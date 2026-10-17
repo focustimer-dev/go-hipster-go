@@ -65,6 +65,10 @@ Long sets still need a thesis, transitions, and accurate catalog matches; if a h
 
 A curated tracklist is not a saved streaming playlist. Ordinary ChatGPT may need multi-app selection to expose the Spotify writer; Gemini does not have that ChatGPT composer workflow. For Gemini, try the connected `@YouTubeMusic` app when available. Google's documented playlist generation from mood or artists does not guarantee exact insertion of the curated recordings and order. Describe any resulting thematic mix as an approximation; do not conflate generation with the user's **Save to library** action. Preserve the original list, avoid re-curation and never reroll DeBarge on a publishing follow-up.
 
+## Personalized setup before `go`
+
+A listener can say `setup` to choose a preferred service, an optional authorized fallback, and default length/exclusions without changing the four music-discovery axes. A **Hipster Music Setup v1** preference summary is reusable only within the accessible conversation or an actual, user-approved host persistence mechanism. A connected-account preference is **not proof of playlist-write capability**. A later `go sad fast 24 on Spotify` explicitly overrides the saved count, mood and service, while a plain `go` inherits only confirmed accessible setup defaults. `setup` must never create an empty playlist, manufacture OAuth access, or roll DeBarge. Setup is a conversation, not a multi-field compliance audit.
+
 ## One-word go: streaming handoff
 
 Execution order matters: preflight accessible playlist-writing capability **before** exploring candidate songs. A writer's existence must be based on exposed tools, not a service subscription. Once the destination is established, curate and resolve its actual catalog recordings before creating the playlist; keep all musical verification standards. If tools are missing, continue a text-list fallback without implying that more taxonomy research will activate Spotify or YouTube Music. This is a routing experiment, not proof of automatic cross-app invocation.

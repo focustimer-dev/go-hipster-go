@@ -6,7 +6,7 @@ Claude and Claude Code support Agent Skills; Claude also has its own **plugin** 
 
 - Download the **skill-only ZIP** generated with `python scripts/build_agent_packages.py`. It contains one `hipster-music-generator/` directory with `SKILL.md` and all supporting references and scripts.
 - In Claude, go to **Customize → Skills → Create skill → Upload a skill**, and upload the ZIP. For a plugin instead, use **Customize → Plugins** and upload the plugin ZIP if your plan/host supports custom plugin upload.
-- Ask `Use Hipster Music Generator: go`. Try `setup-hipster-music-generator` to discover only music integrations the active host actually exposes.
+- Ask `Use Hipster Music Generator: go`. Try `setup` (or the separate `setup-hipster-music-generator` skill) to inspect accessible integrations and choose reusable listening/publishing preferences. Persistence depends on Claude's supported user-owned settings, not the skill ZIP.
 - Installing the skill does **not** grant Spotify, Apple Music, or YouTube Music authentication. Connections and write permissions require separate user authorization.
 
 **Status:** Schema and package structure are checked offline; no Claude account was available for an actual import or generation test. Claude chat custom plugins and custom skills are plan-dependent. No implicit GitHub auto-sync is promised for uploaded ZIPs.

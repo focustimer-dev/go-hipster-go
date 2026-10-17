@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "hipster-music-generator",
-  "version": "3.2.4",
-  "description": "Smug, snarky curator: go sad, fast, angry, chill, slow or weird to discover real deep cuts and publish in Spotify/YouTube Music where supported.",
+  "version": "3.3.0",
+  "description": "An insufferably smug music curator. Say setup to choose services and defaults; go sad, weird, fast or chill for real deep-cut playlists with publishing where accessible.",
   "repository": "https://github.com/focustimer-dev/hipster-music-generator",
   "homepage": "https://github.com/focustimer-dev/hipster-music-generator",
   "license": "MIT",
@@ -30,9 +30,9 @@
         ],
         "websiteURL": "https://github.com/focustimer-dev/hipster-music-generator",
         "defaultPrompt": [
-          "Go. Make 12 excellent tracks, publish if possible, and be insufferably smug about it.",
-          "Go weird slow 24. I assume you have taste.",
-          "Go fast angry. Surprise me, obviously."
+          "Setup. Check my music services and help me choose what to use for playlists.",
+          "Go. Curate 12 tracks and save them if my connected service allows it.",
+          "Go weird slow 24. I assume you have taste."
         ],
         "brandColor": "#8A030D",
         "brandColorDark": "#E85C62",

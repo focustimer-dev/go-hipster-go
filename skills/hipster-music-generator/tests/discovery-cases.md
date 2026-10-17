@@ -101,6 +101,23 @@ For each run, inspect artist/title authenticity, coherent sonic rationale, modif
 
 Observed Gemini Android failure: a twelve-track curation incorrectly recommended ChatGPT's two-plugin composer instruction. Re-test after loading the updated Gemini package; static CI doesn't establish actual tool routing.
 
+## Setup preference and capability checks (manual)
+
+| Request or situation | Expected |
+| --- | --- |
+| `setup` with Spotify writer exposed | Confirm real writer availability, ask preferred service only if not known, then offer sensible defaults; no playlist created |
+| `setup` with Spotify connected but its writer absent | Allow Spotify as preferred service; mark unavailable **in this chat**, not disconnected; never claim setup fixed routing |
+| `setup` with Spotify and YouTube Music | Ask listener which is preferred for listening and which to publish; fallback only if approved |
+| `setup` on Gemini | Use Gemini Connected Apps / `@YouTubeMusic`, never ChatGPT's composer; show exact-versus-thematic publishing limitation |
+| `setup` with no storage API | Return portable **Hipster Music Setup v1** and say **session-only**; don't claim other chats will remember |
+| `setup` with host persistence available | Ask permission; use an actual user-owned write mechanism and confirm only on successful save; never store credentials |
+| `setup status` or `setup change 24 tracks` | Inspect/show or selectively update preferences without creating a playlist or rolling DeBarge |
+| `go sad` after setup default 24 / Spotify | Reuse 24 and the preferred service if accessible; keep emotional modifier and DeBarge eligibility |
+| `go weird 6 on YouTube Music` with a saved Spotify preference | Explicit command overrides profile; report approximate/unsaved results honestly |
+| Preferred service writer missing, alternate not authorized as fallback | Preserve preferred choice, curate text list and ask once before switching; no invisible rerouting |
+
+Manual runtime observations remain necessary: static skill tests cannot establish persistent memory or streaming permissions.
+
 ## Default go: publishing and host-routing acceptance checks (manual)
 
 **A/B preflight trial:** In fresh conversations with the same installed apps and account authorization, compare (A) skill-only `go` against (B) explicit Hipster Music Generator + Spotify selection, using the same 12-track constraint. Record whether playlist-writing tools were exposed *before* catalog research, whether the request saved a playlist, number of provider-confirmed items, substitutions, and whether the assistant falsely attributed missing tools to a disconnected account. The two-plugin success case is the control, not evidence that skill-only activation is fixed. Do not save public account details.

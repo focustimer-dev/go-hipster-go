@@ -26,11 +26,13 @@ conversations, and which connected music services can actually CREATE
 playlists. Don't assume account connection means writing is available.
 ```
 
-Once the agent confirms what it loaded and what setup discovered, say:
+Once the agent confirms what it loaded, run the guided **`setup`** command to select your preferred music service and optional listening defaults. Then say:
 
 ```text
 go
 ```
+
+**`setup`** checks what your connected music services can actually do, asks where you want to listen or publish, and summarizes your choices. It uses the host's real preference storage **only with permission and actual support**; otherwise it provides a portable profile to reuse. **`setup status`** shows your known settings and **`setup change Spotify`** can adjust the destination. You can still skip setup and go straight to music.
 
 **`go` curates twelve real tracks by default and attempts to save the playlist** to an available, authorized streaming service. If no actual publisher is exposed, it still curates and says plainly what wasn't saved. Say `go, text only` to skip publishing.
 
@@ -88,7 +90,7 @@ Try the GitHub-link prompt above first. **Use host-specific installation or manu
 <details>
 <summary><strong>ChatGPT — plugin setup and Work</strong></summary>
 
-If ordinary GitHub loading doesn't persist, use [Plugin Creator](adapters/chatgpt/PLUGIN_INSTALL.md) to build/install the existing [plugin manifest](plugin.json) and [packaged skill](skills/hipster-music-generator/SKILL.md). Run the [setup skill](skills/setup/SKILL.md) to inspect genuinely exposed connected music services. [Project instructions](adapters/chatgpt/README.md) are a fallback without plugin support.
+If ordinary GitHub loading doesn't persist, use [Plugin Creator](adapters/chatgpt/PLUGIN_INSTALL.md) to build/install the existing [plugin manifest](plugin.json) and [packaged skill](skills/hipster-music-generator/SKILL.md). Run **`setup`** (or the [dedicated setup skill](skills/setup/SKILL.md)) to choose music-service preferences and inspect genuinely exposed connected music services. [Project instructions](adapters/chatgpt/README.md) are a fallback without plugin support.
 
 **Observed:** ChatGPT Work has published to Spotify from a single `go`; ordinary Chat on Android required selecting **Hipster Music Generator and Spotify together**. Neither behavior is a universal guarantee. The detailed runtime notes are collapsed under **Field reports** below.
 

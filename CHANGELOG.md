@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.3.0 — The setup command
+
+- Add first-class `setup`, `setup status`, `setup change ...` and `setup again` to the main skill and existing setup skill, with service discovery, listening/publishing preferences and clear defaults.
+- Apply a listener-approved, actually accessible **Hipster Music Setup v1** profile to future `go` requests while rechecking live provider write capability.
+- Keep persistence honest: use actual user-authorized host storage if supported, otherwise display a portable **session-only** profile; never leak personal preferences into public skill packages or claim persistent cross-chat memory.
+- Separate Gemini's thematic YouTube Music generation / Save to library from exact recording insertion; never turn setup into a Spotify OAuth bypass.
+- Add manual setup regression cases and cross-host instructions; keep curation taxonomy, voice and DeBarge Protocol unchanged.
+
+
 ## 3.2.4 — Gemini's YouTube Music routing is not ChatGPT's
 
 - Remove the cross-host fallback that told Gemini users to select two plugins in a ChatGPT-style composer.
