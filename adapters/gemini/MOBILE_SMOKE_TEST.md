@@ -23,6 +23,17 @@ Use the five-file instruction-only ZIP **or** the user-tested GitHub-link loadin
 
 These are manual listening/tone tests: text-based CI cannot establish that Gemini actually performed the behavior.
 
+## Test E — no ChatGPT-style composer leakage
+
+**Observed failure:** after a valid 12-track curation, Gemini offered to "select both" music plugins "in the composer". That is inappropriate Gemini routing advice.
+
+- With no accessible writer, give the original ordered list and say **not published or saved**. Suggest at most one `@YouTubeMusic` or Connected Apps step, not ChatGPT composer selection.
+- If Gemini generates a YouTube Music mix from the thesis, describe it as *provider-generated* until exact songs and order are confirmed.
+- Distinguish generated playlist / playlist preview from a **Save to library** action and an actually saved library item.
+- On follow-up, keep the curated 12 recordings and do not reroll the DeBarge Protocol.
+
+These tests require a Gemini runtime. Passing static CI does not prove YouTube Music supports exact recording insertion.
+
 ## Test A0 — single-command listening
 
 In a new Gemini conversation where the skill is loaded and YouTube Music is authorized, say only `Hipster Music Generator: go`. The skill should attempt to use the actual YouTube Music playlist-writing capability without requiring a separate `@YouTubeMusic` mention. If Gemini's host cannot activate the other skill, it must curate anyway and explicitly explain the limitation, without claiming a saved playlist. Check an explicit `go, text only` to confirm no write is attempted.

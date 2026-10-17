@@ -87,6 +87,9 @@ class PortableAgentTests(unittest.TestCase):
         self.assertIn("Replace skill",guide)
         self.assertIn("go weird, 6 tracks, text only",guide)
         self.assertIn("Test V — preserve the clerk",cases)
+        self.assertIn("Test E — no ChatGPT-style composer leakage",cases)
+        self.assertIn("Gemini-specific publishing recovery",gem)
+        self.assertIn("Save to library",guide)
 
     def test_gemini_zip_is_linked_and_release_automated(self):
         url = "https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/hipster-music-generator-gemini-app-skill.zip"

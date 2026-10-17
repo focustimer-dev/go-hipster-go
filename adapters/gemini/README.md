@@ -4,7 +4,7 @@
 
 ## Download the Gemini skill — no terminal required
 
-**[Download the latest Gemini Skills ZIP](https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/hipster-music-generator-gemini-app-skill.zip)** · [See the versioned v3.2.3 release](https://github.com/focustimer-dev/hipster-music-generator/releases/download/gemini-skill-v3.2.3/hipster-music-generator-gemini-app-skill.zip)
+**[Download the latest Gemini Skills ZIP](https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/hipster-music-generator-gemini-app-skill.zip)** · [See the versioned v3.2.4 release](https://github.com/focustimer-dev/hipster-music-generator/releases/download/gemini-skill-v3.2.4/hipster-music-generator-gemini-app-skill.zip)
 
 This is the **five-file, instruction-only** package ready for Gemini's Skills uploader: `SKILL.md` plus four `references/` files. No Python scripts, credentials or desktop installation needed.
 
@@ -59,9 +59,24 @@ Earlier ZIP packages mistakenly bundled the Python CLI, and Gemini may have inte
 
 When replacing a previously uploaded skill, use the Gemini Skills settings to update or recreate it as supported by your account. Restart the conversation to ensure the updated instructions are used. You can also test immediately by replying: "Yes, curate six tracks now. Do not run scripts; follow the music instructions and use YouTube Music only if available."
 
+## Gemini gave me songs, but no saved playlist
+
+**Observed on Gemini Android:** Hipster Music Generator successfully curated twelve tracks, then mistakenly advised the user to select both Hipster Music Generator and YouTube Music **in a composer**. That was a ChatGPT-only fallback leaking into Gemini. The new skill corrects that advice; the screenshot does not establish that YouTube Music saved those tracks.
+
+For an **already-curated list**, try this in the same Gemini conversation when your YouTube Music connection is available:
+
+```text
+@YouTubeMusic Create a playlist inspired by the twelve recordings above.
+Match those exact versions and order only if supported. If this creates
+a different thematic mix, tell me what changed. Show Save to library
+if available; do not claim the playlist was saved without confirmation.
+```
+
+Gemini can generate a music playlist from a mood, artist, activity or genre. That **doesn't guarantee transferring a specific ordered tracklist**. If a generated playlist appears, you may need to tap **Save to library** to retain it. If `@YouTubeMusic` isn't available, check Gemini **Connected Apps**. Don't re-run setup or re-curate the original twelve tracks repeatedly. See [Google's Gemini–YouTube Music help](https://support.google.com/gemini/answer/15237118).
+
 ## Music-service behavior (documented versus tested)
 
-Google currently documents that Gemini Apps with **YouTube Music** can create playlists based on a mood, activity, genre, artist, and related ideas. This is our preferred target. It does **not** prove the host can recreate an arbitrary *exact ordered set* of obscure tracks, so preview and verify the resulting list before claiming faithful publication.
+Google currently documents that Gemini Apps with **YouTube Music** can generate playlists from a mood, activity, genre, artist or similar idea. This is our preferred destination for a provider-generated *approximation*. It does **not** prove the host can recreate an arbitrary exact ordered set of obscure tracks. If the interface offers **Save to library**, the listener may need to use it after generation; previewed is not necessarily saved.
 
 Google's current **Spotify** connected-media support in Gemini mobile covers searching/playing music and existing playlists; it expressly excludes creating playlists, radio, or saving tracks to playlists through that connection. Spotify remains a listening/search option, **not** a confirmed playlist writer.
 
