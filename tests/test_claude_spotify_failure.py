@@ -26,7 +26,7 @@ class ClaudeSpotifyFailureTests(unittest.TestCase):
         verification=(ROOT/"references/verification.md").read_text(encoding="utf-8")
         self.assertIn("two new playlists",verification)
         self.assertIn("listener-observed",verification)
-        self.assertIn("do not create another duplicate",verification.lower())
+        self.assertIn("delete/recreate anything",verification.lower())
         self.assertIn("claude.com/connectors/spotify",spotify)
 
     def test_protected_debarge_result_and_mirror(self):
