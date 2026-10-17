@@ -129,10 +129,10 @@ class PortableAgentTests(unittest.TestCase):
         self.assertIn("Customize → Skills → Upload a skill", claude)
         self.assertIn("ask one short question", claude)
         self.assertIn("not a mistake by the listener", claude)
-        self.assertIn("Before recommending a ZIP, identify my host AND upload screen", readme)
+        self.assertIn("Before suggesting a ZIP, identify my", readme)
         self.assertIn(".claude-plugin/plugin.json", readme)
         self.assertIn("adapters/claude/README.md", readme)
-        self.assertIn("Never interchange these files", readme)
+        self.assertIn("Never interchange the two archives", readme)
 
         self.assertIn("Which Claude screen are you on?", claude)
         self.assertIn("Customize → Plugins → Upload a plugin", claude)
