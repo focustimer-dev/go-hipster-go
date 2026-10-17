@@ -26,7 +26,7 @@ An **Agent Skills-style**, open-source music curator for real, surprising, globa
 
 </details>
 
-## Try the skill — entry is free; the tote bag is not
+## Try the skill — entry is free; the tote bag is not - Try pointing your agent at this repo and telling it to just add the skill before doing any of this stuff below:
 
 1. Install the **entire repository folder** as `hipster-music-generator` in a compatible agent's skill directory. See [agent setup](adapters/agents.md).
 2. Ask: `Use hipster-music-generator: give me a 12-track playlist connecting Thai molam and Italian library funk; make the transitions defensible.`
