@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased — Listening-quality iteration (experimental)
+
+- For open-ended `go`, select among two or three musically credible concepts rather than jumping to the first regional pairing.
+- Require track-specific sonic reasons and honest uncertainty when recordings could not be heard or independently described.
+- Accept lightweight numbered feedback, using only a playlist actually available in the conversation.
+- Request post-publish reconciliation of intended versus provider-confirmed tracks, mixes, and order; unknown remains unknown.
+- Added manual ChatGPT/Spotify and Gemini/YouTube Music regression cases. Provider fidelity and musical superiority are **not yet established**.
+- Preserved the DeBarge Protocol's random trigger, exact recording and 25-entry behavior without change; made the public-facing README allusion less explicit.
+
 ## 3.1.0 — Portable plugin packaging and discovery setup
 
 - Added portable `plugin.json`, installed curation skill, and onboarding skill.

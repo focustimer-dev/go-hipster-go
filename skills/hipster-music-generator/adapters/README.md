@@ -20,6 +20,7 @@ The common input is [`schemas/playlist.schema.json`](../schemas/playlist.schema.
 6. Handle retries without blindly appending duplicate records; check item-level status and idempotency where possible.
 7. Log sanitized failures, never credentials, secrets, OAuth codes, or raw user tokens.
 8. Keep explicit duplicate track entries for the DeBarge Protocol when supported, and report if a service refuses them.
+9. After any write, reconcile the **requested ordered recordings** against item-level provider results **if available**. Surface requested versus confirmed counts, exact matches, substitutions, missing tracks and reordered items. If the provider confirms only playlist creation, report publication without claiming the specific tracks or order were verified. Do not treat a search-only response as evidence of publication.
 
 No OAuth tokens, app secrets, integrations, or real catalog IDs are included in this public repository. The guides below describe possible official API routes, not already-implemented adapters.
 

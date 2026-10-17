@@ -30,13 +30,13 @@ The four axes: **era; audible texture/production; actual geographic scene; micro
 
 ## Curate in seven steps
 
-1. **Sonic thesis.** In one sentence, identify 2–4 audible qualities connecting the set (e.g., rubbery bass, melancholy harmonies, fuzzy guitars, insistent dance pulse). Separate essential from optional characteristics.
+1. **Sonic thesis.** In one sentence, identify 2–4 audible qualities connecting the set (e.g., rubbery bass, melancholy harmonies, fuzzy guitars, insistent dance pulse). Separate essential from optional characteristics. For an open-ended **"go"**, consider two or three genuinely different sonic theses, then choose the most intriguing one with a convincing audible bridge; show only the selected thesis unless asked. When the last playlist is visible, prefer a different core pairing, without sacrificing musical fit or pretending to remember unseen playlists.
 2. **Explore discovery distance.** Start with direct matches; expand to adjacent scenes sharing musical traits; include one or two *distant* choices only where there is a strong explainable sonic bridge. Geographic novelty alone is never proof of fit. See [sonic taxonomy](references/sonic-taxonomy.md) and [global scenes](references/global-scenes.md).
 3. **Find real recordings.** Search specific artist/title pairs, albums, small-label releases, B-sides, compilations, soundtrack cues, and known mixes. Reference artists are **starting points, not the destination**; prefer surprising labelmates or regional contemporaries with similar musical qualities. Avoid recycling artists or identical primary pairings from the *immediately preceding playlist* when feasible, without blocking an explicit request or a particularly strong fit.
 4. **Verify honestly.** For each recommendation, confirm title and artist (and mix/version, date, scene, and platform availability if claimed) through appropriate credible catalog/artist/label/playable sources. If you cannot verify, label that entry provisional. If the user asks for a strictly verified or publishable playlist, omit unresolved tracks. Never invent links, versions, release years, BPM, or streaming IDs. See [verification rules](references/verification.md).
 5. **Choose intelligently.** A clear majority must fit the sonic thesis; optional off-axis picks should meaningfully expand the idea. Avoid multiple selections by the same artist by default, except when explicitly requested or in the DeBarge Easter egg. The v2 guideline of roughly **no more than two explicitly named taxonomy touchstones in 12 tracks** is a useful preference, never a hard ban. Make room for joyous or cheesy 1980s pop-soul when it makes musical sense; never condescend to its creators.
-6. **Sequence a story.** Establish a recognizable sound, deepen it, introduce a worthwhile surprise, and resolve or intensify. Explain transitions by audible groove, instrumentation, production, atmosphere, or energy—not unsupported numerical claims.
-7. **Deliver and learn.** Default to 12 tracks: evocative title, one-sentence concept, short sonic map, numbered artist — title (mix if established), one concrete reason per track, source links only if actually checked, and one useful next direction. Adapt to shorter requests. Ask which 2–3 tracks worked or failed and revise selection logic for next time, rather than dumping near-duplicates.
+6. **Sequence a story.** Establish a recognizable sound, deepen it, introduce a worthwhile surprise, and resolve or intensify. For each song, give a *track-specific* musical hook—an audible or credibly documented groove, arrangement, voice, texture, or transition—not a generic genre restatement. If no audio was accessible, identify the hook as source-supported or tentative; never imply you listened when you did not. Avoid unsupported numerical claims.
+7. **Deliver and learn.** Default to 12 tracks: evocative title, one-sentence concept, short sonic map, numbered artist — title (mix if established), one concrete reason per track, source links only if actually checked, and one useful next direction. Adapt to shorter requests. Accept feedback like **"more like #4"**, **"less ambient"**, or **"#7 was awful"**: resolve numbers against the last visible playlist, preserve the liked sonic trait or avoid the disliked one, and vary actual recordings instead of reflexively repeating artists. If the earlier list is unavailable, ask which track the user means. Do not claim lasting preferences across conversations without supported context.
 
 ## Deliberate irony and Easter egg
 
@@ -47,6 +47,8 @@ Glossy late-period Motown/Motown-adjacent pop-soul, synth-funk, adult-contempora
 ## Output and streaming boundaries
 
 A playlist recommendation is NOT a published playlist. For structured export, follow [the playlist contract](schemas/playlist.schema.json) and validate with `python scripts/playlist_cli.py validate examples/example-playlist.json`. List unresolved tracks clearly. **Never call a fictional `youtube_music:create` tool** or assume that tools exist. Check available tools and authorization in the execution environment. Only send a playlist to an external service if the user asks for it or has clearly authorized publishing. Confirm exact recording matches and show a preview for approval when ambiguous, public, or irreversible. Use [the adapter contract](adapters/README.md) and the provider guides. On missing credentials/integration, deliver portable JSON or a text playlist with actionable next steps.
+
+**Post-publish check:** Compare the intended ordered list with what the provider actually confirms, if it exposes playlist items. Report the requested and confirmed track counts, exact matches, substitutions, missing entries, and order differences briefly, plus a real provider URL when available. If the provider confirms only playlist creation but does not expose item-level results, say **"Playlist created; exact recordings and order not independently confirmed"** rather than inventing a successful reconciliation. Never infer track-level success from a search result or creation-only acknowledgement.
 
 ## Test changes rather than accumulating rules
 
@@ -236,6 +238,15 @@ Thesis: repetition, elastic live rhythm, adventurous studio treatment. Honor the
 
 Choose a fresh combination across era, production, geography, and microgenre, with geographic breadth over successive requests. State the sonic thesis first, then curate. Avoid repeating the immediately preceding playlist's core regional/microgenre pairing if practical. The DeBarge roll is separate and takes precedence only when eligible.
 
+For an otherwise unstructured "go", privately compare two or three viable combinations. Choose the one that connects concrete sonic traits while offering a fresh scene or surprising transition; do not display discarded sketches by default. No invented discovery score or forced international quota.
+
+## Feedback on the preceding playlist
+
+- "More like track 4" means keep the specific track's audible character and find *different* artists or recordings with that trait.
+- "Track 7 was awful" means avoid the offending texture, energy, or production quality when identifiable, not automatically the entire country or genre.
+- "Less ambient, more rhythmic" updates the sonic thesis and sequence rather than appending random dance music.
+- Only interpret track numbers when the referenced playlist is visible; ask for the track name otherwise. Don't pretend preference history persists automatically across sessions.
+
 ## "DeBarge Protocol"
 
 Exactly 25 entries of DeBarge — "Rhythm of the Night". Do not manufacture remix names or invent a streaming playlist. If the user needs this published, verify whether their service accepts duplicates and report any limitation.
@@ -266,5 +277,9 @@ Use `verification.status` on each entry: `verified` with a source URL, or `unver
 - Explicit handling when the exact track or mix is unavailable
 
 A partial or unverified discovery playlist is fine if openly labeled; a **strictly verified** or **publish-ready** playlist must not silently include unresolved candidates. The validator's `--strict` flag checks minimum verification metadata, not factual truth; independent listening/catalog validation is still needed.
+
+## After a service reports playlist creation
+
+Keep the original ordered selections intact for comparison. If a streaming app offers a returned item list or playlist read-back, line up entries by **position, artist, title, and requested version**; compare repeated tracks positionally rather than collapsing duplicates. State requested count, confirmed added count, exact matches, substitutions, omissions, and order changes **only to the extent supported by provider data**. A remix, live version, cover, or ambiguous title is not an exact match merely because it plays. If a provider returns only a playlist URL or acknowledgement, do **not** claim item-level matches; say the saved sequence still needs a check. Report unknown results as **unknown**, not missing or confirmed. Never silently substitute an alternate version; ask when the alternative materially affects the user's intent.
 
 # END SOURCE: references/verification.md

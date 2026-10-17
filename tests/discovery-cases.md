@@ -22,3 +22,23 @@ Run *the same* prompts against the prior version and this revision, with the sam
 - No agent may claim to have published to a service without authenticated confirmations.
 
 No results are claimed here. Listening quality requires actual human evaluation; this document is a test plan.
+
+## Cross-platform publication regression (manual)
+
+The user reports working ChatGPT → Spotify and Gemini → YouTube Music workflows. These reports validate that a playlist was created in those sessions, **not yet** that every requested recording and sequence was preserved. Do not store private tokens, listening history, account IDs, or playlist URLs in public test fixtures unless explicitly authorized.
+
+Run the *same* six-track curated list on both hosts if possible. Record: host and service; user-requested count; actual item-level count when accessible; exact matches; alternate mixes/covers; absent/unknown matches; order preserved or unverified; real playlist creation acknowledgement. Use **unknown** for fields a provider does not expose. A publish action with no read-back should not claim six exact tracks.
+
+### Test prompts
+
+- **ChatGPT + Spotify:** `Use Hipster Music Generator: go, six tracks. Publish to Spotify using a connected publisher if available. Tell me how many were requested and which recordings and order you can actually verify in the saved playlist. Mark anything else unknown.`
+- **Gemini + YouTube Music:** `Use Hipster Music Generator and the built-in YouTube Music skill: go, six tracks. Publish if available, preserving exact versions and order. Afterward separate confirmed tracks from substitutions and unknowns.`
+- **No writer:** `Use Hipster Music Generator: go. If no connected playlist-writing tool exists, curate anyway and explicitly say nothing was published.`
+- **Feedback:** `More like #4 but less atmospheric, please.` Run after a visible playlist; pass when it uses #4's relevant sonic feature without blindly repeating the artist.
+- **Surprise:** Run two consecutive `go` requests in one conversation; inspect whether the second selection has a distinct scene/microgenre pairing and specific musical explanations without an invented novelty score.
+
+### One-line scorecard
+
+`Host/service | Requested | Confirmed item count or unknown | Exact | Substituted | Missing | Unknown | Order checked? | Saved URL confirmed? | Sonic fit notes`
+
+Pass publication reporting when every claimed number is grounded in a provider result, with explicit uncertainty otherwise. Musical quality remains human-reviewed, not a CI pass/fail claim.

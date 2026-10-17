@@ -15,12 +15,14 @@ An **Agent Skills-style**, open-source music curator for real, surprising, globa
 
 > **Status:** usable curation skill, offline validators and example schema; streaming adapters are documented **plans**, not deployed integrations. No OAuth or audio-recognition service is included.
 
+**Field reports:** Spotify playlist creation via ChatGPT and YouTube Music playlist creation via Gemini have both worked for a user with the relevant connections. The integrations belong to those hosts, not this repository; exact matching and order are still being evaluated.
+
 <details>
 <summary><strong>Our needlessly particular manifesto</strong> (for the discerning listener)</summary>
 
 - **Obscurity is not a personality.** It is, however, an extremely convenient substitute for one.
 - **A sonic connection must be real.** We refuse to pair two tracks solely because both were discovered in a converted warehouse.
-- **There is no shame in a shiny chorus.** The right DeBarge song can be more radical than a limited-edition cassette pressed in somebody's kitchen.
+- **There is no shame in a shiny chorus.** Somewhere in the stacks is a statistically improbable house special. A gloriously overproduced 1980s chorus may be more radical than a limited-edition cassette pressed in somebody's kitchen.
 - **We verify the music.** Your favorite 1982 Bulgarian synth-funk B-side should actually exist before we make you feel inferior for not knowing it.
 - **No gatekeeping at the door.** Just an imaginary bouncer who insists your handlebars are insufficiently mustachioed.
 
