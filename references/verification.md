@@ -29,9 +29,9 @@ A partial or unverified discovery playlist is fine if openly labeled; a **strict
 | Populate | Actual item count and exact song/version/order, or **unverified** |
 | Metadata | Name/description saved, missing, or unknown |
 | Later failure | Exact action and error; do not reinterpret it as a rollback |
-| Reconciliation | Created assets, intended/requested list, partial mismatches, remaining unknowns |
+| Reconciliation | Generated previews versus confirmed saved assets, intended/requested list, partial mismatches, remaining unknowns |
 
-**Real Claude field report:** The listener saw **two new playlists, both missing their descriptions**, after Claude ultimately claimed "0 published" on a Premium-related error. That last statement is inconsistent with the user-observed creations. At this point the two playlist titles/links, actual tracks, duplicates and ordering are **not yet verified**. Don't invent those details or delete/recreate anything. Use read-only provider access if available, or request the two existing links/screenshots. A Spotify Web API description field doesn't establish that Claude's connector can set it; otherwise label any text as **Suggested playlist description (not saved)**. Preserve the original DeBarge roll and all 25 requested positions without rerolling.
+**Real Claude field report, updated 2026-10-17:** The listener initially saw **two generated results with missing descriptions** during a Claude Spotify attempt, and later clarified **neither was saved** to Spotify. Thus **0 saved playlists are confirmed**; the two visible results were previews/generation, not verified durable library objects. A later Premium-related denial is consistent with that failure, but does not establish the listener's actual subscription tier. The precise generated song counts, duplicates and order remain unverified. Do not invent saved URLs or retrospectively claim partial publication. Preserve the original DeBarge roll and all 25 requested positions without rerolling; if a durable saved playlist is subsequently shown, reconcile it separately. A Spotify Web API description field doesn't establish that Claude's connector can set it; otherwise label any text as **Suggested playlist description (not saved)**.
 
 ## After a service reports playlist creation
 

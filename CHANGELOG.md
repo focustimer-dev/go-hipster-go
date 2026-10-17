@@ -1,8 +1,14 @@
 # Changelog
 
+## 3.3.4 — Distinguish generated previews from saved playlists
+
+- Correct Claude field evidence: two playlist results were displayed but **did not save to Spotify**; report 0 confirmed saved rather than partial publication.
+- Keep generated previews, durable saved playlist objects, and exact item/order verification separate. Premium is required for personalized prompt-generated playlists via Claude, but does not guarantee exact duplicate insertion.
+- Preserve the DeBarge selection and all prior music curation behavior.
+
 ## 3.3.3 — Reconcile creations before reporting a total failure
 
-- Claude field report: user observed two Spotify playlists with missing descriptions after Claude incorrectly concluded 0 published on a later Premium error; item counts and order still unverified.
+- Initial field report described two displayed playlist results without descriptions; later user clarification established neither was saved. See 3.3.4 for corrected saved-state guidance.
 - Introduce stage-by-stage publication reconciliation, separating playlist creation, contents, metadata, provider denials, and uncertain results. Never create a third playlist before resolving previous attempts.
 - Preserve DeBarge odds, original 25-entry sequence and one-roll-per-new-playlist behavior.
 
