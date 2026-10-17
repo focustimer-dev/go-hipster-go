@@ -4,7 +4,9 @@
 
 > A lot of the serious music I pretty much exclusively listen to, you probably haven't heard of it.
 
-<p align="center"><em>For people who describe a record as “textural,” commute on a fixed gear, and have been meaning to finish that reclaimed-walnut credenza since 2013.</em></p>
+<p align="center"><em>“Who’s here ironically and who’s here because they sincerely enjoy it?”</em></p>
+
+<p align="center"><strong>Whole crowd raises both hands.</strong></p>
 
 <p align="center"><sub>Ethically sourced deep cuts. Sustainably pretentious. Fair-trade almond milk sold separately.</sub></p>
 
