@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.3.5 — Spotify-first, zero-interview setup
+
+- Default listening and publishing preferences to Spotify without a required service-selection question; keep `setup change ...` for explicit overrides.
+- Check live writer availability separately from provider preference; never silently publish to a different service just because Spotify cannot write on the current host.
+- Document that Gemini's regular Spotify connector supports search/play, not playlist creation; offer an explicit YouTube Music change for Gemini playlist generation and clarify separate library saving.
+- Add listener-reported successful Meta Muse + Spotify flow to the manual platform checks without claiming universal account access or exact track/order fidelity.
+- Preserve four-axis taxonomy, playlist voice, length defaults, DeBarge behavior and streaming authorization safeguards.
+
 ## 3.3.4 — Distinguish generated previews from saved playlists
 
 - Correct Claude field evidence: two playlist results were displayed but **did not save to Spotify**; report 0 confirmed saved rather than partial publication.

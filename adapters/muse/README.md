@@ -4,7 +4,7 @@
 
 ## Muse personal agent — GitHub-first, no imaginary installer
 
-Spotify announced an **official Muse integration** on September 23, 2026: Muse can find music, play it, save songs to a library, and create/modify Spotify playlists after the listener connects their Spotify account. **[Spotify's announcement](https://newsroom.spotify.com/2026-09-23/spotify-meta-muse-agent/)** documents the integration. No new developer-owned Spotify OAuth app is necessary *for Muse to use its existing connector*.
+Spotify announced an **official Muse integration** on September 23, 2026: Muse can find music, play it, save songs to a library, and create/modify Spotify playlists after the listener connects their Spotify account. A listener also reports successfully creating a Spotify playlist with Hipster Music Generator through consumer Meta Muse (2026-10-17); item-by-item fidelity and universal availability are not independently validated. **[Spotify's announcement](https://newsroom.spotify.com/2026-09-23/spotify-meta-muse-agent/)** documents the integration. No new developer-owned Spotify OAuth app is necessary *for Muse to use its existing connector*.
 
 Meta documents **built-in Muse skills and connected services**, but we have **not verified an official consumer Muse `SKILL.md` ZIP uploader or permanent third-party GitHub skill installer**. Do **not** claim that reading the repository means this skill is permanently installed. Muse may summarize a linked file or follow instructions in the current chat; cross-conversation persistence, full reference reading and exact playback actions require user testing.
 

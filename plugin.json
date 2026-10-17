@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "hipster-music-generator",
-  "version": "3.3.4",
-  "description": "An insufferably smug music curator. Say setup to choose Spotify, YouTube Music or other services; go sad, weird, fast or chill for deep cuts and honest publishing.",
+  "version": "3.3.5",
+  "description": "An insufferably smug music curator. Spotify is the default; setup checks your host and supports YouTube Music or other explicit alternatives. Go sad, weird, fast or chill.",
   "repository": "https://github.com/focustimer-dev/hipster-music-generator",
   "homepage": "https://github.com/focustimer-dev/hipster-music-generator",
   "license": "MIT",
@@ -30,7 +30,7 @@
         ],
         "websiteURL": "https://github.com/focustimer-dev/hipster-music-generator",
         "defaultPrompt": [
-          "Setup. Check my music services and help me choose what to use for playlists.",
+          "Setup. Default to Spotify, check whether publishing is available, and show how to change services if needed.",
           "Go. Curate 12 tracks and save them if my connected service allows it.",
           "Go weird slow 24. I assume you have taste."
         ],

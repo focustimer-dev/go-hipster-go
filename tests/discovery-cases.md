@@ -134,10 +134,10 @@ Observed Gemini Android failure: a twelve-track curation incorrectly recommended
 
 | Request or situation | Expected |
 | --- | --- |
-| `setup` with Spotify writer exposed | Confirm real writer availability, ask preferred service only if not known, then offer sensible defaults; no playlist created |
+| `setup` with Spotify writer exposed and no prior preference | Default to Spotify immediately, with no service-selection question; no playlist created |
 | `setup` with Spotify connected but its writer absent | Allow Spotify as preferred service; mark unavailable **in this chat**, not disconnected; never claim setup fixed routing |
-| `setup` with Spotify and YouTube Music | Ask listener which is preferred for listening and which to publish; fallback only if approved |
-| `setup` on Gemini | Use Gemini Connected Apps / `@YouTubeMusic`, never ChatGPT's composer; show exact-versus-thematic publishing limitation |
+| `setup` with Spotify and YouTube Music | Default to Spotify, present `setup change YouTube Music` as an option; never automatically publish to both |
+| `setup` on Gemini | Keep Spotify as the stated default, explain Spotify's Gemini connector is search/play only, offer `setup change YouTube Music` for actual playlist generation; never silently switch |
 | `setup` with no storage API | Return portable **Hipster Music Setup v1** and say **session-only**; don't claim other chats will remember |
 | `setup` with host persistence available | Ask permission; use an actual user-owned write mechanism and confirm only on successful save; never store credentials |
 | `setup status` or `setup change 24 tracks` | Inspect/show or selectively update preferences without creating a playlist or rolling DeBarge |
@@ -154,8 +154,8 @@ Manual runtime observations remain necessary: static skill tests cannot establis
 | Environment | Prompt | Expected result |
 | --- | --- | --- |
 | ChatGPT, Spotify only authorized writer | `Hipster Music Generator: go` | Attempt Spotify publication without separate mention; use actual provider confirmation |
-| Gemini, YouTube Music only authorized writer | `Hipster Music Generator: go` | Attempt YouTube Music via actual host capability, or report an activation limitation |
-| Two writable services, no grounded preference | `go` | Ask once which destination; don't publish both |
+| Gemini, YouTube Music only authorized writer | `Hipster Music Generator: go` | With no explicit service change, do not auto-publish to YouTube Music; explain Spotify cannot write and offer `setup change YouTube Music` |
+| Two writable services, no grounded preference | `go` | Prefer Spotify by default when its writer is authorized; don't ask or publish both |
 | Two writers, visible Spotify preference | `go` | Prefer Spotify when writable |
 | Connected Spotify search/play only | `go` | Curate, don't claim playlist creation |
 | Spotify connected, writer absent in skill-only chat | `go` | Keep the original ordered list; explain that both plugins may need to be selected for the next publication prompt |
@@ -170,7 +170,7 @@ These tests measure actual host behavior; a textual CI assertion does not establ
 
 ## Cross-platform publication regression (manual)
 
-The user reports working ChatGPT → Spotify and Gemini → YouTube Music workflows. These reports validate that a playlist was created in those sessions, **not yet** that every requested recording and sequence was preserved. Do not store private tokens, listening history, account IDs, or playlist URLs in public test fixtures unless explicitly authorized.
+The user reports working ChatGPT → Spotify, Meta Muse → Spotify, and Gemini → YouTube Music workflows. These reports validate that a playlist was created in those sessions, **not yet** that every requested recording and sequence was preserved. Do not store private tokens, listening history, account IDs, or playlist URLs in public test fixtures unless explicitly authorized.
 
 Run the *same* six-track curated list on both hosts if possible. Record: host and service; user-requested count; actual item-level count when accessible; exact matches; alternate mixes/covers; absent/unknown matches; order preserved or unverified; real playlist creation acknowledgement. Use **unknown** for fields a provider does not expose. A publish action with no read-back should not claim six exact tracks.
 

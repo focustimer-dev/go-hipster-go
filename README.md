@@ -30,7 +30,7 @@ Never interchange these files. If my upload screen is unknown,
 ask which one I'm using before giving me a download link.
 ```
 
-**2. Run `setup` in the loaded skill.** It will check the music services *actually available in that chat*, ask where you prefer to listen and publish, and offer default playlist settings. Keep the defaults or customize them. **Run `setup` again whenever you want to change your preferences**; `setup change ...` edits one setting and `setup status` shows what is known.
+**2. Run `setup` in the loaded skill.** Spotify is now the **default listening and publishing preference**: the skill checks whether Spotify can actually write playlists in your current AI platform, then shows the defaults without a service-selection interview. If your platform cannot publish to Spotify—or you simply prefer another service—use `setup change YouTube Music` (on Gemini) or another explicit service change. **`setup again`** rechecks availability; `setup status` shows what is known.
 
 ```text
 setup
@@ -52,13 +52,13 @@ By default, `go` curates **12 real tracks** and attempts to publish to your chos
 
 | Say | What happens |
 | --- | --- |
-| `setup` | Check accessible music services, choose a preferred destination and set defaults; safe to rerun |
+| `setup` | Default to Spotify, check actual writer availability, and set defaults without an interview |
 | `setup status` | Review known preferences and available service capabilities |
-| `setup change Spotify` | Change the preferred publishing service |
+| `setup change YouTube Music` | Explicitly change the publishing preference (particularly useful on Gemini) |
 | `setup change 24 tracks` | Change the default playlist length |
 | `setup again` | Refresh service discovery while retaining existing choices |
 
-Setup does **not** generate a playlist. It won't store your preferences outside the current session unless the host genuinely supports user-approved persistence. Choosing a service is not the same as confirming that its playlist-writing tool is accessible.
+Setup does **not** generate a playlist. It won't store your preferences outside the current session unless the host genuinely supports user-approved persistence. **Spotify is the default preference, not a guaranteed publisher**: Gemini's Spotify media connection is documented for search/play, not playlist creation, so Gemini users can opt into `setup change YouTube Music`. Choosing a service is not the same as confirming that its playlist-writing tool is accessible.
 
 ### Playlists & modifiers
 

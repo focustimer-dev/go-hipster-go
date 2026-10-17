@@ -10,7 +10,7 @@ This is the **five-file, instruction-only** package ready for Gemini's Skills up
 
 1. Open [Gemini web](https://gemini.google.com/) and go to **Customize → Skills → Create → Upload**.
 2. Upload the ZIP from the link above, and save the skill.
-3. Say **`Use Hipster Music Generator: setup`** to choose your preferred music service, confirm whether Gemini's YouTube Music connection is usable, and make a portable listener setup profile. Then try `go weird`. A saved Gemini Skill does not itself store each listener's choices across conversations.
+3. Say **`Use Hipster Music Generator: setup`**. Spotify is the universal **default preference**, but Gemini's Spotify media connector cannot create playlists. To publish through Gemini's supported generator, explicitly say **`setup change YouTube Music`** and use `@YouTubeMusic` when connected; save a generated playlist to your library when prompted. Then try `go weird`. A saved Gemini Skill does not itself store each listener's choices across conversations.
 
 If your Gemini agent can install or load the skill directly from the GitHub repository, **try that first**; the ZIP is the reliable manual fallback. Uploaded copies do **not** automatically sync with GitHub. The release asset is rebuilt from the canonical skill by [the publishing workflow](../../.github/workflows/publish-gemini-skill.yml) whenever relevant source files change.
 

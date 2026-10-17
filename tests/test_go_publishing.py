@@ -8,8 +8,8 @@ class DefaultGoBehaviorTests(unittest.TestCase):
     def test_go_means_publish(self):
         skill=(ROOT/"SKILL.md").read_text(encoding="utf-8")
         for term in ['"go" means curate + publish by default',
-                     'exactly one connected, authorized writer',
-                     'ask once',
+                     'Spotify by default',
+                     'setup change YouTube Music',
                      'go, text only',
                      'nothing was published or saved',
                      'If no authorized writer was exposed']:
