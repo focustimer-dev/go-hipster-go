@@ -2,6 +2,18 @@
 
 **The Gemini mobile/web app now supports native reusable Agent Skills**. Use that for everyday music listening rather than treating a custom Gem or Gemini CLI extension as equivalent.
 
+## Download the Gemini skill — no terminal required
+
+**[Download the latest Gemini Skills ZIP](https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/hipster-music-generator-gemini-app-skill.zip)** · [See the versioned v3.2.3 release](https://github.com/focustimer-dev/hipster-music-generator/releases/download/gemini-skill-v3.2.3/hipster-music-generator-gemini-app-skill.zip)
+
+This is the **five-file, instruction-only** package ready for Gemini's Skills uploader: `SKILL.md` plus four `references/` files. No Python scripts, credentials or desktop installation needed.
+
+1. Open [Gemini web](https://gemini.google.com/) and go to **Customize → Skills → Create → Upload**.
+2. Upload the ZIP from the link above, and save the skill.
+3. Run `Use Hipster Music Generator: go weird`. For playlists saved to YouTube Music, the connected music service must separately expose authorized playlist-writing actions.
+
+If your Gemini agent can install or load the skill directly from the GitHub repository, **try that first**; the ZIP is the reliable manual fallback. Uploaded copies do **not** automatically sync with GitHub. The release asset is rebuilt from the canonical skill by [the publishing workflow](../../.github/workflows/publish-gemini-skill.yml) whenever relevant source files change.
+
 ## If Gemini sounds suspiciously polite
 
 **First verify which version it loaded.** A GitHub URL read in an earlier chat—or a saved Gemini Skill with uploaded files—is not automatically refreshed when this repository changes.
@@ -18,7 +30,7 @@ Keep the dry, smug, passive-aggressive clerk voice in the opening,
 the actual musical commentary and the sign-off; don't make up facts.
 ```
 
-**If you saved or uploaded it as a Gemini Skill:** use [Gemini web](https://gemini.google.com/) → **Customize → Skills**, open the existing Hipster Music Generator, and select **Replace skill** to upload the **entire updated ZIP with its references**. Gemini documents [replacing a skill](https://support.google.com/gemini/answer/17094296). Merely restarting the Android app doesn't refresh an old saved skill.
+**If you saved or uploaded it as a Gemini Skill:** use [Gemini web](https://gemini.google.com/) → **Customize → Skills**, open the existing Hipster Music Generator, and select **Replace skill** to upload the **[latest complete ZIP](https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/hipster-music-generator-gemini-app-skill.zip)** with its references. Gemini documents [replacing a skill](https://support.google.com/gemini/answer/17094296). Merely restarting the Android app doesn't refresh an old saved skill.
 
 Test with **`go weird, 6 tracks, text only`** first to isolate the curator's own voice. When publishing through YouTube Music, the provider card may remain neutral; the curator's surrounding prose should not. A bland response after a confirmed refresh is a genuine Gemini tone-compliance regression.
 
@@ -35,15 +47,11 @@ Try:
 
 Why six songs? The earlier trial prompts explicitly requested **six**; the canonical music skill defaults to **twelve** unless the user sets a different count.
 
-## Supported alternative: upload an instruction-only ZIP
+## Build the ZIP yourself — optional developer path
 
-1. Run `python scripts/build_agent_packages.py --zip` to generate `dist/hipster-music-generator-gemini-app-skill.zip` (or download a release ZIP).
-2. In **Gemini web** at https://gemini.google.com, open **Menu → Customize → Skills → Create → Upload**.
-3. Upload the ZIP with `SKILL.md` and four text-only `references/` files. **No scripts, schemas, or CLI code are included.** Create the skill.
-4. Switch to Gemini **Android** and invoke `Use Hipster Music Generator: go`, or use an available skill selector.
-5. Connect YouTube Music via Gemini's normal app authorization if needed. Select its built-in skill separately if Gemini does not engage it.
+You don't need Python to install the skill: **[download the ready-to-upload package](https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/hipster-music-generator-gemini-app-skill.zip)** instead. For local builds or modifications, run `python scripts/build_agent_packages.py --zip`, which creates `dist/hipster-music-generator-gemini-app-skill.zip` with `SKILL.md` and four plain-text reference files.
 
-**Important:** The ZIP route is Google's documented app-skills installation pathway; the GitHub-chat workflow above is user-observed and needs cross-session validation. Updates from GitHub are not guaranteed to sync into any previously uploaded or chat-loaded skill. Enable **Keep Activity** where Google requires it for skills or connected media.
+Upload it through **Gemini web → Customize → Skills → Create → Upload**. The ZIP route is the supported app-skills upload workflow; GitHub-chat loading is user-observed and may only last for the current session. Existing uploaded skills must be replaced to pick up changes. Enable **Keep Activity** where Google requires it for skills or connected media.
 
 ## If Gemini says the skill cannot execute scripts
 

@@ -83,6 +83,17 @@ class PortableAgentTests(unittest.TestCase):
         self.assertIn("go weird, 6 tracks, text only",guide)
         self.assertIn("Test V — preserve the clerk",cases)
 
+    def test_gemini_zip_is_linked_and_release_automated(self):
+        url = "https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/hipster-music-generator-gemini-app-skill.zip"
+        readme=(ROOT/"README.md").read_text(encoding="utf-8")
+        gem=(ROOT/"adapters/gemini/README.md").read_text(encoding="utf-8")
+        workflow=(ROOT/".github/workflows/publish-gemini-skill.yml").read_text(encoding="utf-8")
+        self.assertIn(url, readme)
+        self.assertIn(url, gem)
+        self.assertIn("Download the Gemini skill — no terminal required", gem)
+        self.assertIn("gh release create", workflow)
+        self.assertIn("gh release upload", workflow)
+
     def test_guardrails_survive(self):
         s=(ROOT/"skills/hipster-music-generator/SKILL.md").read_text()
         for needle in ("DeBarge Protocol","25 consecutive","streaming","references/global-scenes.md"):

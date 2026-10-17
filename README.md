@@ -99,7 +99,7 @@ If ordinary GitHub loading doesn't persist, use [Plugin Creator](adapters/chatgp
 
 A user successfully asked Gemini to load this GitHub skill and then invoked YouTube Music to generate a playlist. The observation doesn't establish a persistent GitHub-based install across chats.
 
-If the agent cannot load or retain it, create the five-file, instruction-only ZIP with `python scripts/build_agent_packages.py --zip` and use the native Skills uploader in Gemini web. Uploaded skills aren't guaranteed to auto-sync from GitHub. See the [Gemini guide](adapters/gemini/README.md) and [Android test cases](adapters/gemini/MOBILE_SMOKE_TEST.md). Gemini CLI is a separate installation path.
+If the agent cannot load or retain it, **[download the ready-to-upload Gemini Skill ZIP](https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/hipster-music-generator-gemini-app-skill.zip)** and use **Gemini web → Customize → Skills → Create → Upload**. No terminal or file-building step needed. Maintainers can still generate the ZIP with `python scripts/build_agent_packages.py --zip`. Uploaded skills don't auto-sync from GitHub. See the [Gemini guide](adapters/gemini/README.md) and [Android test cases](adapters/gemini/MOBILE_SMOKE_TEST.md). Gemini CLI is a separate installation path.
 
 </details>
 
