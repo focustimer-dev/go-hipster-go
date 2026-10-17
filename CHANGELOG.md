@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased — One-command streaming handoff
+
+- Make `go` request an automatically saved playlist through an accessible, authorized music writer, when one is available.
+- Choose the sole writable provider automatically, prefer a grounded service preference, and ask once only if multiple choices remain.
+- Preserve host routing limitations, account permissions, privacy, and approvals; don't promise automatic access to other skills.
+- Add `go, text only` opt-out and clear no-publisher fallback.
+- Add manual Spotify/ChatGPT and YouTube Music/Gemini routing tests; actual host orchestration remains unverified.
+- DeBarge Protocol unchanged.
+
 ## Unreleased — Listening-quality iteration (experimental)
 
 - For open-ended `go`, select among two or three musically credible concepts rather than jumping to the first regional pairing.

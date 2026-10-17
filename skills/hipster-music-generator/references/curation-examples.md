@@ -20,6 +20,10 @@ Choose a fresh combination across era, production, geography, and microgenre, wi
 
 For an otherwise unstructured "go", privately compare two or three viable combinations. Choose the one that connects concrete sonic traits while offering a fresh scene or surprising transition; do not display discarded sketches by default. No invented discovery score or forced international quota.
 
+## One-word go: streaming handoff
+
+Inside this skill, `go` means curate and attempt to save a playlist in a connected playlist-writing music service. When only one authorized writer is available, use it without needing a second plugin mention. When several are available, choose the user's visible stated preference or last successful provider; ask once only if still ambiguous. If the provider skill isn't accessible from the host, return the curated list and honestly report that publication was not completed. `go, text only` avoids all writes. Avoid any false implication of automatic installation or cross-plugin activation.
+
 ## Feedback on the preceding playlist
 
 - "More like track 4" means keep the specific track's audible character and find *different* artists or recordings with that trait.

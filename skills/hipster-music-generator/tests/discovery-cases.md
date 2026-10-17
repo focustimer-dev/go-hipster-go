@@ -23,6 +23,22 @@ Run *the same* prompts against the prior version and this revision, with the sam
 
 No results are claimed here. Listening quality requires actual human evaluation; this document is a test plan.
 
+## Default go: publishing and host-routing acceptance checks (manual)
+
+| Environment | Prompt | Expected result |
+| --- | --- | --- |
+| ChatGPT, Spotify only authorized writer | `Hipster Music Generator: go` | Attempt Spotify publication without separate mention; use actual provider confirmation |
+| Gemini, YouTube Music only authorized writer | `Hipster Music Generator: go` | Attempt YouTube Music via actual host capability, or report an activation limitation |
+| Two writable services, no grounded preference | `go` | Ask once which destination; don't publish both |
+| Two writers, visible Spotify preference | `go` | Prefer Spotify when writable |
+| Connected Spotify search/play only | `go` | Curate, don't claim playlist creation |
+| No connected writer | `go` | Curate, disclose publication failure and one smallest real setup step |
+| Explicit no-publish | `go, text only` | Do not attempt any external write |
+| Platform requires auth/approval | `go` | Respect all authorization prompts and important-change approvals |
+| Provider only confirms playlist created | `go` | Don't claim exact item count or track order without provider evidence |
+
+These tests measure actual host behavior; a textual CI assertion does not establish that a second music skill can be invoked automatically.
+
 ## Cross-platform publication regression (manual)
 
 The user reports working ChatGPT → Spotify and Gemini → YouTube Music workflows. These reports validate that a playlist was created in those sessions, **not yet** that every requested recording and sequence was preserved. Do not store private tokens, listening history, account IDs, or playlist URLs in public test fixtures unless explicitly authorized.

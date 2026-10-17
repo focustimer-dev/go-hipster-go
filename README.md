@@ -28,11 +28,13 @@ An **Agent Skills-style**, open-source music curator for real, surprising, globa
 
 </details>
 
-## Try the skill — entry is free; the tote bag is not - Try pointing your agent at this repo and telling it to just add the skill before doing any of this stuff below:
+## Try the skill — entry is free; the tote bag is not
+
+Point an agent at this repository and ask it to add the skill. Then say **`go`** to curate a 12-track playlist **and attempt to save it in your connected streaming service**. If the host does not expose a playlist writer, it will still curate and tell you what wasn't saved. **`go, text only`** opts out.
 
 1. Install the **entire repository folder** as `hipster-music-generator` in a compatible agent's skill directory. See [agent setup](adapters/agents.md).
 2. Ask: `Use hipster-music-generator: give me a 12-track playlist connecting Thai molam and Italian library funk; make the transitions defensible.`
-3. Or: `Use hipster-music-generator: go.` to get a surprising cross-scene mashup.
+3. Or: `Use hipster-music-generator: go.` to curate a cross-scene surprise and attempt streaming publication automatically.
 4. Request portable playlist JSON if your agent supports writing files; run the standard-library validator below.
 
 <details>
@@ -40,7 +42,7 @@ An **Agent Skills-style**, open-source music curator for real, surprising, globa
 
 The repo now contains a [portable plugin manifest](plugin.json), a [packaged skill](skills/hipster-music-generator/SKILL.md), and a [one-time setup skill](skills/setup/SKILL.md). **Preferred approach:** install ChatGPT's **Plugin Creator**, give it this repository URL and ask it to create a personal plugin using the existing manifest and skills. Then run setup once and say `Use Hipster Music Generator: go`. See the [plugin installation walkthrough](adapters/chatgpt/PLUGIN_INSTALL.md).
 
-Setup discovers **actually available** music-service tools and distinguishes search-only from authorized playlist-writing access. It can curate even without a publisher. No Spotify, YouTube Music or Apple Music publisher is bundled or automatically authorized. A GitHub URL by itself is not a one-click install; publishing this plugin to the universal directory is a separate later step.
+Setup discovers **actually available** music-service tools and distinguishes search-only from authorized playlist-writing access. `go` now requests publication by default (subject to platform selection and approval). It can curate even without a publisher. No Spotify, YouTube Music or Apple Music publisher is bundled or automatically authorized. A GitHub URL by itself is not a one-click install; publishing this plugin to the universal directory is a separate later step.
 
 For ChatGPT hosts without plugin support, the original [Project-based fallback](adapters/chatgpt/README.md) is still available.
 

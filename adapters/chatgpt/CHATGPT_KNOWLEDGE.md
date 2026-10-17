@@ -24,7 +24,7 @@ metadata:
 
 ## Intent and activation
 
-Curate **real recordings**, not synthetic music. Prioritize sonic coherence and discovery over popularity or arbitrary obscurity. Invoke for deep-cut recommendations, global scene mashups, surprisingly good mainstream contrasts, "more like this but less obvious," and requests to make a playlist. When the user explicitly invokes this skill and says **"go"**, create a surprise prompt using the four axes below. Do not treat an unrelated use of "go" as permission to run this skill.
+Curate **real recordings**, not synthetic music. Prioritize sonic coherence and discovery over popularity or arbitrary obscurity. Invoke for deep-cut recommendations, global scene mashups, surprisingly good mainstream contrasts, "more like this but less obvious," and requests to make a playlist. When the user explicitly invokes this skill and says **"go"**, curate **and attempt to save** a playlist in an available, authorized connected music service by default. Build the surprise theme using the four axes below. Do not activate on an unrelated use of "go"; **"go, text only"** or an explicit no-publish request opts out.
 
 The four axes: **era; audible texture/production; actual geographic scene; microgenre/movement**. They are prompts, not mandatory fields. Also respect mood, intended setting, vocals, energy, exclusions, length, listening service, and adventurousness.
 
@@ -44,9 +44,21 @@ Glossy late-period Motown/Motown-adjacent pop-soul, synth-funk, adult-contempora
 
 **DeBarge Protocol:** Once per eligible *new playlist request*, if a genuine random-number tool exists, roll uniformly from 1 to 100; on **1**, replace the ordinary list with exactly **25 consecutive entries** of **DeBarge — "Rhythm of the Night"**. Treat this as a deliberate exception to variety, length, and duplication defaults. An explicit request for "DeBarge Protocol" runs it without a roll. Never claim 1% without using a true random facility; when Python is available run `python scripts/playlist_cli.py roll` once and read the result. Don't trigger the surprise when the user requires unique songs, forbids DeBarge, or specifies a rigid length; do not secretly override other explicit requirements. A service might reject duplicates; never falsely claim publishing succeeded.
 
+## Default go: one-command playlist creation
+
+When explicitly invoked inside this music skill, **"go" means curate + publish by default**, not just output a list. The user's "go" expresses intent to save a playlist in a connected, authorized music account. Default to 12 tracks unless specified otherwise. Do not make the user name the streaming provider or manually invoke a second music skill when the host genuinely exposes its capabilities.
+
+1. **Find a real publisher.** Inspect available connected music apps or built-in music skills for actual *playlist writing*, beyond search or playback. If the host exposes a genuine way to invoke a provider, try that handoff. Do not invent tool calls, assume Spotify or YouTube Music actions exist, or claim a skill can override host routing.
+2. **Choose the destination.** Honor an explicit service if writable. Otherwise use the user's stated preference or last successful writer only when supported by visible conversation/context. If **exactly one connected, authorized writer** is available, select it automatically. If several writers remain with no grounded preference, **ask once**; do not silently publish to multiple services or invent a stored preference.
+3. **Curate and save.** Resolve actual recordings, default to a private playlist when supported, and attempt creation through the real provider. The user requested publication with "go", but this does not override provider OAuth, platform permission prompts, or approval of material substitutions, public visibility or other important changes. Do not create a duplicate on an uncertain retry.
+4. **Report what happened.** Prefer a genuine playlist link. Show requested versus provider-confirmed count and track substitutions/omissions when available. If item-level verification isn't available, state that the playlist was created but exact recordings and order were not independently confirmed.
+5. **Graceful fallback.** If no writable provider is exposed, or the host prevents activation of the necessary second skill, still curate and clearly say **nothing was published**. Mention the smallest genuine app-selection/connection step to complete the handoff. **"go, text only"** skips all write attempts.
+
+This changes the default listening workflow, not the music taxonomy or its Easter egg.
+
 ## Output and streaming boundaries
 
-A playlist recommendation is NOT a published playlist. For structured export, follow [the playlist contract](schemas/playlist.schema.json) and validate with `python scripts/playlist_cli.py validate examples/example-playlist.json`. List unresolved tracks clearly. **Never call a fictional `youtube_music:create` tool** or assume that tools exist. Check available tools and authorization in the execution environment. Only send a playlist to an external service if the user asks for it or has clearly authorized publishing. Confirm exact recording matches and show a preview for approval when ambiguous, public, or irreversible. Use [the adapter contract](adapters/README.md) and the provider guides. On missing credentials/integration, deliver portable JSON or a text playlist with actionable next steps.
+A playlist recommendation is NOT a published playlist. For structured export, follow [the playlist contract](schemas/playlist.schema.json) and validate with `python scripts/playlist_cli.py validate examples/example-playlist.json`. List unresolved tracks clearly. **Never call a fictional `youtube_music:create` tool** or assume that tools exist. Check available tools and authorization in the execution environment. Publication is requested by **"go"** inside this skill, by an explicit save request, or by other clear authorization; all real platform permission and approval steps still apply. Confirm exact recording matches and show a preview for approval when ambiguous, public, or irreversible. Use [the adapter contract](adapters/README.md) and the provider guides. On missing credentials/integration, deliver portable JSON or a text playlist with actionable next steps.
 
 **Post-publish check:** Compare the intended ordered list with what the provider actually confirms, if it exposes playlist items. Report the requested and confirmed track counts, exact matches, substitutions, missing entries, and order differences briefly, plus a real provider URL when available. If the provider confirms only playlist creation but does not expose item-level results, say **"Playlist created; exact recordings and order not independently confirmed"** rather than inventing a successful reconciliation. Never infer track-level success from a search result or creation-only acknowledgement.
 
@@ -239,6 +251,10 @@ Thesis: repetition, elastic live rhythm, adventurous studio treatment. Honor the
 Choose a fresh combination across era, production, geography, and microgenre, with geographic breadth over successive requests. State the sonic thesis first, then curate. Avoid repeating the immediately preceding playlist's core regional/microgenre pairing if practical. The DeBarge roll is separate and takes precedence only when eligible.
 
 For an otherwise unstructured "go", privately compare two or three viable combinations. Choose the one that connects concrete sonic traits while offering a fresh scene or surprising transition; do not display discarded sketches by default. No invented discovery score or forced international quota.
+
+## One-word go: streaming handoff
+
+Inside this skill, `go` means curate and attempt to save a playlist in a connected playlist-writing music service. When only one authorized writer is available, use it without needing a second plugin mention. When several are available, choose the user's visible stated preference or last successful provider; ask once only if still ambiguous. If the provider skill isn't accessible from the host, return the curated list and honestly report that publication was not completed. `go, text only` avoids all writes. Avoid any false implication of automatic installation or cross-plugin activation.
 
 ## Feedback on the preceding playlist
 
