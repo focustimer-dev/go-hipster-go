@@ -79,8 +79,10 @@ class PluginPackageTests(unittest.TestCase):
                      'zero saved playlists were confirmed', 'Save to library',
                      'Muse Code', 'exact recording-by-recording match'):
             self.assertIn(term.lower(), field_reports.lower())
-        self.assertNotIn('| Environment | Observed | Not yet established |',
-                         field_reports)
+        self.assertIn('| AI + service | Observed | Not yet verified |', field_reports)
+        self.assertEqual(sum(line.startswith('| **') for line in field_reports.splitlines()), 5)
+        for row in (line for line in field_reports.splitlines() if line.startswith('| **')):
+            self.assertEqual(row.count('|'), 4, row)
 
     def test_skills_have_frontmatter(self):
         for path in (ROOT / 'skills').glob('*/SKILL.md'):
