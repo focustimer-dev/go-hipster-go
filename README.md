@@ -4,7 +4,7 @@
 
 <p align="center"><sub>EST. MMXXVI · SMALL-BATCH PLAYLISTS · ARTISANAL OBSCURITY</sub></p>
 <p align="center">“Who’s here ironically and who’s here because they sincerely enjoy it?”</p>
-<p align="center"><em>Whole crowd raises both hands.</em></p>
+<p align="center"><em>Crowd stays silent, afraid to appear that they are actually enjoying anything</em></p>
 
 
 An open-source **Agent Skill for discovering real, unlikely, surprisingly coherent music** across eras, textures, geographic scenes and microgenres. Delivered by an extravagantly self-important, passive-aggressive record-store clerk who considers your listening habits a public infrastructure problem.
