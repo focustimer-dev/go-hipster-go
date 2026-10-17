@@ -38,6 +38,27 @@ class DefaultGoBehaviorTests(unittest.TestCase):
         self.assertIn("Both Hipster Music Generator and Spotify selected",cases)
         self.assertIn("don't silently re-curate",cases)
 
+    def test_preflight_precedes_curation(self):
+        skill=(ROOT/"SKILL.md").read_text(encoding="utf-8")
+        self.assertLess(skill.index("## Default go: one-command playlist creation"),
+                        skill.index("## Curate in seven steps"))
+        self.assertIn("Preflight the actual writer first",skill)
+        self.assertIn("do not create an empty test playlist",skill)
+        self.assertIn("Only then curate, resolve and save",skill)
+        preamble=skill.split("## Intent and activation")[0]
+        self.assertIn("Spotify",preamble)
+        self.assertIn("YouTube Music",preamble)
+
+    def test_default_go_routing_discovery_text(self):
+        import json
+        manifest=json.loads((ROOT/"plugin.json").read_text(encoding="utf-8"))
+        self.assertIn("Spotify",manifest["description"])
+        self.assertIn("YouTube Music",manifest["description"])
+        setup=(ROOT/"skills/setup/SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("First, preflight the publishing route",setup)
+        cases=(ROOT/"tests/discovery-cases.md").read_text(encoding="utf-8")
+        self.assertIn("A/B preflight trial",cases)
+
     def test_distribution_synced_and_debarge_intact(self):
         self.assertEqual((ROOT/"SKILL.md").read_bytes(),
                          (ROOT/"skills/hipster-music-generator/SKILL.md").read_bytes())

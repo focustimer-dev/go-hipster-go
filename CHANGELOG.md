@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.1.6 — Publishing-first routing experiment
+
+- Move the connected-service publishing preflight ahead of the seven-step music-curation workflow for `go`; do not create an empty test playlist.
+- Make Spotify/YouTube Music playlist creation prominent in skill activation metadata and plugin discovery text.
+- Curate service-playable real recordings **after** checking accessible write capabilities; retain complete taxonomy and verification requirements.
+- Keep the two-plugin Spotify success case as a manual A/B control. No claim that host-controlled automatic activation is fixed.
+- Preserve the DeBarge Protocol unchanged.
+
 ## 3.1.5 — Preserve curated playlist when app routing fails
 
 - Record the observed ChatGPT Android limitation: a `go` with the curator alone did not expose Spotify's write action, while explicit dual-plugin selection saved a 12-track playlist.

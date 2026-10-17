@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "hipster-music-generator",
-  "version": "3.1.5",
-  "description": "Globally curious music discovery, sonic playlist curation, and optional streaming publication via authorized apps.",
+  "version": "3.1.6",
+  "description": "Curate and attempt to save playable playlists in connected Spotify, YouTube Music or other authorized music apps on go; deep-cut discovery across global scenes.",
   "repository": "https://github.com/focustimer-dev/hipster-music-generator",
   "homepage": "https://github.com/focustimer-dev/hipster-music-generator",
   "license": "MIT",
@@ -10,7 +10,10 @@
     "music",
     "playlists",
     "discovery",
-    "curation"
+    "curation",
+    "spotify",
+    "youtube music",
+    "playlist publishing"
   ],
   "extensions": {
     "com.openai": {

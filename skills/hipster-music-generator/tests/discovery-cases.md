@@ -25,6 +25,8 @@ No results are claimed here. Listening quality requires actual human evaluation;
 
 ## Default go: publishing and host-routing acceptance checks (manual)
 
+**A/B preflight trial:** In fresh conversations with the same installed apps and account authorization, compare (A) skill-only `go` against (B) explicit Hipster Music Generator + Spotify selection, using the same 12-track constraint. Record whether playlist-writing tools were exposed *before* catalog research, whether the request saved a playlist, number of provider-confirmed items, substitutions, and whether the assistant falsely attributed missing tools to a disconnected account. The two-plugin success case is the control, not evidence that skill-only activation is fixed. Do not save public account details.
+
 | Environment | Prompt | Expected result |
 | --- | --- | --- |
 | ChatGPT, Spotify only authorized writer | `Hipster Music Generator: go` | Attempt Spotify publication without separate mention; use actual provider confirmation |
