@@ -41,6 +41,20 @@ def render(canonical: str) -> str:
                         "in this conversation when authorized. Do not promise exact tracks "
                         "or ordering if the resulting playlist cannot be confirmed.")
     body = body.replace(" See [evaluation prompts](tests/discovery-cases.md).", "")
+    # Do not ship ChatGPT-specific app-selection instructions in Gemini packages.
+    chatgpt_clause = ("**Give host-appropriate next steps only.** In ordinary **ChatGPT**, "
+                      "a user who has a multi-app selection control can include Hipster Music "
+                      "Generator and Spotify in the next message and ask to publish the existing "
+                      "selections. In **Gemini**, do not give ChatGPT-specific instructions to "
+                      "select multiple plugins in a composer. Instead, when available, suggest "
+                      "the actual **`@YouTubeMusic`** Connected App or Gemini Connected Apps settings.")
+    if chatgpt_clause not in body:
+        raise ValueError("Canonical publishing fallback changed; review Gemini host routing")
+    body = body.replace(chatgpt_clause, "**Gemini-specific next step:** Where supported, "
+                        "use the actual **`@YouTubeMusic`** Connected App or Gemini Connected "
+                        "Apps settings. Never copy app-selection controls from other hosts.")
+    if "composer" in body.lower():
+        raise ValueError("ChatGPT-specific composer instruction leaked into Gemini package")
     if "scripts/" in body or "python " in body.lower():
         raise ValueError("A code-running instruction remains in the Gemini skill")
     return (
