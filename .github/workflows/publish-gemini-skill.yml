@@ -1,0 +1,75 @@
+name: Publish Gemini skill ZIP
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'SKILL.md'
+      - 'references/**'
+      - 'scripts/build_gemini_app_skill.py'
+      - 'scripts/build_agent_packages.py'
+      - 'plugin.json'
+      - '.github/workflows/publish-gemini-skill.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gemini-skill-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build the instruction-only Gemini package
+        run: python scripts/build_gemini_app_skill.py
+      - name: Validate upload structure
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile
+          path=Path('dist/hipster-music-generator-gemini-app-skill.zip')
+          assert path.is_file()
+          with ZipFile(path) as z:
+              assert z.namelist() == [
+                  'SKILL.md',
+                  'references/global-scenes.md',
+                  'references/sonic-taxonomy.md',
+                  'references/curation-examples.md',
+                  'references/verification.md',
+              ]
+              text=z.read('SKILL.md').decode('utf-8')
+              assert '## The personality is mandatory in Gemini' in text
+              assert 'DeBarge Protocol' in text and '25 consecutive' in text
+              assert 'scripts/' not in text and 'python ' not in text.lower()
+          print('Five-file Gemini ZIP verified.')
+          PY
+      - name: Determine versioned release tag
+        id: version
+        run: |
+          version=$(python -c 'import json; print(json.load(open("plugin.json"))["version"])')
+          echo "tag=gemini-skill-v${version}" >> "$GITHUB_OUTPUT"
+      - name: Publish verified ZIP as a release asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          set -euo pipefail
+          zip=dist/hipster-music-generator-gemini-app-skill.zip
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release upload "$RELEASE_TAG" "$zip" --clobber
+          else
+            gh release create "$RELEASE_TAG" "$zip" \
+              --target "$GITHUB_SHA" \
+              --title "Gemini Apps skill (${RELEASE_TAG})" \
+              --notes 'Five Markdown files: SKILL.md plus four references. Upload through Gemini web Customize → Skills. No executable code or streaming authorization is bundled.' \
+              --latest
+          fi
+          gh release view "$RELEASE_TAG" --json url,assets
