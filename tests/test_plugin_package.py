@@ -38,6 +38,21 @@ class PluginPackageTests(unittest.TestCase):
         self.assertIn('<summary><strong>Iterative improvements & release notes</strong></summary>', readme)
         self.assertEqual(readme.count('<details>'), readme.count('</details>'))
         self.assertIn('adapters/agents.md', readme)
+        self.assertIn('## Start here — load, setup, go', readme)
+        self.assertIn('## Everyday commands', readme)
+        self.assertIn('### Setup & preferences', readme)
+        self.assertIn('### Playlists & modifiers', readme)
+        self.assertIn('Run `setup` again whenever you want to change your preferences', readme)
+        self.assertLess(readme.index('**1. Load the skill.**'),
+                        readme.index('**2. Run `setup`'))
+        self.assertLess(readme.index('**2. Run `setup`'),
+                        readme.index('**3. Make some music.**'))
+        self.assertIn('`setup change Spotify`', readme)
+        self.assertIn('`setup status`', readme)
+        self.assertIn('`go sad`', readme)
+        self.assertIn('`go, text only`', readme)
+        self.assertIn('session-only', readme)
+
 
     def test_skills_have_frontmatter(self):
         for path in (ROOT / 'skills').glob('*/SKILL.md'):

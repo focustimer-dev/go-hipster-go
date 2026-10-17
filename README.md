@@ -9,55 +9,73 @@
 
 An open-source **Agent Skill for discovering real, unlikely, surprisingly coherent music** across eras, textures, geographic scenes and microgenres. Delivered by an extravagantly self-important, passive-aggressive record-store clerk who considers your listening habits a public infrastructure problem.
 
-## Start here — let your agent do the paperwork
+## Start here — load, setup, go
 
-**First, try the easy way.** In your AI agent of choice, paste:
+**Try the easy way first.** Many agents can read a skill straight from GitHub. No folder archaeology required unless your particular host insists on it.
+
+**1. Load the skill.** Give your AI agent this instruction:
 
 ```text
-Add the Hipster Music Generator skill from
+Add or load Hipster Music Generator from
 https://github.com/focustimer-dev/hipster-music-generator
 
-Read the repository's SKILL.md and its referenced files. Install or
-load the skill using this agent's supported mechanism, then run the
-skills/setup/SKILL.md instructions first.
-
-Tell me what you successfully loaded, whether it persists across
-conversations, and which connected music services can actually CREATE
-playlists. Don't assume account connection means writing is available.
+Read SKILL.md and its referenced files. Use your supported skill
+installation or loading mechanism. Confirm what you loaded and whether
+it persists across conversations. If this host requires a manual
+installation step, tell me the smallest supported one.
 ```
 
-Once the agent confirms what it loaded, run the guided **`setup`** command to select your preferred music service and optional listening defaults. Then say:
+**2. Run `setup` in the loaded skill.** It will check the music services *actually available in that chat*, ask where you prefer to listen and publish, and offer default playlist settings. Keep the defaults or customize them. **Run `setup` again whenever you want to change your preferences**; `setup change ...` edits one setting and `setup status` shows what is known.
+
+```text
+setup
+```
+
+**3. Make some music.** Once setup says you're ready:
 
 ```text
 go
 ```
 
-**`setup`** checks what your connected music services can actually do, asks where you want to listen or publish, and summarizes your choices. It uses the host's real preference storage **only with permission and actual support**; otherwise it provides a portable profile to reuse. **`setup status`** shows your known settings and **`setup change Spotify`** can adjust the destination. You can still skip setup and go straight to music.
+By default, `go` curates **12 real tracks** and attempts to publish to your chosen streaming service if a genuine authorized playlist writer is accessible. If publishing isn't available, it returns the music and clearly says it wasn't saved. **Setup is recommended, not mandatory:** `go` works without it.
 
-**`go` curates twelve real tracks by default and attempts to save the playlist** to an available, authorized streaming service. If no actual publisher is exposed, it still curates and says plainly what wasn't saved. Say `go, text only` to skip publishing.
+**Portability note:** Not every host can install directly from a GitHub URL or remember preferences across chats. Setup should tell you when your choices are session-only and offer a reusable profile. It cannot connect an account or unlock an unavailable publisher by itself. [Manual installation options](#installation-when-the-easy-way-needs-help) are below.
 
-**Why this is the first step:** Many agents can load a skill directly from GitHub, without forcing you to download and copy an entire folder. Not all hosts support that flow, and some only load it for the current conversation. **Ask the agent to verify installation and persistence** rather than treating a GitHub URL as a magic install button. Manual and platform-specific paths are below when needed.
+## Everyday commands
 
-## Go, but with opinions
+### Setup & preferences
 
-Modifiers change the **sound**, not merely the genre label. Combine them freely:
-
-| Say | You get |
+| Say | What happens |
 | --- | --- |
-| `go` | Twelve-track sonic surprise |
-| `go weird` | Riskier, still defensible musical bridges |
-| `go fast angry` | Propulsion and confrontation; subtlety is optional |
-| `go chill` | Space and warmth without assuming slow tempo |
-| `go sad` | Melancholy and yearning—without twelve compulsory slow ballads |
-| `go sad fast` | Cathartic, aching music that actually moves |
+| `setup` | Check accessible music services, choose a preferred destination and set defaults; safe to rerun |
+| `setup status` | Review known preferences and available service capabilities |
+| `setup change Spotify` | Change the preferred publishing service |
+| `setup change 24 tracks` | Change the default playlist length |
+| `setup again` | Refresh service discovery while retaining existing choices |
+
+Setup does **not** generate a playlist. It won't store your preferences outside the current session unless the host genuinely supports user-approved persistence. Choosing a service is not the same as confirming that its playlist-writing tool is accessible.
+
+### Playlists & modifiers
+
+Modifiers shape the **sound**, not just a genre label. Combine moods, speeds and track counts freely:
+
+| Say | Musical direction |
+| --- | --- |
+| `go` | 12-track sonic surprise; attempt to publish |
+| `go weird` | Stranger, still musically defensible connections |
+| `go fast angry` | Rhythmic propulsion with bite |
+| `go chill` | Warm, easy listening—not necessarily slow |
+| `go sad` | Melancholy and yearning without compulsory ballads |
+| `go sad fast` | Cathartic music with some forward momentum |
 | `go weird slow` | Patient, hypnotic strangeness |
 | `go short` / `go long` | 6 / 24 tracks |
-| `go fast 30` | 30 tracks with extra forward momentum |
-| `go, text only` | No streaming write attempt |
+| `go fast 30` | 30 tracks with the requested energy |
+| `go, text only` | Curate without attempting a streaming write |
+| `less snark` | Reduce the curator's entirely unearned superiority |
 
-Exact requested counts take precedence over ordinary short/long defaults; **50 is a soft quality target, not a platform limit**. The result should report any shortfall rather than quietly replacing twelve tracks with six.
+An explicit count overrides the ordinary length default; **50 tracks is a soft quality target, not a platform limit**. If the host returns fewer than requested, it should disclose the difference rather than quietly congratulating itself.
 
-Or skip the shorthand and ask for something truly specific:
+Or go beyond the shorthand:
 
 ```text
 Give me twelve real tracks connecting Thai molam and Italian library funk.
@@ -85,7 +103,7 @@ Make the transitions musically defensible, not just geographically surprising.
 
 ## Installation when the easy way needs help
 
-Try the GitHub-link prompt above first. **Use host-specific installation or manual file placement only when your agent can't load and retain the skill directly.** A music-account connection is always a separate authorization step.
+Start with the three steps above: **load → `setup` → `go`**. Use host-specific installation or manual file placement only when the agent cannot load and retain the skill directly. After any manual install, run `setup` before your first `go`. Music-account authorization remains separate.
 
 <details>
 <summary><strong>ChatGPT — plugin setup and Work</strong></summary>
@@ -148,6 +166,7 @@ The personal plugin has also sometimes displayed a generic icon despite packaged
 
 See the [full changelog](CHANGELOG.md) for dates and version-specific detail. The major lines of work are:
 
+- **First-run preferences:** conversational `setup`, revisitable provider choices, and honest session-only versus persistent settings.
 - **Musical discovery:** wider scene taxonomy, track-level sonic bridges, authentic recordings and feedback-driven adjustments.
 - **Publishing handoff:** one-command intent, capability preflight and faithful recovery of already-curated lists.
 - **Flexible prompts:** composable `go` mood/speed modifiers and explicit track counts.
@@ -164,7 +183,7 @@ Implemented instructions aren't the same as demonstrated cross-host publishing o
 | File | Purpose |
 | --- | --- |
 | [`SKILL.md`](SKILL.md) | Canonical music-curation skill |
-| [`skills/setup/SKILL.md`](skills/setup/SKILL.md) | One-time capability/setup instructions |
+| [`skills/setup/SKILL.md`](skills/setup/SKILL.md) | Service discovery and revisitable listener setup |
 | [`references/global-scenes.md`](references/global-scenes.md) | Scene and geography research |
 | [`references/sonic-taxonomy.md`](references/sonic-taxonomy.md) | Audible production and era map |
 | [`references/verification.md`](references/verification.md) | Recording versus streaming versus saved-playlist evidence |
