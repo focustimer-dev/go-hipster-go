@@ -32,6 +32,8 @@ An **Agent Skills-style**, open-source music curator for real, surprising, globa
 
 Point an agent at this repository and ask it to add the skill. Then say **`go`**: it will **check whether a connected playlist writer is actually exposed first**, then curate 12 tracks and attempt to save them. This is an experimental order-of-operations improvement, not a guarantee that ChatGPT or Gemini will automatically activate a second music app. If the host does not expose a playlist writer, it will still curate and tell you what wasn't saved. **Observed ChatGPT workaround:** select both **Hipster Music Generator and Spotify** in the composer before saying `go`. If a `go` run curated but couldn't publish, select Spotify and ask it to publish **the same tracks already listed**, not generate new ones. **`go, text only`** opts out.
 
+**Go modifiers:** `go fast`, `go angry`, `go chill`, `go slow`, `go weird`—or combine them: `go weird slow`. The default is **12 tracks**; `go short` is 6, `go long` is 24, and `go fast 30` asks for 30. **50 tracks is a soft quality target, not a hard limit**; host publishing limits and actual catalog matching still apply.
+
 1. Install the **entire repository folder** as `hipster-music-generator` in a compatible agent's skill directory. See [agent setup](adapters/agents.md).
 2. Ask: `Use hipster-music-generator: give me a 12-track playlist connecting Thai molam and Italian library funk; make the transitions defensible.`
 3. Or: `Use hipster-music-generator: go.` to curate a cross-scene surprise and attempt streaming publication automatically.

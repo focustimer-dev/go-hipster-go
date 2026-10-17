@@ -59,6 +59,20 @@ class DefaultGoBehaviorTests(unittest.TestCase):
         cases=(ROOT/"tests/discovery-cases.md").read_text(encoding="utf-8")
         self.assertIn("A/B preflight trial",cases)
 
+    def test_go_modifiers_and_length_contract(self):
+        skill=(ROOT/"SKILL.md").read_text(encoding="utf-8")
+        examples=(ROOT/"references/curation-examples.md").read_text(encoding="utf-8")
+        scenarios=(ROOT/"tests/discovery-cases.md").read_text(encoding="utf-8")
+        for term in ("go fast", "go angry", "go chill", "go slow", "go weird",
+                     "go short", "go long", "go weird slow", "go chill fast"):
+            self.assertIn(term,skill)
+        for term in ("go 20", "go fast 20", "exactly N", "soft quality target",
+                     "not a schema or platform maximum", "don't silently turn 12 into 6"):
+            self.assertIn(term,skill)
+        self.assertIn("go weird 30",examples)
+        self.assertIn("go 51",scenarios)
+        self.assertIn("go 12 tracks",scenarios)
+
     def test_distribution_synced_and_debarge_intact(self):
         self.assertEqual((ROOT/"SKILL.md").read_bytes(),
                          (ROOT/"skills/hipster-music-generator/SKILL.md").read_bytes())

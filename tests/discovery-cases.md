@@ -23,6 +23,27 @@ Run *the same* prompts against the prior version and this revision, with the sam
 
 No results are claimed here. Listening quality requires actual human evaluation; this document is a test plan.
 
+## Mood, speed and length modifier acceptance matrix (manual)
+
+| Prompt | Expected behavior |
+| --- | --- |
+| `go` | Default 12-track intention, optional publication when authorized |
+| `go fast` | 12; perceived drive without automatic optimism or unsupported BPM |
+| `go angry` | 12; confrontation without automatic tempo jump |
+| `go chill` | 12; warmth and ease, possibly brisk |
+| `go slow` | 12; slow perceived pulse without assuming serenity |
+| `go weird` | 12; audibly defensible long-distance scene pairings, not made-up records |
+| `go angry slow` | 12; brooding tension, combines both modifiers |
+| `go fast chill` | 12; brisk but gentle, combines both modifiers |
+| `go short` | 6 exactly, barring documented provider limits |
+| `go long` | 24 exactly, barring documented provider limits |
+| `go weird slow 30` | 30 curated tracks with both modifiers, count actually verified |
+| `go 51` | No artificial hard 50 cap; warn on host limits / propose batches honestly |
+| `go 12 tracks` yielding 6 in Work | Clearly report 6 of 12; never claim full success |
+| `go weird, text only` | Modifier remains active, no external publication |
+
+For each run, inspect artist/title authenticity, coherent sonic rationale, modifier fidelity, requested vs selected vs provider-confirmed counts, and whether any explicit exclusion or existing DeBarge eligibility constraint was overridden. These are manual tests; GitHub CI checks text-contract integrity, **not actual musical quality or provider capacity**.
+
 ## Default go: publishing and host-routing acceptance checks (manual)
 
 **A/B preflight trial:** In fresh conversations with the same installed apps and account authorization, compare (A) skill-only `go` against (B) explicit Hipster Music Generator + Spotify selection, using the same 12-track constraint. Record whether playlist-writing tools were exposed *before* catalog research, whether the request saved a playlist, number of provider-confirmed items, substitutions, and whether the assistant falsely attributed missing tools to a disconnected account. The two-plugin success case is the control, not evidence that skill-only activation is fixed. Do not save public account details.

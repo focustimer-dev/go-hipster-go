@@ -20,6 +20,27 @@ Choose a fresh combination across era, production, geography, and microgenre, wi
 
 For an otherwise unstructured "go", privately compare two or three viable combinations. Choose the one that connects concrete sonic traits while offering a fresh scene or surprising transition; do not display discarded sketches by default. No invented discovery score or forced international quota.
 
+## Go mood/speed/length examples
+
+These are **musical intentions**, not preselected genres, artists or guaranteed tempos. Always retain the four axes and real-track verification.
+
+| Request | Musical interpretation |
+| --- | --- |
+| `go fast` | Insistent, propulsive rhythms; energy across unexpected global scenes, not necessarily happy |
+| `go angry` | Abrasion, defiance, tension and confrontation; may be slow and brooding |
+| `go chill` | Warm, airy and low-pressure, but not required to be slow |
+| `go slow` | Hypnotic, deliberate pulse; can be severe or heavy |
+| `go weird` | Increased sonic discovery distance; bridge still has audible justification |
+| `go fast angry` | Kinetic confrontation with musical logic rather than a random punk playlist |
+| `go weird slow` | Strange, spacious arrangements and patient rhythm |
+| `go chill fast` | Nimble, breezy movement without harshness |
+| `go short` | 6 tracks |
+| `go long` | 24 tracks |
+| `go weird 30` | 30 tracks with the weird modifier |
+| `go 48` | 48 requested tracks; protect count fidelity and report limits honestly |
+
+Long sets still need a thesis, transitions, and accurate catalog matches; if a host truncates to six tracks when twelve were requested, describe the mismatch as a **shortfall**, not an implicit change of default. `go, text only` still suppresses publication, and an explicit count does not waive the existing Easter-egg eligibility limits.
+
 ## One-word go: streaming handoff
 
 Execution order matters: preflight accessible playlist-writing capability **before** exploring candidate songs. A writer's existence must be based on exposed tools, not a service subscription. Once the destination is established, curate and resolve its actual catalog recordings before creating the playlist; keep all musical verification standards. If tools are missing, continue a text-list fallback without implying that more taxonomy research will activate Spotify or YouTube Music. This is a routing experiment, not proof of automatic cross-app invocation.

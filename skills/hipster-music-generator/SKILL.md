@@ -1,10 +1,10 @@
 ---
 name: hipster-music-generator
-description: On "go", curate and attempt to save a playable playlist in an available connected Spotify, YouTube Music, or other authorized music service. Explore real deep cuts through era, sonic texture, geographic scenes and microgenres; resolve recordings, sequence them and verify publishing results. Also handles obscure-music discovery, feedback and text-only requests.
+description: On "go" or "go fast", "go angry", "go chill", "go slow", "go weird", curate and attempt to save real music playlists in connected Spotify, YouTube Music, or another authorized service. Combine moods and speeds with surprising eras, sonic textures, global scenes and microgenres; support track-count overrides and text-only discovery.
 license: MIT
 compatibility: Requires file-reading capability. Optional web/catalog lookup for track verification and Python 3.10+ to run included validation/randomness scripts. Streaming accounts and OAuth are NOT bundled.
 metadata:
-  version: "3.1.6"
+  version: "3.1.7"
 ---
 
 # Hipster Music Generator — Agent Skill v3
@@ -17,15 +17,31 @@ The four axes: **era; audible texture/production; actual geographic scene; micro
 
 ## Default go: one-command playlist creation
 
-When explicitly invoked inside this music skill, **"go" means curate + publish by default**, not just output a list. The user's "go" expresses intent to save a playlist in a connected, authorized music account. Default to 12 tracks unless specified otherwise. **Run a cheap, non-mutating publishing preflight before inventing a sonic thesis or researching tracks.** The platform may choose exposed apps before loading this skill; workflow instructions cannot retroactively add tools that were not provided.
+When explicitly invoked inside this music skill, **"go" means curate + publish by default**, not just output a list. The user's "go" expresses intent to save a playlist in a connected, authorized music account. Default to 12 tracks unless specified otherwise; parse any modifiers and requested count before discovery. **Run a cheap, non-mutating publishing preflight before inventing a sonic thesis or researching tracks.** The platform may choose exposed apps before loading this skill; workflow instructions cannot retroactively add tools that were not provided.
 
 1. **Preflight the actual writer first.** Before proposing songs, inspect tools already exposed for the selected music account: it must support *creating a playlist and adding tracks* (or an equivalent complete create-and-fill action). Search/play access alone is insufficient. Use a cheap capability check when available; do not create an empty test playlist, repeatedly scan the plugin directory, or imply an app was activated merely because its name appeared in context. If the host exposes a genuine provider handoff, use it; never invent or force cross-plugin actions.
 2. **Select the destination before discovery.** Honor an explicit service if writable. Otherwise use the user's stated preference or last successful writer only when supported by visible conversation/context. If **exactly one connected, authorized writer** is available, select it automatically. If several writers remain with no grounded preference, **ask once**; do not silently publish to multiple services or invent a stored preference.
 3. **Only then curate, resolve and save.** Use the full seven-step sonic workflow below, prioritizing *real recordings that can be matched* in the chosen catalog without compromising the musical idea. Prepare the ordered tracks and resolve material recording/version ambiguity **before** creating the provider playlist; do not create a placeholder playlist as a tool probe. Then write through the real provider, preferring private visibility when supported. The "go" request does not override OAuth, platform permission prompts, or approval for material substitutions, public visibility or other important changes. Do not create a duplicate on an uncertain retry.
-4. **Report what happened.** Prefer a genuine playlist link. Show requested versus provider-confirmed count and track substitutions/omissions when available. If item-level verification isn't available, state that the playlist was created but exact recordings and order were not independently confirmed.
+4. **Report what happened.** Prefer a genuine playlist link. Explicitly compare the **requested track count** with what was actually curated and provider-confirmed, where supported; do not mislabel a six-track result as fulfilling twelve. Show track substitutions/omissions when available. If item-level verification isn't available, state that the playlist was created but exact recordings and order were not independently confirmed.
 5. **Graceful fallback and recovery.** If no writable provider tool is exposed, or the host prevents activation of the necessary second skill, still curate and clearly say **nothing was published**. Distinguish an account that is *connected* from a writing tool that is *not available in this chat*; do not tell the user to reconnect an already connected service without evidence. Preserve the **exact ordered artist/title/version list** in the conversation or manifest for recovery. Give the smallest real next step: when a music app must be explicitly selected, suggest selecting both Hipster Music Generator and that provider in the composer and asking **"Publish the playlist above to Spotify, preserving its exact 12 recordings and order. Do not re-curate."** (replace Spotify with the actual provider). On a follow-up with the writing app accessible, publish the original list instead of making a new one. Publishing an existing selection is not a new playlist-curation request and must not reroll the DeBarge Protocol. If the previous list is unavailable, ask the user to provide it rather than pretending to remember. **"go, text only"** skips all write attempts.
 
 This changes the default listening workflow, not the music taxonomy or its Easter egg.
+
+## Go modifiers and playlist length
+
+Treat short requests as an expressive **overlay on the four discovery axes**, not a genre picker or fixed artist list. Parse any modifiers and track-count request before choosing the sonic thesis; the publishing preflight above remains first among external actions. Keep the normal 12-track default when the listener gives only a mood or speed modifier.
+
+- **`go fast`** — prioritize perceived forward momentum, urgent rhythm, insistent patterns, propulsion and energy. Fast does not imply cheerful, electronic, loud or a verified BPM.
+- **`go angry`** — emphasize friction, dissonance, bite, confrontational vocals or agitated groove. Anger is a mood, **not an automatic tempo increase**: brooding slow rage is valid.
+- **`go chill`** — favor ease, warmth, breathing room, softened dynamics and inviting texture. Chill may be rhythmically busy or quick; it need not be slow, ambient or bland.
+- **`go slow`** — favor unhurried perceived pace, spacious pulse, dubby drag or hypnotic repetition. Slow can be dark, heavy or tense, not necessarily relaxing.
+- **`go weird`** — widen discovery distance and take bolder scene/production detours, **but still require a convincing audible bridge**. Oddity is not an excuse to invent tracks or use randomness instead of taste.
+
+Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation; `go weird slow` suggests patient, alien textures; `go chill fast` can be bright, nimble but gentle. Honor freeform synonyms or phrasing like `go weird and slow`, `go melancholy`, or `go triumphant` as conversational creative direction; the five named words are useful examples, **not an exhaustive whitelist**. Don't claim exact BPM, intensity measurements or audio listening without actual evidence. Modifiers never erase user exclusions, or the music's global/era/microgenre taxonomy.
+
+**Length:** `go` and `go angry` default to **12 tracks**; `go short` requests **6**; `go long` requests **24**. `go 20`, `go fast 20`, `go weird slow 30`, or an explicit `N tracks` request selects **exactly N**, overriding the short/long shorthand. Aim for up to **50** carefully resolved tracks as a *soft quality target*, **not a schema or platform maximum**; when asked for more, attempt the actual requested count if the current host can handle verification and publishing, otherwise be transparent and propose batches or splitting—never silently cap or downgrade the playlist.
+
+**Count fidelity:** before publishing, check the number of distinct ordered selections against the requested count; don't silently turn 12 into 6. After writing, reconcile the saved count and track order where provider results allow it. If the host has a fixed cap or truncates output, report the actual result as incomplete rather than claiming the requested list was published. An explicit fixed-length request remains subject to the existing Easter egg's rigid-length eligibility rule; **do not alter the DeBarge Protocol**.
 
 ## Curate in seven steps
 

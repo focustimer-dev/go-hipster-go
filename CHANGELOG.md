@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.1.7 — Expressive go modifiers and length controls
+
+- Added orthogonal mood/speed instructions: `go fast`, `go angry`, `go chill`, `go slow`, `go weird`, plus combinations and natural-language mood requests.
+- Keep the full four-axis taxonomy; modifiers change sonic properties, not force genre quotas or invented BPM data.
+- Preserve default 12 tracks and introduce explicit `go short` (6), `go long` (24) and numeric requested lengths, with 50 as a soft quality target rather than hard/schema limit.
+- Require clear reporting when providers or hosts produce fewer items than requested; no silent truncation.
+- Added manual cross-host mood/length acceptance cases and structural tests; live fidelity and maximum host throughput remain unverified.
+- DeBarge odds, trigger and 25-entry outcome unchanged.
+
 ## 3.1.6 — Publishing-first routing experiment
 
 - Move the connected-service publishing preflight ahead of the seven-step music-curation workflow for `go`; do not create an empty test playlist.
