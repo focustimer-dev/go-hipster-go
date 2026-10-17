@@ -54,18 +54,32 @@ class PluginPackageTests(unittest.TestCase):
         self.assertIn('session-only', readme)
 
 
-    def test_install_prompt_is_compact_and_copyable_on_github(self):
+    def test_install_prompts_are_separate_and_copyable_on_github(self):
         readme = (ROOT / 'README.md').read_text(encoding='utf-8')
         section = readme.split('**1. Load the skill.**', 1)[1].split('**2. Run `setup`', 1)[0]
-        prompt = section.split('```text\n', 1)[1].split('\n```', 1)[0]
-        self.assertLessEqual(max(map(len, prompt.splitlines())), 45)
-        self.assertIn('focustimer-dev/hipster-music-generator', prompt)
-        self.assertIn('Read SKILL.md', prompt)
-        self.assertIn('Plugins needs the Plugin ZIP', prompt)
-        self.assertIn('Skills needs the Skill ZIP', prompt)
-        self.assertIn('Then run setup.', prompt)
+        prompts = [
+            block.split('\\n```', 1)[0]
+            for block in section.split('```text\\n')[1:]
+        ]
+        self.assertEqual(len(prompts), 2)
+        universal, claude = prompts
+        for prompt in prompts:
+            self.assertLessEqual(max(map(len, prompt.splitlines())), 45)
+            self.assertIn('focustimer-dev/hipster-music-generator', prompt)
+            self.assertIn('Read SKILL.md', prompt)
+        self.assertNotIn('Claude', universal)
+        self.assertNotIn('ZIP', universal)
+        self.assertNotIn('Then run setup.', universal)
+        self.assertIn('Before suggesting a ZIP, identify my', claude)
+        self.assertIn('Plugins: use the Claude Plugin ZIP.', claude)
+        self.assertIn('Skills: use the Claude Skill ZIP.', claude)
+        self.assertIn('If the screen is unknown, ask me once.', claude)
+        self.assertIn('<summary><strong>Claude — copy this prompt instead</strong></summary>', section)
+        self.assertIn('](#claude-quick-start)', section)
         self.assertIn('**Copy** icon', section)
         self.assertIn('adapters/claude/README.md', section)
+        self.assertIn('.claude-plugin/plugin.json', section)
+        self.assertIn('Never interchange the two archives.', section)
 
     def test_field_reports_separate_generated_and_saved_across_hosts(self):
         readme = (ROOT / 'README.md').read_text(encoding='utf-8')
