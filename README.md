@@ -6,7 +6,7 @@
 
 <p align="center"><em>“Who’s here ironically and who’s here because they sincerely enjoy it?”</em></p>
 
-<p align="center"><strong>Whole crowd raises both hands.</strong></p>
+<p align="center"><em>Whole crowd raises both hands.</em></p>
 
 <p align="center"><sub>Ethically sourced deep cuts. Sustainably pretentious. Fair-trade almond milk sold separately.</sub></p>
 
