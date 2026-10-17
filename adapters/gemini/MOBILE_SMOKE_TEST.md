@@ -13,6 +13,12 @@ These are **manual runtime tests** for someone with the Gemini app and connected
 Use the five-file instruction-only ZIP **or** the user-tested GitHub-link loading route. Ask `Use Hipster Music Generator: go`.
 **Pass:** Gemini curates songs without refusing because it cannot execute Python, mentioning a missing runtime, or insisting on a script. The original test screenshot showed exactly that refusal; it is a packaging regression, not a reason to remove music features.
 
+## Test A0 — single-command listening
+
+In a new Gemini conversation where the skill is loaded and YouTube Music is authorized, say only `Hipster Music Generator: go`. The skill should attempt to use the actual YouTube Music playlist-writing capability without requiring a separate `@YouTubeMusic` mention. If Gemini's host cannot activate the other skill, it must curate anyway and explicitly explain the limitation, without claiming a saved playlist. Check an explicit `go, text only` to confirm no write is attempted.
+
+**This is a behavioral test, not proof that Gemini can activate another skill itself.**
+
 ## Test A — skill activation and musical behavior
 
 Invoke the skill using the skill selector or explicitly say:
