@@ -135,7 +135,7 @@ These are **reported runtime observations**, not guaranteed host capabilities:
 | ChatGPT Work + Spotify | A single `go` created a playlist without explicitly selecting Spotify | Exact recording/order fidelity; Work once returned six instead of the normal twelve |
 | Ordinary Chat + Spotify | Selecting both plugins produced a twelve-track playlist visible in Spotify | Automatic activation of Spotify when only the music skill is selected |
 | Ordinary Chat, skill only | Curated tracks but had no Spotify playlist-writing tool, even after publishing-first preflight | Host-level plugin routing; see [issue #1](https://github.com/focustimer-dev/hipster-music-generator/issues/1) |
-| Gemini + YouTube Music | A user reported a six-track playlist after loading the repository and explicitly using the music connection; six were requested | Persistent installation and exact track/ordering fidelity |
+| Gemini + YouTube Music | A six-track user-reported playlist was generated using the connection; a later 12-track curation gave an incorrect ChatGPT-specific composer instruction rather than Gemini's `@YouTubeMusic` route | Whether the provider preserves exact recordings/order or a generated preview is saved to library; see [Gemini guidance](adapters/gemini/README.md) |
 
 The personal plugin has also sometimes displayed a generic icon despite packaged branding assets; see [issue #2](https://github.com/focustimer-dev/hipster-music-generator/issues/2). That is a UI concern, not evidence about playlist publication.
 

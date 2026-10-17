@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.2.4 — Gemini's YouTube Music routing is not ChatGPT's
+
+- Remove the cross-host fallback that told Gemini users to select two plugins in a ChatGPT-style composer.
+- Distinguish Gemini's `@YouTubeMusic` playlist generation, exact curated track insertion, and the **Save to library** step; disclose approximations rather than inventing exact results.
+- Preserve original tracklists for a single Gemini-native recovery step, without re-curation or repeat DeBarge roll.
+- Add Gemini-specific regression tests and setup guidance; music taxonomy, snark and DeBarge odds unchanged.
+
+
 ## 3.2.3 — Make Gemini's record clerk unmistakably insufferable
 
 - Promote the arch, self-important persona to the beginning of canonical skill activation and the **generated Gemini Apps SKILL.md**, before streaming setup instructions.

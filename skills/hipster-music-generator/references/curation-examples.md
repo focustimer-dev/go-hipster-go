@@ -61,6 +61,10 @@ These are **musical intentions**, not preselected genres, artists or guaranteed 
 
 Long sets still need a thesis, transitions, and accurate catalog matches; if a host truncates to six tracks when twelve were requested, describe the mismatch as a **shortfall**, not an implicit change of default. `go, text only` still suppresses publication, **not the Easter-egg roll**. All modifiers and ordinary numeric length targets remain eligible for the **same one-in-100 roll**, including `go sad`, `go short`, `go long`, and `go weird slow 30`. A genuine hit overrides modifiers and ordinary count to 25 repeated tracks. An explicit `no DeBarge`, `unique songs only`, or unambiguous `exactly N, no exceptions` constraint prevents a spontaneous trigger. Do not roll twice on a publishing retry; a follow-up to save an existing list preserves the previous outcome.
 
+## Host-aware recovery
+
+A curated tracklist is not a saved streaming playlist. Ordinary ChatGPT may need multi-app selection to expose the Spotify writer; Gemini does not have that ChatGPT composer workflow. For Gemini, try the connected `@YouTubeMusic` app when available. Google's documented playlist generation from mood or artists does not guarantee exact insertion of the curated recordings and order. Describe any resulting thematic mix as an approximation; do not conflate generation with the user's **Save to library** action. Preserve the original list, avoid re-curation and never reroll DeBarge on a publishing follow-up.
+
 ## One-word go: streaming handoff
 
 Execution order matters: preflight accessible playlist-writing capability **before** exploring candidate songs. A writer's existence must be based on exposed tools, not a service subscription. Once the destination is established, curate and resolve its actual catalog recordings before creating the playlist; keep all musical verification standards. If tools are missing, continue a text-list fallback without implying that more taxonomy research will activate Spotify or YouTube Music. This is a routing experiment, not proof of automatic cross-app invocation.

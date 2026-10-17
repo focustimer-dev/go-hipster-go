@@ -90,6 +90,17 @@ Reject versions that default to identical catchphrases, belittle whole genres/cu
 
 For each run, inspect artist/title authenticity, coherent sonic rationale, modifier fidelity, requested vs selected vs provider-confirmed counts, and whether any explicit exclusion or existing DeBarge eligibility constraint was overridden. These are manual tests; GitHub CI checks text-contract integrity, **not actual musical quality or provider capacity**.
 
+## Gemini-specific writer and save-state acceptance
+
+| Scenario | Required behavior |
+| --- | --- |
+| Gemini curates twelve but writer inaccessible | State not published or saved; suggest Gemini's `@YouTubeMusic` or Connected Apps, never a ChatGPT-style composer |
+| Gemini creates a provider-generated thematic mix | Clearly mark an approximation; do not claim exact song/version/order fidelity |
+| Gemini shows a generated playlist card | Distinguish it from a **Save to library** action and a confirmed saved playlist |
+| Gemini cannot accept exact selections | Retain ordered list and avoid re-curation, invented tool invocation or a second DeBarge roll |
+
+Observed Gemini Android failure: a twelve-track curation incorrectly recommended ChatGPT's two-plugin composer instruction. Re-test after loading the updated Gemini package; static CI doesn't establish actual tool routing.
+
 ## Default go: publishing and host-routing acceptance checks (manual)
 
 **A/B preflight trial:** In fresh conversations with the same installed apps and account authorization, compare (A) skill-only `go` against (B) explicit Hipster Music Generator + Spotify selection, using the same 12-track constraint. Record whether playlist-writing tools were exposed *before* catalog research, whether the request saved a playlist, number of provider-confirmed items, substitutions, and whether the assistant falsely attributed missing tools to a disconnected account. The two-plugin success case is the control, not evidence that skill-only activation is fixed. Do not save public account details.
