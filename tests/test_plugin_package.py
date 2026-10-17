@@ -54,6 +54,19 @@ class PluginPackageTests(unittest.TestCase):
         self.assertIn('session-only', readme)
 
 
+    def test_install_prompt_is_compact_and_copyable_on_github(self):
+        readme = (ROOT / 'README.md').read_text(encoding='utf-8')
+        section = readme.split('**1. Load the skill.**', 1)[1].split('**2. Run `setup`', 1)[0]
+        prompt = section.split('```text\\n', 1)[1].split('\\n```', 1)[0]
+        self.assertLessEqual(max(map(len, prompt.splitlines())), 45)
+        self.assertIn('focustimer-dev/hipster-music-generator', prompt)
+        self.assertIn('Read SKILL.md', prompt)
+        self.assertIn('Plugins needs the Plugin ZIP', prompt)
+        self.assertIn('Skills needs the Skill ZIP', prompt)
+        self.assertIn('Then run setup.', prompt)
+        self.assertIn('**Copy** icon', section)
+        self.assertIn('adapters/claude/README.md', section)
+
     def test_skills_have_frontmatter(self):
         for path in (ROOT / 'skills').glob('*/SKILL.md'):
             data = path.read_text(encoding='utf-8')
