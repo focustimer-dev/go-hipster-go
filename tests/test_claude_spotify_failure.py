@@ -10,7 +10,7 @@ class ClaudeSpotifyFailureTests(unittest.TestCase):
         for phrase in (
             "prompt-generated playlist", "Spotify Premium", "add_playlist_items",
             "subscription tier **unverified**", "25 identical entries",
-            "0 saved", "may reject duplicates"):
+            "0 published", "may reject duplicates"):
             self.assertIn(phrase.lower(),skill.lower())
 
     def test_claude_field_report_and_adapter_are_cautious(self):
