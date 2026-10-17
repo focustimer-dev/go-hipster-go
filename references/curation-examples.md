@@ -45,9 +45,13 @@ These are **musical intentions**, not preselected genres, artists or guaranteed 
 | `go fast` | Insistent, propulsive rhythms; energy across unexpected global scenes, not necessarily happy |
 | `go angry` | Abrasion, defiance, tension and confrontation; may be slow and brooding |
 | `go chill` | Warm, airy and low-pressure, but not required to be slow |
+| `go sad` | Wistfulness, grief and melancholy without automatically choosing slow acoustic ballads |
 | `go slow` | Hypnotic, deliberate pulse; can be severe or heavy |
 | `go weird` | Increased sonic discovery distance; bridge still has audible justification |
 | `go fast angry` | Kinetic confrontation with musical logic rather than a random punk playlist |
+| `go sad fast` | Urgent, cathartic motion with emotional weight—sad is not necessarily slow |
+| `go sad weird` | Unexpected production details that still convey real longing or wistfulness |
+| `go sad chill` | Softly bittersweet warmth and unhurried emotional intimacy |
 | `go weird slow` | Strange, spacious arrangements and patient rhythm |
 | `go chill fast` | Nimble, breezy movement without harshness |
 | `go short` | 6 tracks |
@@ -55,7 +59,7 @@ These are **musical intentions**, not preselected genres, artists or guaranteed 
 | `go weird 30` | 30 tracks with the weird modifier |
 | `go 48` | 48 requested tracks; protect count fidelity and report limits honestly |
 
-Long sets still need a thesis, transitions, and accurate catalog matches; if a host truncates to six tracks when twelve were requested, describe the mismatch as a **shortfall**, not an implicit change of default. `go, text only` still suppresses publication, **not the Easter-egg roll**. All modifiers and ordinary numeric length targets remain eligible for the **same one-in-100 roll**, including `go short`, `go long`, and `go weird slow 30`. A genuine hit overrides modifiers and ordinary count to 25 repeated tracks. An explicit `no DeBarge`, `unique songs only`, or unambiguous `exactly N, no exceptions` constraint prevents a spontaneous trigger. Do not roll twice on a publishing retry; a follow-up to save an existing list preserves the previous outcome.
+Long sets still need a thesis, transitions, and accurate catalog matches; if a host truncates to six tracks when twelve were requested, describe the mismatch as a **shortfall**, not an implicit change of default. `go, text only` still suppresses publication, **not the Easter-egg roll**. All modifiers and ordinary numeric length targets remain eligible for the **same one-in-100 roll**, including `go sad`, `go short`, `go long`, and `go weird slow 30`. A genuine hit overrides modifiers and ordinary count to 25 repeated tracks. An explicit `no DeBarge`, `unique songs only`, or unambiguous `exactly N, no exceptions` constraint prevents a spontaneous trigger. Do not roll twice on a publishing retry; a follow-up to save an existing list preserves the previous outcome.
 
 ## One-word go: streaming handoff
 

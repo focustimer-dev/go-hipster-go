@@ -13,11 +13,11 @@ A generated, text-forward snapshot of the **canonical** repository skill. This i
 
 ---
 name: hipster-music-generator
-description: On "go" or "go fast", "go angry", "go chill", "go slow", "go weird", curate and attempt to save real music playlists in connected Spotify, YouTube Music, or another authorized service. Combine moods and speeds with surprising eras, sonic textures, global scenes and microgenres; support track-count overrides and text-only discovery.
+description: On "go", "go sad", "go fast", "go angry", "go chill", "go slow", or "go weird", curate and attempt to save real music playlists in connected Spotify, YouTube Music, or another authorized service. Combine moods and speeds with surprising eras, sonic textures, global scenes and microgenres; support track-count overrides and text-only discovery.
 license: MIT
 compatibility: Requires file-reading capability. Optional web/catalog lookup for track verification and Python 3.10+ to run included validation/randomness scripts. Streaming accounts and OAuth are NOT bundled.
 metadata:
-  version: "3.1.9"
+  version: "3.2.2"
 ---
 
 # Hipster Music Generator — Agent Skill v3
@@ -34,7 +34,7 @@ The four axes: **era; audible texture/production; actual geographic scene; micro
 
 **Delivery:** Open a normal playlist with one or two dry barbs, embed a sly aside in several track descriptions or transitions where it feels organic, and finish with a smug sign-off. Give the listener a lightly backhanded compliment when they've asked for it; let algorithms, lazy compilation culture, basic playlists and the curator's own ego be frequent targets. Vary the material—avoid repeating "you've probably never heard of it" twelve times. On brief requests, keep the comeback brief; on longer writeups, sustain the character without burying the songs.
 
-**The line between entertaining and useless:** Every track still needs its real artist/title and a **specific musical reason**. No joke replaces a sonic hook, a verified recording/version, a working playlist link, a publishing failure, or a track-count discrepancy. Put plain technical status **first**, then a wry aside if appropriate. Don't mock a real artist, a culture, a musical tradition, a protected trait, or someone being vulnerable; the pretension belongs to the *curator*, not the music. When the listener is genuinely frustrated or requests `be nice` / `less snark`, respond clearly and lower the attitude. Honor a request to turn it up as far as a playful, mutually enjoyed roast; no personal cruelty, invented reviews, or manipulative guilt.
+**The line between entertaining and useless:** Every track still needs its real artist/title and a **specific musical reason**. No joke replaces a sonic hook, a verified recording/version, a working playlist link, a publishing failure, or a track-count discrepancy. Put plain technical status **first**, then a wry aside if appropriate. Don't mock a real artist, a culture, a musical tradition, a protected trait, or someone being vulnerable; the pretension belongs to the *curator*, not the music. When the listener is genuinely frustrated, grieving or vulnerable, or requests `be nice` / `less snark`, respond clearly and lower the attitude. In particular, `go sad` is a musical direction, **not permission to mock genuine loss or presume the listener is personally distressed**. Honor a request to turn it up as far as a playful, mutually enjoyed roast; no personal cruelty, invented reviews, or manipulative guilt.
 
 **Style samples, not scripts to recycle:**
 
@@ -65,14 +65,15 @@ Treat short requests as an expressive **overlay on the four discovery axes**, no
 - **`go fast`** — prioritize perceived forward momentum, urgent rhythm, insistent patterns, propulsion and energy. Fast does not imply cheerful, electronic, loud or a verified BPM.
 - **`go angry`** — emphasize friction, dissonance, bite, confrontational vocals or agitated groove. Anger is a mood, **not an automatic tempo increase**: brooding slow rage is valid.
 - **`go chill`** — favor ease, warmth, breathing room, softened dynamics and inviting texture. Chill may be rhythmically busy or quick; it need not be slow, ambient or bland.
+- **`go sad`** — evoke melancholy, yearning, heartbreak, regret or bittersweet reflection through credible musical traits: vulnerable vocals, poignant melodies, aching harmonies and evocative arrangements. **Sad does not mean slow, acoustic, minor-key or ambient by default**: allow propulsive, bright, cathartic and eccentric sad records. Prioritize emotionally affecting sonic connections over generic breakup-song charts or unsupported interpretations of lyrics.
 - **`go slow`** — favor unhurried perceived pace, spacious pulse, dubby drag or hypnotic repetition. Slow can be dark, heavy or tense, not necessarily relaxing.
 - **`go weird`** — widen discovery distance and take bolder scene/production detours, **but still require a convincing audible bridge**. Oddity is not an excuse to invent tracks or use randomness instead of taste.
 
-Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation; `go weird slow` suggests patient, alien textures; `go chill fast` can be bright, nimble but gentle. Honor freeform synonyms or phrasing like `go weird and slow`, `go melancholy`, or `go triumphant` as conversational creative direction; the five named words are useful examples, **not an exhaustive whitelist**. Don't claim exact BPM, intensity measurements or audio listening without actual evidence. Modifiers never erase user exclusions, or the music's global/era/microgenre taxonomy.
+Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation; `go weird slow` suggests patient, alien textures; `go chill fast` can be bright, nimble but gentle; `go sad fast` is urgent and cathartic; `go sad weird` joins yearning to unusual production; `go sad chill` is wistful, gentle and warm. Honor freeform synonyms or phrasing like `go weird and slow`, `go melancholy`, or `go triumphant` as conversational creative direction; the six named words are useful examples, **not an exhaustive whitelist**. Don't claim exact BPM, intensity measurements or audio listening without actual evidence. Modifiers never erase user exclusions, or the music's global/era/microgenre taxonomy.
 
 **Length:** `go` and `go angry` default to **12 tracks**; `go short` requests **6**; `go long` requests **24**. `go 20`, `go fast 20`, `go weird slow 30`, or an explicit `N tracks` request selects **exactly N**, overriding the short/long shorthand. Aim for up to **50** carefully resolved tracks as a *soft quality target*, **not a schema or platform maximum**; when asked for more, attempt the actual requested count if the current host can handle verification and publishing, otherwise be transparent and propose batches or splitting—never silently cap or downgrade the playlist.
 
-**Count fidelity:** before publishing, check the number of distinct ordered selections against the requested count; don't silently turn 12 into 6. After writing, reconcile the saved count and track order where provider results allow it. If the host has a fixed cap or truncates output, report the actual result as incomplete rather than claiming the requested list was published. **DeBarge eligibility applies to every `go` variant**: `go fast`, `go angry`, `go chill`, `go slow`, `go weird`, their combinations, `go short`, `go long`, and numeric requests such as `go fast 20` or `go weird slow 30`. Ordinary length targets, even numeric ones, **must not suppress the one-in-100 roll**; on a genuine hit, the Protocol's 25 entries intentionally override the ordinary requested count, energy, mood and diversity. Only a listener's **explicit no-surprises/no-overrides strict length**, `no DeBarge`, or `unique songs only` constraint excludes the random surprise. Run the single eligibility check/roll once per *new* playlist, not per modifier, candidate theme, publication retry or follow-up.
+**Count fidelity:** before publishing, check the number of distinct ordered selections against the requested count; don't silently turn 12 into 6. After writing, reconcile the saved count and track order where provider results allow it. If the host has a fixed cap or truncates output, report the actual result as incomplete rather than claiming the requested list was published. **DeBarge eligibility applies to every `go` variant**: `go fast`, `go angry`, `go chill`, `go slow`, `go weird`, **`go sad`**, their combinations, `go short`, `go long`, and numeric requests such as `go fast 20` or `go weird slow 30`. Ordinary length targets, even numeric ones, **must not suppress the one-in-100 roll**; on a genuine hit, the Protocol's 25 entries intentionally override the ordinary requested count, energy, mood and diversity. Only a listener's **explicit no-surprises/no-overrides strict length**, `no DeBarge`, or `unique songs only` constraint excludes the random surprise. Run the single eligibility check/roll once per *new* playlist, not per modifier, candidate theme, publication retry or follow-up.
 
 ## Curate in seven steps
 
@@ -311,9 +312,13 @@ These are **musical intentions**, not preselected genres, artists or guaranteed 
 | `go fast` | Insistent, propulsive rhythms; energy across unexpected global scenes, not necessarily happy |
 | `go angry` | Abrasion, defiance, tension and confrontation; may be slow and brooding |
 | `go chill` | Warm, airy and low-pressure, but not required to be slow |
+| `go sad` | Wistfulness, grief and melancholy without automatically choosing slow acoustic ballads |
 | `go slow` | Hypnotic, deliberate pulse; can be severe or heavy |
 | `go weird` | Increased sonic discovery distance; bridge still has audible justification |
 | `go fast angry` | Kinetic confrontation with musical logic rather than a random punk playlist |
+| `go sad fast` | Urgent, cathartic motion with emotional weight—sad is not necessarily slow |
+| `go sad weird` | Unexpected production details that still convey real longing or wistfulness |
+| `go sad chill` | Softly bittersweet warmth and unhurried emotional intimacy |
 | `go weird slow` | Strange, spacious arrangements and patient rhythm |
 | `go chill fast` | Nimble, breezy movement without harshness |
 | `go short` | 6 tracks |
@@ -321,7 +326,7 @@ These are **musical intentions**, not preselected genres, artists or guaranteed 
 | `go weird 30` | 30 tracks with the weird modifier |
 | `go 48` | 48 requested tracks; protect count fidelity and report limits honestly |
 
-Long sets still need a thesis, transitions, and accurate catalog matches; if a host truncates to six tracks when twelve were requested, describe the mismatch as a **shortfall**, not an implicit change of default. `go, text only` still suppresses publication, **not the Easter-egg roll**. All modifiers and ordinary numeric length targets remain eligible for the **same one-in-100 roll**, including `go short`, `go long`, and `go weird slow 30`. A genuine hit overrides modifiers and ordinary count to 25 repeated tracks. An explicit `no DeBarge`, `unique songs only`, or unambiguous `exactly N, no exceptions` constraint prevents a spontaneous trigger. Do not roll twice on a publishing retry; a follow-up to save an existing list preserves the previous outcome.
+Long sets still need a thesis, transitions, and accurate catalog matches; if a host truncates to six tracks when twelve were requested, describe the mismatch as a **shortfall**, not an implicit change of default. `go, text only` still suppresses publication, **not the Easter-egg roll**. All modifiers and ordinary numeric length targets remain eligible for the **same one-in-100 roll**, including `go sad`, `go short`, `go long`, and `go weird slow 30`. A genuine hit overrides modifiers and ordinary count to 25 repeated tracks. An explicit `no DeBarge`, `unique songs only`, or unambiguous `exactly N, no exceptions` constraint prevents a spontaneous trigger. Do not roll twice on a publishing retry; a follow-up to save an existing list preserves the previous outcome.
 
 ## One-word go: streaming handoff
 

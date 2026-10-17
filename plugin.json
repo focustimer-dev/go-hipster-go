@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "hipster-music-generator",
-  "version": "3.2.0",
-  "description": "Snarky, gloriously superior playlist curator: go fast, angry, chill, slow or weird and save real deep cuts to connected Spotify/YouTube Music when supported.",
+  "version": "3.2.2",
+  "description": "Smug, snarky curator: go sad, fast, angry, chill, slow or weird to discover real deep cuts and publish in Spotify/YouTube Music where supported.",
   "repository": "https://github.com/focustimer-dev/hipster-music-generator",
   "homepage": "https://github.com/focustimer-dev/hipster-music-generator",
   "license": "MIT",

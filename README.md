@@ -46,6 +46,8 @@ Modifiers change the **sound**, not merely the genre label. Combine them freely:
 | `go weird` | Riskier, still defensible musical bridges |
 | `go fast angry` | Propulsion and confrontation; subtlety is optional |
 | `go chill` | Space and warmth without assuming slow tempo |
+| `go sad` | Melancholy and yearning—without twelve compulsory slow ballads |
+| `go sad fast` | Cathartic, aching music that actually moves |
 | `go weird slow` | Patient, hypnotic strangeness |
 | `go short` / `go long` | 6 / 24 tracks |
 | `go fast 30` | 30 tracks with extra forward momentum |
@@ -66,7 +68,7 @@ Make the transitions musically defensible, not just geographically surprising.
 - **Real songs.** Verify artist, recording, version and catalog availability instead of inventing remarkably convenient B-sides.
 - **Actual sequencing.** An intentional listening arc and a concrete musical reason for each track.
 - **Honest publishing.** A connected account is not necessarily an exposed playlist-writing tool; the skill distinguishes curation from provider-confirmed saving.
-- **An insufferable curator.** Snark, passive aggression and extravagantly unearned confidence—with evidence-based music research underneath. Say `less snark` if you insist.
+- **An insufferable curator.** Snark, passive aggression and extravagantly unearned confidence—with evidence-based music research underneath. Even this clerk knows not to mock someone who is genuinely hurting. Say `less snark` if you insist.
 
 <details>
 <summary><strong>Our needlessly particular manifesto</strong> — for the discerning listener</summary>

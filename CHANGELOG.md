@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.2.2 — Go sad, obviously
+
+- Add `go sad`: musically melancholy, wistful or heartbroken, but not synonymous with low tempo, minor keys, acoustic sound or ambient music.
+- Support `go sad fast`, `go sad weird`, and `go sad chill` as natural combinations without changing the four-axis discovery method.
+- Add examples, manual regression checks and README quick-start commands.
+- Keep `go sad` eligible for the existing one-in-100 DeBarge Protocol; its trigger, odds and exact 25-track outcome remain unchanged.
+- Preserve careful publishing verification and the snarky persona without mocking real grief.
+
+
 ## 3.2.0 — An extremely important logo, naturally
 
 - Rebuild the reference crimson faceted five-point star as **real transparent, square SVG vector artwork** with clean negative-space cutouts.

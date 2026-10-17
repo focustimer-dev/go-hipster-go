@@ -89,6 +89,21 @@ class DefaultGoBehaviorTests(unittest.TestCase):
         self.assertIn('exactly **25 consecutive entries**',skill)
         self.assertIn('roll uniformly from 1 to 100; on **1**',skill)
 
+    def test_sad_is_composable_and_not_a_tempo_setting(self):
+        skill=(ROOT/"SKILL.md").read_text(encoding="utf-8")
+        examples=(ROOT/"references/curation-examples.md").read_text(encoding="utf-8")
+        cases=(ROOT/"tests/discovery-cases.md").read_text(encoding="utf-8")
+        readme=(ROOT/"README.md").read_text(encoding="utf-8")
+        for phrase in ("go sad", "go sad fast", "go sad weird", "go sad chill",
+                       "Sad does not mean slow", "not permission to mock genuine loss"):
+            self.assertIn(phrase.lower(),skill.lower())
+        for phrase in ("go sad", "go sad fast", "go sad weird"):
+            self.assertIn(phrase,examples)
+        for phrase in ("go sad", "go sad fast", "go sad weird 24"):
+            self.assertIn(phrase,cases)
+        self.assertIn("go sad",readme)
+        self.assertIn("one-in-100",skill)
+
     def test_distribution_synced_and_debarge_intact(self):
         self.assertEqual((ROOT/"SKILL.md").read_bytes(),
                          (ROOT/"skills/hipster-music-generator/SKILL.md").read_bytes())

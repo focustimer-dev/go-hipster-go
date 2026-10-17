@@ -33,6 +33,7 @@ These scenarios are **instruction-level acceptance checks**. Check that there is
 | `go fast` | Yes | 25 repeated DeBarge tracks, not a fast-themed mix |
 | `go angry slow` | Yes | 25 repeated DeBarge tracks, not a brooding mix |
 | `go weird` | Yes | 25 repeated DeBarge tracks |
+| `go sad` | Yes | 25 repeated DeBarge tracks (on the genuine trigger), not a melancholy mix |
 | `go weird slow 30` | Yes; ordinary numeric length is not an exclusion | 25, not 30 |
 | `go short` | Yes; ordinary 6-track shorthand is not an exclusion | 25, not 6 |
 | `go long` | Yes; ordinary 24-track shorthand is not an exclusion | 25, not 24 |
@@ -55,6 +56,7 @@ This is a **tone test**, not license to fabricate music claims. Judge if the wit
 | `go` | Opening snark, smug transition notes and a short superior sign-off, while preserving real recordings |
 | `go angry` | Angry sonic qualities; the curator's personality stays dry rather than turning into personal abuse |
 | `go chill` | Mellow musical choices despite the curator's needless confidence |
+| `go sad` | Respectful and music-first; snark never makes fun of actual grief |
 | `go weird slow 24` | Brief barbs across the playlist, but 24 specific track hooks and an accurate requested-vs-saved count |
 | `go, text only` | Snarky but useful text list; explicitly no claim of streaming publication |
 | No Spotify writer | State **not published** first; add an accurate backhanded quip, not a fictional Spotify malfunction |
@@ -72,6 +74,9 @@ Reject versions that default to identical catchphrases, belittle whole genres/cu
 | `go fast` | 12; perceived drive without automatic optimism or unsupported BPM |
 | `go angry` | 12; confrontation without automatic tempo jump |
 | `go chill` | 12; warmth and ease, possibly brisk |
+| `go sad` | 12; yearning and poignancy without compulsory slow tempo, acoustic instruments or minor keys |
+| `go sad fast` | 12; cathartic, propulsive sadness; no slow-ballad default |
+| `go sad weird 24` | 24; unusual, emotionally persuasive connections and truthful saved-count report |
 | `go slow` | 12; slow perceived pulse without assuming serenity |
 | `go weird` | 12; audibly defensible long-distance scene pairings, not made-up records |
 | `go angry slow` | 12; brooding tension, combines both modifiers |
