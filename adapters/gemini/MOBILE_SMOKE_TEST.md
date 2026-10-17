@@ -13,6 +13,16 @@ These are **manual runtime tests** for someone with the Gemini app and connected
 Use the five-file instruction-only ZIP **or** the user-tested GitHub-link loading route. Ask `Use Hipster Music Generator: go`.
 **Pass:** Gemini curates songs without refusing because it cannot execute Python, mentioning a missing runtime, or insisting on a script. The original test screenshot showed exactly that refusal; it is a packaging regression, not a reason to remove music features.
 
+## Test V — preserve the clerk's personality in Gemini
+
+1. Confirm whether this is a **fresh GitHub load** or a **replaced Gemini web skill**; an old uploaded skill does not auto-sync from GitHub.
+2. Ask `Use Hipster Music Generator: go weird, 6 tracks, text only`. Expect a dry opener, two or three distinct, track-relevant sardonic asides, and a smug sign-off. Fail if the result is a generic cheerful assistant playlist with one token joke.
+3. Ask `go sad, 6 tracks, text only`. Expect nuanced melancholy, not compulsory slow tracks or jokes about genuine grief.
+4. If publishing through YouTube Music, check whether the curator's **own narrative** still has character even when the provider's card uses neutral wording. Never fake publisher confirmation.
+5. Ask `less snark` to confirm the persona appropriately turns down without changing track accuracy, verification or publishing rules.
+
+These are manual listening/tone tests: text-based CI cannot establish that Gemini actually performed the behavior.
+
 ## Test A0 — single-command listening
 
 In a new Gemini conversation where the skill is loaded and YouTube Music is authorized, say only `Hipster Music Generator: go`. The skill should attempt to use the actual YouTube Music playlist-writing capability without requiring a separate `@YouTubeMusic` mention. If Gemini's host cannot activate the other skill, it must curate anyway and explicitly explain the limitation, without claiming a saved playlist. Check an explicit `go, text only` to confirm no write is attempted.

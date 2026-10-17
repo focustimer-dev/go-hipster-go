@@ -2,6 +2,26 @@
 
 **The Gemini mobile/web app now supports native reusable Agent Skills**. Use that for everyday music listening rather than treating a custom Gem or Gemini CLI extension as equivalent.
 
+## If Gemini sounds suspiciously polite
+
+**First verify which version it loaded.** A GitHub URL read in an earlier chat—or a saved Gemini Skill with uploaded files—is not automatically refreshed when this repository changes.
+
+**If you supplied the GitHub URL in a chat:** start a fresh Gemini conversation and send:
+
+```text
+Reload Hipster Music Generator from the latest main branch of
+https://github.com/focustimer-dev/hipster-music-generator
+Read the entire SKILL.md and relevant references, especially the
+Insufferable Record-Store Clerk voice rules. Confirm what you loaded.
+Then run: go weird, 6 tracks, text only.
+Keep the dry, smug, passive-aggressive clerk voice in the opening,
+the actual musical commentary and the sign-off; don't make up facts.
+```
+
+**If you saved or uploaded it as a Gemini Skill:** use [Gemini web](https://gemini.google.com/) → **Customize → Skills**, open the existing Hipster Music Generator, and select **Replace skill** to upload the **entire updated ZIP with its references**. Gemini documents [replacing a skill](https://support.google.com/gemini/answer/17094296). Merely restarting the Android app doesn't refresh an old saved skill.
+
+Test with **`go weird, 6 tracks, text only`** first to isolate the curator's own voice. When publishing through YouTube Music, the provider card may remain neutral; the curator's surrounding prose should not. A bland response after a confirmed refresh is a genuine Gemini tone-compliance regression.
+
 ## First try: give Gemini the GitHub link (observed working in one session)
 
 A user successfully provided `https://github.com/focustimer-dev/hipster-music-generator` directly in a Gemini app chat, asked Gemini to add the skill, and then explicitly called Gemini's built-in YouTube Music skill. Gemini produced a six-song playlist. **This is one user-reported success, not a documented universal GitHub-install mechanism.** We have not independently confirmed persistent installation across new chats, exact track/ordering fidelity, or availability on every Gemini plan.

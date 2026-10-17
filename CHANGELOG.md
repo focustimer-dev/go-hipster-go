@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.2.3 — Make Gemini's record clerk unmistakably insufferable
+
+- Promote the arch, self-important persona to the beginning of canonical skill activation and the **generated Gemini Apps SKILL.md**, before streaming setup instructions.
+- Require a dry opener, several track-specific witty asides, and a smug closing; factual music/provider status still takes precedence.
+- Explain how to reload a GitHub-linked session or replace a saved Gemini skill using the whole five-file package; static tests and manual tone cases added.
+- Preserve taxonomy, all `go` modes, DeBarge's original protected protocol and the publishing workflow.
+
+
 ## 3.2.2 — Go sad, obviously
 
 - Add `go sad`: musically melancholy, wistful or heartbroken, but not synonymous with low tempo, minor keys, acoustic sound or ambient music.

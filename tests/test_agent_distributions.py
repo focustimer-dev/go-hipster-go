@@ -58,6 +58,11 @@ class PortableAgentTests(unittest.TestCase):
             })
             text = z.read("SKILL.md").decode("utf-8")
             self.assertTrue(text.startswith("---\nname: hipster-music-generator\n"))
+            self.assertIn("passive-aggressive record-store clerk", text[:700])
+            self.assertIn("## The personality is mandatory in Gemini", text[:1300])
+            self.assertIn("two or three varied little jabs", text[:1800])
+            self.assertIn("If YouTube Music returns", text[:2000])
+            self.assertIn("## Voice: the Insufferable Record-Store Clerk", text)
             self.assertIn("no code execution", text.lower())
             self.assertIn("DeBarge Protocol", text)
             self.assertIn("25 consecutive", text)
@@ -66,6 +71,17 @@ class PortableAgentTests(unittest.TestCase):
             for link in re.findall(r"\]\(([^)]+)\)", text):
                 if "://" not in link:
                     self.assertIn(link, names)
+
+    def test_gemini_persona_and_refresh_instructions(self):
+        script=(ROOT/"scripts/build_gemini_app_skill.py").read_text(encoding="utf-8")
+        gem=(ROOT/"adapters/gemini/GEM_INSTRUCTIONS.md").read_text(encoding="utf-8")
+        guide=(ROOT/"adapters/gemini/README.md").read_text(encoding="utf-8")
+        cases=(ROOT/"adapters/gemini/MOBILE_SMOKE_TEST.md").read_text(encoding="utf-8")
+        self.assertIn("The personality is mandatory in Gemini",script)
+        self.assertIn("Gemini voice priority",gem)
+        self.assertIn("Replace skill",guide)
+        self.assertIn("go weird, 6 tracks, text only",guide)
+        self.assertIn("Test V — preserve the clerk",cases)
 
     def test_guardrails_survive(self):
         s=(ROOT/"skills/hipster-music-generator/SKILL.md").read_text()
