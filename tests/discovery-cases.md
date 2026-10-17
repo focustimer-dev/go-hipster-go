@@ -32,12 +32,15 @@ No results are claimed here. Listening quality requires actual human evaluation;
 | Two writable services, no grounded preference | `go` | Ask once which destination; don't publish both |
 | Two writers, visible Spotify preference | `go` | Prefer Spotify when writable |
 | Connected Spotify search/play only | `go` | Curate, don't claim playlist creation |
+| Spotify connected, writer absent in skill-only chat | `go` | Keep the original ordered list; explain that both plugins may need to be selected for the next publication prompt |
+| Both Hipster Music Generator and Spotify selected | `go` | Attempt actual Spotify playlist creation; confirm provider result |
+| Follow-up after blocked publish, with writer now exposed | `Publish the 12 tracks above` | Reuse exact already-curated tracks/versions/order; don't silently re-curate or reroll the Easter egg |
 | No connected writer | `go` | Curate, disclose publication failure and one smallest real setup step |
 | Explicit no-publish | `go, text only` | Do not attempt any external write |
 | Platform requires auth/approval | `go` | Respect all authorization prompts and important-change approvals |
 | Provider only confirms playlist created | `go` | Don't claim exact item count or track order without provider evidence |
 
-These tests measure actual host behavior; a textual CI assertion does not establish that a second music skill can be invoked automatically.
+These tests measure actual host behavior; a textual CI assertion does not establish that a second music skill can be invoked automatically. **Observed in ChatGPT Android, 2026-10-16:** HMG-only `go` curated 12 but reported the Spotify writer unavailable; explicitly selecting both HMG and Spotify led to a 12-track playlist visible in the Spotify app. The host-selection difference is the verified finding; exact item-level mixes are not independently audited. See [issue #1](https://github.com/focustimer-dev/hipster-music-generator/issues/1).
 
 ## Cross-platform publication regression (manual)
 

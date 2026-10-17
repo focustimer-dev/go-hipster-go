@@ -22,7 +22,7 @@ For an otherwise unstructured "go", privately compare two or three viable combin
 
 ## One-word go: streaming handoff
 
-Inside this skill, `go` means curate and attempt to save a playlist in a connected playlist-writing music service. When only one authorized writer is available, use it without needing a second plugin mention. When several are available, choose the user's visible stated preference or last successful provider; ask once only if still ambiguous. If the provider skill isn't accessible from the host, return the curated list and honestly report that publication was not completed. `go, text only` avoids all writes. Avoid any false implication of automatic installation or cross-plugin activation.
+Inside this skill, `go` means curate and attempt to save a playlist in a connected playlist-writing music service. When only one authorized writer is available, use it without needing a second plugin mention. When several are available, choose the user's visible stated preference or last successful provider; ask once only if still ambiguous. If the provider skill isn't accessible from the host, return the curated list and honestly report that publication was not completed. Preserve the exact original ordered tracks so that explicitly selecting the provider app in the next turn can publish **the same playlist**, without re-curation or a second Easter-egg roll. Do not confuse a connected account with an exposed writer. `go, text only` avoids all writes. Avoid any false implication of automatic installation or cross-plugin activation.
 
 ## Feedback on the preceding playlist
 

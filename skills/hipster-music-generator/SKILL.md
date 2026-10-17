@@ -4,7 +4,7 @@ description: Curate adventurous playlists of real music through era, sonic textu
 license: MIT
 compatibility: Requires file-reading capability. Optional web/catalog lookup for track verification and Python 3.10+ to run included validation/randomness scripts. Streaming accounts and OAuth are NOT bundled.
 metadata:
-  version: "3.1.4"
+  version: "3.1.5"
 ---
 
 # Hipster Music Generator — Agent Skill v3
@@ -39,7 +39,7 @@ When explicitly invoked inside this music skill, **"go" means curate + publish b
 2. **Choose the destination.** Honor an explicit service if writable. Otherwise use the user's stated preference or last successful writer only when supported by visible conversation/context. If **exactly one connected, authorized writer** is available, select it automatically. If several writers remain with no grounded preference, **ask once**; do not silently publish to multiple services or invent a stored preference.
 3. **Curate and save.** Resolve actual recordings, default to a private playlist when supported, and attempt creation through the real provider. The user requested publication with "go", but this does not override provider OAuth, platform permission prompts, or approval of material substitutions, public visibility or other important changes. Do not create a duplicate on an uncertain retry.
 4. **Report what happened.** Prefer a genuine playlist link. Show requested versus provider-confirmed count and track substitutions/omissions when available. If item-level verification isn't available, state that the playlist was created but exact recordings and order were not independently confirmed.
-5. **Graceful fallback.** If no writable provider is exposed, or the host prevents activation of the necessary second skill, still curate and clearly say **nothing was published**. Mention the smallest genuine app-selection/connection step to complete the handoff. **"go, text only"** skips all write attempts.
+5. **Graceful fallback and recovery.** If no writable provider tool is exposed, or the host prevents activation of the necessary second skill, still curate and clearly say **nothing was published**. Distinguish an account that is *connected* from a writing tool that is *not available in this chat*; do not tell the user to reconnect an already connected service without evidence. Preserve the **exact ordered artist/title/version list** in the conversation or manifest for recovery. Give the smallest real next step: when a music app must be explicitly selected, suggest selecting both Hipster Music Generator and that provider in the composer and asking **"Publish the playlist above to Spotify, preserving its exact 12 recordings and order. Do not re-curate."** (replace Spotify with the actual provider). On a follow-up with the writing app accessible, publish the original list instead of making a new one. Publishing an existing selection is not a new playlist-curation request and must not reroll the DeBarge Protocol. If the previous list is unavailable, ask the user to provide it rather than pretending to remember. **"go, text only"** skips all write attempts.
 
 This changes the default listening workflow, not the music taxonomy or its Easter egg.
 

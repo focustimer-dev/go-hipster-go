@@ -29,6 +29,15 @@ class DefaultGoBehaviorTests(unittest.TestCase):
                      'go, text only']:
             self.assertIn(term,cases)
 
+    def test_missing_writer_preserves_tracks_and_recovers_with_both_plugins(self):
+        skill=(ROOT/"SKILL.md").read_text(encoding="utf-8")
+        setup=(ROOT/"skills/setup/SKILL.md").read_text(encoding="utf-8")
+        cases=(ROOT/"tests/discovery-cases.md").read_text(encoding="utf-8")
+        self.assertIn("Do not re-curate",skill)
+        self.assertIn("connected",setup)
+        self.assertIn("Both Hipster Music Generator and Spotify selected",cases)
+        self.assertIn("without re-curating",cases)
+
     def test_distribution_synced_and_debarge_intact(self):
         self.assertEqual((ROOT/"SKILL.md").read_bytes(),
                          (ROOT/"skills/hipster-music-generator/SKILL.md").read_bytes())

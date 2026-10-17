@@ -30,7 +30,7 @@ An **Agent Skills-style**, open-source music curator for real, surprising, globa
 
 ## Try the skill — entry is free; the tote bag is not
 
-Point an agent at this repository and ask it to add the skill. Then say **`go`** to curate a 12-track playlist **and attempt to save it in your connected streaming service**. If the host does not expose a playlist writer, it will still curate and tell you what wasn't saved. **`go, text only`** opts out.
+Point an agent at this repository and ask it to add the skill. Then say **`go`** to curate a 12-track playlist **and attempt to save it in your connected streaming service**. If the host does not expose a playlist writer, it will still curate and tell you what wasn't saved. **Observed ChatGPT workaround:** select both **Hipster Music Generator and Spotify** in the composer before saying `go`. If a `go` run curated but couldn't publish, select Spotify and ask it to publish **the same tracks already listed**, not generate new ones. **`go, text only`** opts out.
 
 1. Install the **entire repository folder** as `hipster-music-generator` in a compatible agent's skill directory. See [agent setup](adapters/agents.md).
 2. Ask: `Use hipster-music-generator: give me a 12-track playlist connecting Thai molam and Italian library funk; make the transitions defensible.`

@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.1.5 — Preserve curated playlist when app routing fails
+
+- Record the observed ChatGPT Android limitation: a `go` with the curator alone did not expose Spotify's write action, while explicit dual-plugin selection saved a 12-track playlist.
+- When writer activation fails, retain the exact ordered playlist and instruct the user how to publish it in a follow-up with the provider selected—without re-curating or rerolling any Easter egg.
+- Distinguish a connected account from a writing tool missing in the current conversation. Automatic cross-plugin activation remains **unverified and not guaranteed**.
+- Maintain the DeBarge trigger, odds, and 25-entry special behavior unchanged.
+
 ## Unreleased — One-command streaming handoff
 
 - Make `go` request an automatically saved playlist through an accessible, authorized music writer, when one is available.
