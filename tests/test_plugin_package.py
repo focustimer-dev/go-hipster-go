@@ -29,6 +29,16 @@ class PluginPackageTests(unittest.TestCase):
             self.assertNotIn('checkerboard', svg.lower().split('<desc>')[-1])
             self.assertNotIn('fill="#ffffff"', svg.lower())
 
+    def test_readme_is_easy_first_and_reports_are_collapsed(self):
+        readme = (ROOT / 'README.md').read_text(encoding='utf-8')
+        self.assertIn('## Start here — let your agent do the paperwork', readme)
+        self.assertIn('skills/setup/SKILL.md', readme)
+        self.assertLess(readme.index('## Start here'), readme.index('## Installation when the easy way needs help'))
+        self.assertIn('<summary><strong>Field reports & compatibility notes</strong></summary>', readme)
+        self.assertIn('<summary><strong>Iterative improvements & release notes</strong></summary>', readme)
+        self.assertEqual(readme.count('<details>'), readme.count('</details>'))
+        self.assertIn('adapters/agents.md', readme)
+
     def test_skills_have_frontmatter(self):
         for path in (ROOT / 'skills').glob('*/SKILL.md'):
             data = path.read_text(encoding='utf-8')

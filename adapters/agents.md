@@ -2,6 +2,10 @@
 
 The repository root is a standards-oriented Agent Skill: the directory must be named `hipster-music-generator` and contain `SKILL.md`. Some hosts recognize the standard directly; others require a dedicated install path, extension, file upload, or custom instructions. Always confirm the actual host version and tool permissions.
 
+## Try the link first
+
+Before manual file placement, ask an agent: `Add the Hipster Music Generator skill from https://github.com/focustimer-dev/hipster-music-generator; read SKILL.md and its references, load or install it by the mechanism you support, and run skills/setup/SKILL.md first. Tell me whether installation persists and which connected music services actually support playlist creation.` This can work in capable agent sessions but **is not a universal, permanent GitHub installation**. Use the host-specific instructions below only if the agent cannot do this itself.
+
 ## Generic Agent Skills installation
 
 Clone or download the complete repository and place the **folder** (not just SKILL.md) into the host's skill discovery directory. The relative `references/`, `scripts/`, `schemas/`, and `adapters/` paths must remain available.
