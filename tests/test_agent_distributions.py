@@ -42,6 +42,22 @@ class PortableAgentTests(unittest.TestCase):
             self.assertIn("skills/setup/SKILL.md", z.namelist())
             self.assertIn("skills/hipster-music-generator/references/global-scenes.md", z.namelist())
 
+    def test_gemini_app_upload_zip(self):
+        import re
+        subprocess.run([sys.executable, "scripts/build_agent_packages.py", "--zip"],
+                       check=True, cwd=ROOT, capture_output=True, text=True)
+        archive = ROOT / "dist/hipster-music-generator-gemini-app-skill.zip"
+        with ZipFile(archive) as z:
+            names = set(z.namelist())
+            self.assertIn("SKILL.md", names)
+            self.assertIn("references/global-scenes.md", names)
+            self.assertIn("schemas/playlist.schema.json", names)
+            text = z.read("SKILL.md").decode("utf-8")
+            self.assertTrue(text.startswith("---\\nname: hipster-music-generator\\n"))
+            for link in re.findall(r"\\]\\(([^)]+)\\)", text):
+                if "://" not in link:
+                    self.assertIn(link, names)
+
     def test_guardrails_survive(self):
         s=(ROOT/"skills/hipster-music-generator/SKILL.md").read_text()
         for needle in ("DeBarge Protocol","25 consecutive","streaming","references/global-scenes.md"):

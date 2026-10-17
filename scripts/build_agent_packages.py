@@ -71,7 +71,14 @@ def make_zips():
             for src in (ROOT / folder).rglob("*"):
                 if src.is_file():
                     z.write(src, str(src.relative_to(ROOT)))
-    print("Created", skill_zip.relative_to(ROOT), "and", plugin_zip.relative_to(ROOT))
+    # Gemini web Skills uploader expects SKILL.md at the archive root.
+    gemini_zip = output / "hipster-music-generator-gemini-app-skill.zip"
+    with ZipFile(gemini_zip, "w", ZIP_DEFLATED) as z:
+        for src in (ROOT / SKILL_PATH).rglob("*"):
+            if src.is_file():
+                z.write(src, str(src.relative_to(ROOT / SKILL_PATH)))
+    print("Created", skill_zip.relative_to(ROOT), "and",
+          plugin_zip.relative_to(ROOT), "and", gemini_zip.relative_to(ROOT))
 
 
 def main():

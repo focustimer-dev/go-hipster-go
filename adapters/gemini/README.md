@@ -1,41 +1,43 @@
-# Gemini installation — CLI extension + Gemini app Gem
+# Gemini: native app skill first, CLI second
 
-Gemini CLI extensions/Agent Skills and the consumer Gemini app are **different runtimes**.
+**The Gemini mobile/web app now supports native reusable Agent Skills**. Use that for everyday music listening rather than treating a custom Gem or Gemini CLI extension as equivalent.
 
-## Gemini CLI — install from GitHub
+## Preferred: native Gemini app skill (Android and web)
 
-With Gemini CLI installed, in a terminal:
+1. From this repository, run `python scripts/build_agent_packages.py --zip` to generate `dist/hipster-music-generator-gemini-app-skill.zip` (or download a prebuilt ZIP from a trusted release).
+2. In **Gemini web** at https://gemini.google.com open **Menu → Customize → Skills → Create → Upload**.
+3. Upload the ZIP. Its archive root contains `SKILL.md` and the full `references/` taxonomy, alongside supporting `schemas/`, `scripts/`, `adapters/`, and test reference text. Review and create the skill.
+4. Switch to Gemini **Android**. The installed skill can be used from chats, either by selecting it with `/` or `@` or asking `Use Hipster Music Generator: go`. Automatic skill activation can also apply when enabled.
+5. If you want music on YouTube Music, verify its **Connected Apps** authorization. Gemini may prompt you to connect when you request music. Explicitly use `@YouTubeMusic` when Gemini chooses the wrong service.
+
+**Important:** Google documents ZIP/folder upload **in Gemini web**, not directly in the Android app; afterward the skill is available on mobile. Enable **Keep Activity** if Google requires it for Skills and connected music. A GitHub URL isn't currently documented as a one-click Gemini-app skill installer, and GitHub updates do **not** auto-sync to an uploaded skill. Re-upload a regenerated ZIP to update it.
+
+## Music-service behavior (documented versus tested)
+
+Google currently documents that Gemini Apps with **YouTube Music** can create playlists based on a mood, activity, genre, artist, and related ideas. This is our preferred target. It does **not** prove the host can recreate an arbitrary *exact ordered set* of obscure tracks, so preview and verify the resulting list before claiming faithful publication.
+
+Google's current **Spotify** connected-media support in Gemini mobile covers searching/playing music and existing playlists; it expressly excludes creating playlists, radio, or saving tracks to playlists through that connection. Spotify remains a listening/search option, **not** a confirmed playlist writer.
+
+Apple Music, other services, and host support for connected-app actions *inside the custom skill* are **not confirmed**. Do a real capability check in the active Gemini chat. Don't claim that linking a streaming account alone grants write access.
+
+See [the mobile acceptance tests](MOBILE_SMOKE_TEST.md). Do not use fictional music-provider commands or request raw OAuth tokens.
+
+Official documentation:
+- [Google: Create and manage skills for Gemini Apps](https://support.google.com/gemini/answer/17094296)
+- [Google: YouTube Music in Gemini](https://support.google.com/gemini/answer/15237118)
+- [Google: Media streaming apps in Gemini mobile](https://support.google.com/gemini/answer/15300097)
+
+## Gemini CLI — optional developer route
+
+The repository also includes `gemini-extension.json` and `skills/hipster-music-generator/SKILL.md`. With Gemini CLI installed:
 
 ```bash
 gemini extensions install https://github.com/focustimer-dev/hipster-music-generator
 gemini extensions list
-gemini extensions validate .
 ```
 
-The repository root has `gemini-extension.json`; `skills/hipster-music-generator/SKILL.md` and `skills/setup/SKILL.md` are bundled under the recognized extension skills directory. Restart the interactive Gemini CLI session after install, then use `/skills list`. Ask `Use Hipster Music Generator: go`. Gemini CLI asks for consent when activating a skill and accessing its resources.
+An extension is **not** a Gemini mobile-app skill. Consult [Gemini CLI skills](https://geminicli.com/docs/cli/using-agent-skills/) for that host.
 
-For a skill-only installation instead of the whole extension, supported CLI versions accept:
+## Older fallback: a Gem
 
-```bash
-gemini skills install https://github.com/focustimer-dev/hipster-music-generator --path skills/hipster-music-generator
-```
-
-The `--path` option depends on Gemini CLI version; check `gemini skills install --help`. For extension updates, use `gemini extensions update hipster-music-generator`.
-
-**Status:** Static structure checked locally; CLI execution and music-service permissions require testing on a machine with Gemini CLI installed.
-
-## Gemini mobile/web app
-
-The consumer Gemini app does **not** run Gemini CLI extensions just because it sees a GitHub URL. Use a custom **Gem** in Gemini web:
-
-1. Open [gemini.google.com](https://gemini.google.com) → **Gems → New Gem**.
-2. Name it **Hipster Music Generator**, paste [GEM_INSTRUCTIONS.md](GEM_INSTRUCTIONS.md) into instructions.
-3. Add [GEM_KNOWLEDGE.md](GEM_KNOWLEDGE.md) under **Knowledge** by uploading it. It is generated from the canonical taxonomy and skill.
-4. Save, then invoke the Gem on web or mobile: `go`.
-
-Google's help center notes that personal-account Gems are scheduled to transition to skills starting November 2026; the installation pathway may change. A manually uploaded knowledge file is a snapshot, not an auto-synced GitHub connection. Google Drive-backed knowledge can sync Drive-file edits after configuration, but is not automatic GitHub sync. No music service is connected solely by Gem creation.
-
-References:
-- [Gemini CLI extensions](https://geminicli.com/docs/extensions/reference/)
-- [Gemini CLI skills](https://geminicli.com/docs/cli/using-agent-skills/)
-- [Gemini Gems](https://support.google.com/gemini/answer/15146780?hl=en)
+If native Skills are not visible in your account, create a custom Gem on Gemini web using [Gem instructions](GEM_INSTRUCTIONS.md) and the full [Gem knowledge bundle](GEM_KNOWLEDGE.md). Gems created on web are usable in the Android app, but knowledge uploads are snapshots, not automatic GitHub sync. The native Skills route is preferred when available.

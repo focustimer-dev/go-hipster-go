@@ -23,11 +23,15 @@ For ChatGPT hosts without plugin support, the original [Project-based fallback](
 
 ## Claude and Gemini (v3.1 distributions)
 
-**Claude:** The repository is a Claude plugin marketplace. In Claude Code, add `https://github.com/focustimer-dev/hipster-music-generator` with `/plugin marketplace add`, then `/plugin install hipster-music-generator@hipster-music-plugins`. For Claude chat/Cowork, build the custom skill/plugin ZIP with `python scripts/build_agent_packages.py --zip` and upload it if your Claude plan supports custom skills/plugins. See [Claude installation](adapters/claude/README.md).
+**Claude:** Install the GitHub marketplace in Claude Code, or build a skill/plugin ZIP with `python scripts/build_agent_packages.py --zip` for supported Claude chat/Cowork accounts. See [Claude installation](adapters/claude/README.md). Installation has not been live-tested in Claude.
 
-**Gemini CLI:** `gemini extensions install https://github.com/focustimer-dev/hipster-music-generator` installs the extension and packaged skills. For the **Gemini mobile/web app**, create a custom Gem using [Gem instructions](adapters/gemini/GEM_INSTRUCTIONS.md) and [knowledge](adapters/gemini/GEM_KNOWLEDGE.md); the Gemini app does not directly load CLI extensions. See [Gemini installation](adapters/gemini/README.md).
+**Gemini Android app:** Gemini now supports native Skills. Use `python scripts/build_agent_packages.py --zip`, then upload the resulting `dist/hipster-music-generator-gemini-app-skill.zip` in **Gemini web → Customize → Skills → Create → Upload**. The installed skill can then be used on mobile. [Gemini guide](adapters/gemini/README.md) and [Android acceptance test](adapters/gemini/MOBILE_SMOKE_TEST.md).
 
-Both use the same canonical taxonomy. Their bundled copy is checked by `python scripts/build_agent_packages.py --check`. **Static packaging does not prove runtime installation, music metadata verification, or streaming account authorization.**
+**Gemini CLI:** You can separately install the extension with `gemini extensions install https://github.com/focustimer-dev/hipster-music-generator`. This is a different runtime from the mobile app.
+
+**Streaming note:** Google's Gemini/YouTube Music connection documents playlist creation, but exact ordering and exact mix matching still require a runtime test. Its Gemini/Spotify connection is documented for search/play, not playlist-writing. In all hosts, publishing requires a real authorized provider action; static packaging is not proof of account access.
+
+All agent distributions are built from the same canonical `SKILL.md` and references. Run `python scripts/build_agent_packages.py --check` to verify synchronization.
 
 ## Quick validation (Python 3.10+; no pip install)
 
