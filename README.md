@@ -24,11 +24,8 @@ Use my platform's supported loading method.
 Confirm what loaded and if it persists.
 ```
 
-**Using Claude?** [Open the Claude-specific copyable prompt below.](#claude-quick-start)
-
-<a id="claude-quick-start"></a>
 <details>
-<summary><strong>Claude — copy this prompt instead</strong></summary>
+<summary><strong>Using Claude? Copy this prompt instead</strong></summary>
 
 Claude's Plugin and Skill uploaders need **different ZIP files**. Use this prompt rather than the universal one:
 
