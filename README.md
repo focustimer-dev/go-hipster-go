@@ -13,26 +13,43 @@ An open-source **Agent Skill for discovering real, unlikely, surprisingly cohere
 
 **Try the easy way first.** Many agents can read a skill straight from GitHub. No folder archaeology required unless your particular host insists on it.
 
-**1. Load the skill.** Copy the prompt below into your AI assistant. On GitHub, use the **Copy** icon at the top-right of the code block.
+**1. Load the skill.** Copy this prompt into your AI assistant. On GitHub, use the **Copy** icon at the top-right of the code block.
 
 ```text
 Load Hipster Music Generator from GitHub:
 focustimer-dev/hipster-music-generator
 
-Read SKILL.md and its references.
-Use your supported installation method.
+Read SKILL.md and linked references.
+Use my platform's supported loading method.
 Confirm what loaded and if it persists.
+```
 
+**Using Claude?** [Open the Claude-specific copyable prompt below.](#claude-quick-start)
+
+<a id="claude-quick-start"></a>
+<details>
+<summary><strong>Claude — copy this prompt instead</strong></summary>
+
+Claude's Plugin and Skill uploaders need **different ZIP files**. Use this prompt rather than the universal one:
+
+```text
+Load Hipster Music Generator from GitHub:
+focustimer-dev/hipster-music-generator
+
+Read SKILL.md and linked references.
+Try a supported persistent install.
 Before suggesting a ZIP, identify my
-AI platform and upload screen.
-For Claude, Plugins needs the Plugin ZIP;
-Skills needs the Skill ZIP. Don't swap.
-Ask if my upload screen is unclear.
-
-Then run setup.
+Claude upload screen.
+Plugins: use the Claude Plugin ZIP.
+Skills: use the Claude Skill ZIP.
+Do not interchange these two files.
+If the screen is unknown, ask me once.
+Confirm what loaded and if it persists.
 ```
 
 **Claude ZIP note:** The **Plugins** uploader needs `.claude-plugin/plugin.json` at the archive root; the **Skills** uploader needs `hipster-music-generator/SKILL.md`. Never interchange the two archives. See the [Claude installation guide](adapters/claude/README.md) for the correct downloads.
+
+</details>
 
 **2. Run `setup` in the loaded skill.** Spotify is now the **default listening and publishing preference**: the skill checks whether Spotify can actually write playlists in your current AI platform, then shows the defaults without a service-selection interview. If your platform cannot publish to Spotify—or you simply prefer another service—use `setup change YouTube Music` (on Gemini) or another explicit service change. Run `setup` again whenever you want to change your preferences or refresh current music-service capabilities; `setup status` shows what is known.
 
