@@ -13,9 +13,13 @@ An **Agent Skills-style**, open-source music curator for real, surprising, globa
 3. Or: `Use hipster-music-generator: go.` to get a surprising cross-scene mashup.
 4. Request portable playlist JSON if your agent supports writing files; run the standard-library validator below.
 
-## ChatGPT: first supported installation path
+## ChatGPT: install once with Plugin Creator (v3.1)
 
-Use a **ChatGPT Project** rather than assuming a GitHub `SKILL.md` auto-installs into consumer ChatGPT. The [ChatGPT setup guide](adapters/chatgpt/README.md) walks through Project instructions plus a **single consolidated knowledge file**; run the [manual smoke tests](adapters/chatgpt/SMOKE_TEST.md) after setting it up. No music account access or automatic GitHub-to-Project synchronization is implied.
+The repo now contains a [portable plugin manifest](plugin.json), a [packaged skill](skills/hipster-music-generator/SKILL.md), and a [one-time setup skill](skills/setup/SKILL.md). **Preferred approach:** install ChatGPT's **Plugin Creator**, give it this repository URL and ask it to create a personal plugin using the existing manifest and skills. Then run setup once and say `Use Hipster Music Generator: go`. See the [plugin installation walkthrough](adapters/chatgpt/PLUGIN_INSTALL.md).
+
+Setup discovers **actually available** music-service tools and distinguishes search-only from authorized playlist-writing access. It can curate even without a publisher. No Spotify, YouTube Music or Apple Music publisher is bundled or automatically authorized. A GitHub URL by itself is not a one-click install; publishing this plugin to the universal directory is a separate later step.
+
+For ChatGPT hosts without plugin support, the original [Project-based fallback](adapters/chatgpt/README.md) is still available.
 
 ## Quick validation (Python 3.10+; no pip install)
 

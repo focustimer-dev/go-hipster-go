@@ -1,5 +1,7 @@
 # Use Hipster Music Generator in ChatGPT
 
+> **Preferred:** [install as a ChatGPT plugin](PLUGIN_INSTALL.md) with one-time onboarding and optional streaming-service capability discovery. The Project workflow below is a fallback for hosts without plugin support.
+
 **Status:** Project-based installation guide; not a native one-click ChatGPT skill installation and not a streaming integration. No ChatGPT Project has been created on the user's account by this repository.
 
 ## Quick setup (works from phone or desktop)
