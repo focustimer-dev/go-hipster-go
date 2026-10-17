@@ -1,0 +1,17 @@
+{
+  "name": "hipster-music-plugins",
+  "description": "Installable music discovery skills from focustimer-dev",
+  "owner": {
+    "name": "focustimer-dev"
+  },
+  "plugins": [
+    {
+      "name": "hipster-music-generator",
+      "source": {
+        "source": "github",
+        "repo": "focustimer-dev/hipster-music-generator"
+      },
+      "description": "Portable playlist curation, global scenes, and music-service setup"
+    }
+  ]
+}

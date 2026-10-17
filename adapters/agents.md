@@ -29,3 +29,7 @@ Where a runtime has no native skill discovery, supply the text of `SKILL.md` thr
 ## Quick smoke test
 
 After installing, ask: `Use hipster-music-generator: give me 6 real tracks connecting Peruvian chicha and Turkish psych, with the musical bridge for each and honest verification status.` Then try `go` while explicitly invoking the skill. Verify the correct taxonomy, provenance caveats, and absence of claimed playlist publication.
+
+## Tested package definitions for Claude and Gemini
+
+See the dedicated [Claude guide](claude/README.md) and [Gemini guide](gemini/README.md). Both packages read the same vendored full skill (`skills/hipster-music-generator/`), not a truncated rewrite. CI checks that it matches the canonical `SKILL.md` and that all references exist. Actual platform installation requires runtime smoke testing.

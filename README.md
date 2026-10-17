@@ -21,6 +21,14 @@ Setup discovers **actually available** music-service tools and distinguishes sea
 
 For ChatGPT hosts without plugin support, the original [Project-based fallback](adapters/chatgpt/README.md) is still available.
 
+## Claude and Gemini (v3.1 distributions)
+
+**Claude:** The repository is a Claude plugin marketplace. In Claude Code, add `https://github.com/focustimer-dev/hipster-music-generator` with `/plugin marketplace add`, then `/plugin install hipster-music-generator@hipster-music-plugins`. For Claude chat/Cowork, build the custom skill/plugin ZIP with `python scripts/build_agent_packages.py --zip` and upload it if your Claude plan supports custom skills/plugins. See [Claude installation](adapters/claude/README.md).
+
+**Gemini CLI:** `gemini extensions install https://github.com/focustimer-dev/hipster-music-generator` installs the extension and packaged skills. For the **Gemini mobile/web app**, create a custom Gem using [Gem instructions](adapters/gemini/GEM_INSTRUCTIONS.md) and [knowledge](adapters/gemini/GEM_KNOWLEDGE.md); the Gemini app does not directly load CLI extensions. See [Gemini installation](adapters/gemini/README.md).
+
+Both use the same canonical taxonomy. Their bundled copy is checked by `python scripts/build_agent_packages.py --check`. **Static packaging does not prove runtime installation, music metadata verification, or streaming account authorization.**
+
 ## Quick validation (Python 3.10+; no pip install)
 
 ```bash

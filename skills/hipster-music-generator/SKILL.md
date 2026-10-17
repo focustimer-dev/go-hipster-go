@@ -1,25 +1,44 @@
 ---
 name: hipster-music-generator
-description: Create creative playlists of verified real recordings, with global scenes, daring sonic bridges, playful 1980s camp, and optional authorized streaming publication. Use when explicitly invoked or when asked for obscure/left-field music discovery or playlists.
+description: Curate adventurous playlists of real music through era, sonic texture, geographic scene, and microgenre. Use for obscure global discoveries, unlikely musical bridges, deliberate camp, deep cuts, playlist sequencing, and short prompts like "go" for a surprise playlist. Can prepare portable playlist JSON for authorized streaming adapters.
+license: MIT
+compatibility: Requires file-reading capability. Optional web/catalog lookup for track verification and Python 3.10+ to run included validation/randomness scripts. Streaming accounts and OAuth are NOT bundled.
+metadata:
+  version: "3.0.0"
 ---
 
-# Hipster Music Generator — installed plugin skill
+# Hipster Music Generator — Agent Skill v3
 
-Follow the canonical music rules in [`../../SKILL.md`](../../SKILL.md) and its references under [`../../references/`](../../references/). If the host doesn't load those resources, use this compact fallback; do not silently pretend references were read.
+## Intent and activation
 
-## On every playlist request
+Curate **real recordings**, not synthetic music. Prioritize sonic coherence and discovery over popularity or arbitrary obscurity. Invoke for deep-cut recommendations, global scene mashups, surprisingly good mainstream contrasts, "more like this but less obvious," and requests to make a playlist. When the user explicitly invokes this skill and says **"go"**, create a surprise prompt using the four axes below. Do not treat an unrelated use of "go" as permission to run this skill.
 
-1. Parse user's musical anchors: era, audible textures, geographic scene, microgenre, mood, exclusions, count, preferred music service. Saying `go` inside this skill means a surprise theme, **not** arbitrary activation for unrelated tasks.
-2. Form a one-line sonic thesis of 2–4 audible traits. Explore direct, adjacent, then unexpectedly distant scenes; prioritize sound over map and verify genuine scene attribution. See [`../../references/global-scenes.md`](../../references/global-scenes.md) and [`../../references/sonic-taxonomy.md`](../../references/sonic-taxonomy.md).
-3. Propose actual recordings, verify title/artist/version honestly through available sources; never invent audio familiarity, catalog links, dates, or platform IDs. Unverified entries must be labeled and excluded from strictly verified requests.
-4. Sequence intentionally (default 12 songs); include a reason for each musical bridge and occasional gloriously uncool mainstream contrast where appropriate. Do not rigidly ban returning artists; avoid immediate repetition when practical.
-5. Check *available* connected music tools when a user wants to play, save, or publish, or when your host's setup skill runs. Treat each service as `unavailable`, `discoverable but not authorized`, `authorized search-only`, or `authorized playlist-writer` **only from observed evidence**, not guessed plugin names. Tool inventories may be incomplete; never claim to enumerate all user subscriptions. If management/discovery tools exist, query relevant music services and inspect writable capabilities, but do not install/connect without user action.
-6. For a publish request, resolve exact recording matches, surface substitutions, request relevant provider authorization where required and respect user approval; use a real playlist-write tool only when available. Confirm success from provider response, not from a search link. If none is available, provide the sequenced playlist and portable JSON under [`../../schemas/playlist.schema.json`](../../schemas/playlist.schema.json), clearly stating no publication happened.
+The four axes: **era; audible texture/production; actual geographic scene; microgenre/movement**. They are prompts, not mandatory fields. Also respect mood, intended setting, vocals, energy, exclusions, length, listening service, and adventurousness.
 
-## DeBarge Protocol
+## Curate in seven steps
 
-For each eligible new playlist, a **real uniform 1-in-100 random draw** may replace the playlist with **25 copies of DeBarge — "Rhythm of the Night"**. Use a real RNG if available, otherwise skip the spontaneous roll; explicit `DeBarge Protocol` always triggers. Never override explicit unique-song, exact-length, or no-DeBarge constraints. Provider duplicate limits must be disclosed; do not claim publication if blocked.
+1. **Sonic thesis.** In one sentence, identify 2–4 audible qualities connecting the set (e.g., rubbery bass, melancholy harmonies, fuzzy guitars, insistent dance pulse). Separate essential from optional characteristics.
+2. **Explore discovery distance.** Start with direct matches; expand to adjacent scenes sharing musical traits; include one or two *distant* choices only where there is a strong explainable sonic bridge. Geographic novelty alone is never proof of fit. See [sonic taxonomy](references/sonic-taxonomy.md) and [global scenes](references/global-scenes.md).
+3. **Find real recordings.** Search specific artist/title pairs, albums, small-label releases, B-sides, compilations, soundtrack cues, and known mixes. Reference artists are **starting points, not the destination**; prefer surprising labelmates or regional contemporaries with similar musical qualities. Avoid recycling artists or identical primary pairings from the *immediately preceding playlist* when feasible, without blocking an explicit request or a particularly strong fit.
+4. **Verify honestly.** For each recommendation, confirm title and artist (and mix/version, date, scene, and platform availability if claimed) through appropriate credible catalog/artist/label/playable sources. If you cannot verify, label that entry provisional. If the user asks for a strictly verified or publishable playlist, omit unresolved tracks. Never invent links, versions, release years, BPM, or streaming IDs. See [verification rules](references/verification.md).
+5. **Choose intelligently.** A clear majority must fit the sonic thesis; optional off-axis picks should meaningfully expand the idea. Avoid multiple selections by the same artist by default, except when explicitly requested or in the DeBarge Easter egg. The v2 guideline of roughly **no more than two explicitly named taxonomy touchstones in 12 tracks** is a useful preference, never a hard ban. Make room for joyous or cheesy 1980s pop-soul when it makes musical sense; never condescend to its creators.
+6. **Sequence a story.** Establish a recognizable sound, deepen it, introduce a worthwhile surprise, and resolve or intensify. Explain transitions by audible groove, instrumentation, production, atmosphere, or energy—not unsupported numerical claims.
+7. **Deliver and learn.** Default to 12 tracks: evocative title, one-sentence concept, short sonic map, numbered artist — title (mix if established), one concrete reason per track, source links only if actually checked, and one useful next direction. Adapt to shorter requests. Ask which 2–3 tracks worked or failed and revise selection logic for next time, rather than dumping near-duplicates.
+
+## Deliberate irony and Easter egg
+
+Glossy late-period Motown/Motown-adjacent pop-soul, synth-funk, adult-contemporary crossover, and unlikely crowd-pleasers are **valid ingredients**. An obvious hit may earn its place by providing a funny yet persuasive sonic transition. Usually zero to two per 12-track set unless the listener wants more. Don't force comedy onto solemn or narrow briefs.
+
+**DeBarge Protocol:** Once per eligible *new playlist request*, if a genuine random-number tool exists, roll uniformly from 1 to 100; on **1**, replace the ordinary list with exactly **25 consecutive entries** of **DeBarge — "Rhythm of the Night"**. Treat this as a deliberate exception to variety, length, and duplication defaults. An explicit request for "DeBarge Protocol" runs it without a roll. Never claim 1% without using a true random facility; when Python is available run `python scripts/playlist_cli.py roll` once and read the result. Don't trigger the surprise when the user requires unique songs, forbids DeBarge, or specifies a rigid length; do not secretly override other explicit requirements. A service might reject duplicates; never falsely claim publishing succeeded.
+
+## Output and streaming boundaries
+
+A playlist recommendation is NOT a published playlist. For structured export, follow [the playlist contract](schemas/playlist.schema.json) and validate with `python scripts/playlist_cli.py validate examples/example-playlist.json`. List unresolved tracks clearly. **Never call a fictional `youtube_music:create` tool** or assume that tools exist. Check available tools and authorization in the execution environment. Only send a playlist to an external service if the user asks for it or has clearly authorized publishing. Confirm exact recording matches and show a preview for approval when ambiguous, public, or irreversible. Use [the adapter contract](adapters/README.md) and the provider guides. On missing credentials/integration, deliver portable JSON or a text playlist with actionable next steps.
+
+## Test changes rather than accumulating rules
+
+Before expanding this skill, compare old and new on three fixed prompts (regional mashup, obscure artist alternatives, open-ended "go") with equal verification access. Check: real tracks/versions, sonic coherence, genuinely unfamiliar discoveries, and scene variety when appropriate. Use listener feedback; never invent quality metrics or claim validation that hasn't happened. See [evaluation prompts](tests/discovery-cases.md).
 
 ## Scope
 
-This is a music recommendation skill, not an app or OAuth grant. Installation alone does not provide a streaming integration. Do not imply a service or tool is available unless actually exposed and authorized in the current host. Refer to [`../setup/SKILL.md`](../setup/SKILL.md) for onboarding.
+Never identify a song from audio if the running agent lacks audio music-recognition capability. Do not pretend to have listened to tracks or created streaming playlists. Respect the user's exclusions, music-service availability, and rights/platform limits.
