@@ -2,16 +2,25 @@
 
 Claude chat, Cowork and Claude Code are **different installation environments**. Hipster Music Generator is an instruction-based Agent Skill; it does not ship a Spotify authorization, paid account, or music publisher.
 
-## Claude chat / Cowork — easiest supported install
+## Claude chat / Cowork — choose the right uploader
 
-**[Download Claude Skill ZIP](https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/hipster-music-generator-claude-skill.zip)**
+**Which Claude screen are you on?** The two ZIPs are **not interchangeable**:
+
+| Claude screen | Required archive | What's inside |
+| --- | --- | --- |
+| **Customize → Skills → Upload a skill** | **[Download Claude Skill ZIP](https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/hipster-music-generator-claude-skill.zip)** | `hipster-music-generator/SKILL.md` plus references |
+| **Customize → Plugins → Upload a plugin** | **[Download Claude Plugin ZIP](https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/hipster-music-generator-claude-plugin.zip)** | Top-level `.claude-plugin/plugin.json` manifest plus `skills/` |
+
+**Common validation error:** If the Plugins page says *"Zip must contain a .claude-plugin/plugin.json file or a top-level SKILL.md"*, you've probably uploaded the **Skill ZIP** into the **Plugin** uploader. Remove that file and choose the **Plugin ZIP** instead. No changes to Spotify authorization or the music skill are required to resolve that format error.
+
+For most Claude chat users, the Skill uploader is the simpler installation method. If you've already reached the **Plugin** uploader, use the Plugin ZIP there.
 
 1. **Try the GitHub link first:** ask Claude to read [this repository](https://github.com/focustimer-dev/hipster-music-generator) and apply its `SKILL.md`. This can work within a chat, but reading GitHub is **not proof of a persistent skill installation**.
 2. **For reliable reuse**, open Claude's **Customize → Skills → + → Create skill → Upload a skill** and select the ZIP above. Enable the new skill. The archive contains the required `hipster-music-generator/` root folder, the full SKILL.md, its local references and helper files. Claude requires **code execution enabled** for custom Skills; check the actual Skills controls if they aren't visible. Anthropic says Skills are available across Free, Pro, Max, Team and Enterprise subject to these controls.
 3. **Connect Spotify separately:** [Add Spotify to Claude](https://claude.com/marketplace/connectors/spotify) through its official connector and complete whatever authorization the provider asks for. Spotify's Claude connection is available to Free and Premium listeners for discovery; **Spotify Premium** is specified for prompt-generated personalized playlists. The Anthropic connector lists `create_playlist`, `search`, and `fetch_tracks`, but the public tool list does **not** prove arbitrary *exact* item insertion or ordering.
 4. Invoke `Use Hipster Music Generator: setup` and choose Spotify as the preferred publishing service if appropriate. Then say `go`, `go weird`, or `go sad 24`. Claude can **suggest a connected app without you naming it every time**, but may require your selection/approval. After publishing, compare the actual URL, count, song versions and ordering; a generated mix is not necessarily an exact transfer.
 
-**[Download the complete Claude Plugin ZIP](https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/hipster-music-generator-claude-plugin.zip)** only if your Claude host supports custom plugin upload through **Customize → Plugins**. The skill-only ZIP is the simpler default in Claude chat. Neither ZIP bundles Spotify credentials or adds a provider tool by itself.
+**[Download the complete Claude Plugin ZIP](https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/hipster-music-generator-claude-plugin.zip)** if your Claude host offers **Customize → Plugins → Upload a plugin**. The skill-only ZIP is the simpler default in Claude chat. Neither ZIP bundles Spotify credentials or adds a provider tool by itself.
 
 **Update policy:** Uploaded ZIPs are snapshots, not live subscriptions to GitHub. If the skill changes, upload the newer package using Claude's skill-edit/replace controls. `setup` is safe to rerun; any cross-chat preference persistence requires a genuinely supported, user-approved storage mechanism.
 
