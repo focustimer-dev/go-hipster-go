@@ -25,7 +25,7 @@ For ChatGPT hosts without plugin support, the original [Project-based fallback](
 
 **Claude:** Install the GitHub marketplace in Claude Code, or build a skill/plugin ZIP with `python scripts/build_agent_packages.py --zip` for supported Claude chat/Cowork accounts. See [Claude installation](adapters/claude/README.md). Installation has not been live-tested in Claude.
 
-**Gemini Android app:** Gemini now supports native Skills. Use `python scripts/build_agent_packages.py --zip`, then upload the **five-file, instruction-only** `dist/hipster-music-generator-gemini-app-skill.zip` in **Gemini web → Customize → Skills → Create → Upload**. The installed skill can then be used on mobile. [Gemini guide](adapters/gemini/README.md) and [Android acceptance test](adapters/gemini/MOBILE_SMOKE_TEST.md).
+**Gemini Android app:** **User-tested first try:** paste this GitHub repository URL in Gemini chat and ask it to add/use the skill, then invoke its built-in **YouTube Music** skill separately for publishing. One user reported a six-track playlist from this flow; the prompt had explicitly requested six. **Persistence across chats and exact track matching are not yet verified.** Official fallback: build/upload the five-file, instruction-only `dist/hipster-music-generator-gemini-app-skill.zip` through **Gemini web → Customize → Skills → Create → Upload**. See [Gemini guide](adapters/gemini/README.md) and [Android acceptance test](adapters/gemini/MOBILE_SMOKE_TEST.md).
 
 **Gemini CLI:** You can separately install the extension with `gemini extensions install https://github.com/focustimer-dev/hipster-music-generator`. This is a different runtime from the mobile app.
 

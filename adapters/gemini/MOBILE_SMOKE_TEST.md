@@ -4,13 +4,13 @@ These are **manual runtime tests** for someone with the Gemini app and connected
 
 ## Prerequisites
 
-- The `hipster-music-generator` skill has been uploaded through Gemini **web** and appears under **Customize → Skills**.
+- The skill was either uploaded through Gemini **web** or explicitly loaded from the GitHub link in chat. Record which path was used; do not assume the two are equivalent.
 - In Gemini **Android**, YouTube Music is connected under **Connected Apps**, or Gemini has offered its normal connection flow.
 - If trying Spotify, connect it separately. Do not expect playlist-writing through Spotify's current Gemini connected app.
 
 ## Test 0 — no executable code
 
-Use the new five-file text-only ZIP. Ask `Use Hipster Music Generator: go`.
+Use the five-file instruction-only ZIP **or** the user-tested GitHub-link loading route. Ask `Use Hipster Music Generator: go`.
 **Pass:** Gemini curates songs without refusing because it cannot execute Python, mentioning a missing runtime, or insisting on a script. The original test screenshot showed exactly that refusal; it is a packaging regression, not a reason to remove music features.
 
 ## Test A — skill activation and musical behavior
@@ -34,6 +34,20 @@ Invoke the skill using the skill selector or explicitly say:
 > Use Hipster Music Generator and show me a six-track playlist for Spotify. Tell me whether this Gemini session can actually create it in my account, or only search/play existing music.
 
 **Pass:** Search/play actions may work, but the skill doesn't claim Spotify playlist creation where the connected app can't do it.
+
+## Test D — default 12 tracks and persistence
+
+Earlier controlled prompts requested **six tracks**, which explains the observed six-song playlist and does not establish a six-track cap.
+
+1. In a new chat, check whether the skill remains available without re-supplying the GitHub URL.
+2. Invoke the curator together with the built-in YouTube Music skill, asking: `Go. Make the default 12-track playlist and try to save the same twelve recordings in order in YouTube Music. Report the result and substitutions.`
+3. Confirm the actual published playlist in YouTube Music and record whether there are 12 entries and whether title, performer, and order match.
+
+**Pass:** A confirmed twelve-item playlist, or a truthful explanation of a platform limit. Separately record whether GitHub loading was persistent or needed repeating.
+
+## Field observation (reported, not independently audited)
+
+On 2026-10-16, the user reported that Gemini accepted a GitHub repository URL with an instruction to add the skill; invoking Gemini's built-in YouTube Music skill then generated a six-song playlist. The preceding test prompt had explicitly asked for six tracks. **Not yet verified:** actual saved playlist link, matching fidelity, persistent installation across chats, or a 12-track publication.
 
 ## Reporting
 

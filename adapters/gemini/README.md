@@ -2,15 +2,28 @@
 
 **The Gemini mobile/web app now supports native reusable Agent Skills**. Use that for everyday music listening rather than treating a custom Gem or Gemini CLI extension as equivalent.
 
-## Preferred: native Gemini app skill (Android and web)
+## First try: give Gemini the GitHub link (observed working in one session)
 
-1. From this repository, run `python scripts/build_agent_packages.py --zip` to generate `dist/hipster-music-generator-gemini-app-skill.zip` (or download a prebuilt ZIP from a trusted release).
-2. In **Gemini web** at https://gemini.google.com open **Menu → Customize → Skills → Create → Upload**.
-3. Upload the ZIP. Its archive root contains `SKILL.md` plus four text-only `references/` files. **No scripts, schemas, or CLI code are included.** Review and create the skill.
-4. Switch to Gemini **Android**. The installed skill can be used from chats, either by selecting it with `/` or `@` or asking `Use Hipster Music Generator: go`. Automatic skill activation can also apply when enabled.
-5. If you want music on YouTube Music, verify its **Connected Apps** authorization. Gemini may prompt you to connect when you request music. Explicitly use `@YouTubeMusic` when Gemini chooses the wrong service.
+A user successfully provided `https://github.com/focustimer-dev/hipster-music-generator` directly in a Gemini app chat, asked Gemini to add the skill, and then explicitly called Gemini's built-in YouTube Music skill. Gemini produced a six-song playlist. **This is one user-reported success, not a documented universal GitHub-install mechanism.** We have not independently confirmed persistent installation across new chats, exact track/ordering fidelity, or availability on every Gemini plan.
 
-**Important:** Google documents ZIP/folder upload **in Gemini web**, not directly in the Android app; afterward the skill is available on mobile. Enable **Keep Activity** if Google requires it for Skills and connected music. A GitHub URL isn't currently documented as a one-click Gemini-app skill installer, and GitHub updates do **not** auto-sync to an uploaded skill. Re-upload a regenerated ZIP to update it.
+Try:
+
+1. In Gemini app, send: `Add the Hipster Music Generator skill from https://github.com/focustimer-dev/hipster-music-generator and use the repository SKILL.md and its references.`
+2. Once Gemini confirms what it loaded, ask: `Use Hipster Music Generator and the built-in YouTube Music skill. Go: make a 12-track playlist (the normal default). Confirm what was actually saved, including track count and substitutions.`
+3. If the YouTube Music skill is not automatically called, explicitly invoke it using the actual skill selector or available connected-app controls. Don't assume a particular invocation syntax will work for every account.
+4. Test whether the skill is still present in a **new conversation** before calling this an install-once flow. Direct GitHub loading might be session-scoped.
+
+Why six songs? The earlier trial prompts explicitly requested **six**; the canonical music skill defaults to **twelve** unless the user sets a different count.
+
+## Supported alternative: upload an instruction-only ZIP
+
+1. Run `python scripts/build_agent_packages.py --zip` to generate `dist/hipster-music-generator-gemini-app-skill.zip` (or download a release ZIP).
+2. In **Gemini web** at https://gemini.google.com, open **Menu → Customize → Skills → Create → Upload**.
+3. Upload the ZIP with `SKILL.md` and four text-only `references/` files. **No scripts, schemas, or CLI code are included.** Create the skill.
+4. Switch to Gemini **Android** and invoke `Use Hipster Music Generator: go`, or use an available skill selector.
+5. Connect YouTube Music via Gemini's normal app authorization if needed. Select its built-in skill separately if Gemini does not engage it.
+
+**Important:** The ZIP route is Google's documented app-skills installation pathway; the GitHub-chat workflow above is user-observed and needs cross-session validation. Updates from GitHub are not guaranteed to sync into any previously uploaded or chat-loaded skill. Enable **Keep Activity** where Google requires it for skills or connected media.
 
 ## If Gemini says the skill cannot execute scripts
 
