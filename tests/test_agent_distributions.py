@@ -66,7 +66,7 @@ class PortableAgentTests(unittest.TestCase):
             self.assertIn("## Gemini-native playlist creation", text)
             self.assertIn("@YouTubeMusic", text)
             self.assertIn("Save to library", text)
-            self.assertNotIn("in the composer", text)
+            self.assertNotIn("composer", text.lower())
             self.assertNotIn("selecting both Hipster Music Generator", text)
             self.assertIn("no code execution", text.lower())
             self.assertIn("DeBarge Protocol", text)
