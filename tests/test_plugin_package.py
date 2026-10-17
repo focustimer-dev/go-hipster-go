@@ -72,7 +72,7 @@ class PluginPackageTests(unittest.TestCase):
         field_reports = readme.split(
             '<summary><strong>Field reports & compatibility notes</strong></summary>', 1
         )[1].split('</details>', 1)[0]
-        for host in ('ChatGPT Work', 'Ordinary ChatGPT', 'Gemini',
+        for host in ('ChatGPT Work', 'ChatGPT → Spotify', 'Gemini',
                      'Claude', 'Meta Muse'):
             self.assertIn(host, field_reports)
         for term in ('generated but not saved', 'neither persisted in Spotify',
