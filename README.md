@@ -55,6 +55,7 @@ By default, `go` curates **12 real tracks** and attempts to publish to your chos
 | `setup` | Default to Spotify, check actual writer availability, and set defaults without an interview |
 | `setup status` | Review known preferences and available service capabilities |
 | `setup change YouTube Music` | Explicitly change the publishing preference (particularly useful on Gemini) |
+| `setup change Spotify` | Restore Spotify as the preferred publishing service |
 | `setup change 24 tracks` | Change the default playlist length |
 | `setup again` | Refresh service discovery while retaining existing choices |
 
