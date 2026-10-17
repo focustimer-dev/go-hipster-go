@@ -22,7 +22,7 @@ class ClaudeSpotifyFailureTests(unittest.TestCase):
         self.assertIn("two generated playlist results, neither saved",guide)
         self.assertIn("unknown track contents/order",guide)
         self.assertIn("do not",guide.lower())
-        self.assertIn("later premium-related denial",guide.lower())
+        self.assertIn("later premium-required error",guide.lower())
         verification=(ROOT/"references/verification.md").read_text(encoding="utf-8")
         self.assertIn("two generated results",verification)
         self.assertIn("listener-observed",verification)
