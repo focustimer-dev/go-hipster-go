@@ -1,5 +1,7 @@
 # Hipster Music Generator v3
 
+> A lot of the serious music I pretty much exclusively listen to, you probably haven't heard of it.
+
 An **Agent Skills-style**, open-source music curator for real, surprising, globally connected music. It combines **era + audible texture + geographic scene + microgenre** with actual track-verification discipline, a sense of humor, and a service-neutral playlist JSON format.
 
 > **Status:** usable curation skill, offline validators and example schema; streaming adapters are documented **plans**, not deployed integrations. No OAuth or audio-recognition service is included.
