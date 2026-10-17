@@ -30,7 +30,7 @@ Never interchange these files. If my upload screen is unknown,
 ask which one I'm using before giving me a download link.
 ```
 
-**2. Run `setup` in the loaded skill.** Spotify is now the **default listening and publishing preference**: the skill checks whether Spotify can actually write playlists in your current AI platform, then shows the defaults without a service-selection interview. If your platform cannot publish to Spotify—or you simply prefer another service—use `setup change YouTube Music` (on Gemini) or another explicit service change. **`setup again`** rechecks availability; `setup status` shows what is known.
+**2. Run `setup` in the loaded skill.** Spotify is now the **default listening and publishing preference**: the skill checks whether Spotify can actually write playlists in your current AI platform, then shows the defaults without a service-selection interview. If your platform cannot publish to Spotify—or you simply prefer another service—use `setup change YouTube Music` (on Gemini) or another explicit service change. Run `setup` again whenever you want to change your preferences or refresh current music-service capabilities; `setup status` shows what is known.
 
 ```text
 setup
