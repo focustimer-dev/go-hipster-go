@@ -47,6 +47,20 @@ These scenarios are **instruction-level acceptance checks**. Check that there is
 
 Never simulate the 1% probability when there is no genuine random facility; the user-requested explicit Protocol remains available. Verify actual provider support for identical repeated entries and never claim published duplicates without confirmation. Changing or combining `go` modifiers must not silently switch this behavior off.
 
+## Playlist writing and Claude voice parity (manual)
+
+| Situation | Expected copy |
+| --- | --- |
+| Claude plugin: `go weird 12` | Distinctive, sonically grounded title; 1–2-sentence playlist description; varied, track-specific liner notes; dry opener and smug closer |
+| Claude + Spotify provider returns generic card | Keep expressive description in Claude's own reply, clearly identify whether it was actually saved as metadata |
+| Claude tool creates a playlist but exposes no description field | Show **Suggested playlist description**; never claim Spotify saved it |
+| ChatGPT versus Claude, same creative direction | Both should use the record-clerk persona without requiring identical jokes or melodies |
+| `go sad` | Evocative but respectful copy; do not mock real grief or reduce the music to "slow = sad" |
+| `less snark` | Natural, specific musical description without forced superiority |
+| Actual DeBarge hit | Exact protected 25-entry outcome; no synthetic different-track notes |
+
+Reject vague adjectives masquerading as musical evidence, generic "Musical Journey" titles, unverified listening claims, repetitive catchphrases or markdown that buries the saved/unsaved status. These are **manual qualitative acceptance cases**; static tests cannot prove a host's writing style.
+
 ## Voice and substance regression (manual)
 
 This is a **tone test**, not license to fabricate music claims. Judge if the wit is pointed and sustained **without obscuring musical or publishing information**.

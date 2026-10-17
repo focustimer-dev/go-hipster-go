@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.3.1 — Make the liner notes worth reading
+
+- Distinguish **playlist title**, **proposed streaming description**, and **track-specific liner notes** in the core skill rather than relying solely on a generic "be snarky" persona.
+- Add concrete flat-versus-expressive examples, a succinct copywriting format, and manual Claude/ChatGPT quality-parity checks without inventing audio evidence.
+- Clarify provider boundaries: a distinctive **Suggested playlist description** in chat does not mean Claude's Spotify connector saved that metadata.
+- Add Claude-specific rewrite-in-place troubleshooting for already-curated playlists; do not re-curate, republish, or reroll DeBarge on a writing-only revision.
+- Keep discovery taxonomy, mood modifiers, setup, publishing authorization and the protected DeBarge Protocol unchanged.
+
+
 ## 3.3.0 — The setup command
 
 - Claude/Muse distribution follow-up: shorten the Agent Skills discovery description to Claude's 200-character guidance, publish Claude Skill and Plugin ZIPs alongside Gemini, and document consumer Muse versus Muse Code with native Spotify integrations and verified permission boundaries.

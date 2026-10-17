@@ -118,6 +118,9 @@ class PortableAgentTests(unittest.TestCase):
             self.assertIn(filename, workflow)
         self.assertIn("Customize → Skills", claude)
         self.assertIn("Spotify Premium", claude)
+        self.assertIn("descriptions sound like a corporate brochure",claude)
+        self.assertIn("Suggested playlist description",claude)
+        self.assertIn("Do not change the song selection or order",claude)
         self.assertIn("create_playlist", claude)
         # Regression: Claude recommended a valid Skill ZIP to a user on the
         # Plugin uploader. The installer must be identified before choosing.

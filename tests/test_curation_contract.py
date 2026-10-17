@@ -45,6 +45,27 @@ class CurationContractTests(unittest.TestCase):
         self.assertIn("Voice and substance regression", cases)
         self.assertIn("not published", cases.lower())
 
+    def test_playlist_copy_has_voice_and_real_metadata_boundaries(self):
+        skill=(ROOT/"SKILL.md").read_text(encoding="utf-8")
+        examples=(ROOT/"references/curation-examples.md").read_text(encoding="utf-8")
+        cases=(ROOT/"tests/discovery-cases.md").read_text(encoding="utf-8")
+        for marker in (
+            "## Playlist writing: sell the music, not a spreadsheet",
+            "**Title:**", "**Playlist description:**", "**Track commentary:**",
+            "Suggested description", "generic titles", "actual character limit",
+        ):
+            # Lowercased checks permit small editorial phrasing differences.
+            if marker == "Suggested description":
+                self.assertIn("suggested description", skill.lower())
+            elif marker == "generic titles":
+                self.assertIn("generic titles", skill.lower())
+            else:
+                self.assertIn(marker.lower(),skill.lower())
+        self.assertIn("Suggested playlist description",examples)
+        self.assertIn("Claude plugin",cases)
+        self.assertIn("Claude + Spotify",cases)
+        self.assertIn("DeBarge",cases)
+
     def test_playlist_reconciliation_does_not_invent_confirmation(self):
         reference=(ROOT / "references/verification.md").read_text(encoding="utf-8")
         self.assertIn('**unknown**',reference)

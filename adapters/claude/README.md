@@ -49,6 +49,27 @@ For most Claude chat users, the Skill uploader is the simpler installation metho
 
 References: [Claude custom skills](https://support.claude.com/en/articles/12512198-how-to-create-custom-skills) · [Claude Spotify connector](https://claude.com/marketplace/connectors/spotify) · [How Claude suggests connected apps](https://support.claude.com/en/articles/14730684-how-claude-suggests-connected-apps)
 
+## Claude made a playlist but the descriptions sound like a corporate brochure
+
+The **install may be working even when Claude's copy is dull**. The skill now has a dedicated **playlist writing** section near the beginning of `SKILL.md`; it expects an evocative record-sleeve title, a concise proposed service description and track notes with real sonic hooks and just enough irritating superiority to suggest the clerk has tenure.
+
+**After updating the installed plugin/skill**, test the tone before asking for another playlist:
+
+```text
+Use Hipster Music Generator. Rewrite the title, playlist description
+and track commentary for the playlist above in the Insufferable
+Record-Store Clerk voice. Make the title evocative and peculiar;
+the description two snarky, sonically specific sentences; each
+track note one concrete musical observation and an occasional
+passive-aggressive aside. Avoid generic genre reviews and
+repetitive insults. Do not change the song selection or order,
+reroll DeBarge, or republish unless I ask.
+```
+
+If Claude only offers a neutral Spotify playlist card, it may not be able to **set the playlist's description metadata**. In that case it should write a separately labeled **Suggested playlist description** in chat. Never claim it updated Spotify unless the provider confirms the metadata write. After trying the style, share a sample of Claude's actual output if it still feels flat; we haven't yet compared real Claude and ChatGPT descriptions side by side.
+
+**Remember to update the installed ZIP:** changing GitHub does **not** hot-reload the existing Claude plugin. Use [the Claude Plugin ZIP](https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/hipster-music-generator-claude-plugin.zip) in **Customize → Plugins**, or the [Claude Skill ZIP](https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/hipster-music-generator-claude-skill.zip) in **Customize → Skills** as appropriate.
+
 ## Claude Code — GitHub marketplace installation
 
 This repository already provides a Claude Code plugin manifest, its own marketplace and two self-contained skills. In Claude Code, open a session and run:
