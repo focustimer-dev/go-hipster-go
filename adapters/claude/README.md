@@ -2,6 +2,27 @@
 
 Claude chat, Cowork and Claude Code are **different installation environments**. Hipster Music Generator is an instruction-based Agent Skill; it does not ship a Spotify authorization, paid account, or music publisher.
 
+## For an agent asked to install this repository
+
+**Critical pre-install selection rule:** The listener may be asking Claude itself to install the skill. **Do not recommend either archive until you have identified the exact upload interface.** If the user is already on **Customize → Plugins → Upload a plugin**, send the **Claude Plugin ZIP**, *not* the Claude Skill ZIP, and verify that the archive root contains `.claude-plugin/plugin.json`. If the user is on **Customize → Skills → Upload a skill**, send the **Claude Skill ZIP**, with `hipster-music-generator/SKILL.md` in the archive. If the user hasn't specified which screen, **ask one short question about the screen** instead of guessing from their words "install the skill." If the host can load from GitHub without a ZIP, prefer that but confirm the result is actually persistent before claiming installation.
+
+**Observed regression:** A user pasted the repository's installation prompt into Claude. Claude supplied the *Skill ZIP*, but the user was on Claude's *Plugin* upload page, which rejected the ZIP because its plugin manifest was absent. **This was an agent recommendation error, not a mistake by the listener.** The correct Plugin ZIP is a separate, verified GitHub Release asset; actual successful import into that Claude account remains to be tested.
+
+**Prompt to use inside Claude, if you're already looking at an upload page:**
+
+```text
+Install Hipster Music Generator from
+https://github.com/focustimer-dev/hipster-music-generator
+
+First identify whether I'm on Claude's "Upload a plugin" or
+"Upload a skill" screen. Read adapters/claude/README.md.
+For the Plugins screen, give me ONLY the Claude Plugin ZIP, with
+.claude-plugin/plugin.json at its root. For Skills, give me ONLY
+the Claude Skill ZIP, with hipster-music-generator/SKILL.md.
+If the screen is unclear, ask. Don't claim installation
+until the upload actually succeeds. Then run setup.
+```
+
 ## Claude chat / Cowork — choose the right uploader
 
 **Which Claude screen are you on?** The two ZIPs are **not interchangeable**:

@@ -19,10 +19,15 @@ An open-source **Agent Skill for discovering real, unlikely, surprisingly cohere
 Add or load Hipster Music Generator from
 https://github.com/focustimer-dev/hipster-music-generator
 
-Read SKILL.md and its referenced files. Use your supported skill
-installation or loading mechanism. Confirm what you loaded and whether
-it persists across conversations. If this host requires a manual
-installation step, tell me the smallest supported one.
+Read SKILL.md and its references. Use your supported installation
+or loading mechanism; confirm what was loaded and whether it persists.
+Before recommending a ZIP, identify my host AND upload screen.
+For Claude, read adapters/claude/README.md: Customize > Plugins >
+Upload a plugin requires the Claude PLUGIN ZIP (with a root
+.claude-plugin/plugin.json); Customize > Skills > Upload a skill
+requires the Claude SKILL ZIP (with a skill-folder SKILL.md).
+Never interchange these files. If my upload screen is unknown,
+ask which one I'm using before giving me a download link.
 ```
 
 **2. Run `setup` in the loaded skill.** It will check the music services *actually available in that chat*, ask where you prefer to listen and publish, and offer default playlist settings. Keep the defaults or customize them. **Run `setup` again whenever you want to change your preferences**; `setup change ...` edits one setting and `setup status` shows what is known.

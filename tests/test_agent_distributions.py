@@ -119,6 +119,18 @@ class PortableAgentTests(unittest.TestCase):
         self.assertIn("Customize → Skills", claude)
         self.assertIn("Spotify Premium", claude)
         self.assertIn("create_playlist", claude)
+        # Regression: Claude recommended a valid Skill ZIP to a user on the
+        # Plugin uploader. The installer must be identified before choosing.
+        self.assertIn("Do not recommend either archive until you have identified", claude)
+        self.assertIn("Customize → Plugins → Upload a plugin", claude)
+        self.assertIn("Customize → Skills → Upload a skill", claude)
+        self.assertIn("ask one short question", claude)
+        self.assertIn("not a mistake by the listener", claude)
+        self.assertIn("Before recommending a ZIP, identify my host AND upload screen", readme)
+        self.assertIn(".claude-plugin/plugin.json", readme)
+        self.assertIn("adapters/claude/README.md", readme)
+        self.assertIn("Never interchange these files", readme)
+
         self.assertIn("Which Claude screen are you on?", claude)
         self.assertIn("Customize → Plugins → Upload a plugin", claude)
         self.assertIn(".claude-plugin/plugin.json", claude)
