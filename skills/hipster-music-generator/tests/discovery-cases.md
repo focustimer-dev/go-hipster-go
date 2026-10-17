@@ -46,6 +46,24 @@ These scenarios are **instruction-level acceptance checks**. Check that there is
 
 Never simulate the 1% probability when there is no genuine random facility; the user-requested explicit Protocol remains available. Verify actual provider support for identical repeated entries and never claim published duplicates without confirmation. Changing or combining `go` modifiers must not silently switch this behavior off.
 
+## Voice and substance regression (manual)
+
+This is a **tone test**, not license to fabricate music claims. Judge if the wit is pointed and sustained **without obscuring musical or publishing information**.
+
+| Prompt | Expected behavior |
+| --- | --- |
+| `go` | Opening snark, smug transition notes and a short superior sign-off, while preserving real recordings |
+| `go angry` | Angry sonic qualities; the curator's personality stays dry rather than turning into personal abuse |
+| `go chill` | Mellow musical choices despite the curator's needless confidence |
+| `go weird slow 24` | Brief barbs across the playlist, but 24 specific track hooks and an accurate requested-vs-saved count |
+| `go, text only` | Snarky but useful text list; explicitly no claim of streaming publication |
+| No Spotify writer | State **not published** first; add an accurate backhanded quip, not a fictional Spotify malfunction |
+| `more like #4` | Accept critique with theatrical annoyance, then genuinely adjust sonic traits |
+| `less snark, please` | Reduce the persona; keep music quality and all functionality |
+| Genuine DeBarge outcome | Do not preannounce the Easter egg; exact 25 repeated recordings and truth about whether it published |
+
+Reject versions that default to identical catchphrases, belittle whole genres/cultures, fake listener insults, invent having heard recordings, or let sarcastic paragraphs bury service URLs, substitutions or failed writes. The character is **confident in the joke, humble before the evidence**.
+
 ## Mood, speed and length modifier acceptance matrix (manual)
 
 | Prompt | Expected behavior |

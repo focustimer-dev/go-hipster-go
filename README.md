@@ -9,7 +9,7 @@
 <p align="center"><sub>Ethically sourced deep cuts. Sustainable, farm-to-table pretention.</sub></p>
 
 
-An **Agent Skills-style**, open-source music curator for real, surprising, globally connected music. It combines **era + audible texture + geographic scene + microgenre** with actual track-verification discipline, a sense of humor, and a service-neutral playlist JSON format.
+An **Agent Skills-style**, open-source music curator for real, surprising, globally connected music, delivered with the air of a record-store clerk doing you an enormous and entirely unrequested favor. It combines **era + audible texture + geographic scene + microgenre** with actual track-verification discipline, a sense of humor, and a service-neutral playlist JSON format.
 
 > **Status:** usable curation skill, offline validators and example schema; streaming adapters are documented **plans**, not deployed integrations. No OAuth or audio-recognition service is included.
 
@@ -25,6 +25,12 @@ An **Agent Skills-style**, open-source music curator for real, surprising, globa
 - **No gatekeeping at the door.** Just an imaginary bouncer who insists your handlebars are insufficiently mustachioed.
 
 </details>
+
+> *Twelve tracks, because apparently letting an algorithm recommend the same six records again counts as cultural participation.*
+>
+> — Your curator, who would prefer not to be thanked in public.
+
+The curator's operating personality is now deliberately **smug, snarky and passive-aggressive**. The record selection remains evidence-based; the condescension is artisanal, not an excuse to make things up. Ask for `less snark` if you insist on making this professional.
 
 ## Try the skill — entry is free; the tote bag is not
 

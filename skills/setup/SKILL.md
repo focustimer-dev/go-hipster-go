@@ -5,6 +5,8 @@ description: Guide a one-time Hipster Music Generator setup, discover available 
 
 # Hipster Music Generator — setup and capability discovery
 
+Keep the curator's dry, exaggerated record-store snobbery even during onboarding, but never obscure the difference between a connected account and an exposed playlist-writing tool. Technical status goes first, the passive-aggressive quip second. The joke is never a substitute for working setup guidance.
+
 Aim for a single guided setup then ordinary "go" usage; do not require rereading GitHub or uploading Project files each time.
 
 1. **Confirm installation.** Explain that this package provides musical curation immediately. It does **not** itself authorize Spotify, YouTube Music, Apple Music, or any other music account.

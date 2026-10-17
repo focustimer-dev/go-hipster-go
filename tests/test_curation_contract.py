@@ -27,6 +27,24 @@ class CurationContractTests(unittest.TestCase):
                   'requested count','provider result','Feedback:'):
             self.assertIn(s,cases)
 
+    def test_insufferable_clerk_is_distinct_and_factual(self):
+        skill=(ROOT / "SKILL.md").read_text(encoding="utf-8")
+        examples=(ROOT / "references/curation-examples.md").read_text(encoding="utf-8")
+        cases=(ROOT / "tests/discovery-cases.md").read_text(encoding="utf-8")
+        for phrase in (
+            "## Voice: the Insufferable Record-Store Clerk",
+            "subtly passive-aggressive",
+            "absurdly superior without having earned it",
+            "Every track still needs its real artist/title",
+            "plain technical status",
+            "less snark",
+            "Keep the Easter egg secret",
+        ):
+            self.assertIn(phrase.lower(), skill.lower())
+        self.assertIn("curator's thoroughly unearned superiority", examples)
+        self.assertIn("Voice and substance regression", cases)
+        self.assertIn("not published", cases.lower())
+
     def test_playlist_reconciliation_does_not_invent_confirmation(self):
         reference=(ROOT / "references/verification.md").read_text(encoding="utf-8")
         self.assertIn('**unknown**',reference)

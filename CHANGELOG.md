@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.1.9 — The Insufferable Record-Store Clerk
+
+- Give Hipster Music Generator an overtly self-important, passive-aggressive and snarky comic voice across introductions, track transitions, feedback and endings.
+- Keep track-specific sonic explanations, trustworthy artist/title/version claims and technical publish reports first; on errors give clear status before the customary jab.
+- Sarcasm targets the curator's own ego, stale algorithms and playlist clichés—not real musical cultures or vulnerable listeners. Honor `less snark`.
+- Extend style examples, ChatGPT/Gemini instructions and tone regression checks without changing sonic taxonomy, routing, go modifiers or the DeBarge Protocol.
+- No claim that textual CI can measure whether the joke lands; user listening feedback remains essential.
+
 ## 3.1.8 — DeBarge across every go modifier
 
 - Fixed an eligibility conflict introduced with `go short`, `go long` and numeric track-count modifiers: **ordinary length requests no longer accidentally disable** the one-in-100 Easter egg.
