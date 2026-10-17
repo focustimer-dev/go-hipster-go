@@ -74,6 +74,10 @@ def render(canonical: str) -> str:
         "may support search/play without precise playlist creation. Use only available "
         "and authorized actions; never claim a playlist was saved without confirmation. "
         "Do not request login credentials.\n\n"
+        "## Gemini-native playlist creation — not ChatGPT\n"
+        "\n"
+        "Gemini does not use ChatGPT's two-plugin selection workflow. First use a genuinely exposed YouTube Music Connected App. When available, the listener can address `@YouTubeMusic` in a Gemini prompt; skill instructions cannot activate an inaccessible app. Google's integration documents generating playlists from moods, genres, artists, and activities, not guaranteed song-by-song insertion of twelve obscure recordings in exact order. If only a theme-based mix is possible, label it an approximation and get approval for material substitutions. Do not claim exact matching without provider evidence. If the interface offers `Save to library`, the listener may need to tap it to keep a generated playlist. If writing is unavailable, report `Not published or saved`, keep the original curated list, and suggest at most one Gemini-native follow-up: `@YouTubeMusic Create a playlist inspired by the tracks above; use exact versions and order only if supported, show any differences, and offer Save to library.` Do not re-curate or reroll DeBarge.\n"
+        "\n"
         + body
     )
 
