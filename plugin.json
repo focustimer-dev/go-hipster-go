@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "hipster-music-generator",
-  "version": "3.1.9",
+  "version": "3.2.0",
   "description": "Snarky, gloriously superior playlist curator: go fast, angry, chill, slow or weird and save real deep cuts to connected Spotify/YouTube Music when supported.",
   "repository": "https://github.com/focustimer-dev/hipster-music-generator",
   "homepage": "https://github.com/focustimer-dev/hipster-music-generator",
@@ -17,7 +17,30 @@
   ],
   "extensions": {
     "com.openai": {
-      "onboardingSkill": "./skills/setup/SKILL.md"
+      "onboardingSkill": "./skills/setup/SKILL.md",
+      "interface": {
+        "displayName": "Hipster Music Generator",
+        "shortDescription": "Artisanally obscure playlists served with unearned superiority.",
+        "longDescription": "A gloriously self-satisfied, passive-aggressive record-store clerk curates real international deep cuts and attempts to publish them in authorized connected music apps. Real track matching, playlist count and publishing verification come before the snark.",
+        "developerName": "Hipster Music Generator",
+        "category": "Entertainment",
+        "capabilities": [
+          "Music discovery",
+          "Playlist curation"
+        ],
+        "websiteURL": "https://github.com/focustimer-dev/hipster-music-generator",
+        "defaultPrompt": [
+          "Go. Make 12 excellent tracks, publish if possible, and be insufferably smug about it.",
+          "Go weird slow 24. I assume you have taste.",
+          "Go fast angry. Surprise me, obviously."
+        ],
+        "brandColor": "#8A030D",
+        "brandColorDark": "#E85C62",
+        "composerIcon": "./assets/icon.svg",
+        "composerIconDark": "./assets/icon.svg",
+        "logo": "./assets/logo.svg",
+        "logoDark": "./assets/logo.svg"
+      }
     }
   }
 }

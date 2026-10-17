@@ -1,3 +1,5 @@
+<p align="center"><img src="assets/logo.svg" width="132" height="132" alt="Hipster Music Generator — crimson five-point star" /></p>
+
 <h1 align="center">HIPSTER MUSIC GENERATOR</h1>
 
 <p align="center"><sub>EST. MMXXVI · SMALL-BATCH PLAYLISTS · ARTISANAL OBSCURITY</sub></p>

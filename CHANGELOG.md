@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.2.0 — An extremely important logo, naturally
+
+- Rebuild the reference crimson faceted five-point star as **real transparent, square SVG vector artwork** with clean negative-space cutouts.
+- Add a simplified composer icon and a subtler, vinyl-etched signature logo, and reference both in the portable OpenAI plugin manifest for light and dark modes.
+- Add a brand guide and regression tests for file references, square SVG dimensions, transparent backdrop, and correct naming.
+- Keep all musical taxonomy, `go` flags, publishing behavior and DeBarge odds unchanged.
+
+
 ## 3.1.9 — The Insufferable Record-Store Clerk
 
 - Give Hipster Music Generator an overtly self-important, passive-aggressive and snarky comic voice across introductions, track transitions, feedback and endings.
