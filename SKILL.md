@@ -1,6 +1,6 @@
 ---
 name: hipster-music-generator
-description: Use setup to choose preferred music services and listening defaults; go then curates and attempts to publish real deep-cut playlists with snarky record-store commentary. Supports go sad, go weird and other modifiers, Spotify/YouTube Music when accessible, and honest publishing status.
+description: Setup music services; use go, go sad or go weird to curate real global deep cuts with smug record-store commentary and authorized Spotify/YouTube Music publishing when available.
 license: MIT
 compatibility: Requires file-reading capability. Optional web/catalog lookup for track verification and Python 3.10+ to run included validation/randomness scripts. Streaming accounts and OAuth are NOT bundled.
 metadata:

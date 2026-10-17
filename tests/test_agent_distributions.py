@@ -102,6 +102,29 @@ class PortableAgentTests(unittest.TestCase):
         self.assertIn("gh release create", workflow)
         self.assertIn("gh release upload", workflow)
 
+    def test_claude_and_muse_onboarding_assets(self):
+        root=(ROOT/"SKILL.md").read_text(encoding="utf-8")
+        desc=next(s[len("description: "):] for s in root.splitlines()
+                  if s.startswith("description: "))
+        self.assertLessEqual(len(desc), 200)
+        claude=(ROOT/"adapters/claude/README.md").read_text(encoding="utf-8")
+        muse=(ROOT/"adapters/muse/README.md").read_text(encoding="utf-8")
+        readme=(ROOT/"README.md").read_text(encoding="utf-8")
+        workflow=(ROOT/".github/workflows/publish-gemini-skill.yml").read_text(encoding="utf-8")
+        for filename in ("hipster-music-generator-claude-skill.zip",
+                         "hipster-music-generator-claude-plugin.zip"):
+            self.assertIn(filename, claude)
+            self.assertIn(filename, readme)
+            self.assertIn(filename, workflow)
+        self.assertIn("Customize → Skills", claude)
+        self.assertIn("Spotify Premium", claude)
+        self.assertIn("create_playlist", claude)
+        self.assertIn("Muse Code — separate developer route", muse)
+        self.assertIn("muse skills install", muse)
+        self.assertIn("not proof", muse)
+        self.assertIn("spotify-meta-muse-agent", muse)
+        self.assertIn("gh release upload", workflow)
+
     def test_guardrails_survive(self):
         s=(ROOT/"skills/hipster-music-generator/SKILL.md").read_text()
         for needle in ("DeBarge Protocol","25 consecutive","streaming","references/global-scenes.md"):

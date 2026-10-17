@@ -124,11 +124,27 @@ If the agent cannot load or retain it, **[download the ready-to-upload Gemini Sk
 </details>
 
 <details>
-<summary><strong>Claude and other agents — plugin or manual fallback</strong></summary>
+<summary><strong>Claude — ready-to-upload skill, native Spotify connector, or Claude Code plugin</strong></summary>
 
-Try pointing your agent at the repository first. If it needs an explicit install mechanism, see the [Claude guide](adapters/claude/README.md) and [generic Agent Skills guide](adapters/agents.md).
+Start with the GitHub-link prompt. To **keep** the skill in Claude chat, **[download the Claude Skills ZIP](https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/hipster-music-generator-claude-skill.zip)** and upload it under **Customize → Skills** with code execution enabled. Separately **[add Spotify to Claude](https://claude.com/marketplace/connectors/spotify)** if you want it to publish playlists; Spotify Premium is advertised for personalized playlist creation. Then `setup` → `go`.
 
-Where filesystem placement is genuinely required, install the **whole repository folder**, keeping `SKILL.md` and its relative reference files together. Claude runtime installation has not been live-tested here.
+Claude Code users can install the existing GitHub marketplace plugin. These are different environments: having Spotify connected in Claude chat does not by itself expose Spotify tools to Claude Code. **[Full Claude instructions](adapters/claude/README.md)** · [optional Claude Plugin ZIP](https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/hipster-music-generator-claude-plugin.zip). There is no end-to-end live Claude account test yet.
+
+</details>
+
+<details>
+<summary><strong>Meta Muse — official Spotify support; skill installation requires verification</strong></summary>
+
+**Muse personal agent already connects to Spotify** for discovery, playback, and playlist creation. Try the GitHub-link prompt, run `setup`, and ask Muse whether it can **retain** the workflow; don't assume a consumer Muse custom-skill ZIP installer exists. Meta's developer **Muse Code** has a documented `SKILL.md` installer, but it is a different product.
+
+See the **[Muse-specific GitHub-first prompt and setup guide](adapters/muse/README.md)**. A working consumer Spotify connector does not confirm exact recording order or persistent installation of our skill.
+
+</details>
+
+<details>
+<summary><strong>Other agents — manual fallback</strong></summary>
+
+Ask the agent to load this repository first. If it truly requires filesystem placement, follow the [generic Agent Skills guide](adapters/agents.md) and keep `SKILL.md` alongside all its referenced files.
 
 </details>
 
@@ -167,6 +183,7 @@ The personal plugin has also sometimes displayed a generic icon despite packaged
 See the [full changelog](CHANGELOG.md) for dates and version-specific detail. The major lines of work are:
 
 - **First-run preferences:** conversational `setup`, revisitable provider choices, and honest session-only versus persistent settings.
+- **Claude and Meta Muse:** platform-specific onboarding, native Spotify connector guidance and conservative cross-conversation skill persistence claims.
 - **Musical discovery:** wider scene taxonomy, track-level sonic bridges, authentic recordings and feedback-driven adjustments.
 - **Publishing handoff:** one-command intent, capability preflight and faithful recovery of already-curated lists.
 - **Flexible prompts:** composable `go` mood/speed modifiers and explicit track counts.

@@ -18,6 +18,10 @@ For agents using `.agents/skills/`, copy or symlink the repository folder to `.a
 
 Put the folder in `.claude/skills/hipster-music-generator` in the project or an appropriate personal skills location. Verify the installation using the platform's documented skill listing/discovery controls.
 
+## Meta Muse and Muse Code
+
+**Consumer Muse:** [Muse installation and Spotify guide](muse/README.md) recommends asking the agent to load GitHub references and run `setup`; a permanent third-party skill importer is not confirmed. **Muse Code:** its separate developer CLI supports `muse skills validate ./skills/hipster-music-generator` and `muse skills install ./skills/hipster-music-generator --scope user` from a checkout. A consumer Muse Spotify connection does not automatically appear in Muse Code.
+
 ## Gemini CLI
 
 Gemini CLI supports the Agent Skills convention; its docs describe `.gemini/skills/` and `.agents/skills/` discovery locations and `gemini skills install <URL>` on supported versions. See [official guide](https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/creating-skills.md) and check `gemini skills list` / `/skills` as supported by your release.
