@@ -11,8 +11,8 @@ class DefaultGoBehaviorTests(unittest.TestCase):
                      'exactly one connected, authorized writer',
                      'ask once',
                      'go, text only',
-                     'nothing was published',
-                     'host prevents activation']:
+                     'nothing was published or saved',
+                     'If no authorized writer is exposed']:
             self.assertIn(term.lower(),skill.lower())
 
     def test_setup_supports_automatic_writer(self):
@@ -33,7 +33,7 @@ class DefaultGoBehaviorTests(unittest.TestCase):
         skill=(ROOT/"SKILL.md").read_text(encoding="utf-8")
         setup=(ROOT/"skills/setup/SKILL.md").read_text(encoding="utf-8")
         cases=(ROOT/"tests/discovery-cases.md").read_text(encoding="utf-8")
-        self.assertIn("Do not re-curate",skill)
+        self.assertIn("without re-curating or rerolling",skill)
         self.assertIn("connected",setup)
         self.assertIn("Both Hipster Music Generator and Spotify selected",cases)
         self.assertIn("don't silently re-curate",cases)
