@@ -2,8 +2,6 @@
 
 <p align="center"><sub>EST. MMXXVI · SMALL-BATCH PLAYLISTS · ARTISANAL OBSCURITY</sub></p>
 
-> A lot of the serious music I pretty much exclusively listen to, you probably haven't heard of it.
-
 <p align="center">“Who’s here ironically and who’s here because they sincerely enjoy it?”</p>
 
 <p align="center"><em>Whole crowd raises both hands.</em></p>
