@@ -9,7 +9,7 @@ class ClaudeSpotifyFailureTests(unittest.TestCase):
         skill=(ROOT/"SKILL.md").read_text(encoding="utf-8")
         for phrase in (
             "prompt-generated playlist", "Spotify Premium", "add_playlist_items",
-            "subscription tier unverified", "25 identical entries",
+            "subscription tier **unverified**", "25 identical entries",
             "0 saved", "may reject duplicates"):
             self.assertIn(phrase.lower(),skill.lower())
 
