@@ -36,7 +36,7 @@ class DefaultGoBehaviorTests(unittest.TestCase):
         self.assertIn("Do not re-curate",skill)
         self.assertIn("connected",setup)
         self.assertIn("Both Hipster Music Generator and Spotify selected",cases)
-        self.assertIn("without re-curating",cases)
+        self.assertIn("don't silently re-curate",cases)
 
     def test_distribution_synced_and_debarge_intact(self):
         self.assertEqual((ROOT/"SKILL.md").read_bytes(),
