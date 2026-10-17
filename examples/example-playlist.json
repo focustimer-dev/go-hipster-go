@@ -1,0 +1,33 @@
+{
+  "format_version": "1.0",
+  "mode": "standard",
+  "title": "Across the Reverb Line (Illustrative)",
+  "concept": "A deliberately short example of the portable payload; not a factual verified curation.",
+  "sonic_thesis": "Propulsive rhythms and exploratory analog or guitar-led textures.",
+  "tracks": [
+    {
+      "position": 1,
+      "artist": "Can",
+      "title": "Vitamin C",
+      "rationale": "Percussive, repeated groove is an example of a direct touchstone.",
+      "verification": {
+        "status": "unverified",
+        "note": "Illustrative example; verify catalog and recording before publishing."
+      }
+    },
+    {
+      "position": 2,
+      "artist": "Los Mirlos",
+      "title": "La Danza de los Mirlos",
+      "rationale": "An example of how a geographically distant rhythm/guitar connection could be explained, not a claimed measured similarity.",
+      "verification": {
+        "status": "unverified",
+        "note": "Illustrative example; verify exact artist, title, and version before publishing."
+      }
+    }
+  ],
+  "publishing": {
+    "provider": "spotify",
+    "status": "not_attempted"
+  }
+}
