@@ -1,12 +1,30 @@
-# Hipster Music Generator v3
+<h1 align="center">HIPSTER MUSIC GENERATOR</h1>
+
+<p align="center"><sub>EST. MMXXVI · SMALL-BATCH PLAYLISTS · ARTISANAL OBSCURITY · NO BEARD REQUIRED</sub></p>
 
 > A lot of the serious music I pretty much exclusively listen to, you probably haven't heard of it.
+
+<p align="center"><em>For people who describe a record as “textural,” commute on a fixed gear, and have been meaning to finish that reclaimed-walnut credenza since 2013.</em></p>
+
+<p align="center"><sub>Ethically sourced deep cuts. Sustainably pretentious. Fair-trade almond milk sold separately.</sub></p>
+
 
 An **Agent Skills-style**, open-source music curator for real, surprising, globally connected music. It combines **era + audible texture + geographic scene + microgenre** with actual track-verification discipline, a sense of humor, and a service-neutral playlist JSON format.
 
 > **Status:** usable curation skill, offline validators and example schema; streaming adapters are documented **plans**, not deployed integrations. No OAuth or audio-recognition service is included.
 
-## Try the skill
+<details>
+<summary><strong>Our needlessly particular manifesto</strong> (for the discerning listener)</summary>
+
+- **Obscurity is not a personality.** It is, however, an extremely convenient substitute for one.
+- **A sonic connection must be real.** We refuse to pair two tracks solely because both were discovered in a converted warehouse.
+- **There is no shame in a shiny chorus.** The right DeBarge song can be more radical than a limited-edition cassette pressed in somebody's kitchen.
+- **We verify the music.** Your favorite 1982 Bulgarian synth-funk B-side should actually exist before we make you feel inferior for not knowing it.
+- **No gatekeeping at the door.** Just an imaginary bouncer who insists your handlebars are insufficiently mustachioed.
+
+</details>
+
+## Try the skill — entry is free; the tote bag is not
 
 1. Install the **entire repository folder** as `hipster-music-generator` in a compatible agent's skill directory. See [agent setup](adapters/agents.md).
 2. Ask: `Use hipster-music-generator: give me a 12-track playlist connecting Thai molam and Italian library funk; make the transitions defensible.`
