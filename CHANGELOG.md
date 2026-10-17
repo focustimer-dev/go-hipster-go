@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.3.3 — Reconcile creations before reporting a total failure
+
+- Claude field report: user observed two Spotify playlists with missing descriptions after Claude incorrectly concluded 0 published on a later Premium error; item counts and order still unverified.
+- Introduce stage-by-stage publication reconciliation, separating playlist creation, contents, metadata, provider denials, and uncertain results. Never create a third playlist before resolving previous attempts.
+- Preserve DeBarge odds, original 25-entry sequence and one-roll-per-new-playlist behavior.
+
+
 ## 3.3.2 — Spotify refusal is not an invitation to invent tools
 
 - Differentiate Premium-gated prompt-generated Spotify playlists from exact ordered-track editing in Claude.
