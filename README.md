@@ -15,7 +15,7 @@ An **Agent Skills-style**, open-source music curator for real, surprising, globa
 
 > **Status:** usable curation skill, offline validators and example schema; streaming adapters are documented **plans**, not deployed integrations. No OAuth or audio-recognition service is included.
 
-**Field reports:** Spotify playlist creation via ChatGPT and YouTube Music playlist creation via Gemini have both worked for a user with the relevant connections. The integrations belong to those hosts, not this repository; exact matching and order are still being evaluated.
+**Field reports:** A user has successfully published Spotify playlists through ChatGPT and YouTube Music playlists through Gemini. **ChatGPT Work** also successfully orchestrated Hipster Music Generator → Spotify from one `go` request; **ordinary Chat** required selecting both Hipster Music Generator and Spotify in the same prompt. These are observed host behaviors, not bundled integrations or guarantees for other accounts. Exact catalog matching and order are still being evaluated. See [ChatGPT installation and mode notes](adapters/chatgpt/PLUGIN_INSTALL.md).
 
 <details>
 <summary><strong>Our needlessly particular manifesto</strong> (for the discerning listener)</summary>
