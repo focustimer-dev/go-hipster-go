@@ -58,8 +58,8 @@ class PluginPackageTests(unittest.TestCase):
         readme = (ROOT / 'README.md').read_text(encoding='utf-8')
         section = readme.split('**1. Load the skill.**', 1)[1].split('**2. Run `setup`', 1)[0]
         prompts = [
-            block.split('\\n```', 1)[0]
-            for block in section.split('```text\\n')[1:]
+            block.split('\n```', 1)[0]
+            for block in section.split('```text\n')[1:]
         ]
         self.assertEqual(len(prompts), 2)
         universal, claude = prompts
