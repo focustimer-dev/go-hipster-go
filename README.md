@@ -25,9 +25,11 @@ For ChatGPT hosts without plugin support, the original [Project-based fallback](
 
 **Claude:** Install the GitHub marketplace in Claude Code, or build a skill/plugin ZIP with `python scripts/build_agent_packages.py --zip` for supported Claude chat/Cowork accounts. See [Claude installation](adapters/claude/README.md). Installation has not been live-tested in Claude.
 
-**Gemini Android app:** Gemini now supports native Skills. Use `python scripts/build_agent_packages.py --zip`, then upload the resulting `dist/hipster-music-generator-gemini-app-skill.zip` in **Gemini web → Customize → Skills → Create → Upload**. The installed skill can then be used on mobile. [Gemini guide](adapters/gemini/README.md) and [Android acceptance test](adapters/gemini/MOBILE_SMOKE_TEST.md).
+**Gemini Android app:** Gemini now supports native Skills. Use `python scripts/build_agent_packages.py --zip`, then upload the **five-file, instruction-only** `dist/hipster-music-generator-gemini-app-skill.zip` in **Gemini web → Customize → Skills → Create → Upload**. The installed skill can then be used on mobile. [Gemini guide](adapters/gemini/README.md) and [Android acceptance test](adapters/gemini/MOBILE_SMOKE_TEST.md).
 
 **Gemini CLI:** You can separately install the extension with `gemini extensions install https://github.com/focustimer-dev/hipster-music-generator`. This is a different runtime from the mobile app.
+
+The Gemini app ZIP deliberately excludes Python and scripts, since its music curation is an instruction workflow rather than executable code. Run `python scripts/build_gemini_app_skill.py` locally only to **build** the upload, not inside Gemini.
 
 **Streaming note:** Google's Gemini/YouTube Music connection documents playlist creation, but exact ordering and exact mix matching still require a runtime test. Its Gemini/Spotify connection is documented for search/play, not playlist-writing. In all hosts, publishing requires a real authorized provider action; static packaging is not proof of account access.
 

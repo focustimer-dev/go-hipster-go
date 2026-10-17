@@ -8,6 +8,11 @@ These are **manual runtime tests** for someone with the Gemini app and connected
 - In Gemini **Android**, YouTube Music is connected under **Connected Apps**, or Gemini has offered its normal connection flow.
 - If trying Spotify, connect it separately. Do not expect playlist-writing through Spotify's current Gemini connected app.
 
+## Test 0 — no executable code
+
+Use the new five-file text-only ZIP. Ask `Use Hipster Music Generator: go`.
+**Pass:** Gemini curates songs without refusing because it cannot execute Python, mentioning a missing runtime, or insisting on a script. The original test screenshot showed exactly that refusal; it is a packaging regression, not a reason to remove music features.
+
 ## Test A — skill activation and musical behavior
 
 Invoke the skill using the skill selector or explicitly say:

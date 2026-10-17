@@ -6,11 +6,17 @@
 
 1. From this repository, run `python scripts/build_agent_packages.py --zip` to generate `dist/hipster-music-generator-gemini-app-skill.zip` (or download a prebuilt ZIP from a trusted release).
 2. In **Gemini web** at https://gemini.google.com open **Menu → Customize → Skills → Create → Upload**.
-3. Upload the ZIP. Its archive root contains `SKILL.md` and the full `references/` taxonomy, alongside supporting `schemas/`, `scripts/`, `adapters/`, and test reference text. Review and create the skill.
+3. Upload the ZIP. Its archive root contains `SKILL.md` plus four text-only `references/` files. **No scripts, schemas, or CLI code are included.** Review and create the skill.
 4. Switch to Gemini **Android**. The installed skill can be used from chats, either by selecting it with `/` or `@` or asking `Use Hipster Music Generator: go`. Automatic skill activation can also apply when enabled.
 5. If you want music on YouTube Music, verify its **Connected Apps** authorization. Gemini may prompt you to connect when you request music. Explicitly use `@YouTubeMusic` when Gemini chooses the wrong service.
 
 **Important:** Google documents ZIP/folder upload **in Gemini web**, not directly in the Android app; afterward the skill is available on mobile. Enable **Keep Activity** if Google requires it for Skills and connected music. A GitHub URL isn't currently documented as a one-click Gemini-app skill installer, and GitHub updates do **not** auto-sync to an uploaded skill. Re-upload a regenerated ZIP to update it.
+
+## If Gemini says the skill cannot execute scripts
+
+Earlier ZIP packages mistakenly bundled the Python CLI, and Gemini may have interpreted the skill as a script rather than instructions. Upload the **instruction-only** ZIP built from this revision, not the earlier 12-file ZIP. It intentionally contains only five Markdown files and does not require execution. If Gemini offers to curate and create a YouTube Music playlist, the next test is whether it follows the taxonomy and writes the exact tracks, not whether Python runs.
+
+When replacing a previously uploaded skill, use the Gemini Skills settings to update or recreate it as supported by your account. Restart the conversation to ensure the updated instructions are used. You can also test immediately by replying: "Yes, curate six tracks now. Do not run scripts; follow the music instructions and use YouTube Music only if available."
 
 ## Music-service behavior (documented versus tested)
 

@@ -49,11 +49,20 @@ class PortableAgentTests(unittest.TestCase):
         archive = ROOT / "dist/hipster-music-generator-gemini-app-skill.zip"
         with ZipFile(archive) as z:
             names = set(z.namelist())
-            self.assertIn("SKILL.md", names)
-            self.assertIn("references/global-scenes.md", names)
-            self.assertIn("schemas/playlist.schema.json", names)
+            self.assertEqual(names, {
+                "SKILL.md",
+                "references/global-scenes.md",
+                "references/sonic-taxonomy.md",
+                "references/curation-examples.md",
+                "references/verification.md",
+            })
             text = z.read("SKILL.md").decode("utf-8")
             self.assertTrue(text.startswith("---\nname: hipster-music-generator\n"))
+            self.assertIn("No code", text)
+            self.assertIn("DeBarge Protocol", text)
+            self.assertIn("25 consecutive", text)
+            self.assertNotIn("scripts/", text)
+            self.assertNotIn("python ", text.lower())
             for link in re.findall(r"\]\(([^)]+)\)", text):
                 if "://" not in link:
                     self.assertIn(link, names)
