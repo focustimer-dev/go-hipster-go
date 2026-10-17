@@ -19,7 +19,14 @@ class ClaudeSpotifyFailureTests(unittest.TestCase):
         manual=(ROOT/"tests/discovery-cases.md").read_text(encoding="utf-8")
         for phrase in ("Premium-required", "0 saved", "actual subscription tier"):
             self.assertIn(phrase.lower(),manual.lower())
-        self.assertIn("Saved: 0 / 25",guide)
+        self.assertIn("two playlists visible in Spotify",guide)
+        self.assertIn("track contents and order",guide)
+        self.assertIn("do not",guide.lower())
+        self.assertIn("later denial",guide.lower())
+        verification=(ROOT/"references/verification.md").read_text(encoding="utf-8")
+        self.assertIn("two new playlists",verification)
+        self.assertIn("listener-observed",verification)
+        self.assertIn("do not create another duplicate",verification.lower())
         self.assertIn("claude.com/connectors/spotify",spotify)
 
     def test_protected_debarge_result_and_mirror(self):
