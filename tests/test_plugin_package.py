@@ -67,6 +67,21 @@ class PluginPackageTests(unittest.TestCase):
         self.assertIn('**Copy** icon', section)
         self.assertIn('adapters/claude/README.md', section)
 
+    def test_field_reports_separate_generated_and_saved_across_hosts(self):
+        readme = (ROOT / 'README.md').read_text(encoding='utf-8')
+        field_reports = readme.split(
+            '<summary><strong>Field reports & compatibility notes</strong></summary>', 1
+        )[1].split('</details>', 1)[0]
+        for host in ('ChatGPT Work', 'Ordinary ChatGPT', 'Gemini',
+                     'Claude', 'Meta Muse'):
+            self.assertIn(host, field_reports)
+        for term in ('generated but not saved', 'neither persisted in Spotify',
+                     'zero saved playlists were confirmed', 'Save to library',
+                     'Muse Code', 'exact recording-by-recording match'):
+            self.assertIn(term.lower(), field_reports.lower())
+        self.assertNotIn('| Environment | Observed | Not yet established |',
+                         field_reports)
+
     def test_skills_have_frontmatter(self):
         for path in (ROOT / 'skills').glob('*/SKILL.md'):
             data = path.read_text(encoding='utf-8')
