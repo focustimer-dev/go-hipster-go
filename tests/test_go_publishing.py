@@ -12,7 +12,7 @@ class DefaultGoBehaviorTests(unittest.TestCase):
                      'ask once',
                      'go, text only',
                      'nothing was published or saved',
-                     'If no authorized writer is exposed']:
+                     'If no authorized writer was exposed']:
             self.assertIn(term.lower(),skill.lower())
 
     def test_setup_supports_automatic_writer(self):
