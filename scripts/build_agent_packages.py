@@ -15,6 +15,11 @@ SOURCES = [
     "references/verification.md",
     "schemas/playlist.schema.json",
     "scripts/playlist_cli.py",
+    "adapters/README.md",
+    "adapters/streaming/youtube.md",
+    "adapters/streaming/spotify.md",
+    "adapters/streaming/apple-music.md",
+    "tests/discovery-cases.md",
 ]
 CHATGPT_BUNDLE = Path("adapters/chatgpt/CHATGPT_KNOWLEDGE.md")
 GEM_BUNDLE = Path("adapters/gemini/GEM_KNOWLEDGE.md")

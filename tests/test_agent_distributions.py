@@ -35,6 +35,8 @@ class PortableAgentTests(unittest.TestCase):
             self.assertIn("hipster-music-generator/SKILL.md", names)
             self.assertIn("hipster-music-generator/references/global-scenes.md", names)
             self.assertIn("hipster-music-generator/scripts/playlist_cli.py", names)
+            self.assertIn("hipster-music-generator/adapters/README.md", names)
+            self.assertIn("hipster-music-generator/tests/discovery-cases.md", names)
         with ZipFile(ROOT / "dist/hipster-music-generator-claude-plugin.zip") as z:
             self.assertIn(".claude-plugin/plugin.json", z.namelist())
             self.assertIn("skills/setup/SKILL.md", z.namelist())
