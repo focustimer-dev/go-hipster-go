@@ -1,6 +1,6 @@
 <h1 align="center">HIPSTER MUSIC GENERATOR</h1>
 
-<p align="center"><sub>EST. MMXXVI · SMALL-BATCH PLAYLISTS · ARTISANAL OBSCURITY · NO BEARD REQUIRED</sub></p>
+<p align="center"><sub>EST. MMXXVI · SMALL-BATCH PLAYLISTS · ARTISANAL OBSCURITY</sub></p>
 
 > A lot of the serious music I pretty much exclusively listen to, you probably haven't heard of it.
 
