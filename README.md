@@ -13,6 +13,10 @@ An **Agent Skills-style**, open-source music curator for real, surprising, globa
 3. Or: `Use hipster-music-generator: go.` to get a surprising cross-scene mashup.
 4. Request portable playlist JSON if your agent supports writing files; run the standard-library validator below.
 
+## ChatGPT: first supported installation path
+
+Use a **ChatGPT Project** rather than assuming a GitHub `SKILL.md` auto-installs into consumer ChatGPT. The [ChatGPT setup guide](adapters/chatgpt/README.md) walks through Project instructions plus a **single consolidated knowledge file**; run the [manual smoke tests](adapters/chatgpt/SMOKE_TEST.md) after setting it up. No music account access or automatic GitHub-to-Project synchronization is implied.
+
 ## Quick validation (Python 3.10+; no pip install)
 
 ```bash

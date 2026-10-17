@@ -18,7 +18,11 @@ Put the folder in `.claude/skills/hipster-music-generator` in the project or an 
 
 Gemini CLI supports the Agent Skills convention; its docs describe `.gemini/skills/` and `.agents/skills/` discovery locations and `gemini skills install <URL>` on supported versions. See [official guide](https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/creating-skills.md) and check `gemini skills list` / `/skills` as supported by your release.
 
-## Other platforms (including ChatGPT interfaces)
+## ChatGPT
+
+For consumer ChatGPT, use the [Project-based installation guide](chatgpt/README.md) and [copyable instructions](chatgpt/PROJECT_INSTRUCTIONS.md). This is an adapted use of the skill, not native installation or an authenticated streaming adapter. The OpenAI API has a separate Skill bundle mechanism.
+
+## Other platforms
 
 Where a runtime has no native skill discovery, supply the text of `SKILL.md` through the platform's supported custom-instruction or knowledge-upload feature, and make the referenced files accessible. An instruction file alone does **not** provide catalog search, OAuth tokens, streaming API calls or tool access. Do not assume a ChatGPT session will automatically execute files installed in GitHub.
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — ChatGPT Project adapter
+
+- Added phone-friendly ChatGPT Project instructions and one-file knowledge bundle.
+- Added reproducible bundle generator, freshness tests, and manual in-Project smoke tests.
+- Kept GitHub as the canonical skill source; no claim of native ChatGPT installation or streaming publication.
+
 ## 3.0.0 — 2026-10-16
 
 - Consolidated original and v2 music taxonomy into an Agent Skills-style repository.

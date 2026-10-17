@@ -1,0 +1,270 @@
+# Hipster Music Generator — ChatGPT knowledge bundle
+
+A generated, text-forward snapshot of the **canonical** repository skill. This is reference material used together with Project instructions; it does not install scripts, APIs, music-streaming access, or authorization.
+
+**Source:** https://github.com/focustimer-dev/hipster-music-generator
+
+**Files included:** `SKILL.md`, `references/global-scenes.md`, `references/sonic-taxonomy.md`, `references/curation-examples.md`, `references/verification.md`.
+
+
+---
+
+# BEGIN SOURCE: SKILL.md
+
+---
+name: hipster-music-generator
+description: Curate adventurous playlists of real music through era, sonic texture, geographic scene, and microgenre. Use for obscure global discoveries, unlikely musical bridges, deliberate camp, deep cuts, playlist sequencing, and short prompts like "go" for a surprise playlist. Can prepare portable playlist JSON for authorized streaming adapters.
+license: MIT
+compatibility: Requires file-reading capability. Optional web/catalog lookup for track verification and Python 3.10+ to run included validation/randomness scripts. Streaming accounts and OAuth are NOT bundled.
+metadata:
+  version: "3.0.0"
+---
+
+# Hipster Music Generator — Agent Skill v3
+
+## Intent and activation
+
+Curate **real recordings**, not synthetic music. Prioritize sonic coherence and discovery over popularity or arbitrary obscurity. Invoke for deep-cut recommendations, global scene mashups, surprisingly good mainstream contrasts, "more like this but less obvious," and requests to make a playlist. When the user explicitly invokes this skill and says **"go"**, create a surprise prompt using the four axes below. Do not treat an unrelated use of "go" as permission to run this skill.
+
+The four axes: **era; audible texture/production; actual geographic scene; microgenre/movement**. They are prompts, not mandatory fields. Also respect mood, intended setting, vocals, energy, exclusions, length, listening service, and adventurousness.
+
+## Curate in seven steps
+
+1. **Sonic thesis.** In one sentence, identify 2–4 audible qualities connecting the set (e.g., rubbery bass, melancholy harmonies, fuzzy guitars, insistent dance pulse). Separate essential from optional characteristics.
+2. **Explore discovery distance.** Start with direct matches; expand to adjacent scenes sharing musical traits; include one or two *distant* choices only where there is a strong explainable sonic bridge. Geographic novelty alone is never proof of fit. See [sonic taxonomy](references/sonic-taxonomy.md) and [global scenes](references/global-scenes.md).
+3. **Find real recordings.** Search specific artist/title pairs, albums, small-label releases, B-sides, compilations, soundtrack cues, and known mixes. Reference artists are **starting points, not the destination**; prefer surprising labelmates or regional contemporaries with similar musical qualities. Avoid recycling artists or identical primary pairings from the *immediately preceding playlist* when feasible, without blocking an explicit request or a particularly strong fit.
+4. **Verify honestly.** For each recommendation, confirm title and artist (and mix/version, date, scene, and platform availability if claimed) through appropriate credible catalog/artist/label/playable sources. If you cannot verify, label that entry provisional. If the user asks for a strictly verified or publishable playlist, omit unresolved tracks. Never invent links, versions, release years, BPM, or streaming IDs. See [verification rules](references/verification.md).
+5. **Choose intelligently.** A clear majority must fit the sonic thesis; optional off-axis picks should meaningfully expand the idea. Avoid multiple selections by the same artist by default, except when explicitly requested or in the DeBarge Easter egg. The v2 guideline of roughly **no more than two explicitly named taxonomy touchstones in 12 tracks** is a useful preference, never a hard ban. Make room for joyous or cheesy 1980s pop-soul when it makes musical sense; never condescend to its creators.
+6. **Sequence a story.** Establish a recognizable sound, deepen it, introduce a worthwhile surprise, and resolve or intensify. Explain transitions by audible groove, instrumentation, production, atmosphere, or energy—not unsupported numerical claims.
+7. **Deliver and learn.** Default to 12 tracks: evocative title, one-sentence concept, short sonic map, numbered artist — title (mix if established), one concrete reason per track, source links only if actually checked, and one useful next direction. Adapt to shorter requests. Ask which 2–3 tracks worked or failed and revise selection logic for next time, rather than dumping near-duplicates.
+
+## Deliberate irony and Easter egg
+
+Glossy late-period Motown/Motown-adjacent pop-soul, synth-funk, adult-contemporary crossover, and unlikely crowd-pleasers are **valid ingredients**. An obvious hit may earn its place by providing a funny yet persuasive sonic transition. Usually zero to two per 12-track set unless the listener wants more. Don't force comedy onto solemn or narrow briefs.
+
+**DeBarge Protocol:** Once per eligible *new playlist request*, if a genuine random-number tool exists, roll uniformly from 1 to 100; on **1**, replace the ordinary list with exactly **25 consecutive entries** of **DeBarge — "Rhythm of the Night"**. Treat this as a deliberate exception to variety, length, and duplication defaults. An explicit request for "DeBarge Protocol" runs it without a roll. Never claim 1% without using a true random facility; when Python is available run `python scripts/playlist_cli.py roll` once and read the result. Don't trigger the surprise when the user requires unique songs, forbids DeBarge, or specifies a rigid length; do not secretly override other explicit requirements. A service might reject duplicates; never falsely claim publishing succeeded.
+
+## Output and streaming boundaries
+
+A playlist recommendation is NOT a published playlist. For structured export, follow [the playlist contract](schemas/playlist.schema.json) and validate with `python scripts/playlist_cli.py validate examples/example-playlist.json`. List unresolved tracks clearly. **Never call a fictional `youtube_music:create` tool** or assume that tools exist. Check available tools and authorization in the execution environment. Only send a playlist to an external service if the user asks for it or has clearly authorized publishing. Confirm exact recording matches and show a preview for approval when ambiguous, public, or irreversible. Use [the adapter contract](adapters/README.md) and the provider guides. On missing credentials/integration, deliver portable JSON or a text playlist with actionable next steps.
+
+## Test changes rather than accumulating rules
+
+Before expanding this skill, compare old and new on three fixed prompts (regional mashup, obscure artist alternatives, open-ended "go") with equal verification access. Check: real tracks/versions, sonic coherence, genuinely unfamiliar discoveries, and scene variety when appropriate. Use listener feedback; never invent quality metrics or claim validation that hasn't happened. See [evaluation prompts](tests/discovery-cases.md).
+
+## Scope
+
+Never identify a song from audio if the running agent lacks audio music-recognition capability. Do not pretend to have listened to tracks or created streaming playlists. Respect the user's exclusions, music-service availability, and rights/platform limits.
+
+# END SOURCE: SKILL.md
+
+---
+
+# BEGIN SOURCE: references/global-scenes.md
+
+# Global musical scenes and microgenre touchstones
+
+These are **research leads, not quotas or exhaustive histories**. Source: the user's v2 taxonomy, preserved as a starting map. Descriptions and reference artists are prompts for discovery, not proof about individual recordings. Dates, instruments, and regional claims about a specific track must be verified independently.
+
+## Geographic research map
+
+- West Germany — Düsseldorf, Cologne, Berlin, Munich: kosmische, motorik rock, Neue Deutsche Welle, experimental electronics.
+- Italy — Rome, Milan, Rimini: giallo scoring, film/library funk, progressive soundtrack work, Italo disco, Mediterranean balearic chug.
+- Eastern Europe & Soviet Periphery — Yugoslavia, Poland, Hungary, Czechoslovakia, Baltic/USSR: Cold War synth-pop, Yugo novi val, Estrada-funk, cosmic synth instrumentals.
+- Southern & West Africa — Zambia, South Africa, Nigeria, Ghana: 1970s Zamrock, South African Shangaan electro/bubblegum synth-boogie & post-punk, Lagos Afro-funk and Edo boogie, Ghanaian Burger-Highlife.
+- Latin America — Peru, Colombia, Chile, Brazil, Argentina: Peruvian chicha and Amazonian psychedelic cumbia, Chilean Nueva Canción and avant-folk, Brazilian Tropicália/post-punk/boogie, Argentine synth-pop and rock nacional.
+- Southeast & East Asia — Indonesia, Thailand, Japan: Indonesian garage-psych, Kroncong-funk, and Indo-punk; Thai luk thung and molam funk; Japanese city pop, kankyō ongaku (environmental ambient), and Shibuya-kei.
+- Mediterranean & Middle East — Turkey, Lebanon, Habesha/Ethiopia: Turkish Anatolian psych-rock (Anadolu Pop), Habesha Ethio-jazz and Tizita groove, Levantine synth-dabke and bellydance disco.
+- Caribbean & UK Diaspora — Jamaica, Bahamas, London, Bristol: Kingston Studio One/Black Ark dub and rockers, Nassau Compass Point electro-boogie, UK Lovers Rock, Bristol sound-system trip-hop, Sheffield bleep.
+- Belgium & France — Brussels, Paris: late-1980s New Beat, coldwave, minimal synth, cosmic French library music (Patchwork, Tele Music).
+
+
+A geography is a research lead, not a substitute for identifying the actual artist, recording, and context. Distinguish a movement's birthplace from an individual artist's location.
+
+## Movement and microgenre touchstones
+
+### Krautrock / Kosmische Musik
+
+**Vibe:** hypnotic motorik momentum, long-form improvisation, spacious electronic exploration.
+
+**Sonic markers:** repeated pulses, analog sequences, tape manipulation, evolving guitar/synth textures.
+
+**Reference artists:** Neu!, Can, Harmonia, Popol Vuh, Tangerine Dream, Klaus Schulze.
+
+### Giallo Soundtracks / Italian Library Music
+
+**Vibe:** tense and cinematic; eerie, lush, playful, or suspenseful depending on the cue.
+
+**Sonic markers:** propulsive prog bass, Mellotron/string colors, Rhodes, analog arpeggios, hushed vocals.
+
+**Reference artists:** Goblin, Fabio Frizzi, Piero Umiliani, Alessandro Alessandroni, Stelvio Cipriani.
+
+### Zamrock
+
+**Vibe:** raw Zambian psychedelic rock, garage energy, and funk from the 1970s.
+
+**Sonic markers:** distorted fuzz riffs, prominent live drums, extended leads, English and local-language vocals.
+
+**Reference artists:** WITCH, Amanaz, Paul Ngozi / Ngozi Family, Chrissy Zebby Tembo.
+
+### Brussels New Beat
+
+**Vibe:** heavy, slower, ominous late-1980s Belgian dance music.
+
+**Sonic markers:** pitched-down dance records, synth stabs, industrial influences, hypnotic sampling; roughly 90–115 BPM as a broad stylistic cue, not a rule.
+
+**Reference artists:** A Split-Second, Lords of Acid, Neon, The Confetti's, Amnesia.
+
+### Peruvian Chicha & Psychedelic Cumbia
+
+**Vibe:** sun-drenched, hypnotic, bittersweet tropical psychedelia bridging Andean huayno, cumbia rhythms, and surf/garage rock.
+
+**Sonic markers:** spring-reverb electric guitars, wah-wah pedals, Farfisa organs, driving timbales, guiro, and melodic basslines.
+
+**Reference artists:** Los Destellos, Juaneco y Su Combo, Los Mirlos, Chacalón y La Nueva Crema, Los Wembler's de Iquitos.
+
+### Indonesian Garage Psych & Underground Punk / Pop Kreatif
+
+**Vibe:** raw, high-energy archipelago rock ranging from 1970s fuzz-organ garage and cassette-era synth-boogie to defiant underground punk.
+
+**Sonic markers:** overdriven fuzz guitars, swirling organ, tight funk-inflected rhythm sections, and raw tape saturation.
+
+**Reference artists:** AKA, Panbers, Shark Move, Benny Soebardja, Guruh Gipsy, Superman Is Dead.
+
+### Chilean Nueva Canción & Andean Avant-Folk
+
+**Vibe:** deeply poetic, politically charged, and acoustically rich folk-experimentalism blending indigenous Andean instrumentation with avant-garde songcraft.
+
+**Sonic markers:** charango, quena (bamboo flute), bombo legüero, intricate nylon-string guitar, and soaring vocal harmonies.
+
+**Reference artists:** Violeta Parra, Víctor Jara, Inti-Illimani, Quilapayún, Los Jaivas (for progressive/psych-folk crossover).
+
+### South African Bubblegum, Township Synth-Boogie & New Wave
+
+**Vibe:** jubilant yet urgent 1980s South African urban dance and post-punk, fusing mbaqanga basslines with imported LinnDrums and DX7 synths.
+
+**Sonic markers:** elastic fretless/slap bass, bright FM synth brass, infectious call-and-response vocals, and crisp drum-machine programming.
+
+**Reference artists:** Brenda Fassie, Paul Ndlovu, The Rockets, Via Afrika, Petit Cheval, Harari.
+
+### Turkish Anatolian Psych-Rock (Anadolu Pop)
+
+**Vibe:** hypnotic, microtonal 1970s Turkish psychedelic folk-rock fusing traditional aşık minstrel melodies with heavy Western psych-funk.
+
+**Sonic markers:** electric bağlama (saz), fuzz pedals, Moog synthesizers, darbuka hand percussion, and dramatic, melancholic vocals.
+
+**Reference artists:** Erkin Koray, Barış Manço, Selda Bağcan, Moğollar, Mustafa Özkent.
+
+### Thai Molam & Luk Thung Funk
+
+**Vibe:** electrifying, fast-paced Northeast Thai (Isan) roots music supercharged with 1970s/80s James Brown-style funk and surf-psych.
+
+**Sonic markers:** hypnotic khaen (bamboo mouth organ) drones, phin (electric lute) leads, punchy horn sections, and syncopated hand percussion.
+
+**Reference artists:** Dao Bandon, Banyen Rakgan, The Paradise Bangkok Molam International Band, Suthep Wongkamhaeng.
+
+### Habesha Ethio-Jazz & Tizita Groove
+
+**Vibe:** nocturnal, smoky, and deeply hypnotic 1960s/70s Addis Ababa instrumental jazz and soul built on pentatonic Ethiopian modes.
+
+**Sonic markers:** vibraphone, serpentine saxophones, Wurlitzer/Farfisa organ, Latin-inflected percussion, and haunting modal melodies.
+
+**Reference artists:** Mulatu Astatke, Hailu Mergia, Mahmoud Ahmed, Getatchew Mekurya, Alemayehu Eshete.
+
+## Responsible cross-scene reasoning
+
+- Identify the actual artist, label, scene, period, and recording; do not infer origin from language, instruments, or broad regional labels.
+- The broader the geographic leap, the more important the audible bridge (groove, timbre, arrangement, production, atmosphere).
+- Don't turn these examples into an obligatory global tour. Stay within a requested scene when appropriate.
+- Treat all historical summaries as hypotheses and research leads, not automatic provenance claims.
+
+# END SOURCE: references/global-scenes.md
+
+---
+
+# BEGIN SOURCE: references/sonic-taxonomy.md
+
+# Sonic taxonomy
+
+Source: expanded v2 axes, with the original v1 emphasis on audible qualities.
+
+## Era and sonic period
+
+* Late 1960s–early 1970s: fuzz guitar, psychedelic experimentation, tape effects, progressive arrangements, unusual library recordings, electric folk transitions.
+- Mid–late 1970s: analog polyphonic synthesizers, motorik rhythms, cosmic funk, Afro-rock, roots dub, exploratory disco, private-press AOR.
+- Early–mid 1980s: DX7-era FM synthesis, LinnDrum/DMX/TR-808 percussion, slap or fretless bass, gated reverb, post-punk economy, cassette-culture DIY.
+- Late 1980s–early 1990s: TB-303 acid basslines, pitched-down dance records, new beat, industrial swing, sample-based loops, street soul, early trip-hop.
+- Post-Y2K & 2000s Underground: micro-house, blog-house, electroclash, lo-fi bedroom indietronica, minimal synth revivals.
+
+## Sonic textures and instrumentation
+
+* Synths and electronics: Moog, ARP Odyssey, EMS VCS3, Oberheim, PPG Wave, Fairlight CMI stabs; analog sequencers and modular patches.
+- Guitars and keys: spring-reverb surf/chicha guitar, fuzz-wah psych leads, angular no-wave scratch guitar, Farfisa/Vox Continental organ, Rhodes, Clavinet.
+- Rhythm and bass: motorik 4/4 drums, TR-808/TR-909/DMX patterns, live hand percussion (timbales, congas, guacharaca), fretless/slap bass, heavy live breaks, steppers dub basslines.
+- Recording atmosphere: Roland Space Echo and tape saturation, spring/plate reverb, vocoders and talkboxes, vinyl wear, cassette grit, cinematic space. Use these as audible features; do not claim an instrument appears on a particular track without confirming it.
+
+## Operating guidance
+
+1. Start from 2–4 **audible traits**, not a country flag or a genre tag.
+2. Identify essential vs optional traits. A cross-scene suggestion must have a credible audible connection.
+3. Specific production gear, instrumentation, tempos, and release dates are unconfirmed until supported by a reliable source; don't invent precision.
+4. Follow the sound beyond the listed examples; don't make all playlists converge on the same reference artists.
+
+# END SOURCE: references/sonic-taxonomy.md
+
+---
+
+# BEGIN SOURCE: references/curation-examples.md
+
+# Prompt interpretation examples
+
+These are examples of **intent interpretation**, not pre-vetted track lists.
+
+## "Forgotten space disco from the Soviet periphery, with German kosmische hypnosis"
+
+Thesis: rolling bass/synth pulses, expansive analog atmosphere, dance propulsion. Explore verified Soviet-periphery scenes, their adjacent catalogs, and carefully selected non-European sonic bridges. Avoid assuming origin from language alone. For a camp curveball, a gleaming 1980s pop-soul song might work **if** the groove and tonal handoff make sense.
+
+## "Zamrock guitar fuzz meets Italian horror-soundtrack tension"
+
+Thesis: distorted guitar, anxious low-end movement, dramatic arrangements. Most tracks should reflect the two named scenes, with a small number of plausible bridges. Don't assert influence across the scenes without historical evidence.
+
+## "Something like Can, but no Can or Neu!"
+
+Thesis: repetition, elastic live rhythm, adventurous studio treatment. Honor the exclusions and favor lesser-known recordings from nearby and distant scenes.
+
+## "go"
+
+Choose a fresh combination across era, production, geography, and microgenre, with geographic breadth over successive requests. State the sonic thesis first, then curate. Avoid repeating the immediately preceding playlist's core regional/microgenre pairing if practical. The DeBarge roll is separate and takes precedence only when eligible.
+
+## "DeBarge Protocol"
+
+Exactly 25 entries of DeBarge — "Rhythm of the Night". Do not manufacture remix names or invent a streaming playlist. If the user needs this published, verify whether their service accepts duplicates and report any limitation.
+
+# END SOURCE: references/curation-examples.md
+
+---
+
+# BEGIN SOURCE: references/verification.md
+
+# Verification and playlist matching
+
+## Distinguish three kinds of certainty
+
+1. **Recording exists**: a credible artist/title pairing (and exact version, if relevant) is supported by an artist/label page, release track listing, catalog, or legitimate listing.
+2. **Recording is available on a service**: an actual playable catalog result from that service was found. A search-engine hit does not prove it is playable.
+3. **Recording has been added**: an authenticated provider response confirms a playlist item. A tool request or guessed URL does not prove publication.
+
+Use `verification.status` on each entry: `verified` with a source URL, or `unverified` with the uncertainty stated in `verification.note`. Track references must not be guessed. For publishing, require a resolved provider ID and user authorization; verify artist/title/version before linking the match.
+
+## Match checklist
+
+- Exact artist credit, title, featured artists, spelling/transliteration variants
+- Original versus cover, live, edit, remaster, demo, remix, extended 12-inch
+- Release/recording metadata when confidently sourced; avoid dates if uncertain
+- Actual service URL and provider ID, not a general artist page or a generic search result
+- Country/scene provenance separately from a broad stylistic guess
+- Explicit handling when the exact track or mix is unavailable
+
+A partial or unverified discovery playlist is fine if openly labeled; a **strictly verified** or **publish-ready** playlist must not silently include unresolved candidates. The validator's `--strict` flag checks minimum verification metadata, not factual truth; independent listening/catalog validation is still needed.
+
+# END SOURCE: references/verification.md
