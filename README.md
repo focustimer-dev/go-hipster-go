@@ -174,13 +174,21 @@ For anyone who reads the liner notes, the iteration history and platform observa
 <details>
 <summary><strong>Field reports & compatibility notes</strong></summary>
 
-These are **listener-reported tests from October 16–17, 2026**, not a guarantee that the same tools, account permissions, or results will be available to everyone. The labels distinguish **generated** from **saved**.
+These are **listener-reported tests from October 16–17, 2026**, not guaranteed capabilities on every account. Short entries keep this table easier to scan on mobile.
 
-- **ChatGPT Work → Spotify — created.** A plain `go` created a Spotify playlist without manually selecting Spotify. In another run, Work produced six tracks instead of the normal twelve. **Not verified:** exact recording versions, order, and reliability across sessions.
-- **Ordinary ChatGPT → Spotify — saved when both apps were selected.** With Hipster Music Generator selected alone, a twelve-track curation could not access Spotify's playlist writer. Selecting **both Hipster Music Generator and Spotify** produced a twelve-track playlist visible in the Spotify app. **Still open:** automatic writer activation with the curator alone ([issue #1](https://github.com/focustimer-dev/hipster-music-generator/issues/1)); exact versions and ordering were not independently audited.
-- **Gemini → YouTube Music — generated.** A listener generated a six-song playlist via Gemini's native YouTube Music connection. A separate twelve-track curation subsequently gave an incorrect ChatGPT-style composer instruction; the guidance was corrected, but that route still needs retesting. **Not verified:** whether the generated result was added to the YouTube Music library or reproduced every intended track and its order. See [Gemini guidance](adapters/gemini/README.md).
-- **Claude → Spotify — generated but not saved.** Two playlist results appeared without descriptions, but the listener confirmed **neither persisted in Spotify**. A later attempt returned a Premium-required error, so **zero saved playlists were confirmed in this test**. Spotify requires Premium for personalized prompt-generated playlists through Claude; the listener's actual plan was not independently established. Exact duplicate insertion and descriptions remain unverified. See [Claude guidance](adapters/claude/README.md).
-- **Meta Muse personal agent → Spotify — working (listener report).** The listener reported successfully creating a Spotify playlist with Hipster Music Generator through Muse's consumer Spotify connection. **Not verified:** exact artist/version matching, track order, repeatability across accounts, or persistent loading of the custom skill. **Muse Code** is a different environment and was not tested. See [Muse guidance](adapters/muse/README.md).
+| AI + service | Observed | Not yet verified |
+| --- | --- | --- |
+| **ChatGPT Work → Spotify** | `go` created a playlist | Exact versions/order; one run had 6 rather than 12 tracks |
+| **ChatGPT → Spotify** | Selecting both apps saved 12 tracks | Skill-only writer routing ([issue #1](https://github.com/focustimer-dev/hipster-music-generator/issues/1)); exact versions/order |
+| **Gemini → YouTube Music** | Six-track playlist generated | **Save to library** and exact versions/order; 12-track routing needs retest |
+| **Claude → Spotify** | Two previews; **generated but not saved** | Premium requirement encountered; exact duplicates and descriptions |
+| **Meta Muse → Spotify** | Playlist created (listener report) | Exact versions/order; persistent skill loading |
+
+**Claude detail:** Neither generated preview persisted in Spotify; **zero saved playlists were confirmed** in that test. A later attempt returned a Premium-required error. The listener's actual subscription tier was not independently verified. See [Claude guidance](adapters/claude/README.md).
+
+**Gemini detail:** A separate twelve-track curation gave an incorrect ChatGPT-style composer instruction. That guidance was corrected but has not been retested. See [Gemini guidance](adapters/gemini/README.md).
+
+**Muse detail:** The listener tested the consumer Meta Muse agent, **not Muse Code**. See [Muse guidance](adapters/muse/README.md).
 
 **Platform notes, not additional field tests:** [Spotify's Claude announcement](https://newsroom.spotify.com/2026-04-23/claude-integration/) describes discovery for Free and Premium listeners but prompt-tailored playlists for Premium; [Spotify's Muse announcement](https://newsroom.spotify.com/2026-09-23/spotify-meta-muse-agent/) documents playlist creation. Google's [Spotify media-app guidance](https://support.google.com/gemini/answer/15300097) covers search/play, not playlist creation, while its [YouTube Music guidance](https://support.google.com/gemini/answer/15237118) supports generating playlists and may require tapping **Save to library**. These differences explain why Spotify is the **default preference**, but Gemini users may need `setup change YouTube Music` to publish.
 
