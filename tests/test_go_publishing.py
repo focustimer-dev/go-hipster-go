@@ -17,9 +17,10 @@ class DefaultGoBehaviorTests(unittest.TestCase):
 
     def test_setup_supports_automatic_writer(self):
         setup=(ROOT/"skills/setup/SKILL.md").read_text(encoding="utf-8")
-        self.assertIn('sole writable service',setup)
-        self.assertIn('attempt to publish',setup)
+        self.assertIn('listener',setup)
+        self.assertIn('publish',setup)
         self.assertIn('OAuth',setup)
+        self.assertIn('session-only',setup)
 
     def test_manual_regression_matrix(self):
         cases=(ROOT/"tests/discovery-cases.md").read_text(encoding="utf-8")
@@ -55,7 +56,7 @@ class DefaultGoBehaviorTests(unittest.TestCase):
         self.assertIn("Spotify",manifest["description"])
         self.assertIn("YouTube Music",manifest["description"])
         setup=(ROOT/"skills/setup/SKILL.md").read_text(encoding="utf-8")
-        self.assertIn("First, preflight the publishing route",setup)
+        self.assertIn("Check real capabilities",setup)
         cases=(ROOT/"tests/discovery-cases.md").read_text(encoding="utf-8")
         self.assertIn("A/B preflight trial",cases)
 

@@ -2,7 +2,7 @@
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "hipster-music-generator",
   "version": "3.3.0",
-  "description": "An insufferably smug music curator. Say setup to choose services and defaults; go sad, weird, fast or chill for real deep-cut playlists with publishing where accessible.",
+  "description": "An insufferably smug music curator. Say setup to choose Spotify, YouTube Music or other services; go sad, weird, fast or chill for deep cuts and honest publishing.",
   "repository": "https://github.com/focustimer-dev/hipster-music-generator",
   "homepage": "https://github.com/focustimer-dev/hipster-music-generator",
   "license": "MIT",

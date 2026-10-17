@@ -48,7 +48,7 @@ class PluginPackageTests(unittest.TestCase):
         setup = (ROOT/'skills/setup/SKILL.md').read_text(encoding='utf-8')
         self.assertIn('authorization', setup.lower())
         self.assertIn('without', setup.lower())
-        self.assertIn('not a complete user account inventory', setup)
+        self.assertIn('A plugin in a directory is not evidence of authorization', setup)
     def test_skill_links_are_locally_resolvable(self):
         from re import findall
         path=ROOT/'skills/hipster-music-generator/SKILL.md'
