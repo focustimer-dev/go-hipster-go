@@ -184,7 +184,7 @@ These are **listener-reported tests from October 16–17, 2026**, not guaranteed
 | **Claude → Spotify** | Two previews; **generated but not saved** | Premium requirement encountered; exact duplicates and descriptions |
 | **Meta Muse → Spotify** | Playlist created (listener report) | Exact versions/order; persistent skill loading |
 
-**Claude detail:** Neither generated preview persisted in Spotify; **zero saved playlists were confirmed** in that test. A later attempt returned a Premium-required error. The listener's actual subscription tier was not independently verified. See [Claude guidance](adapters/claude/README.md).
+**Claude detail:** Neither persisted in Spotify; **zero saved playlists were confirmed** in that test. A later attempt returned a Premium-required error. The listener's actual subscription tier was not independently verified. See [Claude guidance](adapters/claude/README.md).
 
 **Gemini detail:** A separate twelve-track curation gave an incorrect ChatGPT-style composer instruction. That guidance was corrected but has not been retested. See [Gemini guidance](adapters/gemini/README.md).
 
