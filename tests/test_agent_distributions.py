@@ -53,8 +53,8 @@ class PortableAgentTests(unittest.TestCase):
             self.assertIn("references/global-scenes.md", names)
             self.assertIn("schemas/playlist.schema.json", names)
             text = z.read("SKILL.md").decode("utf-8")
-            self.assertTrue(text.startswith("---\\nname: hipster-music-generator\\n"))
-            for link in re.findall(r"\\]\\(([^)]+)\\)", text):
+            self.assertTrue(text.startswith("---\nname: hipster-music-generator\n"))
+            for link in re.findall(r"\]\(([^)]+)\)", text):
                 if "://" not in link:
                     self.assertIn(link, names)
 
