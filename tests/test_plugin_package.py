@@ -42,6 +42,8 @@ class PluginPackageTests(unittest.TestCase):
         self.assertIn('## Everyday commands', readme)
         self.assertIn('### Setup & preferences', readme)
         self.assertIn('### Playlists & modifiers', readme)
+        self.assertLess(readme.index('### Playlists & modifiers'),
+                        readme.index('### Setup & preferences'))
         self.assertIn('Run `setup` again whenever you want to change your preferences', readme)
         self.assertLess(readme.index('**1. Load the skill.**'),
                         readme.index('**2. Run `setup`'))
