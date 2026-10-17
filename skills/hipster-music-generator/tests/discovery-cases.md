@@ -23,6 +23,19 @@ Run *the same* prompts against the prior version and this revision, with the sam
 
 No results are claimed here. Listening quality requires actual human evaluation; this document is a test plan.
 
+## Claude Premium refusal and exact DeBarge outcome (manual)
+
+| Case | Required behavior |
+| --- | --- |
+| `create_playlist` returns Premium-required | Report real denial, **0 saved**, **actual subscription tier unverified**; no repetitive retries |
+| Claude publicly lists `create_playlist` but doesn't expose it in chat | Don't pretend the tool is actionable |
+| No `add_playlist_items` exposed | Don't describe it as a working manual write route |
+| Listener already has Spotify Premium | Ask which Spotify account Claude is using before suggesting reconnection; don't presume actual plan |
+| Existing 25-copy DeBarge result | Preserve all 25 entries as a portable list, no reroll, no substitutions, no compulsory manual duplication |
+| Ordinary search succeeds | Search is not playlist publication and doesn't circumvent Premium-gated generation |
+
+This user-supplied Claude transcript is one field report, not proof of a universal account restriction or a real end-to-end Premium test.
+
 ## DeBarge Protocol precedence across go modifiers
 
 These scenarios are **instruction-level acceptance checks**. Check that there is **one genuine 1–100 roll per eligible new playlist request**, when a random tool exists; do not force a success by inventing a random number. The 25 repeated DeBarge recording outcome is an intentional override of ordinary mood, speed, length and non-repetition rules.

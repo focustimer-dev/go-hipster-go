@@ -49,6 +49,18 @@ For most Claude chat users, the Skill uploader is the simpler installation metho
 
 References: [Claude custom skills](https://support.claude.com/en/articles/12512198-how-to-create-custom-skills) · [Claude Spotify connector](https://claude.com/marketplace/connectors/spotify) · [How Claude suggests connected apps](https://support.claude.com/en/articles/14730684-how-claude-suggests-connected-apps)
 
+## Spotify denied playlist creation: Premium gate versus exact 25-track editing
+
+**Observed Claude field report (2026-10-17):** Spotify refused a 25-entry DeBarge playlist with a **Premium-required** generation error. Claude correctly reported **0 saved**, but then proposed `create_playlist` and `add_playlist_items` as a manual route even though those tools weren't exposed in its session, and directed the listener to duplicate the song repeatedly in Spotify. The denial does not independently establish the listener's subscription tier or a broken account connection.
+
+**What can actually be established:** Spotify's [official Claude launch announcement](https://newsroom.spotify.com/2026-04-23/claude-integration/) permits discovery on Free and Premium but specifies **Premium for personalized prompt-generated playlists**. The [published Claude connector tool list](https://claude.com/connectors/spotify) names `create_playlist`, `search`, and `fetch_tracks`, but does not advertise `add_playlist_items`. A tool listed publicly may be absent in a particular chat; its name doesn't guarantee exact versions, arbitrary duplicates, or ordered playlist editing.
+
+**Correct next steps:** Preserve the original 25-position DeBarge manifest, report the real Spotify denial once, and distinguish **actual account plan: unverified**, **tool exposed here: based on this chat**, and **exact duplicate insertion: unconfirmed**. If the listener has Premium, ask them to check which Spotify account Claude is using before considering reauthorization. Do not claim a reconnect solves a Premium gate, reroll the DeBarge result, silently substitute songs, suggest fictional tools, or force manual duplication. Spotify mobile may not offer straightforward duplicate-add actions.
+
+Example of a useful failure report:
+
+> **Not published:** Spotify returned a Premium-required error for playlist generation. This does not independently confirm your account plan. No exact ordered-track editor is available in this Claude chat. **Saved: 0 / 25.** The original 25 identical DeBarge entries remain available as text. No new selection or DeBarge roll occurred.
+
 ## Claude made a playlist but the descriptions sound like a corporate brochure
 
 The **install may be working even when Claude's copy is dull**. The skill now has a dedicated **playlist writing** section near the beginning of `SKILL.md`; it expects an evocative record-sleeve title, a concise proposed service description and track notes with real sonic hooks and just enough irritating superiority to suggest the clerk has tenure.

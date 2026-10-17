@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.3.2 — Spotify refusal is not an invitation to invent tools
+
+- Differentiate Premium-gated prompt-generated Spotify playlists from exact ordered-track editing in Claude.
+- Preserve 25-entry DeBarge selections and report 0 saved when the official Spotify connector refuses publication; never reroll or force mobile manual duplication.
+- Avoid making claims about actual account subscription or suggesting unavailable `add_playlist_items` tools; add a field-report regression matrix.
+- DeBarge probability and special result unchanged.
+
+
 ## 3.3.1 — Make the liner notes worth reading
 
 - Distinguish **playlist title**, **proposed streaming description**, and **track-specific liner notes** in the core skill rather than relying solely on a generic "be snarky" persona.

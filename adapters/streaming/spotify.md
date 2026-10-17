@@ -11,3 +11,9 @@ The official [Spotify Web API](https://developer.spotify.com/documentation/web-a
 - Do not use a Spotify playlist URL as evidence that all requested tracks matched: return individual match statuses.
 
 This repository does not include OAuth application registration, credentials, or a completed API client.
+
+## Claude's first-party Spotify connector (separate from this planned API adapter)
+
+Spotify's [April 2026 Claude announcement](https://newsroom.spotify.com/2026-04-23/claude-integration/) supports discovery for Free and Premium, but personalized prompt-generated playlists require **Spotify Premium**. The [Claude connector listing](https://claude.com/connectors/spotify) advertises `create_playlist`, `search`, `fetch_tracks` and playback/library actions, **not** `add_playlist_items`. This does not prove a particular tool is exposed in a given conversation or that `create_playlist` supports exact ordered recording/duplicate insertion.
+
+On a Premium-required provider denial, truthfully report 0 saved and **subscription unverified** unless independently checked; do not invent write methods or falsely diagnose a disconnected account. Preserve an already-chosen DeBarge 25-entry result without rerolling. See [Claude integration guidance](../claude/README.md#spotify-denied-playlist-creation-premium-gate-versus-exact-25-track-editing).
