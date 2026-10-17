@@ -58,7 +58,7 @@ class PortableAgentTests(unittest.TestCase):
             })
             text = z.read("SKILL.md").decode("utf-8")
             self.assertTrue(text.startswith("---\nname: hipster-music-generator\n"))
-            self.assertIn("No code", text)
+            self.assertIn("no code execution", text.lower())
             self.assertIn("DeBarge Protocol", text)
             self.assertIn("25 consecutive", text)
             self.assertNotIn("scripts/", text)
