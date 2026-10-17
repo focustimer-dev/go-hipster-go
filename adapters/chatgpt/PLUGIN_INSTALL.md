@@ -12,6 +12,15 @@ The **preferred** ChatGPT pathway is a packaged plugin, not repeatedly pasting a
 
 **Availability varies:** Plugin Creator may provide personal/local installation in supported ChatGPT surfaces. Local MCP apps hosted on one computer generally will **not** be usable from ChatGPT web/mobile; for cross-device playlist publishing, a registered/remote provider integration is needed. A plugin manifest does not automatically publish to the public Plugin Directory, and personal plugins are not guaranteed to auto-sync from GitHub.
 
+## Work versus ordinary Chat: observed Spotify behavior
+
+A user tested both on their connected Spotify account:
+
+- **ChatGPT Work:** Hipster Music Generator followed by plain `go` successfully orchestrated Spotify publishing without explicitly naming Spotify in the prompt. This is a **user-reported result**; it is not a guarantee for other accounts or a demonstration of exact recording/order fidelity.
+- **Ordinary Chat (Android):** selecting only Hipster Music Generator and sending `go` has repeatedly generated a playlist **without** Spotify's write tools. Selecting **both Hipster Music Generator and Spotify** before sending `go` successfully created a playlist visible in Spotify.
+
+**Recommended minimal-friction path:** use **Work** for one-command `go` when available. Otherwise, in ordinary Chat, select both plugins in the composer; don't rebuild or reauthorize Spotify merely because a particular chat lacks its writer. The different outcomes indicate host-level plugin orchestration, not a broken curation skill. See [the tracked integration limitation](https://github.com/focustimer-dev/hipster-music-generator/issues/1).
+
 ## Expected capabilities
 
 - **Curation:** available immediately after the skill is installed, subject to the host reading the skill and optional reference files.
