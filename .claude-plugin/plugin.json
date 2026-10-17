@@ -1,7 +1,7 @@
 {
   "name": "hipster-music-generator",
   "displayName": "Hipster Music Generator",
-  "version": "3.3.2",
+  "version": "3.3.3",
   "description": "Smug record-store music curator with vivid playlist titles, witty sonic liner notes, setup, go moods and authorized Spotify publishing.",
   "author": {
     "name": "focustimer-dev"
