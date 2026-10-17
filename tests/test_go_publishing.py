@@ -25,7 +25,7 @@ class DefaultGoBehaviorTests(unittest.TestCase):
         cases=(ROOT/"tests/discovery-cases.md").read_text(encoding="utf-8")
         for term in ['Spotify only authorized writer',
                      'YouTube Music only authorized writer',
-                     'Two writable services', 'Search/play only',
+                     'Two writable services', 'search/play only',
                      'go, text only']:
             self.assertIn(term,cases)
 
