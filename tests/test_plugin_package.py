@@ -31,7 +31,7 @@ class PluginPackageTests(unittest.TestCase):
 
     def test_readme_is_easy_first_and_reports_are_collapsed(self):
         readme = (ROOT / 'README.md').read_text(encoding='utf-8')
-        self.assertIn('## Start here — let your agent do the paperwork', readme)
+        self.assertIn('## Start here — load, setup, go', readme)
         self.assertIn('skills/setup/SKILL.md', readme)
         self.assertLess(readme.index('## Start here'), readme.index('## Installation when the easy way needs help'))
         self.assertIn('<summary><strong>Field reports & compatibility notes</strong></summary>', readme)
