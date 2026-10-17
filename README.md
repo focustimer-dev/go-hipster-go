@@ -8,7 +8,7 @@
 
 <p align="center"><em>Whole crowd raises both hands.</em></p>
 
-<p align="center"><sub>Ethically sourced deep cuts. Sustainably pretentious. Fair-trade almond milk sold separately.</sub></p>
+<p align="center"><sub>Ethically sourced deep cuts. Sustainable, farm-to-table pretention.</sub></p>
 
 
 An **Agent Skills-style**, open-source music curator for real, surprising, globally connected music. It combines **era + audible texture + geographic scene + microgenre** with actual track-verification discipline, a sense of humor, and a service-neutral playlist JSON format.
