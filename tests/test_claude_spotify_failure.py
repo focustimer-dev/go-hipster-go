@@ -20,9 +20,9 @@ class ClaudeSpotifyFailureTests(unittest.TestCase):
         for phrase in ("Premium-required", "0 saved", "actual subscription tier"):
             self.assertIn(phrase.lower(),manual.lower())
         self.assertIn("two playlists visible in Spotify",guide)
-        self.assertIn("track contents and order",guide)
+        self.assertIn("unknown track contents/order",guide)
         self.assertIn("do not",guide.lower())
-        self.assertIn("later denial",guide.lower())
+        self.assertIn("later premium-related denial",guide.lower())
         verification=(ROOT/"references/verification.md").read_text(encoding="utf-8")
         self.assertIn("two new playlists",verification)
         self.assertIn("listener-observed",verification)
