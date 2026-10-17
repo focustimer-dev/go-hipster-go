@@ -5,7 +5,7 @@
 <p align="center"><sub>EST. MMXXVI · SMALL-BATCH PLAYLISTS · ARTISANAL OBSCURITY</sub></p>
 <p align="center">“Who’s here ironically and who’s here because they sincerely enjoy it?”</p>
 <p align="center"><em>Whole crowd raises both hands.</em></p>
-<p align="center"><sub>Ethically sourced deep cuts. Sustainable, farm-to-table pretension.</sub></p>
+
 
 An open-source **Agent Skill for discovering real, unlikely, surprisingly coherent music** across eras, textures, geographic scenes and microgenres. Delivered by an extravagantly self-important, passive-aggressive record-store clerk who considers your listening habits a public infrastructure problem.
 
@@ -187,3 +187,7 @@ Use `python scripts/build_agent_packages.py --zip` to generate upload bundles. O
 MIT licensed. Contributions are welcome: [open an issue](https://github.com/focustimer-dev/hipster-music-generator/issues) with the **prompt, exact recording titles, and what succeeded or regressed**. Never upload copyrighted recordings or streaming-service credentials. See [AGENTS.md](AGENTS.md) and [CHANGELOG.md](CHANGELOG.md).
 
 *You're welcome. We understand it's difficult to express gratitude when you aren't accustomed to hearing good music.*
+
+
+
+<p align="center"><sub>Ethically sourced deep cuts. Sustainable, farm-to-table pretension.</sub></p>
