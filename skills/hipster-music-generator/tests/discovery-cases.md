@@ -23,6 +23,29 @@ Run *the same* prompts against the prior version and this revision, with the sam
 
 No results are claimed here. Listening quality requires actual human evaluation; this document is a test plan.
 
+## DeBarge Protocol precedence across go modifiers
+
+These scenarios are **instruction-level acceptance checks**. Check that there is **one genuine 1–100 roll per eligible new playlist request**, when a random tool exists; do not force a success by inventing a random number. The 25 repeated DeBarge recording outcome is an intentional override of ordinary mood, speed, length and non-repetition rules.
+
+| Request | Random roll eligible? | On genuine roll = 1 |
+| --- | --- | --- |
+| `go` | Yes | 25 repeated DeBarge tracks |
+| `go fast` | Yes | 25 repeated DeBarge tracks, not a fast-themed mix |
+| `go angry slow` | Yes | 25 repeated DeBarge tracks, not a brooding mix |
+| `go weird` | Yes | 25 repeated DeBarge tracks |
+| `go weird slow 30` | Yes; ordinary numeric length is not an exclusion | 25, not 30 |
+| `go short` | Yes; ordinary 6-track shorthand is not an exclusion | 25, not 6 |
+| `go long` | Yes; ordinary 24-track shorthand is not an exclusion | 25, not 24 |
+| `go 50` | Yes; ordinary requested track count is not an exclusion | 25, not 50 |
+| `go, text only` | Yes; publication opt-out is separate | 25 in text, no write |
+| `go 12, no DeBarge` | No | Honor the exclusion; regular 12 |
+| `go unique songs only` | No | Honor unique tracks; regular playlist |
+| `go exactly 12, no exceptions` | No | Honor rigid count; regular 12 |
+| `DeBarge Protocol` | No random roll; explicit invocation | 25 when not contradictory with another explicit exclusion |
+| `publish the playlist above` | No new roll | Publish the original selections and outcome |
+
+Never simulate the 1% probability when there is no genuine random facility; the user-requested explicit Protocol remains available. Verify actual provider support for identical repeated entries and never claim published duplicates without confirmation. Changing or combining `go` modifiers must not silently switch this behavior off.
+
 ## Mood, speed and length modifier acceptance matrix (manual)
 
 | Prompt | Expected behavior |

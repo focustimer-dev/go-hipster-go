@@ -73,6 +73,22 @@ class DefaultGoBehaviorTests(unittest.TestCase):
         self.assertIn("go 51",scenarios)
         self.assertIn("go 12 tracks",scenarios)
 
+    def test_debarge_protocol_eligible_across_modifiers_and_lengths(self):
+        skill=(ROOT/"SKILL.md").read_text(encoding="utf-8")
+        cases=(ROOT/"tests/discovery-cases.md").read_text(encoding="utf-8")
+        # Flags and ordinary counts do not turn off the 1:100 lottery.
+        for term in ('go fast', 'go angry', 'go chill', 'go slow',
+                     'go weird', 'go short', 'go long', 'go weird slow 30',
+                     'numeric count', 'one roll total'):
+            self.assertIn(term.lower(),skill.lower())
+        for case in ('go short', 'go long', 'go weird slow 30', 'go 50',
+                     'go, text only', 'no DeBarge', 'unique songs only',
+                     'go exactly 12, no exceptions', 'publish the playlist above'):
+            self.assertIn(case,cases)
+        self.assertNotIn("Don't trigger the surprise when the user requires unique songs, forbids DeBarge, or specifies a rigid length",skill)
+        self.assertIn('exactly **25 consecutive entries**',skill)
+        self.assertIn('roll uniformly from 1 to 100; on **1**',skill)
+
     def test_distribution_synced_and_debarge_intact(self):
         self.assertEqual((ROOT/"SKILL.md").read_bytes(),
                          (ROOT/"skills/hipster-music-generator/SKILL.md").read_bytes())

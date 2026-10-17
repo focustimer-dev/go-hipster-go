@@ -17,7 +17,7 @@ description: On "go" or "go fast", "go angry", "go chill", "go slow", "go weird"
 license: MIT
 compatibility: Requires file-reading capability. Optional web/catalog lookup for track verification and Python 3.10+ to run included validation/randomness scripts. Streaming accounts and OAuth are NOT bundled.
 metadata:
-  version: "3.1.7"
+  version: "3.1.8"
 ---
 
 # Hipster Music Generator — Agent Skill v3
@@ -54,7 +54,7 @@ Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation;
 
 **Length:** `go` and `go angry` default to **12 tracks**; `go short` requests **6**; `go long` requests **24**. `go 20`, `go fast 20`, `go weird slow 30`, or an explicit `N tracks` request selects **exactly N**, overriding the short/long shorthand. Aim for up to **50** carefully resolved tracks as a *soft quality target*, **not a schema or platform maximum**; when asked for more, attempt the actual requested count if the current host can handle verification and publishing, otherwise be transparent and propose batches or splitting—never silently cap or downgrade the playlist.
 
-**Count fidelity:** before publishing, check the number of distinct ordered selections against the requested count; don't silently turn 12 into 6. After writing, reconcile the saved count and track order where provider results allow it. If the host has a fixed cap or truncates output, report the actual result as incomplete rather than claiming the requested list was published. An explicit fixed-length request remains subject to the existing Easter egg's rigid-length eligibility rule; **do not alter the DeBarge Protocol**.
+**Count fidelity:** before publishing, check the number of distinct ordered selections against the requested count; don't silently turn 12 into 6. After writing, reconcile the saved count and track order where provider results allow it. If the host has a fixed cap or truncates output, report the actual result as incomplete rather than claiming the requested list was published. **DeBarge eligibility applies to every `go` variant**: `go fast`, `go angry`, `go chill`, `go slow`, `go weird`, their combinations, `go short`, `go long`, and numeric requests such as `go fast 20` or `go weird slow 30`. Ordinary length targets, even numeric ones, **must not suppress the one-in-100 roll**; on a genuine hit, the Protocol's 25 entries intentionally override the ordinary requested count, energy, mood and diversity. Only a listener's **explicit no-surprises/no-overrides strict length**, `no DeBarge`, or `unique songs only` constraint excludes the random surprise. Run the single eligibility check/roll once per *new* playlist, not per modifier, candidate theme, publication retry or follow-up.
 
 ## Curate in seven steps
 
@@ -70,7 +70,7 @@ Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation;
 
 Glossy late-period Motown/Motown-adjacent pop-soul, synth-funk, adult-contemporary crossover, and unlikely crowd-pleasers are **valid ingredients**. An obvious hit may earn its place by providing a funny yet persuasive sonic transition. Usually zero to two per 12-track set unless the listener wants more. Don't force comedy onto solemn or narrow briefs.
 
-**DeBarge Protocol:** Once per eligible *new playlist request*, if a genuine random-number tool exists, roll uniformly from 1 to 100; on **1**, replace the ordinary list with exactly **25 consecutive entries** of **DeBarge — "Rhythm of the Night"**. Treat this as a deliberate exception to variety, length, and duplication defaults. An explicit request for "DeBarge Protocol" runs it without a roll. Never claim 1% without using a true random facility; when Python is available run `python scripts/playlist_cli.py roll` once and read the result. Don't trigger the surprise when the user requires unique songs, forbids DeBarge, or specifies a rigid length; do not secretly override other explicit requirements. A service might reject duplicates; never falsely claim publishing succeeded.
+**DeBarge Protocol:** Once per eligible *new playlist request*, if a genuine random-number tool exists, roll uniformly from 1 to 100; on **1**, replace the ordinary list with exactly **25 consecutive entries** of **DeBarge — "Rhythm of the Night"**. Treat this as a deliberate exception to variety, length, duplication, **all `go` moods and speeds**, and the ordinary numeric count—including `go short`, `go long`, `go fast 20`, and `go weird slow 30`. Each eligible new playlist receives **one roll total**; never reroll for each modifier, suggested concept, save attempt, or publication retry. A requested number of tracks is a normal target, not itself a rigid exclusion: only an **explicit prohibition of DeBarge**, a **unique-tracks requirement**, or an **explicitly non-overridable count** (e.g. "exactly 12, no exceptions") blocks the spontaneous surprise. An explicit request for "DeBarge Protocol" runs it without a roll, except when it directly conflicts with another explicit exclusion that must first be clarified. Never claim 1% without using a true random facility; when Python is available run `python scripts/playlist_cli.py roll` once and read the result. If reliable randomness is unavailable, omit the spontaneous roll rather than inventing it. A service might reject duplicates; never falsely claim publishing succeeded.
 
 ## Output and streaming boundaries
 
@@ -287,7 +287,7 @@ These are **musical intentions**, not preselected genres, artists or guaranteed 
 | `go weird 30` | 30 tracks with the weird modifier |
 | `go 48` | 48 requested tracks; protect count fidelity and report limits honestly |
 
-Long sets still need a thesis, transitions, and accurate catalog matches; if a host truncates to six tracks when twelve were requested, describe the mismatch as a **shortfall**, not an implicit change of default. `go, text only` still suppresses publication, and an explicit count does not waive the existing Easter-egg eligibility limits.
+Long sets still need a thesis, transitions, and accurate catalog matches; if a host truncates to six tracks when twelve were requested, describe the mismatch as a **shortfall**, not an implicit change of default. `go, text only` still suppresses publication, **not the Easter-egg roll**. All modifiers and ordinary numeric length targets remain eligible for the **same one-in-100 roll**, including `go short`, `go long`, and `go weird slow 30`. A genuine hit overrides modifiers and ordinary count to 25 repeated tracks. An explicit `no DeBarge`, `unique songs only`, or unambiguous `exactly N, no exceptions` constraint prevents a spontaneous trigger. Do not roll twice on a publishing retry; a follow-up to save an existing list preserves the previous outcome.
 
 ## One-word go: streaming handoff
 

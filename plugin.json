@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "hipster-music-generator",
-  "version": "3.1.7",
+  "version": "3.1.8",
   "description": "Curate and attempt to save playlists in connected Spotify or YouTube Music. Say go fast, go angry, go chill, go slow, go weird, go short, go long or specify a track count.",
   "repository": "https://github.com/focustimer-dev/hipster-music-generator",
   "homepage": "https://github.com/focustimer-dev/hipster-music-generator",

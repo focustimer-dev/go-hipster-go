@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.1.8 — DeBarge across every go modifier
+
+- Fixed an eligibility conflict introduced with `go short`, `go long` and numeric track-count modifiers: **ordinary length requests no longer accidentally disable** the one-in-100 Easter egg.
+- On a genuine single-roll success, 25 repeated original recordings override all normal mood, speed, short/long and numeric count goals.
+- Explicit no-DeBarge, unique-song, or unambiguously non-overridable length constraints still prevent a surprise; no second roll on publishing retries.
+- Added manual acceptance matrix and contract tests. Randomness remains contingent on an actual reliable random tool, and streaming provider duplicate support remains unverified.
+
 ## 3.1.7 — Expressive go modifiers and length controls
 
 - Added orthogonal mood/speed instructions: `go fast`, `go angry`, `go chill`, `go slow`, `go weird`, plus combinations and natural-language mood requests.

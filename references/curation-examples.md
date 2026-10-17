@@ -39,7 +39,7 @@ These are **musical intentions**, not preselected genres, artists or guaranteed 
 | `go weird 30` | 30 tracks with the weird modifier |
 | `go 48` | 48 requested tracks; protect count fidelity and report limits honestly |
 
-Long sets still need a thesis, transitions, and accurate catalog matches; if a host truncates to six tracks when twelve were requested, describe the mismatch as a **shortfall**, not an implicit change of default. `go, text only` still suppresses publication, and an explicit count does not waive the existing Easter-egg eligibility limits.
+Long sets still need a thesis, transitions, and accurate catalog matches; if a host truncates to six tracks when twelve were requested, describe the mismatch as a **shortfall**, not an implicit change of default. `go, text only` still suppresses publication, **not the Easter-egg roll**. All modifiers and ordinary numeric length targets remain eligible for the **same one-in-100 roll**, including `go short`, `go long`, and `go weird slow 30`. A genuine hit overrides modifiers and ordinary count to 25 repeated tracks. An explicit `no DeBarge`, `unique songs only`, or unambiguous `exactly N, no exceptions` constraint prevents a spontaneous trigger. Do not roll twice on a publishing retry; a follow-up to save an existing list preserves the previous outcome.
 
 ## One-word go: streaming handoff
 
