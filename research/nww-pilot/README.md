@@ -2,6 +2,14 @@
 
 **State: RESEARCH-ONLY · NO production ranking, no playlist writes, no new publishing integration.**
 
+## Round 2: the useful connection experiment
+
+**[Read the source-grounded bridge review](bridge-review.md)** · [Eight documented pair cases](bridge-cases.json) · [Function-aware smoke test](review_bridges.py)
+
+We compared three cross-genre candidate bridges, one baseline-sufficient pair, and four rejection controls using source-supported recording/work descriptions. **Raw technique overlap connected 6 of 8 pairs, including 2 of 4 intentionally inappropriate near-neighbors.** A role/recording-type gate preserved 3 conditional candidates, recognized the baseline control, and rejected all four hand-selected negatives.
+
+**Interpretation:** meaningful *method/function* distinctions are missing from the flat genre/sonic-term vocabulary. The evidence supports a small shadow reasoning layer, **not** an artist-ranking boost or an independently validated music-quality lift. This fixture was purpose-built, not blinded, and no listening or Spotify catalog check has occurred.
+
 ## Question and conclusion
 
 Can the [Nurse with Wound list](https://en.wikipedia.org/wiki/Nurse_with_Wound_list) improve **method/era/sonic relationship vocabulary** without skewing Hipster Music Generator's international discovery toward a Euro-American experimental-rock collector canon?
