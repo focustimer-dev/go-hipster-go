@@ -29,12 +29,13 @@
   <main class="main">
     <aside class="welcome-setup" id="welcomeSetup" aria-labelledby="welcomeTitle" hidden>
       <div class="welcome-copy">
-        <span class="welcome-eyebrow">✳ YOUR FIRST VISIT? ✳</span>
-        <h2 id="welcomeTitle">SET IT UP<br><em>BEFORE YOU GO.</em></h2>
-        <p>Install the music skill and connect your streaming service once. Then come back and hit the big ridiculous button.</p>
-        <a class="welcome-link" href="/setup/">→ TAKE ME TO THE MANUAL</a>
+        <span class="welcome-eyebrow">✳ NO ONBOARDING MARATHON ✳</span>
+        <h2 id="welcomeTitle">TRY GO.<br><em>THEN SET UP.</em></h2>
+        <p>Pick your AI and music app below, tap GO, and send the copied prompt. If they aren't connected yet, we'll walk you through it.</p>
+        <a class="welcome-link" href="#goButton">→ TRY THE PROMPT FIRST</a>
+        <a class="welcome-text-link" href="/setup/">Need a hand? Open Setup →</a>
       </div>
-      <button type="button" id="dismissWelcome" class="welcome-dismiss" aria-label="Dismiss first-time setup reminder" title="Dismiss this reminder">×</button>
+      <button type="button" id="dismissWelcome" class="welcome-dismiss" aria-label="Dismiss first-time tip" title="Dismiss this reminder">×</button>
     </aside>
     <div class="hero-title">
       <span class="kicker">VOL. 001 / A MUSICAL EMERGENCY</span>
@@ -43,6 +44,7 @@
       <p class="hero-note">We found a solution in the back of a record shop that no longer exists. You're welcome.</p>
     </div>
 
+    <div class="try-first-strip"><strong>FIRST TIME?</strong> Try a prompt before installing anything. <a href="/setup/">Setup help →</a></div>
     <div class="section-title"><span><span class="num">A</span> CHOOSE YOUR DEALERS</span><small>two decisions, one regrettable outfit</small></div>
     <div class="selector-grid">
       <section class="panel" aria-labelledby="aiLabel">
@@ -50,17 +52,19 @@
         <div class="switch" role="group" aria-label="AI assistant">
           <button data-ai="chatgpt" type="button" aria-pressed="true">CHATGPT</button>
           <button data-ai="gemini" type="button" aria-pressed="false">GEMINI</button>
+          <button data-ai="claude" type="button" aria-pressed="false">CLAUDE</button>
         </div>
       </section>
       <section class="panel panel-alt" aria-labelledby="musicLabel">
         <h2 class="panel-head" id="musicLabel">02 / THE NEEDLE</h2>
         <div class="switch" role="group" aria-label="Streaming destination">
           <button data-service="spotify" type="button" aria-pressed="true">SPOTIFY</button>
-          <button data-service="youtube" type="button" aria-pressed="false">YOUTUBE<br>MUSIC</button>
+          <button data-service="youtube" type="button" aria-pressed="false">YOUTUBE MUSIC</button>
+          <button data-service="apple" type="button" aria-pressed="false">APPLE MUSIC</button>
         </div>
       </section>
     </div>
-    <div class="connector-status" id="routeStatus" role="status"><span>ChatGPT and Spotify — the verified writer route when both apps are selected.</span></div>
+    <div class="connector-status" id="routeStatus" role="status"><span>Choose your platforms. We'll explain what each pairing can actually do.</span></div>
 
     <div class="section-title"><span><span class="num">B</span> PULL THE TRIGGER</span><small>no vinyl was harmed</small></div>
     <div class="grind">

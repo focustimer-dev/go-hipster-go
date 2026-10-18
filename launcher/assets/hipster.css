@@ -173,3 +173,41 @@ a{color:inherit}
 .welcome-link{display:inline-block;border:2px solid var(--ink);background:var(--bone);text-decoration:none;padding:9px 10px;font-size:.76rem;font-weight:1000;box-shadow:2px 2px 0 var(--ink)}
 .welcome-link:active{box-shadow:none;transform:translate(2px,2px)}
 .welcome-dismiss{position:absolute;right:7px;top:7px;width:30px;height:30px;border:2px solid var(--ink);background:var(--bone);font-size:1.35rem;line-height:1;padding:0}
+
+
+/* Two-choice route selector; three labels fit without forfeiting dignity. */
+.switch:has(> button:nth-child(3)){grid-template-columns:repeat(3,minmax(0,1fr))}
+.switch button{overflow-wrap:anywhere;line-height:1.22}
+.welcome-text-link{display:inline-block;margin:10px 0 0 11px;font-size:.76rem;font-weight:800;text-decoration:underline;text-underline-offset:3px}
+.try-first-strip{background:var(--lime);border-left:5px solid var(--ink);padding:10px 11px;margin:11px 0 14px;font-size:.76rem;line-height:1.4}
+.try-first-strip strong{font-family:ui-monospace,Consolas,monospace}
+.try-first-strip a{font-weight:850;white-space:nowrap}
+.test-before-setup{background:var(--lime);border:2px solid var(--ink);box-shadow:4px 5px 0 var(--ink);padding:13px 14px;margin:13px 0 24px}
+.test-before-setup h2{font:900 clamp(1.55rem,6vw,2.5rem)/1 Impact,"Arial Black",sans-serif;margin:11px 0 5px}
+.test-before-setup p{font-size:.83rem;line-height:1.48;margin:9px 0 12px}
+.setup-selectors{margin-top:12px}
+.setup-recipe{border:2px solid var(--ink);box-shadow:5px 5px 0 var(--red2);background:var(--bone);padding:18px 14px;margin:13px 0 23px}
+.setup-recipe h2{font:900 clamp(1.85rem,7vw,2.9rem)/.95 Impact,"Arial Black",Arial,sans-serif;margin:11px 0 8px}
+.recipe-intro{font-size:.81rem;line-height:1.45;font-weight:750;color:var(--red2)}
+.recipe-steps{counter-reset:setup-step;padding:0;list-style:none;margin:13px 0}
+.recipe-steps li{position:relative;margin:0 0 9px;padding:9px 8px 9px 40px;font-size:.82rem;line-height:1.52;border:1px dashed #9f9685;background:#f5eacc}
+.recipe-steps li:before{counter-increment:setup-step;content:counter(setup-step);position:absolute;top:8px;left:9px;background:var(--ink);color:var(--bone);font:900 .84rem ui-monospace,monospace;width:22px;height:22px;display:grid;place-items:center}
+.recipe-resources{display:flex;flex-wrap:wrap;gap:8px;margin:13px 0}
+.setup-actions{display:flex;flex-wrap:wrap;gap:8px}
+.setup-actions .resource{flex:1;min-width:155px}
+.resource-shelf{background:#eadbb6;border:2px solid var(--ink);margin:17px 0;padding:0 14px}
+.resource-shelf summary{cursor:pointer;font:900 .8rem ui-monospace,Consolas,monospace;padding:15px 0;list-style:none}
+.resource-shelf summary::-webkit-details-marker{display:none}
+.resource-shelf summary span{display:block;font:italic .78rem Georgia,serif;margin:4px 0;color:#4b4741}
+.resource-shelf summary:after{content:" +";float:right}
+.resource-shelf[open] summary:after{content:" −"}
+.resource-shelf-body{border-top:2px dashed var(--ink);padding:12px 0 16px}
+.resource-shelf-body p{font-size:.8rem;line-height:1.5}
+.resource-stack{display:flex;flex-wrap:wrap;gap:7px;margin:9px 0}
+@media(max-width:540px){
+ .selector-grid{grid-template-columns:1fr;gap:3px}
+ .selector-grid .panel{margin:0 0 8px}
+ .switch button{font-size:.73rem;min-height:42px}
+ .setup-recipe{padding:14px 11px}
+ .welcome-text-link{display:block;margin:12px 0 0}
+}
