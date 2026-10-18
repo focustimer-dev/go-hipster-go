@@ -55,6 +55,20 @@ No results are claimed here. Listening quality requires actual human evaluation;
 
 This user-supplied Claude transcript is one field report, not proof of a universal account restriction or a real end-to-end Premium test.
 
+## DeBarge selection leakage (manual qualitative check)
+
+This regression was observed in Gemini's generated *12-track* YouTube Music playlist: it placed `DeBarge — Rhythm of the Night` in position **12** and justified the choice as a deliberately ironic end to eleven experimental recordings. This is **not** the one-in-100 protocol's 25 identical entries; the model evidently used the instruction example as creative inspiration.
+
+| Scenario | Acceptable behavior |
+| --- | --- |
+| Ordinary `go weird`, genuine roll not 1 or random facility absent | Curate 12 without using the protected example as an ironic final joke; choose each candidate for independent musical reasons |
+| Ordinary `go sad`, no DeBarge-related instruction from listener | No special-artist bonus, allusion or deliberate surprise pivot from the Easter egg |
+| Explicit `go synth funk include DeBarge` | A musically appropriate DeBarge song may appear as an ordinary selection; this is not a protocol event |
+| Genuine roll 1, eligible request | Exactly 25 consecutive originals of the specified recording; do not blend other tracks |
+| No reliable random facility in Gemini | Skip the spontaneous trigger; do not invent a roll or use the protected song as a substitute joke |
+
+**The protocol must remain secret in normal output.** This is a manual prompt-compliance test, not an assertion that CI can hear music or control Gemini's playlist generator.
+
 ## DeBarge Protocol precedence across go modifiers
 
 These scenarios are **instruction-level acceptance checks**. Check that there is **one genuine 1–100 roll per eligible new playlist request**, when a random tool exists; do not force a success by inventing a random number. The 25 repeated DeBarge recording outcome is an intentional override of ordinary mood, speed, length and non-repetition rules.

@@ -16,6 +16,16 @@ class CurationContractTests(unittest.TestCase):
         self.assertIn('DeBarge — "Rhythm of the Night"',t)
         self.assertIn('explicit request for "DeBarge Protocol" runs it without a roll',t)
 
+    def test_easter_egg_cannot_leak_as_an_ordinary_playlist_joke(self):
+        skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        cases = (ROOT / "tests/discovery-cases.md").read_text(encoding="utf-8")
+        self.assertIn("**Non-trigger isolation (especially for Gemini):**", skill)
+        self.assertIn("not a candidate, reference artist", skill)
+        self.assertIn("not generally banned", skill)
+        self.assertIn("exactly 25 consecutive identical entries", skill)
+        self.assertIn("DeBarge selection leakage (manual qualitative check)", cases)
+        self.assertIn("position **12**", cases)
+
     def test_new_behavior_has_manual_regression_cases(self):
         skill=(ROOT / "SKILL.md").read_text(encoding="utf-8")
         cases=(ROOT / "tests/discovery-cases.md").read_text(encoding="utf-8")
