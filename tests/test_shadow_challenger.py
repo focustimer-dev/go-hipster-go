@@ -70,6 +70,27 @@ class MethodChallengerTests(unittest.TestCase):
                              texture="same", energy=2) for x in original)
         self.assertEqual(engine.resequence(flat), flat)
 
+    def test_already_wide_coverage_does_not_force_unneeded_novelty(self):
+        pool = engine.catalog("go")
+        # Deliberately select all 8 scene labels and all 6 era values:
+        chosen = []
+        scenes = set()
+        eras = set()
+        for x in pool:
+            if len(chosen) < 8 and x.scene not in scenes:
+                chosen.append(x)
+                scenes.add(x.scene)
+                eras.add(x.era)
+        for x in pool:
+            if len(eras) < 6 and x.id not in {v.id for v in chosen} and x.era not in eras:
+                chosen.append(x)
+                eras.add(x.era)
+        chosen.extend(x for x in pool if x.id not in {v.id for v in chosen})
+        seq = tuple(chosen[:12])
+        self.assertEqual(engine.stats(seq)["scenes"], 8)
+        self.assertEqual(engine.stats(seq)["eras"], 6)
+        self.assertEqual(engine.diversify(seq, pool), seq)
+
     def test_run_results_are_deterministic(self):
         once = engine.evaluate(seeds=(1, 2))
         again = engine.evaluate(seeds=(1, 2))

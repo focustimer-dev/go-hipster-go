@@ -127,7 +127,7 @@ def diversify(
                 if s["transition"] < old["transition"] - 0.070:
                     continue
                 gain = score_variety(proposal) - score_variety(current)
-                if gain > best_gain + 1e-9:
+                # Do not replace a track for a tiny novelty bump alone.\n                if gain >= 0.65 and gain > best_gain + 1e-9:
                     best, best_gain = proposal, gain
         if best is current:
             break
