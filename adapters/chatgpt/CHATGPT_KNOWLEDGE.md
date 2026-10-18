@@ -17,7 +17,7 @@ description: Setup services, then go: real global deep cuts with sardonic, speci
 license: MIT
 compatibility: Requires file-reading capability. Optional web/catalog lookup for track verification and Python 3.10+ to run included validation/randomness scripts. Streaming accounts and OAuth are NOT bundled.
 metadata:
-  version: "3.3.5"
+  version: "3.4.0"
 ---
 
 # Hipster Music Generator — Agent Skill v3
@@ -116,7 +116,7 @@ Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation;
 ## Curate in seven steps
 
 1. **Sonic thesis.** In one sentence, identify 2–4 audible qualities connecting the set (e.g., rubbery bass, melancholy harmonies, fuzzy guitars, insistent dance pulse). Separate essential from optional characteristics. For an open-ended **"go"**, consider two or three genuinely different sonic theses, then choose the most intriguing one with a convincing audible bridge; show only the selected thesis unless asked. When the last playlist is visible, prefer a different core pairing, without sacrificing musical fit or pretending to remember unseen playlists.
-2. **Explore discovery distance.** Start with direct matches; expand to adjacent scenes sharing musical traits; include one or two *distant* choices only where there is a strong explainable sonic bridge. Geographic novelty alone is never proof of fit. See [sonic taxonomy](references/sonic-taxonomy.md) and [global scenes](references/global-scenes.md).
+2. **Explore discovery distance.** Start with direct matches; expand to adjacent scenes sharing musical traits; include one or two *distant* choices only where there is a strong explainable sonic bridge. Geographic novelty alone is never proof of fit. For unstructured `go`, also consider at least one musically plausible under-covered route from the [expanded global scenes](references/global-scenes.md)—including Lao/Saigon, qawwali, Indigenous rock, Hindi rock, Indonesian DIY punk, Memphis/sigilkore, non-English psychedelia and nonbinary country—before settling on canonical favorites. **No cultural, language, identity or religious quotas**: the actual audible bridge still decides. See [sonic taxonomy](references/sonic-taxonomy.md) and [global scenes](references/global-scenes.md).
 3. **Find real recordings.** Search specific artist/title pairs, albums, small-label releases, B-sides, compilations, soundtrack cues, and known mixes. Reference artists are **starting points, not the destination**; prefer surprising labelmates or regional contemporaries with similar musical qualities. Avoid recycling artists or identical primary pairings from the *immediately preceding playlist* when feasible, without blocking an explicit request or a particularly strong fit.
 4. **Verify honestly.** For each recommendation, confirm title and artist (and mix/version, date, scene, and platform availability if claimed) through appropriate credible catalog/artist/label/playable sources. If you cannot verify, label that entry provisional. If the user asks for a strictly verified or publishable playlist, omit unresolved tracks. Never invent links, versions, release years, BPM, or streaming IDs. See [verification rules](references/verification.md).
 5. **Choose intelligently.** A clear majority must fit the sonic thesis; optional off-axis picks should meaningfully expand the idea. Avoid multiple selections by the same artist by default, except when explicitly requested or in the DeBarge Easter egg. The v2 guideline of roughly **no more than two explicitly named taxonomy touchstones in 12 tracks** is a useful preference, never a hard ban. Make room for joyous or cheesy 1980s pop-soul when it makes musical sense; never condescend to its creators.
@@ -160,10 +160,14 @@ These are **research leads, not quotas or exhaustive histories**. Source: the us
 - Eastern Europe & Soviet Periphery — Yugoslavia, Poland, Hungary, Czechoslovakia, Baltic/USSR: Cold War synth-pop, Yugo novi val, Estrada-funk, cosmic synth instrumentals.
 - Southern & West Africa — Zambia, South Africa, Nigeria, Ghana: 1970s Zamrock, South African Shangaan electro/bubblegum synth-boogie & post-punk, Lagos Afro-funk and Edo boogie, Ghanaian Burger-Highlife.
 - Latin America — Peru, Colombia, Chile, Brazil, Argentina: Peruvian chicha and Amazonian psychedelic cumbia, Chilean Nueva Canción and avant-folk, Brazilian Tropicália/post-punk/boogie, Argentine synth-pop and rock nacional.
-- Southeast & East Asia — Indonesia, Thailand, Japan: Indonesian garage-psych, Kroncong-funk, and Indo-punk; Thai luk thung and molam funk; Japanese city pop, kankyō ongaku (environmental ambient), and Shibuya-kei.
+- Southeast & East Asia — Laos, Vietnam, Cambodia, Indonesia, Thailand, Japan: pre-1975 Lao pop/lam archives; Saigon surf/soul/psych; Khmer psychedelic rock; separate Indonesian garage-psych and punk/hardcore; Thai luk thung/Isan molam; Japanese city pop, kankyō ongaku and Shibuya-kei.
 - Mediterranean & Middle East — Turkey, Lebanon, Habesha/Ethiopia: Turkish Anatolian psych-rock (Anadolu Pop), Habesha Ethio-jazz and Tizita groove, Levantine synth-dabke and bellydance disco.
 - Caribbean & UK Diaspora — Jamaica, Bahamas, London, Bristol: Kingston Studio One/Black Ark dub and rockers, Nassau Compass Point electro-boogie, UK Lovers Rock, Bristol sound-system trip-hop, Sheffield bleep.
 - Belgium & France — Brussels, Paris: late-1980s New Beat, coldwave, minimal synth, cosmic French library music (Patchwork, Tele Music).
+- South Asia — Hindi-language independent band rock/fusion; Pakistani and northern Indian Sufi devotional qawwali (not a form of psychedelic rock).
+- Indigenous North America and Australia — Nation- and community-specific punk, post-rock, shoegaze, folk-rock, Aboriginal Australian roots and Yolŋu surf-rock, not one generic 'Indigenous' sound.
+- Memphis / internet underground — 1980s–1990s cassette rap; separately, later SoundCloud sigilkore and chopped/bitcrushed electronic rap.
+- Contemporary country — nonbinary, queer and gender-expansive country/Americana artists as creators, not separate timbres.
 
 
 A geography is a research lead, not a substitute for identifying the actual artist, recording, and context. Distinguish a movement's birthplace from an individual artist's location.
@@ -210,13 +214,13 @@ A geography is a research lead, not a substitute for identifying the actual arti
 
 **Reference artists:** Los Destellos, Juaneco y Su Combo, Los Mirlos, Chacalón y La Nueva Crema, Los Wembler's de Iquitos.
 
-### Indonesian Garage Psych & Underground Punk / Pop Kreatif
+### Indonesian Garage Psych / Pop Kreatif (separate from later punk)
 
-**Vibe:** raw, high-energy archipelago rock ranging from 1970s fuzz-organ garage and cassette-era synth-boogie to defiant underground punk.
+**Vibe:** 1970s Indonesian garage, fuzz-organ psych and cassette-era pop kreatif. The later independent punk and hardcore scenes get their own entry below.
 
 **Sonic markers:** overdriven fuzz guitars, swirling organ, tight funk-inflected rhythm sections, and raw tape saturation.
 
-**Reference artists:** AKA, Panbers, Shark Move, Benny Soebardja, Guruh Gipsy, Superman Is Dead.
+**Reference artists:** AKA, Panbers, Shark Move, Benny Soebardja, Guruh Gipsy. See the Indonesian DIY punk section below rather than collapsing several decades into one scene.
 
 ### Chilean Nueva Canción & Andean Avant-Folk
 
@@ -258,12 +262,108 @@ A geography is a research lead, not a substitute for identifying the actual arti
 
 **Reference artists:** Mulatu Astatke, Hailu Mergia, Mahmoud Ahmed, Getatchew Mekurya, Alemayehu Eshete.
 
+
+## Further scene horizons — research leads, not default playlists
+
+The additions below widen what the curator can *consider*. Source links support scene or artist context, **not** a verified Spotify track, playlist placement or streaming match. An actual recommendation still requires a musically defensible bridge and verified artist/title/version.
+
+### Classic Lao pop, royal-era and pre-1975 vocal archives
+
+**Scope:** Lao popular music, love songs and regional *lam/lum* from the decades around the Royal Lao period and 1975. The listener's "Royalist / Ban-Na Era" phrasing is a **discovery query, not an independently verified formal genre**; neither it nor "royalist" should be assigned to an artist's politics. Do not conflate these recordings with late-1980s onward *L-pop*.
+
+**Audible leads:** lyric-driven melodic singing, region-specific lam phrasing and rhythmic variation; investigate electric/pop arrangements only where a recording demonstrates them. **Research leads:** Khamvong Insixiengmai (documented Lao folk/lam singer, *not* established as "royalist pop"), *Love Songs* (1972) and *Laos: Traditional Music of the South* (1973). Preserve original-language metadata and verify who actually performs each archive track.
+
+**Sources:** [National Endowment for the Arts — Insixiengmai](https://www.arts.gov/honors/heritage/khamvong-insixiengmai) · [Smithsonian Folkways — Laos 1970s](https://folkways.si.edu/country/laos/1970s).
+
+### Pre-1975 Saigon sound — Vietnamese surf, soul, nhạc trẻ and psychedelia
+
+**Scope:** 1960s–1975 Saigon popular/electric recordings. Early surf and twist are not equivalent to later soul, funk and acid-rock; nor is every Vietnamese ballad psychedelic. War and displaced archives complicate original-release claims.
+
+**Audible leads:** beat and surf guitar, pop harmonies, horns/organ and funk rhythm when documented, distinctive Vietnamese-language melodic phrasing. **Research leads:** Phương Tâm's *Magical Nights* (1964–1966); *Saigon Rock & Soul* (1968–1974); scene performers Elvis Phương, Hùng Cường and CBC Band. Check exact spelling and versions.
+
+**Sources:** [Sublime Frequencies — Phương Tâm](https://www.sublimefrequencies.com/products/712290-phuong-tam-magical-nights-saigon-surf-twist-soul-1964-1966) · [Sublime Frequencies — Saigon Rock & Soul](https://www.sublimefrequencies.com/products/576864-saigon-rock-soul-vietnamese-classic-tracks-1968-1974).
+
+### Hindi-language rock and South Asian electric folk fusion
+
+**Scope:** distinguish Hindi rock/indie pop, regional-language rock, Indian folk fusion and film music. A performer from India does **not** necessarily sing Hindi, nor is every Hindi band song rock.
+
+**Audible leads:** band-driven choruses, electric/acoustic dynamics, folk-derived melodies and rhythmic phrasing. **Research leads:** Euphoria / Palash Sen (*Dhoom*, 1998), Indian Ocean (folk/jazz-rock fusion; check language on each recording), related independent bands.
+
+**Sources:** [Apple Music — Euphoria, Dhoom](https://music.apple.com/us/album/dhoom/1566127004) · [Times of India — Euphoria](https://timesofindia.indiatimes.com/city/lucknow/silent-disco-rock-band-gig-twin-treat-for-music-fans/articleshow/126109678.cms).
+
+### Qawwali — devotional ensemble, poetry and repetition
+
+**Scope:** South Asian Sufi devotional *qawwali* has its own religious and performance traditions. Never reduce it to "Indian psychedelia" or treat sacred vocals as interchangeable exotic samples.
+
+**Audible leads:** lead/chorus call-and-response, recurrent poetic refrains and cumulative ensemble intensity (verify instruments/percussion on the actual recording). **Research leads:** Haji Ghulam Farid Sabri / the Sabri Brothers, Aziz Mian and Nusrat Fateh Ali Khan. Check whether a release contains an excerpt, full ensemble recording or later remix.
+
+**Sources:** [Smithsonian Folkways — Music of the Qawal](https://folkways.si.edu/pakistan-the-music-of-the-qawal/world/music/album/smithsonian) · [Smithsonian — scholarly context](https://folkways.si.edu/news-and-press/unesco-collection-week-16-lesser-known-music-from-north-india-and-pakistan).
+
+### Indigenous North American punk, shoegaze and experimental rock
+
+**Scope:** credit the artist's specific Nations and scenes; "Indigenous" is not a sound or an artist-wide label for ceremonial music. **Audible leads:** guitar-driven punk, distortion, shoegaze drones, contrasting acoustic dynamics and locally grounded lyrics where verified.
+
+**Research leads:** 1876 (Northern Cheyenne / Blackfeet powwow punk), Status/Non-Status (Anishinaabe-led psych/folk/post-rock), OMBIIGIZI (Indigenous-led indie rock from Zoon and Status/Non-Status musicians). Verify language, Nation and any traditional elements per recording.
+
+**Sources:** [1876 — official band biography](https://www.1876band.com/band) · [Status/Non-Status — official biography](https://www.statusnonstatus.com/st/biography/) · [AllMusic — OMBIIGIZI](https://www.allmusic.com/artist/ombiigizi-mn0004169216).
+
+### Aboriginal Australian / Yolŋu rock and related First Nations music
+
+**Scope:** Australian First Nations communities are not one genre. Examples here are Aboriginal/Yolŋu-led groups; **do not claim these represent all Torres Strait Islander traditions**.
+
+**Audible leads:** electric guitar and rock rhythm, country-rock crossover and Yolŋu surf-rock; verify instruments, language and community connections per track. **Research leads:** Warumpi Band (including English, Luritja and Gumatj rock songs), Yothu Yindi, King Stingray. Do not blend these distinct catalogs into one imagined "tribal sound".
+
+**Sources:** [Guardian — Warumpi Band](https://www.theguardian.com/culture/2024/jan/12/big-name-no-blankets-review-warumpi-band-musical-is-a-joyous-rollicking-tribute) · [Guardian — King Stingray/Yothu Yindi](https://www.theguardian.com/culture/2023/aug/12/national-indigenous-music-awards-2023-winners-list-king-stingray-yothu-yindi).
+
+### Memphis underground rap — cassettes, 808s and horror-tinged production
+
+**Scope:** late-1980s/1990s local cassette/club rap, not a synonym for contemporary phonk or sigilkore. **Audible leads:** 808 bass, sparse hypnotic loops, tape saturation, chant structures, eerie sample textures, occasional cowbell and fast triplet flows (not universal).
+
+**Research leads:** DJ Spanish Fly, DJ Squeeky, DJ Zirk, Tommy Wright III, Kingpin Skinny Pimp, early Three 6 Mafia, Gangsta Boo and La Chat. Track exact tape issues and potentially misleading later reissues.
+
+**Sources:** [Red Bull Music Academy — DJ Spanish Fly](https://daily.redbullmusicacademy.com/2012/07/noz-pit-stop-memphis-spanish-fly/) · [Memphis Music Hall of Fame](https://memphismusichalloffame.com/inductee/threesixmafia/) · [Pitchfork — early tapes](https://pitchfork.com/reviews/albums/triple-six-mafia-underground-vol-1-1991-1994/).
+
+### Sigilkore — later digital occult rap, distinct from Memphis originals
+
+**Scope:** late-2010s/2020s SoundCloud internet rap/mixing. Memphis-influenced darkness can be a sonic bridge, **not evidence that Memphis artists recorded sigilkore**. Occult/sigil artwork alone does not determine genre.
+
+**Audible leads:** chopped/stuttered editing, changing tempo/pitch, bitcrushed vocals, clipped digital distortion and trap drums. **Research leads:** Luci4 (also associated with earlier aliases 4jay/axxturel), islurwhenitalk and Jewelxxet; verify artist aliases and actual uploads.
+
+**Sources:** [Pitchfork — sigilkore's Luci4/Jewelxxet history](https://pitchfork.com/thepitch/luci4-unleashed-a-generation-of-glitchy-underground-rap/).
+
+### Indonesian punk, hardcore and anarcho-punk — independent of garage psych
+
+**Scope:** Bandung/Jakarta DIY punk scenes, their own venues, zines, cassettes, politics and timelines. Do not substitute 1970s fuzz-rock for 1990s punk because both are Indonesian.
+
+**Audible leads:** raw punk guitar, shouts, hard-edged percussion and live-room grit, verified at song level. **Research leads:** Bandung's Puppen (early 1990s independent hardcore-adjacent history); Bandung punk/hardcore and anarcho-punk collectives, with artist names verified from scene sources before publication.
+
+**Sources:** [The Jakarta Post — Puppen](https://www.thejakartapost.com/news/2011/02/06/puppen-lessons-a-pioneering-indie-band) · [Punk & Post-Punk — Bandung scene history](https://intellectdiscover.com/content/journals/10.1386/punk.6.2.189_1) · [Asia Pacific Journal of Anthropology](https://www.tandfonline.com/doi/abs/10.1080/14442213.2023.2199716).
+
+### Non-English psychedelic rock beyond the Anglophone canon
+
+**Scope:** explore Khmer, Vietnamese, Turkish, Indonesian, Peruvian and other original-language electric/psych scenes separately. Singing in a non-English language **doesn't itself make a track psychedelic**.
+
+**Audible leads:** fuzz and surf guitar, organ, modal hooks, distinctive regional melodic phrasing and tape-era rhythm (confirmed per track). **Research leads:** Cambodian-era Sinn Sisamouth, Ros Serey Sothea and Pen Ran; Saigon archives above; existing Anatolian and chicha entries. Prioritize original performers over cover bands when discussing historical scenes.
+
+**Sources:** [KPBS — Cambodian psychedelic history](https://www.kpbs.org/news/2014/08/17/the-death-and-uneasy-rebirth-of-cambodias) · [Los Angeles Times — Cambodian rock](https://www.latimes.com/archives/la-xpm-2010-may-23-la-ca-dengue-fever-20100523-story.html).
+
+### Nonbinary country and gender-expansive Americana
+
+**Scope:** country is the music style; nonbinary describes *self-identified creators*, not their presumed sound. Queer country is broader than nonbinary country: never guess identities or pronouns.
+
+**Audible leads:** songwriter narrative, honky-tonk/roots twang, country-punk abrasion, steel or acoustic texture where verified. **Research leads:** Adeem the Artist (publicly uses they/them), August Ponthier (publicly discussed nonbinary identity; check current country/folk song style). Discover beyond named touchstones without using gender as a music-production shortcut.
+
+**Sources:** [Adeem — official biography and pronouns](https://adeemtheartist.com/epk) · [them. — August Ponthier interview](https://www.them.us/story/musician-august-ponthier-comes-out-as-nonbinary-exclusive-interview).
+
+
 ## Responsible cross-scene reasoning
 
 - Identify the actual artist, label, scene, period, and recording; do not infer origin from language, instruments, or broad regional labels.
 - The broader the geographic leap, the more important the audible bridge (groove, timbre, arrangement, production, atmosphere).
 - Don't turn these examples into an obligatory global tour. Stay within a requested scene when appropriate.
 - Treat all historical summaries as hypotheses and research leads, not automatic provenance claims.
+- For open-ended `go`, consider under-covered scenes and languages before settling on a canonical shortlist, but **never force a regional, religious, Indigenous or identity quota**. A promising audible bridge always outranks token diversity.
+- Verify artist credit, language, Nation/community identification, gender self-description and historical context when stated. These example names are discovery doors, not a ready-to-publish playlist.
 
 # END SOURCE: references/global-scenes.md
 
@@ -282,6 +382,11 @@ Source: expanded v2 axes, with the original v1 emphasis on audible qualities.
 - Early–mid 1980s: DX7-era FM synthesis, LinnDrum/DMX/TR-808 percussion, slap or fretless bass, gated reverb, post-punk economy, cassette-culture DIY.
 - Late 1980s–early 1990s: TB-303 acid basslines, pitched-down dance records, new beat, industrial swing, sample-based loops, street soul, early trip-hop.
 - Post-Y2K & 2000s Underground: micro-house, blog-house, electroclash, lo-fi bedroom indietronica, minimal synth revivals.
+- Pre-1975 Southeast Asian electric music: Saigon surf/soul/psych, Cambodian Khmer-language electric pop and separately documented Lao-era vocal/pop traditions.
+- 1980s–1990s Memphis cassette rap: 808 lows, murky tape textures, minimalist loops and sometimes horror-tinged keys.
+- 1990s–2000s Indonesian DIY punk/hardcore and Hindi-language band rock/folk fusion: different local scenes, not a single exotic-rock label.
+- 2010s–2020s SoundCloud sigilkore: chopped vocals, bitcrushing, pitch/tempo shifts and saturated trap production (not a synonym for old Memphis tapes).
+- Contemporary nonbinary country/Americana and Indigenous North American/Australian rock: cross-scene guitar/songwriting routes, not identity-derived instrument claims.
 
 ## Sonic textures and instrumentation
 
@@ -324,6 +429,30 @@ Thesis: repetition, elastic live rhythm, adventurous studio treatment. Honor the
 Choose a fresh combination across era, production, geography, and microgenre, with geographic breadth over successive requests. State the sonic thesis first, then curate. Avoid repeating the immediately preceding playlist's core regional/microgenre pairing if practical. The DeBarge roll is separate and takes precedence only when eligible.
 
 For an otherwise unstructured "go", privately compare two or three viable combinations. Choose the one that connects concrete sonic traits while offering a fresh scene or surprising transition; do not display discarded sketches by default. No invented discovery score or forced international quota.
+
+## "Pre-1975 Saigon surf meets classic Lao vocal archives"
+
+Explore Saigon electric/soul recordings and older Lao popular/lam archives independently. "Royalist/Ban-Na" is listener-supplied search vocabulary, not a verified political or genre designation. Bridge only if the recordings have a credible shared rhythmic, melodic or production quality.
+
+## "Qawwali and Hindi-language rock with an audible bridge"
+
+Treat qawwali as a distinct devotional performance tradition, not just Indian rock or psychedelia. Compare long-form lead/chorus repetition with verified Hindi indie-rock structures without inventing influence or track languages.
+
+## "Indonesian punk, Cambodian psych and non-English rock"
+
+Separate Indonesian DIY punk from 1970s garage-psych. Look for original Khmer-language recordings, and never identify style solely by language. Verify the specific players and titles.
+
+## "Memphis tape rap → later sigilkore"
+
+Connect 808 dread, tape grit and sparse grooves to newer bitcrushed, chopped internet rap. The Memphis artists are not retroactively sigilkore producers; check aliases, dates and actual playable recordings.
+
+## "Indigenous punk, Yolŋu surf-rock and nonbinary country"
+
+A guitar/arrangement-based sequence might bridge 1876, King Stingray and Adeem the Artist, but only where the sound works. Do not use Nation, Country, pronouns or artist identity as sonic stereotypes or quotas.
+
+## "Obscure non-English-language psychedelia"
+
+Explore Saigon, Cambodian, Turkish, Indonesian and Peruvian original-language scenes, rather than always returning to a familiar Anglophone psych canon; confirm that each selected recording actually has psychedelic musical traits.
 
 ## Titles, playlist descriptions and track notes
 
