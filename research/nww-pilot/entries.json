@@ -1,0 +1,593 @@
+{
+  "schema_version": "research-nww-pilot-v1",
+  "not_production": true,
+  "pilot_scope": "36 manually stratified secondary-list entries, six from each of six analytical families",
+  "methodology": "Techniques are provisional group-level hypotheses, not listening-derived facts about recordings. Membership is via Wikipedia's annotated transcription, NOT independently checked against original printed insert. Genre membership is a modeling lens; artists may span families.",
+  "source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+  "families": [
+    "electroacoustic",
+    "free_improvisation",
+    "rock_in_opposition",
+    "psychedelic_drone_zeuhl",
+    "art_punk_studio",
+    "sound_poetry_performance"
+  ],
+  "entries": [
+    {
+      "name": "Pierre Henry",
+      "family": "electroacoustic",
+      "methods": [
+        "tape_montage",
+        "found_sound",
+        "electronics"
+      ],
+      "regional_context": "France",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "Luc Ferrari",
+      "family": "electroacoustic",
+      "methods": [
+        "tape_montage",
+        "found_sound",
+        "studio_manipulation"
+      ],
+      "regional_context": "France",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "Alvin Lucier",
+      "family": "electroacoustic",
+      "methods": [
+        "spatial_acoustics",
+        "extended_instrument",
+        "repetition_drone"
+      ],
+      "regional_context": "USA",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "Iannis Xenakis",
+      "family": "electroacoustic",
+      "methods": [
+        "electronics",
+        "chance_scores",
+        "irregular_pulse"
+      ],
+      "regional_context": "Greece/France",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "Robert Ashley",
+      "family": "electroacoustic",
+      "methods": [
+        "extended_voice",
+        "speech_collage",
+        "performance_art"
+      ],
+      "regional_context": "USA",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "Trevor Wishart",
+      "family": "electroacoustic",
+      "methods": [
+        "extended_voice",
+        "tape_montage",
+        "studio_manipulation"
+      ],
+      "regional_context": "UK",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "AMM",
+      "family": "free_improvisation",
+      "methods": [
+        "nonmetric_improv",
+        "collective_improv",
+        "extended_instrument"
+      ],
+      "regional_context": "UK",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "Musica Elettronica Viva",
+      "family": "free_improvisation",
+      "methods": [
+        "nonmetric_improv",
+        "collective_improv",
+        "electronics"
+      ],
+      "regional_context": "US/Europe",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "Music Improvisation Company",
+      "family": "free_improvisation",
+      "methods": [
+        "nonmetric_improv",
+        "collective_improv",
+        "extended_instrument"
+      ],
+      "regional_context": "UK",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "Iskra",
+      "family": "free_improvisation",
+      "methods": [
+        "nonmetric_improv",
+        "collective_improv",
+        "irregular_pulse"
+      ],
+      "regional_context": "Sweden",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "Nihilist Spasm Band",
+      "family": "free_improvisation",
+      "methods": [
+        "nonmetric_improv",
+        "noise_texture",
+        "extended_instrument"
+      ],
+      "regional_context": "Canada",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "Parker and Lytton",
+      "family": "free_improvisation",
+      "methods": [
+        "nonmetric_improv",
+        "extended_instrument",
+        "collective_improv"
+      ],
+      "regional_context": "UK",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "Aksak Maboul",
+      "family": "rock_in_opposition",
+      "methods": [
+        "chamber_counterpoint",
+        "irregular_pulse",
+        "studio_manipulation"
+      ],
+      "regional_context": "Belgium",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "Henry Cow",
+      "family": "rock_in_opposition",
+      "methods": [
+        "chamber_counterpoint",
+        "irregular_pulse",
+        "collective_improv"
+      ],
+      "regional_context": "UK",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "Art Bears",
+      "family": "rock_in_opposition",
+      "methods": [
+        "chamber_counterpoint",
+        "extended_voice",
+        "irregular_pulse"
+      ],
+      "regional_context": "UK",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "Art Zoyd",
+      "family": "rock_in_opposition",
+      "methods": [
+        "chamber_counterpoint",
+        "repetition_drone",
+        "extended_instrument"
+      ],
+      "regional_context": "France",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "Etron Fou Leloublan",
+      "family": "rock_in_opposition",
+      "methods": [
+        "irregular_pulse",
+        "extended_voice",
+        "noise_texture"
+      ],
+      "regional_context": "France",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "Univers Zero",
+      "family": "rock_in_opposition",
+      "methods": [
+        "chamber_counterpoint",
+        "repetition_drone",
+        "irregular_pulse"
+      ],
+      "regional_context": "Belgium",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "Magma",
+      "family": "psychedelic_drone_zeuhl",
+      "methods": [
+        "repetition_drone",
+        "extended_voice",
+        "irregular_pulse"
+      ],
+      "regional_context": "France",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "Archaïa",
+      "family": "psychedelic_drone_zeuhl",
+      "methods": [
+        "repetition_drone",
+        "extended_voice",
+        "noise_texture"
+      ],
+      "regional_context": "France",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "Ash Ra Tempel",
+      "family": "psychedelic_drone_zeuhl",
+      "methods": [
+        "repetition_drone",
+        "collective_improv",
+        "electronics"
+      ],
+      "regional_context": "Germany",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "International Harvester",
+      "family": "psychedelic_drone_zeuhl",
+      "methods": [
+        "repetition_drone",
+        "collective_improv",
+        "noise_texture"
+      ],
+      "regional_context": "Sweden",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "Taj Mahal Travellers",
+      "family": "psychedelic_drone_zeuhl",
+      "methods": [
+        "repetition_drone",
+        "extended_instrument",
+        "collective_improv"
+      ],
+      "regional_context": "Japan",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "Magical Power Mako",
+      "family": "psychedelic_drone_zeuhl",
+      "methods": [
+        "studio_manipulation",
+        "extended_voice",
+        "noise_texture"
+      ],
+      "regional_context": "Japan",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "The Residents",
+      "family": "art_punk_studio",
+      "methods": [
+        "tape_montage",
+        "extended_voice",
+        "performance_art"
+      ],
+      "regional_context": "USA",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "This Heat",
+      "family": "art_punk_studio",
+      "methods": [
+        "tape_montage",
+        "irregular_pulse",
+        "noise_texture"
+      ],
+      "regional_context": "UK",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "Chrome",
+      "family": "art_punk_studio",
+      "methods": [
+        "studio_manipulation",
+        "noise_texture",
+        "electronics"
+      ],
+      "regional_context": "USA",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "Mars",
+      "family": "art_punk_studio",
+      "methods": [
+        "noise_texture",
+        "irregular_pulse",
+        "nonmetric_improv"
+      ],
+      "regional_context": "USA",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "Pere Ubu",
+      "family": "art_punk_studio",
+      "methods": [
+        "extended_voice",
+        "irregular_pulse",
+        "noise_texture"
+      ],
+      "regional_context": "USA",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "The Pop Group",
+      "family": "art_punk_studio",
+      "methods": [
+        "collective_improv",
+        "irregular_pulse",
+        "noise_texture"
+      ],
+      "regional_context": "UK",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "Henri Chopin",
+      "family": "sound_poetry_performance",
+      "methods": [
+        "extended_voice",
+        "speech_collage",
+        "tape_montage"
+      ],
+      "regional_context": "France",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "Albrecht/d.",
+      "family": "sound_poetry_performance",
+      "methods": [
+        "performance_art",
+        "found_sound",
+        "chance_scores"
+      ],
+      "regional_context": "Germany",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "John Cage",
+      "family": "sound_poetry_performance",
+      "methods": [
+        "chance_scores",
+        "extended_instrument",
+        "performance_art"
+      ],
+      "regional_context": "USA",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "Yoko Ono",
+      "family": "sound_poetry_performance",
+      "methods": [
+        "extended_voice",
+        "performance_art",
+        "nonmetric_improv"
+      ],
+      "regional_context": "Japan/USA",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "Ghédalia Tazartès",
+      "family": "sound_poetry_performance",
+      "methods": [
+        "extended_voice",
+        "tape_montage",
+        "studio_manipulation"
+      ],
+      "regional_context": "France",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    },
+    {
+      "name": "Jean Dubuffet",
+      "family": "sound_poetry_performance",
+      "methods": [
+        "performance_art",
+        "extended_instrument",
+        "noise_texture"
+      ],
+      "regional_context": "France",
+      "era_scope": "primarily 1960s–1980s material; verify recording dates",
+      "membership_source": "https://en.wikipedia.org/wiki/Nurse_with_Wound_list",
+      "membership_level": "annotated-list secondary source",
+      "tag_status": "hypothesis: confirm on recording",
+      "recording_verified": false,
+      "streaming_match": "unknown"
+    }
+  ]
+}
