@@ -1,0 +1,269 @@
+{
+  "schema_version": "nww-source-grounded-bridge-review-v1",
+  "status": "shadow-only",
+  "review_mode": "manual evidence review; source-grounded examples, NOT generated playlists or blinded listening test",
+  "recordings_verified_as_works": true,
+  "spotify_catalog_matches_verified": false,
+  "reviewer_listening_performed": false,
+  "selection_bias": "Cases and positive/negative labels are curated by researchers, not randomly drawn. No statistical quality estimate.",
+  "sources": {
+    "henry": {
+      "artist": "Pierre Henry",
+      "work": "Variations pour une porte et un soupir",
+      "era": "1963",
+      "source": "https://resources.ircam.fr/en/work/variations-pour-une-porte-et-un-soupir",
+      "source_type": "institution",
+      "documented": [
+        "fixed-media electronic composition",
+        "recorded door and breath sounds",
+        "composition in movements"
+      ],
+      "methods": [
+        "captured_sounds",
+        "fixed_media_composition"
+      ],
+      "roles": [
+        "sound_as_material"
+      ],
+      "music_context": "electroacoustic"
+    },
+    "thisheat": {
+      "artist": "This Heat",
+      "work": "24 Track Loop",
+      "era": "1978 recording era",
+      "source": "https://lightintheattic.net/products/repeat-metal",
+      "source_type": "label/distributor",
+      "documented": [
+        "tape-based experimental rock",
+        "loop-based rhythmic construction",
+        "repeat reworks 24 Track Loop"
+      ],
+      "methods": [
+        "fixed_media_composition",
+        "rhythmic_loop_reconstruction"
+      ],
+      "roles": [
+        "beat_as_material"
+      ],
+      "music_context": "experimental rock"
+    },
+    "nusrat": {
+      "artist": "Nusrat Fateh Ali Khan & Party",
+      "work": "Allah, Mohammed, Char, Yaar (Shahen Shah)",
+      "era": "1989 release",
+      "source": "https://realworldrecords.com/releases/shahen-shah/",
+      "source_type": "label",
+      "documented": [
+        "qawwali devotional performance",
+        "repeating names and phrases",
+        "call-and-response with chorus and intensification"
+      ],
+      "methods": [
+        "live_vocal_refrain",
+        "ensemble_intensification"
+      ],
+      "roles": [
+        "devotional_semantics",
+        "vocal_group_exchange"
+      ],
+      "music_context": "Sufi devotional qawwali"
+    },
+    "magma": {
+      "artist": "Magma",
+      "work": "Mëkanïk Dëstruktïẁ Kömmandöh (album-length composition)",
+      "era": "1973",
+      "source": "https://www.magmamusic.org/en/discography/mekanik-destruktiw-kommandoh-2/",
+      "source_type": "artist",
+      "documented": [
+        "long suite in seven movements",
+        "powerful vocal group",
+        "driving rhythm section and epic crescendos"
+      ],
+      "methods": [
+        "live_vocal_refrain",
+        "ensemble_intensification"
+      ],
+      "roles": [
+        "constructed_concert_suite",
+        "vocal_group_exchange"
+      ],
+      "music_context": "zeuhl/experimental progressive rock"
+    },
+    "screw": {
+      "artist": "DJ Screw",
+      "work": "June 27th (mixtape)",
+      "era": "1996",
+      "source": "https://exhibits.lib.uh.edu/s/dj-screw-records/page/june-27th",
+      "source_type": "university archive",
+      "documented": [
+        "Houston mixtape from June 1996",
+        "long freestyle over an existing beat",
+        "turntable slowing and phrase repetition documented by UH"
+      ],
+      "methods": [
+        "rhythmic_loop_reconstruction",
+        "pitch_time_manipulation"
+      ],
+      "roles": [
+        "remix_reconstruction",
+        "local_hiphop_context"
+      ],
+      "music_context": "Houston chopped-and-screwed hip-hop"
+    },
+    "ferrari": {
+      "artist": "Luc Ferrari",
+      "work": "Presque Rien n°1",
+      "era": "1967–1970",
+      "source": "https://lucferrari.bandcamp.com/track/presque-rien-n-1-1967-70",
+      "source_type": "artist estate/release",
+      "documented": [
+        "recorded Croatian village soundscape",
+        "light studio interventions",
+        "fixed-media sound composition"
+      ],
+      "methods": [
+        "captured_sounds",
+        "fixed_media_composition"
+      ],
+      "roles": [
+        "environmental_documentation"
+      ],
+      "music_context": "electroacoustic/soundscape"
+    },
+    "chopin": {
+      "artist": "Henri Chopin",
+      "work": "Pêche de Nuit (audio poem, 1957–59)",
+      "era": "1957–1959",
+      "source": "https://www.ngprague.cz/en/event/163/poetry-passage-5-l-esprit-des-po-tes-officiels-et-crochus",
+      "source_type": "museum",
+      "documented": [
+        "published audio-poetry recording",
+        "voice used as processed sound"
+      ],
+      "methods": [
+        "extended_voice"
+      ],
+      "roles": [
+        "recorded_poetry"
+      ],
+      "music_context": "sound poetry"
+    },
+    "ono": {
+      "artist": "Yoko Ono",
+      "work": "Voice Piece for Soprano (1961 instruction work)",
+      "era": "1961",
+      "source": "https://www.moma.org/explore/inside_out/2010/07/14/from-a-whisper-to-a-scream-following-yoko-onos-instructions/",
+      "source_type": "museum",
+      "documented": [
+        "performance instruction to scream",
+        "institutional performance of instruction piece",
+        "not inherently a fixed commercially released song recording"
+      ],
+      "methods": [
+        "extended_voice"
+      ],
+      "roles": [
+        "live_instruction_performance"
+      ],
+      "music_context": "performance art"
+    }
+  },
+  "cases": [
+    {
+      "id": "B01",
+      "left": "henry",
+      "right": "thisheat",
+      "kind": "candidate",
+      "mechanism": "Reworking recorded material into composed structure across fixed-media composition and experimental rock",
+      "baseline": "Genre and era axes separate electroacoustic composition from 1970s post-punk/rock; generic tape vocabulary is present, but no explicit distinction between sound source and compositional operation.",
+      "shadow": "Connect at the level of fixed-media transformation, noting Pierre Henry's door/breath materials versus This Heat's rhythmic looping.",
+      "verdict": "conditional_bridge",
+      "incremental": "meaningful",
+      "limitations": "Looping drums and transforming non-pitched object sounds have different listening dynamics. No provider-level exact-match check or human hearing comparison."
+    },
+    {
+      "id": "B02",
+      "left": "nusrat",
+      "right": "magma",
+      "kind": "candidate",
+      "mechanism": "Ensemble vocal response and staged intensification despite unrelated musical traditions",
+      "baseline": "Qawwali and zeuhl/experimental-rock live in different scene categories; repetition alone is too general.",
+      "shadow": "Bridge via collective vocal intensification and group exchange; retain devotional lyrics and seven-movement rock-suite distinction.",
+      "verdict": "conditional_bridge",
+      "incremental": "meaningful",
+      "limitations": "No claim of direct influence or comparable sacred context. Album-level Magma source, not track-version-level match; requires listening/sequencing review."
+    },
+    {
+      "id": "B03",
+      "left": "thisheat",
+      "right": "screw",
+      "kind": "candidate",
+      "mechanism": "Recorded rhythmic material actively re-edited to become the composition",
+      "baseline": "Post-punk tape loops and Southern hip-hop are very distant scene entries; tape manipulation, though already in baseline, has no role-typed bridge.",
+      "shadow": "Bridge via loop/phrase recomposition and altered perceived rhythmic time; explain cassette/turntable culture and studio editing as distinct workflows.",
+      "verdict": "conditional_bridge",
+      "incremental": "meaningful",
+      "limitations": "June 27th is a long mixtape, not an ordinary track; no evidence of influence or a confirmed Spotify playable recording for either exact version."
+    },
+    {
+      "id": "C01",
+      "left": "henry",
+      "right": "ferrari",
+      "kind": "baseline_control",
+      "mechanism": "Recorded environmental/noninstrument sounds entering fixed-media compositions",
+      "baseline": "Both explicitly electroacoustic and tape-based: existing era and technique vocabulary is enough to consider them.",
+      "shadow": "Differentiate recognizable object variation (Henry) from documentary field-sound editing (Ferrari), useful for explanation but not novel candidate discovery.",
+      "verdict": "baseline_already_sufficient",
+      "incremental": "low",
+      "limitations": "Composition vs edition/version distinctions need track-level checks."
+    },
+    {
+      "id": "N01",
+      "left": "magma",
+      "right": "thisheat",
+      "kind": "negative_control",
+      "mechanism": "Only the word repetition; Magma is ensemble-driven, This Heat loop/fixed-media-driven",
+      "baseline": "Repetition plus avant-rock could overgeneralize the pair.",
+      "shadow": "Reject as a *method* bridge unless a specific verified recording offers stronger shared roles or sonic motion.",
+      "verdict": "reject_weak_bridge",
+      "incremental": "guardrail",
+      "limitations": "This does not forbid a human choosing both after listening; it rejects the asserted evidence."
+    },
+    {
+      "id": "N02",
+      "left": "nusrat",
+      "right": "screw",
+      "kind": "negative_control",
+      "mechanism": "Both repeat phrases but for fundamentally different social and musical functions",
+      "baseline": "Both can be described as hypnotic repeated phrases, which is dangerously broad.",
+      "shadow": "Reject method-equivalence: qawwali's devotional ensemble refrains vs hip-hop DJ's tape/crossfader/pitch intervention.",
+      "verdict": "reject_weak_bridge",
+      "incremental": "guardrail",
+      "limitations": "Shared words don't create equivalent cultural context; still may share a particular *audible* quality after listening."
+    },
+    {
+      "id": "N03",
+      "left": "ferrari",
+      "right": "thisheat",
+      "kind": "negative_control",
+      "mechanism": "Both recorded onto tape, but environmental documentation is not necessarily rhythmic looping",
+      "baseline": "Tape and experimental labels overlap superficially.",
+      "shadow": "Reject medium-only match without proof of shared manipulation technique or audible rhythm.",
+      "verdict": "reject_weak_bridge",
+      "incremental": "guardrail",
+      "limitations": "Could be reconsidered if a specific track passage demonstrably uses a stronger joint operation."
+    },
+    {
+      "id": "N04",
+      "left": "chopin",
+      "right": "ono",
+      "kind": "negative_control",
+      "mechanism": "Both use extended voice, but one is a documented audio poem and the other a performance instruction",
+      "baseline": "An artist-level tag match might treat both as eligible audio tracks.",
+      "shadow": "Reject as a direct playlist-ready pair without a specific recording of Ono's instruction performance; medium/type guardrail first.",
+      "verdict": "reject_recording_type",
+      "incremental": "guardrail",
+      "limitations": "MoMA documents an actual performance; a recording may exist, but not automatically a commercially playable canonical track."
+    }
+  ]
+}
