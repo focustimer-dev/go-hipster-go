@@ -2,6 +2,14 @@
 
 **State: RESEARCH-ONLY · NO production ranking, no playlist writes, no new publishing integration.**
 
+## Round 3: Playlist C — minimal A/B hybrid, ready to audition
+
+**[Listen/inspect Playlist C (12 tracks)](playlist-c.md)** · [Compare A and C's exact changes and source evidence](playlist-c.json) · [Original A/B head-to-head](competing-playlists.md)
+
+Starting from listener feedback that A was more enjoyable than B, this controlled shadow draft **keeps nine of A's twelve recordings**, replacing exactly positions **4, 7 and 12**: a Saharan cycling-guitar bridge (Etran de L'Aïr), a Ghanaian funk pivot toward Ethiopian jazz (Ebo Taylor), and a rhythmic This Heat finale (`Health and Efficiency` rather than `24 Track Loop`). All three substitutions have an artist/label release link, a material → operation → musical role hypothesis and a documented possible downside. NWW pilot artist count stays **two in both A and C**; no historical-list membership is scored.
+
+**No listening verdict yet.** The scorecard focuses on three exact transition regions and whole-playlist replay preference. No Spotify account was accessed and no streaming write was attempted; production `SKILL.md` is unaffected.
+
 ## Round 2: the useful connection experiment
 
 **[Read the source-grounded bridge review](bridge-review.md)** · [Eight documented pair cases](bridge-cases.json) · [Function-aware smoke test](review_bridges.py)

@@ -1,0 +1,276 @@
+{
+  "schema_version": "nww-playlist-c-v1",
+  "status": "shadow research; NOT Spotify-published; no actual listening A/B",
+  "brief": "12 real, musically coherent recordings moving from hypnotic guitar grooves to unusual vocals, repetition and studio experimentation",
+  "baseline": {
+    "title": "The Familiar Strangers",
+    "ordered_keys": [
+      "phuong",
+      "ros",
+      "mirlos",
+      "erkin",
+      "mustafa",
+      "witch",
+      "ngozi",
+      "hailu",
+      "mulatu",
+      "nusrat",
+      "magma",
+      "thisheat"
+    ],
+    "source": "competing-playlists.json"
+  },
+  "comparison": {
+    "title": "The Wrong Turn That Works",
+    "description": "From Saigon electric pop through cumbia, Sahel guitar, Turkish grooves, Zamrock and Ghanaian funk to ensemble-vocal intensity and a beautifully stubborn experimental-rock finish.",
+    "ordered_keys": [
+      "phuong",
+      "ros",
+      "mirlos",
+      "etran",
+      "mustafa",
+      "witch",
+      "ebo",
+      "hailu",
+      "mulatu",
+      "nusrat",
+      "magma",
+      "heat_efficiency"
+    ],
+    "route": "preserve A's enjoyable arc, substitute only method/role-backed transitions",
+    "allow_nww_inclusion_bonus": false
+  },
+  "recordings": {
+    "phuong": {
+      "artist": "Phương Tâm",
+      "track": "Đêm Huyền Diệu (Magical Night)",
+      "source": "https://sublime-frequencies.bandcamp.com/album/magical-nights-saigon-surf-twist-soul-1964-1966",
+      "scene": "1960s Saigon popular rock/soul",
+      "method": "surf/pop guitar and vocal phrasing",
+      "nww": false
+    },
+    "ros": {
+      "artist": "Ros Serey Sothea",
+      "track": "Chnam Oun Dop-Pram Muy (I'm 16)",
+      "source": "https://open.spotify.com/embed/album/03Mcn6ITH2MtlQjYqU0oq1",
+      "scene": "Cambodian pre-1975 electric popular song",
+      "method": "vocal/beat and archival-era adjacency",
+      "nww": false
+    },
+    "mirlos": {
+      "artist": "Los Mirlos",
+      "track": "La Danza de los Mirlos",
+      "source": "https://barbes.bandcamp.com/track/la-danza-de-los-mirlos",
+      "scene": "Peruvian electric cumbia/chicha",
+      "method": "repeating guitar line and dance pulse",
+      "nww": false
+    },
+    "erkin": {
+      "artist": "Erkin Koray",
+      "track": "Cemalim",
+      "source": "https://music.apple.com/us/song/1701826019",
+      "scene": "Turkish Anatolian psych",
+      "method": "distorted electric folk melody",
+      "nww": false
+    },
+    "mustafa": {
+      "artist": "Mustafa Özkent",
+      "track": "Burçak Tarlası",
+      "source": "https://open.spotify.com/embed/album/3bnqPaNk1lbje5XwhZuPwz",
+      "scene": "Turkish instrumental funk/folk",
+      "method": "instrumental groove and electric arrangement",
+      "nww": false
+    },
+    "witch": {
+      "artist": "WITCH",
+      "track": "Lazy Bones",
+      "source": "https://w-i-t-c-h.bandcamp.com/track/lazy-bones",
+      "scene": "Zambian Zamrock",
+      "method": "fuzz/rock rhythm",
+      "nww": false
+    },
+    "ngozi": {
+      "artist": "Ngozi Family",
+      "track": "Hi Babe",
+      "source": "https://ngozifamily.bandcamp.com/album/day-of-judgment",
+      "scene": "Zambian Zamrock",
+      "method": "rhythmic electric rock",
+      "nww": false
+    },
+    "hailu": {
+      "artist": "Hailu Mergia & Walias Band",
+      "track": "Tche Belew",
+      "source": "https://hailumergia.bandcamp.com/track/tche-belew",
+      "scene": "Ethiopian jazz/funk",
+      "method": "instrumental arrangement over dance pulse",
+      "nww": false
+    },
+    "mulatu": {
+      "artist": "Mulatu Astatke",
+      "track": "Yèkèrmo Sèw (New York–Addis–London reissue)",
+      "source": "https://mulatuastatke.bandcamp.com/track/y-k-rmo-s-w-2",
+      "scene": "Ethiopian ethio-jazz",
+      "method": "melodic repetition and ensemble groove",
+      "nww": false
+    },
+    "nusrat": {
+      "artist": "Nusrat Fateh Ali Khan & Party",
+      "track": "Allah, Mohammed, Char, Yaar",
+      "source": "https://realworldrecords.com/releases/shahen-shah/",
+      "scene": "Pakistani Sufi devotional qawwali",
+      "method": "chorus/lead response and intensification in a devotional context",
+      "nww": false
+    },
+    "magma": {
+      "artist": "Magma",
+      "track": "Da Zeuhl Wortz Mekanïk (1973 album sequence)",
+      "source": "https://open.spotify.com/embed/album/6MDeMi4c1Zo1KRKtCgZpsb",
+      "scene": "French zeuhl",
+      "method": "ensemble vocals and insistent rhythmic development",
+      "nww": true
+    },
+    "thisheat": {
+      "artist": "This Heat",
+      "track": "24 Track Loop",
+      "source": "https://thisheat.bandcamp.com/track/24-track-loop",
+      "scene": "British experimental rock",
+      "method": "reconstructed/tape-looped rhythmic material",
+      "nww": true
+    },
+    "etran": {
+      "artist": "Etran de L'Aïr",
+      "track": "Toubouk Ine Chihoussay (Agadez studio)",
+      "source": "https://etrandelair.bandcamp.com/track/toubouk-ine-chihoussay-2",
+      "scene": "Agadez guitar/wedding performance",
+      "method": "cycling guitar figures and ensemble momentum",
+      "nww": false
+    },
+    "ebo": {
+      "artist": "Ebo Taylor",
+      "track": "Heaven",
+      "source": "https://ebotaylor.bandcamp.com/track/heaven-1",
+      "source_kind": "artist/label Bandcamp track",
+      "date_context": "1977 original on Ebo Taylor LP; online reissue",
+      "scene": "Ghanaian highlife / Afro-funk",
+      "material": [
+        "electric guitar",
+        "horn-led ensemble",
+        "rhythm section"
+      ],
+      "operation": [
+        "interlocking guitar-and-horn groove",
+        "rhythmic funk propulsion"
+      ],
+      "role": [
+        "sustain bodily dance pulse",
+        "transition from guitar fuzz to arranged jazz/funk"
+      ],
+      "nww": false,
+      "service_resolution": "not checked"
+    },
+    "heat_efficiency": {
+      "artist": "This Heat",
+      "track": "Health and Efficiency (1980 studio single; artist remaster)",
+      "source": "https://thisheat.bandcamp.com/track/health-and-efficiency-2",
+      "source_kind": "official band artist track",
+      "date_context": "1980 original single; 2020 artist remaster",
+      "scene": "British experimental/post-punk rock",
+      "material": [
+        "vocal opening",
+        "rock rhythm section",
+        "instrumental textures"
+      ],
+      "operation": [
+        "extended motoric instrumental development",
+        "sustained ensemble momentum"
+      ],
+      "role": [
+        "convert Magma's group intensity into a hard-driving, comparatively songlike finale"
+      ],
+      "nww": true,
+      "service_resolution": "not checked"
+    }
+  },
+  "changes": [
+    {
+      "position": 4,
+      "from": "erkin",
+      "to": "etran",
+      "mechanism": {
+        "material": "repeating electric-guitar figures",
+        "operation": "move cycling melodic riffs from Peruvian cumbia toward Saharan ensemble propulsion",
+        "role": "retain a recognizable groove while crossing a large stylistic/geographic distance"
+      },
+      "incoming": "Los Mirlos → Etran de L'Aïr",
+      "outgoing": "Etran de L'Aïr → Mustafa Özkent",
+      "benefit": "a meaningful long-distance guitar bridge rather than a second guitar-psych reference",
+      "risk": "a contemporary Niger recording between older Peruvian and Turkish studio sounds can reveal a production-era jump",
+      "evidence_urls": [
+        "https://etrandelair.bandcamp.com/track/toubouk-ine-chihoussay-2",
+        "https://barbes.bandcamp.com/track/la-danza-de-los-mirlos"
+      ],
+      "status": "plausible, unheard sequence"
+    },
+    {
+      "position": 7,
+      "from": "ngozi",
+      "to": "ebo",
+      "mechanism": {
+        "material": "electric guitars, live funk rhythm, arranged horns",
+        "operation": "move a heavy fuzz-rock groove toward layered Ghanaian highlife/funk",
+        "role": "keep the listener dancing while preparing Hailu Mergia's instrumental ensemble sound"
+      },
+      "incoming": "WITCH → Ebo Taylor",
+      "outgoing": "Ebo Taylor → Hailu Mergia & Walias Band",
+      "benefit": "removes back-to-back Zamrock artists and bridges toward Ethio-jazz via funk arrangement",
+      "risk": "'Heaven' is a longer cut; transition depends on actual dynamics, which have not been listened to",
+      "evidence_urls": [
+        "https://ebotaylor.bandcamp.com/track/heaven-1",
+        "https://hailumergia.bandcamp.com/track/tche-belew"
+      ],
+      "status": "plausible, unheard sequence"
+    },
+    {
+      "position": 12,
+      "from": "thisheat",
+      "to": "heat_efficiency",
+      "mechanism": {
+        "material": "experimental rock group, instrumental momentum and an opening vocal passage",
+        "operation": "replace primarily tape-loop demonstration with a gradually intensifying live-band composition",
+        "role": "resolve Magma's ensemble force in a driving finale without switching to pure sound art"
+      },
+      "incoming": "Magma → This Heat",
+      "outgoing": "end",
+      "benefit": "retains This Heat eccentricity but finishes on an energetic band track, not a tape-loop exercise",
+      "risk": "still an eight-minute long-form track, not a guaranteed breezy closer",
+      "evidence_urls": [
+        "https://thisheat.bandcamp.com/track/health-and-efficiency-2",
+        "https://www.magmamusic.org/en/discography/mekanik-destruktiw-kommandoh-2/"
+      ],
+      "status": "source-supported, listening untested"
+    }
+  ],
+  "control_metrics": {
+    "track_count_a": 12,
+    "track_count_c": 12,
+    "identical_recordings": 9,
+    "changed_recording_positions": [
+      4,
+      7,
+      12
+    ],
+    "distinct_artists_a": 12,
+    "distinct_artists_c": 12,
+    "nww_artist_count_a": 2,
+    "nww_artist_count_c": 2
+  },
+  "verification": "New candidate identities verified on official artist/label release pages; inherited nine retain original A's varying catalog evidence. Exact provider IDs and live availability unknown.",
+  "evaluation_plan": "Compare A and C in order; mark #3→4→5, #6→7→8 and #11→12 as stronger/same/weaker; rate whole-list listenability and unexpected-but-musical transitions independently. No scores recorded before actual hearing.",
+  "limitations": [
+    "The same curator constructed A and C without blinding or machine-based music evaluation.",
+    "A one-to-one source listing does not ensure correct playable track resolution on Spotify.",
+    "Benefits and risks are predictions from documented instrumentation/production rather than a personal audio audition.",
+    "The method-layer is open-universe reasoning, not a Nurse with Wound artist rank boost.",
+    "Existing nine A tracks have prior varying-strength sources; no across-the-board service matching was performed."
+  ]
+}
