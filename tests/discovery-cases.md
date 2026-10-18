@@ -13,6 +13,23 @@ Run *the same* prompts against the prior version and this revision, with the sam
 - `Give me music with the repetition and elastic rhythm of Can, but no Can or Neu! and no obvious krautrock classics.`
 - `Use the hipster-music-generator skill: go.`
 
+## Expanded sonic-map acceptance probes (manual, not a validated win)
+
+Test these against the prior revision with the *same* catalog/tools. Rate actual artist/title verification, credible sonic transitions, original-language provenance and breadth without forced token inclusions:
+
+| Prompt | Important distinction |
+| --- | --- |
+| `go classic Lao pop Royalist Ban-Na era and Saigon 1974` | Separate Lao archive research from Vietnamese soul/psych; no invented formal genre or political stance |
+| `go Hindi rock with qawwali` | Track language and devotional ensemble context, not pan-Indian psych |
+| `go Indonesian punk and Khmer psychedelia` | Later Bandung DIY distinct from early Indonesian garage and Cambodian pop |
+| `go Indigenous American punk with Australian Indigenous rock` | Specific Nations and Aboriginal/Yolŋu band history, not "tribal" stereotypes |
+| `go Memphis rap into sigilkore` | Different scenes and production periods, accurate aliases |
+| `go nonbinary country` | Self-described identities, song-level country traits and no gender assumptions |
+| `go non-English psychedelia` | Actual verified psych characteristics in multiple language scenes, not random foreign songs |
+| repeated plain `go` | Consider under-covered scenes without quotas; DeBarge Protocol unchanged |
+
+This is a **test plan**, not proof the curation model will pick better music or that a provider can save these recordings.
+
 ## Behavioral checks
 
 - Repeated `go` asks in one conversation should *try* not to reuse the previous pairing or artist, but a good requested track remains allowed.
