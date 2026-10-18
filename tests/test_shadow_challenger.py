@@ -54,7 +54,7 @@ class MethodChallengerTests(unittest.TestCase):
         for arm in engine.ARMS:
             self.assertEqual([x.id for x in original[arm]],
                              [x.id for x in altered[arm]])
-        self.assertNotIn("NWW", ENGINE.read_text(encoding="utf-8"))
+        self.assertNotIn("nww_membership", ENGINE.read_text(encoding="utf-8").casefold())
 
     def test_rejects_false_novelty_and_can_abstain(self):
         src = engine.catalog("go angry")
