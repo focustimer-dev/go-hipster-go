@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.4.0 — Expand the musical scene horizon
+
+- Add research-backed leads and documented guardrails for pre-1975 Lao and Saigon music, Hindi rock, qawwali, Indigenous North American/Australian guitar scenes, Memphis cassette rap, distinct internet sigilkore, Indonesian punk/hardcore, Khmer and other non-English psychedelia, and nonbinary country.
+- Keep distinct timelines, Nations, traditions and artist identities separate; the listener's Lao "Royalist/Ban-Na" terminology is not presented as a verified historical genre.
+- Broaden open-ended `go` discovery without quotas or sonic stereotypes; add source links and manual scene-specific acceptance prompts.
+- No change to the DeBarge lottery, Spotify-first setup, platform publishing logic, or track-level verification requirements. These are candidate leads, **not a live listening win**.
+
+
 ## 3.3.5 — Spotify-first, zero-interview setup
 
 - Default listening and publishing preferences to Spotify without a required service-selection question; keep `setup change ...` for explicit overrides.
