@@ -1,0 +1,206 @@
+{
+  "schema_version": "nww-head-to-head-v1",
+  "status": "comparison text only; not published",
+  "brief": "12 real, musically coherent recordings moving from hypnotic guitar grooves to unusual vocals, repetition and studio experimentation",
+  "methodology": "Human-authored, source-researched illustrative playlist alternatives using same six anchors, not independently executed autonomous solvers or blinded listeners.",
+  "reference_baseline": "v3.4.0 four-axis curation instructions",
+  "experimental_layer": "hypothetical material → operation → musical role transitions, no Nurse-with-Wound membership ranking boost",
+  "shared_anchor_keys": [
+    "phuong",
+    "mirlos",
+    "hailu",
+    "nusrat",
+    "magma",
+    "thisheat"
+  ],
+  "tracks": {
+    "phuong": {
+      "artist": "Phương Tâm",
+      "track": "Đêm Huyền Diệu (Magical Night)",
+      "source": "https://sublime-frequencies.bandcamp.com/album/magical-nights-saigon-surf-twist-soul-1964-1966",
+      "scene": "1960s Saigon popular rock/soul",
+      "method": "surf/pop guitar and vocal phrasing",
+      "nww": false
+    },
+    "ros": {
+      "artist": "Ros Serey Sothea",
+      "track": "Chnam Oun Dop-Pram Muy (I'm 16)",
+      "source": "https://open.spotify.com/embed/album/03Mcn6ITH2MtlQjYqU0oq1",
+      "scene": "Cambodian pre-1975 electric popular song",
+      "method": "vocal/beat and archival-era adjacency",
+      "nww": false
+    },
+    "mirlos": {
+      "artist": "Los Mirlos",
+      "track": "La Danza de los Mirlos",
+      "source": "https://barbes.bandcamp.com/track/la-danza-de-los-mirlos",
+      "scene": "Peruvian electric cumbia/chicha",
+      "method": "repeating guitar line and dance pulse",
+      "nww": false
+    },
+    "erkin": {
+      "artist": "Erkin Koray",
+      "track": "Cemalim",
+      "source": "https://music.apple.com/us/song/1701826019",
+      "scene": "Turkish Anatolian psych",
+      "method": "distorted electric folk melody",
+      "nww": false
+    },
+    "mustafa": {
+      "artist": "Mustafa Özkent",
+      "track": "Burçak Tarlası",
+      "source": "https://open.spotify.com/embed/album/3bnqPaNk1lbje5XwhZuPwz",
+      "scene": "Turkish instrumental funk/folk",
+      "method": "instrumental groove and electric arrangement",
+      "nww": false
+    },
+    "witch": {
+      "artist": "WITCH",
+      "track": "Lazy Bones",
+      "source": "https://w-i-t-c-h.bandcamp.com/track/lazy-bones",
+      "scene": "Zambian Zamrock",
+      "method": "fuzz/rock rhythm",
+      "nww": false
+    },
+    "ngozi": {
+      "artist": "Ngozi Family",
+      "track": "Hi Babe",
+      "source": "https://ngozifamily.bandcamp.com/album/day-of-judgment",
+      "scene": "Zambian Zamrock",
+      "method": "rhythmic electric rock",
+      "nww": false
+    },
+    "hailu": {
+      "artist": "Hailu Mergia & Walias Band",
+      "track": "Tche Belew",
+      "source": "https://hailumergia.bandcamp.com/track/tche-belew",
+      "scene": "Ethiopian jazz/funk",
+      "method": "instrumental arrangement over dance pulse",
+      "nww": false
+    },
+    "mulatu": {
+      "artist": "Mulatu Astatke",
+      "track": "Yèkèrmo Sèw (New York–Addis–London reissue)",
+      "source": "https://mulatuastatke.bandcamp.com/track/y-k-rmo-s-w-2",
+      "scene": "Ethiopian ethio-jazz",
+      "method": "melodic repetition and ensemble groove",
+      "nww": false
+    },
+    "nusrat": {
+      "artist": "Nusrat Fateh Ali Khan & Party",
+      "track": "Allah, Mohammed, Char, Yaar",
+      "source": "https://realworldrecords.com/releases/shahen-shah/",
+      "scene": "Pakistani Sufi devotional qawwali",
+      "method": "chorus/lead response and intensification in a devotional context",
+      "nww": false
+    },
+    "magma": {
+      "artist": "Magma",
+      "track": "Da Zeuhl Wortz Mekanïk (1973 album sequence)",
+      "source": "https://open.spotify.com/embed/album/6MDeMi4c1Zo1KRKtCgZpsb",
+      "scene": "French zeuhl",
+      "method": "ensemble vocals and insistent rhythmic development",
+      "nww": true
+    },
+    "thisheat": {
+      "artist": "This Heat",
+      "track": "24 Track Loop",
+      "source": "https://thisheat.bandcamp.com/track/24-track-loop",
+      "scene": "British experimental rock",
+      "method": "reconstructed/tape-looped rhythmic material",
+      "nww": true
+    },
+    "etran": {
+      "artist": "Etran de L'Aïr",
+      "track": "Toubouk Ine Chihoussay (Agadez studio)",
+      "source": "https://etrandelair.bandcamp.com/track/toubouk-ine-chihoussay-2",
+      "scene": "Agadez guitar/wedding performance",
+      "method": "cycling guitar figures and ensemble momentum",
+      "nww": false
+    },
+    "senyawa": {
+      "artist": "Senyawa",
+      "track": "Alkisah I (2021 studio recording)",
+      "source": "https://senyawaofficial.bandcamp.com/track/alkisah-i-5",
+      "scene": "Yogyakarta experimental Indonesian duo",
+      "method": "expressive vocal force and handmade instrumentation",
+      "nww": false
+    },
+    "screw": {
+      "artist": "DJ Screw & Point Blank",
+      "track": "My Mind Went Blank (Screwed)",
+      "source": "https://open.spotify.com/embed/track/7zfLS7MJmy8zmj1OL7s6bk",
+      "scene": "Houston chopped-and-screwed rap",
+      "method": "manipulated tempo and reconstructed recorded rhythm",
+      "nww": false
+    },
+    "dilla": {
+      "artist": "J Dilla",
+      "track": "Workinonit (Donuts, 2006)",
+      "source": "https://dilla.bandcamp.com/track/workinonit-2",
+      "scene": "Detroit sample-based instrumental hip-hop",
+      "method": "rhythmic sample collage/montage",
+      "nww": false
+    },
+    "henry": {
+      "artist": "Pierre Henry",
+      "track": "Variations pour une porte et un soupir: 2. Balancement 1 (Galaxie Pierre Henry)",
+      "source": "https://open.spotify.com/album/3Lnkr3mGrY3vYUlB7w7fFr",
+      "scene": "French musique concrète",
+      "method": "recorded object/breath sound as compositional material",
+      "nww": true
+    },
+    "kmru": {
+      "artist": "KMRU",
+      "track": "Klang (Peel, 2020)",
+      "source": "https://kmru.bandcamp.com/album/peel",
+      "scene": "Nairobi electronic/field-recording composition",
+      "method": "field recording and electronics as slowly unfolding texture",
+      "nww": false
+    }
+  },
+  "playlist_a": {
+    "title": "The Familiar Strangers",
+    "route": "scene/era/genre/texture adjacency",
+    "ordered_keys": [
+      "phuong",
+      "ros",
+      "mirlos",
+      "erkin",
+      "mustafa",
+      "witch",
+      "ngozi",
+      "hailu",
+      "mulatu",
+      "nusrat",
+      "magma",
+      "thisheat"
+    ]
+  },
+  "playlist_b": {
+    "title": "Rhythm, Taken Apart",
+    "route": "purpose-aware operation and musical role",
+    "ordered_keys": [
+      "phuong",
+      "mirlos",
+      "etran",
+      "hailu",
+      "nusrat",
+      "magma",
+      "senyawa",
+      "thisheat",
+      "screw",
+      "dilla",
+      "henry",
+      "kmru"
+    ]
+  },
+  "limitations": [
+    "Track identities are source-supported, but not all exact streaming service catalog IDs have been checked.",
+    "Some cited sources are Spotify listing, other sources are Bandcamp/label or store catalogs.",
+    "Magma is an excerpt from a long suite; qawwali recording and ensemble role must not be equated with avant-rock lyrics.",
+    "The Pierre Henry track is Galaxie/reissue version; confirm exact Spotify ID before write.",
+    "No playback, perceptual loudness analysis, automatic generation, blinded listening, or Spotify playlist publication has occurred.",
+    "Selection favors understandable demonstrations of the candidate method rather than a random sample."
+  ]
+}
