@@ -108,7 +108,7 @@ Setup does **not** generate a playlist. It won't store your preferences outside 
 
 ## What you're installing
 
-- **Sonic-first discovery.** **Era + audible texture/production + geographic scene + microgenre**. Being obscure on the same continent is not a musical bridge.
+- **Sonic-first discovery.** **Era + audible texture/production + geographic scene + microgenre**. The [expanded research map](references/global-scenes.md) now explores Lao/Saigon archives, qawwali, Indigenous rock, Memphis rap/sigilkore, Indonesian punk, non-English psychedelia and nonbinary country—without quotas or stereotypes. Being obscure on the same continent is not a musical bridge.
 - **Real songs.** Verify artist, recording, version and catalog availability instead of inventing remarkably convenient B-sides.
 - **Actual sequencing.** An intentional listening arc and a concrete musical reason for each track.
 - **Honest publishing.** A connected account is not necessarily an exposed playlist-writing tool; the skill distinguishes curation from provider-confirmed saving.
