@@ -211,3 +211,19 @@ a{color:inherit}
  .setup-recipe{padding:14px 11px}
  .welcome-text-link{display:block;margin:12px 0 0}
 }
+
+/* Four magnificently self-serious hipster faces: vector beard/bun portraits */
+.mood-grid .mood{background:#202126;color:#f9efe1;min-height:112px;border-color:#242021}
+.mood-grid .mood:nth-child(2),.mood-grid .mood:nth-child(3),.mood-grid .mood:nth-child(4){background:#202126}
+.mood-grid .mood[aria-pressed=true]{background:#ecca82;color:#2e2723;border-color:#9d2b40}
+.mood .face{display:block;width:61px;height:68px;background:url('/assets/hipster-moods.svg') no-repeat;background-size:400% 100%;flex-shrink:0;font-size:0}
+.mood:nth-child(1) .face{background-position:0 0}
+.mood:nth-child(2) .face{background-position:33.333% 0}
+.mood:nth-child(3) .face{background-position:66.667% 0}
+.mood:nth-child(4) .face{background-position:100% 0}
+.mood .word{font-weight:1000;letter-spacing:.06em}
+.welcome-link{cursor:pointer;font:900 .76rem Arial,Helvetica,sans-serif}
+.try-first-strip button{border:0;background:transparent;padding:0 2px;color:#473321;text-decoration:underline;font-weight:950;cursor:pointer}
+.first-setup-status{font-size:.74rem;margin:8px 0 0;line-height:1.4;font-weight:750}
+#setupTryStatus{max-width:530px}
+@media(max-width:390px){.mood-grid .mood{min-height:110px;padding:8px 2px}.mood .face{width:54px;height:61px}.mood .word{font-size:.64rem}}

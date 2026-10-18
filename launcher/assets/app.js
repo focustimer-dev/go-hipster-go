@@ -34,11 +34,11 @@ function routeInfo(ai,service){
  return {tone:"warn",message:aiNames[ai]+" + "+serviceNames[service]+": playlist-writing support isn't confirmed for this pairing.",note:"The skill can still curate a verified text playlist; publish only if the AI exposes a real authorized writer."};
 }
 function setupPrompt(ai,service){
- let first;
- if(ai==="chatgpt")first="@Hipster Music Generator setup change "+serviceNames[service]+".";
- else if(ai==="gemini")first="@hipster-music-generator setup change "+serviceNames[service]+".";
- else first="Use Hipster Music Generator. Run setup; prefer "+serviceNames[service]+".";
- return first+"\nCheck that the Hipster Music Generator skill/plugin is actually loaded, that "+serviceNames[service]+" is connected, and whether this session has tools to CREATE and FILL a playlist, not just search or play. If the writer isn't available, keep the verified ordered 12-track list and report that nothing was saved. Do not request login credentials in chat.";
+ const name=aiNames[ai],target=serviceNames[service];
+ const intro=ai==="chatgpt"?"In ChatGPT, check for the Hipster Music Generator plugin/app.":ai==="gemini"?"In Gemini, check for the installed Hipster Music Generator Skill (not a Gem).":"In Claude, check for the Hipster Music Generator skill or plugin.";
+ const install=ai==="gemini"?"If missing, guide me to Customize → Skills and the current Gemini Skill ZIP.":ai==="claude"?"If missing, identify whether I need Claude's Skills ZIP or Plugins ZIP; they are different.":"If missing, use the available app/skill installation flow or show how to install from the project's GitHub repository.";
+ return "FIRST-TIME SETUP CHECK for "+name+" + "+target+".\n"+intro+" "+install+" Source: "+repo+
+ "\nIf the skill is available, run its setup for "+target+", guide me through connecting or selecting that music service, and CHECK whether playlist creation and adding tracks are actually supported—not just search/playback. Tell me the smallest action needed to finish setup. If everything is already ready, say so and tell me to run go. Do NOT generate a new playlist during this setup check, claim a playlist was saved, or ask me to paste credentials into chat.";
 }
 const universalPrompt="Load Hipster Music Generator from "+repo+". Read SKILL.md and the referenced musical taxonomy. Use your supported skill/plugin installation mechanism, confirm what actually loaded and whether it persists, then run setup. Do not assume a streaming playlist writer exists.";
 function goCommand(ai,service,mood){
@@ -82,7 +82,7 @@ function renderSetup(){
  const q=routeInfo(ai,service);
  const intro=doc.getElementById("recipeIntro"),steps=doc.getElementById("recipeSteps"),links=doc.getElementById("recipeResources");
  if(!intro||!steps||!links)return;
- intro.textContent="YOUR MIX: "+aiNames[ai]+" × "+serviceNames[service]+". Try GO first; if it fails, use these steps.";
+ intro.textContent="YOUR MIX: "+aiNames[ai]+" × "+serviceNames[service]+". Copy the setup-check prompt first; if you're already connected, it should simply tell you to run GO.";
  let install="",connection="";
  if(ai==="chatgpt")install="In ChatGPT, select Hipster Music Generator. If missing, install/load it using the project source or app directory.";
  else if(ai==="gemini")install="In Gemini Customize → Skills, upload the Gemini Skill ZIP (or Replace skill to update it), then choose Hipster Music Generator using @ or /.";
@@ -93,12 +93,12 @@ function renderSetup(){
  else if(service==="youtube"&&ai==="gemini")connection="Enable YouTube Music in Gemini Connected Apps and choose it in the prompt. You may need to tap Save to library.";
  else if(service==="apple"&&(ai==="chatgpt"||ai==="claude"))connection="In your AI's apps/connectors, locate and connect Apple Music if offered. Verify whether it can create and fill playlists; don't assume.";
  else connection="Check whether "+serviceNames[service]+" is available as a connected writer in "+aiNames[ai]+". If not, use a text playlist instead.";
- const stepsText=[install,connection,"Copy the tailored setup prompt only if the trial didn't work, then try GO again."];
+ const stepsText=[install,connection,"Copy the tailored setup prompt to verify the connection. When your AI confirms everything is ready, go back to the Jukebox and press GO."];
  steps.replaceChildren();for(const text of stepsText){const li=doc.createElement("li");li.textContent=text;steps.append(li)}
  setupLinks(links,resourceInfo[ai]);
  const caveat=doc.getElementById("recipeCaveat");if(caveat)caveat.textContent=q.note;
  const target=doc.getElementById("openSelectedAi");if(target){target.href=destinations[ai];target.textContent="↗ OPEN "+aiNames[ai].toUpperCase()}
- const test=doc.getElementById("tryFirstFromSetup");if(test)test.href="/?ai="+encodeURIComponent(ai)+"&service="+encodeURIComponent(service);
+ const tryFirst=doc.getElementById("trySetupPrompt");if(tryFirst)tryFirst.dataset.readyPair=ai+":"+service;
 }
 function renderLaunch(){
  renderSelections();
@@ -125,12 +125,23 @@ doc.querySelectorAll("[data-setup]").forEach(b=>b.addEventListener("click",async
  const prompt=b.dataset.setup==="universal"?universalPrompt:setupPrompt(ai,service);
  status(await copyText(prompt)?"Installation prompt copied. Paste into your chosen AI.":"Clipboard blocked; please copy the instructions manually.");
 }));
+async function copyFirstSetup(){
+ const ok=await copyText(setupPrompt(ai,service));
+ const msg=ok?"Setup check copied for "+aiNames[ai]+" + "+serviceNames[service]+". Open that AI, paste and send.":"Clipboard unavailable; use the personalized Manual for the setup instructions.";
+ const tip=doc.getElementById("setupTipStatus"),setupTip=doc.getElementById("setupTryStatus");
+ if(tip)tip.textContent=msg;
+ if(setupTip)setupTip.textContent=msg;
+ status(msg);
+}
+for(const id of ["quickSetupPrompt","stripSetupPrompt","trySetupPrompt"]){
+ const b=doc.getElementById(id);if(b)b.addEventListener("click",copyFirstSetup);
+}
 const copyTailored=doc.getElementById("copyTailoredSetup");
 if(copyTailored)copyTailored.addEventListener("click",async()=>status(await copyText(setupPrompt(ai,service))?"Setup prompt copied. Paste it into "+aiNames[ai]+".":"Clipboard unavailable. Try again."));
 if(body.dataset.page!=="launch"){render();return}
 // A dismissible hint, never a blocking onboarding gate. Changing its version lets existing visitors see Try First.
 const welcome=doc.getElementById("welcomeSetup");
-if(welcome&&!stored("hmg-try-first-tip-dismissed-v2")){
+if(welcome&&!stored("hmg-setup-first-tip-dismissed-v3")){
  welcome.hidden=false;const close=doc.getElementById("dismissWelcome");
  if(close)close.addEventListener("click",()=>{welcome.hidden=true;store("hmg-try-first-tip-dismissed-v2","yes")});
 }

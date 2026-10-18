@@ -29,11 +29,12 @@
   <main class="main">
     <aside class="welcome-setup" id="welcomeSetup" aria-labelledby="welcomeTitle" hidden>
       <div class="welcome-copy">
-        <span class="welcome-eyebrow">✳ NO ONBOARDING MARATHON ✳</span>
-        <h2 id="welcomeTitle">TRY GO.<br><em>THEN SET UP.</em></h2>
-        <p>Pick your AI and music app below, tap GO, and send the copied prompt. If they aren't connected yet, we'll walk you through it.</p>
-        <a class="welcome-link" href="#goButton">→ TRY THE PROMPT FIRST</a>
-        <a class="welcome-text-link" href="/setup/">Need a hand? Open Setup →</a>
+        <span class="welcome-eyebrow">✳ NEW TO THE RECORD STORE? ✳</span>
+        <h2 id="welcomeTitle">FIRST, RUN<br><em>THE SETUP PROMPT.</em></h2>
+        <p>Choose your AI and music service below, then copy a tailored setup check. It can help install the skill and check your connection before you press GO.</p>
+        <button class="welcome-link" type="button" id="quickSetupPrompt">✂ COPY MY SETUP PROMPT</button>
+        <a class="welcome-text-link" href="/setup/">Or see the step-by-step Manual →</a>
+        <p class="first-setup-status" id="setupTipStatus" role="status" aria-live="polite"></p>
       </div>
       <button type="button" id="dismissWelcome" class="welcome-dismiss" aria-label="Dismiss first-time tip" title="Dismiss this reminder">×</button>
     </aside>
@@ -44,7 +45,7 @@
       <p class="hero-note">We found a solution in the back of a record shop that no longer exists. You're welcome.</p>
     </div>
 
-    <div class="try-first-strip"><strong>FIRST TIME?</strong> Try a prompt before installing anything. <a href="/setup/">Setup help →</a></div>
+    <div class="try-first-strip"><strong>FIRST TIME?</strong> Run the setup check before GO. <button type="button" id="stripSetupPrompt">Copy setup prompt ↗</button> <a href="/setup/">Manual →</a></div>
     <div class="section-title"><span><span class="num">A</span> CHOOSE YOUR DEALERS</span><small>two decisions, one regrettable outfit</small></div>
     <div class="selector-grid">
       <section class="panel" aria-labelledby="aiLabel">
@@ -79,10 +80,10 @@
       <span class="sideprint" aria-hidden="true">INDEPENDENTLY CURATED</span>
     </div>
     <div class="mood-grid" role="group" aria-label="Mood presets">
-      <button class="mood" data-mood="happy" type="button" aria-pressed="false"><span class="face">🙂</span><span class="word">HAPPY</span></button>
-      <button class="mood" data-mood="angry" type="button" aria-pressed="false"><span class="face">😠</span><span class="word">ANGRY</span></button>
-      <button class="mood" data-mood="sad" type="button" aria-pressed="false"><span class="face">😢</span><span class="word">SAD</span></button>
-      <button class="mood" data-mood="weird" type="button" aria-pressed="false"><span class="face">🤪</span><span class="word">WEIRD</span></button>
+      <button class="mood" data-mood="happy" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">HAPPY</span></button>
+      <button class="mood" data-mood="angry" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">ANGRY</span></button>
+      <button class="mood" data-mood="sad" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">SAD</span></button>
+      <button class="mood" data-mood="weird" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">WEIRD</span></button>
     </div>
 
     <div class="section-title"><span><span class="num">C</span> YOUR MIXTAPE RECEIPT</span><small>zero returns · all sales final</small></div>

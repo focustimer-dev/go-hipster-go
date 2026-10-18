@@ -16,3 +16,9 @@ For Android, open the live Launch page in Chrome and use **Install app** or **Ad
 The deployment is a Cloudflare Worker containing these file contents. Updating GitHub source **does not automatically deploy** the Worker. Static HTML and JS are served with no-cache; the worker serves `/setup/` and `/gemini/` along with root and app assets. The legacy Gemini manifest has scope `/` so Setup navigation stays in the same installed web app.
 
 Run UI and behavior smoke checks after deploying: launch + setup routes render; both selectors work and warn on unsupported pairs; mood copy text updates; Android share/app handoff is optional; manifest shortcuts and ZIP links remain correct; mobile viewport does not overflow.
+
+## First-time setup & the bearded mood clerks
+
+The Launch page includes a **Copy my setup prompt** callout and a small persistent setup link; both copy the personalized **install/connect/status** prompt, never a `go` playlist-generation prompt. The top of Setup also copies that same setup prompt after the user selects their AI and music service. Pressing GO is a separate action after setup. Dismissed prompts stay dismissed in local storage on that device.
+
+Four illustrative bearded/man-bun mood portraits are stored in `launcher/assets/hipster-moods.svg`; text labels and ARIA mood names remain separate. Tapping the selected mood again still returns to plain `go`.
