@@ -1,13 +1,13 @@
 {
   "id": "/gemini/",
-  "name": "Hipster GO — Music Launcher",
+  "name": "Hipster GO — The Presumptuous Listening Society",
   "short_name": "GO Gemini",
-  "description": "One launcher for Hipster Music Generator on ChatGPT or Gemini.",
+  "description": "A deeply pretentious, absurdly useful record-store clerk in your pocket.",
   "start_url": "/gemini/",
-  "scope": "/gemini/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#17191f",
-  "theme_color": "#1c1d25",
+  "background_color": "#252320",
+  "theme_color": "#252320",
   "icons": [
     {
       "src": "/gemini/icon.svg",
@@ -19,22 +19,18 @@
   "shortcuts": [
     {
       "name": "Happy",
-      "short_name": "Happy",
       "url": "/gemini/?mood=happy"
     },
     {
       "name": "Angry",
-      "short_name": "Angry",
       "url": "/gemini/?mood=angry"
     },
     {
       "name": "Sad",
-      "short_name": "Sad",
       "url": "/gemini/?mood=sad"
     },
     {
       "name": "Weird",
-      "short_name": "Weird",
       "url": "/gemini/?mood=weird"
     }
   ]
