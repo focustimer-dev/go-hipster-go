@@ -85,6 +85,12 @@
       <button class="mood" data-mood="weird" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">WEIRD</span></button>
     </div>
     <p class="mood-hint">No mood selected? It’s a surprise. Tap a selected mood again to clear it.</p>
+    <div class="tempo-control">
+      <div class="tempo-heading"><label for="tempoSlider">TEMPO <span id="tempoValue">Any tempo</span></label><button id="anyTempo" type="button" aria-pressed="true">Any tempo</button></div>
+      <input id="tempoSlider" type="range" min="1" max="5" step="1" value="3" aria-describedby="tempoHelp" aria-valuetext="Any tempo — move to choose a pace">
+      <div class="tempo-scale" aria-hidden="true"><span>Slow</span><span>Fast</span></div>
+      <p id="tempoHelp">Slide to choose a pace. Your mood stays selected.</p>
+    </div>
     <div class="grind">
       <button type="button" class="go-button" id="goButton" aria-label="GO! Copy a surprise playlist prompt">
         <svg class="star-glyph" viewBox="0 0 120 120" aria-hidden="true">

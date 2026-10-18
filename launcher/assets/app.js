@@ -8,6 +8,8 @@ const serviceNames={spotify:"Spotify",youtube:"YouTube Music",apple:"Apple Music
 const destinations={chatgpt:"https://chatgpt.com/",gemini:"https://gemini.google.com/app",claude:"https://claude.ai/"};
 const geminiIntent="intent://gemini.google.com/app#Intent;scheme=https;package=com.google.android.apps.bard;S.browser_fallback_url=https%3A%2F%2Fgemini.google.com%2Fapp;end";
 let copiedPrompt=null;
+const tempoNames={slow:"Slow",relaxed:"Relaxed",moderate:"Mid-tempo",brisk:"Brisk",fast:"Fast"};
+const tempoSteps=Object.keys(tempoNames);
 const moods=new Set(["go","happy","angry","sad","weird"]);
 function stored(key){try{return localStorage.getItem(key)}catch(e){return null}}
 function store(key,v){try{localStorage.setItem(key,v)}catch(e){}}
@@ -57,7 +59,7 @@ function goPrompt(ai,service,mood){
  else if(ai==="gemini"&&service==="youtube")handoff="Choose real artist/title/version tracks FIRST. Ask YouTube Music to match them. If it can only make a similar mood mix, label it approximate, note substitutions, and mention Save to library.";
  else if(ai==="gemini"&&service==="spotify")handoff="Gemini's Spotify connected app does not create playlists. Give me a verified ordered tracklist, and use Spotify only for supported search/playback.";
  else handoff="Target "+serviceNames[service]+", but only write if this AI actually exposes a connected, authorized playlist writer. Otherwise give the verified ordered tracklist; don't claim it was saved.";
- return goCommand(ai,service,mood)+"\n\n"+thesis+"\n\n"+handoff;
+ return goCommand(ai,service,mood)+"\n\n"+thesis+(tempo?"\n\nTempo preference: "+tempoNames[tempo]+". Favor recordings with this perceived pace while respecting the selected mood. Treat this as a curation preference, not a verified BPM filter; do not invent BPM values.":"")+"\n\n"+handoff;
 }
 const params=new URLSearchParams(location.search);
 const isLegacyGemini=location.pathname.startsWith("/gemini/");
@@ -66,6 +68,7 @@ if(!defaultService[ai])ai="chatgpt";
 let service=(params.get("service")||(isLegacyGemini?"youtube":stored("hmg-service"))||defaultService[ai]).toLowerCase();
 if(!serviceNames[service])service=defaultService[ai];
 let mood=(params.get("mood")||"go").toLowerCase();if(!moods.has(mood))mood="go";
+let tempo=params.get("tempo")||"";if(!Object.hasOwn(tempoNames,tempo))tempo="";
 function updateHandoff(){
  const ready=copiedPrompt===goPrompt(ai,service,mood);
  for(const id of ["openAi","browserAi"]){const a=doc.getElementById(id);if(a)a.setAttribute("aria-disabled",String(!ready))}
@@ -116,6 +119,10 @@ function renderSetup(){
 }
 function renderLaunch(){
  renderSelections();
+ const slider=doc.getElementById("tempoSlider"),tempoValue=doc.getElementById("tempoValue"),anyTempo=doc.getElementById("anyTempo");
+ if(slider){slider.value=tempo?tempoSteps.indexOf(tempo)+1:3;slider.setAttribute("aria-valuetext",tempo?tempoNames[tempo]:"Any tempo — move to choose a pace")}
+ if(tempoValue)tempoValue.textContent=tempo?tempoNames[tempo]:"Any tempo";
+ if(anyTempo)anyTempo.setAttribute("aria-pressed",String(!tempo));
  doc.querySelectorAll("[data-mood]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.mood===mood)));
  const e={prompt:doc.getElementById("prompt"),mood:doc.getElementById("moodName"),code:doc.getElementById("receiptCode"),open:doc.getElementById("openAi"),browser:doc.getElementById("browserAi")};
  if(!e.prompt)return;
@@ -123,7 +130,7 @@ function renderLaunch(){
  e.mood.textContent=mood==="go"?"SURPRISE":mood.toUpperCase();
  e.code.textContent=(ai==="chatgpt"?"CG":ai==="gemini"?"GM":"CL")+"-"+mood.slice(0,3).toUpperCase()+"-01";
  e.open.href=ai==="gemini"?geminiIntent:destinations[ai];e.open.textContent="↗ OPEN "+aiNames[ai].toUpperCase();
- const summary=doc.getElementById("receiptSummary");if(summary)summary.textContent=aiNames[ai]+" · "+serviceNames[service]+" · "+(mood==="go"?"Surprise":mood[0].toUpperCase()+mood.slice(1))+" · 12 tracks";
+ const summary=doc.getElementById("receiptSummary");if(summary)summary.textContent=aiNames[ai]+" · "+serviceNames[service]+" · "+(mood==="go"?"Surprise":mood[0].toUpperCase()+mood.slice(1))+(tempo?" · "+tempoNames[tempo]:"")+" · 12 tracks";
  const hint=doc.getElementById("goHint");if(hint)hint.textContent="Copy "+(mood==="go"?"surprise":mood)+" prompt · 12 tracks";
  const goButton=doc.getElementById("goButton");if(goButton)goButton.setAttribute("aria-label","GO! Copy "+(mood==="go"?"surprise":mood)+" playlist prompt");
  const manual=doc.getElementById("manualOpenAi");if(manual){manual.href=destinations[ai];manual.textContent="I COPIED IT MANUALLY — OPEN "+aiNames[ai].toUpperCase()}
@@ -131,6 +138,7 @@ function renderLaunch(){
  e.browser.hidden=ai!=="gemini";e.browser.href=destinations[ai];e.browser.textContent="open "+aiNames[ai]+" in browser";
  const u=new URL(location.href);u.searchParams.set("ai",ai);u.searchParams.set("service",service);
  if(mood==="go")u.searchParams.delete("mood");else u.searchParams.set("mood",mood);
+ if(tempo)u.searchParams.set("tempo",tempo);else u.searchParams.delete("tempo");
  history.replaceState(null,"",u.pathname+u.search);
 }
 function render(){if(body.dataset.page==="launch")renderLaunch();else renderSetup()}
@@ -181,6 +189,10 @@ async function copyGo(){
 doc.querySelectorAll("[data-mood]").forEach(b=>b.addEventListener("click",()=>{
  mood=mood===b.dataset.mood?"go":b.dataset.mood;copiedPrompt=null;selectionChanged();
 }));
+const tempoSlider=doc.getElementById("tempoSlider");
+if(tempoSlider)tempoSlider.addEventListener("input",()=>{tempo=tempoSteps[Number(tempoSlider.value)-1]||"";copiedPrompt=null;selectionChanged()});
+const anyTempo=doc.getElementById("anyTempo");
+if(anyTempo)anyTempo.addEventListener("click",()=>{tempo="";copiedPrompt=null;selectionChanged()});
 const go=doc.getElementById("goButton");if(go)go.addEventListener("click",copyGo);
 for(const id of ["openAi","browserAi"]){const a=doc.getElementById(id);if(a)a.addEventListener("click",event=>{
  if(copiedPrompt!==goPrompt(ai,service,mood)){event.preventDefault();status("Press GO to copy the current prompt before opening your AI.")}

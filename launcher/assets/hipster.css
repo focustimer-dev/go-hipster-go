@@ -284,3 +284,15 @@ a{color:inherit}
 .setup-check pre:focus-visible{outline:3px solid #ff9f3e;outline-offset:3px}
 .grind{margin-bottom:12px}
 @media(max-width:540px){.setup-check .resource{display:flex;margin-right:0}.receipt-summary{font-size:.875rem}}
+
+/* Tempo uses the same printed controls and leaves mood independent. */
+.tempo-control{margin:18px 0 24px;padding:14px 0;border-top:1px solid var(--ink)}
+.tempo-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.tempo-heading label{font-size:.875rem;font-weight:700}
+.tempo-heading label span{display:block;margin-top:4px;font-size:1rem;font-weight:400}
+.tempo-heading button{min-height:44px;padding:8px 12px;border:1px solid var(--ink);background:transparent;color:var(--ink);font-family:inherit;font-size:.875rem;font-weight:700;cursor:pointer}
+.tempo-heading button[aria-pressed=true]{background:var(--ink);color:var(--bone)}
+#tempoSlider{display:block;width:100%;min-width:0;height:44px;margin:8px 0 0;accent-color:var(--ink);cursor:pointer}
+#tempoSlider:focus-visible,.tempo-heading button:focus-visible{outline:3px solid #b93426;outline-offset:3px}
+.tempo-scale{display:flex;justify-content:space-between;font-size:.875rem}
+.tempo-control p{margin:8px 0 0;font-size:.875rem;line-height:1.5}
