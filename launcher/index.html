@@ -45,7 +45,7 @@
       <p class="hero-note">We found a solution in the back of a record shop that no longer exists. You're welcome.</p>
     </div>
 
-    <div class="try-first-strip"><strong>FIRST TIME?</strong> Run the setup check before GO. <button type="button" id="stripSetupPrompt">Copy setup prompt ↗</button> <a href="/setup/">Manual →</a></div>
+    <div class="try-first-strip" id="setupReminder"><strong>FIRST TIME?</strong> Run the setup check before GO. <button type="button" id="stripSetupPrompt">Copy setup prompt ↗</button> <a href="/setup/">Manual →</a></div>
     <div class="section-title"><span><span class="num">A</span> CHOOSE YOUR DEALERS</span><small>two decisions, one regrettable outfit</small></div>
     <div class="selector-grid">
       <section class="panel" aria-labelledby="aiLabel">
@@ -69,7 +69,7 @@
 
     <div class="section-title"><span><span class="num">B</span> PULL THE TRIGGER</span><small>no vinyl was harmed</small></div>
     <div class="grind">
-      <button type="button" class="go-button" id="goButton" aria-label="Prepare a surprise playlist">
+      <button type="button" class="go-button" id="goButton" aria-label="GO! Copy a surprise playlist prompt">
         <svg class="star-glyph" viewBox="0 0 120 120" aria-hidden="true">
           <path d="M60 3 74 44h43L82 69l14 44-36-27-36 27 14-44L3 44h43Z" fill="#d73340" stroke="#fd7981" stroke-width="3"/>
           <path d="M60 14v71l29 19-11-37 29-19H71Z" fill="#100e13"/>
@@ -98,7 +98,7 @@
         <button type="button" id="shareButton">↗ share to app</button>
         <a id="browserAi" href="https://chatgpt.com/" target="_blank" rel="noopener">open in browser</a>
       </div>
-      <p class="status" id="copyStatus" role="status" aria-live="polite">Pick a mood or hit GO to copy your command.</p>
+      <p class="status" id="copyStatus" role="status" aria-live="polite">GO copies a surprise prompt. Tap a selected mood again to clear it.</p>
     </section>
     <p class="footnote">The AI and music apps still need to be selected/connected in their own interface. This launcher prepares the request; it does not publish or pretend a mix was saved. For the upload instructions, visit <a href="/setup/"><b>the excessively comprehensive manual</b></a>.</p>
     <div class="badge-row"><span class="tiny-mark">★ FIXED GEAR ★ BAD INTERNET ★ BETTER RECORDS</span><span class="copyright">Unnecessarily limited edition.</span></div>

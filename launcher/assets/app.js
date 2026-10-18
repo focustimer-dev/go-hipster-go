@@ -21,7 +21,7 @@ async function copyText(text){
 const repo="https://github.com/focustimer-dev/hipster-music-generator";
 const releases=repo+"/releases/latest/download/";
 const resourceInfo={
- chatgpt:[{name:"Hipster Music Generator source",url:repo},{name:"Open ChatGPT",url:destinations.chatgpt}],
+ chatgpt:[{name:"Hipster Music Generator source",url:repo}],
  gemini:[{name:"Gemini Skill ZIP",url:releases+"hipster-music-generator-gemini-app-skill.zip"},{name:"Gemini installation guide",url:repo+"/blob/main/adapters/gemini/README.md"}],
  claude:[{name:"Claude Skill ZIP",url:releases+"hipster-music-generator-claude-skill.zip"},{name:"Claude Plugin ZIP",url:releases+"hipster-music-generator-claude-plugin.zip"},{name:"Which one? Claude guide",url:repo+"/blob/main/adapters/claude/README.md"}]
 };
@@ -109,14 +109,14 @@ function renderLaunch(){
  e.mood.textContent=mood==="go"?"SURPRISE":mood.toUpperCase();
  e.code.textContent=(ai==="chatgpt"?"CG":ai==="gemini"?"GM":"CL")+"-"+mood.slice(0,3).toUpperCase()+"-01";
  e.open.href=ai==="gemini"?geminiIntent:destinations[ai];e.open.textContent="↗ OPEN "+aiNames[ai].toUpperCase();
- e.browser.href=destinations[ai];e.browser.textContent="open "+aiNames[ai]+" in browser";
+ e.browser.hidden=ai!=="gemini";e.browser.href=destinations[ai];e.browser.textContent="open "+aiNames[ai]+" in browser";
  const u=new URL(location.href);u.searchParams.set("ai",ai);u.searchParams.set("service",service);
  if(mood==="go")u.searchParams.delete("mood");else u.searchParams.set("mood",mood);
  history.replaceState(null,"",u.pathname+u.search);
 }
 function render(){if(body.dataset.page==="launch")renderLaunch();else renderSetup()}
 doc.querySelectorAll("[data-ai]").forEach(b=>b.addEventListener("click",()=>{
- ai=b.dataset.ai;service=defaultService[ai];render();status("AI selected. Try GO first; setup only if needed.");
+ ai=b.dataset.ai;service=defaultService[ai];render();status("AI selected. New here? Run the setup check before GO.");
 }));
 doc.querySelectorAll("[data-service]").forEach(b=>b.addEventListener("click",()=>{
  service=b.dataset.service;render();status("Music service selected. Your instructions are tailored below.");
@@ -140,10 +140,10 @@ const copyTailored=doc.getElementById("copyTailoredSetup");
 if(copyTailored)copyTailored.addEventListener("click",async()=>status(await copyText(setupPrompt(ai,service))?"Setup prompt copied. Paste it into "+aiNames[ai]+".":"Clipboard unavailable. Try again."));
 if(body.dataset.page!=="launch"){render();return}
 // A dismissible hint, never a blocking onboarding gate. Changing its version lets existing visitors see Try First.
-const welcome=doc.getElementById("welcomeSetup");
+const welcome=doc.getElementById("welcomeSetup"),reminder=doc.getElementById("setupReminder");
 if(welcome&&!stored("hmg-setup-first-tip-dismissed-v3")){
- welcome.hidden=false;const close=doc.getElementById("dismissWelcome");
- if(close)close.addEventListener("click",()=>{welcome.hidden=true;store("hmg-setup-first-tip-dismissed-v3","yes")});
+ welcome.hidden=false;if(reminder)reminder.hidden=true;const close=doc.getElementById("dismissWelcome");
+ if(close)close.addEventListener("click",()=>{welcome.hidden=true;if(reminder)reminder.hidden=false;store("hmg-setup-first-tip-dismissed-v3","yes")});
 }
 async function copyGo(){
  status(await copyText(goPrompt(ai,service,mood))?"COPIED. Open "+aiNames[ai]+", paste and send. Select your app/skill if needed.":"Clipboard blocked. Long-press the receipt and copy the text.");
