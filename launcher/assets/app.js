@@ -30,6 +30,17 @@ doc.querySelectorAll("[data-setup]").forEach(button=>{
  });
 });
 if(body.dataset.page!=="launch")return;
+// The tutorial is a little handbill, not an interrupting dialog.
+// A dismiss stays dismissed in this browser, and the manual remains in the top navigation.
+const welcome=doc.getElementById("welcomeSetup");
+if(welcome&&!stored("hmg-setup-tip-dismissed-v1")){
+ welcome.hidden=false;
+ const dismiss=doc.getElementById("dismissWelcome");
+ if(dismiss)dismiss.addEventListener("click",()=>{
+  welcome.hidden=true;
+  store("hmg-setup-tip-dismissed-v1","yes");
+ });
+}
 const u=new URL(location.href),params=u.searchParams;
 const isGeminiShortcut=location.pathname.startsWith("/gemini");
 let ai=(params.get("ai")||(isGeminiShortcut?"gemini":stored("hmg-ai"))||"chatgpt").toLowerCase();
