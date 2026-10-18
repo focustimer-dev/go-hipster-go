@@ -19,6 +19,8 @@ Run UI and behavior smoke checks after deploying: launch + setup routes render; 
 
 ## First-time setup & the bearded mood clerks
 
-The Launch page includes a **Copy my setup prompt** callout and a small persistent setup link; both copy the personalized **install/connect/status** prompt, never a `go` playlist-generation prompt. The top of Setup also copies that same setup prompt after the user selects their AI and music service. Pressing GO is a separate action after setup. Dismissed prompts stay dismissed in local storage on that device.
+The Launch page introduces setup first, then places the tailored **Copy setup check** action immediately below the AI/music selectors. Its label names the selected pair. Setup copying has its own local feedback and an expandable manual-copy fallback.
 
-Four illustrative bearded/man-bun mood portraits are stored in `launcher/assets/hipster-moods.svg`; text labels and ARIA mood names remain separate. Tapping the selected mood again still returns to plain `go`.
+Four illustrative bearded/man-bun mood portraits are stored in `launcher/assets/hipster-moods.svg`; text labels and ARIA mood names remain separate. Moods select without copying. Tapping the selected mood again returns to plain `go`. **GO copies the current selection without clearing it.**
+
+Copy confirmation and Open AI sit immediately below GO. Changing AI, service or mood invalidates the previous copy state; Open AI is guarded until the current prompt is copied. Copying a setup prompt also invalidates the music handoff. The receipt shows AI, service, mood and count; the full prompt and explicit manual-copy handoff remain available in a native disclosure. Clipboard failure opens that disclosure. Android sharing remains a separate action using the current prompt.

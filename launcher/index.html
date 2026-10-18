@@ -32,9 +32,9 @@
         <span class="welcome-eyebrow">✳ NEW TO THE RECORD STORE? ✳</span>
         <h2 id="welcomeTitle">FIRST, RUN<br><em>THE SETUP PROMPT.</em></h2>
         <p>Choose your AI and music service below, then copy a tailored setup check. It can help install the skill and check your connection before you press GO.</p>
-        <button class="welcome-link" type="button" id="quickSetupPrompt">✂ COPY MY SETUP PROMPT</button>
+        <a class="welcome-link" href="#aiLabel">CHOOSE YOUR SERVICES ↓</a>
         <a class="welcome-text-link" href="/setup/">Or see the step-by-step Manual →</a>
-        <p class="first-setup-status" id="setupTipStatus" role="status" aria-live="polite"></p>
+
       </div>
       <button type="button" id="dismissWelcome" class="welcome-dismiss" aria-label="Dismiss first-time tip" title="Dismiss this reminder">×</button>
     </aside>
@@ -45,7 +45,6 @@
       <p class="hero-note">We found a solution in the back of a record shop that no longer exists. You're welcome.</p>
     </div>
 
-    <div class="try-first-strip" id="setupReminder"><strong>FIRST TIME?</strong> Run the setup check before GO. <button type="button" id="stripSetupPrompt">Copy setup prompt ↗</button> <a href="/setup/">Manual →</a></div>
     <div class="section-title"><span><span class="num">A</span> CHOOSE YOUR DEALERS</span><small>two decisions, one regrettable outfit</small></div>
     <div class="selector-grid">
       <section class="panel" aria-labelledby="aiLabel">
@@ -67,7 +66,25 @@
     </div>
     <div class="connector-status" id="routeStatus" role="status"><span>Choose your platforms. We'll explain what each pairing can actually do.</span></div>
 
-    <div class="section-title"><span><span class="num">B</span> PULL THE TRIGGER</span><small>no vinyl was harmed</small></div>
+    <section class="setup-check" aria-label="First-time setup check">
+      <p><strong>FIRST TIME?</strong> Check your skill and music connection before GO.</p>
+      <button class="resource copy" type="button" id="stripSetupPrompt">COPY SETUP CHECK</button>
+      <a class="resource subtle" id="openSetupAi" href="https://chatgpt.com/" target="_blank" rel="noopener">OPEN CHATGPT</a>
+      <p class="first-setup-status" id="setupTipStatus" role="status" aria-live="polite"></p>
+      <details class="setup-prompt-details" id="setupPromptDetails">
+        <summary>View setup prompt / copy manually</summary>
+        <pre id="setupPromptText" tabindex="0" aria-label="Copyable setup prompt"></pre>
+      </details>
+    </section>
+
+    <div class="section-title"><span><span class="num">B</span> CHOOSE A MOOD, THEN GO</span><small>no vinyl was harmed</small></div>
+    <div class="mood-grid" role="group" aria-label="Mood presets">
+      <button class="mood" data-mood="happy" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">HAPPY</span></button>
+      <button class="mood" data-mood="angry" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">ANGRY</span></button>
+      <button class="mood" data-mood="sad" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">SAD</span></button>
+      <button class="mood" data-mood="weird" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">WEIRD</span></button>
+    </div>
+    <p class="mood-hint">No mood selected? It’s a surprise. Tap a selected mood again to clear it.</p>
     <div class="grind">
       <button type="button" class="go-button" id="goButton" aria-label="GO! Copy a surprise playlist prompt">
         <svg class="star-glyph" viewBox="0 0 120 120" aria-hidden="true">
@@ -75,30 +92,30 @@
           <path d="M60 14v71l29 19-11-37 29-19H71Z" fill="#100e13"/>
           <circle cx="60" cy="60" r="8" fill="#f9df9a" stroke="#191919" stroke-width="3"/>
         </svg>
-        <span class="go-copy"><b>GO!</b><span>blindly trust a stranger with unusual knowledge of 1978.</span></span>
+        <span class="go-copy"><b>GO!</b><span id="goHint">Copy surprise prompt · 12 tracks</span></span>
       </button>
       <span class="sideprint" aria-hidden="true">INDEPENDENTLY CURATED</span>
     </div>
-    <div class="mood-grid" role="group" aria-label="Mood presets">
-      <button class="mood" data-mood="happy" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">HAPPY</span></button>
-      <button class="mood" data-mood="angry" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">ANGRY</span></button>
-      <button class="mood" data-mood="sad" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">SAD</span></button>
-      <button class="mood" data-mood="weird" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">WEIRD</span></button>
+
+
+    <div class="handoff" aria-label="Copy and open your AI">
+      <p class="status" id="copyStatus" role="status" aria-live="polite">Choose a mood, then press GO to copy your prompt.</p>
+      <a class="action secondary-action" id="openAi" href="https://chatgpt.com/" rel="noopener" aria-disabled="true">COPY WITH GO FIRST</a>
+      <div class="foot-tools">
+        <button type="button" id="shareButton">↗ Share current prompt</button>
+        <a id="browserAi" href="https://chatgpt.com/" target="_blank" rel="noopener" aria-disabled="true" hidden>open in browser</a>
+      </div>
     </div>
 
     <div class="section-title"><span><span class="num">C</span> YOUR MIXTAPE RECEIPT</span><small>zero returns · all sales final</small></div>
     <section class="receipt" aria-label="Prompt to send to your AI">
       <div class="receipt-top"><span>NO. <span id="receiptCode">GO-001</span></span><span>MOOD / <span id="moodName">SURPRISE</span></span></div>
-      <pre id="prompt" tabindex="0" aria-label="Copyable music prompt"></pre>
-      <div class="button-row">
-        <button class="action main-action" type="button" id="copyButton">✂ COPY PROMPT</button>
-        <a class="action secondary-action" id="openAi" href="https://chatgpt.com/" rel="noopener">↗ OPEN CHATGPT</a>
-      </div>
-      <div class="foot-tools">
-        <button type="button" id="shareButton">↗ share to app</button>
-        <a id="browserAi" href="https://chatgpt.com/" target="_blank" rel="noopener">open in browser</a>
-      </div>
-      <p class="status" id="copyStatus" role="status" aria-live="polite">GO copies a surprise prompt. Tap a selected mood again to clear it.</p>
+      <p class="receipt-summary" id="receiptSummary">ChatGPT · Spotify · Surprise · 12 tracks</p>
+      <details id="promptDetails">
+        <summary>View full prompt / copy manually</summary>
+        <pre id="prompt" tabindex="0" aria-label="Copyable music prompt"></pre>
+        <a class="resource subtle" id="manualOpenAi" href="https://chatgpt.com/" rel="noopener">I COPIED IT MANUALLY — OPEN CHATGPT</a>
+      </details>
     </section>
     <p class="footnote">The AI and music apps still need to be selected/connected in their own interface. This launcher prepares the request; it does not publish or pretend a mix was saved. For the upload instructions, visit <a href="/setup/"><b>the excessively comprehensive manual</b></a>.</p>
     <div class="badge-row"><span class="tiny-mark">★ FIXED GEAR ★ BAD INTERNET ★ BETTER RECORDS</span><span class="copyright">Unnecessarily limited edition.</span></div>

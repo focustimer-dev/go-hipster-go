@@ -266,3 +266,21 @@ a{color:inherit}
  .switch button{font-size:var(--type-control)}
  .section-title small{margin-left:31px}
 }
+
+/* Jukebox: choose, copy, then hand off; the receipt is optional detail. */
+.setup-check{margin:14px 0 24px;padding:14px;background:var(--lime);border:2px solid var(--ink)}
+.setup-check>p:first-child{margin:0 0 10px;font-size:.875rem;line-height:1.5}
+.setup-check .resource{margin:0 5px 8px 0;max-width:100%;overflow-wrap:anywhere}
+.setup-check pre{white-space:pre-wrap;overflow-wrap:anywhere;font:.875rem/1.6 ui-monospace,monospace;background:var(--bone);padding:12px;max-height:20rem;overflow:auto}
+.setup-check summary,.receipt summary{cursor:pointer;min-height:44px;padding:12px 0;font-size:.875rem;font-weight:700}
+.mood-hint{font-size:.875rem;line-height:1.5;margin:0 0 12px}
+.handoff{margin:0 0 24px}
+.handoff .status{text-align:left;margin:0 0 12px;min-height:3em;color:var(--ink)}
+.handoff .foot-tools{justify-content:flex-start;margin-top:8px}
+.receipt-summary{font-size:1rem;line-height:1.5;margin:9px 3px;font-weight:700}
+.receipt .resource{max-width:100%;white-space:normal}
+.action[aria-disabled=true]{background:#e3dcc9;color:var(--ink2);box-shadow:none;cursor:not-allowed}
+.go-button:disabled{opacity:.7;cursor:wait}
+.setup-check pre:focus-visible{outline:3px solid #ff9f3e;outline-offset:3px}
+.grind{margin-bottom:12px}
+@media(max-width:540px){.setup-check .resource{display:flex;margin-right:0}.receipt-summary{font-size:.875rem}}

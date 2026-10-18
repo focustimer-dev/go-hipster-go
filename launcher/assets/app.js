@@ -7,6 +7,7 @@ const aiNames={chatgpt:"ChatGPT",gemini:"Gemini",claude:"Claude"};
 const serviceNames={spotify:"Spotify",youtube:"YouTube Music",apple:"Apple Music"};
 const destinations={chatgpt:"https://chatgpt.com/",gemini:"https://gemini.google.com/app",claude:"https://claude.ai/"};
 const geminiIntent="intent://gemini.google.com/app#Intent;scheme=https;package=com.google.android.apps.bard;S.browser_fallback_url=https%3A%2F%2Fgemini.google.com%2Fapp;end";
+let copiedPrompt=null;
 const moods=new Set(["go","happy","angry","sad","weird"]);
 function stored(key){try{return localStorage.getItem(key)}catch(e){return null}}
 function store(key,v){try{localStorage.setItem(key,v)}catch(e){}}
@@ -51,7 +52,6 @@ function goCommand(ai,service,mood){
 }
 const thesis="Curate 12 verified deep-cut recordings around a cohesive sonic thesis. Explore surprising links across scenes, eras, rhythm, voice, production and instrumentation. Keep the transitions listenable, not just clever. Avoid recycled example-artist lists and never invent track matches.";
 function goPrompt(ai,service,mood){
- const info=routeInfo(ai,service);
  let handoff;
  if(ai==="chatgpt"&&service==="spotify")handoff="Resolve exact Spotify track versions and publish in the chosen order if an authorized writer is exposed. Read back the saved count/order if possible.";
  else if(ai==="gemini"&&service==="youtube")handoff="Choose real artist/title/version tracks FIRST. Ask YouTube Music to match them. If it can only make a similar mood mix, label it approximate, note substitutions, and mention Save to library.";
@@ -66,11 +66,25 @@ if(!defaultService[ai])ai="chatgpt";
 let service=(params.get("service")||(isLegacyGemini?"youtube":stored("hmg-service"))||defaultService[ai]).toLowerCase();
 if(!serviceNames[service])service=defaultService[ai];
 let mood=(params.get("mood")||"go").toLowerCase();if(!moods.has(mood))mood="go";
+function updateHandoff(){
+ const ready=copiedPrompt===goPrompt(ai,service,mood);
+ for(const id of ["openAi","browserAi"]){const a=doc.getElementById(id);if(a)a.setAttribute("aria-disabled",String(!ready))}
+ const a=doc.getElementById("openAi");if(a)a.textContent=ready?"↗ OPEN "+aiNames[ai].toUpperCase():"COPY WITH GO FIRST";
+}
+function selectionChanged(){
+ render();
+ if(body.dataset.page==="launch")status("Prompt changed. Press GO to copy the current selection.");
+ else status("Selection updated. Copy your tailored setup check below.");
+ const tip=doc.getElementById("setupTipStatus");if(tip)tip.textContent="";
+}
 function renderSelections(){
  doc.querySelectorAll("[data-ai]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.ai===ai)));
  doc.querySelectorAll("[data-service]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.service===service)));
  const info=routeInfo(ai,service),r=doc.getElementById("routeStatus");
  if(r){const span=r.querySelector("span");if(span)span.textContent=info.message;r.classList.toggle("warn",info.tone==="warn")}
+ const setupText=doc.getElementById("setupPromptText");if(setupText)setupText.textContent=setupPrompt(ai,service);
+ const setupCopy=doc.getElementById("stripSetupPrompt");if(setupCopy)setupCopy.textContent="COPY SETUP · "+aiNames[ai]+" + "+serviceNames[service];
+ const setupOpen=doc.getElementById("openSetupAi");if(setupOpen){setupOpen.href=destinations[ai];setupOpen.textContent="OPEN "+aiNames[ai].toUpperCase()}
  store("hmg-ai",ai);store("hmg-service",service);
 }
 function setupLinks(parent,items){
@@ -109,6 +123,11 @@ function renderLaunch(){
  e.mood.textContent=mood==="go"?"SURPRISE":mood.toUpperCase();
  e.code.textContent=(ai==="chatgpt"?"CG":ai==="gemini"?"GM":"CL")+"-"+mood.slice(0,3).toUpperCase()+"-01";
  e.open.href=ai==="gemini"?geminiIntent:destinations[ai];e.open.textContent="↗ OPEN "+aiNames[ai].toUpperCase();
+ const summary=doc.getElementById("receiptSummary");if(summary)summary.textContent=aiNames[ai]+" · "+serviceNames[service]+" · "+(mood==="go"?"Surprise":mood[0].toUpperCase()+mood.slice(1))+" · 12 tracks";
+ const hint=doc.getElementById("goHint");if(hint)hint.textContent="Copy "+(mood==="go"?"surprise":mood)+" prompt · 12 tracks";
+ const goButton=doc.getElementById("goButton");if(goButton)goButton.setAttribute("aria-label","GO! Copy "+(mood==="go"?"surprise":mood)+" playlist prompt");
+ const manual=doc.getElementById("manualOpenAi");if(manual){manual.href=destinations[ai];manual.textContent="I COPIED IT MANUALLY — OPEN "+aiNames[ai].toUpperCase()}
+ updateHandoff();
  e.browser.hidden=ai!=="gemini";e.browser.href=destinations[ai];e.browser.textContent="open "+aiNames[ai]+" in browser";
  const u=new URL(location.href);u.searchParams.set("ai",ai);u.searchParams.set("service",service);
  if(mood==="go")u.searchParams.delete("mood");else u.searchParams.set("mood",mood);
@@ -116,22 +135,25 @@ function renderLaunch(){
 }
 function render(){if(body.dataset.page==="launch")renderLaunch();else renderSetup()}
 doc.querySelectorAll("[data-ai]").forEach(b=>b.addEventListener("click",()=>{
- ai=b.dataset.ai;service=defaultService[ai];render();status("AI selected. New here? Run the setup check before GO.");
+ ai=b.dataset.ai;service=defaultService[ai];copiedPrompt=null;selectionChanged();
 }));
 doc.querySelectorAll("[data-service]").forEach(b=>b.addEventListener("click",()=>{
- service=b.dataset.service;render();status("Music service selected. Your instructions are tailored below.");
+ service=b.dataset.service;copiedPrompt=null;selectionChanged();
 }));
 doc.querySelectorAll("[data-setup]").forEach(b=>b.addEventListener("click",async()=>{
  const prompt=b.dataset.setup==="universal"?universalPrompt:setupPrompt(ai,service);
  status(await copyText(prompt)?"Installation prompt copied. Paste into your chosen AI.":"Clipboard blocked; please copy the instructions manually.");
 }));
 async function copyFirstSetup(){
+ copiedPrompt=null;if(body.dataset.page==="launch")updateHandoff();
  const ok=await copyText(setupPrompt(ai,service));
- const msg=ok?"Setup check copied for "+aiNames[ai]+" + "+serviceNames[service]+". Open that AI, paste and send.":"Clipboard unavailable; use the personalized Manual for the setup instructions.";
+ const details=doc.getElementById("setupPromptDetails");if(!ok&&details)details.open=true;
+ const msg=ok?"Setup check copied for "+aiNames[ai]+" + "+serviceNames[service]+". Open that AI, paste and send.":"Clipboard unavailable. Copy the setup prompt shown below, then open your AI.";
  const tip=doc.getElementById("setupTipStatus"),setupTip=doc.getElementById("setupTryStatus");
  if(tip)tip.textContent=msg;
  if(setupTip)setupTip.textContent=msg;
- status(msg);
+ if(body.dataset.page!=="launch")status(msg);
+ else status("Setup check selected. For a playlist, press GO to copy your music prompt.");
 }
 for(const id of ["quickSetupPrompt","stripSetupPrompt","trySetupPrompt"]){
  const b=doc.getElementById(id);if(b)b.addEventListener("click",copyFirstSetup);
@@ -140,20 +162,29 @@ const copyTailored=doc.getElementById("copyTailoredSetup");
 if(copyTailored)copyTailored.addEventListener("click",async()=>status(await copyText(setupPrompt(ai,service))?"Setup prompt copied. Paste it into "+aiNames[ai]+".":"Clipboard unavailable. Try again."));
 if(body.dataset.page!=="launch"){render();return}
 // A dismissible hint, never a blocking onboarding gate. Changing its version lets existing visitors see Try First.
-const welcome=doc.getElementById("welcomeSetup"),reminder=doc.getElementById("setupReminder");
+const welcome=doc.getElementById("welcomeSetup");
 if(welcome&&!stored("hmg-setup-first-tip-dismissed-v3")){
- welcome.hidden=false;if(reminder)reminder.hidden=true;const close=doc.getElementById("dismissWelcome");
- if(close)close.addEventListener("click",()=>{welcome.hidden=true;if(reminder)reminder.hidden=false;store("hmg-setup-first-tip-dismissed-v3","yes")});
+ welcome.hidden=false;const close=doc.getElementById("dismissWelcome");
+ if(close)close.addEventListener("click",()=>{welcome.hidden=true;store("hmg-setup-first-tip-dismissed-v3","yes")});
 }
 async function copyGo(){
- status(await copyText(goPrompt(ai,service,mood))?"COPIED. Open "+aiNames[ai]+", paste and send. Select your app/skill if needed.":"Clipboard blocked. Long-press the receipt and copy the text.");
+ const prompt=goPrompt(ai,service,mood);
+ const button=doc.getElementById("goButton");if(button)button.disabled=true;
+ status("Copying your prompt…");
+ const ok=await copyText(prompt);
+ if(button)button.disabled=false;
+ copiedPrompt=ok?prompt:null;updateHandoff();
+ if(prompt!==goPrompt(ai,service,mood)){status("Selection changed while copying. Press GO again for the current prompt.");return}
+ if(ok)status("Copied. Open "+aiNames[ai]+", paste and send. Select your skill and music app if needed.");
+ else{const details=doc.getElementById("promptDetails");if(details)details.open=true;status("Clipboard blocked. Copy the full prompt in the receipt below, then use its manual Open link.")}
 }
 doc.querySelectorAll("[data-mood]").forEach(b=>b.addEventListener("click",()=>{
- // Tap a selected mood again to clear it and return to unmodified 'go'.
- mood=mood===b.dataset.mood?"go":b.dataset.mood;render();copyGo();
+ mood=mood===b.dataset.mood?"go":b.dataset.mood;copiedPrompt=null;selectionChanged();
 }));
-const go=doc.getElementById("goButton");if(go)go.addEventListener("click",()=>{mood="go";render();copyGo()});
-const copy=doc.getElementById("copyButton");if(copy)copy.addEventListener("click",copyGo);
+const go=doc.getElementById("goButton");if(go)go.addEventListener("click",copyGo);
+for(const id of ["openAi","browserAi"]){const a=doc.getElementById(id);if(a)a.addEventListener("click",event=>{
+ if(copiedPrompt!==goPrompt(ai,service,mood)){event.preventDefault();status("Press GO to copy the current prompt before opening your AI.")}
+})}
 const share=doc.getElementById("shareButton");if(share)share.addEventListener("click",async()=>{
  if(!navigator.share){status("No share sheet available. Copy the prompt instead.");return}
  try{await navigator.share({text:goPrompt(ai,service,mood)})}catch(e){if(e.name!=="AbortError")status("Share failed. Copy the prompt instead.")}
