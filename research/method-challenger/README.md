@@ -51,6 +51,25 @@ The first command emits the detailed JSON table of A/B/C/D means for all three p
 3. Require *at least two separate user-preferred examples beyond the original Playlist C*, covering more than one mood, with no major factual/recording regression. This is a preliminary human decision gate, not a claim of statistical significance.
 4. Promote **only an optional challenger pass**, with zero-change abstention, at most two replacements and three swaps by default. Do not create a permanent artist list, NWW preference, or rewrite the taxonomy.
 
-## Status
+## Observed CI smoke-test results — five seeds per prompt
 
-Pending current-turn CI execution and result review. Machine metrics are **self-evaluated engineering controls**. The next missing evidence is real candidate features, Spotify identity verification, and blind listening on the three prompts.
+**Validated on Python 3.10, 3.12 and 3.13:** [GitHub Actions run 39093709067](https://github.com/focustimer-dev/hipster-music-generator/actions/runs/39093709067). **71 existing+new tests passed per matrix job.** The following are **averages of synthetic proxy attributes**, not evaluated music:
+
+| Prompt | Scene coverage A → B/D | Adjacent-method transition proxy A → C | Proxy B → D | Distinct IDs in 5 repeats A → B |
+| --- | ---: | ---: | ---: | ---: |
+| `go sad` | **2.2 → 4.2** | **−0.036 → 0.299** | −0.032 → 0.310 | **15 → 17** |
+| `go angry` | **2.2 → 4.2** | **0.064 → 0.246** | 0.097 → 0.304 | **16 → 18** |
+| `go` | **2.0 → 4.0** | **0.044 → 0.301** | 0.066 → 0.296 | **14 → 14** |
+
+Mean fictional mood-fit A → B/D: `go sad` **0.886 → 0.876**, `go angry` **0.898 → 0.878**, and `go` **0.849 → 0.842**. This satisfies the prototype's bounded-fit guardrail, but a real music rating could behave differently.
+
+### Interpretation — structural behavior, **not** a musical quality win
+
+- **Variety challenger works as programmed on an intentionally biased fixture.** The A proxy's familiarity scores favor two abstract scenes; increasing coverage from ~2 to ~4 is partly *built into the test setup*. This does not establish that the production curator lacks diversity or that listeners want additional scene diversity.
+- **Sequencing optimizer raises the metric it is written to raise.** It rearranges the same 12 entries using the defined synthetic method/role/texture adjacency score. This validates a controlled swap mechanism, **not** transitions sounding better.
+- **D does not dominate every aspect.** On plain `go`, C has slightly higher mean transition proxy (**0.301**) than D (**0.296**). And B did **not** increase between-run unique IDs for plain `go` (both **14**), despite higher within-list scene counts. Neither arm deserves unconditional preference.
+- **Restraint works:** tests verify stable 12-track length, distinct-artist IDs, mood gate, open-corpus identity independence, fixed 2-replacement/3-swap budgets, and refusal to force novelty when the original already covers the available scene/era vocabulary.
+- **No listening, recording or Spotify outcome:** The experimental fixture cannot validate actual mood accuracy, replayability, transition attractiveness, recording identities, or whether a curator should prefer B/C/D. User's earlier blind preference for the existing four-axis `go sad` remains the only real listening comparison for that prompt.
+
+**Decision:** retain production v3.4.0 unchanged. The shadow challenger passes an engineering smoke test and is suitable for a **real-catalog blind musical test**, not automatic rollout.
+
