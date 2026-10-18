@@ -164,7 +164,7 @@ a{color:inherit}
 
 /* First-time setup flyer: visible only until this visitor dismisses it. */
 [hidden]{display:none!important}
-.welcome-setup{position:relative;margin:1px 0 17px;background:#f8df79;border:2px solid var(--ink);box-shadow:5px 5px 0 var(--red2);padding:12px 38px 13px 14px;transform:rotate(-.4deg)}
+.welcome-setup{position:relative;margin:1px 0 17px;background:#f8df79;border:2px solid var(--ink);box-shadow:5px 5px 0 var(--red2);padding:12px 58px 13px 14px;transform:rotate(-.4deg)}
 .welcome-setup:before{content:"";position:absolute;left:15px;top:-8px;width:63px;height:15px;background:#d6b9acb8;transform:rotate(-6deg);border:1px solid #0002;pointer-events:none}
 .welcome-eyebrow{display:inline-block;font:950 .61rem ui-monospace,Consolas,monospace;letter-spacing:.08em;background:var(--ink);color:var(--bone);padding:4px 6px}
 .welcome-setup h2{font-family:Impact,"Arial Black",Arial,sans-serif;font-size:clamp(1.38rem,5.5vw,1.9rem);line-height:1.02;letter-spacing:.01em;margin:10px 0 6px}
@@ -172,7 +172,7 @@ a{color:inherit}
 .welcome-setup p{margin:7px 0 12px;font-size:.8rem;line-height:1.42;max-width:460px}
 .welcome-link{display:inline-block;border:2px solid var(--ink);background:var(--bone);text-decoration:none;padding:9px 10px;font-size:.76rem;font-weight:1000;box-shadow:2px 2px 0 var(--ink)}
 .welcome-link:active{box-shadow:none;transform:translate(2px,2px)}
-.welcome-dismiss{position:absolute;right:7px;top:7px;width:30px;height:30px;border:2px solid var(--ink);background:var(--bone);font-size:1.35rem;line-height:1;padding:0}
+.welcome-dismiss{position:absolute;right:7px;top:7px;width:44px;height:44px;border:2px solid var(--ink);background:var(--bone);font-size:1.35rem;line-height:1;padding:0}
 
 
 /* Two-choice route selector; three labels fit without forfeiting dignity. */

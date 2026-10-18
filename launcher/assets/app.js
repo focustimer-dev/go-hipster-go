@@ -143,7 +143,7 @@ if(body.dataset.page!=="launch"){render();return}
 const welcome=doc.getElementById("welcomeSetup");
 if(welcome&&!stored("hmg-setup-first-tip-dismissed-v3")){
  welcome.hidden=false;const close=doc.getElementById("dismissWelcome");
- if(close)close.addEventListener("click",()=>{welcome.hidden=true;store("hmg-try-first-tip-dismissed-v2","yes")});
+ if(close)close.addEventListener("click",()=>{welcome.hidden=true;store("hmg-setup-first-tip-dismissed-v3","yes")});
 }
 async function copyGo(){
  status(await copyText(goPrompt(ai,service,mood))?"COPIED. Open "+aiNames[ai]+", paste and send. Select your app/skill if needed.":"Clipboard blocked. Long-press the receipt and copy the text.");
