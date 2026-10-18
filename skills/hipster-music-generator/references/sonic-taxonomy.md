@@ -9,6 +9,11 @@ Source: expanded v2 axes, with the original v1 emphasis on audible qualities.
 - Early–mid 1980s: DX7-era FM synthesis, LinnDrum/DMX/TR-808 percussion, slap or fretless bass, gated reverb, post-punk economy, cassette-culture DIY.
 - Late 1980s–early 1990s: TB-303 acid basslines, pitched-down dance records, new beat, industrial swing, sample-based loops, street soul, early trip-hop.
 - Post-Y2K & 2000s Underground: micro-house, blog-house, electroclash, lo-fi bedroom indietronica, minimal synth revivals.
+- Pre-1975 Southeast Asian electric music: Saigon surf/soul/psych, Cambodian Khmer-language electric pop and separately documented Lao-era vocal/pop traditions.
+- 1980s–1990s Memphis cassette rap: 808 lows, murky tape textures, minimalist loops and sometimes horror-tinged keys.
+- 1990s–2000s Indonesian DIY punk/hardcore and Hindi-language band rock/folk fusion: different local scenes, not a single exotic-rock label.
+- 2010s–2020s SoundCloud sigilkore: chopped vocals, bitcrushing, pitch/tempo shifts and saturated trap production (not a synonym for old Memphis tapes).
+- Contemporary nonbinary country/Americana and Indigenous North American/Australian rock: cross-scene guitar/songwriting routes, not identity-derived instrument claims.
 
 ## Sonic textures and instrumentation
 
