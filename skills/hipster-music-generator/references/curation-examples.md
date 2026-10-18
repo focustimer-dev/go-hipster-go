@@ -20,6 +20,30 @@ Choose a fresh combination across era, production, geography, and microgenre, wi
 
 For an otherwise unstructured "go", privately compare two or three viable combinations. Choose the one that connects concrete sonic traits while offering a fresh scene or surprising transition; do not display discarded sketches by default. No invented discovery score or forced international quota.
 
+## "Pre-1975 Saigon surf meets classic Lao vocal archives"
+
+Explore Saigon electric/soul recordings and older Lao popular/lam archives independently. "Royalist/Ban-Na" is listener-supplied search vocabulary, not a verified political or genre designation. Bridge only if the recordings have a credible shared rhythmic, melodic or production quality.
+
+## "Qawwali and Hindi-language rock with an audible bridge"
+
+Treat qawwali as a distinct devotional performance tradition, not just Indian rock or psychedelia. Compare long-form lead/chorus repetition with verified Hindi indie-rock structures without inventing influence or track languages.
+
+## "Indonesian punk, Cambodian psych and non-English rock"
+
+Separate Indonesian DIY punk from 1970s garage-psych. Look for original Khmer-language recordings, and never identify style solely by language. Verify the specific players and titles.
+
+## "Memphis tape rap → later sigilkore"
+
+Connect 808 dread, tape grit and sparse grooves to newer bitcrushed, chopped internet rap. The Memphis artists are not retroactively sigilkore producers; check aliases, dates and actual playable recordings.
+
+## "Indigenous punk, Yolŋu surf-rock and nonbinary country"
+
+A guitar/arrangement-based sequence might bridge 1876, King Stingray and Adeem the Artist, but only where the sound works. Do not use Nation, Country, pronouns or artist identity as sonic stereotypes or quotas.
+
+## "Obscure non-English-language psychedelia"
+
+Explore Saigon, Cambodian, Turkish, Indonesian and Peruvian original-language scenes, rather than always returning to a familiar Anglophone psych canon; confirm that each selected recording actually has psychedelic musical traits.
+
 ## Titles, playlist descriptions and track notes
 
 These examples are **imaginary copy exercises**, not recommendations, verified track analyses or claimed service metadata. Use the pattern, not the literal words.
