@@ -105,6 +105,30 @@ class DefaultGoBehaviorTests(unittest.TestCase):
         self.assertIn("go sad",readme)
         self.assertIn("one-in-100",skill)
 
+    def test_expanded_sonic_map_has_distinct_scenes_and_sources(self):
+        scenes=(ROOT/"references/global-scenes.md").read_text(encoding="utf-8")
+        examples=(ROOT/"references/curation-examples.md").read_text(encoding="utf-8")
+        cases=(ROOT/"tests/discovery-cases.md").read_text(encoding="utf-8")
+        skill=(ROOT/"SKILL.md").read_text(encoding="utf-8")
+        for name in ("Classic Lao pop", "Pre-1975 Saigon sound",
+                     "Hindi-language rock", "Qawwali", "Indigenous North American",
+                     "Aboriginal Australian", "Memphis underground rap", "Sigilkore",
+                     "Indonesian punk", "Non-English psychedelic", "Nonbinary country"):
+            self.assertIn(name, scenes)
+        for domain in ("arts.gov", "sublimefrequencies.com", "folkways.si.edu",
+                       "1876band.com", "memphismusichalloffame.com",
+                       "thejakartapost.com", "adeemtheartist.com"):
+            self.assertIn(domain, scenes)
+        self.assertIn("not an independently verified formal genre", scenes)
+        self.assertIn("not a synonym for contemporary phonk or sigilkore", scenes)
+        self.assertIn("never force a regional, religious, Indigenous or identity quota", scenes)
+        self.assertIn("No cultural, language, identity or religious quotas", skill)
+        for term in ("qawwali", "Memphis", "Indonesian punk", "nonbinary country"):
+            self.assertIn(term.lower(), cases.lower())
+            self.assertIn(term.lower(), examples.lower())
+        self.assertEqual((ROOT/"references/global-scenes.md").read_bytes(),
+                         (ROOT/"skills/hipster-music-generator/references/global-scenes.md").read_bytes())
+
     def test_distribution_synced_and_debarge_intact(self):
         self.assertEqual((ROOT/"SKILL.md").read_bytes(),
                          (ROOT/"skills/hipster-music-generator/SKILL.md").read_bytes())
