@@ -1,0 +1,41 @@
+{
+  "id": "/",
+  "name": "Hipster GO — Music Launcher",
+  "short_name": "Hipster GO",
+  "description": "One launcher for Hipster Music Generator on ChatGPT or Gemini.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#17191f",
+  "theme_color": "#1c1d25",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Happy",
+      "short_name": "Happy",
+      "url": "/?mood=happy"
+    },
+    {
+      "name": "Angry",
+      "short_name": "Angry",
+      "url": "/?mood=angry"
+    },
+    {
+      "name": "Sad",
+      "short_name": "Sad",
+      "url": "/?mood=sad"
+    },
+    {
+      "name": "Weird",
+      "short_name": "Weird",
+      "url": "/?mood=weird"
+    }
+  ]
+}

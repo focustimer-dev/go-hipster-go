@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1c1d25">
+<meta name="description" content="Hipster GO — one home for music discovery with ChatGPT, Gemini, Spotify and YouTube Music.">
+<link rel="manifest" href="/manifest.webmanifest">
+<title>Hipster GO — the record store in your pocket</title>
+<style>
+:root{color-scheme:dark;--bg:#17191f;--surface:#242833;--surface2:#2c303c;--line:#444b5a;--txt:#edf1f4;--muted:#b4becb;--red:#d94b59;--accent:#ed7780;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--txt)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100svh;background:radial-gradient(ellipse at 48% -12%,#40303e 0,#1c1d27 42%,#17191f 78%);padding:0 16px 32px}
+.shell{max-width:520px;margin:auto;padding-top:env(safe-area-inset-top)}header{display:flex;align-items:center;gap:13px;padding:23px 0 16px}.mark{width:47px;height:47px;flex-shrink:0;display:grid;place-items:center;background:#272735;border:1px solid #64505b;border-radius:14px}.mark svg{width:34px}h1{font-size:1.3rem;letter-spacing:.1em;margin:0;font-weight:800}header p{margin:2px 0 0;color:var(--muted);font-size:.79rem}
+.card{background:#242833e8;border:1px solid #464955;border-radius:19px;padding:17px;margin:12px 0;box-shadow:0 9px 28px #0002}.eyebrow{margin:0 0 9px;color:#aeb7c5;font-weight:700;font-size:.69rem;letter-spacing:.14em;text-transform:uppercase}
+.toggle{display:grid;grid-template-columns:repeat(2,1fr);padding:4px;gap:3px;border-radius:13px;background:#181b23}.toggle button{padding:11px 5px;border:1px solid transparent;border-radius:10px;background:transparent;color:#c6cbd5;font-weight:650;font-size:.9rem}.toggle button[aria-pressed="true"]{background:#3c414f;border-color:#616a79;color:#fff;box-shadow:0 2px 8px #0005}
+.between{display:flex;align-items:center;justify-content:space-between;gap:8px}.between .eyebrow{margin-bottom:0}.connector{font-size:.73rem;color:#c9c4cc;padding:9px 0 3px}.note{color:var(--muted);font-size:.81rem;line-height:1.5;margin:12px 0 0}.note strong{color:#f3e6e8}.note.warn{color:#ffcbc1}.ready{color:#bfe1c3}
+.hero{text-align:center;padding:18px 16px}.hero .intro{font-size:.88rem;color:#c4c8d0;margin:0}.go{display:grid;place-items:center;width:148px;height:148px;margin:15px auto 7px;border-radius:38px;border:1px solid #634959;background:linear-gradient(150deg,#383440,#22252c);box-shadow:0 12px 24px #0006;touch-action:manipulation;transition:transform .14s;cursor:pointer}.go:active{transform:scale(.96)}.go svg{width:120px;height:120px}.go-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.16em;color:#b7c0cc}.moods{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:17px}.moods button{display:grid;place-items:center;gap:4px;padding:12px 2px 10px;border:1px solid #515665;background:#2e3340;border-radius:13px;color:var(--txt);font-size:.72rem;font-weight:600}.moods button .emoji{font-size:1.65rem}.moods button[aria-pressed=true]{background:#533640;border-color:var(--accent)}
+button{font:inherit;cursor:pointer;color:inherit}button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #ffadb4;outline-offset:3px}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;background:#171a22;border:1px solid #454956;border-radius:12px;color:#e2e4ec;font-size:.80rem;line-height:1.48;padding:13px;text-align:left;max-height:178px;overflow:auto;margin:12px 0;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}.primary,.secondary,.mini{border-radius:12px;border:1px solid #a94757;background:#933242;color:#fff;padding:12px 8px;text-decoration:none;text-align:center;font-weight:700;font-size:.86rem;display:inline-grid;place-items:center}.secondary{background:#313746;border-color:#5a6070;color:#eef1f5}.mini{font-size:.77rem;padding:9px 10px;background:#363b4a;border-color:#626b79}
+#message{min-height:20px;margin:10px 0 0;color:#c2d7c6;font-size:.78rem;text-align:center;line-height:1.4}.subactions{display:flex;justify-content:center;gap:15px;margin-top:10px}.subactions button,.subactions a{border:0;background:none;text-decoration:underline;text-underline-offset:3px;font-size:.77rem;color:#bbc7dc;padding:4px}
+details{border:1px solid #484e5c;border-radius:15px;background:#252a35;padding:0 15px;margin:12px 0}summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-weight:750;font-size:.92rem;padding:17px 0}summary::-webkit-details-marker{display:none}summary::after{content:'+';font-size:1.2rem;color:#d4bec2}details[open] summary::after{content:'−'}details[open] summary{border-bottom:1px solid #444b57}.setup-inner{padding:12px 0 18px}.setup-block{padding:12px 0;border-bottom:1px solid #454b58}.setup-block:last-child{border-bottom:0}.setup-block h3{margin:0 0 6px;font-size:.9rem}.setup-block p{margin:6px 0 9px;color:var(--muted);line-height:1.48;font-size:.81rem}.resource-links{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}.resource-links a{font-size:.79rem;color:#ffd0d3;text-decoration:none;border:1px solid #6a5966;border-radius:9px;padding:9px 10px;background:#38313f}.resource-links a:hover{text-decoration:underline}
+.pill{border:1px solid #696273;border-radius:999px;padding:4px 8px;color:#e4d7e1;font-size:.67rem;font-weight:600;white-space:nowrap}
+footer{padding:8px 6px 22px;color:#919eaf;line-height:1.5;text-align:center;font-size:.75rem}footer a{color:#cbbacb}
+@media(prefers-reduced-motion:reduce){.go{transition:none}html{scroll-behavior:auto}}@media(min-width:700px){.shell{max-width:580px}.card{padding:21px}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header>
+ <div class="mark" aria-hidden="true"><svg viewBox="0 0 100 100"><path d="M50 4 61 36h34L68 57l11 35-29-21-29 21 11-35L5 36h34Z" fill="#d0273e" stroke="#fa5063" stroke-width="2"/><path d="M50 12v58l22 15-9-31 22-14H58Z" fill="#0f1118"/></svg></div>
+ <div><h1>HIPSTER GO</h1><p>One record store. Multiple questionable assistants.</p></div>
+</header>
+<section class="card" aria-label="Choose your music workflow">
+ <div class="between"><p class="eyebrow">AI assistant</p><span class="pill">01 / 02</span></div>
+ <div class="toggle" role="group" aria-label="AI assistant">
+  <button type="button" data-ai="chatgpt" aria-pressed="true">ChatGPT</button>
+  <button type="button" data-ai="gemini" aria-pressed="false">Gemini</button>
+ </div>
+ <p class="eyebrow" style="margin-top:16px">Streaming destination</p>
+ <div class="toggle" role="group" aria-label="Music streaming service">
+  <button type="button" data-service="spotify" aria-pressed="true">Spotify</button>
+  <button type="button" data-service="youtube" aria-pressed="false">YouTube Music</button>
+ </div>
+ <p id="route-note" class="note ready" aria-live="polite">ChatGPT + Spotify: supported workflow when both apps are connected.</p>
+</section>
+<section class="card hero" aria-label="Choose a playlist mood">
+ <p class="eyebrow" style="margin-bottom:0">Crate-digging emergency button</p>
+ <button type="button" class="go" id="go" aria-label="Prepare a surprise GO playlist">
+  <svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 4 61 36h34L68 57l11 35-29-21-29 21 11-35L5 36h34Z" fill="#ce263b" stroke="#f04454" stroke-width="2"/><path d="M50 12v58l22 15-9-31 22-14H58Z" fill="#100c14"/></svg>
+ </button>
+ <div class="go-label">Tap to GO · or choose a mood</div>
+ <div class="moods" role="group" aria-label="Playlist mood">
+  <button type="button" data-mood="happy" aria-pressed="false"><span class="emoji">🙂</span>Happy</button>
+  <button type="button" data-mood="angry" aria-pressed="false"><span class="emoji">😠</span>Angry</button>
+  <button type="button" data-mood="sad" aria-pressed="false"><span class="emoji">😢</span>Sad</button>
+  <button type="button" data-mood="weird" aria-pressed="false"><span class="emoji">🤪</span>Weird</button>
+ </div>
+</section>
+<section class="card" aria-label="Your prepared music prompt">
+ <div class="between"><p class="eyebrow">Your ready-to-copy prompt</p><span id="mood-label" class="pill">Surprise</span></div>
+ <pre id="prompt" tabindex="0"></pre>
+ <div class="actions">
+  <button type="button" class="primary" id="copy">Copy command</button>
+  <a id="open-app" class="secondary" href="https://chatgpt.com/" target="_blank" rel="noopener">Open ChatGPT ↗</a>
+ </div>
+ <div class="subactions"><button type="button" id="share">Share command…</button><a id="browser-link" href="https://chatgpt.com/" target="_blank" rel="noopener">Open in browser</a></div>
+ <p id="message" role="status" aria-live="polite">Copy, open your AI, paste and send.</p>
+</section>
+<details id="setup">
+ <summary><span>Setup & downloads <span style="color:#aeb7c5;font-weight:450">· everything in one place</span></span></summary>
+ <div class="setup-inner">
+  <div class="setup-block"><h3>ChatGPT + Spotify</h3>
+   <p>Choose the Hipster Music Generator and Spotify apps in ChatGPT. Text mentions alone may not activate them. Spotify publishing needs a connected playlist writer.</p>
+   <div class="resource-links"><a href="https://github.com/focustimer-dev/hipster-music-generator" target="_blank" rel="noopener">Source & installation</a><a href="https://chatgpt.com/" target="_blank" rel="noopener">Open ChatGPT</a></div>
+   <button type="button" class="mini" data-setup="chatgpt">Copy ChatGPT setup prompt</button>
+  </div>
+  <div class="setup-block"><h3>Gemini + YouTube Music</h3>
+   <p>Install the latest Gemini <strong>Skill ZIP</strong> via Gemini's Skills settings. Select the skill and YouTube Music connected app when needed. Replace an uploaded skill to receive updates.</p>
+   <div class="resource-links"><a href="https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/hipster-music-generator-gemini-app-skill.zip" target="_blank" rel="noopener">Gemini Skill ZIP ↗</a><a href="https://github.com/focustimer-dev/hipster-music-generator/blob/main/adapters/gemini/README.md" target="_blank" rel="noopener">Gemini setup guide ↗</a></div>
+   <button type="button" class="mini" data-setup="gemini">Copy Gemini setup prompt</button>
+  </div>
+  <div class="setup-block"><h3>Claude · optional</h3>
+   <p>Claude uses different archives depending on whether you're on <strong>Skills</strong> or <strong>Plugins</strong>. Don't interchange them. Spotify publishing capabilities vary by account and host.</p>
+   <div class="resource-links"><a href="https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/hipster-music-generator-claude-skill.zip" target="_blank" rel="noopener">Claude Skill ZIP ↗</a><a href="https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/hipster-music-generator-claude-plugin.zip" target="_blank" rel="noopener">Claude Plugin ZIP ↗</a><a href="https://github.com/focustimer-dev/hipster-music-generator/blob/main/adapters/claude/README.md" target="_blank" rel="noopener">Which ZIP?</a></div>
+  </div>
+  <div class="setup-block"><h3>Universal installation prompt</h3>
+   <p>For any AI that supports loading skills from GitHub. Installation and persistence depend on the host.</p>
+   <button type="button" class="mini" data-setup="universal">Copy GitHub loading prompt</button>
+  </div>
+  <div class="setup-block"><h3>Project & updates</h3>
+   <div class="resource-links"><a href="https://github.com/focustimer-dev/hipster-music-generator" target="_blank" rel="noopener">Repository ↗</a><a href="https://github.com/focustimer-dev/hipster-music-generator/releases/latest" target="_blank" rel="noopener">Latest release ↗</a></div>
+  </div>
+ </div>
+</details>
+<footer>This launcher only prepares prompts and opens an AI. It never uploads music, stores credentials, or secretly creates playlists. Gemini's YouTube Music output may differ from the curated tracklist and may require <strong>Save to library</strong>. <a href="https://github.com/focustimer-dev/hipster-music-generator">Project source</a>.</footer>
+</div>
+<script>
+(function(){
+'use strict';
+var supported={chatgpt:'spotify',gemini:'youtube'};
+var root=document.documentElement;
+var pathGemini=location.pathname.indexOf('/gemini')===0;
+var urlParams=new URLSearchParams(location.search);
+function storageGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function storageSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+var ai=(urlParams.get('ai')|| (pathGemini?'gemini':storageGet('hipster-ai'))||'chatgpt').toLowerCase();
+if(ai!=='chatgpt'&&ai!=='gemini')ai='chatgpt';
+var service=(urlParams.get('service')|| (pathGemini?'youtube':storageGet('hipster-service'))||supported[ai]).toLowerCase();
+if(service!=='spotify'&&service!=='youtube')service=supported[ai];
+var mood=(urlParams.get('mood')||'go').toLowerCase();
+if(!['go','happy','angry','sad','weird'].includes(mood))mood='go';
+var el={prompt:document.getElementById('prompt'),route:document.getElementById('route-note'),message:document.getElementById('message'),mood:document.getElementById('mood-label'),open:document.getElementById('open-app'),browser:document.getElementById('browser-link')};
+var browserLinks={chatgpt:'https://chatgpt.com/',gemini:'https://gemini.google.com/app'};
+var geminiIntent='intent://gemini.google.com/app#Intent;scheme=https;package=com.google.android.apps.bard;S.browser_fallback_url=https%3A%2F%2Fgemini.google.com%2Fapp;end';
+var basePrompt='Discover a fresh, coherent 12-track playlist using the full Hipster Music Generator skill. Find verified deep cuts across eras and musical scenes, with unexpected connections in texture, rhythm, voice, production or musical function. Do not force novelty or recycle instruction examples. Sequence for mood, momentum and replayability.';
+function promptText(){
+ var cmd=ai==='gemini'?'@hipster-music-generator '+(mood==='go'?'go':'go '+mood)+' @youtube-music':'@Hipster Music Generator @Spotify '+(mood==='go'?'go':'go '+mood);
+ if(ai==='gemini'&&service==='spotify')cmd='@hipster-music-generator '+(mood==='go'?'go':'go '+mood)+' — destination Spotify';
+ if(ai==='chatgpt'&&service==='youtube')cmd='@Hipster Music Generator '+(mood==='go'?'go':'go '+mood)+' — destination YouTube Music';
+ var handoff=service==='youtube'?'Curate the actual artist/title/version list FIRST. Ask YouTube Music to match the selections where supported. If it only creates an inspired mix, clearly state substitutions, uncertain order and whether the user needs to Save to library.':'Resolve exact Spotify recordings and preserve order before publishing. Confirm saved item count and identify substitutions or missing matches.';
+ if(supported[ai]!==service)handoff='This AI/music-service combination has no confirmed automatic playlist-writing route. Curate the verified ordered tracklist first. Publish only if a genuine authorized writer is available; otherwise label the result text-only rather than claiming it was saved.';
+ return cmd+'\n\n'+basePrompt+'\n\n'+handoff;
+}
+function routeMessage(){
+ if(ai==='chatgpt'&&service==='spotify')return 'ChatGPT + Spotify: the verified exact-track publishing route when both apps are selected.';
+ if(ai==='gemini'&&service==='youtube')return 'Gemini + YouTube Music: can generate playlists, but exact songs and order may not be preserved.';
+ return 'This combination has no confirmed playlist-writing integration. You can still curate a text tracklist.';
+}
+function render(){
+ document.querySelectorAll('[data-ai]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.ai===ai))});
+ document.querySelectorAll('[data-service]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.service===service))});
+ document.querySelectorAll('[data-mood]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.mood===mood))});
+ el.prompt.textContent=promptText();el.mood.textContent=mood==='go'?'Surprise':mood[0].toUpperCase()+mood.slice(1);
+ el.route.textContent=routeMessage();el.route.className='note '+(supported[ai]===service?'ready':'warn');
+ el.open.textContent='Open '+(ai==='chatgpt'?'ChatGPT ↗':'Gemini app ↗');
+ el.open.href=ai==='chatgpt'?browserLinks.chatgpt:geminiIntent;
+ el.open.removeAttribute('target');if(ai==='chatgpt')el.open.setAttribute('target','_blank');
+ el.browser.href=browserLinks[ai];el.browser.textContent='Open '+(ai==='chatgpt'?'ChatGPT':'Gemini')+' in browser';
+ storageSet('hipster-ai',ai);storageSet('hipster-service',service);
+ var u=new URL(location.href);if(mood==='go')u.searchParams.delete('mood');else u.searchParams.set('mood',mood);
+ u.searchParams.set('ai',ai);u.searchParams.set('service',service);history.replaceState(null,'',u.pathname+u.search);
+}
+function status(t){el.message.textContent=t}
+async function copy(s){var ok=false;try{await navigator.clipboard.writeText(s);ok=true}catch(err){var textarea=document.createElement('textarea');textarea.value=s;textarea.style.cssText='position:fixed;opacity:0;left:-5000px';document.body.appendChild(textarea);textarea.select();try{ok=document.execCommand('copy')}catch(e){}textarea.remove()}return ok}
+async function copyCurrent(){status(await copy(promptText())?'Copied. Open '+(ai==='gemini'?'Gemini':'ChatGPT')+', paste and send. Activate both apps/skills if needed.':'Clipboard blocked. Long-press the prompt above to select and copy it.')}
+document.querySelectorAll('[data-ai]').forEach(function(b){b.addEventListener('click',function(){ai=b.dataset.ai;service=supported[ai];render();status('Ready. Choose a mood or copy the command.')})});
+document.querySelectorAll('[data-service]').forEach(function(b){b.addEventListener('click',function(){service=b.dataset.service;render();status('Destination changed. Copy the refreshed command when ready.')})});
+document.getElementById('go').addEventListener('click',function(){mood='go';render();copyCurrent()});
+document.querySelectorAll('[data-mood]').forEach(function(b){b.addEventListener('click',function(){mood=b.dataset.mood;render();copyCurrent()})});
+document.getElementById('copy').addEventListener('click',copyCurrent);
+document.getElementById('share').addEventListener('click',async function(){if(!navigator.share){status('Share sheet unavailable. Use Copy command instead.');return}try{await navigator.share({text:promptText()})}catch(e){if(e.name!=='AbortError')status('Sharing failed. Use Copy command instead.')}});
+var setupPrompts={
+ chatgpt:'@Hipster Music Generator @Spotify setup\nCheck which Spotify playlist-writing actions are actually accessible. Use the full Hipster Music Generator taxonomy and default to twelve real tracks. Do not claim a playlist was saved without evidence.',
+ gemini:'@hipster-music-generator setup change YouTube Music @youtube-music\nConfirm that my current Gemini skill is loaded and that YouTube Music is connected. Prefer exact curated recordings; distinguish a generated mix from a saved playlist.',
+ universal:'Load Hipster Music Generator from https://github.com/focustimer-dev/hipster-music-generator . Read SKILL.md and its references. Install using your supported skills method if available, confirm whether that installation persists, check music-service publishing permissions, then run setup.'
+};
+document.querySelectorAll('[data-setup]').forEach(function(b){b.addEventListener('click',async function(){var id=b.dataset.setup;if(await copy(setupPrompts[id])){b.textContent='Copied ✓';status('Setup prompt copied. Paste it into the relevant AI.');setTimeout(function(){b.textContent=id==='universal'?'Copy GitHub loading prompt':'Copy '+(id==='chatgpt'?'ChatGPT':'Gemini')+' setup prompt'},1600)}else status('Could not copy setup prompt. Please try again.')})});
+render();
+})();
+</script>
+</body>
+</html>
