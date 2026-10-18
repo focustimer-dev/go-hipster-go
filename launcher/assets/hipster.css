@@ -30,12 +30,13 @@ a{color:inherit}
 .site>*{position:relative;z-index:11}
 .masthead{background:var(--ink);color:var(--bone);padding:12px 18px 13px;border-bottom:6px solid var(--red);position:relative}
 .brandrow{display:flex;justify-content:space-between;align-items:center;gap:14px}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;min-width:0}
+.brand>span:last-child{min-width:0}
 .brand-star{display:grid;place-items:center;width:43px;height:43px;flex-shrink:0;background:var(--red);transform:rotate(-11deg);border:2px solid var(--paper);box-shadow:3px 3px 0 #000}
 .brand-star svg{width:34px;height:34px}
-.brand-name{font-size:1.38rem;letter-spacing:-.08em;font-weight:1000;line-height:.9}
+.brand-name{display:block;font-size:1.38rem;letter-spacing:-.045em;font-weight:1000;line-height:1}
 .brand-name span{color:#f6bfbe}
-.brand-sub{font-size:.55rem;letter-spacing:.19em;font-weight:700;margin-top:5px;color:#d4c3c3}
+.brand-sub{display:block;font-size:.55rem;letter-spacing:.19em;font-weight:700;margin-top:5px;color:#d4c3c3}
 .est{border:1px solid #d0c7bd;padding:4px 6px;line-height:1.1;letter-spacing:.05em;font-family:Georgia,serif;font-size:.62rem;transform:rotate(4deg);text-align:center}
 .topnav{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding-top:15px}
 .topnav a{display:flex;align-items:center;justify-content:center;gap:7px;color:#d3cdd0;
@@ -229,3 +230,11 @@ a{color:inherit}
 .first-setup-status{font-size:.74rem;margin:8px 0 0;line-height:1.4;font-weight:750}
 #setupTryStatus{max-width:530px}
 @media(max-width:390px){.mood-grid .mood{min-height:110px;padding:8px 2px}.mood .face{width:54px;height:61px}.mood .word{font-size:.64rem}}
+
+/* Narrow screens: keep the issue-marker, heading and cheeky caption from competing for one line. */
+@media(max-width:680px){
+ .section-title{flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:4px}
+ .section-title>span:first-child{display:flex;align-items:flex-start;gap:8px;min-width:0;max-width:100%;line-height:1.25}
+ .section-title .num{flex:0 0 auto}
+ .section-title small{display:block;max-width:100%;margin-left:31px;line-height:1.4}
+}
