@@ -406,3 +406,5 @@ body[data-page=setup] summary:focus-visible,#setupPromptText:focus-visible{outli
 .manual-workbench .manual-install-body{padding:8px 0 0}
 .manual-workbench .manual-install .recipe-steps{margin-top:0}
 @media(max-width:569px){.manual-workbench .setup-actions{display:grid;grid-template-columns:1fr;gap:10px}.manual-workbench .setup-actions .resource{width:100%;text-align:center;min-height:48px}}
+
+@media(max-width:390px){.brand-name{font-size:1.05rem}.brand-sub{max-width:24ch;line-height:1.3}}
