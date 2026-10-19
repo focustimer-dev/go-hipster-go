@@ -18,5 +18,7 @@ jobs:
       - name: Verify files and examples
         run: |
           python scripts/playlist_cli.py check-skill
+          python scripts/build_agent_packages.py --check
+          python scripts/build_agent_packages.py --zip
           python scripts/playlist_cli.py validate examples/example-playlist.json
           python -m unittest discover -s tests -v
