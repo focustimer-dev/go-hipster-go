@@ -44,20 +44,11 @@
   </nav>
 </header>
 <div class="ticker" aria-hidden="true"><div class="track">✳ THE MANUAL THAT CAME FREE WITH YOUR RECYCLED TOTE BAG ✳ SETUP DOES NOT CONFER TASTE ✳ HAND-BOTTLED IN SMALL BATCHES ✳ NOW WITH 40% MORE TECHNICAL CLARITY ✳&nbsp;&nbsp; ✳ THE MANUAL THAT CAME FREE WITH YOUR RECYCLED TOTE BAG ✳ SETUP DOES NOT CONFER TASTE ✳ HAND-BOTTLED IN SMALL BATCHES ✳ NOW WITH 40% MORE TECHNICAL CLARITY ✳&nbsp;&nbsp;</div></div>
-<main class="main">
-  <div class="setup-intro">
-    <span class="kicker">VOL. 002 / ESSENTIAL DOCUMENTATION</span>
-    <h1 class="headline" style="font-size:clamp(2.5rem,9vw,4.3rem)">THE OWNER'S<br><em>MANUAL.</em></h1>
-    <p>Pick your AI and streaming service. We'll show only the steps that apply. Start with the setup check—your apps may already be ready.</p>
-  </div>
-  <section class="test-before-setup" aria-labelledby="testFirstTitle">
-    <span class="welcome-eyebrow">✳ BEFORE YOUR FIRST PLAYLIST ✳</span>
-    <h2 id="testFirstTitle">TRY THE SETUP PROMPT FIRST.</h2>
-    <p>Choose your AI and streaming service below, then copy a prompt that checks the skill installation and music connection before your first playlist.</p>
-    <a class="resource copy" href="#setupAiTitle">CHOOSE YOUR SERVICES ↓</a>
-    <p class="first-setup-status" id="setupTryStatus" role="status" aria-live="polite"></p>
-  </section>
-
+<main class="main manual-workbench">
+  <header class="manual-intro">
+    <h1 class="headline">THE OWNER'S <em>MANUAL.</em></h1>
+    <p>Choose your services. Copy the setup check. Paste and send it in your AI.</p>
+  </header>
   <div class="section-title"><span><span class="num">A</span> TWO CHOICES. THAT'S IT.</span><small>no personality quiz required</small></div>
   <div class="selector-grid setup-selectors">
     <section class="panel" aria-labelledby="setupAiTitle">
@@ -80,11 +71,8 @@
   <div class="connector-status" id="routeStatus" role="status"><span>Choose the two services above for tailored instructions.</span></div>
 
   <section class="setup-recipe" aria-labelledby="recipeTitle">
-    <span class="kicker">YOUR CUSTOM SETUP CARD</span>
-    <h2 id="recipeTitle">LET'S GET THIS<br>THING SPINNING.</h2>
+    <h2 id="recipeTitle">FIRST, CHECK YOUR SETUP.</h2>
     <p id="recipeIntro" class="recipe-intro">A short plan based on your two choices.</p>
-    <ol id="recipeSteps" class="recipe-steps"></ol>
-    <div id="recipeResources" class="recipe-resources"></div>
     <div class="setup-actions">
       <button type="button" class="resource copy" id="copyTailoredSetup">✂ COPY MY SETUP PROMPT</button>
       <a class="resource" id="openSelectedAi" href="https://chatgpt.com/" target="_blank" rel="noopener">↗ OPEN YOUR AI</a>
@@ -92,6 +80,7 @@
     <p class="status" role="status" aria-live="polite" id="copyStatus">Copy your setup prompt, then open your AI.</p>
     <details class="manual-prompt" id="setupPromptDetails"><summary>View setup prompt / copy manually</summary><div class="receipt-fold"><pre id="setupPromptText" tabindex="0" aria-label="Copyable setup prompt"></pre></div></details>
     <p id="recipeCaveat" class="footnote"></p>
+    <details class="manual-install"><summary>Need to install or connect? Your steps &amp; downloads</summary><div class="manual-install-body"><ol id="recipeSteps" class="recipe-steps"></ol><div id="recipeResources" class="recipe-resources"></div></div></details>
   </section>
   <details class="resource-shelf">
     <summary>ALL THE DOWNLOADS <span>for people who alphabetize their vinyl</span></summary>

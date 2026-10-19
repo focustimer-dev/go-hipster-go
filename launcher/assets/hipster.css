@@ -388,3 +388,21 @@ body[data-page=setup] summary:focus-visible,#setupPromptText:focus-visible{outli
  body[data-page=setup] .switch button[aria-pressed=true],#copyTailoredSetup:active,#copyTailoredSetup[data-copy-state=copying]{transform:none}
  #openSelectedAi[data-copy-ready=true],.manual-prompt[open] .receipt-fold,.resource-shelf[open] .resource-shelf-body{animation:none}
 }
+
+/* Manual: services and setup handoff form one compact workbench. */
+.manual-workbench .manual-intro{padding:6px 0 20px}
+.manual-workbench .manual-intro .headline{font-size:clamp(2rem,7vw,3.25rem);line-height:1.05;margin:0 0 12px}
+.manual-workbench .manual-intro p{font-size:1rem;line-height:1.5;max-width:58ch;margin:0}
+.manual-workbench .section-title:first-of-type{margin-top:0}
+.manual-workbench .setup-recipe{margin-top:14px;padding:18px}
+.manual-workbench #recipeTitle{font-size:clamp(1.35rem,4.5vw,1.8rem);line-height:1.15;margin:0 0 10px}
+.manual-workbench .recipe-intro{margin:0 0 16px;line-height:1.5}
+.manual-workbench .setup-actions{margin-top:0}
+.manual-workbench #copyStatus{min-height:2.8em;margin:10px 0 6px}
+.manual-workbench .manual-prompt{margin-top:0}
+.manual-workbench .manual-install{border-top:2px solid var(--ink);margin-top:16px;padding-top:6px}
+.manual-workbench .manual-install summary{cursor:pointer;min-height:48px;display:list-item;align-content:center;font-weight:700;line-height:1.4;padding:12px 0}
+.manual-workbench .manual-install summary:focus-visible{outline:3px solid var(--red);outline-offset:4px}
+.manual-workbench .manual-install-body{padding:8px 0 0}
+.manual-workbench .manual-install .recipe-steps{margin-top:0}
+@media(max-width:569px){.manual-workbench .setup-actions{display:grid;grid-template-columns:1fr;gap:10px}.manual-workbench .setup-actions .resource{width:100%;text-align:center;min-height:48px}}

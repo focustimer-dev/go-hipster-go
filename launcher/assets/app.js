@@ -103,7 +103,7 @@ function renderSetup(){
  const q=routeInfo(ai,service);
  const intro=doc.getElementById("recipeIntro"),steps=doc.getElementById("recipeSteps"),links=doc.getElementById("recipeResources");
  if(!intro||!steps||!links)return;
- intro.textContent="YOUR MIX: "+aiNames[ai]+" × "+serviceNames[service]+". Copy the setup-check prompt first; if you're already connected, it should simply tell you to run GO.";
+ intro.textContent="YOUR MIX: "+aiNames[ai]+" × "+serviceNames[service]+". The check will identify anything missing. Already connected? It should tell you to run GO.";
  let install="",connection="";
  if(ai==="chatgpt")install="In ChatGPT, select Go, Hipster, Go!. If missing, install/load it using the project source or app directory.";
  else if(ai==="gemini")install="In Gemini Customize → Skills, upload the Gemini Skill ZIP (or Replace skill to update it), then choose Go, Hipster, Go! using @ or /.";
