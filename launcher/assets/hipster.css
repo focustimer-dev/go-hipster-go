@@ -354,3 +354,10 @@ a{color:inherit}
 @keyframes receipt-unfold{from{transform:rotateX(-10deg) translateY(-6px)}to{transform:rotateX(0) translateY(0)}}
 @keyframes receipt-crease{from{opacity:1}to{opacity:0}}
 @media(prefers-reduced-motion:reduce){#promptDetails[open] .receipt-fold,#promptDetails[open] .receipt-fold:before{animation:none}}
+
+/* The next action gets one emphasis after GO's success stamp settles. */
+.handoff #openAi{white-space:normal;min-height:48px;line-height:1.4}
+.handoff #openAi[aria-disabled=false]{animation:handoff-ready 460ms 340ms cubic-bezier(.16,1,.3,1) backwards}
+.handoff #openAi:focus-visible{outline:3px solid var(--red2);outline-offset:4px}
+@keyframes handoff-ready{0%{background:var(--yellow);transform:translateY(3px)}100%{transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.handoff #openAi[aria-disabled=false]{animation:none}}

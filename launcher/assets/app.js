@@ -74,7 +74,7 @@ function updateHandoff(){
  const button=doc.getElementById("goButton");
  if(button)button.setAttribute("data-copy-state",button.disabled?"copying":ready?"copied":"idle");
  for(const id of ["openAi","browserAi"]){const a=doc.getElementById(id);if(a)a.setAttribute("aria-disabled",String(!ready))}
- const a=doc.getElementById("openAi");if(a)a.textContent=ready?"↗ OPEN "+aiNames[ai].toUpperCase():"COPY WITH GO FIRST";
+ const a=doc.getElementById("openAi");if(a)a.textContent=ready?"NEXT: OPEN "+aiNames[ai].toUpperCase():"COPY WITH GO FIRST";
 }
 function selectionChanged(){
  render();
@@ -183,6 +183,7 @@ async function copyGo(){
  const button=doc.getElementById("goButton");
  if(button&&button.disabled)return;
  if(button){button.disabled=true;button.setAttribute("aria-busy","true");button.setAttribute("data-copy-state","copying")}
+ copiedPrompt=null;updateHandoff();
  status("Copying your prompt…");
  const ok=await copyText(prompt);
  if(button){button.disabled=false;button.setAttribute("aria-busy","false")}
