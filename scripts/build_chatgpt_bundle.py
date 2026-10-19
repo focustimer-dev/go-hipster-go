@@ -16,7 +16,7 @@ SOURCES = [
 
 def render() -> str:
     parts = [
-        "# Hipster Music Generator — ChatGPT knowledge bundle\n\n",
+        "# Go, Hipster, Go! — ChatGPT knowledge bundle\n\n",
         "A generated, text-forward snapshot of the **canonical** repository skill. "
         "This is reference material used together with Project instructions; "
         "it does not install scripts, APIs, music-streaming access, or authorization.\n\n",
