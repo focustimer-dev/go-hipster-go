@@ -48,7 +48,7 @@ class SetupContractTests(unittest.TestCase):
 
     def test_plugin_promotes_setup(self):
         data=json.loads((ROOT/"plugin.json").read_text(encoding="utf-8"))
-        self.assertEqual(data["version"],"3.5.0")
+        self.assertEqual(data["version"],json.loads((ROOT/".claude-plugin/plugin.json").read_text())["version"])
         self.assertTrue(any("Setup" in t for t in
             data["extensions"]["com.openai"]["interface"]["defaultPrompt"]))
         self.assertEqual((ROOT/"SKILL.md").read_bytes(),

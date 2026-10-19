@@ -2,7 +2,7 @@
 
 A generated, text-forward snapshot of the **canonical** repository skill. This is reference material used together with Gem instructions; it does not install scripts, APIs, music-streaming access, or authorization.
 
-**Source:** https://github.com/focustimer-dev/hipster-music-generator
+**Source:** https://github.com/focustimer-dev/go-hipster-go
 
 **Files included:** `SKILL.md`, `references/global-scenes.md`, `references/sonic-taxonomy.md`, `references/curation-examples.md`, `references/verification.md`.
 

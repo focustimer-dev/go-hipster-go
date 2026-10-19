@@ -21,7 +21,7 @@ async function copyText(text){
   let ok=false;try{ok=doc.execCommand("copy")}catch(err){}t.remove();return ok;
  }
 }
-const repo="https://github.com/focustimer-dev/hipster-music-generator";
+const repo="https://github.com/focustimer-dev/go-hipster-go";
 const releases=repo+"/releases/latest/download/";
 const resourceInfo={
  chatgpt:[{name:"Go, Hipster, Go! source",url:repo}],
@@ -151,7 +151,7 @@ function renderLaunch(){
 }
 function render(){if(body.dataset.page==="launch")renderLaunch();else renderSetup()}
 doc.querySelectorAll("[data-ai]").forEach(b=>b.addEventListener("click",()=>{
- ai=b.dataset.ai;service=defaultService[ai];copiedPrompt=null;selectionChanged();
+ ai=b.dataset.ai;copiedPrompt=null;selectionChanged();
 }));
 doc.querySelectorAll("[data-service]").forEach(b=>b.addEventListener("click",()=>{
  service=b.dataset.service;copiedPrompt=null;selectionChanged();

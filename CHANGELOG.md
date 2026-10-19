@@ -1,5 +1,11 @@
 ## 3.5.0 — Go, Hipster, Go! identity migration
 
+## 3.5.1 — Rename cleanup
+
+- Use the renamed repository in metadata, setup prompts, manuals and download links.
+- Preserve the selected music service when changing AI in the Jukebox and Manual.
+- Refresh portable packages and migration instructions; retain legacy ZIP aliases.
+
 - Rename playlist-curation skill and plugin identity to `go-hipster-go`.
 - Preserve existing music taxonomy, DeBarge Protocol and PWA installation paths.
 - Package under the new name and include compatibility ZIP filenames for existing download links.

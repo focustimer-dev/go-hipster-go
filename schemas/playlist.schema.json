@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/focustimer-dev/hipster-music-generator/blob/main/schemas/playlist.schema.json",
+  "$id": "https://github.com/focustimer-dev/go-hipster-go/blob/main/schemas/playlist.schema.json",
   "title": "Hipster Music Generator Playlist v1",
   "type": "object",
   "additionalProperties": false,

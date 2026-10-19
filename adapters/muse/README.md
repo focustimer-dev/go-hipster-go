@@ -12,7 +12,7 @@ Meta documents **built-in Muse skills and connected services**, but we have **no
 
 ```text
 Use Go, Hipster, Go! from
-https://github.com/focustimer-dev/hipster-music-generator
+https://github.com/focustimer-dev/go-hipster-go
 
 Read the current SKILL.md and the referenced music taxonomy,
 global scenes, verification, and curation examples. Do not replace

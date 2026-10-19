@@ -12,7 +12,7 @@ Claude chat, Cowork and Claude Code are **different installation environments**.
 
 ```text
 Install Go, Hipster, Go! from
-https://github.com/focustimer-dev/hipster-music-generator
+https://github.com/focustimer-dev/go-hipster-go
 
 First identify whether I'm on Claude's "Upload a plugin" or
 "Upload a skill" screen. Read adapters/claude/README.md.
@@ -29,19 +29,19 @@ until the upload actually succeeds. Then run setup.
 
 | Claude screen | Required archive | What's inside |
 | --- | --- | --- |
-| **Customize → Skills → Upload a skill** | **[Download Claude Skill ZIP](https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/go-hipster-go-claude-skill.zip)** | `go-hipster-go/SKILL.md` plus references |
-| **Customize → Plugins → Upload a plugin** | **[Download Claude Plugin ZIP](https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/go-hipster-go-claude-plugin.zip)** | Top-level `.claude-plugin/plugin.json` manifest plus `skills/` |
+| **Customize → Skills → Upload a skill** | **[Download Claude Skill ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-claude-skill.zip)** | `go-hipster-go/SKILL.md` plus references |
+| **Customize → Plugins → Upload a plugin** | **[Download Claude Plugin ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-claude-plugin.zip)** | Top-level `.claude-plugin/plugin.json` manifest plus `skills/` |
 
 **Common validation error:** If the Plugins page says *"Zip must contain a .claude-plugin/plugin.json file or a top-level SKILL.md"*, you've probably uploaded the **Skill ZIP** into the **Plugin** uploader. Remove that file and choose the **Plugin ZIP** instead. No changes to Spotify authorization or the music skill are required to resolve that format error.
 
 For most Claude chat users, the Skill uploader is the simpler installation method. If you've already reached the **Plugin** uploader, use the Plugin ZIP there.
 
-1. **Try the GitHub link first:** ask Claude to read [this repository](https://github.com/focustimer-dev/hipster-music-generator) and apply its `SKILL.md`. This can work within a chat, but reading GitHub is **not proof of a persistent skill installation**.
+1. **Try the GitHub link first:** ask Claude to read [this repository](https://github.com/focustimer-dev/go-hipster-go) and apply its `SKILL.md`. This can work within a chat, but reading GitHub is **not proof of a persistent skill installation**.
 2. **For reliable reuse**, open Claude's **Customize → Skills → + → Create skill → Upload a skill** and select the ZIP above. Enable the new skill. The archive contains the required `go-hipster-go/` root folder, the full SKILL.md, its local references and helper files. Claude requires **code execution enabled** for custom Skills; check the actual Skills controls if they aren't visible. Anthropic says Skills are available across Free, Pro, Max, Team and Enterprise subject to these controls.
 3. **Connect Spotify separately:** [Add Spotify to Claude](https://claude.com/marketplace/connectors/spotify) through its official connector and complete whatever authorization the provider asks for. Spotify's Claude connection is available to Free and Premium listeners for discovery; **Spotify Premium** is specified for prompt-generated personalized playlists. The Anthropic connector lists `create_playlist`, `search`, and `fetch_tracks`, but the public tool list does **not** prove arbitrary *exact* item insertion or ordering.
 4. Invoke `Use Go, Hipster, Go!: setup` and choose Spotify as the preferred publishing service if appropriate. Then say `go`, `go weird`, or `go sad 24`. Claude can **suggest a connected app without you naming it every time**, but may require your selection/approval. After publishing, compare the actual URL, count, song versions and ordering; a generated mix is not necessarily an exact transfer.
 
-**[Download the complete Claude Plugin ZIP](https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/go-hipster-go-claude-plugin.zip)** if your Claude host offers **Customize → Plugins → Upload a plugin**. The skill-only ZIP is the simpler default in Claude chat. Neither ZIP bundles Spotify credentials or adds a provider tool by itself.
+**[Download the complete Claude Plugin ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-claude-plugin.zip)** if your Claude host offers **Customize → Plugins → Upload a plugin**. The skill-only ZIP is the simpler default in Claude chat. Neither ZIP bundles Spotify credentials or adds a provider tool by itself.
 
 **Update policy:** Uploaded ZIPs are snapshots, not live subscriptions to GitHub. If the skill changes, upload the newer package using Claude's skill-edit/replace controls. `setup` is safe to rerun; any cross-chat preference persistence requires a genuinely supported, user-approved storage mechanism.
 
@@ -90,14 +90,14 @@ reroll DeBarge, or republish unless I ask.
 
 If Claude only offers a neutral Spotify playlist card, it may not be able to **set the playlist's description metadata**. In that case it should write a separately labeled **Suggested playlist description** in chat. Never claim it updated Spotify unless the provider confirms the metadata write. After trying the style, share a sample of Claude's actual output if it still feels flat; we haven't yet compared real Claude and ChatGPT descriptions side by side.
 
-**Remember to update the installed ZIP:** changing GitHub does **not** hot-reload the existing Claude plugin. Use [the Claude Plugin ZIP](https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/go-hipster-go-claude-plugin.zip) in **Customize → Plugins**, or the [Claude Skill ZIP](https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/go-hipster-go-claude-skill.zip) in **Customize → Skills** as appropriate.
+**Remember to update the installed ZIP:** changing GitHub does **not** hot-reload the existing Claude plugin. Use [the Claude Plugin ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-claude-plugin.zip) in **Customize → Plugins**, or the [Claude Skill ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-claude-skill.zip) in **Customize → Skills** as appropriate.
 
 ## Claude Code — GitHub marketplace installation
 
 This repository already provides a Claude Code plugin manifest, its own marketplace and two self-contained skills. In Claude Code, open a session and run:
 
 ```text
-/plugin marketplace add https://github.com/focustimer-dev/hipster-music-generator
+/plugin marketplace add https://github.com/focustimer-dev/go-hipster-go
 /plugin install go-hipster-go@hipster-music-plugins
 ```
 
