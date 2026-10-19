@@ -4,7 +4,7 @@
 
 ## Test 1: Surprise discovery
 
-Prompt: `Use the Hipster Music Generator skill: go. Make a 6-track playlist and identify the audible bridge between any distant scene choices.`
+Prompt: `Use the Go, Hipster, Go! skill: go. Make a 6-track playlist and identify the audible bridge between any distant scene choices.`
 
 Check: response uses a four-axis thesis; six actual artist–track pairs; sonic connections rather than a world-tour list; no made-up streaming playlist URL. If a real random facility is available, the DeBarge Protocol might replace the length only when eligibility permits; here the explicit 6-track count means it must **not** trigger.
 
@@ -22,7 +22,7 @@ Check: exclusions honored; no fabricated catalog or streaming claims; may return
 
 ## Test 4: DeBarge override
 
-Prompt: `Use the Hipster Music Generator skill: invoke the DeBarge Protocol explicitly. Show the text playlist.`
+Prompt: `Use the Go, Hipster, Go! skill: invoke the DeBarge Protocol explicitly. Show the text playlist.`
 
 Check: exactly 25 identical consecutive entries, original `DeBarge — Rhythm of the Night`; no claim of uploading or playlist creation.
 
