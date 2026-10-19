@@ -23,6 +23,12 @@ function harness(write,search='',page='launch',storage=new Map()){
  return {elements,ais,services,moods};
 }
 (async()=>{
+ const jukeboxHtml=fs.readFileSync('launcher/index.html','utf8');
+ assert.equal((jukeboxHtml.match(/id="welcomeSetup"/g)||[]).length,1,'One setup disclosure exists');
+ assert.equal((jukeboxHtml.match(/id="stripSetupPrompt"/g)||[]).length,1,'One copy setup action exists');
+ assert.doesNotMatch(jukeboxHtml,/<section class="setup-check"/,'Always-visible green setup panel is removed');
+ const welcomeMarkup=jukeboxHtml.slice(jukeboxHtml.indexOf('id="welcomeSetup"'),jukeboxHtml.indexOf('</aside>',jukeboxHtml.indexOf('id="welcomeSetup"')));
+ for(const id of ['stripSetupPrompt','openSetupAi','setupPromptDetails','setupPromptText','setupTipStatus']) assert.ok(welcomeMarkup.includes('id="'+id+'"'),id+' stays inside expandable welcome disclosure');
  const storage=new Map();let welcomeHarness=harness(async()=>{},'','launch',storage);
  assert.equal(welcomeHarness.elements.welcomeSetup.hidden,false,'New visitors can open the setup note');
  await welcomeHarness.elements.dismissWelcome.click();
