@@ -197,7 +197,7 @@ Manual runtime observations remain necessary: static skill tests cannot establis
 | Platform requires auth/approval | `go` | Respect all authorization prompts and important-change approvals |
 | Provider only confirms playlist created | `go` | Don't claim exact item count or track order without provider evidence |
 
-These tests measure actual host behavior; a textual CI assertion does not establish that a second music skill can be invoked automatically. **Observed in ChatGPT Android, 2026-10-16:** HMG-only `go` curated 12 but reported the Spotify writer unavailable; explicitly selecting both HMG and Spotify led to a 12-track playlist visible in the Spotify app. The host-selection difference is the verified finding; exact item-level mixes are not independently audited. See [issue #1](https://github.com/focustimer-dev/hipster-music-generator/issues/1).
+These tests measure actual host behavior; a textual CI assertion does not establish that a second music skill can be invoked automatically. **Observed in ChatGPT Android, 2026-10-16:** HMG-only `go` curated 12 but reported the Spotify writer unavailable; explicitly selecting both HMG and Spotify led to a 12-track playlist visible in the Spotify app. The host-selection difference is the verified finding; exact item-level mixes are not independently audited. See [issue #1](https://github.com/focustimer-dev/go-hipster-go/issues/1).
 
 ## Cross-platform publication regression (manual)
 

@@ -157,16 +157,16 @@ If ordinary GitHub loading doesn't persist, use [Plugin Creator](adapters/chatgp
 
 A user successfully asked Gemini to load this GitHub skill and then invoked YouTube Music to generate a playlist. The observation doesn't establish a persistent GitHub-based install across chats.
 
-If the agent cannot load or retain it, **[download the ready-to-upload Gemini Skill ZIP](https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/go-hipster-go-gemini-app-skill.zip)** and use **Gemini web → Customize → Skills → Create → Upload**. No terminal or file-building step needed. Maintainers can still generate the ZIP with `python scripts/build_agent_packages.py --zip`. Uploaded skills don't auto-sync from GitHub. See the [Gemini guide](adapters/gemini/README.md) and [Android test cases](adapters/gemini/MOBILE_SMOKE_TEST.md). Gemini CLI is a separate installation path.
+If the agent cannot load or retain it, **[download the ready-to-upload Gemini Skill ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip)** and use **Gemini web → Customize → Skills → Create → Upload**. No terminal or file-building step needed. Maintainers can still generate the ZIP with `python scripts/build_agent_packages.py --zip`. Uploaded skills don't auto-sync from GitHub. See the [Gemini guide](adapters/gemini/README.md) and [Android test cases](adapters/gemini/MOBILE_SMOKE_TEST.md). Gemini CLI is a separate installation path.
 
 </details>
 
 <details>
 <summary><strong>Claude — ready-to-upload skill, native Spotify connector, or Claude Code plugin</strong></summary>
 
-Start with the GitHub-link prompt. **On Claude's Skills upload screen**, use the **[Claude Skill ZIP](https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/go-hipster-go-claude-skill.zip)**. **On Claude's Plugins upload screen**, use the **[Claude Plugin ZIP](https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/go-hipster-go-claude-plugin.zip)** instead: the skill-only ZIP fails plugin validation because it lacks `.claude-plugin/plugin.json`. These are different uploaders. Custom Skills may require code execution enabled. Separately **[add Spotify to Claude](https://claude.com/marketplace/connectors/spotify)** if you want it to publish playlists; Spotify Premium is advertised for personalized playlist creation. Then `setup` → `go`.
+Start with the GitHub-link prompt. **On Claude's Skills upload screen**, use the **[Claude Skill ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-claude-skill.zip)**. **On Claude's Plugins upload screen**, use the **[Claude Plugin ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-claude-plugin.zip)** instead: the skill-only ZIP fails plugin validation because it lacks `.claude-plugin/plugin.json`. These are different uploaders. Custom Skills may require code execution enabled. Separately **[add Spotify to Claude](https://claude.com/marketplace/connectors/spotify)** if you want it to publish playlists; Spotify Premium is advertised for personalized playlist creation. Then `setup` → `go`.
 
-Claude's Spotify connector requires Premium for personalized prompt-generated playlists; that does not prove it can insert **25 exact duplicates**. Generated cards or previews are **not saved playlists** unless the service/library confirms persistence. If Spotify refuses a later operation but playlists were already created, reconcile the **existing playlists, songs, order and description** before claiming a total failure. A later denial does not prove 0 saved, and another playlist must not be created automatically. [Claude's Premium-denial troubleshooting](adapters/claude/README.md#spotify-denied-playlist-creation-premium-gate-versus-exact-25-track-editing). Claude's commentary should use vivid playlist titles, a short snarky proposed description and track-specific liner notes; if it's generic, follow the [Claude writing-quality troubleshooting guide](adapters/claude/README.md#claude-made-a-playlist-but-the-descriptions-sound-like-a-corporate-brochure). Claude Code users can install the existing GitHub marketplace plugin. These are different environments: having Spotify connected in Claude chat does not by itself expose Spotify tools to Claude Code. **[Full Claude instructions](adapters/claude/README.md)** · [optional Claude Plugin ZIP](https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/go-hipster-go-claude-plugin.zip). There is no end-to-end live Claude account test yet.
+Claude's Spotify connector requires Premium for personalized prompt-generated playlists; that does not prove it can insert **25 exact duplicates**. Generated cards or previews are **not saved playlists** unless the service/library confirms persistence. If Spotify refuses a later operation but playlists were already created, reconcile the **existing playlists, songs, order and description** before claiming a total failure. A later denial does not prove 0 saved, and another playlist must not be created automatically. [Claude's Premium-denial troubleshooting](adapters/claude/README.md#spotify-denied-playlist-creation-premium-gate-versus-exact-25-track-editing). Claude's commentary should use vivid playlist titles, a short snarky proposed description and track-specific liner notes; if it's generic, follow the [Claude writing-quality troubleshooting guide](adapters/claude/README.md#claude-made-a-playlist-but-the-descriptions-sound-like-a-corporate-brochure). Claude Code users can install the existing GitHub marketplace plugin. These are different environments: having Spotify connected in Claude chat does not by itself expose Spotify tools to Claude Code. **[Full Claude instructions](adapters/claude/README.md)** · [optional Claude Plugin ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-claude-plugin.zip). There is no end-to-end live Claude account test yet.
 
 </details>
 
@@ -207,7 +207,7 @@ These are **listener-reported tests from October 16–17, 2026**, not guaranteed
 | AI + service | Observed | Not yet verified |
 | --- | --- | --- |
 | **ChatGPT Work → Spotify** | `go` created a playlist | Exact versions/order; one run had 6 rather than 12 tracks |
-| **ChatGPT → Spotify** | Selecting both apps saved 12 tracks | Skill-only writer routing ([issue #1](https://github.com/focustimer-dev/hipster-music-generator/issues/1)); exact versions/order |
+| **ChatGPT → Spotify** | Selecting both apps saved 12 tracks | Skill-only writer routing ([issue #1](https://github.com/focustimer-dev/go-hipster-go/issues/1)); exact versions/order |
 | **Gemini → YouTube Music** | Six-track playlist generated | **Save to library** and exact versions/order; 12-track routing needs retest |
 | **Claude → Spotify** | Two previews; **generated but not saved** | Premium requirement encountered; exact duplicates and descriptions |
 | **Meta Muse → Spotify** | Playlist created (listener report) | Exact versions/order; persistent skill loading |
@@ -222,7 +222,7 @@ These are **listener-reported tests from October 16–17, 2026**, not guaranteed
 
 **Evidence rule:** An on-screen playlist, a saved provider playlist, and an exact recording-by-recording match are three different outcomes. Don't claim a saved playlist or exact ordering without confirmation.
 
-The personal plugin has also sometimes displayed a generic icon despite packaged branding assets; see [issue #2](https://github.com/focustimer-dev/hipster-music-generator/issues/2). That is a UI concern, not evidence about playlist publication.
+The personal plugin has also sometimes displayed a generic icon despite packaged branding assets; see [issue #2](https://github.com/focustimer-dev/go-hipster-go/issues/2). That is a UI concern, not evidence about playlist publication.
 
 </details>
 
@@ -239,7 +239,7 @@ See the [full changelog](CHANGELOG.md) for dates and version-specific detail. Th
 - **Quality control:** request-versus-result counts, version matching and honest uncertain or missing track reports.
 - **Identity:** the insufferably smug record-shop persona and crimson-star branding.
 
-Implemented instructions aren't the same as demonstrated cross-host publishing or proven musical improvement. Open issues and unresolved experiments remain in [GitHub issues](https://github.com/focustimer-dev/hipster-music-generator/issues).
+Implemented instructions aren't the same as demonstrated cross-host publishing or proven musical improvement. Open issues and unresolved experiments remain in [GitHub issues](https://github.com/focustimer-dev/go-hipster-go/issues).
 
 </details>
 
@@ -274,7 +274,7 @@ Use `python scripts/build_agent_packages.py --zip` to generate upload bundles. O
 
 ## License & contributions
 
-MIT licensed. Contributions are welcome: [open an issue](https://github.com/focustimer-dev/hipster-music-generator/issues) with the **prompt, exact recording titles, and what succeeded or regressed**. Never upload copyrighted recordings or streaming-service credentials. See [AGENTS.md](AGENTS.md) and [CHANGELOG.md](CHANGELOG.md).
+MIT licensed. Contributions are welcome: [open an issue](https://github.com/focustimer-dev/go-hipster-go/issues) with the **prompt, exact recording titles, and what succeeded or regressed**. Never upload copyrighted recordings or streaming-service credentials. See [AGENTS.md](AGENTS.md) and [CHANGELOG.md](CHANGELOG.md).
 
 *You're welcome. We understand it's difficult to express gratitude when you aren't accustomed to hearing good music.*
 

@@ -1,13 +1,13 @@
 {
   "name": "go-hipster-go",
   "displayName": "Go, Hipster, Go!",
-  "version": "3.5.0",
+  "version": "3.5.1",
   "description": "Smug record-store music curator with vivid playlist titles, witty sonic liner notes, setup, go moods and authorized Spotify publishing.",
   "author": {
     "name": "focustimer-dev"
   },
-  "homepage": "https://github.com/focustimer-dev/hipster-music-generator",
-  "repository": "https://github.com/focustimer-dev/hipster-music-generator",
+  "homepage": "https://github.com/focustimer-dev/go-hipster-go",
+  "repository": "https://github.com/focustimer-dev/go-hipster-go",
   "license": "MIT",
   "keywords": [
     "music",

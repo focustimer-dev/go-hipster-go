@@ -20,7 +20,7 @@ def render() -> str:
         "A generated, text-forward snapshot of the **canonical** repository skill. "
         "This is reference material used together with Project instructions; "
         "it does not install scripts, APIs, music-streaming access, or authorization.\n\n",
-        "**Source:** https://github.com/focustimer-dev/hipster-music-generator\n\n",
+        "**Source:** https://github.com/focustimer-dev/go-hipster-go\n\n",
         "**Files included:** " + ", ".join(f"`{path}`" for path in SOURCES) + ".\n\n",
     ]
     for path in SOURCES:

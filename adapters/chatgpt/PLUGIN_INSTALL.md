@@ -5,7 +5,7 @@ The **preferred** ChatGPT pathway is a packaged plugin, not repeatedly pasting a
 ## Personal setup
 
 1. In ChatGPT **Plugins**, install **Plugin Creator** if available.
-2. Start a chat with `@plugin-creator` and provide this public repository: `https://github.com/focustimer-dev/hipster-music-generator`.
+2. Start a chat with `@plugin-creator` and provide this public repository: `https://github.com/focustimer-dev/go-hipster-go`.
 3. Ask it to **create a personal Go, Hipster, Go! plugin from the repository's `plugin.json` and `skills/` directory**, preserving the canonical source and `skills/setup/SKILL.md` as onboarding. Review the generated plugin and install it from your available Plugins UI if needed. GitHub URLs are *inputs to the creation workflow*, not magic install links.
 4. Run its **setup** skill once to check which music-service tools are **actually exposed and authorized**. Approval and connection screens are provider-controlled; do not enter tokens into the chat.
 5. In a new music conversation, ask `Use Go, Hipster, Go!: go`. A correctly installed plugin can be used without manually re-fetching the entire repository each time. **For a reliably published Spotify playlist in the currently observed Android workflow, select both Go, Hipster, Go! and Spotify in the composer, then say `go`.** A skill-only `go` has been observed to curate successfully while lacking Spotify's writing action in that chat. If that happens, activate Spotify and ask to publish the **existing ordered playlist** without re-curating; do not discard the work.
@@ -19,7 +19,7 @@ A user tested both on their connected Spotify account:
 - **ChatGPT Work:** Go, Hipster, Go! followed by plain `go` successfully orchestrated Spotify publishing without explicitly naming Spotify in the prompt. This is a **user-reported result**; it is not a guarantee for other accounts or a demonstration of exact recording/order fidelity.
 - **Ordinary Chat (Android):** selecting only Go, Hipster, Go! and sending `go` has repeatedly generated a playlist **without** Spotify's write tools. Selecting **both Go, Hipster, Go! and Spotify** before sending `go` successfully created a playlist visible in Spotify.
 
-**Recommended minimal-friction path:** use **Work** for one-command `go` when available. Otherwise, in ordinary Chat, select both plugins in the composer; don't rebuild or reauthorize Spotify merely because a particular chat lacks its writer. The different outcomes indicate host-level plugin orchestration, not a broken curation skill. See [the tracked integration limitation](https://github.com/focustimer-dev/hipster-music-generator/issues/1).
+**Recommended minimal-friction path:** use **Work** for one-command `go` when available. Otherwise, in ordinary Chat, select both plugins in the composer; don't rebuild or reauthorize Spotify merely because a particular chat lacks its writer. The different outcomes indicate host-level plugin orchestration, not a broken curation skill. See [the tracked integration limitation](https://github.com/focustimer-dev/go-hipster-go/issues/1).
 
 ## Expected capabilities
 

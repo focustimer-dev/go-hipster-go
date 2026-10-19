@@ -105,7 +105,7 @@ class PortableAgentTests(unittest.TestCase):
         self.assertIn("Save to library",guide)
 
     def test_gemini_zip_is_linked_and_release_automated(self):
-        url = "https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/go-hipster-go-gemini-app-skill.zip"
+        url = "https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip"
         readme=(ROOT/"README.md").read_text(encoding="utf-8")
         gem=(ROOT/"adapters/gemini/README.md").read_text(encoding="utf-8")
         workflow=(ROOT/".github/workflows/publish-gemini-skill.yml").read_text(encoding="utf-8")
