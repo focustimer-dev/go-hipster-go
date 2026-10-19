@@ -54,6 +54,15 @@
             <a class="welcome-link" href="#aiLabel">CHOOSE YOUR SERVICES ↓</a>
             <a class="welcome-text-link" href="/setup/">Open the Manual →</a>
           </div>
+          <div class="welcome-setup-actions">
+            <button class="resource copy" type="button" id="stripSetupPrompt">COPY SETUP CHECK</button>
+            <a class="resource subtle" id="openSetupAi" href="https://chatgpt.com/" target="_blank" rel="noopener">OPEN CHATGPT</a>
+          </div>
+          <p class="first-setup-status" id="setupTipStatus" role="status" aria-live="polite"></p>
+          <details class="setup-prompt-details" id="setupPromptDetails">
+            <summary>View setup prompt / copy manually</summary>
+            <pre id="setupPromptText" tabindex="0" aria-label="Copyable setup prompt"></pre>
+          </details>
         </div>
       </details>
       <button type="button" id="dismissWelcome" class="welcome-dismiss" aria-label="Dismiss setup tip" title="Hide this tip; setup help stays in the Manual">×</button>
@@ -85,17 +94,6 @@
       </section>
     </div>
     <div class="connector-status" id="routeStatus" role="status"><span>Choose your platforms. We'll explain what each pairing can actually do.</span></div>
-
-    <section class="setup-check" aria-label="First-time setup check">
-      <p><strong>FIRST TIME?</strong> Check your skill and music connection before GO.</p>
-      <button class="resource copy" type="button" id="stripSetupPrompt">COPY SETUP CHECK</button>
-      <a class="resource subtle" id="openSetupAi" href="https://chatgpt.com/" target="_blank" rel="noopener">OPEN CHATGPT</a>
-      <p class="first-setup-status" id="setupTipStatus" role="status" aria-live="polite"></p>
-      <details class="setup-prompt-details" id="setupPromptDetails">
-        <summary>View setup prompt / copy manually</summary>
-        <pre id="setupPromptText" tabindex="0" aria-label="Copyable setup prompt"></pre>
-      </details>
-    </section>
 
     <div class="section-title"><span><span class="num">B</span> CHOOSE A MOOD, THEN GO</span><small>no vinyl was harmed</small></div>
     <div class="mood-grid" role="group" aria-label="Mood presets">
