@@ -2,14 +2,14 @@
 
 [Open the private ChatGPT plugin](https://chatgpt.com/plugins/plugins_6ad2c9ef604081919bf5b18ef6cb072b)
 
-This ChatGPT plugin packages the repository's **SKILL.md** and supporting references under `skills/hipster-music-generator/`. It also includes `skills/setup/SKILL.md` as an onboarding skill. The portable manifest uses the Agent Plugins schema at `plugin.json`.
+This ChatGPT plugin packages the repository's **SKILL.md** and supporting references under `skills/go-hipster-go/`. It also includes `skills/setup/SKILL.md` as an onboarding skill. The portable manifest uses the Agent Plugins schema at `plugin.json`.
 
 ## Installation
 
 1. Open the plugin link above using the ChatGPT account that owns the plugin.
 2. Install/enable the private plugin when the UI offers that option.
-3. Run setup, or ask: `Set up Hipster Music Generator and check what music services you can actually use.`
-4. Ask: `Use Hipster Music Generator: go.`
+3. Run setup, or ask: `Set up Go, Hipster, Go! and check what music services you can actually use.`
+4. Ask: `Use Go, Hipster, Go!: go.`
 
 ## Capability levels
 
