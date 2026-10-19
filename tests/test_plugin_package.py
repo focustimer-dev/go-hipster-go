@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class PluginPackageTests(unittest.TestCase):
     def test_manifest_and_onboarding(self):
         manifest = json.loads((ROOT / 'plugin.json').read_text(encoding='utf-8'))
-        self.assertEqual(manifest['name'], 'hipster-music-generator')
+        self.assertEqual(manifest['name'], 'go-hipster-go')
         self.assertEqual(manifest['$schema'], 'https://agent-plugins.org/schemas/1.0.0/plugin.schema.json')
         skill = manifest['extensions']['com.openai']['onboardingSkill'].removeprefix('./')
         self.assertTrue((ROOT / skill).is_file())
@@ -67,7 +67,7 @@ class PluginPackageTests(unittest.TestCase):
         universal, claude = prompts
         for prompt in prompts:
             self.assertLessEqual(max(map(len, prompt.splitlines())), 45)
-            self.assertIn('focustimer-dev/hipster-music-generator', prompt)
+            self.assertIn('focustimer-dev/go-hipster-go', prompt)
             self.assertIn('Read SKILL.md', prompt)
         self.assertNotIn('Claude', universal)
         self.assertNotIn('ZIP', universal)
@@ -113,7 +113,7 @@ class PluginPackageTests(unittest.TestCase):
         self.assertIn('A plugin in a directory is not evidence of authorization', setup)
     def test_skill_links_are_locally_resolvable(self):
         from re import findall
-        path=ROOT/'skills/hipster-music-generator/SKILL.md'
+        path=ROOT/'skills/go-hipster-go/SKILL.md'
         contents=path.read_text(encoding='utf-8')
         for dest in findall(r'\]\(([^)]+)\)',contents):
             if '://' not in dest:

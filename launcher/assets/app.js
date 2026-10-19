@@ -24,9 +24,9 @@ async function copyText(text){
 const repo="https://github.com/focustimer-dev/hipster-music-generator";
 const releases=repo+"/releases/latest/download/";
 const resourceInfo={
- chatgpt:[{name:"Hipster Music Generator source",url:repo}],
- gemini:[{name:"Gemini Skill ZIP",url:releases+"hipster-music-generator-gemini-app-skill.zip"},{name:"Gemini installation guide",url:repo+"/blob/main/adapters/gemini/README.md"}],
- claude:[{name:"Claude Skill ZIP",url:releases+"hipster-music-generator-claude-skill.zip"},{name:"Claude Plugin ZIP",url:releases+"hipster-music-generator-claude-plugin.zip"},{name:"Which one? Claude guide",url:repo+"/blob/main/adapters/claude/README.md"}]
+ chatgpt:[{name:"Go, Hipster, Go! source",url:repo}],
+ gemini:[{name:"Gemini Skill ZIP",url:releases+"go-hipster-go-gemini-app-skill.zip"},{name:"Gemini installation guide",url:repo+"/blob/main/adapters/gemini/README.md"}],
+ claude:[{name:"Claude Skill ZIP",url:releases+"go-hipster-go-claude-skill.zip"},{name:"Claude Plugin ZIP",url:releases+"go-hipster-go-claude-plugin.zip"},{name:"Which one? Claude guide",url:repo+"/blob/main/adapters/claude/README.md"}]
 };
 function routeInfo(ai,service){
  if(ai==="chatgpt"&&service==="spotify")return {tone:"ready",message:"ChatGPT + Spotify: playlist creation and exact-track insertion can work when both apps and their writer actions are available.",note:"You still need to select and authorize both apps in ChatGPT; mentioning them in text alone may not activate them."};
@@ -39,20 +39,20 @@ function routeInfo(ai,service){
 }
 function setupPrompt(ai,service){
  const name=aiNames[ai],target=serviceNames[service];
- const intro=ai==="chatgpt"?"In ChatGPT, check for the Hipster Music Generator plugin/app.":ai==="gemini"?"In Gemini, check for the installed Hipster Music Generator Skill (not a Gem).":"In Claude, check for the Hipster Music Generator skill or plugin.";
+ const intro=ai==="chatgpt"?"In ChatGPT, check for the Go, Hipster, Go! plugin/app.":ai==="gemini"?"In Gemini, check for the installed Go, Hipster, Go! Skill (not a Gem).":"In Claude, check for the Go, Hipster, Go! skill or plugin.";
  const install=ai==="gemini"?"If missing, guide me to Customize → Skills and the current Gemini Skill ZIP.":ai==="claude"?"If missing, identify whether I need Claude's Skills ZIP or Plugins ZIP; they are different.":"If missing, use the available app/skill installation flow or show how to install from the project's GitHub repository.";
  return "FIRST-TIME SETUP CHECK for "+name+" + "+target+".\n"+intro+" "+install+" Source: "+repo+
  (ai==="claude"&&service==="apple"?"\nApple Music requires a compatible MCP connector: local for Desktop or hosted for web/mobile. Check which Claude app I use and help me connect it if missing. Verify catalog track search, playlist creation and adding tracks; library-only search may not find new recordings.":"")+
  "\nIf the skill is available, run its setup for "+target+", guide me through connecting or selecting that music service, and CHECK whether playlist creation and adding tracks are actually supported—not just search/playback. Tell me the smallest action needed to finish setup. If everything is already ready, say so and tell me to run go. Do NOT generate a new playlist during this setup check, claim a playlist was saved, or ask me to paste credentials into chat.";
 }
-const universalPrompt="Load Hipster Music Generator from "+repo+". Read SKILL.md and the referenced musical taxonomy. Use your supported skill/plugin installation mechanism, confirm what actually loaded and whether it persists, then run setup. Do not assume a streaming playlist writer exists.";
+const universalPrompt="Load Go, Hipster, Go! from "+repo+". Read SKILL.md and the referenced musical taxonomy. Use your supported skill/plugin installation mechanism, confirm what actually loaded and whether it persists, then run setup. Do not assume a streaming playlist writer exists.";
 function goCommand(ai,service,mood){
  const go=mood==="go"?"go":"go "+mood;
- if(ai==="chatgpt"&&service==="spotify")return "@Hipster Music Generator @Spotify "+go;
- if(ai==="gemini"&&service==="youtube")return "@hipster-music-generator "+go+" @youtube-music";
- if(ai==="gemini"&&service==="spotify")return "@hipster-music-generator "+go+" @Spotify";
- if(ai==="claude")return "Use Hipster Music Generator: "+go+". Preferred music service: "+serviceNames[service]+".";
- return "@Hipster Music Generator "+go+" — destination "+serviceNames[service];
+ if(ai==="chatgpt"&&service==="spotify")return "@Go, Hipster, Go! @Spotify "+go;
+ if(ai==="gemini"&&service==="youtube")return "@go-hipster-go "+go+" @youtube-music";
+ if(ai==="gemini"&&service==="spotify")return "@go-hipster-go "+go+" @Spotify";
+ if(ai==="claude")return "Use Go, Hipster, Go!: "+go+". Preferred music service: "+serviceNames[service]+".";
+ return "@Go, Hipster, Go! "+go+" — destination "+serviceNames[service];
 }
 const thesis="Curate 12 verified deep-cut recordings around a cohesive sonic thesis. Explore surprising links across scenes, eras, rhythm, voice, production and instrumentation. Keep the transitions listenable, not just clever. Avoid recycled example-artist lists and never invent track matches.";
 function goPrompt(ai,service,mood){
@@ -105,12 +105,12 @@ function renderSetup(){
  if(!intro||!steps||!links)return;
  intro.textContent="YOUR MIX: "+aiNames[ai]+" × "+serviceNames[service]+". Copy the setup-check prompt first; if you're already connected, it should simply tell you to run GO.";
  let install="",connection="";
- if(ai==="chatgpt")install="In ChatGPT, select Hipster Music Generator. If missing, install/load it using the project source or app directory.";
- else if(ai==="gemini")install="In Gemini Customize → Skills, upload the Gemini Skill ZIP (or Replace skill to update it), then choose Hipster Music Generator using @ or /.";
- else install="In Claude Customize, install Hipster Music Generator. Use the Skill ZIP for Skills, or the Plugin ZIP for Plugins; they are not interchangeable.";
+ if(ai==="chatgpt")install="In ChatGPT, select Go, Hipster, Go!. If missing, install/load it using the project source or app directory.";
+ else if(ai==="gemini")install="In Gemini Customize → Skills, upload the Gemini Skill ZIP (or Replace skill to update it), then choose Go, Hipster, Go! using @ or /.";
+ else install="In Claude Customize, install Go, Hipster, Go!. Use the Skill ZIP for Skills, or the Plugin ZIP for Plugins; they are not interchangeable.";
  if(service==="spotify"&&ai==="gemini")connection="On Gemini mobile, link Spotify if offered. Google's connected app supports search/play, not playlist creation.";
  else if(service==="spotify"&&ai==="claude")connection="Connect Spotify in Claude. Premium is required for personalized prompted playlists; inspect whether saving is supported here.";
- else if(service==="spotify")connection="In ChatGPT, connect and select Spotify in the same conversation as Hipster Music Generator.";
+ else if(service==="spotify")connection="In ChatGPT, connect and select Spotify in the same conversation as Go, Hipster, Go!.";
  else if(service==="youtube"&&ai==="gemini")connection="Enable YouTube Music in Gemini Connected Apps and choose it in the prompt. You may need to tap Save to library.";
  else if(service==="apple"&&ai==="claude")connection="Connect an Apple Music MCP connector compatible with your Claude app: local on Desktop, hosted for web/mobile. Verify it can find recordings, create playlists and add tracks.";
  else if(service==="apple"&&ai==="chatgpt")connection="In your AI's apps/connectors, locate and connect Apple Music if offered. Verify whether it can create and fill playlists; don't assume.";

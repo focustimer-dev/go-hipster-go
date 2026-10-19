@@ -6,10 +6,10 @@
   },
   "plugins": [
     {
-      "name": "hipster-music-generator",
+      "name": "go-hipster-go",
       "source": {
         "source": "github",
-        "repo": "focustimer-dev/hipster-music-generator"
+        "repo": "focustimer-dev/go-hipster-go"
       },
       "description": "Portable playlist curation, global scenes, and music-service setup"
     }

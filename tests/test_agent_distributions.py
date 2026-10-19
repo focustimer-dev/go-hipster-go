@@ -13,14 +13,14 @@ class PortableAgentTests(unittest.TestCase):
     def test_claude_manifest_and_marketplace(self):
         meta = json.loads((ROOT / ".claude-plugin/plugin.json").read_text())
         marketplace = json.loads((ROOT / ".claude-plugin/marketplace.json").read_text())
-        self.assertEqual(meta["name"], "hipster-music-generator")
+        self.assertEqual(meta["name"], "go-hipster-go")
         self.assertEqual(marketplace["plugins"][0]["name"], meta["name"])
-        self.assertEqual(marketplace["plugins"][0]["source"]["repo"], "focustimer-dev/hipster-music-generator")
+        self.assertEqual(marketplace["plugins"][0]["source"]["repo"], "focustimer-dev/go-hipster-go")
 
     def test_gemini_extension(self):
         meta = json.loads((ROOT / "gemini-extension.json").read_text())
-        self.assertEqual(meta["name"], "hipster-music-generator")
-        self.assertTrue((ROOT / "skills/hipster-music-generator/SKILL.md").exists())
+        self.assertEqual(meta["name"], "go-hipster-go")
+        self.assertTrue((ROOT / "skills/go-hipster-go/SKILL.md").exists())
         self.assertTrue((ROOT / "skills/setup/SKILL.md").exists())
 
     def test_bundle_synced(self):
@@ -30,23 +30,23 @@ class PortableAgentTests(unittest.TestCase):
     def test_upload_zips(self):
         subprocess.run([sys.executable, "scripts/build_agent_packages.py", "--zip"],
                        check=True, cwd=ROOT, capture_output=True, text=True)
-        with ZipFile(ROOT / "dist/hipster-music-generator-claude-skill.zip") as z:
+        with ZipFile(ROOT / "dist/go-hipster-go-claude-skill.zip") as z:
             names = z.namelist()
-            self.assertIn("hipster-music-generator/SKILL.md", names)
-            self.assertIn("hipster-music-generator/references/global-scenes.md", names)
-            self.assertIn("hipster-music-generator/scripts/playlist_cli.py", names)
-            self.assertIn("hipster-music-generator/adapters/README.md", names)
-            self.assertIn("hipster-music-generator/tests/discovery-cases.md", names)
-        with ZipFile(ROOT / "dist/hipster-music-generator-claude-plugin.zip") as z:
+            self.assertIn("go-hipster-go/SKILL.md", names)
+            self.assertIn("go-hipster-go/references/global-scenes.md", names)
+            self.assertIn("go-hipster-go/scripts/playlist_cli.py", names)
+            self.assertIn("go-hipster-go/adapters/README.md", names)
+            self.assertIn("go-hipster-go/tests/discovery-cases.md", names)
+        with ZipFile(ROOT / "dist/go-hipster-go-claude-plugin.zip") as z:
             self.assertIn(".claude-plugin/plugin.json", z.namelist())
             self.assertIn("skills/setup/SKILL.md", z.namelist())
-            self.assertIn("skills/hipster-music-generator/references/global-scenes.md", z.namelist())
+            self.assertIn("skills/go-hipster-go/references/global-scenes.md", z.namelist())
 
     def test_gemini_app_upload_zip(self):
         import re
         subprocess.run([sys.executable, "scripts/build_agent_packages.py", "--zip"],
                        check=True, cwd=ROOT, capture_output=True, text=True)
-        archive = ROOT / "dist/hipster-music-generator-gemini-app-skill.zip"
+        archive = ROOT / "dist/go-hipster-go-gemini-app-skill.zip"
         with ZipFile(archive) as z:
             names = set(z.namelist())
             self.assertEqual(names, {
@@ -57,7 +57,7 @@ class PortableAgentTests(unittest.TestCase):
                 "references/verification.md",
             })
             text = z.read("SKILL.md").decode("utf-8")
-            self.assertTrue(text.startswith("---\nname: hipster-music-generator\n"))
+            self.assertTrue(text.startswith("---\nname: go-hipster-go\n"))
             self.assertIn("passive-aggressive record-store clerk", text[:700])
             self.assertIn("## The personality is mandatory in Gemini", text[:1300])
             self.assertIn("two or three varied little jabs", text[:1800])
@@ -67,7 +67,7 @@ class PortableAgentTests(unittest.TestCase):
             self.assertIn("@YouTubeMusic", text)
             self.assertIn("Save to library", text)
             self.assertNotIn("composer", text.lower())
-            self.assertNotIn("selecting both Hipster Music Generator", text)
+            self.assertNotIn("selecting both Go, Hipster, Go!", text)
             self.assertIn("no code execution", text.lower())
             self.assertIn("DeBarge Protocol", text)
             self.assertIn("25 consecutive", text)
@@ -92,7 +92,7 @@ class PortableAgentTests(unittest.TestCase):
         self.assertIn("Save to library",guide)
 
     def test_gemini_zip_is_linked_and_release_automated(self):
-        url = "https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/hipster-music-generator-gemini-app-skill.zip"
+        url = "https://github.com/focustimer-dev/hipster-music-generator/releases/latest/download/go-hipster-go-gemini-app-skill.zip"
         readme=(ROOT/"README.md").read_text(encoding="utf-8")
         gem=(ROOT/"adapters/gemini/README.md").read_text(encoding="utf-8")
         workflow=(ROOT/".github/workflows/publish-gemini-skill.yml").read_text(encoding="utf-8")
@@ -111,8 +111,8 @@ class PortableAgentTests(unittest.TestCase):
         muse=(ROOT/"adapters/muse/README.md").read_text(encoding="utf-8")
         readme=(ROOT/"README.md").read_text(encoding="utf-8")
         workflow=(ROOT/".github/workflows/publish-gemini-skill.yml").read_text(encoding="utf-8")
-        for filename in ("hipster-music-generator-claude-skill.zip",
-                         "hipster-music-generator-claude-plugin.zip"):
+        for filename in ("go-hipster-go-claude-skill.zip",
+                         "go-hipster-go-claude-plugin.zip"):
             self.assertIn(filename, claude)
             self.assertIn(filename, readme)
             self.assertIn(filename, workflow)
@@ -145,7 +145,7 @@ class PortableAgentTests(unittest.TestCase):
         self.assertIn("gh release upload", workflow)
 
     def test_guardrails_survive(self):
-        s=(ROOT/"skills/hipster-music-generator/SKILL.md").read_text()
+        s=(ROOT/"skills/go-hipster-go/SKILL.md").read_text()
         for needle in ("DeBarge Protocol","25 consecutive","streaming","references/global-scenes.md"):
             self.assertIn(needle,s)
 

@@ -4,14 +4,14 @@
 
 ## Muse personal agent — GitHub-first, no imaginary installer
 
-Spotify announced an **official Muse integration** on September 23, 2026: Muse can find music, play it, save songs to a library, and create/modify Spotify playlists after the listener connects their Spotify account. A listener also reports successfully creating a Spotify playlist with Hipster Music Generator through consumer Meta Muse (2026-10-17); item-by-item fidelity and universal availability are not independently validated. **[Spotify's announcement](https://newsroom.spotify.com/2026-09-23/spotify-meta-muse-agent/)** documents the integration. No new developer-owned Spotify OAuth app is necessary *for Muse to use its existing connector*.
+Spotify announced an **official Muse integration** on September 23, 2026: Muse can find music, play it, save songs to a library, and create/modify Spotify playlists after the listener connects their Spotify account. A listener also reports successfully creating a Spotify playlist with Go, Hipster, Go! through consumer Meta Muse (2026-10-17); item-by-item fidelity and universal availability are not independently validated. **[Spotify's announcement](https://newsroom.spotify.com/2026-09-23/spotify-meta-muse-agent/)** documents the integration. No new developer-owned Spotify OAuth app is necessary *for Muse to use its existing connector*.
 
 Meta documents **built-in Muse skills and connected services**, but we have **not verified an official consumer Muse `SKILL.md` ZIP uploader or permanent third-party GitHub skill installer**. Do **not** claim that reading the repository means this skill is permanently installed. Muse may summarize a linked file or follow instructions in the current chat; cross-conversation persistence, full reference reading and exact playback actions require user testing.
 
 **Try this in Muse:**
 
 ```text
-Use Hipster Music Generator from
+Use Go, Hipster, Go! from
 https://github.com/focustimer-dev/hipster-music-generator
 
 Read the current SKILL.md and the referenced music taxonomy,
@@ -34,17 +34,17 @@ If Muse can't load the GitHub references, provide it the `SKILL.md` content and 
 
 If the person already created a playlist using Muse's own Spotify tool, they don't need to install a second Spotify app or separately authorize a new developer API. **The open question is durable custom skill loading**, not Spotify's ability to create a playlist in Muse.
 
-**Evidence:** [Meta Muse product](https://ai.meta.com/muse/) · [Spotify Muse integration](https://newsroom.spotify.com/2026-09-23/spotify-meta-muse-agent/) · [Meta Muse connectors](https://muse.ai/platform/docs). Third-party reports suggest Muse may retain user-supplied workflows when asked, but that is **not a documented or verified upload interface for Hipster Music Generator**.
+**Evidence:** [Meta Muse product](https://ai.meta.com/muse/) · [Spotify Muse integration](https://newsroom.spotify.com/2026-09-23/spotify-meta-muse-agent/) · [Meta Muse connectors](https://muse.ai/platform/docs). Third-party reports suggest Muse may retain user-supplied workflows when asked, but that is **not a documented or verified upload interface for Go, Hipster, Go!**.
 
 ## Muse Code — separate developer route
 
 Meta's [Muse Code documentation](https://dev.meta.ai/docs/muse-code/extending) supports `SKILL.md` skills from personal and project directories and imports from Claude/Codex. For developers, clone the repository and run the supported commands **from the checkout**:
 
 ```bash
-muse skills validate ./skills/hipster-music-generator
-muse skills install ./skills/hipster-music-generator --scope user
+muse skills validate ./skills/go-hipster-go
+muse skills install ./skills/go-hipster-go --scope user
 muse skills list
-muse skills inspect hipster-music-generator
+muse skills inspect go-hipster-go
 ```
 
 Muse Code also discovers compatible `~/.claude/skills`, `~/.agents/skills` and project `.claude/skills` where enabled. Unlike the consumer agent, this is a documented actual installation route. `setup` and `go` remain logical commands inside the loaded workflow.

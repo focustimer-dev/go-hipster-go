@@ -48,11 +48,11 @@ class SetupContractTests(unittest.TestCase):
 
     def test_plugin_promotes_setup(self):
         data=json.loads((ROOT/"plugin.json").read_text(encoding="utf-8"))
-        self.assertEqual(data["version"],"3.4.0")
+        self.assertEqual(data["version"],"3.5.0")
         self.assertTrue(any("Setup" in t for t in
             data["extensions"]["com.openai"]["interface"]["defaultPrompt"]))
         self.assertEqual((ROOT/"SKILL.md").read_bytes(),
-                         (ROOT/"skills/hipster-music-generator/SKILL.md").read_bytes())
+                         (ROOT/"skills/go-hipster-go/SKILL.md").read_bytes())
 
 if __name__ == "__main__":
     unittest.main()

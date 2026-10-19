@@ -36,7 +36,7 @@ class DefaultGoBehaviorTests(unittest.TestCase):
         cases=(ROOT/"tests/discovery-cases.md").read_text(encoding="utf-8")
         self.assertIn("without re-curating or rerolling",skill)
         self.assertIn("connected",setup)
-        self.assertIn("Both Hipster Music Generator and Spotify selected",cases)
+        self.assertIn("Both Go, Hipster, Go! and Spotify selected",cases)
         self.assertIn("don't silently re-curate",cases)
 
     def test_preflight_precedes_curation(self):
@@ -127,11 +127,11 @@ class DefaultGoBehaviorTests(unittest.TestCase):
             self.assertIn(term.lower(), cases.lower())
             self.assertIn(term.lower(), examples.lower())
         self.assertEqual((ROOT/"references/global-scenes.md").read_bytes(),
-                         (ROOT/"skills/hipster-music-generator/references/global-scenes.md").read_bytes())
+                         (ROOT/"skills/go-hipster-go/references/global-scenes.md").read_bytes())
 
     def test_distribution_synced_and_debarge_intact(self):
         self.assertEqual((ROOT/"SKILL.md").read_bytes(),
-                         (ROOT/"skills/hipster-music-generator/SKILL.md").read_bytes())
+                         (ROOT/"skills/go-hipster-go/SKILL.md").read_bytes())
         skill=(ROOT/"SKILL.md").read_text(encoding="utf-8")
         self.assertIn('roll uniformly from 1 to 100; on **1**',skill)
         self.assertIn('exactly **25 consecutive entries**',skill)

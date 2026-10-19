@@ -39,7 +39,7 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           from zipfile import ZipFile
-          path=Path('dist/hipster-music-generator-gemini-app-skill.zip')
+          path=Path('dist/go-hipster-go-gemini-app-skill.zip')
           assert path.is_file()
           with ZipFile(path) as z:
               assert z.namelist() == [
@@ -53,19 +53,21 @@ jobs:
               assert '## The personality is mandatory in Gemini' in text
               assert 'DeBarge Protocol' in text and '25 consecutive' in text
               assert 'scripts/' not in text and 'python ' not in text.lower()
-          claude=Path('dist/hipster-music-generator-claude-skill.zip')
-          plugin=Path('dist/hipster-music-generator-claude-plugin.zip')
+          claude=Path('dist/go-hipster-go-claude-skill.zip')
+          plugin=Path('dist/go-hipster-go-claude-plugin.zip')
           assert claude.is_file() and plugin.is_file()
           with ZipFile(claude) as z:
-              assert 'hipster-music-generator/SKILL.md' in z.namelist()
-              assert 'hipster-music-generator/references/global-scenes.md' in z.namelist()
-              front=z.read('hipster-music-generator/SKILL.md').decode('utf-8')
+              assert 'go-hipster-go/SKILL.md' in z.namelist()
+              assert 'go-hipster-go/references/global-scenes.md' in z.namelist()
+              front=z.read('go-hipster-go/SKILL.md').decode('utf-8')
               desc=next(line[len('description: '):] for line in front.splitlines() if line.startswith('description: '))
               assert len(desc) <= 200, 'Claude frontmatter description too long'
           with ZipFile(plugin) as z:
               assert '.claude-plugin/plugin.json' in z.namelist()
               assert 'skills/setup/SKILL.md' in z.namelist()
-              assert 'skills/hipster-music-generator/SKILL.md' in z.namelist()
+              assert 'skills/go-hipster-go/SKILL.md' in z.namelist()
+          for name in ('gemini-app-skill', 'claude-skill', 'claude-plugin'):
+              assert (Path('dist') / f'hipster-music-generator-{name}.zip').read_bytes() == (Path('dist') / f'go-hipster-go-{name}.zip').read_bytes()
           print('Gemini and Claude skill/plugin ZIPs verified.')
           PY
       - name: Determine versioned release tag
@@ -81,6 +83,9 @@ jobs:
         run: |
           set -euo pipefail
           files=(
+            dist/go-hipster-go-gemini-app-skill.zip
+            dist/go-hipster-go-claude-skill.zip
+            dist/go-hipster-go-claude-plugin.zip
             dist/hipster-music-generator-gemini-app-skill.zip
             dist/hipster-music-generator-claude-skill.zip
             dist/hipster-music-generator-claude-plugin.zip
@@ -90,7 +95,7 @@ jobs:
           else
             gh release create "$RELEASE_TAG" "${files[@]}" \
               --target "$GITHUB_SHA" \
-              --title "Hipster Music Generator platform packages (${RELEASE_TAG})" \
+              --title "Go, Hipster, Go! platform packages (${RELEASE_TAG})" \
               --notes 'Ready-to-upload Gemini Skill, Claude Skill and Claude Plugin ZIPs; each requires the music-service authorization separately.' \
               --latest
           fi

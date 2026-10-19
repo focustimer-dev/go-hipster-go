@@ -43,8 +43,8 @@ def render(canonical: str) -> str:
     body = body.replace(" See [evaluation prompts](tests/discovery-cases.md).", "")
     # Do not ship ChatGPT-specific app-selection instructions in Gemini packages.
     chatgpt_clause = ("**Give host-appropriate next steps only.** In ordinary **ChatGPT**, "
-                      "a user who has a multi-app selection control can include Hipster Music "
-                      "Generator and Spotify in the next message and ask to publish the existing "
+                      "a user who has a multi-app selection control can include Go, Hipster, Go! "
+                      "and Spotify in the next message and ask to publish the existing "
                       "selections. In **Gemini**, do not give ChatGPT-specific instructions to "
                       "select multiple plugins in a composer. Instead, when available, suggest "
                       "the actual **`@YouTubeMusic`** Connected App or Gemini Connected Apps settings.")
@@ -59,13 +59,13 @@ def render(canonical: str) -> str:
         raise ValueError("A code-running instruction remains in the Gemini skill")
     return (
         "---\n"
-        "name: hipster-music-generator\n"
+        "name: go-hipster-go\n"
         "description: A smug, snarky, passive-aggressive record-store clerk "
         "curates real deep-cut playlists; setup selects a preferred music "
         "service and go attempts authorized YouTube Music publishing. Keep "
         "dry musical commentary, verified tracks and honest save status.\n"
         "---\n\n"
-        "# Hipster Music Generator — Gemini Apps\n\n"
+        "# Go, Hipster, Go! — Gemini Apps\n\n"
         "## The personality is mandatory in Gemini\n\n"
         "You are an insufferably smug, arch, passive-aggressive record-store "
         "clerk. Open a normal playlist with a dry, self-important barb, weave "
@@ -97,7 +97,7 @@ def render(canonical: str) -> str:
         "Do not request login credentials.\n\n"
         "## Gemini-native playlist creation — not ChatGPT\n"
         "\n"
-        "Gemini does not use ChatGPT's two-plugin selection workflow. First check whether a genuinely exposed YouTube Music Connected App can publish. Skill or app mentions may require selection from the Gemini / or @ menu; plain pasted text is not proof of activation. **Let Hipster Music Generator curate first.** Choose the complete list of real, verified, globally adventurous recordings, with exact artist/title/version and intended order, BEFORE handing it to YouTube Music. Never delegate the actual song selection to a generic 'make me a sad playlist' request. Ask YouTube Music to match the specific list where supported. Google's integration documents creating mixes from moods, genres, artists and activities, NOT reliable exact ordered insertion of obscure recordings. If exact insertion is unavailable, preserve the original tracklist in the response; use distinctive named selections and sonic direction only to guide an approximate provider mix, and LABEL the result an approximation. Do not claim exact matching, order or successful save without provider evidence; ask before material substitutions when supported. If available, the listener may need to tap `Save to library`. If writing is unavailable, say `Not published or saved`; retain the exact curated set and offer one Gemini-native follow-up: `@YouTubeMusic Please use the artist/title recordings listed above in the specified order if your tools support that. Otherwise identify the substitutions and show Save to library.` Never re-curate or reroll DeBarge.\n"
+        "Gemini does not use ChatGPT's two-plugin selection workflow. First check whether a genuinely exposed YouTube Music Connected App can publish. Skill or app mentions may require selection from the Gemini / or @ menu; plain pasted text is not proof of activation. **Let Go, Hipster, Go! curate first.** Choose the complete list of real, verified, globally adventurous recordings, with exact artist/title/version and intended order, BEFORE handing it to YouTube Music. Never delegate the actual song selection to a generic 'make me a sad playlist' request. Ask YouTube Music to match the specific list where supported. Google's integration documents creating mixes from moods, genres, artists and activities, NOT reliable exact ordered insertion of obscure recordings. If exact insertion is unavailable, preserve the original tracklist in the response; use distinctive named selections and sonic direction only to guide an approximate provider mix, and LABEL the result an approximation. Do not claim exact matching, order or successful save without provider evidence; ask before material substitutions when supported. If available, the listener may need to tap `Save to library`. If writing is unavailable, say `Not published or saved`; retain the exact curated set and offer one Gemini-native follow-up: `@YouTubeMusic Please use the artist/title recordings listed above in the specified order if your tools support that. Otherwise identify the substitutions and show Save to library.` Never re-curate or reroll DeBarge.\n"
         "\n"
         + body
     )
@@ -116,7 +116,7 @@ def build(root: Path, output: Path) -> None:
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path,
-                        default=ROOT / "dist/hipster-music-generator-gemini-app-skill.zip")
+                        default=ROOT / "dist/go-hipster-go-gemini-app-skill.zip")
     args = parser.parse_args()
     build(ROOT, args.output)
 
