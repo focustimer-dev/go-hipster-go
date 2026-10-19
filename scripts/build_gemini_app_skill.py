@@ -43,8 +43,8 @@ def render(canonical: str) -> str:
     body = body.replace(" See [evaluation prompts](tests/discovery-cases.md).", "")
     # Do not ship ChatGPT-specific app-selection instructions in Gemini packages.
     chatgpt_clause = ("**Give host-appropriate next steps only.** In ordinary **ChatGPT**, "
-                      "a user who has a multi-app selection control can include Hipster Music "
-                      "Generator and Spotify in the next message and ask to publish the existing "
+                      "a user who has a multi-app selection control can include Go, Hipster, Go! "
+                      "and Spotify in the next message and ask to publish the existing "
                       "selections. In **Gemini**, do not give ChatGPT-specific instructions to "
                       "select multiple plugins in a composer. Instead, when available, suggest "
                       "the actual **`@YouTubeMusic`** Connected App or Gemini Connected Apps settings.")
