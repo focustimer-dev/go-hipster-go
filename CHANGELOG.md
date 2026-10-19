@@ -1,3 +1,11 @@
+## 3.5.0 — Go, Hipster, Go! identity migration
+
+- Rename playlist-curation skill and plugin identity to `go-hipster-go`.
+- Preserve existing music taxonomy, DeBarge Protocol and PWA installation paths.
+- Package under the new name and include compatibility ZIP filenames for existing download links.
+- Existing installed plugins and skills remain snapshots; replacement is required to adopt the new identifier.
+- GitHub repository rename is a separate Settings action.
+
 # Changelog
 
 ## 3.4.0 — Expand the musical scene horizon
@@ -91,7 +99,7 @@
 
 ## 3.1.9 — The Insufferable Record-Store Clerk
 
-- Give Hipster Music Generator an overtly self-important, passive-aggressive and snarky comic voice across introductions, track transitions, feedback and endings.
+- Give Go, Hipster, Go! an overtly self-important, passive-aggressive and snarky comic voice across introductions, track transitions, feedback and endings.
 - Keep track-specific sonic explanations, trustworthy artist/title/version claims and technical publish reports first; on errors give clear status before the customary jab.
 - Sarcasm targets the curator's own ego, stale algorithms and playlist clichés—not real musical cultures or vulnerable listeners. Honor `less snark`.
 - Extend style examples, ChatGPT/Gemini instructions and tone regression checks without changing sonic taxonomy, routing, go modifiers or the DeBarge Protocol.
