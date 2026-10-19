@@ -10,13 +10,13 @@ These are **manual runtime tests** for someone with the Gemini app and connected
 
 ## Test 0 — no executable code
 
-Use the five-file instruction-only ZIP **or** the user-tested GitHub-link loading route. Ask `Use Hipster Music Generator: go`.
+Use the five-file instruction-only ZIP **or** the user-tested GitHub-link loading route. Ask `Use Go, Hipster, Go!: go`.
 **Pass:** Gemini curates songs without refusing because it cannot execute Python, mentioning a missing runtime, or insisting on a script. The original test screenshot showed exactly that refusal; it is a packaging regression, not a reason to remove music features.
 
 ## Test V — preserve the clerk's personality in Gemini
 
 1. Confirm whether this is a **fresh GitHub load** or a **replaced Gemini web skill**; an old uploaded skill does not auto-sync from GitHub.
-2. Ask `Use Hipster Music Generator: go weird, 6 tracks, text only`. Expect a dry opener, two or three distinct, track-relevant sardonic asides, and a smug sign-off. Fail if the result is a generic cheerful assistant playlist with one token joke.
+2. Ask `Use Go, Hipster, Go!: go weird, 6 tracks, text only`. Expect a dry opener, two or three distinct, track-relevant sardonic asides, and a smug sign-off. Fail if the result is a generic cheerful assistant playlist with one token joke.
 3. Ask `go sad, 6 tracks, text only`. Expect nuanced melancholy, not compulsory slow tracks or jokes about genuine grief.
 4. If publishing through YouTube Music, check whether the curator's **own narrative** still has character even when the provider's card uses neutral wording. Never fake publisher confirmation.
 5. Ask `less snark` to confirm the persona appropriately turns down without changing track accuracy, verification or publishing rules.
@@ -36,7 +36,7 @@ These tests require a Gemini runtime. Passing static CI does not prove YouTube M
 
 ## Test A0 — single-command listening
 
-In a new Gemini conversation where the skill is loaded and YouTube Music is authorized, say only `Hipster Music Generator: go`. The skill should attempt to use the actual YouTube Music playlist-writing capability without requiring a separate `@YouTubeMusic` mention. If Gemini's host cannot activate the other skill, it must curate anyway and explicitly explain the limitation, without claiming a saved playlist. Check an explicit `go, text only` to confirm no write is attempted.
+In a new Gemini conversation where the skill is loaded and YouTube Music is authorized, say only `Go, Hipster, Go!: go`. The skill should attempt to use the actual YouTube Music playlist-writing capability without requiring a separate `@YouTubeMusic` mention. If Gemini's host cannot activate the other skill, it must curate anyway and explicitly explain the limitation, without claiming a saved playlist. Check an explicit `go, text only` to confirm no write is attempted.
 
 **This is a behavioral test, not proof that Gemini can activate another skill itself.**
 
@@ -44,13 +44,13 @@ In a new Gemini conversation where the skill is loaded and YouTube Music is auth
 
 Invoke the skill using the skill selector or explicitly say:
 
-> Use Hipster Music Generator: go. Curate six real tracks with one surprising cross-scene bridge. Show exact artist and recording titles plus honest verification status.
+> Use Go, Hipster, Go!: go. Curate six real tracks with one surprising cross-scene bridge. Show exact artist and recording titles plus honest verification status.
 
 **Pass:** The skill produces a coherent six-track list, keeps the global taxonomy and DeBarge exception, and never invents publishing success. Mark missing recording verification honestly.
 
 ## Test B — YouTube Music capabilities
 
-> Use Hipster Music Generator to create a six-track exploratory playlist. Try to create it in @YouTubeMusic. Before calling anything 'published', identify what exact recording matches you can establish and what the connected app is actually able to write. If exact entries cannot be preserved, show me the curated list and explain the limitation.
+> Use Go, Hipster, Go! to create a six-track exploratory playlist. Try to create it in @YouTubeMusic. Before calling anything 'published', identify what exact recording matches you can establish and what the connected app is actually able to write. If exact entries cannot be preserved, show me the curated list and explain the limitation.
 
 **Record:** Can Gemini reach the YouTube Music connection from *inside* this skill? Does it create a playlist or only a radio / general generated playlist? Are the six artist/title/version pairs preserved in order? Does it return an authentic playlist URL or a saved-library action? Were substitutions explicitly identified?
 
@@ -58,7 +58,7 @@ Invoke the skill using the skill selector or explicitly say:
 
 ## Test C — Spotify negative capability
 
-> Use Hipster Music Generator and show me a six-track playlist for Spotify. Tell me whether this Gemini session can actually create it in my account, or only search/play existing music.
+> Use Go, Hipster, Go! and show me a six-track playlist for Spotify. Tell me whether this Gemini session can actually create it in my account, or only search/play existing music.
 
 **Pass:** Search/play actions may work, but the skill doesn't claim Spotify playlist creation where the connected app can't do it.
 
