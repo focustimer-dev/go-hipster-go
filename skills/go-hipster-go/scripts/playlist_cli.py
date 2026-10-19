@@ -93,7 +93,13 @@ def check_skill(root:Path=ROOT)->list[str]:
     name=attrs.get('name','').strip()
     if not re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*',name) or len(name)>64:
         errs.append('invalid Agent Skills name')
-    if name != root.name: errs.append(f'name {name!r} must match folder {root.name!r}')
+    if name != root.name:
+        # Repository roots may temporarily retain an older GitHub slug while their
+        # canonical Agent Skill lives under skills/<name>/SKILL.md. Require an
+        # exact matching packaged copy; arbitrary name/folder drift still fails.
+        installed = root / "skills" / name / "SKILL.md"
+        if not installed.is_file() or installed.read_text(encoding="utf-8-sig") != text:
+            errs.append(f'name {name!r} must match folder {root.name!r} or its packaged skill')
     description=attrs.get('description','')
     if not description or len(description)>1024: errs.append('description missing or over 1024 characters')
     for path in re.findall(r'(?<!!)\[[^]\n]+\]\(([^)]+)\)',text):
