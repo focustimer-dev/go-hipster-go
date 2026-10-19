@@ -312,3 +312,25 @@ a{color:inherit}
 @keyframes key-return{0%{transform:translateY(5px) scale(.985)}45%{transform:translateY(-2px) scale(1.003)}72%{transform:translateY(1px)}100%{transform:translateY(0) scale(1)}}
 @keyframes copy-stamp{0%{opacity:0;transform:translateY(-65%) rotate(-12deg) scale(1.22)}65%{opacity:1;transform:translateY(-50%) rotate(-6deg) scale(.97)}100%{opacity:1;transform:translateY(-50%) rotate(-7deg) scale(1)}}
 @media(prefers-reduced-motion:reduce){.go-button,.go-button .star-glyph{transition:none}.go-button:active,.go-button[data-copy-state=copying]{transform:none}.go-button[data-copy-state=copied],.go-button[data-copy-state=copied] .go-stamp{animation:none}}
+
+/* Pitch-fader hardware; a native range keeps touch and keyboard behavior intact. */
+.tempo-control{padding:16px;background:#ded8c7;border:2px solid var(--ink)}
+.tempo-heading label span{min-width:9ch;font-weight:700;font-variant-numeric:tabular-nums}
+.tempo-heading button{background:var(--bone)}
+.tempo-heading button[aria-pressed=true]{background:var(--ink);color:var(--bone)}
+.fader-bed{position:relative;margin-top:14px;padding:0 10px 30px;background:#c9c2af;box-shadow:inset 0 2px 4px #29272240}
+#tempoSlider{appearance:none;-webkit-appearance:none;background:transparent;height:56px;margin:0;touch-action:pan-y;position:relative;z-index:1;border-radius:0}
+#tempoSlider::-webkit-slider-runnable-track{height:7px;background:var(--ink);border-radius:0;box-shadow:0 1px 0 #fff8}
+#tempoSlider::-moz-range-track{height:7px;background:var(--ink);border-radius:0;box-shadow:0 1px 0 #fff8}
+#tempoSlider::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:44px;height:36px;margin-top:-15px;border:2px solid var(--ink);border-radius:2px;background:linear-gradient(90deg,#eee8d8 0 44%,#292722 44% 56%,#eee8d8 56%);box-shadow:0 3px 3px #29272260;cursor:grab}
+#tempoSlider::-moz-range-thumb{width:40px;height:32px;border:2px solid var(--ink);border-radius:2px;background:linear-gradient(90deg,#eee8d8 0 44%,#292722 44% 56%,#eee8d8 56%);box-shadow:0 3px 3px #29272260;cursor:grab}
+#tempoSlider:active::-webkit-slider-thumb{cursor:grabbing;box-shadow:0 1px 2px #29272260}
+#tempoSlider:active::-moz-range-thumb{cursor:grabbing;box-shadow:0 1px 2px #29272260}
+.fader-stops{position:relative;margin:0 22px;height:0;color:var(--ink)}
+.fader-stops span{position:absolute;top:0;transform:translateX(-50%);font-size:.75rem;line-height:1.5;white-space:nowrap}
+.fader-stops span:before{content:"";display:block;position:absolute;width:1px;height:9px;background:var(--ink);left:50%;bottom:calc(100% + 2px)}
+.fader-stops span:nth-child(1){left:0}.fader-stops span:nth-child(2){left:25%}.fader-stops span:nth-child(3){left:50%}.fader-stops span:nth-child(4){left:75%}.fader-stops span:nth-child(5){left:100%}
+[data-tempo=slow] [data-pace=slow],[data-tempo=relaxed] [data-pace=relaxed],[data-tempo=moderate] [data-pace=moderate],[data-tempo=brisk] [data-pace=brisk],[data-tempo=fast] [data-pace=fast]{font-weight:700;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:2px}
+.tempo-control[data-tempo=any] .fader-bed{background:#d6d0bf}
+.tempo-control:not([data-tempo=any]) #tempoValue{color:var(--red2)}
+@media(max-width:390px){.tempo-control{padding:12px}.fader-bed{padding-left:4px;padding-right:4px}}

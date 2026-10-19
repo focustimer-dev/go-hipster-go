@@ -123,6 +123,7 @@ function renderLaunch(){
  renderSelections();
  const slider=doc.getElementById("tempoSlider"),tempoValue=doc.getElementById("tempoValue"),anyTempo=doc.getElementById("anyTempo");
  if(slider){slider.value=tempo?tempoSteps.indexOf(tempo)+1:3;slider.setAttribute("aria-valuetext",tempo?tempoNames[tempo]:"Any tempo — move to choose a pace")}
+ const tempoControl=doc.getElementById("tempoControl");if(tempoControl)tempoControl.setAttribute("data-tempo",tempo||"any");
  if(tempoValue)tempoValue.textContent=tempo?tempoNames[tempo]:"Any tempo";
  if(anyTempo)anyTempo.setAttribute("aria-pressed",String(!tempo));
  doc.querySelectorAll("[data-mood]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.mood===mood)));
@@ -194,7 +195,13 @@ doc.querySelectorAll("[data-mood]").forEach(b=>b.addEventListener("click",()=>{
  mood=mood===b.dataset.mood?"go":b.dataset.mood;copiedPrompt=null;selectionChanged();
 }));
 const tempoSlider=doc.getElementById("tempoSlider");
-if(tempoSlider)tempoSlider.addEventListener("input",()=>{tempo=tempoSteps[Number(tempoSlider.value)-1]||"";copiedPrompt=null;selectionChanged()});
+function selectTempo(){tempo=tempoSteps[Number(tempoSlider.value)-1]||"";copiedPrompt=null;selectionChanged()}
+if(tempoSlider){
+ tempoSlider.addEventListener("input",selectTempo);
+ // A tap on the parked center cap also chooses Mid-tempo from bypass.
+ tempoSlider.addEventListener("pointerup",()=>{if(!tempo)selectTempo()});
+ tempoSlider.addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();selectTempo()}});
+}
 const anyTempo=doc.getElementById("anyTempo");
 if(anyTempo)anyTempo.addEventListener("click",()=>{tempo="";copiedPrompt=null;selectionChanged()});
 const go=doc.getElementById("goButton");if(go)go.addEventListener("click",copyGo);
