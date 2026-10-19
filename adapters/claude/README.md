@@ -49,6 +49,16 @@ For most Claude chat users, the Skill uploader is the simpler installation metho
 
 References: [Claude custom skills](https://support.claude.com/en/articles/12512198-how-to-create-custom-skills) · [Claude Spotify connector](https://claude.com/marketplace/connectors/spotify) · [How Claude suggests connected apps](https://support.claude.com/en/articles/14730684-how-claude-suggests-connected-apps)
 
+## Apple Music requires a separate MCP connector
+
+The [Hipster, Go! Manual](https://hipster-go.samelling.workers.dev/setup/?ai=claude&service=apple) prepares a Claude + Apple Music setup check. Installing this skill or selecting Apple Music in the PWA does **not** connect your account.
+
+Use an Apple Music MCP connector compatible with your Claude environment: a local connector for Desktop, or a hosted remote connector for web/mobile. A local Mac connection does not automatically become available on your phone. Check the connector's actual tools for recording search, playlist creation and adding tracks; some implementations only search your existing library.
+
+No Apple Music MCP server or credentials are bundled here, and an end-to-end Claude → Apple Music publishing test has not been completed. If writing is unavailable, return a verified text playlist and clearly report that it was not saved.
+
+References: [Anthropic remote connector setup](https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp) · [Example community Mac connector and its requirements](https://github.com/pedrocid/music-mcp). The example is not a tested project integration.
+
 ## Spotify denied playlist creation: Premium gate versus exact 25-track editing
 
 **Observed Claude field report (2026-10-17, corrected):** Spotify refused a 25-entry DeBarge playlist with a **Premium-required** generation error. Two generated playlist results appeared without descriptions, but the listener later confirmed **they did not save to Spotify**. The correct durable-publication count is therefore **0 confirmed saved**; the two generated results are not evidence of saved playlist objects. Their song counts and exact contents are unverified. Claude also proposed `create_playlist` and `add_playlist_items` as a manual route even though those tools weren't exposed in its session, and directed the listener to duplicate the song repeatedly in Spotify. The denial does not independently establish the listener's subscription tier or a broken account connection.

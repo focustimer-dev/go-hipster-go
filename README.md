@@ -9,6 +9,20 @@
 
 An open-source **Agent Skill for discovering real, unlikely, surprisingly coherent music** across eras, textures, geographic scenes and microgenres. Delivered by an extravagantly self-important, passive-aggressive record-store clerk who considers your listening habits a public infrastructure problem.
 
+## Start with Hipster, Go!
+
+**[Open the Jukebox](https://hipster-go.samelling.workers.dev/)** · **[First-time setup: Manual](https://hipster-go.samelling.workers.dev/setup/)**
+
+The mobile-friendly PWA prepares prompts for **ChatGPT, Gemini or Claude** and **Spotify, YouTube Music or Apple Music**. Choose your AI and music service, copy the tailored setup check, then paste and send it in your AI. Once ready, choose a mood and optional tempo, press **GO** to copy a 12-track request, and open your AI to paste and send it.
+
+- Tap a selected mood again for plain `go`. Tempo is an independent pace preference, not a measured BPM filter.
+- The Manual provides setup guidance, current download links and a manual-copy fallback. Compatibility notes depend on your selected pair; selecting a service does not connect it.
+- Add the app to your home screen where your browser supports it. It does not install the skill, submit prompts, play music or publish playlists itself. There is no offline service-worker cache.
+
+**Claude + Apple Music requires a compatible MCP connector**, with actual track-search and playlist-writing tools; see the [Claude guide](adapters/claude/README.md#apple-music-requires-a-separate-mcp-connector).
+
+Prefer to work directly in chat? Follow the steps below. The skill defaults to Spotify; the PWA's explicit service choice takes precedence in its prompts. [PWA behavior and maintenance](launcher/README.md).
+
 ## Start here — load, setup, go
 
 **Try the easy way first.** Many agents can read a skill straight from GitHub. No folder archaeology required unless your particular host insists on it.
@@ -234,6 +248,7 @@ Implemented instructions aren't the same as demonstrated cross-host publishing o
 
 | File | Purpose |
 | --- | --- |
+| [`launcher/`](launcher/README.md) | Hipster, Go! PWA: Jukebox, Manual, shared UI and manifests |
 | [`SKILL.md`](SKILL.md) | Canonical music-curation skill |
 | [`skills/setup/SKILL.md`](skills/setup/SKILL.md) | Service discovery and revisitable listener setup |
 | [`references/global-scenes.md`](references/global-scenes.md) | Scene and geography research |
