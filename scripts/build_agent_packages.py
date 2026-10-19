@@ -72,6 +72,15 @@ def make_zips():
             for src in (ROOT / folder).rglob("*"):
                 if src.is_file():
                     z.write(src, str(src.relative_to(ROOT)))
+    # ChatGPT personal plugin upload needs the root manifest and complete skill.
+    chatgpt_zip = output / "go-hipster-go-chatgpt-plugin.zip"
+    with ZipFile(chatgpt_zip, "w", ZIP_DEFLATED) as z:
+        for rel in ("plugin.json", "assets/icon.svg", "assets/logo.svg"):
+            z.write(ROOT / rel, rel)
+        for folder in ("skills/go-hipster-go", "skills/setup"):
+            for src in (ROOT / folder).rglob("*"):
+                if src.is_file():
+                    z.write(src, str(src.relative_to(ROOT)))
     # Gemini web Skills uploader expects SKILL.md at the archive root.
     gemini_zip = output / "go-hipster-go-gemini-app-skill.zip"
     # Gemini Apps cannot rely on code execution. Ship text-only skill + references.
@@ -80,12 +89,13 @@ def make_zips():
     # Legacy ZIP filenames are aliases containing the new identity.
     for renamed, legacy in (
         ("go-hipster-go-claude-skill.zip", "hipster-music-generator-claude-skill.zip"),
+        ("go-hipster-go-chatgpt-plugin.zip", "hipster-music-generator-chatgpt-plugin.zip"),
         ("go-hipster-go-claude-plugin.zip", "hipster-music-generator-claude-plugin.zip"),
         ("go-hipster-go-gemini-app-skill.zip", "hipster-music-generator-gemini-app-skill.zip"),
     ):
         copyfile(output / renamed, output / legacy)
     print("Created", skill_zip.relative_to(ROOT), "and",
-          plugin_zip.relative_to(ROOT), "and", gemini_zip.relative_to(ROOT))
+          plugin_zip.relative_to(ROOT), "and", gemini_zip.relative_to(ROOT), "and", chatgpt_zip.relative_to(ROOT))
 
 
 def main():
