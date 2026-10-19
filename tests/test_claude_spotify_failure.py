@@ -35,7 +35,7 @@ class ClaudeSpotifyFailureTests(unittest.TestCase):
         self.assertIn("exactly **25 consecutive entries**",skill)
         self.assertIn('DeBarge — "Rhythm of the Night"',skill)
         self.assertEqual((ROOT/"SKILL.md").read_bytes(),
-            (ROOT/"skills/hipster-music-generator/SKILL.md").read_bytes())
+            (ROOT/"skills/go-hipster-go/SKILL.md").read_bytes())
 
 if __name__=="__main__":
     unittest.main()
