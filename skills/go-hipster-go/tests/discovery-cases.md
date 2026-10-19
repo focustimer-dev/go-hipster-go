@@ -11,7 +11,7 @@ Run *the same* prompts against the prior version and this revision, with the sam
 
 - `Give me 12 songs that bridge Soviet-periphery cosmic disco and Japanese city pop, with one surprising African or Latin American connection.`
 - `Give me music with the repetition and elastic rhythm of Can, but no Can or Neu! and no obvious krautrock classics.`
-- `Use the hipster-music-generator skill: go.`
+- `Use the go-hipster-go skill: go.`
 
 ## Expanded sonic-map acceptance probes (manual, not a validated win)
 
@@ -180,17 +180,17 @@ Manual runtime observations remain necessary: static skill tests cannot establis
 
 ## Default go: publishing and host-routing acceptance checks (manual)
 
-**A/B preflight trial:** In fresh conversations with the same installed apps and account authorization, compare (A) skill-only `go` against (B) explicit Hipster Music Generator + Spotify selection, using the same 12-track constraint. Record whether playlist-writing tools were exposed *before* catalog research, whether the request saved a playlist, number of provider-confirmed items, substitutions, and whether the assistant falsely attributed missing tools to a disconnected account. The two-plugin success case is the control, not evidence that skill-only activation is fixed. Do not save public account details.
+**A/B preflight trial:** In fresh conversations with the same installed apps and account authorization, compare (A) skill-only `go` against (B) explicit Go, Hipster, Go! + Spotify selection, using the same 12-track constraint. Record whether playlist-writing tools were exposed *before* catalog research, whether the request saved a playlist, number of provider-confirmed items, substitutions, and whether the assistant falsely attributed missing tools to a disconnected account. The two-plugin success case is the control, not evidence that skill-only activation is fixed. Do not save public account details.
 
 | Environment | Prompt | Expected result |
 | --- | --- | --- |
-| ChatGPT, Spotify only authorized writer | `Hipster Music Generator: go` | Attempt Spotify publication without separate mention; use actual provider confirmation |
-| Gemini, YouTube Music only authorized writer | `Hipster Music Generator: go` | With no explicit service change, do not auto-publish to YouTube Music; explain Spotify cannot write and offer `setup change YouTube Music` |
+| ChatGPT, Spotify only authorized writer | `Go, Hipster, Go!: go` | Attempt Spotify publication without separate mention; use actual provider confirmation |
+| Gemini, YouTube Music only authorized writer | `Go, Hipster, Go!: go` | With no explicit service change, do not auto-publish to YouTube Music; explain Spotify cannot write and offer `setup change YouTube Music` |
 | Two writable services, no grounded preference | `go` | Prefer Spotify by default when its writer is authorized; don't ask or publish both |
 | Two writers, visible Spotify preference | `go` | Prefer Spotify when writable |
 | Connected Spotify search/play only | `go` | Curate, don't claim playlist creation |
 | Spotify connected, writer absent in skill-only chat | `go` | Keep the original ordered list; explain that both plugins may need to be selected for the next publication prompt |
-| Both Hipster Music Generator and Spotify selected | `go` | Attempt actual Spotify playlist creation; confirm provider result |
+| Both Go, Hipster, Go! and Spotify selected | `go` | Attempt actual Spotify playlist creation; confirm provider result |
 | Follow-up after blocked publish, with writer now exposed | `Publish the 12 tracks above` | Reuse exact already-curated tracks/versions/order; don't silently re-curate or reroll the Easter egg |
 | No connected writer | `go` | Curate, disclose publication failure and one smallest real setup step |
 | Explicit no-publish | `go, text only` | Do not attempt any external write |
@@ -207,9 +207,9 @@ Run the *same* six-track curated list on both hosts if possible. Record: host an
 
 ### Test prompts
 
-- **ChatGPT + Spotify:** `Use Hipster Music Generator: go, six tracks. Publish to Spotify using a connected publisher if available. Tell me how many were requested and which recordings and order you can actually verify in the saved playlist. Mark anything else unknown.`
-- **Gemini + YouTube Music:** `Use Hipster Music Generator and the built-in YouTube Music skill: go, six tracks. Publish if available, preserving exact versions and order. Afterward separate confirmed tracks from substitutions and unknowns.`
-- **No writer:** `Use Hipster Music Generator: go. If no connected playlist-writing tool exists, curate anyway and explicitly say nothing was published.`
+- **ChatGPT + Spotify:** `Use Go, Hipster, Go!: go, six tracks. Publish to Spotify using a connected publisher if available. Tell me how many were requested and which recordings and order you can actually verify in the saved playlist. Mark anything else unknown.`
+- **Gemini + YouTube Music:** `Use Go, Hipster, Go! and the built-in YouTube Music skill: go, six tracks. Publish if available, preserving exact versions and order. Afterward separate confirmed tracks from substitutions and unknowns.`
+- **No writer:** `Use Go, Hipster, Go!: go. If no connected playlist-writing tool exists, curate anyway and explicitly say nothing was published.`
 - **Feedback:** `More like #4 but less atmospheric, please.` Run after a visible playlist; pass when it uses #4's relevant sonic feature without blindly repeating the artist.
 - **Surprise:** Run two consecutive `go` requests in one conversation; inspect whether the second selection has a distinct scene/microgenre pairing and specific musical explanations without an invented novelty score.
 
