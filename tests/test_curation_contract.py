@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class CurationContractTests(unittest.TestCase):
     def test_canonical_and_packaged_skill_are_identical(self):
         self.assertEqual((ROOT / "SKILL.md").read_bytes(),
-                         (ROOT / "skills/hipster-music-generator/SKILL.md").read_bytes())
+                         (ROOT / "skills/go-hipster-go/SKILL.md").read_bytes())
 
     def test_debarge_protocol_is_preserved(self):
         t=(ROOT / "SKILL.md").read_text(encoding="utf-8")
