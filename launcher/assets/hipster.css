@@ -367,3 +367,24 @@ a{color:inherit}
  .go-button:active .star-glyph,.go-button[data-copy-state=copying] .star-glyph{transform:rotate(-8deg)}
  .mood-grid .mood,.mood-grid .mood:active,.mood-grid .mood[aria-pressed=true]{transform:none}
 }
+
+/* Manual: selector keys, local copy feedback, and native paper disclosures. */
+body[data-page=setup] .switch button{transition:transform 160ms cubic-bezier(.16,1,.3,1),box-shadow 160ms ease-out}
+body[data-page=setup] .switch button[aria-pressed=true]{transform:translateY(2px);box-shadow:inset 0 2px 4px #0004}
+body[data-page=setup] .switch button:focus-visible{outline:3px solid var(--red2);outline-offset:3px}
+.setup-recipe #copyStatus{text-align:left;min-height:3em;margin:12px 0;color:var(--ink);font-weight:400}
+#copyTailoredSetup{min-height:48px;transition:transform 100ms ease-out;white-space:normal}
+#copyTailoredSetup:active,#copyTailoredSetup[data-copy-state=copying]{transform:translateY(2px)}
+#copyTailoredSetup[data-copy-state=copied]{background:var(--ink);color:var(--bone)}
+#copyTailoredSetup:disabled{cursor:wait}
+#openSelectedAi[data-copy-ready=true]{animation:handoff-ready 320ms 180ms cubic-bezier(.16,1,.3,1)}
+.manual-prompt summary{cursor:pointer;min-height:44px;padding:12px 0;font-size:.875rem;font-weight:700}
+.manual-prompt pre{white-space:pre-wrap;overflow-wrap:anywhere;font:.875rem/1.6 ui-monospace,monospace;max-height:18rem;overflow:auto;padding:12px;background:var(--bone)}
+.manual-prompt,.resource-shelf{perspective:900px}
+.manual-prompt[open] .receipt-fold,.resource-shelf[open] .resource-shelf-body{transform-origin:top center;animation:receipt-unfold 260ms cubic-bezier(.16,1,.3,1)}
+body[data-page=setup] summary:focus-visible,#setupPromptText:focus-visible{outline:3px solid var(--red2);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){
+ body[data-page=setup] .switch button,#copyTailoredSetup{transition:none}
+ body[data-page=setup] .switch button[aria-pressed=true],#copyTailoredSetup:active,#copyTailoredSetup[data-copy-state=copying]{transform:none}
+ #openSelectedAi[data-copy-ready=true],.manual-prompt[open] .receipt-fold,.resource-shelf[open] .resource-shelf-body{animation:none}
+}

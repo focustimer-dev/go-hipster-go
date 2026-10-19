@@ -116,7 +116,9 @@ function renderSetup(){
  steps.replaceChildren();for(const text of stepsText){const li=doc.createElement("li");li.textContent=text;steps.append(li)}
  setupLinks(links,resourceInfo[ai]);
  const caveat=doc.getElementById("recipeCaveat");if(caveat)caveat.textContent=q.note;
- const target=doc.getElementById("openSelectedAi");if(target){target.href=destinations[ai];target.textContent="↗ OPEN "+aiNames[ai].toUpperCase()}
+ const setupReady=copiedPrompt===setupPrompt(ai,service);
+ const copyButton=doc.getElementById("copyTailoredSetup");if(copyButton){copyButton.setAttribute("data-copy-state",copyButton.disabled?"copying":setupReady?"copied":"idle");copyButton.textContent=copyButton.disabled?"COPYING…":setupReady?"COPIED — COPY AGAIN":"COPY MY SETUP PROMPT"}
+ const target=doc.getElementById("openSelectedAi");if(target){target.href=destinations[ai];target.textContent=(setupReady?"NEXT: OPEN ":"OPEN ")+aiNames[ai].toUpperCase();target.setAttribute("data-copy-ready",String(setupReady))}
  const tryFirst=doc.getElementById("trySetupPrompt");if(tryFirst)tryFirst.dataset.readyPair=ai+":"+service;
 }
 function renderLaunch(){
@@ -152,6 +154,7 @@ doc.querySelectorAll("[data-service]").forEach(b=>b.addEventListener("click",()=
  service=b.dataset.service;copiedPrompt=null;selectionChanged();
 }));
 doc.querySelectorAll("[data-setup]").forEach(b=>b.addEventListener("click",async()=>{
+ copiedPrompt=null;if(body.dataset.page==="setup")renderSetup();
  const prompt=b.dataset.setup==="universal"?universalPrompt:setupPrompt(ai,service);
  status(await copyText(prompt)?"Installation prompt copied. Paste into your chosen AI.":"Clipboard blocked; please copy the instructions manually.");
 }));
@@ -170,7 +173,15 @@ for(const id of ["quickSetupPrompt","stripSetupPrompt","trySetupPrompt"]){
  const b=doc.getElementById(id);if(b)b.addEventListener("click",copyFirstSetup);
 }
 const copyTailored=doc.getElementById("copyTailoredSetup");
-if(copyTailored)copyTailored.addEventListener("click",async()=>status(await copyText(setupPrompt(ai,service))?"Setup prompt copied. Paste it into "+aiNames[ai]+".":"Clipboard unavailable. Try again."));
+if(copyTailored)copyTailored.addEventListener("click",async()=>{
+ if(copyTailored.disabled)return;
+ const prompt=setupPrompt(ai,service);copiedPrompt=null;copyTailored.disabled=true;copyTailored.setAttribute("aria-busy","true");renderSetup();status("Copying your setup prompt…");
+ const ok=await copyText(prompt);
+ copyTailored.disabled=false;copyTailored.setAttribute("aria-busy","false");copiedPrompt=ok?prompt:null;renderSetup();
+ if(prompt!==setupPrompt(ai,service)){status("Selection changed while copying. Copy the current setup prompt again.");return}
+ if(ok)status("Copied. Open "+aiNames[ai]+", paste and send your setup check.");
+ else{const details=doc.getElementById("setupPromptDetails");if(details)details.open=true;status("Clipboard unavailable. Copy the setup prompt below, then open your AI.")}
+});
 if(body.dataset.page!=="launch"){render();return}
 // A dismissible hint, never a blocking onboarding gate. Changing its version lets existing visitors see Try First.
 const welcome=doc.getElementById("welcomeSetup");
