@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Offline tools for Hipster Music Generator. Python 3.10+, no dependencies."""
+"""Offline tools for Go, Hipster, Go!. Python 3.10+, no dependencies."""
 from __future__ import annotations
 import argparse
 import json
