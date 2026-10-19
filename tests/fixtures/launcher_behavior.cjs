@@ -3,6 +3,7 @@ const vm=require('node:vm');
 const fs=require('node:fs');
 class Element{
  constructor(dataset={}){this.dataset=dataset;this.attrs={};this.events={};this.textContent='';this.hidden=false;this.open=false;this.classList={toggle(){}};}
+ focus(){this.focused=true}
  replaceChildren(){}
  append(){}
  setAttribute(k,v){this.attrs[k]=v}
@@ -10,18 +11,27 @@ class Element{
  querySelector(){return this.span||(this.span=new Element())}
  async click(){const event={preventDefault(){this.prevented=true}};await this.events.click?.(event);return event}
 }
-function harness(write,search='',page='launch'){
- const ids=['copyTailoredSetup','recipeIntro','recipeSteps','recipeResources','recipeCaveat','openSelectedAi','tempoControl','tempoSlider','tempoValue','anyTempo','copyStatus','routeStatus','prompt','moodName','receiptCode','openAi','browserAi','manualOpenAi','receiptSummary','goHint','goButton','stripSetupPrompt','setupPromptText','setupPromptDetails','setupTipStatus','openSetupAi','promptDetails','shareButton'];
+function harness(write,search='',page='launch',storage=new Map()){
+ const ids=['welcomeSetup','dismissWelcome','aiLabel','copyTailoredSetup','recipeIntro','recipeSteps','recipeResources','recipeCaveat','openSelectedAi','tempoControl','tempoSlider','tempoValue','anyTempo','copyStatus','routeStatus','prompt','moodName','receiptCode','openAi','browserAi','manualOpenAi','receiptSummary','goHint','goButton','stripSetupPrompt','setupPromptText','setupPromptDetails','setupTipStatus','openSetupAi','promptDetails','shareButton'];
  const elements=Object.fromEntries(ids.map(id=>[id,new Element()]));
  const ais=['chatgpt','gemini','claude'].map(ai=>new Element({ai}));
  const services=['spotify','youtube','apple'].map(service=>new Element({service}));
  const moods=['happy','angry','sad','weird'].map(mood=>new Element({mood}));
  const groups={'[data-ai]':ais,'[data-service]':services,'[data-mood]':moods,'[data-setup]':[]};
  const doc={body:{dataset:{page},appendChild(){}},getElementById:id=>elements[id]||null,querySelectorAll:q=>groups[q]||[],createElement:()=>Object.assign(new Element(),{style:{},select(){},remove(){}}),execCommand:()=>false};
- vm.runInNewContext(fs.readFileSync('launcher/assets/app.js','utf8'),{document:doc,navigator:{clipboard:{writeText:write}},localStorage:{getItem(){return null},setItem(){}},URL,URLSearchParams,location:{search,pathname:'/',href:'https://example.test/'},history:{replaceState(){}}});
+ vm.runInNewContext(fs.readFileSync('launcher/assets/app.js','utf8'),{document:doc,navigator:{clipboard:{writeText:write}},localStorage:{getItem(key){return storage.get(key)||null},setItem(key,value){storage.set(key,value)}},URL,URLSearchParams,location:{search,pathname:'/',href:'https://example.test/'},history:{replaceState(){}}});
  return {elements,ais,services,moods};
 }
 (async()=>{
+ const storage=new Map();let welcomeHarness=harness(async()=>{},'','launch',storage);
+ assert.equal(welcomeHarness.elements.welcomeSetup.hidden,false,'New visitors can open the setup note');
+ await welcomeHarness.elements.dismissWelcome.click();
+ assert.equal(welcomeHarness.elements.welcomeSetup.hidden,true,'Dismiss hides the note immediately');
+ assert.equal(welcomeHarness.elements.aiLabel.focused,true,'Dismiss moves keyboard focus to service choices');
+ welcomeHarness=harness(async()=>{},'','launch',storage);
+ assert.equal(welcomeHarness.elements.welcomeSetup.hidden,true,'Dismiss survives a reload');
+ welcomeHarness=harness(async()=>{},'','launch',new Map([['hmg-setup-first-tip-dismissed-v3','yes']]));
+ assert.equal(welcomeHarness.elements.welcomeSetup.hidden,true,'Existing dismissals are respected');
  let copies=[];let h=harness(async text=>copies.push(text)),e=h.elements;
  await h.moods[2].click();assert.equal(copies.length,0,'Selecting a mood must not copy');
  await e.goButton.click();assert.match(copies.at(-1),/go sad/,'GO must preserve selected mood');assert.equal(e.openAi.attrs['aria-disabled'],'false');assert.equal(e.goButton.attrs['data-copy-state'],'copied');assert.equal(e.openAi.textContent,'NEXT: OPEN CHATGPT');

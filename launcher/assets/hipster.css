@@ -165,23 +165,26 @@ a{color:inherit}
 @media(max-width:390px){.main{padding:13px 11px 20px}.panel{padding:10px}.switch button{font-size:.7rem;min-height:47px}.go-button{padding:13px}.go-copy b{font-size:2.7rem}.hero-title .sticker{font-size:.54rem;right:0}.headline{font-size:2.72rem}.mood{min-height:86px}.brand-sub{letter-spacing:.1em}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
 
-/* First-time setup flyer: visible only until this visitor dismisses it. */
+/* A folded setup note: quiet until opened, remembered when dismissed. */
 [hidden]{display:none!important}
-.welcome-setup{position:relative;margin:1px 0 17px;background:#f8df79;border:2px solid var(--ink);box-shadow:5px 5px 0 var(--red2);padding:12px 58px 13px 14px;transform:rotate(-.4deg)}
-.welcome-setup:before{content:"";position:absolute;left:15px;top:-8px;width:63px;height:15px;background:#d6b9acb8;transform:rotate(-6deg);border:1px solid #0002;pointer-events:none}
-.welcome-eyebrow{display:inline-block;font:700 .61rem ui-monospace,Consolas,monospace;letter-spacing:.08em;background:var(--ink);color:var(--bone);padding:4px 6px}
-.welcome-setup h2{font-family:Impact,"Arial Black",Arial,sans-serif;font-size:clamp(1.38rem,5.5vw,1.9rem);line-height:1.02;letter-spacing:.01em;margin:10px 0 6px}
-.welcome-setup h2 em{color:var(--red2);font-style:normal}
-.welcome-setup p{margin:7px 0 12px;font-size:.8rem;line-height:1.42;max-width:460px}
-.welcome-link{display:inline-flex;align-items:center;min-height:44px;border:2px solid var(--ink);background:var(--bone);text-decoration:none;padding:9px 10px;font-size:.76rem;font-weight:700;box-shadow:2px 2px 0 var(--ink)}
-.welcome-link:active{box-shadow:none;transform:translate(2px,2px)}
-.welcome-dismiss{position:absolute;right:7px;top:7px;width:44px;height:44px;border:2px solid var(--ink);background:var(--bone);font-size:1.35rem;line-height:1;padding:0}
-
+.welcome-setup{position:relative;margin:1px 0 17px;border:1px solid #9a8560;background:#f1e3b7;color:var(--ink)}
+.welcome-setup summary{min-height:52px;padding:14px 58px 14px 15px;font-size:.875rem;line-height:1.5;cursor:pointer}
+.welcome-setup summary::marker{color:var(--red2)}
+.welcome-setup summary strong{color:var(--red2);font-weight:700}
+.welcome-setup summary:hover strong{text-decoration:underline;text-underline-offset:3px}
+.welcome-setup details[open]>summary{border-bottom:1px solid #9a8560}
+.welcome-copy{padding:2px 15px 14px}
+.welcome-setup p{margin:12px 0 10px;max-width:60ch}
+.welcome-actions{display:flex;align-items:center;flex-wrap:wrap;gap:4px 16px}
+.welcome-link{display:inline-flex;align-items:center;min-height:44px;border:1px solid var(--ink);background:var(--bone);text-decoration:none;padding:9px 10px;font-weight:700}
+.welcome-link:hover{background:var(--yellow)}
+.welcome-dismiss{position:absolute;right:4px;top:4px;width:44px;height:44px;border:0;background:transparent;color:var(--ink);font-size:1.35rem;line-height:1;padding:0;cursor:pointer}
+.welcome-dismiss:hover{background:#e3d19c}
 
 /* Two-choice route selector; three labels fit without forfeiting dignity. */
 .switch:has(> button:nth-child(3)){grid-template-columns:repeat(3,minmax(0,1fr))}
 .switch button{overflow-wrap:anywhere;line-height:1.22}
-.welcome-text-link{display:inline-block;margin:10px 0 0 11px;font-size:.76rem;font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.welcome-text-link{display:inline-flex;align-items:center;margin:0;font-size:.76rem;font-weight:700;text-decoration:underline;text-underline-offset:3px}
 .try-first-strip{background:var(--lime);border-left:5px solid var(--ink);padding:10px 11px;margin:11px 0 14px;font-size:.76rem;line-height:1.4}
 .try-first-strip strong{font-family:ui-monospace,Consolas,monospace}
 .try-first-strip a{display:inline-flex;align-items:center;min-height:44px;padding:7px 2px;font-weight:700;white-space:nowrap}
@@ -212,7 +215,6 @@ a{color:inherit}
  .selector-grid .panel{margin:0 0 8px}
  .switch button{font-size:.73rem;min-height:44px}
  .setup-recipe{padding:14px 11px}
- .welcome-text-link{display:block;margin:12px 0 0}
 }
 
 /* Four magnificently self-serious hipster faces: vector beard/bun portraits */
@@ -261,7 +263,6 @@ a{color:inherit}
 ::selection{background:var(--ink);color:var(--bone)}
 @media(max-width:540px){
  .hero-title .sticker{position:static;margin:7px 0}
- .welcome-setup{padding-right:14px;padding-top:52px}
  .button-row{grid-template-columns:1fr}
  .switch button{font-size:var(--type-control)}
  .section-title small{margin-left:31px}

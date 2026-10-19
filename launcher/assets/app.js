@@ -186,11 +186,15 @@ if(copyTailored)copyTailored.addEventListener("click",async()=>{
  else{const details=doc.getElementById("setupPromptDetails");if(details)details.open=true;status("Clipboard unavailable. Copy the setup prompt below, then open your AI.")}
 });
 if(body.dataset.page!=="launch"){render();return}
-// A dismissible hint, never a blocking onboarding gate. Changing its version lets existing visitors see Try First.
+// Keep the existing dismissal key so returning visitors are not asked again.
 const welcome=doc.getElementById("welcomeSetup");
-if(welcome&&!stored("hmg-setup-first-tip-dismissed-v3")){
- welcome.hidden=false;const close=doc.getElementById("dismissWelcome");
- if(close)close.addEventListener("click",()=>{welcome.hidden=true;store("hmg-setup-first-tip-dismissed-v3","yes")});
+if(welcome){
+ welcome.hidden=Boolean(stored("hmg-setup-first-tip-dismissed-v3"));
+ const close=doc.getElementById("dismissWelcome");
+ if(close)close.addEventListener("click",()=>{
+  welcome.hidden=true;store("hmg-setup-first-tip-dismissed-v3","yes");
+  const next=doc.getElementById("aiLabel");if(next)next.focus();
+ });
 }
 async function copyGo(){
  const prompt=goPrompt(ai,service,mood);

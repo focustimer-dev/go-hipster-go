@@ -19,7 +19,7 @@ Run UI and behavior smoke checks after deploying: launch + setup routes render; 
 
 ## First-time setup & the bearded mood clerks
 
-The Launch page introduces setup first, then places the tailored **Copy setup check** action immediately below the AI/music selectors. Its label names the selected pair. Setup copying has its own local feedback and an expandable manual-copy fallback.
+The Launch page starts with a slim, collapsed **New here? Start with setup** disclosure. It expands only on request; dismissing it is remembered in browser local storage using the existing dismissal key, so previous dismissals remain respected. The Manual remains available after dismissal. The page places the tailored **Copy setup check** action immediately below the AI/music selectors. Its label names the selected pair. Setup copying has its own local feedback and an expandable manual-copy fallback.
 
 Four illustrative bearded/man-bun mood portraits are stored in `launcher/assets/hipster-moods.svg`; text labels and ARIA mood names remain separate. Moods select without copying. Tapping the selected mood again returns to plain `go`. **GO copies the current selection without clearing it.**
 

@@ -45,16 +45,18 @@
   </header>
   <div class="ticker" aria-hidden="true"><div class="track">✳ 100% ARTISANAL ALGORITHMIC OBSCURITY ✳ NO GRAMMY WINNERS WERE CONSULTED ✳ CERTIFIED BEARD-OIL ADJACENT ✳ THIS PLAYLIST IS NOT A PERSONALITY ✳&nbsp;&nbsp; ✳ 100% ARTISANAL ALGORITHMIC OBSCURITY ✳ NO GRAMMY WINNERS WERE CONSULTED ✳ CERTIFIED BEARD-OIL ADJACENT ✳ THIS PLAYLIST IS NOT A PERSONALITY ✳&nbsp;&nbsp;</div></div>
   <main class="main">
-    <aside class="welcome-setup" id="welcomeSetup" aria-labelledby="welcomeTitle" hidden>
-      <div class="welcome-copy">
-        <span class="welcome-eyebrow">✳ NEW TO THE RECORD STORE? ✳</span>
-        <h2 id="welcomeTitle">FIRST, RUN<br><em>THE SETUP PROMPT.</em></h2>
-        <p>Choose your AI and music service below, then copy a tailored setup check. It can help install the skill and check your connection before you press GO.</p>
-        <a class="welcome-link" href="#aiLabel">CHOOSE YOUR SERVICES ↓</a>
-        <a class="welcome-text-link" href="/setup/">Or see the step-by-step Manual →</a>
-
-      </div>
-      <button type="button" id="dismissWelcome" class="welcome-dismiss" aria-label="Dismiss first-time tip" title="Dismiss this reminder">×</button>
+    <aside class="welcome-setup" id="welcomeSetup" aria-label="First-time setup help">
+      <details id="welcomeDisclosure">
+        <summary>New here? <strong>Start with setup</strong></summary>
+        <div class="welcome-copy">
+          <p>Choose your AI and music service, then copy the setup check below. It helps check your skill and connection before your first playlist.</p>
+          <div class="welcome-actions">
+            <a class="welcome-link" href="#aiLabel">CHOOSE YOUR SERVICES ↓</a>
+            <a class="welcome-text-link" href="/setup/">Open the Manual →</a>
+          </div>
+        </div>
+      </details>
+      <button type="button" id="dismissWelcome" class="welcome-dismiss" aria-label="Dismiss setup tip" title="Hide this tip; setup help stays in the Manual">×</button>
     </aside>
     <div class="hero-title">
       <span class="kicker">VOL. 001 / A MUSICAL EMERGENCY</span>
@@ -66,7 +68,7 @@
     <div class="section-title"><span><span class="num">A</span> CHOOSE YOUR DEALERS</span><small>we’re judging both choices.</small></div>
     <div class="selector-grid">
       <section class="panel" aria-labelledby="aiLabel">
-        <h2 class="panel-head" id="aiLabel">01 / THE ROBOT</h2>
+        <h2 class="panel-head" id="aiLabel" tabindex="-1">01 / THE ROBOT</h2>
         <div class="switch" role="group" aria-label="AI assistant">
           <button data-ai="chatgpt" type="button" aria-pressed="true">CHATGPT</button>
           <button data-ai="gemini" type="button" aria-pressed="false">GEMINI</button>
