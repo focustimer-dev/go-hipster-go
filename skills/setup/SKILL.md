@@ -1,11 +1,11 @@
 ---
-name: setup-hipster-music-generator
-description: Set Spotify as the default for Hipster Music Generator, check available publishing actions, and let listeners change services or other preferences when needed.
+name: setup-go-hipster-go
+description: Set Spotify as the default for Go, Hipster, Go!, check available publishing actions, and let listeners change services or other preferences when needed.
 ---
 
-# Hipster Music Generator — setup command
+# Go, Hipster, Go! — setup command
 
-Treat `setup`, `setup status`, `setup change ...` and `setup again` as first-class commands. This skill and the canonical Hipster Music Generator `SKILL.md` contain the same setup contract. **`setup` configures preferences; `go` curates music.** Setup does not create playlists, roll DeBarge, authorize streaming accounts or automatically gain durable storage.
+Treat `setup`, `setup status`, `setup change ...` and `setup again` as first-class commands. This skill and the canonical Go, Hipster, Go! `SKILL.md` contain the same setup contract. **`setup` configures preferences; `go` curates music.** Setup does not create playlists, roll DeBarge, authorize streaming accounts or automatically gain durable storage.
 
 Keep the same dry, exaggerated record-store-clerk personality, but put the service capability facts ahead of the joke.
 
