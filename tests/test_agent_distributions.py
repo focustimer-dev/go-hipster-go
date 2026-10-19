@@ -42,6 +42,19 @@ class PortableAgentTests(unittest.TestCase):
             self.assertIn("skills/setup/SKILL.md", z.namelist())
             self.assertIn("skills/go-hipster-go/references/global-scenes.md", z.namelist())
 
+    def test_chatgpt_plugin_zip_contains_renamed_skill(self):
+        import json
+        import subprocess
+        import sys
+        from zipfile import ZipFile
+        subprocess.run([sys.executable, "scripts/build_agent_packages.py", "--zip"],
+                       cwd=ROOT, capture_output=True, check=True)
+        with ZipFile(ROOT / "dist/go-hipster-go-chatgpt-plugin.zip") as z:
+            assert json.loads(z.read("plugin.json"))["name"] == "go-hipster-go"
+            assert "skills/go-hipster-go/SKILL.md" in z.namelist()
+            assert "skills/setup/SKILL.md" in z.namelist()
+        assert (ROOT / "dist/hipster-music-generator-chatgpt-plugin.zip").read_bytes() == (ROOT / "dist/go-hipster-go-chatgpt-plugin.zip").read_bytes()
+
     def test_gemini_app_upload_zip(self):
         import re
         subprocess.run([sys.executable, "scripts/build_agent_packages.py", "--zip"],
