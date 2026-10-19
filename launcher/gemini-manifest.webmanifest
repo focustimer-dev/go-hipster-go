@@ -1,6 +1,6 @@
 {
   "id": "/gemini/",
-  "name": "Hipster GO — The Presumptuous Listening Society",
+  "name": "Hipster GO \u2014 The Presumptuous Listening Society",
   "short_name": "GO Gemini",
   "description": "A deeply pretentious, absurdly useful record-store clerk in your pocket.",
   "start_url": "/gemini/",
@@ -10,10 +10,10 @@
   "theme_color": "#252320",
   "icons": [
     {
-      "src": "/gemini/icon.svg",
+      "src": "/icon.svg?v=nautical-1",
       "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ],
   "shortcuts": [

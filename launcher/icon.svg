@@ -1,1 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect width="192" height="192" rx="42" fill="#23242f"/><path d="M96 22l18 53h56l-45 34 17 53-46-32-46 32 17-53-45-34h56Z" fill="#ce2032" stroke="#f34853" stroke-width="4"/><path d="M96 39v82l30 22-12-42 35-26h-44Z" fill="#100f16"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-label="Hipster Music Generator crimson angular five-point star">
+<title>Hipster Music Generator — The Five-Point Deep Cut</title>
+<desc>A burgundy five-point record-label star with alternating solid and transparent angular facets.</desc>
+<defs>
+<linearGradient id="red" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#df4048"/><stop offset=".43" stop-color="#b50913"/><stop offset="1" stop-color="#710008"/></linearGradient>
+<linearGradient id="dark" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#ae0710"/><stop offset=".45" stop-color="#87020a"/><stop offset="1" stop-color="#590007"/></linearGradient>
+</defs>
+<path d="M 512.00,520.00 L 392.68,355.77 L 512.00,88.00 Z" fill="url(#red)"/>
+<path d="M 512.00,520.00 L 631.32,355.77 L 922.86,386.50 Z" fill="url(#red)"/>
+<path d="M 512.00,520.00 L 705.06,582.73 L 765.92,869.50 Z" fill="url(#red)"/>
+<path d="M 512.00,520.00 L 512.00,723.00 L 258.08,869.50 Z" fill="url(#red)"/>
+<path d="M 512.00,520.00 L 318.94,582.73 L 101.14,386.50 Z" fill="url(#red)"/>
+<path d="M 512.00,520.00 L 512.00,88.00 L 631.32,355.77" fill="none" stroke="#94070e" stroke-width="13" stroke-linejoin="miter"/>
+<path d="M 512.00,520.00 L 922.86,386.50 L 705.06,582.73" fill="none" stroke="#94070e" stroke-width="13" stroke-linejoin="miter"/>
+<path d="M 512.00,520.00 L 765.92,869.50 L 512.00,723.00" fill="none" stroke="#94070e" stroke-width="13" stroke-linejoin="miter"/>
+<path d="M 512.00,520.00 L 258.08,869.50 L 318.94,582.73" fill="none" stroke="#94070e" stroke-width="13" stroke-linejoin="miter"/>
+<path d="M 512.00,520.00 L 101.14,386.50 L 392.68,355.77" fill="none" stroke="#94070e" stroke-width="13" stroke-linejoin="miter"/>
+<path d="M 512.00,88.00 L 631.32,355.77 L 922.86,386.50 L 705.06,582.73 L 765.92,869.50 L 512.00,723.00 L 258.08,869.50 L 318.94,582.73 L 101.14,386.50 L 392.68,355.77 Z" fill="none" stroke="#94070e" stroke-width="19" stroke-linejoin="miter"/>
+</svg>

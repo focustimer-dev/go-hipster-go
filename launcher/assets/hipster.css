@@ -32,7 +32,7 @@ a{color:inherit}
 .brandrow{display:flex;justify-content:space-between;align-items:center;gap:14px}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;min-width:0}
 .brand>span:last-child{min-width:0}
-.brand-star{display:grid;place-items:center;width:43px;height:43px;flex-shrink:0;background:var(--red);transform:rotate(-11deg);border:2px solid var(--paper);box-shadow:3px 3px 0 #000}
+.brand-star{display:grid;place-items:center;width:43px;height:43px;flex-shrink:0;background:var(--paper);transform:rotate(-11deg);border:2px solid var(--paper);box-shadow:3px 3px 0 #000}
 .brand-star svg{width:34px;height:34px}
 .brand-name{display:block;font-size:1.38rem;letter-spacing:-.045em;font-weight:700;line-height:1}
 .brand-name span{color:#f6bfbe}
