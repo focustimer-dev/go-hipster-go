@@ -66,7 +66,14 @@ jobs:
               assert '.claude-plugin/plugin.json' in z.namelist()
               assert 'skills/setup/SKILL.md' in z.namelist()
               assert 'skills/go-hipster-go/SKILL.md' in z.namelist()
-          for name in ('gemini-app-skill', 'claude-skill', 'claude-plugin'):
+          with ZipFile('dist/go-hipster-go-chatgpt-plugin.zip') as z:
+              assert 'plugin.json' in z.namelist()
+              assert 'skills/setup/SKILL.md' in z.namelist()
+              assert 'skills/go-hipster-go/SKILL.md' in z.namelist()
+              assert 'assets/icon.svg' in z.namelist()
+              import json
+              assert json.loads(z.read('plugin.json'))['name'] == 'go-hipster-go'
+          for name in ('gemini-app-skill', 'claude-skill', 'claude-plugin', 'chatgpt-plugin'):
               assert (Path('dist') / f'hipster-music-generator-{name}.zip').read_bytes() == (Path('dist') / f'go-hipster-go-{name}.zip').read_bytes()
           print('Gemini and Claude skill/plugin ZIPs verified.')
           PY
@@ -86,9 +93,11 @@ jobs:
             dist/go-hipster-go-gemini-app-skill.zip
             dist/go-hipster-go-claude-skill.zip
             dist/go-hipster-go-claude-plugin.zip
+            dist/go-hipster-go-chatgpt-plugin.zip
             dist/hipster-music-generator-gemini-app-skill.zip
             dist/hipster-music-generator-claude-skill.zip
             dist/hipster-music-generator-claude-plugin.zip
+            dist/hipster-music-generator-chatgpt-plugin.zip
           )
           if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
             gh release upload "$RELEASE_TAG" "${files[@]}" --clobber
@@ -96,7 +105,7 @@ jobs:
             gh release create "$RELEASE_TAG" "${files[@]}" \
               --target "$GITHUB_SHA" \
               --title "Go, Hipster, Go! platform packages (${RELEASE_TAG})" \
-              --notes 'Ready-to-upload Gemini Skill, Claude Skill and Claude Plugin ZIPs; each requires the music-service authorization separately.' \
+              --notes 'Ready-to-upload Gemini, Claude and ChatGPT plugin/skill ZIPs; each requires the music-service authorization separately.' \
               --latest
           fi
           gh release view "$RELEASE_TAG" --json url,assets
