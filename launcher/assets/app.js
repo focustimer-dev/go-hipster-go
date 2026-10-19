@@ -71,6 +71,8 @@ let mood=(params.get("mood")||"go").toLowerCase();if(!moods.has(mood))mood="go";
 let tempo=params.get("tempo")||"";if(!Object.hasOwn(tempoNames,tempo))tempo="";
 function updateHandoff(){
  const ready=copiedPrompt===goPrompt(ai,service,mood);
+ const button=doc.getElementById("goButton");
+ if(button)button.setAttribute("data-copy-state",button.disabled?"copying":ready?"copied":"idle");
  for(const id of ["openAi","browserAi"]){const a=doc.getElementById(id);if(a)a.setAttribute("aria-disabled",String(!ready))}
  const a=doc.getElementById("openAi");if(a)a.textContent=ready?"↗ OPEN "+aiNames[ai].toUpperCase():"COPY WITH GO FIRST";
 }
@@ -177,10 +179,12 @@ if(welcome&&!stored("hmg-setup-first-tip-dismissed-v3")){
 }
 async function copyGo(){
  const prompt=goPrompt(ai,service,mood);
- const button=doc.getElementById("goButton");if(button)button.disabled=true;
+ const button=doc.getElementById("goButton");
+ if(button&&button.disabled)return;
+ if(button){button.disabled=true;button.setAttribute("aria-busy","true");button.setAttribute("data-copy-state","copying")}
  status("Copying your prompt…");
  const ok=await copyText(prompt);
- if(button)button.disabled=false;
+ if(button){button.disabled=false;button.setAttribute("aria-busy","false")}
  copiedPrompt=ok?prompt:null;updateHandoff();
  if(prompt!==goPrompt(ai,service,mood)){status("Selection changed while copying. Press GO again for the current prompt.");return}
  if(ok)status("Copied. Open "+aiNames[ai]+", paste and send. Select your skill and music app if needed.");
