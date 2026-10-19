@@ -306,8 +306,8 @@ a{color:inherit}
 .go-button:active,.go-button[data-copy-state=copying]{transform:translateY(5px) scale(.985);box-shadow:inset 0 1px 0 #ffffff12,inset 0 -1px 0 #0008}
 .go-button:active .star-glyph,.go-button[data-copy-state=copying] .star-glyph{transform:rotate(-3deg) scale(.96)}
 .go-button:disabled{opacity:1}
-.go-button[data-copy-state=copied]{animation:key-return 380ms cubic-bezier(.16,1,.3,1) both}
-.go-button[data-copy-state=copied] .go-stamp{opacity:1;animation:copy-stamp 240ms 100ms cubic-bezier(.16,1,.3,1) both}
+.go-button[data-copy-state=copied]{animation:key-return 280ms cubic-bezier(.16,1,.3,1)}
+.go-button[data-copy-state=copied] .go-stamp{opacity:1;animation:copy-stamp 180ms 180ms cubic-bezier(.16,1,.3,1) both}
 .go-button:focus-visible{outline:3px solid var(--yellow);outline-offset:-5px}
 @keyframes key-return{0%{transform:translateY(5px) scale(.985)}45%{transform:translateY(-2px) scale(1.003)}72%{transform:translateY(1px)}100%{transform:translateY(0) scale(1)}}
 @keyframes copy-stamp{0%{opacity:0;transform:translateY(-65%) rotate(-12deg) scale(1.22)}65%{opacity:1;transform:translateY(-50%) rotate(-6deg) scale(.97)}100%{opacity:1;transform:translateY(-50%) rotate(-7deg) scale(1)}}
@@ -337,7 +337,7 @@ a{color:inherit}
 
 /* Mood keys latch into a shared keybed; selection remains the native pressed state. */
 .mood-grid{padding:6px 6px 10px;background:#302d29;border:2px solid var(--ink);gap:8px}
-.mood-grid .mood{position:relative;min-width:0;transform:translateY(0);border-color:#45413a;box-shadow:0 5px 0 #121212,inset 0 2px 0 #ffffff20;transition:transform 160ms cubic-bezier(.16,1,.3,1),box-shadow 160ms ease-out,background-color 120ms ease-out;touch-action:manipulation}
+.mood-grid .mood{position:relative;min-width:0;transform:translateY(0);border-color:#45413a;box-shadow:0 5px 0 #121212,inset 0 2px 0 #ffffff20;transition:transform 160ms cubic-bezier(.16,1,.3,1),box-shadow 160ms ease-out;touch-action:manipulation}
 .mood-grid .mood[aria-pressed=true]{transform:translateY(4px);border-color:#9d2b40;box-shadow:inset 0 3px 5px #5a351950,0 1px 0 #121212}
 .mood-grid .mood:active{transform:translateY(5px);box-shadow:inset 0 3px 5px #0004,0 0 0 #121212;transition-duration:60ms}
 .mood-grid .mood[aria-pressed=true] .word{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:4px}
@@ -348,8 +348,8 @@ a{color:inherit}
 #promptDetails{perspective:900px}
 .receipt-fold{position:relative;transform-origin:top center;border-top:1px dashed #9f9581;padding-top:8px;background:#fbf4df}
 .receipt-fold:before{content:"";position:absolute;top:0;left:0;right:0;height:28px;pointer-events:none;opacity:0;background:linear-gradient(#5a49312b,transparent)}
-#promptDetails[open] .receipt-fold{animation:receipt-unfold 300ms cubic-bezier(.16,1,.3,1) both}
-#promptDetails[open] .receipt-fold:before{animation:receipt-crease 300ms ease-out both}
+#promptDetails[open] .receipt-fold{animation:receipt-unfold 260ms cubic-bezier(.16,1,.3,1) both}
+#promptDetails[open] .receipt-fold:before{animation:receipt-crease 260ms ease-out both}
 #promptDetails>summary:focus-visible{outline:3px solid var(--red2);outline-offset:2px}
 @keyframes receipt-unfold{from{transform:rotateX(-10deg) translateY(-6px)}to{transform:rotateX(0) translateY(0)}}
 @keyframes receipt-crease{from{opacity:1}to{opacity:0}}
@@ -357,7 +357,13 @@ a{color:inherit}
 
 /* The next action gets one emphasis after GO's success stamp settles. */
 .handoff #openAi{white-space:normal;min-height:48px;line-height:1.4}
-.handoff #openAi[aria-disabled=false]{animation:handoff-ready 460ms 340ms cubic-bezier(.16,1,.3,1) backwards}
+.handoff #openAi[aria-disabled=false]{animation:handoff-ready 320ms 380ms cubic-bezier(.16,1,.3,1)}
 .handoff #openAi:focus-visible{outline:3px solid var(--red2);outline-offset:4px}
 @keyframes handoff-ready{0%{background:var(--yellow);transform:translateY(3px)}100%{transform:translateY(0)}}
 @media(prefers-reduced-motion:reduce){.handoff #openAi[aria-disabled=false]{animation:none}}
+
+/* Reduced motion keeps state changes immediate, including pressed illustrations. */
+@media(prefers-reduced-motion:reduce){
+ .go-button:active .star-glyph,.go-button[data-copy-state=copying] .star-glyph{transform:rotate(-8deg)}
+ .mood-grid .mood,.mood-grid .mood:active,.mood-grid .mood[aria-pressed=true]{transform:none}
+}
