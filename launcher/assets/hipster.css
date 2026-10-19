@@ -172,7 +172,7 @@ a{color:inherit}
 .welcome-setup summary::marker{color:var(--red2)}
 .welcome-setup summary strong{color:var(--red2);font-weight:700}
 .welcome-setup summary:hover strong{text-decoration:underline;text-underline-offset:3px}
-.welcome-setup details[open]>summary{border-bottom:1px solid #9a8560}
+.welcome-setup #welcomeDisclosure[open]>summary{border-bottom:1px solid #9a8560}
 .welcome-copy{padding:2px 15px 14px}
 .welcome-setup p{margin:12px 0 10px;max-width:60ch}
 .welcome-actions{display:flex;align-items:center;flex-wrap:wrap;gap:4px 16px}
@@ -409,3 +409,11 @@ body[data-page=setup] summary:focus-visible,#setupPromptText:focus-visible{outli
 @media(max-width:569px){.manual-workbench .setup-actions{display:grid;grid-template-columns:1fr;gap:10px}.manual-workbench .setup-actions .resource{width:100%;text-align:center;min-height:48px}}
 
 @media(max-width:390px){.brand-name{font-size:1.05rem}.brand-sub{max-width:24ch;line-height:1.3}}
+
+/* First-time instructions live in the single folded welcome strip. */
+.welcome-setup-actions{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0}
+.welcome-setup-actions .resource{flex:1 1 160px;min-width:0;text-align:center}
+.welcome-setup #setupPromptDetails{margin-top:10px}
+.welcome-setup #setupPromptDetails summary{cursor:pointer;display:flex;align-items:center;min-height:44px;font-size:.8rem;font-weight:700}
+.welcome-setup #setupPromptText{white-space:pre-wrap;overflow-wrap:anywhere;font:.76rem/1.55 ui-monospace,monospace;background:var(--bone);padding:12px;max-height:20rem;overflow:auto}
+.welcome-setup #setupPromptText:focus-visible{outline:3px solid #ff9f3e;outline-offset:3px}
