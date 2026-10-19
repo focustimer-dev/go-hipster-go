@@ -1,4 +1,4 @@
-# Hipster Music Generator — Visual identity
+# Go, Hipster, Go! — Visual identity
 
 ## The five-point deep cut
 
