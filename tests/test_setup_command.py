@@ -52,7 +52,7 @@ class SetupContractTests(unittest.TestCase):
         self.assertTrue(any("Setup" in t for t in
             data["extensions"]["com.openai"]["interface"]["defaultPrompt"]))
         self.assertEqual((ROOT/"SKILL.md").read_bytes(),
-                         (ROOT/"skills/hipster-music-generator/SKILL.md").read_bytes())
+                         (ROOT/"skills/go-hipster-go/SKILL.md").read_bytes())
 
 if __name__ == "__main__":
     unittest.main()
