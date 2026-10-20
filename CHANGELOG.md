@@ -1,3 +1,10 @@
+## 3.5.2 — Fresh-crate discovery and repeat controls
+
+- Rotate twelve sound-led discovery lenses at the Jukebox GO action; exclude recently used browser lenses and retain a deterministic fallback.
+- Check exact artist/title/version overlap across up to three accessible prior playlists in the curation skill without inventing cross-session history.
+- Distinguish curator-chosen tracks from Gemini/YouTube Music thematic substitutions. Keep mood, musical cohesion and the original taxonomy.
+- Add offline prompt/route regression checks and manual cross-service A/B cases. Improvement in real Gemini playlists still requires user-visible listening tests.
+
 ## 3.5.0 — Go, Hipster, Go! identity migration
 
 ## 3.5.1 — Rename cleanup
