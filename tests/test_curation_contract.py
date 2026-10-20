@@ -26,6 +26,9 @@ class CurationContractTests(unittest.TestCase):
         self.assertNotIn('return "@go-hipster-go "+go+" @youtube-music"',app)
         self.assertIn("Gemini search-card and spark-combination regression",cases)
         self.assertIn("Playlist not created",skill)
+        self.assertIn("without artist-name anchors unless explicitly requested",skill)
+        self.assertIn("25 returned when 12 were requested",skill)
+        self.assertIn("Gemini artist-anchor collapse and count integrity",cases)
 
     def test_debarge_protocol_is_preserved(self):
         t=(ROOT / "SKILL.md").read_text(encoding="utf-8")
