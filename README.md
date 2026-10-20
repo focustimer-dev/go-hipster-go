@@ -214,7 +214,7 @@ These are **listener-reported tests from October 16–17, 2026**, not guaranteed
 
 **Claude detail:** Neither persisted in Spotify; **zero saved playlists were confirmed** in that test. A later attempt returned a Premium-required error. The listener's actual subscription tier was not independently verified. See [Claude guidance](adapters/claude/README.md).
 
-**Gemini v3.5.5:** Plain GO now returns **the curator's original ordered tracklist without calling YouTube Music**. A generated provider approximation is optional Stage 2, requested separately; multiple field tests showed that Google's thematic generator could replace the curated twelve songs with a different twenty-five-track mix. Exact track publishing is not confirmed.
+**Gemini v3.5.7:** Plain `go` again means curation **and an attempt to create a playable YouTube Music playlist**. The Skill preserves the original verified tracklist, reports provider substitutions as approximations and labels failures clearly. The previous curate-only default and Jukebox checkbox have been retired; `go, text only` is an explicit troubleshooting override. Gemini Skill ZIPs must be updated to v3.5.7. 
 
 **Gemini detail:** A separate twelve-track curation gave an incorrect ChatGPT-style composer instruction. That guidance was corrected but has not been retested. See [Gemini guidance](adapters/gemini/README.md).
 
