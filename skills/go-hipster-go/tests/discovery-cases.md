@@ -30,6 +30,17 @@ Test these against the prior revision with the *same* catalog/tools. Rate actual
 
 This is a **test plan**, not proof the curation model will pick better music or that a provider can save these recordings.
 
+## Fresh-crate diversity regression (manual A/B, not a measured improvement)
+
+Repeat `go sad` three times on Gemini + YouTube Music, with the same connected app and access, and separately run three plain `go` commands in one chat. Keep the earlier curated lists visible. Compare **intended** artist/title/version lists before handing them to the service, then inspect the **provider** lists when available. Record distinct exact recordings, repeated artists, new scene/production routes, believable transitions, and provider substitutions. If the service exposes only a thematic card, mark track-level overlap **unknown**; don't infer an exact save.
+
+- In a single conversation, ordinary playlists should avoid repeating specific recordings across the last three *visible* sets unless directly requested or explained. Repeated mood alone isn't a repeat-track exemption.
+- Two presses of Jukebox GO with unchanged AI, mood and tempo must produce different **Fresh-crate discovery lens** text and the preview must equal the copied prompt. This does not prove the provider honored the lens.
+- Fresh lenses should open real alternative sonic search routes, never hard-code the same example artists or demand geographic quotas.
+- A brand-new Gemini chat with no available playlists must not claim to have read the user's previous YouTube Music selections. The PWA keeps only recent lens identifiers, not a listened-song database.
+- For a YouTube Music theme-generation fallback, compare intended versus provider list when possible. Mark provider substitutions or repeated songs honestly and do not mislabel the returned mix as an exact ordered insertion.
+- Do not sacrifice source verification, real versions, requested mood, track count or musical transitions to artificially maximize novelty. The protected Easter egg's explicit exception is unchanged.
+
 ## Behavioral checks
 
 - Repeated `go` asks in one conversation should *try* not to reuse the previous pairing or artist, but a good requested track remains allowed.
