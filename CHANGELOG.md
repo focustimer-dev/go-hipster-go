@@ -1,3 +1,11 @@
+## 3.5.3 — Gemini playlist handoff and randomized crate sparks
+
+- GO now combines a fresh discovery lens with an independent three-part creative phrase assembled from 1,000 combinations; avoid the previous three phrases locally. These are metaphorical music research cues, not artist/genre requirements.
+- Correct the documented Gemini Connected App name to @YouTubeMusic and explicitly request **one playlist**, not one ordinary YouTube search result per candidate track.
+- Keep original curated recordings distinct from the actual YouTube Music theme-generated playlist; if only video cards are returned, report that no playlist was created. Pasting a literal @-mention doesn't activate an app.
+- Preserve the existing sonic taxonomy, DeBarge protocol, moods, tempos, verification, and non-persistent listening history.
+- Add prompt regressions and Gemini manual acceptance tests; actual provider success must still be checked in Gemini.
+
 ## 3.5.2 — Fresh-crate discovery and repeat controls
 
 - Rotate twelve sound-led discovery lenses at the Jukebox GO action; exclude recently used browser lenses and retain a deterministic fallback.
