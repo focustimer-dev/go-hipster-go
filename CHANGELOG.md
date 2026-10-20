@@ -1,3 +1,10 @@
+## 3.5.5 — Exact crate first; Gemini publication opt-in
+
+- Switch Gemini + YouTube Music plain GO to **Stage 1 curation only** with ordered, verified tracks and a clear **CURATED — NOT PUBLISHED** label. Do not invoke Google's thematic generator, video search or Connected App as part of ordinary GO.
+- Make **Stage 2 approximate YouTube Music generation** an explicit, separate user request. Preserve the original tracklist; show substitutions and count differences where observable, and separate playlist card from Save to library.
+- Remove the automatic provider invocation from Jukebox Gemini GO. Keep random discovery lenses, creative sparks, mood, tempo, non-Gemini publishing, and protected DeBarge behavior.
+- Update Gemini native ZIP renderer, Gem fallback instructions, manuals, regression cases and package snapshots. Google native routing and item fidelity still require live user-visible tests.
+
 ## 3.5.4 — Avoid artist-radio collapse in Gemini playlists
 
 - Request one twelve-song Gemini/YouTube Music playlist with twelve distinct lead artists, seeded by sonic qualities and cross-scene traits rather than named reference artists by default.
