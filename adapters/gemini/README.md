@@ -14,6 +14,12 @@ This is the **five-file, instruction-only** package ready for Gemini's Skills up
 
 If your Gemini agent can install or load the skill directly from the GitHub repository, **try that first**; the ZIP is the reliable manual fallback. Uploaded copies do **not** automatically sync with GitHub. The release asset is rebuilt from the canonical skill by [the publishing workflow](../../.github/workflows/publish-gemini-skill.yml) whenever relevant source files change.
 
+## If YouTube Music keeps playing the same records
+
+The Jukebox now rotates a fresh, sound-led search lens on every **GO** press while avoiding the previous three lenses in that browser. This changes the *request to the curator*, not Google's catalog or generation algorithm. Ask the skill to consider earlier tracklists **only if they are visible or supplied**; an uploaded skill is not a persistent played-song ledger. For direct Gemini commands, say `go fresh: no recordings from the three playlists shown above` when earlier lists are in the same chat.
+
+First examine the curator's **intended** 12 recordings. If those repeat, correct discovery/track exclusion. If they are distinct but `@YouTubeMusic` returns familiar recordings, the thematic provider generation is the likely bottleneck; ask for exact matches only when supported and compare the result, otherwise label the provider list approximate. Replacing the uploaded Gemini skill is required for the updated repeat-control rules; updated repository ZIPs do not automatically change already-installed skills.
+
 ## If Gemini sounds suspiciously polite
 
 **First verify which version it loaded.** A GitHub URL read in an earlier chat—or a saved Gemini Skill with uploaded files—is not automatically refreshed when this repository changes.
