@@ -1,3 +1,13 @@
+## Acceptance: GO actually tries to produce a playlist (v3.5.7)
+
+1. In a fresh Gemini conversation with verified v3.5.7 Skill and YouTube Music connection, issue **`go`** from the Jukebox. Confirm it first curates a verified 12-track list, then attempts **one YouTube Music playlist generation** without any extra command or publishing toggle.
+2. When Google generates a card, inspect the actual track count and visible matches. Treat unmatched or unverified provider entries as **APPROXIMATE**, not as the exact curated crate. Record whether Save to library was actually used.
+3. If the connected app cannot publish, expect the complete curated set **plus an explicit PLAYLIST NOT CREATED status** and a single actionable next step. A text tracklist alone must not be reported as successful publication.
+4. An explicit `go, text only` must not call any provider action. `go live` remains a compatible synonym, not a necessary selection.
+5. Regression: the Jukebox has no Curate only checkbox; other service pairings and the protected DeBarge Protocol remain unchanged.
+
+The older two-stage cases below are **historical failure investigations**, not current default requirements.
+
 # Gemini Android acceptance test — YouTube Music first
 
 These are **manual runtime tests** for someone with the Gemini app and connected music accounts. Passing GitHub CI does not establish that Gemini followed the skill or published tracks.
