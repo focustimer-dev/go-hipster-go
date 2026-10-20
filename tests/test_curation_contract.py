@@ -32,7 +32,7 @@ class CurationContractTests(unittest.TestCase):
         self.assertIn("one authoritative steering contract",skill)
         self.assertIn("Separate optional follow-up",skill)
         self.assertIn("Gemini two-stage publication boundary",cases)
-        self.assertIn("requested-versus-returned count",skill)
+        self.assertIn("show visible count/artist/substitution differences",skill)
         self.assertIn("Gemini artist-anchor collapse and count integrity",cases)
 
     def test_debarge_protocol_is_preserved(self):
