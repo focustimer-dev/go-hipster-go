@@ -1,3 +1,10 @@
+## PWA Gemini GO live default (post-v3.5.6)
+
+- Restore `go live` as Gemini + YouTube Music's Jukebox GO default: curate first, then attempt one authorized provider playlist.
+- Add a compact **Curate only** checkbox and `?mode=curate` override; update receipt and copy feedback to match the selected mode.
+- Keep existing Skill steering, mood/tempo choices, random discovery, and non-Gemini routes unchanged. The Gemini Skill ZIP remains v3.5.6.
+- Provider result still requires real-world verification; a returned thematic mix is not proof of exact insertion or Save to library.
+
 ## 3.5.6 — Move the long Gemini GO prompt into installed steering
 
 - A Gemini + YouTube Music Jukebox GO now sends only skill invocation and current mood/tempo/discovery seed, not repeated publishing instructions.

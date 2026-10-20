@@ -30,7 +30,7 @@ const resourceInfo={
 };
 function routeInfo(ai,service){
  if(ai==="chatgpt"&&service==="spotify")return {tone:"ready",message:"ChatGPT + Spotify: playlist creation and exact-track insertion can work when both apps and their writer actions are available.",note:"You still need to select and authorize both apps in ChatGPT; mentioning them in text alone may not activate them."};
- if(ai==="gemini"&&service==="youtube")return {tone:"ready",message:"Gemini + YouTube Music: GO is a short curate-only request. The installed Skill handles the details.",note:"Use go live in Gemini only if you want to test one-step publication; otherwise request an approximate provider mix later. Never assume exact insertion."};
+ if(ai==="gemini"&&service==="youtube")return geminiCurateOnly?{tone:"ready",message:"Gemini + YouTube Music: Curate only is selected. GO makes the verified tracklist without creating a playlist.",note:"Uncheck Curate only to restore the default one-step YouTube Music playlist attempt."}:{tone:"ready",message:"Gemini + YouTube Music: GO curates and attempts one YouTube Music playlist in the same request.",note:"The installed Skill preserves the intended tracklist and flags provider substitutions. Select Curate only to skip playlist generation."};
  if(ai==="gemini"&&service==="spotify")return {tone:"warn",message:"Gemini + Spotify: search and playback work on supported mobile accounts, but Google's Spotify connection cannot create playlists.",note:"You can still curate an exact text tracklist and play/search Spotify; don't expect a new saved Spotify playlist."};
  if(ai==="claude"&&service==="spotify")return {tone:"ready",message:"Claude + Spotify: connected discovery works; prompted playlists are a Premium feature and provider save behavior can vary.",note:"Enable Spotify in Claude's connectors and verify whether the available writer can actually create/save the playlist."};
  if(ai==="claude"&&service==="apple")return {tone:"warn",message:"Claude + Apple Music: requires an Apple Music MCP connector with playlist-writing tools.",note:"Use a compatible local connector on Desktop or a hosted connector for web/mobile. Run the setup check to verify track search and playlist creation."};
@@ -49,7 +49,7 @@ const universalPrompt="If using Gemini, choose Task mode beneath the input BEFOR
 function goCommand(ai,service,mood){
  const go=mood==="go"?"go":"go "+mood;
  if(ai==="chatgpt"&&service==="spotify")return "@Go, Hipster, Go! @Spotify "+go;
- if(ai==="gemini"&&service==="youtube")return "Use Go, Hipster, Go!: "+go+".";
+ if(ai==="gemini"&&service==="youtube")return "Use Go, Hipster, Go!: "+(geminiCurateOnly?go:"go live"+(mood==="go"?"":" "+mood))+".";
  if(ai==="gemini"&&service==="spotify")return "@go-hipster-go "+go+" @Spotify";
  if(ai==="claude")return "Use Go, Hipster, Go!: "+go+". Preferred music service: "+serviceNames[service]+".";
  return "@Go, Hipster, Go! "+go+" — destination "+serviceNames[service];
@@ -103,7 +103,7 @@ const thesis="Curate 12 verified deep-cut recordings around a cohesive sonic the
 function goPrompt(ai,service,mood){
  if(ai==="gemini"&&service==="youtube"){
   // Gemini's installed Skill owns the workflow. Only session choices belong in GO.
-  return goCommand(ai,service,mood)+"\nService: YouTube Music. Mode: curate-only."+
+  return goCommand(ai,service,mood)+"\nService: YouTube Music. Mode: "+(geminiCurateOnly?"curate-only":"go live (curate, then attempt one playlist; verify actual result)")+"."+
    (tempo?"\nTempo: "+tempoNames[tempo]+".":"")+
    (freshCrateLens?"\nDiscovery lens: "+freshCrateLens:"")+
    (crateSparkPhrase?"\nCrate spark: "+crateSparkPhrase:"");
@@ -122,6 +122,8 @@ let service=(params.get("service")||(isLegacyGemini?"youtube":stored("hmg-servic
 if(!serviceNames[service])service=defaultService[ai];
 let mood=(params.get("mood")||"go").toLowerCase();if(!moods.has(mood))mood="go";
 let tempo=params.get("tempo")||"";if(!Object.hasOwn(tempoNames,tempo))tempo="";
+// GO live is the one-step default; curate-only is an explicit opt-out.
+let geminiCurateOnly=params.get("mode")==="curate";
 function updateHandoff(){
  const ready=copiedPrompt===goPrompt(ai,service,mood);
  const button=doc.getElementById("goButton");
@@ -183,14 +185,17 @@ function renderLaunch(){
  if(tempoValue)tempoValue.textContent=tempo?tempoNames[tempo]:"Any tempo";
  if(anyTempo)anyTempo.setAttribute("aria-pressed",String(!tempo));
  doc.querySelectorAll("[data-mood]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.mood===mood)));
+ const geminiOption=doc.getElementById("geminiCurateOption"),curateToggle=doc.getElementById("geminiCurateOnly");
+ if(geminiOption)geminiOption.hidden=!(ai==="gemini"&&service==="youtube");
+ if(curateToggle)curateToggle.checked=geminiCurateOnly;
  const e={prompt:doc.getElementById("prompt"),mood:doc.getElementById("moodName"),code:doc.getElementById("receiptCode"),open:doc.getElementById("openAi"),browser:doc.getElementById("browserAi")};
  if(!e.prompt)return;
  e.prompt.textContent=goPrompt(ai,service,mood);
  e.mood.textContent=mood==="go"?"SURPRISE":mood.toUpperCase();
  e.code.textContent=(ai==="chatgpt"?"CG":ai==="gemini"?"GM":"CL")+"-"+mood.slice(0,3).toUpperCase()+"-01";
  e.open.href=ai==="gemini"?geminiIntent:destinations[ai];e.open.textContent="↗ OPEN "+aiNames[ai].toUpperCase();
- const summary=doc.getElementById("receiptSummary");if(summary)summary.textContent=aiNames[ai]+" · "+serviceNames[service]+" · "+(mood==="go"?"Surprise":mood[0].toUpperCase()+mood.slice(1))+(tempo?" · "+tempoNames[tempo]:"")+" · 12 tracks";
- const hint=doc.getElementById("goHint");if(hint)hint.textContent="Copy "+(mood==="go"?"surprise":mood)+" prompt · 12 tracks";
+ const summary=doc.getElementById("receiptSummary");if(summary)summary.textContent=aiNames[ai]+" · "+serviceNames[service]+" · "+(mood==="go"?"Surprise":mood[0].toUpperCase()+mood.slice(1))+(tempo?" · "+tempoNames[tempo]:"")+" · 12 tracks"+(ai==="gemini"&&service==="youtube"?(geminiCurateOnly?" · Curate only":" · Go live"):"");
+ const hint=doc.getElementById("goHint");if(hint)hint.textContent="Copy "+(mood==="go"?"surprise":mood)+" prompt · 12 tracks"+(ai==="gemini"&&service==="youtube"?(geminiCurateOnly?" · curate only":" · go live"):"");
  const goButton=doc.getElementById("goButton");if(goButton)goButton.setAttribute("aria-label","GO! Copy "+(mood==="go"?"surprise":mood)+" playlist prompt");
  const manual=doc.getElementById("manualOpenAi");if(manual){manual.href=destinations[ai];manual.textContent="I COPIED IT MANUALLY — OPEN "+aiNames[ai].toUpperCase()}
  updateHandoff();
@@ -198,6 +203,7 @@ function renderLaunch(){
  const u=new URL(location.href);u.searchParams.set("ai",ai);u.searchParams.set("service",service);
  if(mood==="go")u.searchParams.delete("mood");else u.searchParams.set("mood",mood);
  if(tempo)u.searchParams.set("tempo",tempo);else u.searchParams.delete("tempo");
+ if(ai==="gemini"&&service==="youtube"&&geminiCurateOnly)u.searchParams.set("mode","curate");else u.searchParams.delete("mode");
  history.replaceState(null,"",u.pathname+u.search);
 }
 function render(){if(body.dataset.page==="launch")renderLaunch();else renderSetup()}
@@ -260,7 +266,7 @@ async function copyGo(){
  if(button){button.disabled=false;button.setAttribute("aria-busy","false")}
  copiedPrompt=ok?prompt:null;updateHandoff();
  if(prompt!==goPrompt(ai,service,mood)){status("Selection changed while copying. Press GO again for the current prompt.");return}
- if(ok)status(ai==="gemini"&&service==="youtube"?"Copied. Open Gemini and select Go, Hipster, Go! only. This first step curates the crate without generating a YouTube Music mix.":"Copied. Open "+aiNames[ai]+", paste and send. Select your skill and music app if needed.");
+ if(ok)status(ai==="gemini"&&service==="youtube"?(geminiCurateOnly?"Copied. Open Gemini and select Go, Hipster, Go!. Curate only: no YouTube Music playlist action.":"Copied GO LIVE. Open Gemini and select Go, Hipster, Go!; the Skill will curate first, then attempt one YouTube Music playlist. Check the actual result."):"Copied. Open "+aiNames[ai]+", paste and send. Select your skill and music app if needed.");
  else{const details=doc.getElementById("promptDetails");if(details)details.open=true;status("Clipboard blocked. Copy the full prompt in the receipt below, then use its manual Open link.")}
 }
 doc.querySelectorAll("[data-mood]").forEach(b=>b.addEventListener("click",()=>{
@@ -276,6 +282,8 @@ if(tempoSlider){
 }
 const anyTempo=doc.getElementById("anyTempo");
 if(anyTempo)anyTempo.addEventListener("click",()=>{tempo="";copiedPrompt=null;selectionChanged()});
+const curateToggle=doc.getElementById("geminiCurateOnly");
+if(curateToggle)curateToggle.addEventListener("change",()=>{geminiCurateOnly=Boolean(curateToggle.checked);copiedPrompt=null;selectionChanged()});
 const go=doc.getElementById("goButton");if(go)go.addEventListener("click",copyGo);
 for(const id of ["openAi","browserAi"]){const a=doc.getElementById(id);if(a)a.addEventListener("click",event=>{
  if(copiedPrompt!==goPrompt(ai,service,mood)){event.preventDefault();status("Press GO to copy the current prompt before opening your AI.")}
