@@ -32,9 +32,9 @@ class CurationContractTests(unittest.TestCase):
         self.assertIn("Gemini search-card and spark-combination regression",cases)
         self.assertIn("PLAYLIST NOT CREATED",skill)
         self.assertIn("publication is the default, not an optional second feature",skill)
-        self.assertIn("Separate optional follow-up",skill)
+        self.assertIn("Explicit no-publish override",skill)
         self.assertIn("Gemini two-stage publication boundary",cases)
-        self.assertIn("show visible count/artist/substitution differences",skill)
+        self.assertIn("Report observed differences honestly",skill)
         self.assertIn("Gemini artist-anchor collapse and count integrity",cases)
 
     def test_debarge_protocol_is_preserved(self):
