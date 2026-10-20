@@ -417,12 +417,3 @@ body[data-page=setup] summary:focus-visible,#setupPromptText:focus-visible{outli
 .welcome-setup #setupPromptDetails summary{cursor:pointer;display:flex;align-items:center;min-height:44px;font-size:.8rem;font-weight:700}
 .welcome-setup #setupPromptText{white-space:pre-wrap;overflow-wrap:anywhere;font:.76rem/1.55 ui-monospace,monospace;background:var(--bone);padding:12px;max-height:20rem;overflow:auto}
 .welcome-setup #setupPromptText:focus-visible{outline:3px solid #ff9f3e;outline-offset:3px}
-
-/* Compact Gemini-only opt-out; the main GO stays the live default. */
-.gemini-curate-option{display:flex;align-items:center;gap:12px;margin:10px 0 15px;padding:12px 14px;background:#eee8d8;border:2px solid #3b3830;color:#282622;cursor:pointer;min-height:48px}
-.gemini-curate-option[hidden]{display:none}
-.gemini-curate-option input{flex:none;width:20px;height:20px;accent-color:#9b1822;cursor:pointer}
-.gemini-curate-option span{display:flex;flex-direction:column;gap:2px}
-.gemini-curate-option strong{font-size:.85rem;letter-spacing:.02em}
-.gemini-curate-option small{font-size:.74rem}
-.gemini-curate-option:focus-within{outline:3px solid #a71925;outline-offset:3px}
