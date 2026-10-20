@@ -4,7 +4,7 @@
 
 ## Download the Gemini skill — no terminal required
 
-**[Download the latest Gemini Skills ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip)** · [See the versioned v3.5.1 release](https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.5.1/go-hipster-go-gemini-app-skill.zip)
+**[Download the latest Gemini Skills ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip)** · [See the versioned v3.5.3 release](https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.5.3/go-hipster-go-gemini-app-skill.zip)
 
 This is the **five-file, instruction-only** package ready for Gemini's Skills uploader: `SKILL.md` plus four `references/` files. No Python scripts, credentials or desktop installation needed.
 
@@ -13,6 +13,12 @@ This is the **five-file, instruction-only** package ready for Gemini's Skills up
 3. Say **`Use Go, Hipster, Go!: setup`**. Spotify is the universal **default preference**, but Gemini's Spotify media connector cannot create playlists. To publish through Gemini's supported generator, explicitly say **`setup change YouTube Music`** and use `@YouTubeMusic` when connected; save a generated playlist to your library when prompted. Then try `go weird`. A saved Gemini Skill does not itself store each listener's choices across conversations.
 
 If your Gemini agent can install or load the skill directly from the GitHub repository, **try that first**; the ZIP is the reliable manual fallback. Uploaded copies do **not** automatically sync with GitHub. The release asset is rebuilt from the canonical skill by [the publishing workflow](../../.github/workflows/publish-gemini-skill.yml) whenever relevant source files change.
+
+## If Gemini suddenly shows YouTube video search cards
+
+This is **not** a completed YouTube Music playlist. When exact song-name matching is requested but the Gemini connected app only exposes theme-based playlist creation, Gemini may search ordinary YouTube one recording at a time and never generate a playlist. The Jukebox now says **Create ONE playlist in @YouTubeMusic**, asks Gemini to use the supported theme-generation capability where exact ordered insertion is unavailable, and treats individual YouTube video results as **playlist not created**.
+
+Google's documented app name is **`@YouTubeMusic`**, not `@youtube-music`. Merely pasting this text from the Jukebox does **not** create an active Connected App mention. In Gemini, type `@` and **select YouTube Music from the actual picker** if the app did not activate; similarly select the installed Go, Hipster, Go! skill from `/` or `@` where needed. Google currently documents **Create a playlist** by a mood, activity or artist; it does not document editing an arbitrary exact ordered recording list. Use **Save to library** if the generated playlist needs saving.
 
 ## If YouTube Music keeps playing the same records
 
