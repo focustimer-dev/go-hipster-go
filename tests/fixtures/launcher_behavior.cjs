@@ -38,6 +38,12 @@ function harness(write,search='',page='launch',storage=new Map()){
  assert.equal(welcomeHarness.elements.welcomeSetup.hidden,true,'Dismiss survives a reload');
  welcomeHarness=harness(async()=>{},'','launch',new Map([['hmg-setup-first-tip-dismissed-v3','yes']]));
  assert.equal(welcomeHarness.elements.welcomeSetup.hidden,true,'Existing dismissals are respected');
+ let repeatCopies=[];const repeat=harness(async s=>repeatCopies.push(s));
+ await repeat.elements.goButton.click();await repeat.elements.goButton.click();
+ assert.equal(repeatCopies.length,2,'Each GO press copies once');
+ assert.match(repeatCopies[0],/Fresh-crate discovery lens:/,'A GO copies a fresh discovery lens');
+ assert.notEqual(repeatCopies[0],repeatCopies[1],'Repeats rotate even with no browser crypto');
+ assert.equal(repeat.elements.prompt.textContent,repeatCopies[1],'Receipt matches the copied fresh crate');
  let copies=[];let h=harness(async text=>copies.push(text)),e=h.elements;
  await h.moods[2].click();assert.equal(copies.length,0,'Selecting a mood must not copy');
  await e.goButton.click();assert.match(copies.at(-1),/go sad/,'GO must preserve selected mood');assert.equal(e.openAi.attrs['aria-disabled'],'false');assert.equal(e.goButton.attrs['data-copy-state'],'copied');assert.equal(e.openAi.textContent,'NEXT: OPEN CHATGPT');
