@@ -9,6 +9,18 @@ class CurationContractTests(unittest.TestCase):
         self.assertEqual((ROOT / "SKILL.md").read_bytes(),
                          (ROOT / "skills/go-hipster-go/SKILL.md").read_bytes())
 
+    def test_fresh_crate_and_recent_repeat_rules_present(self):
+        skill=(ROOT / "SKILL.md").read_text(encoding="utf-8")
+        cases=(ROOT / "tests/discovery-cases.md").read_text(encoding="utf-8")
+        app=(ROOT / "launcher/assets/app.js").read_text(encoding="utf-8")
+        self.assertIn("Fresh-crate discovery and repeat control",skill)
+        self.assertIn("artist + title + recording/version",skill)
+        self.assertIn("last *up to three* sets",skill)
+        self.assertIn("Fresh-crate diversity regression",cases)
+        self.assertIn("crypto.getRandomValues",app)
+        self.assertIn("ghg-crate-routes-v1",app)
+        self.assertIn("Fresh-crate discovery lens",app)
+
     def test_debarge_protocol_is_preserved(self):
         t=(ROOT / "SKILL.md").read_text(encoding="utf-8")
         self.assertIn('roll uniformly from 1 to 100; on **1**',t)
