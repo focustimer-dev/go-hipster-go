@@ -43,12 +43,13 @@ function harness(write,search='',page='launch',storage=new Map()){
  assert.equal(repeatCopies.length,2,'Each GO press copies once');
  assert.match(repeatCopies[0],/Fresh-crate discovery lens:/,'A GO copies a fresh discovery lens');
  assert.match(repeatCopies[0],/Random crate spark:/,'GO adds an independently combined random phrase');
- assert.match(harness(async()=>{},'?ai=gemini&service=youtube').elements.prompt.textContent,/Create ONE playlist in @YouTubeMusic/,'Gemini route explicitly asks for a playlist');
  const geminiPrompt=harness(async()=>{},'?ai=gemini&service=youtube').elements.prompt.textContent;
- assert.match(geminiPrompt,/12 DISTINCT lead artists/,'Require artist diversity at provider handoff');
- assert.match(geminiPrompt,/25 songs instead of 12/,'Require count mismatch reporting');
- assert.match(geminiPrompt,/do NOT seed the theme generator with named example artists/,'Avoid artist-anchor collapse');
- assert.match(geminiPrompt,/Do not silently create a second playlist/,'Avoid duplicate saves from automatic retries');
+ assert.match(geminiPrompt,/STAGE 1 ONLY/,'Gemini GO is curation-only');
+ assert.match(geminiPrompt,/TWO-STAGE workflow/,'Gemini request explains the split');
+ assert.match(geminiPrompt,/CURATED — NOT PUBLISHED/,'Gemini request discloses unsaved state');
+ assert.match(geminiPrompt,/Do NOT call YouTube Music/,'No automatic thematic generator');
+ assert.match(geminiPrompt,/separate explicit request/,'Optional listening mix must be user authorized');
+ assert.doesNotMatch(geminiPrompt,/@YouTubeMusic|Create ONE playlist in/,'Initial GO must not invoke provider by pasted mention');
  assert.notEqual(repeatCopies[0],repeatCopies[1],'Repeats rotate even with no browser crypto');
  assert.notEqual(repeatCopies[0].match(/Random crate spark: ([^\n]+)/)[1],repeatCopies[1].match(/Random crate spark: ([^\n]+)/)[1],'Each GO changes the spark, even without browser crypto');
  assert.doesNotMatch(harness(async()=>{},'?ai=gemini&service=youtube').elements.prompt.textContent,/@youtube-music/,'Do not suggest unofficial @youtube-music spelling');
