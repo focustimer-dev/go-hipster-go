@@ -30,7 +30,7 @@ const resourceInfo={
 };
 function routeInfo(ai,service){
  if(ai==="chatgpt"&&service==="spotify")return {tone:"ready",message:"ChatGPT + Spotify: playlist creation and exact-track insertion can work when both apps and their writer actions are available.",note:"You still need to select and authorize both apps in ChatGPT; mentioning them in text alone may not activate them."};
- if(ai==="gemini"&&service==="youtube")return {tone:"ready",message:"Gemini + YouTube Music: GO curates your exact 12-track crate first. No automatic provider-generated substitutions.",note:"If you want an approximate YouTube Music listening playlist afterward, request it separately in Gemini; it will not be the exact crate."};
+ if(ai==="gemini"&&service==="youtube")return {tone:"ready",message:"Gemini + YouTube Music: GO is a short curate-only request. The installed Skill handles the details.",note:"Use go live in Gemini only if you want to test one-step publication; otherwise request an approximate provider mix later. Never assume exact insertion."};
  if(ai==="gemini"&&service==="spotify")return {tone:"warn",message:"Gemini + Spotify: search and playback work on supported mobile accounts, but Google's Spotify connection cannot create playlists.",note:"You can still curate an exact text tracklist and play/search Spotify; don't expect a new saved Spotify playlist."};
  if(ai==="claude"&&service==="spotify")return {tone:"ready",message:"Claude + Spotify: connected discovery works; prompted playlists are a Premium feature and provider save behavior can vary.",note:"Enable Spotify in Claude's connectors and verify whether the available writer can actually create/save the playlist."};
  if(ai==="claude"&&service==="apple")return {tone:"warn",message:"Claude + Apple Music: requires an Apple Music MCP connector with playlist-writing tools.",note:"Use a compatible local connector on Desktop or a hosted connector for web/mobile. Run the setup check to verify track search and playlist creation."};
@@ -40,16 +40,16 @@ function routeInfo(ai,service){
 function setupPrompt(ai,service){
  const name=aiNames[ai],target=serviceNames[service];
  const intro=ai==="chatgpt"?"In ChatGPT, check for the Go, Hipster, Go! plugin/app.":ai==="gemini"?"In Gemini, check for the installed Go, Hipster, Go! Skill (not a Gem).":"In Claude, check for the Go, Hipster, Go! skill or plugin.";
- const install=ai==="gemini"?"If missing, guide me to Customize → Skills and the current Gemini Skill ZIP.":ai==="claude"?"If missing, identify whether I need Claude's Skills ZIP or Plugins ZIP; they are different.":"If missing, use the available app/skill installation flow or show how to install from the project's GitHub repository.";
- return "FIRST-TIME SETUP CHECK for "+name+" + "+target+".\n"+intro+" "+install+" Source: "+repo+
+ const install=ai==="gemini"?"Try native installation from the current main SKILL.md and all four referenced files first; if persistent installation is unsupported, guide me to Customize → Skills with the current five-file Gemini ZIP.":ai==="claude"?"If missing, identify whether I need Claude's Skills ZIP or Plugins ZIP; they are different.":"If missing, use the available app/skill installation flow or show how to install from the project's GitHub repository.";
+ return "FIRST-TIME SETUP CHECK for "+name+" + "+target+".\n"+intro+" "+install+" Source: "+repo+(ai==="gemini"?"\nRead https://github.com/focustimer-dev/go-hipster-go/blob/main/SKILL.md and its four references. Install the current version using actual Gemini Skills capabilities. Verify the loaded skill explicitly reports version 3.5.6 and whether the installation persists into a new conversation. If repository loading only reads instructions but cannot install a persistent Skill, be clear and offer the latest Gemini ZIP upload instead. Do not report installation complete just because the URL was opened.":"")+
  (ai==="claude"&&service==="apple"?"\nApple Music requires a compatible MCP connector: local for Desktop or hosted for web/mobile. Check which Claude app I use and help me connect it if missing. Verify catalog track search, playlist creation and adding tracks; library-only search may not find new recordings.":"")+
  "\nIf the skill is available, run its setup for "+target+", guide me through connecting or selecting that music service, and CHECK whether playlist creation and adding tracks are actually supported—not just search/playback. Tell me the smallest action needed to finish setup. If everything is already ready, say so and tell me to run go. Do NOT generate a new playlist during this setup check, claim a playlist was saved, or ask me to paste credentials into chat.";
 }
-const universalPrompt="Load Go, Hipster, Go! from "+repo+". Read SKILL.md and the referenced musical taxonomy. Use your supported skill/plugin installation mechanism, confirm what actually loaded and whether it persists, then run setup. Do not assume a streaming playlist writer exists.";
+const universalPrompt="Load Go, Hipster, Go! from "+repo+"/blob/main/SKILL.md and all four referenced music documents. Install it using your supported Skill mechanism and confirm the loaded version is 3.5.6 and whether it persists across Gemini conversations. If reading GitHub does not install it, say so and offer the current Gemini Skill ZIP at "+releases+"go-hipster-go-gemini-app-skill.zip. Then run setup; do not create a playlist or assume a writer exists.";
 function goCommand(ai,service,mood){
  const go=mood==="go"?"go":"go "+mood;
  if(ai==="chatgpt"&&service==="spotify")return "@Go, Hipster, Go! @Spotify "+go;
- if(ai==="gemini"&&service==="youtube")return "Use Go, Hipster, Go!: "+go+". STAGE 1 ONLY: curate the exact tracklist. Do not invoke any music service or create a playlist yet.";
+ if(ai==="gemini"&&service==="youtube")return "Use Go, Hipster, Go!: "+go+".";
  if(ai==="gemini"&&service==="spotify")return "@go-hipster-go "+go+" @Spotify";
  if(ai==="claude")return "Use Go, Hipster, Go!: "+go+". Preferred music service: "+serviceNames[service]+".";
  return "@Go, Hipster, Go! "+go+" — destination "+serviceNames[service];
@@ -101,9 +101,15 @@ function nextCrateSparkPhrase(){
 }
 const thesis="Curate 12 verified deep-cut recordings around a cohesive sonic thesis. Explore surprising links across scenes, eras, rhythm, voice, production and instrumentation. Keep the transitions listenable, not just clever. Avoid recycled example-artist lists and never invent track matches.";
 function goPrompt(ai,service,mood){
+ if(ai==="gemini"&&service==="youtube"){
+  // Gemini's installed Skill owns the workflow. Only session choices belong in GO.
+  return goCommand(ai,service,mood)+"\nService: YouTube Music. Mode: curate-only."+
+   (tempo?"\nTempo: "+tempoNames[tempo]+".":"")+
+   (freshCrateLens?"\nDiscovery lens: "+freshCrateLens:"")+
+   (crateSparkPhrase?"\nCrate spark: "+crateSparkPhrase:"");
+ }
  let handoff;
  if(ai==="chatgpt"&&service==="spotify")handoff="Resolve exact Spotify track versions and publish in the chosen order if an authorized writer is exposed. Read back the saved count/order if possible.";
- else if(ai==="gemini"&&service==="youtube")handoff="Gemini + YouTube Music is a TWO-STAGE workflow. THIS GO REQUEST AUTHORIZES STAGE 1 ONLY. Return the curator\'s complete numbered 12-track artist/title/version list (or my explicit track count), cohesive sonic thesis, and track-specific notes. Label it CURATED — NOT PUBLISHED. Do NOT call YouTube Music, YouTube search, or any media playlist generator; do NOT replace selections with a themed 25-track mix. Only AFTER presenting the original crate, offer one optional next action I may request: Generate an APPROXIMATE YouTube Music playlist from this thesis. That requires a separate explicit request and the actual connected app; preserve the original tracklist for comparison. If no verified exact-track insertion is available, never imply the generated approximation matches the crate.";
  else if(ai==="gemini"&&service==="spotify")handoff="Gemini's Spotify connected app does not create playlists. Give me a verified ordered tracklist, and use Spotify only for supported search/playback.";
  else handoff="Target "+serviceNames[service]+", but only write if this AI actually exposes a connected, authorized playlist writer. Otherwise give the verified ordered tracklist; don't claim it was saved.";
  return goCommand(ai,service,mood)+"\n\n"+thesis+(freshCrateLens?"\n\nFresh-crate discovery lens: "+freshCrateLens+" Treat this as a search route, not a forced genre or an artist list. Prefer recordings absent from recent visible playlists; keep the requested mood and sonic cohesion.":"")+(crateSparkPhrase?"\n\nRandom crate spark: "+crateSparkPhrase+". Use this as a loose metaphor for musical discovery, NOT as a track title, factual instrument claim or rigid requirement. Find independently verified recordings; respect my mood and tempo.":"")+(tempo?"\n\nTempo preference: "+tempoNames[tempo]+". Favor recordings with this perceived pace while respecting the selected mood. Treat this as a curation preference, not a verified BPM filter; do not invent BPM values.":"")+"\n\n"+handoff;
@@ -151,12 +157,12 @@ function renderSetup(){
  intro.textContent="YOUR MIX: "+aiNames[ai]+" × "+serviceNames[service]+". The check will identify anything missing. Already connected? It should tell you to run GO.";
  let install="",connection="";
  if(ai==="chatgpt")install="In ChatGPT, select Go, Hipster, Go!. If missing, install/load it using the project source or app directory.";
- else if(ai==="gemini")install="In Gemini Customize → Skills, upload the Gemini Skill ZIP (or Replace skill to update it), then choose Go, Hipster, Go! using @ or /.";
+ else if(ai==="gemini")install="First try installing the current main repository Skill via Gemini. If Gemini only reads the repository, upload or replace the five-file Gemini ZIP in Customize → Skills. Verify v3.5.6 is actually installed.";
  else install="In Claude Customize, install Go, Hipster, Go!. Use the Skill ZIP for Skills, or the Plugin ZIP for Plugins; they are not interchangeable.";
  if(service==="spotify"&&ai==="gemini")connection="On Gemini mobile, link Spotify if offered. Google's connected app supports search/play, not playlist creation.";
  else if(service==="spotify"&&ai==="claude")connection="Connect Spotify in Claude. Premium is required for personalized prompted playlists; inspect whether saving is supported here.";
  else if(service==="spotify")connection="In ChatGPT, connect and select Spotify in the same conversation as Go, Hipster, Go!.";
- else if(service==="youtube"&&ai==="gemini")connection="Enable YouTube Music in Gemini Connected Apps and choose it in the prompt. You may need to tap Save to library.";
+ else if(service==="youtube"&&ai==="gemini")connection="Connect YouTube Music if available, but ordinary GO curates only. After reviewing the crate, say go live to attempt one-step provider generation, or separately request an approximate mix.";
  else if(service==="apple"&&ai==="claude")connection="Connect an Apple Music MCP connector compatible with your Claude app: local on Desktop, hosted for web/mobile. Verify it can find recordings, create playlists and add tracks.";
  else if(service==="apple"&&ai==="chatgpt")connection="In your AI's apps/connectors, locate and connect Apple Music if offered. Verify whether it can create and fill playlists; don't assume.";
  else connection="Check whether "+serviceNames[service]+" is available as a connected writer in "+aiNames[ai]+". If not, use a text playlist instead.";

@@ -4,7 +4,7 @@
 
 ## Download the Gemini skill — no terminal required
 
-**[Download the latest Gemini Skills ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip)** · [See the versioned v3.5.5 release](https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.5.5/go-hipster-go-gemini-app-skill.zip)
+**[Download the latest Gemini Skills ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip)** · [See the versioned v3.5.6 release](https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.5.6/go-hipster-go-gemini-app-skill.zip)
 
 This is the **five-file, instruction-only** package ready for Gemini's Skills uploader: `SKILL.md` plus four `references/` files. No Python scripts, credentials or desktop installation needed.
 
@@ -14,7 +14,21 @@ This is the **five-file, instruction-only** package ready for Gemini's Skills up
 
 If your Gemini agent can install or load the skill directly from the GitHub repository, **try that first**; the ZIP is the reliable manual fallback. Uploaded copies do **not** automatically sync with GitHub. The release asset is rebuilt from the canonical skill by [the publishing workflow](../../.github/workflows/publish-gemini-skill.yml) whenever relevant source files change.
 
-## The Gemini two-stage workflow (v3.5.5)
+## Fresh installation from GitHub (v3.5.6)
+
+The Jukebox's **Copy setup check** now explicitly asks Gemini to load the **latest main-branch** `SKILL.md` and its four reference documents, install a persistent Skill if its actual interface supports that, and **confirm version 3.5.6**. Reading a GitHub URL into one chat is *not* the same as installing a persistent Skill. If Gemini can only read the repository, use the current [five-file Gemini Skill ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip) and the app's **Customize → Skills** upload. Confirm that it persists across a new conversation. Do not claim the installer can act on the user's behalf unless Gemini actually reports installation.
+
+## Short GO prompts; workflow lives in steering (v3.5.6)
+
+The Jukebox now sends only the skill command, chosen service, optional tempo, rotating sound-led discovery lens and random crate spark. The installed Skill owns music verification, liner-note personality, repeat avoidance and truthful provider status. The successful long-form **v3.5.3-style handoff** is retained as a manual comparison case, not pasted into every GO.
+
+- **`go`**: default Gemini + YouTube Music curate-only. Deliver the original 12-track list with **CURATED — NOT PUBLISHED**, no provider action.
+- **`go live`**: explicitly experiment with curation and one YouTube Music playlist generation in the same response. Curate and preserve the exact list *first*. Ask for exact insertion only if the real app supports it. Otherwise the provider playlist is **APPROXIMATE**, not the crate, even if the initial entries happen to match.
+- **Separate follow-up**: request an approximate YouTube Music playlist for an already-visible curated crate, without rerolling or re-curating.
+
+This doesn't prove lower-effort Gemini models will comply. Compare against the earlier successful Argon run before changing the default, and verify actual provider count, first/last tracks and saved state.
+
+## Previous two-stage workflow (v3.5.5)
 
 Real tests found that Gemini could curate twelve distinctive songs but the YouTube Music thematic generator then returned unrelated twenty-five-track mixes. **Stop accepting the provider mix as a replacement for the crate.**
 

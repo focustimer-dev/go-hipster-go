@@ -30,6 +30,19 @@ Test these against the prior revision with the *same* catalog/tools. Rate actual
 
 This is a **test plan**, not proof the curation model will pick better music or that a provider can save these recordings.
 
+## Minimal Gemini prompt vs. known-good Argon one-step baseline
+
+**Known-good field observation (user screenshots, not a full end-to-end audit):** Gemini Argon at highest thinking with the older Jukebox instruction produced a detailed 12-track crate, then a provider card labeled 12 songs with matching first three visible recordings. The original prompt's publishing clause was:
+
+> Use the connected YouTube Music PLAYLIST generation action, not separate YouTube video searches. Curate the intended artist/title/version list first, then ask for exact insertion ONLY if the connected app supports it. Otherwise request ONE themed playlist using the chosen sonic thesis, mood, rhythms, production and at most two verified artist anchors; label the provider mix approximate and mention Save to library. If Gemini returns individual YouTube search cards rather than a YouTube Music playlist, state PLAYLIST NOT CREATED and ask me to select the actual @YouTubeMusic Connected App via the @ picker. Pasted @ text does not activate an app.
+
+This is a **historical regression baseline**, not an instruction to reintroduce the risky artist anchors. A shorter installed-Skill `go live` aims to capture the successful sequence (curate, then attempt one playlist), rather than rely on a long copy-pasted paragraph. Record provider counts, exact matches, order, names, and whether Save to library was actually completed. A matched first three of twelve doesn't establish twelve exact matches.
+
+- Setup prompt must verify Skill version 3.5.6, reading all four references, and *actual installation persistence*, or offer current ZIP.
+- Ordinary Jukebox GO should be short, include mood/tempo/lens/spark, and **not** invoke `@YouTubeMusic` or duplicate the streaming protocol.
+- Explicit `go live` should preserve the intended 12 tracks before using any publisher, with one provider playlist at most and a truthful approximation label.
+- Test installed Skill on Gemini Argon at high effort first, then compare with lower thinking effort using the **same short request** and identical account capabilities. Record failures without claiming model-specific causality.
+
 ## Gemini two-stage publication boundary (manual A/B, not yet provider verified)
 
 - With Gemini + YouTube Music selected, an ordinary Jukebox `go` must create the exact intended 12-track **curation only**, labeled **CURATED — NOT PUBLISHED**, with no connected media actions or YouTube search cards. The prompt must not contain an `@YouTubeMusic` invocation.

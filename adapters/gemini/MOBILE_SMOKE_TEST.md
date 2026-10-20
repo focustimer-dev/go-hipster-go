@@ -34,6 +34,14 @@ These are manual listening/tone tests: text-based CI cannot establish that Gemin
 
 These tests require a Gemini runtime. Passing static CI does not prove YouTube Music supports exact recording insertion.
 
+## Test S0 — short prompts and actual installation (v3.5.6)
+
+1. From the Jukebox Gemini + YouTube Music selection, copy **FIRST-TIME SETUP CHECK**. In a fresh Gemini conversation, ask for the skill to be installed from the latest main repository, and inspect Gemini's real reported behavior. **Passing requires reporting the actual installed version 3.5.6 and persistence**, or honestly falling back to ZIP upload. Merely reading SKILL.md once is not persistence.
+2. Press GO twice with the same settings: each clipboard prompt should be short (under ~85 words), contain the chosen mood/tempo and a different discovery lens and crate spark. It should not paste the long YouTube playlist-handling paragraph.
+3. In a fresh Gemini chat, choose the installed Skill and issue GO. Expect **CURATED — NOT PUBLISHED** with twelve intended recordings, not a connected app call.
+4. In another fresh chat, issue **go live** after choosing a real YouTube Music Connected App if supported. The skill must first curate the intended list, then attempt at most ONE provider playlist. Compare exact tracks and order as visible, labeling the returned playlist **APPROXIMATE** where exact insertion is unsupported. Do not invent permission or saved status.
+5. Repeat the same short prompt on Argon at lower thinking levels where available. Record relative success, count/order and provider substitution; CI passing does not establish Gemini runtime performance.
+
 ## Test S — two-stage Gemini regression (v3.5.5)
 
 1. Load/reload the v3.5.5 Gemini Skill and select Gemini + YouTube Music in the Jukebox.
