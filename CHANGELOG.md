@@ -1,3 +1,10 @@
+## 3.5.4 — Avoid artist-radio collapse in Gemini playlists
+
+- Request one twelve-song Gemini/YouTube Music playlist with twelve distinct lead artists, seeded by sonic qualities and cross-scene traits rather than named reference artists by default.
+- Treat exact count and artist diversity as requests, never guaranteed provider controls; report provider cards that expand to twenty-five tracks or concentrate on one performer as mismatched approximations.
+- Prevent silent second-playlist retries and retain truthful created/saved versus intended distinctions.
+- Add Jukebox prompt, contract and Gemini mobile smoke tests based on an observed 25-song artist-heavy card. Native Gemini performance remains to be confirmed on the user's account.
+
 ## 3.5.3 — Gemini playlist handoff and randomized crate sparks
 
 - GO now combines a fresh discovery lens with an independent three-part creative phrase assembled from 1,000 combinations; avoid the previous three phrases locally. These are metaphorical music research cues, not artist/genre requirements.
