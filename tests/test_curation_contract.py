@@ -31,7 +31,7 @@ class CurationContractTests(unittest.TestCase):
         self.assertNotIn('return "@go-hipster-go "+go+" @youtube-music"',app)
         self.assertIn("Gemini search-card and spark-combination regression",cases)
         self.assertIn("PLAYLIST NOT CREATED",skill)
-        self.assertIn("one authoritative steering contract",skill)
+        self.assertIn("publication is the default, not an optional second feature",skill)
         self.assertIn("Separate optional follow-up",skill)
         self.assertIn("Gemini two-stage publication boundary",cases)
         self.assertIn("show visible count/artist/substitution differences",skill)
