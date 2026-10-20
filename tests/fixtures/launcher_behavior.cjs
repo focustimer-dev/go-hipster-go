@@ -53,7 +53,7 @@ function harness(write,search='',page='launch',storage=new Map()){
  assert.doesNotMatch(geminiPrompt,/@YouTubeMusic/,'Short GO does not activate a music service');
  assert.ok(geminiPrompt.split(/\\s+/).length<85,'Gemini prompt stays concise');
  const geminiSetup=harness(async()=>{},'?ai=gemini&service=youtube','setup').elements.setupPromptText.textContent;
- assert.match(geminiSetup,/3.5.6/,'Setup asks for installed version verification');
+ assert.match(geminiSetup,/3.5.7/,'Setup asks for installed version verification');
  assert.match(geminiSetup,/persistent Skill/,'Setup distinguishes reading a repo from installation');
  assert.match(geminiSetup,/choose Task mode beneath the Gemini prompt box/,'Gemini setup requires Task mode before pasting');
  assert.match(geminiSetup,/do not schedule a recurring task/,'Gemini install task must not be scheduled');
