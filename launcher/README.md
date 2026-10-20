@@ -45,7 +45,13 @@ The UI includes keyboard focus states, native disclosures, clipboard fallbacks a
 
 Update the HTML, shared assets and manifests in this directory, run the repository tests, then deploy the matching content to the existing Worker. GitHub commits alone do not publish the site. Keep deployment configuration and bindings intact when replacing content; verify the live Jukebox and Manual after deployment. The root README is the visitor entry point; this file records PWA behavior, while host-specific installation details belong in `adapters/`.
 
-### Gemini two-stage curation (exact crate first)
+### Gemini minimal prompt / steering split (v3.5.6)
+
+Gemini + YouTube Music Jukebox GO now copies only `Use Go, Hipster, Go!: go [mood]`, `Service: YouTube Music. Mode: curate-only.`, the optional tempo, rotating discovery lens and random crate spark. Research/verification, persona and publication handling live in the **installed Skill**, not in 200 words of repeated Jukebox instructions. The installed Skill's `go live` command is an **opt-in experimental one-step curation + YouTube Music playlist action** using the known-good long handoff's sequencing rules; users can enter that short command directly in Gemini. Ordinary GO keeps the safe curate-only behavior, and separate stage-two approximation still exists.
+
+The Gemini setup prompt asks Gemini to read latest main and its four references, **verify 3.5.6 and persistent installation**, and use the latest Skill ZIP in Customize → Skills if the runtime merely read the repository instead of installing it. Never claim that loading a GitHub page means installation.
+
+### Previous Gemini two-stage curation (v3.5.5)
 
 GO with Gemini + YouTube Music now copies a **stage-one, curator-only** prompt. It does **not** ask for a provider-generated playlist, and does not contain a pasted `@YouTubeMusic` invocation. The Gemini Skill should return the intended verified artist/title/version tracks in order, plus notes and **CURATED — NOT PUBLISHED** status. A second-stage **approximate YouTube Music playlist** is optional and must be requested explicitly in the same Gemini chat after reviewing the crate. That separate action may use the native Connected App if selected, but its results cannot be called exact without item-level verification. Keep the original crate intact for comparisons.
 
