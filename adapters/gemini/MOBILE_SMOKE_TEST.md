@@ -34,6 +34,15 @@ These are manual listening/tone tests: text-based CI cannot establish that Gemin
 
 These tests require a Gemini runtime. Passing static CI does not prove YouTube Music supports exact recording insertion.
 
+## Test S — video search cards are not a playlist
+
+Using the new Gemini v3.5.3 upload and Jukebox's Gemini + YouTube Music setting:
+1. Press GO twice with the same mood/tempo; verify each copied prompt has a *different* Random crate spark phrase and preserves the same mood/tempo.
+2. Use Gemini's real skill selection and the real **@YouTubeMusic** Connected App from the @ picker; pasted @ text by itself does not guarantee either was activated.
+3. Require the response to say **Create ONE playlist**, not to issue twelve ordinary YouTube searches for exact song titles. A screen of YouTube **video** cards counts as **playlist not created**.
+4. When exact insert isn't supported, generate one provider-native thematic playlist from the curator's musical thesis and up to two verified artist anchors, noting that the output may differ from the intended 12 recordings. Look for the native **Save to library** action before claiming saved.
+5. Keep video search, generated YouTube Music playlist, and library-saved playlist as three different statuses. Do not claim these tests pass merely because CI passes.
+
 ## Test R — repeated songs versus provider auto-fill
 
 1. In one Gemini conversation, create three six-track sets using the same mood; keep all intended lists visible. An ordinary repeated `go` should avoid using a recording already chosen in those visible lists without explanation, while leaving room for coherent tracks.

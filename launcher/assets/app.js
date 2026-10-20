@@ -49,7 +49,7 @@ const universalPrompt="Load Go, Hipster, Go! from "+repo+". Read SKILL.md and th
 function goCommand(ai,service,mood){
  const go=mood==="go"?"go":"go "+mood;
  if(ai==="chatgpt"&&service==="spotify")return "@Go, Hipster, Go! @Spotify "+go;
- if(ai==="gemini"&&service==="youtube")return "@go-hipster-go "+go+" @youtube-music";
+ if(ai==="gemini"&&service==="youtube")return "Use Go, Hipster, Go!: "+go+". Create ONE playlist in @YouTubeMusic.";
  if(ai==="gemini"&&service==="spotify")return "@go-hipster-go "+go+" @Spotify";
  if(ai==="claude")return "Use Go, Hipster, Go!: "+go+". Preferred music service: "+serviceNames[service]+".";
  return "@Go, Hipster, Go! "+go+" — destination "+serviceNames[service];
@@ -74,14 +74,39 @@ function nextFreshCrateLens(){
  store(recentKey,JSON.stringify([chosen,...recent].slice(0,3)));
  return freshCrateLenses[chosen];
 }
+
+/* Real entropy from independently combined creative cues, not a hard-coded artist roster.
+   Store only recent cue IDs; no music history or account data is recorded. */
+const crateSparkWords=[
+ ["papery handclaps","elastic low end","hollow percussion","unsteady guitar","dubbed-out space","wiry organ","hushed harmonies","brittle synths","rough-edged strings","shifting drum accents"],
+ ["at the night ferry","under an empty arcade","beneath rain-streaked windows","past a deserted ballroom","through a late-night radio","inside a faded cinema","on a slow mountain bus","after the last dance","beside an old tape machine","at a half-lit market"],
+ ["longing with momentum","tension that never quite breaks","playful rhythmic friction","melodies that take a wrong turn","a groove that keeps changing shape","warmth in an unlikely place","subtle call-and-response","an eerie but inviting pulse","room for sudden silence","voices just out of alignment"]
+];
+let crateSparkPhrase="";
+function nextCrateSparkPhrase(){
+ const key="ghg-crate-sparks-v1",size=1000;
+ let recent=[];
+ try{const saved=JSON.parse(stored(key)||"[]");if(Array.isArray(saved))recent=saved.filter(n=>Number.isInteger(n)&&n>=0&&n<size).slice(0,3)}catch(e){}
+ const options=Array.from({length:size},(_,i)=>i).filter(i=>!recent.includes(i));
+ let pick;
+ if(typeof crypto!=="undefined"&&typeof crypto.getRandomValues==="function"){
+  const a=new Uint32Array(1);crypto.getRandomValues(a);pick=options[a[0]%options.length];
+ }else{
+  const n=Number(stored("ghg-crate-spark-cycle-v1"))||0;
+  pick=options[Math.abs(Math.trunc(n))%options.length];
+  store("ghg-crate-spark-cycle-v1",String(n+1));
+ }
+ store(key,JSON.stringify([pick,...recent].slice(0,3)));
+ return crateSparkWords[0][pick%10]+" / "+crateSparkWords[1][Math.floor(pick/10)%10]+" / "+crateSparkWords[2][Math.floor(pick/100)%10];
+}
 const thesis="Curate 12 verified deep-cut recordings around a cohesive sonic thesis. Explore surprising links across scenes, eras, rhythm, voice, production and instrumentation. Keep the transitions listenable, not just clever. Avoid recycled example-artist lists and never invent track matches.";
 function goPrompt(ai,service,mood){
  let handoff;
  if(ai==="chatgpt"&&service==="spotify")handoff="Resolve exact Spotify track versions and publish in the chosen order if an authorized writer is exposed. Read back the saved count/order if possible.";
- else if(ai==="gemini"&&service==="youtube")handoff="Choose real artist/title/version tracks FIRST. Ask YouTube Music to match them. If it can only make a similar mood mix, label it approximate, note substitutions, and mention Save to library.";
+ else if(ai==="gemini"&&service==="youtube")handoff="Use the connected YouTube Music PLAYLIST generation action, not separate YouTube video searches. Curate the intended artist/title/version list first, then ask for exact insertion ONLY if the connected app supports it. Otherwise request ONE themed playlist using the chosen sonic thesis, mood, rhythms, production and at most two verified artist anchors; label the provider mix approximate and mention Save to library. If Gemini returns individual YouTube search cards rather than a YouTube Music playlist, state PLAYLIST NOT CREATED and ask me to select the actual @YouTubeMusic Connected App via the @ picker. Pasted @ text does not activate an app.";
  else if(ai==="gemini"&&service==="spotify")handoff="Gemini's Spotify connected app does not create playlists. Give me a verified ordered tracklist, and use Spotify only for supported search/playback.";
  else handoff="Target "+serviceNames[service]+", but only write if this AI actually exposes a connected, authorized playlist writer. Otherwise give the verified ordered tracklist; don't claim it was saved.";
- return goCommand(ai,service,mood)+"\n\n"+thesis+(freshCrateLens?"\n\nFresh-crate discovery lens: "+freshCrateLens+" Treat this as a search route, not a forced genre or an artist list. Prefer recordings absent from recent visible playlists; keep the requested mood and sonic cohesion.":"")+(tempo?"\n\nTempo preference: "+tempoNames[tempo]+". Favor recordings with this perceived pace while respecting the selected mood. Treat this as a curation preference, not a verified BPM filter; do not invent BPM values.":"")+"\n\n"+handoff;
+ return goCommand(ai,service,mood)+"\n\n"+thesis+(freshCrateLens?"\n\nFresh-crate discovery lens: "+freshCrateLens+" Treat this as a search route, not a forced genre or an artist list. Prefer recordings absent from recent visible playlists; keep the requested mood and sonic cohesion.":"")+(crateSparkPhrase?"\n\nRandom crate spark: "+crateSparkPhrase+". Use this as a loose metaphor for musical discovery, NOT as a track title, factual instrument claim or rigid requirement. Find independently verified recordings; respect my mood and tempo.":"")+(tempo?"\n\nTempo preference: "+tempoNames[tempo]+". Favor recordings with this perceived pace while respecting the selected mood. Treat this as a curation preference, not a verified BPM filter; do not invent BPM values.":"")+"\n\n"+handoff;
 }
 const params=new URLSearchParams(location.search);
 const isLegacyGemini=location.pathname.startsWith("/gemini/");
@@ -220,7 +245,7 @@ async function copyGo(){
  const button=doc.getElementById("goButton");
  if(button&&button.disabled)return;
  // Each GO explores a different lane; preview and copied request stay identical.
- freshCrateLens=nextFreshCrateLens();renderLaunch();
+ freshCrateLens=nextFreshCrateLens();crateSparkPhrase=nextCrateSparkPhrase();renderLaunch();
  const prompt=goPrompt(ai,service,mood);
  if(button){button.disabled=true;button.setAttribute("aria-busy","true");button.setAttribute("data-copy-state","copying")}
  copiedPrompt=null;updateHandoff();

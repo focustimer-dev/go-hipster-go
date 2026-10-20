@@ -42,7 +42,11 @@ function harness(write,search='',page='launch',storage=new Map()){
  await repeat.elements.goButton.click();await repeat.elements.goButton.click();
  assert.equal(repeatCopies.length,2,'Each GO press copies once');
  assert.match(repeatCopies[0],/Fresh-crate discovery lens:/,'A GO copies a fresh discovery lens');
+ assert.match(repeatCopies[0],/Random crate spark:/,'GO adds an independently combined random phrase');
+ assert.match(harness(async()=>{},'?ai=gemini&service=youtube').elements.prompt.textContent,/Create ONE playlist in @YouTubeMusic/,'Gemini route explicitly asks for a playlist');
  assert.notEqual(repeatCopies[0],repeatCopies[1],'Repeats rotate even with no browser crypto');
+ assert.notEqual(repeatCopies[0].match(/Random crate spark: ([^\n]+)/)[1],repeatCopies[1].match(/Random crate spark: ([^\n]+)/)[1],'Each GO changes the spark, even without browser crypto');
+ assert.doesNotMatch(harness(async()=>{},'?ai=gemini&service=youtube').elements.prompt.textContent,/@youtube-music/,'Do not suggest unofficial @youtube-music spelling');
  assert.equal(repeat.elements.prompt.textContent,repeatCopies[1],'Receipt matches the copied fresh crate');
  let copies=[];let h=harness(async text=>copies.push(text)),e=h.elements;
  await h.moods[2].click();assert.equal(copies.length,0,'Selecting a mood must not copy');

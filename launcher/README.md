@@ -29,7 +29,7 @@ The optional tempo slider selects Slow, Relaxed, Mid-tempo, Brisk, or Fast indep
 
 ## Fresh crate: route diversity without random-song roulette
 
-Every press of **GO** now chooses one of twelve different sound-led search lenses. The PWA uses browser `crypto.getRandomValues` when available, and deterministic route cycling otherwise; the previous three lens IDs are kept locally so a repeat press explores a different route. The lens is appended to the copied prompt and receipt preview. It is a **search starting point**, not a compulsory genre or artist quota; the listener's mood and tempo still take precedence. Only lens IDs are stored, **not** the user's playlists, songs or listening history.
+Every press of **GO** chooses one of twelve different sound-led search lenses **and** assembles an independent three-part creative spark from 1,000 combinations. Browser cryptographic randomness selects each when available; fallback cycling avoids repeats in unsupported environments. The previous three lens IDs and three spark IDs are kept locally, so a repeated press explores new territory. The lens and spark are appended to the copied prompt and receipt preview. It is a **search starting point**, not a compulsory genre or artist quota; the listener's mood and tempo still take precedence. Only lens IDs are stored, **not** the user's playlists, songs or listening history.
 
 The AI still selects/verifies recordings; the PWA neither searches a catalog nor stores a cross-session played-track ledger. A new prompt does not guarantee YouTube Music's thematic playlist generator will preserve the exact tracks. Compare the curator's proposed list with the provider card before attributing repetition to either system.
 
@@ -44,3 +44,7 @@ The UI includes keyboard focus states, native disclosures, clipboard fallbacks a
 ## Maintaining the launcher
 
 Update the HTML, shared assets and manifests in this directory, run the repository tests, then deploy the matching content to the existing Worker. GitHub commits alone do not publish the site. Keep deployment configuration and bindings intact when replacing content; verify the live Jukebox and Manual after deployment. The root README is the visitor entry point; this file records PWA behavior, while host-specific installation details belong in `adapters/`.
+
+### Gemini playlist handoff (not YouTube video search)
+
+For Gemini + YouTube Music, the Jukebox explicitly asks for **one playlist** using Google's documented `@YouTubeMusic` name, rather than asking for individual exact-recording searches. Selecting a real skill/Connected App from Gemini's `@` or `/` picker may still be required: text pasted from the Jukebox is not a connected-app token. When the YouTube Music generator cannot add exact recordings in order, the skill should preserve its original curated list, request a thematically faithful *approximate* playlist, and say so. If only ordinary YouTube video cards appear, **no playlist is confirmed**; it should stop and offer the native app-selection step instead of treating the search results as a playlist.
