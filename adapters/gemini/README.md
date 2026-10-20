@@ -30,11 +30,13 @@ The Jukebox's **Copy setup check** now explicitly asks Gemini to load the **late
 
 The Jukebox now sends only the skill command, chosen service, optional tempo, rotating sound-led discovery lens and random crate spark. The installed Skill owns music verification, liner-note personality, repeat avoidance and truthful provider status. The successful long-form **v3.5.3-style handoff** is retained as a manual comparison case, not pasted into every GO.
 
-- **`go`**: default Gemini + YouTube Music curate-only. Deliver the original 12-track list with **CURATED — NOT PUBLISHED**, no provider action.
-- **`go live`**: explicitly experiment with curation and one YouTube Music playlist generation in the same response. Curate and preserve the exact list *first*. Ask for exact insertion only if the real app supports it. Otherwise the provider playlist is **APPROXIMATE**, not the crate, even if the initial entries happen to match.
+- **`go`**: curate-only, available through the Jukebox's optional checkbox or a direct Gemini request. Deliver the original 12-track list with **CURATED — NOT PUBLISHED**, no provider action.
+- **`go live`**: **default Jukebox GO for Gemini + YouTube Music**. Curate the original tracklist first, then attempt one YouTube Music playlist generation in the same response. Curate and preserve the exact list *first*. Ask for exact insertion only if the real app supports it. Otherwise the provider playlist is **APPROXIMATE**, not the crate, even if the initial entries happen to match.
 - **Separate follow-up**: request an approximate YouTube Music playlist for an already-visible curated crate, without rerolling or re-curating.
 
 This doesn't prove lower-effort Gemini models will comply. Compare against the earlier successful Argon run before changing the default, and verify actual provider count, first/last tracks and saved state.
+
+**Jukebox mode:** Gemini + YouTube Music GO now sends `go live` unless you enable **Curate only** beneath GO. The full musical workflow stays in the installed Skill. Google's generated mix remains approximate unless exact matching is verified. Other service combinations are unchanged. The standalone Skill's plain `go` remains curate-only when invoked directly.
 
 ## Previous two-stage workflow (v3.5.5)
 
