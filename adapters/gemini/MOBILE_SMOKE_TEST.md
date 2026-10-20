@@ -34,6 +34,14 @@ These are manual listening/tone tests: text-based CI cannot establish that Gemin
 
 These tests require a Gemini runtime. Passing static CI does not prove YouTube Music supports exact recording insertion.
 
+## Test R — repeated songs versus provider auto-fill
+
+1. In one Gemini conversation, create three six-track sets using the same mood; keep all intended lists visible. An ordinary repeated `go` should avoid using a recording already chosen in those visible lists without explanation, while leaving room for coherent tracks.
+2. In the Jukebox, copy GO twice with the same selectors. Confirm the **Fresh-crate discovery lens** differs while mood/tempo and copy handoff remain intact.
+3. Hand each curated list to `@YouTubeMusic`. If the provider supplies a different thematic selection, record the intended and actually visible songs separately; do not claim exclusion enforcement without item-level confirmation.
+4. In a brand-new Gemini conversation, check that the skill does **not** claim knowledge of playlists it cannot read. If songs recur, provide earlier lists to support explicit exclusions.
+5. Judge coherence and recording verification as well as novelty. Do not label static GitHub tests an end-to-end Gemini success.
+
 ## Test A0 — single-command listening
 
 In a new Gemini conversation where the skill is loaded and YouTube Music is authorized, say only `Go, Hipster, Go!: go`. The skill should attempt to use the actual YouTube Music playlist-writing capability without requiring a separate `@YouTubeMusic` mention. If Gemini's host cannot activate the other skill, it must curate anyway and explicitly explain the limitation, without claiming a saved playlist. Check an explicit `go, text only` to confirm no write is attempted.
