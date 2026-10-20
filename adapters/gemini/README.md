@@ -10,7 +10,7 @@
 
 ## Download the Gemini skill — no terminal required
 
-**[Download the latest Gemini Skills ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip)** · [See the versioned v3.5.6 release](https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.5.6/go-hipster-go-gemini-app-skill.zip)
+**[Download the latest Gemini Skills ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip)** · [See the versioned v3.5.7 release](https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.5.7/go-hipster-go-gemini-app-skill.zip)
 
 This is the **five-file, instruction-only** package ready for Gemini's Skills uploader: `SKILL.md` plus four `references/` files. No Python scripts, credentials or desktop installation needed.
 
@@ -24,19 +24,15 @@ If using Gemini to install directly from GitHub, **choose Task mode before pasti
 
 Start by selecting **Task mode** in Gemini before pasting the Jukebox's repository-install prompt. Verify that the task actually creates a persistent Skill; otherwise switch to the **browser-based** ZIP upload route. Do not look for the ZIP uploader in the native mobile app.
 
-The Jukebox's **Copy setup check** now explicitly asks Gemini to load the **latest main-branch** `SKILL.md` and its four reference documents, install a persistent Skill if its actual interface supports that, and **confirm version 3.5.6**. Reading a GitHub URL into one chat is *not* the same as installing a persistent Skill. If Gemini can only read the repository, use the current [five-file Gemini Skill ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip) and the app's **Customize → Skills** upload. Confirm that it persists across a new conversation. Do not claim the installer can act on the user's behalf unless Gemini actually reports installation.
+The Jukebox's **Copy setup check** now explicitly asks Gemini to load the **latest main-branch** `SKILL.md` and its four reference documents, install a persistent Skill if its actual interface supports that, and **confirm version 3.5.7**. Reading a GitHub URL into one chat is *not* the same as installing a persistent Skill. If Gemini can only read the repository, use the current [five-file Gemini Skill ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip) and the app's **Customize → Skills** upload. Confirm that it persists across a new conversation. Do not claim the installer can act on the user's behalf unless Gemini actually reports installation.
 
-## Short GO prompts; workflow lives in steering (v3.5.6)
+## GO means make a playlist (v3.5.7)
 
-The Jukebox now sends only the skill command, chosen service, optional tempo, rotating sound-led discovery lens and random crate spark. The installed Skill owns music verification, liner-note personality, repeat avoidance and truthful provider status. The successful long-form **v3.5.3-style handoff** is retained as a manual comparison case, not pasted into every GO.
+Gemini's installed Skill carries all the research, verification, sonic sequencing and publication rules. The Jukebox passes the destination, mood, optional tempo, sound-led discovery lens and crate spark. **Plain `go` now curates AND attempts to create one playable YouTube Music playlist by default.** `go live` remains a synonym for older prompts, not a required mode. There is no Curate only checkbox in the Jukebox. If requested explicitly, `go, text only` skips writing.
 
-- **`go`**: curate-only, available through the Jukebox's optional checkbox or a direct Gemini request. Deliver the original 12-track list with **CURATED — NOT PUBLISHED**, no provider action.
-- **`go live`**: **default Jukebox GO for Gemini + YouTube Music**. Curate the original tracklist first, then attempt one YouTube Music playlist generation in the same response. Curate and preserve the exact list *first*. Ask for exact insertion only if the real app supports it. Otherwise the provider playlist is **APPROXIMATE**, not the crate, even if the initial entries happen to match.
-- **Separate follow-up**: request an approximate YouTube Music playlist for an already-visible curated crate, without rerolling or re-curating.
+The curator's intended 12 artist/title/version recordings are selected first, then the actual provider's **playlist** action is tried once. Google's theme generator may substitute tracks or ignore order/count. Do not silently call those exact: label the mix **APPROXIMATE** unless item-level read-back establishes fidelity. If the connected writer fails or is unavailable, return the original crate, mark **PLAYLIST NOT CREATED**, and offer one actionable next step. A playlist card is not necessarily saved; the user may need **Save to library**.
 
-This doesn't prove lower-effort Gemini models will comply. Compare against the earlier successful Argon run before changing the default, and verify actual provider count, first/last tracks and saved state.
-
-**Jukebox mode:** Gemini + YouTube Music GO now sends `go live` unless you enable **Curate only** beneath GO. The full musical workflow stays in the installed Skill. Google's generated mix remains approximate unless exact matching is verified. Other service combinations are unchanged. The standalone Skill's plain `go` remains curate-only when invoked directly.
+**Installing or refreshing the Skill:** the Gemini Task-mode GitHub install prompt should confirm **v3.5.7** is genuinely installed and persists. If it only reads the repository, upload the [five-file Gemini Skill ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip) from Gemini desktop/mobile web, not the native app.
 
 ## Previous two-stage workflow (v3.5.5)
 
@@ -50,7 +46,7 @@ These stages do not require a new Jukebox control. To avoid unwanted media calls
 
 ## If Gemini suddenly shows YouTube video search cards
 
-This is **not** a completed YouTube Music playlist. When exact song-name matching is requested but the Gemini connected app only exposes theme-based playlist creation, Gemini may search ordinary YouTube one recording at a time and never generate a playlist. The Jukebox now **only curates the original list on GO**. The separate optional Stage 2, if requested by the listener, uses the provider's theme-generation capability and treats individual YouTube video results as **playlist not created**.
+This is **not** a completed YouTube Music playlist. When exact song-name matching is requested but the Gemini connected app only exposes theme-based playlist creation, Gemini may search ordinary YouTube one recording at a time and never generate a playlist. The Jukebox now requests the original verified crate **and one playlist attempt on GO**. If Google responds with individual YouTube video results rather than a YouTube Music playlist, report **PLAYLIST NOT CREATED**.
 
 Google's documented app name is **`@YouTubeMusic`**, not `@youtube-music`. Merely pasting this text from the Jukebox does **not** create an active Connected App mention. In Gemini, type `@` and **select YouTube Music from the actual picker** if the app did not activate; similarly select the installed Go, Hipster, Go! skill from `/` or `@` where needed. Google currently documents **Create a playlist** by a mood, activity or artist; it does not document editing an arbitrary exact ordered recording list. Use **Save to library** if the generated playlist needs saving.
 
