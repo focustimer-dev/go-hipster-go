@@ -30,11 +30,20 @@ Test these against the prior revision with the *same* catalog/tools. Rate actual
 
 This is a **test plan**, not proof the curation model will pick better music or that a provider can save these recordings.
 
+## Gemini two-stage publication boundary (manual A/B, not yet provider verified)
+
+- With Gemini + YouTube Music selected, an ordinary Jukebox `go` must create the exact intended 12-track **curation only**, labeled **CURATED — NOT PUBLISHED**, with no connected media actions or YouTube search cards. The prompt must not contain an `@YouTubeMusic` invocation.
+- The Jukebox still randomizes its search lens and independent crate spark; the original curated list is held as the source of truth.
+- Only a separate, explicit Stage 2 request may generate **one approximate YouTube Music playlist**, using the theme from the preserved crate; it must not overwrite or misrepresent that original tracklist.
+- If the provider returns 25 songs or different familiar recordings, show the result as **APPROXIMATE**, with visible count/substitution differences and unknowns honestly marked. A generated preview isn't a saved-library confirmation.
+- An ordinary `go` in another host with an actual exact-write music provider keeps its existing publishing behavior. A genuine DeBarge Protocol hit remains the explicitly defined exceptional output.
+- Test both stages independently in a real Gemini session. CI can assert textual behavior but cannot establish which provider actions Gemini executed.
+
 ## Gemini artist-anchor collapse and count integrity
 
 A user screenshot showed a real Gemini/YouTube Music card titled *Anatolian Fuzz & Psych* with 25 songs; at least the first five displayed titles belonged to Erkin Koray. This demonstrates a count mismatch and visible artist concentration, **not** that all 25 came from that artist or that the mix was saved.
 
-- For ordinary `go`, require the **Jukebox Gemini handoff** to request 12 tracks / 12 different lead artists, describe sonic properties rather than name two canonical artists, and forbid treating a themed mix as an exact ordered transfer.
+- For ordinary Gemini `go`, require an intact 12-track curator-selected crate with no provider generation. A 12-distinct-artist goal for any optional Stage 2 mix is not a guaranteed Google feature.
 - An actual 25-track card with five visible consecutive selections by one artist is **approximate; requested count/diversity not met**. Do not falsely report 12 saved or claim all 25 are by that artist.
 - If provider count and unique-artist constraints are ignored, do **not** auto-create a second playlist; allow optional refinement only with listener intent and re-check the result.
 - These are observable and static compliance tests, not evidence that YouTube Music enforces a per-artist cap, an exact count, or final playlist persistence.
@@ -43,7 +52,7 @@ A user screenshot showed a real Gemini/YouTube Music card titled *Anatolian Fuzz
 ## Gemini search-card and spark-combination regression
 
 - Repeated Jukebox GO prompts should provide *different* Random crate spark metaphors, assembled independently of the 12 prewritten lenses. These change the search hypothesis, not listener-requested mood or source verification.
-- Gemini + YouTube Music should ask for one generated YouTube **Music** playlist via the properly selected Connected App. The name @YouTubeMusic is an instruction, not proof the app was connected or selected.
+- Gemini + YouTube Music Stage 1 must not invoke the Connected App. Only a separate, explicit Stage 2 may ask for one generated YouTube **Music** playlist through the properly selected app.
 - A response containing a collection of YouTube video search cards but no native playlist card is **Playlist not created**; preserve the curator's original intended recording list and offer one real picker-selection action.
 - When Gemini cannot insert exact ordered recordings, a native themed playlist may be approximate; never present it as the exact curated set, and don't pretend it is saved until Save to library is confirmed.
 
@@ -182,8 +191,8 @@ For each run, inspect artist/title authenticity, coherent sonic rationale, modif
 
 | Scenario | Required behavior |
 | --- | --- |
-| Gemini curates twelve but writer inaccessible | State not published or saved; suggest Gemini's `@YouTubeMusic` or Connected Apps, never a ChatGPT-style composer |
-| Gemini creates a provider-generated thematic mix | Clearly mark an approximation; do not claim exact song/version/order fidelity |
+| Gemini Stage 1 GO with YouTube Music preference | Curate twelve and state **CURATED — NOT PUBLISHED**; don't use media apps or force setup, even when a thematic generator is available |
+| Gemini Stage 2 explicitly asks for provider approximation | Create one thematic mix only if an authorized writer exists, mark approximation; do not claim exact song/version/order fidelity |
 | Gemini shows a generated playlist card | Distinguish it from a **Save to library** action and a confirmed saved playlist |
 | Gemini cannot accept exact selections | Retain ordered list and avoid re-curation, invented tool invocation or a second DeBarge roll |
 
