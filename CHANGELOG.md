@@ -1,3 +1,10 @@
+## 3.5.7 — GO is the complete product again
+
+- Plain `go` now curates and attempts to create one playable playlist across supported services, including Gemini + YouTube Music; `go live` is only a backwards-compatible alias.
+- Remove the Gemini Jukebox Curate only checkbox and special mode routing. The copied prompt simply requests one playlist, leaving detailed behavior in the installed Skill.
+- Preserve the intended ordered list if Google's provider makes an approximate mix; disclose mismatches, Save to library uncertainty and publishing failure. Explicit `go, text only` remains available to developers and power users.
+- Synchronize canonical/mirrored Skill, Gemini app ZIP renderer and Gem steering; reset the short GO prompt and revise current acceptance tests and installation version to 3.5.7.
+
 ## PWA Gemini GO live default (post-v3.5.6)
 
 - Restore `go live` as Gemini + YouTube Music's Jukebox GO default: curate first, then attempt one authorized provider playlist.
