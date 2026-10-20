@@ -1,3 +1,11 @@
+## 3.5.6 — Move the long Gemini GO prompt into installed steering
+
+- A Gemini + YouTube Music Jukebox GO now sends only skill invocation and current mood/tempo/discovery seed, not repeated publishing instructions.
+- Keep default `go` curate-only and introduce explicit `go live` for a one-step Argon-style curated-first publishing experiment; preserve exact intended tracklist before the provider's approximate mix.
+- Store verification, count/order honesty, and playback handoff rules in the canonical Skill and Gemini package. Add known-good long-prompt manual A/B case without promoting unverified success.
+- The Gemini installation prompt verifies latest main Skill v3.5.6, all four references, and real persistent install. If unsupported, present the official ZIP upload rather than reporting that reading GitHub equals installation.
+- Regression tests cover Gemini's concise GO prompt, setup version check, source bundle and no change to other hosts' normal publishing paths. Real Gemini model comparisons remain to be tested.
+
 ## 3.5.5 — Exact crate first; Gemini publication opt-in
 
 - Switch Gemini + YouTube Music plain GO to **Stage 1 curation only** with ordered, verified tracks and a clear **CURATED — NOT PUBLISHED** label. Do not invoke Google's thematic generator, video search or Connected App as part of ordinary GO.
