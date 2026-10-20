@@ -45,6 +45,12 @@ The UI includes keyboard focus states, native disclosures, clipboard fallbacks a
 
 Update the HTML, shared assets and manifests in this directory, run the repository tests, then deploy the matching content to the existing Worker. GitHub commits alone do not publish the site. Keep deployment configuration and bindings intact when replacing content; verify the live Jukebox and Manual after deployment. The root README is the visitor entry point; this file records PWA behavior, while host-specific installation details belong in `adapters/`.
 
+### Gemini installation: Task mode vs. browser ZIP upload
+
+The Jukebox's Gemini setup prompt now opens with **select Task mode beneath the Gemini prompt box before pasting**. Task mode is for asking Gemini to attempt the multi-step GitHub Skill installation; this is a **one-time install**, not a recurring scheduled task. Confirm Skill v3.5.6 appears as a persistently installed Skill in another conversation. Merely reading GitHub in a Task does not prove installation.
+
+**ZIP fallback platform constraint:** On the user's tested setup, the Gemini native mobile app does not offer the Skill ZIP uploader. Use **gemini.google.com in a desktop or mobile web browser → Customize → Skills → Create → Upload** instead. The ZIP fallback is independent of Task mode; no Task selection is required for manual web upload. Ordinary `go` does not require Task mode.
+
 ### Gemini minimal prompt / steering split (v3.5.6)
 
 Gemini + YouTube Music Jukebox GO now copies only `Use Go, Hipster, Go!: go [mood]`, `Service: YouTube Music. Mode: curate-only.`, the optional tempo, rotating discovery lens and random crate spark. Research/verification, persona and publication handling live in the **installed Skill**, not in 200 words of repeated Jukebox instructions. The installed Skill's `go live` command is an **opt-in experimental one-step curation + YouTube Music playlist action** using the known-good long handoff's sequencing rules; users can enter that short command directly in Gemini. Ordinary GO keeps the safe curate-only behavior, and separate stage-two approximation still exists.
