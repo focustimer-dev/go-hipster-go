@@ -30,6 +30,13 @@ Test these against the prior revision with the *same* catalog/tools. Rate actual
 
 This is a **test plan**, not proof the curation model will pick better music or that a provider can save these recordings.
 
+## Gemini search-card and spark-combination regression
+
+- Repeated Jukebox GO prompts should provide *different* Random crate spark metaphors, assembled independently of the 12 prewritten lenses. These change the search hypothesis, not listener-requested mood or source verification.
+- Gemini + YouTube Music should ask for one generated YouTube **Music** playlist via the properly selected Connected App. The name @YouTubeMusic is an instruction, not proof the app was connected or selected.
+- A response containing a collection of YouTube video search cards but no native playlist card is **Playlist not created**; preserve the curator's original intended recording list and offer one real picker-selection action.
+- When Gemini cannot insert exact ordered recordings, a native themed playlist may be approximate; never present it as the exact curated set, and don't pretend it is saved until Save to library is confirmed.
+
 ## Fresh-crate diversity regression (manual A/B, not a measured improvement)
 
 Repeat `go sad` three times on Gemini + YouTube Music, with the same connected app and access, and separately run three plain `go` commands in one chat. Keep the earlier curated lists visible. Compare **intended** artist/title/version lists before handing them to the service, then inspect the **provider** lists when available. Record distinct exact recordings, repeated artists, new scene/production routes, believable transitions, and provider substitutions. If the service exposes only a thematic card, mark track-level overlap **unknown**; don't infer an exact save.
