@@ -52,6 +52,13 @@ function harness(write,search='',page='launch',storage=new Map()){
  const geminiSetup=harness(async()=>{},'?ai=gemini&service=youtube','setup').elements.setupPromptText.textContent;
  assert.match(geminiSetup,/3.5.6/,'Setup asks for installed version verification');
  assert.match(geminiSetup,/persistent Skill/,'Setup distinguishes reading a repo from installation');
+ assert.match(geminiSetup,/choose Task mode beneath the Gemini prompt box/,'Gemini setup requires Task mode before pasting');
+ assert.match(geminiSetup,/do not schedule a recurring task/,'Gemini install task must not be scheduled');
+ assert.match(geminiSetup,/desktop or mobile WEB BROWSER/,'ZIP fallback must use Gemini web');
+ assert.match(geminiSetup,/Do not direct me to upload the ZIP inside the native Gemini app/,'Native app ZIP upload is not offered');
+ const nonGemSetup=harness(async()=>{},'?ai=chatgpt&service=spotify','setup').elements.setupPromptText.textContent;
+ assert.doesNotMatch(nonGemSetup,/Task mode|native Gemini app/,'ChatGPT setup is not altered');
+
  assert.notEqual(repeatCopies[0],repeatCopies[1],'Repeats rotate even with no browser crypto');
  assert.notEqual(repeatCopies[0].match(/Random crate spark: ([^\n]+)/)[1],repeatCopies[1].match(/Random crate spark: ([^\n]+)/)[1],'Each GO changes the spark, even without browser crypto');
  assert.doesNotMatch(harness(async()=>{},'?ai=gemini&service=youtube').elements.prompt.textContent,/@youtube-music/,'Do not suggest unofficial @youtube-music spelling');
