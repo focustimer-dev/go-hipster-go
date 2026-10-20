@@ -34,33 +34,32 @@ These are manual listening/tone tests: text-based CI cannot establish that Gemin
 
 These tests require a Gemini runtime. Passing static CI does not prove YouTube Music supports exact recording insertion.
 
-## Test S — video search cards are not a playlist
+## Test S — two-stage Gemini regression (v3.5.5)
 
-Using the new Gemini v3.5.3 upload and Jukebox's Gemini + YouTube Music setting:
-1. Press GO twice with the same mood/tempo; verify each copied prompt has a *different* Random crate spark phrase and preserves the same mood/tempo.
-2. Use Gemini's real skill selection and the real **@YouTubeMusic** Connected App from the @ picker; pasted @ text by itself does not guarantee either was activated.
-3. Require the response to say **Create ONE playlist**, not to issue twelve ordinary YouTube searches for exact song titles. A screen of YouTube **video** cards counts as **playlist not created**.
-4. When exact insert isn't supported, generate one provider-native thematic playlist from the curator's sonic thesis and no artist-name anchors unless specifically requested by the listener, noting that the output may differ from the intended 12 recordings. Look for the native **Save to library** action before claiming saved.
-5. Keep video search, generated YouTube Music playlist, and library-saved playlist as three different statuses. Do not claim these tests pass merely because CI passes.
+1. Load/reload the v3.5.5 Gemini Skill and select Gemini + YouTube Music in the Jukebox.
+2. Press GO twice with unchanged mood/tempo; confirm distinct **Random crate spark** phrases while preserving the selected mood and count.
+3. Stage 1: invoke **Go, Hipster, Go!** alone. Do **not** select `@YouTubeMusic` yet. Expect an ordered curator-selected crate and **CURATED — NOT PUBLISHED**, no YouTube searches or provider-generated playlist cards.
+4. Stage 2: only if the tester intentionally asks `Generate an approximate YouTube Music playlist from the crate above`, select the real `@YouTubeMusic` Connected App. Expect ONE possible provider-generated thematic result clearly labeled **APPROXIMATE**, not a claim of preserved original selections. Observe count, versions and artist concentration when visible.
+5. A playlist card is distinct from **Save to library**; if only YouTube video search cards appear, say **PLAYLIST NOT CREATED**. Never make a second provider playlist without new user intent.
+6. Run a fresh Gemini conversation to verify `go` still stays at Stage 1 and does not invent access to previous tracks. Passing GitHub CI isn't proof this Gemini routing works.
 
-## Test D2 — 25-song artist-radio regression
+## Test D2 — 25-song artist-radio regression (historical Stage 2)
 
-- Run plain `go` in Gemini + YouTube Music with the actual skill and Connected App selected, using a recent Jukebox-generated prompt. The request must say **12 songs / 12 distinct lead artists** and avoid sending the provider a named lead artist.
-- If the actual provider card returns 25 songs with five or more tracks by one performer (the user observed this with Erkin Koray), report an **approximate playlist** and that the requested **count/diversity were not met**. Do not silently declare success, or automatically retry and leave duplicate generated cards.
-- Check both counts separately: intended curator list versus generated provider card. Google documents themed playlist generation; exact counts and performer caps have not been confirmed as enforceable.
-- A user can try a single refinement in the existing provider card when the UI offers it, then report whether the displayed result changed; do not imply Gemini can edit an already saved YouTube Music playlist if its tool cannot.
+- The user observed the provider returning a 25-song mix headed by repeated Erkin Koray tracks despite a carefully selected 12-track curator list. This motivates Stage 1 preservation, not another attempt to enforce count and artist quotas with stronger prompts.
+- Stage 1 should always present its original list intact and **not create a Google mix**. During an explicitly requested Stage 2 provider result, compare intended vs. generated counts and identify visible concentration; don't report exact publication or claim every one of the 25 tracks has been inspected.
+- If the native provider permits refining its own generated card, ask once with listener authorization; keep the curated crate unchanged and don't infer exact playlist editing.
 
 ## Test R — repeated songs versus provider auto-fill
 
 1. In one Gemini conversation, create three six-track sets using the same mood; keep all intended lists visible. An ordinary repeated `go` should avoid using a recording already chosen in those visible lists without explanation, while leaving room for coherent tracks.
 2. In the Jukebox, copy GO twice with the same selectors. Confirm the **Fresh-crate discovery lens** differs while mood/tempo and copy handoff remain intact.
-3. Hand each curated list to `@YouTubeMusic`. If the provider supplies a different thematic selection, record the intended and actually visible songs separately; do not claim exclusion enforcement without item-level confirmation.
+3. Only after the curated lists have been reviewed, optionally request a separate Stage 2 provider approximation for one list; compare provider results to the untouched original when visible.
 4. In a brand-new Gemini conversation, check that the skill does **not** claim knowledge of playlists it cannot read. If songs recur, provide earlier lists to support explicit exclusions.
 5. Judge coherence and recording verification as well as novelty. Do not label static GitHub tests an end-to-end Gemini success.
 
 ## Test A0 — single-command listening
 
-In a new Gemini conversation where the skill is loaded and YouTube Music is authorized, say only `Go, Hipster, Go!: go`. The skill should attempt to use the actual YouTube Music playlist-writing capability without requiring a separate `@YouTubeMusic` mention. If Gemini's host cannot activate the other skill, it must curate anyway and explicitly explain the limitation, without claiming a saved playlist. Check an explicit `go, text only` to confirm no write is attempted.
+In a new Gemini conversation where the skill is loaded and YouTube Music is the desired service, say only `Go, Hipster, Go!: go`. It must return the original 12-track crate with **CURATED — NOT PUBLISHED** and must not attempt any provider publication or video search. An optional second-stage playlist requires a **separate explicit request**. Check `go, text only` for the same no-write behavior.
 
 **This is a behavioral test, not proof that Gemini can activate another skill itself.**
 
@@ -74,7 +73,7 @@ Invoke the skill using the skill selector or explicitly say:
 
 ## Test B — YouTube Music capabilities
 
-> Use Go, Hipster, Go! to create a six-track exploratory playlist. Try to create it in @YouTubeMusic. Before calling anything 'published', identify what exact recording matches you can establish and what the connected app is actually able to write. If exact entries cannot be preserved, show me the curated list and explain the limitation.
+> Stage 1: Use Go, Hipster, Go! to curate six verified recordings; no streaming action. Stage 2 (separate user message): Generate an approximate YouTube Music playlist from that six-track crate's sonic thesis. Report what the connected app actually generated; do not replace the original list.
 
 **Record:** Can Gemini reach the YouTube Music connection from *inside* this skill? Does it create a playlist or only a radio / general generated playlist? Are the six artist/title/version pairs preserved in order? Does it return an authentic playlist URL or a saved-library action? Were substitutions explicitly identified?
 
@@ -91,8 +90,8 @@ Invoke the skill using the skill selector or explicitly say:
 Earlier controlled prompts requested **six tracks**, which explains the observed six-song playlist and does not establish a six-track cap.
 
 1. In a new chat, check whether the skill remains available without re-supplying the GitHub URL.
-2. Invoke the curator together with the built-in YouTube Music skill, asking: `Go. Make the default 12-track playlist and try to save the same twelve recordings in order in YouTube Music. Report the result and substitutions.`
-3. Confirm the actual published playlist in YouTube Music and record whether there are 12 entries and whether title, performer, and order match.
+2. Invoke the curator alone using `go`. Confirm an ordered 12-track output with **CURATED — NOT PUBLISHED** and no provider call.
+3. Optionally send a second request to generate a **separate approximate** YouTube Music playlist using the original thesis. Record visible substitutions, count and whether Save to library was used.
 
 **Pass:** A confirmed twelve-item playlist, or a truthful explanation of a platform limit. Separately record whether GitHub loading was persistent or needed repeating.
 

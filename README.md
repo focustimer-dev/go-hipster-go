@@ -214,6 +214,8 @@ These are **listener-reported tests from October 16–17, 2026**, not guaranteed
 
 **Claude detail:** Neither persisted in Spotify; **zero saved playlists were confirmed** in that test. A later attempt returned a Premium-required error. The listener's actual subscription tier was not independently verified. See [Claude guidance](adapters/claude/README.md).
 
+**Gemini v3.5.5:** Plain GO now returns **the curator's original ordered tracklist without calling YouTube Music**. A generated provider approximation is optional Stage 2, requested separately; multiple field tests showed that Google's thematic generator could replace the curated twelve songs with a different twenty-five-track mix. Exact track publishing is not confirmed.
+
 **Gemini detail:** A separate twelve-track curation gave an incorrect ChatGPT-style composer instruction. That guidance was corrected but has not been retested. See [Gemini guidance](adapters/gemini/README.md).
 
 **Muse detail:** The listener tested the consumer Meta Muse agent, **not Muse Code**. See [Muse guidance](adapters/muse/README.md).
