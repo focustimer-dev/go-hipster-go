@@ -27,6 +27,12 @@ Copy confirmation and Open AI sit immediately below GO. Changing AI, service or 
 
 The optional tempo slider selects Slow, Relaxed, Mid-tempo, Brisk, or Fast independently of mood. Any tempo clears the preference. Tempo is included in the prompt, receipt and URL; changing it requires a fresh GO copy. These are perceived-pace preferences, not verified BPM filters.
 
+## Fresh crate: route diversity without random-song roulette
+
+Every press of **GO** now chooses one of twelve different sound-led search lenses. The PWA uses browser `crypto.getRandomValues` when available, and deterministic route cycling otherwise; the previous three lens IDs are kept locally so a repeat press explores a different route. The lens is appended to the copied prompt and receipt preview. It is a **search starting point**, not a compulsory genre or artist quota; the listener's mood and tempo still take precedence. Only lens IDs are stored, **not** the user's playlists, songs or listening history.
+
+The AI still selects/verifies recordings; the PWA neither searches a catalog nor stores a cross-session played-track ledger. A new prompt does not guarantee YouTube Music's thematic playlist generator will preserve the exact tracks. Compare the curator's proposed list with the provider card before attributing repetition to either system.
+
 ## Manual and saved selections
 
 The Manual uses the same AI/service selectors as the Jukebox. Copying its tailored setup check shows confirmation beside the action and changes the next link to **NEXT: OPEN…**. The user still pastes and sends the prompt. Clipboard failure opens the full prompt for manual copying; changing the selected pair clears the previous success state. Skill/plugin download links remain available in the downloads disclosure.
