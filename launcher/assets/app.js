@@ -54,6 +54,26 @@ function goCommand(ai,service,mood){
  if(ai==="claude")return "Use Go, Hipster, Go!: "+go+". Preferred music service: "+serviceNames[service]+".";
  return "@Go, Hipster, Go! "+go+" — destination "+serviceNames[service];
 }
+const freshCrateLenses=["Rhythm first: asymmetrical hand-percussion accents, interlocking guitar patterns and a convincing pocket.","Voice first: intimate or unusual vocal phrasing against restrained, textural accompaniment.","Production first: dub-space, spring or tape echo and spacious low-end where actually documented.","Motion first: restless post-punk-style grooves connected to rhythmically surprising regional recordings.","Texture first: wiry organ or electric-key timbres meeting guitar-led folk or soundtrack arrangements.","Contrast first: brittle drum machines beside warm live bass or hand-played rhythms.","Arrangement first: call-and-response, shifting ensemble layers and accumulating tension.","Atmosphere first: dreamy vocal harmonies or modal drones with a clear rhythmic through-line.","Beat first: clipped syncopation, early sample collage or hypnotic repetition across different eras.","Melody first: bittersweet melodic turns carried by unexpectedly propulsive backing.","Timbre first: fuzzed or tremulous guitar against smooth keys or airy instrumental colors.","Structure first: long-form builds, sudden negative space and patiently evolving motifs."];
+let freshCrateLens="";
+function nextFreshCrateLens(){
+ const recentKey="ghg-crate-routes-v1",raw=stored(recentKey);
+ let recent=[];
+ try{const parsed=JSON.parse(raw||"[]");if(Array.isArray(parsed))recent=parsed.filter(v=>Number.isInteger(v)&&v>=0&&v<freshCrateLenses.length).slice(0,3)}catch(e){}
+ const available=freshCrateLenses.map((_,i)=>i).filter(i=>!recent.includes(i));
+ let pick=0;
+ if(typeof crypto!=="undefined"&&typeof crypto.getRandomValues==="function"){
+  const n=new Uint32Array(1);crypto.getRandomValues(n);pick=n[0]%available.length;
+ }else{
+  // Older/nonsecure contexts rotate routes without pretending to be random.
+  const counter=Number(stored("ghg-crate-cycle-v1"))||0;
+  pick=Math.abs(Math.trunc(counter))%available.length;
+  store("ghg-crate-cycle-v1",String(counter+1));
+ }
+ const chosen=available[pick];
+ store(recentKey,JSON.stringify([chosen,...recent].slice(0,3)));
+ return freshCrateLenses[chosen];
+}
 const thesis="Curate 12 verified deep-cut recordings around a cohesive sonic thesis. Explore surprising links across scenes, eras, rhythm, voice, production and instrumentation. Keep the transitions listenable, not just clever. Avoid recycled example-artist lists and never invent track matches.";
 function goPrompt(ai,service,mood){
  let handoff;
@@ -61,7 +81,7 @@ function goPrompt(ai,service,mood){
  else if(ai==="gemini"&&service==="youtube")handoff="Choose real artist/title/version tracks FIRST. Ask YouTube Music to match them. If it can only make a similar mood mix, label it approximate, note substitutions, and mention Save to library.";
  else if(ai==="gemini"&&service==="spotify")handoff="Gemini's Spotify connected app does not create playlists. Give me a verified ordered tracklist, and use Spotify only for supported search/playback.";
  else handoff="Target "+serviceNames[service]+", but only write if this AI actually exposes a connected, authorized playlist writer. Otherwise give the verified ordered tracklist; don't claim it was saved.";
- return goCommand(ai,service,mood)+"\n\n"+thesis+(tempo?"\n\nTempo preference: "+tempoNames[tempo]+". Favor recordings with this perceived pace while respecting the selected mood. Treat this as a curation preference, not a verified BPM filter; do not invent BPM values.":"")+"\n\n"+handoff;
+ return goCommand(ai,service,mood)+"\n\n"+thesis+(freshCrateLens?"\n\nFresh-crate discovery lens: "+freshCrateLens+" Treat this as a search route, not a forced genre or an artist list. Prefer recordings absent from recent visible playlists; keep the requested mood and sonic cohesion.":"")+(tempo?"\n\nTempo preference: "+tempoNames[tempo]+". Favor recordings with this perceived pace while respecting the selected mood. Treat this as a curation preference, not a verified BPM filter; do not invent BPM values.":"")+"\n\n"+handoff;
 }
 const params=new URLSearchParams(location.search);
 const isLegacyGemini=location.pathname.startsWith("/gemini/");
@@ -197,9 +217,11 @@ if(welcome){
  });
 }
 async function copyGo(){
- const prompt=goPrompt(ai,service,mood);
  const button=doc.getElementById("goButton");
  if(button&&button.disabled)return;
+ // Each GO explores a different lane; preview and copied request stay identical.
+ freshCrateLens=nextFreshCrateLens();renderLaunch();
+ const prompt=goPrompt(ai,service,mood);
  if(button){button.disabled=true;button.setAttribute("aria-busy","true");button.setAttribute("data-copy-state","copying")}
  copiedPrompt=null;updateHandoff();
  status("Copying your prompt…");
