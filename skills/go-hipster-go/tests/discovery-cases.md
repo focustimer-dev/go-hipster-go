@@ -30,6 +30,16 @@ Test these against the prior revision with the *same* catalog/tools. Rate actual
 
 This is a **test plan**, not proof the curation model will pick better music or that a provider can save these recordings.
 
+## Gemini artist-anchor collapse and count integrity
+
+A user screenshot showed a real Gemini/YouTube Music card titled *Anatolian Fuzz & Psych* with 25 songs; at least the first five displayed titles belonged to Erkin Koray. This demonstrates a count mismatch and visible artist concentration, **not** that all 25 came from that artist or that the mix was saved.
+
+- For ordinary `go`, require the **Jukebox Gemini handoff** to request 12 tracks / 12 different lead artists, describe sonic properties rather than name two canonical artists, and forbid treating a themed mix as an exact ordered transfer.
+- An actual 25-track card with five visible consecutive selections by one artist is **approximate; requested count/diversity not met**. Do not falsely report 12 saved or claim all 25 are by that artist.
+- If provider count and unique-artist constraints are ignored, do **not** auto-create a second playlist; allow optional refinement only with listener intent and re-check the result.
+- These are observable and static compliance tests, not evidence that YouTube Music enforces a per-artist cap, an exact count, or final playlist persistence.
+- Preserve the DeBarge Protocol's explicitly defined one-in-100 exceptional outcome; ordinary playlist targets and test cases do not override a real eligible hit.
+
 ## Gemini search-card and spark-combination regression
 
 - Repeated Jukebox GO prompts should provide *different* Random crate spark metaphors, assembled independently of the 12 prewritten lenses. These change the search hypothesis, not listener-requested mood or source verification.

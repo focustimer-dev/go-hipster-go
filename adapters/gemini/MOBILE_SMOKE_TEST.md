@@ -40,8 +40,15 @@ Using the new Gemini v3.5.3 upload and Jukebox's Gemini + YouTube Music setting:
 1. Press GO twice with the same mood/tempo; verify each copied prompt has a *different* Random crate spark phrase and preserves the same mood/tempo.
 2. Use Gemini's real skill selection and the real **@YouTubeMusic** Connected App from the @ picker; pasted @ text by itself does not guarantee either was activated.
 3. Require the response to say **Create ONE playlist**, not to issue twelve ordinary YouTube searches for exact song titles. A screen of YouTube **video** cards counts as **playlist not created**.
-4. When exact insert isn't supported, generate one provider-native thematic playlist from the curator's musical thesis and up to two verified artist anchors, noting that the output may differ from the intended 12 recordings. Look for the native **Save to library** action before claiming saved.
+4. When exact insert isn't supported, generate one provider-native thematic playlist from the curator's sonic thesis and no artist-name anchors unless specifically requested by the listener, noting that the output may differ from the intended 12 recordings. Look for the native **Save to library** action before claiming saved.
 5. Keep video search, generated YouTube Music playlist, and library-saved playlist as three different statuses. Do not claim these tests pass merely because CI passes.
+
+## Test D2 — 25-song artist-radio regression
+
+- Run plain `go` in Gemini + YouTube Music with the actual skill and Connected App selected, using a recent Jukebox-generated prompt. The request must say **12 songs / 12 distinct lead artists** and avoid sending the provider a named lead artist.
+- If the actual provider card returns 25 songs with five or more tracks by one performer (the user observed this with Erkin Koray), report an **approximate playlist** and that the requested **count/diversity were not met**. Do not silently declare success, or automatically retry and leave duplicate generated cards.
+- Check both counts separately: intended curator list versus generated provider card. Google documents themed playlist generation; exact counts and performer caps have not been confirmed as enforceable.
+- A user can try a single refinement in the existing provider card when the UI offers it, then report whether the displayed result changed; do not imply Gemini can edit an already saved YouTube Music playlist if its tool cannot.
 
 ## Test R — repeated songs versus provider auto-fill
 

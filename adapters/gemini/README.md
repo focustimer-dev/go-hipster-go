@@ -4,7 +4,7 @@
 
 ## Download the Gemini skill — no terminal required
 
-**[Download the latest Gemini Skills ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip)** · [See the versioned v3.5.3 release](https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.5.3/go-hipster-go-gemini-app-skill.zip)
+**[Download the latest Gemini Skills ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip)** · [See the versioned v3.5.4 release](https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.5.4/go-hipster-go-gemini-app-skill.zip)
 
 This is the **five-file, instruction-only** package ready for Gemini's Skills uploader: `SKILL.md` plus four `references/` files. No Python scripts, credentials or desktop installation needed.
 
@@ -19,6 +19,12 @@ If your Gemini agent can install or load the skill directly from the GitHub repo
 This is **not** a completed YouTube Music playlist. When exact song-name matching is requested but the Gemini connected app only exposes theme-based playlist creation, Gemini may search ordinary YouTube one recording at a time and never generate a playlist. The Jukebox now says **Create ONE playlist in @YouTubeMusic**, asks Gemini to use the supported theme-generation capability where exact ordered insertion is unavailable, and treats individual YouTube video results as **playlist not created**.
 
 Google's documented app name is **`@YouTubeMusic`**, not `@youtube-music`. Merely pasting this text from the Jukebox does **not** create an active Connected App mention. In Gemini, type `@` and **select YouTube Music from the actual picker** if the app did not activate; similarly select the installed Go, Hipster, Go! skill from `/` or `@` where needed. Google currently documents **Create a playlist** by a mood, activity or artist; it does not document editing an arbitrary exact ordered recording list. Use **Save to library** if the generated playlist needs saving.
+
+## If Gemini produces an artist-heavy 25-song playlist
+
+A real Gemini playlist card is an improvement over video search cards, **not** proof that Go, Hipster, Go!'s curation survived the handoff. One observed 25-song *Anatolian Fuzz & Psych* card began with five Erkin Koray tracks, despite the intended default of twelve varied recordings. The v3.5.3 provider handoff allowed up to two artist anchors; Google's theme-based generator may prioritize these artists rather than the sonic thesis. Version 3.5.4 removes artist anchors **by default** for Gemini + YouTube Music and requests 12 tracks from 12 different lead artists. These are desired properties, **not verified provider controls**.
+
+If the resulting playlist ignores them, report **requested 12 vs. returned count**, and note the visible artist concentration. Keep the intended curated tracks distinct from the generated provider mix, and don't automatically create a second playlist to retry. If Gemini's playlist card provides a refinement flow, try `Keep the theme, but make it 12 songs by 12 different artists, no artist radio or repeated performers` once. Whether that refinement succeeds must be checked on the displayed result. Remember to distinguish a Gemini-generated card from **Save to library**.
 
 ## If YouTube Music keeps playing the same records
 
