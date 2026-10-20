@@ -12,7 +12,7 @@ class Element{
  async click(){const event={preventDefault(){this.prevented=true}};await this.events.click?.(event);return event}
 }
 function harness(write,search='',page='launch',storage=new Map()){
- const ids=['welcomeSetup','dismissWelcome','aiLabel','copyTailoredSetup','recipeIntro','recipeSteps','recipeResources','recipeCaveat','openSelectedAi','tempoControl','tempoSlider','tempoValue','anyTempo','copyStatus','routeStatus','prompt','moodName','receiptCode','openAi','browserAi','manualOpenAi','receiptSummary','goHint','goButton','stripSetupPrompt','setupPromptText','setupPromptDetails','setupTipStatus','openSetupAi','promptDetails','shareButton'];
+ const ids=['welcomeSetup','dismissWelcome','aiLabel','copyTailoredSetup','recipeIntro','recipeSteps','recipeResources','recipeCaveat','openSelectedAi','tempoControl','tempoSlider','tempoValue','anyTempo','copyStatus','routeStatus','prompt','moodName','receiptCode','openAi','browserAi','manualOpenAi','receiptSummary','goHint','goButton','stripSetupPrompt','setupPromptText','setupPromptDetails','setupTipStatus','openSetupAi','promptDetails','shareButton','geminiCurateOption','geminiCurateOnly'];
  const elements=Object.fromEntries(ids.map(id=>[id,new Element()]));
  const ais=['chatgpt','gemini','claude'].map(ai=>new Element({ai}));
  const services=['spotify','youtube','apple'].map(service=>new Element({service}));
@@ -44,8 +44,22 @@ function harness(write,search='',page='launch',storage=new Map()){
  assert.match(repeatCopies[0],/Fresh-crate discovery lens:/,'A GO copies a fresh discovery lens');
  assert.match(repeatCopies[0],/Random crate spark:/,'GO adds an independently combined random phrase');
  const geminiPrompt=harness(async()=>{},'?ai=gemini&service=youtube').elements.prompt.textContent;
- assert.match(geminiPrompt,/Service: YouTube Music. Mode: curate-only/,'Short GO declares mode');
- assert.match(geminiPrompt,/Use Go, Hipster, Go!: go/,'Short GO invokes the skill');
+ assert.match(geminiPrompt,/Use Go, Hipster, Go!: go live\./,'Gemini GO defaults to one-step publishing');
+ assert.match(geminiPrompt,/Mode: go live/,'Gemini GO labels one-step mode');
+ assert.doesNotMatch(geminiPrompt,/curate-only/,'Default Gemini prompt is not curate-only');
+ const geminiLive=harness(async()=>{},'?ai=gemini&service=youtube');
+ assert.equal(geminiLive.elements.geminiCurateOption.hidden,false,'Gemini checkbox is visible');
+ assert.equal(geminiLive.elements.geminiCurateOnly.checked,false,'Curate-only option starts unchecked');
+ geminiLive.elements.geminiCurateOnly.checked=true;
+ await geminiLive.elements.geminiCurateOnly.events.change();
+ assert.match(geminiLive.elements.prompt.textContent,/Mode: curate-only/,'Checkbox gives curate-only prompt');
+ assert.match(geminiLive.elements.prompt.textContent,/Use Go, Hipster, Go!: go\./,'Checkbox invokes plain go');
+ assert.match(geminiLive.elements.receiptSummary.textContent,/Curate only/,'Receipt reflects curate-only mode');
+ assert.equal(geminiLive.elements.openAi.attrs['aria-disabled'],'true','Mode change invalidates previous copy');
+ const geminiModeUrl=harness(async()=>{},'?ai=gemini&service=youtube&mode=curate');
+ assert.equal(geminiModeUrl.elements.geminiCurateOnly.checked,true,'URL mode=curate selects opt-out');
+ assert.equal(harness(async()=>{},'?ai=chatgpt&service=spotify').elements.geminiCurateOption.hidden,true,'Non-Gemini mode control hidden');
+ assert.match(geminiPrompt,/Use Go, Hipster, Go!: go live/,'Short GO invokes the skill');
  assert.doesNotMatch(geminiPrompt,/Stage 1|TWO-STAGE|YouTube Music PLAYLIST generation action|CURATED — NOT PUBLISHED/,'Repeated policy stays in installed Skill');
  assert.doesNotMatch(geminiPrompt,/@YouTubeMusic/,'Short GO does not activate a music service');
  assert.ok(geminiPrompt.split(/\\s+/).length<85,'Gemini prompt stays concise');
