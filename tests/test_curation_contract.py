@@ -28,7 +28,7 @@ class CurationContractTests(unittest.TestCase):
         self.assertNotIn("Create ONE playlist in @YouTubeMusic",app)
         self.assertNotIn('return "@go-hipster-go "+go+" @youtube-music"',app)
         self.assertIn("Gemini search-card and spark-combination regression",cases)
-        self.assertIn("Playlist not created",skill)
+        self.assertIn("PLAYLIST NOT CREATED",skill)
         self.assertIn("two-stage Gemini workflow",skill)
         self.assertIn("separate opt-in",skill)
         self.assertIn("Gemini two-stage publication boundary",cases)
