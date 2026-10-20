@@ -20,6 +20,12 @@ class CurationContractTests(unittest.TestCase):
         self.assertIn("crypto.getRandomValues",app)
         self.assertIn("ghg-crate-routes-v1",app)
         self.assertIn("Fresh-crate discovery lens",app)
+        self.assertIn("Random crate spark",app)
+        self.assertIn("nextCrateSparkPhrase",app)
+        self.assertIn("Create ONE playlist in @YouTubeMusic",app)
+        self.assertNotIn('return "@go-hipster-go "+go+" @youtube-music"',app)
+        self.assertIn("Gemini search-card and spark-combination regression",cases)
+        self.assertIn("Playlist not created",skill)
 
     def test_debarge_protocol_is_preserved(self):
         t=(ROOT / "SKILL.md").read_text(encoding="utf-8")
