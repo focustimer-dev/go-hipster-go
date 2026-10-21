@@ -66,3 +66,7 @@ This deliberately changes Gemini's previous automatic playlist-generation behavi
 ### Criminal mood
 
 Select **Criminal** for lesser-known criminal/gangster anthems, strongly favoring non-English vocals. Discovery routes include narcocorridos, Sicilian mafia songs, and relevant Caribbean, African and Latin American scenes. Songs must explicitly concern crime, supported by lyrics or credible song-level sources; the prompt asks for a short English explanation and skips uncertain matches. Mood and tempo take priority over randomized discovery cues.
+
+### ChatGPT + Apple Music
+
+Connect Apple Music in ChatGPT Settings → Apps and select both it and Go, Hipster, Go! in the conversation. GO includes `@Apple Music` and requests exact recordings in the intended order through the app’s playlist widget or an available authorized writer. If the widget offers **Create playlist in Apple Music**, use that control to save. Search and playlist generation do not require an Apple Music subscription; saving to the library does. The workflow distinguishes **ready to save**, tool-confirmed saving and user-confirmed saving, and does not assume library/history access or independent read-back verification. A missing direct writer alone does not force a text fallback when a saveable widget is available. Claude’s separate MCP setup is unchanged.

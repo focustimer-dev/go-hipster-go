@@ -23,6 +23,18 @@ function harness(write,search='',page='launch',storage=new Map()){
  return {elements,ais,services,moods};
 }
 (async()=>{
+ const apple=harness(async()=>{},"?ai=chatgpt&service=apple");
+ assert.match(apple.elements.prompt.textContent,/@Go, Hipster, Go! @Apple Music go/);
+ assert.match(apple.elements.prompt.textContent,/playlist widget/);
+ assert.match(apple.elements.prompt.textContent,/Do not fall back to text merely/);
+ assert.match(apple.elements.prompt.textContent,/Report ready to save/);
+ assert.match(apple.elements.prompt.textContent,/saving to my library requires an Apple Music subscription/);
+ assert.match(apple.elements.setupPromptText.textContent,/do not require an Apple Music subscription/);
+ assert.match(apple.elements.setupPromptText.textContent,/even without a direct playlist-writing tool/);
+ const claudeApple=harness(async()=>{},"?ai=claude&service=apple");
+ assert.match(claudeApple.elements.setupPromptText.textContent,/compatible MCP connector/);
+ assert.doesNotMatch(claudeApple.elements.prompt.textContent,/playlist widget/);
+
  for(const ai of ['chatgpt','gemini','claude']) for(const service of ['spotify','youtube','apple']){
   let copied='';const h=harness(async s=>copied=s,`?ai=${ai}&service=${service}&mood=criminal&tempo=fast`);
   assert.equal(h.moods[4].attrs['aria-pressed'],'true');
