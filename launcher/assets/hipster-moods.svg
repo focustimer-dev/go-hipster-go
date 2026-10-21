@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 112" role="img" aria-label="Four hipster mood portraits with beards, beanies and man buns">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 112" role="img" aria-label="Five hipster mood portraits with beards, beanies and man buns">
 <defs><linearGradient id="skin" x2=".7" y2="1"><stop stop-color="#ffe6b6"/><stop offset="1" stop-color="#cb986c"/></linearGradient>
 <linearGradient id="beard" x2=".7" y2="1"><stop stop-color="#8a512c"/><stop offset="1" stop-color="#422b24"/></linearGradient>
-<pattern id="knit" width="7" height="6" patternUnits="userSpaceOnUse"><path d="M0 1L4 5M5 1L2 5" stroke="#ffffff" stroke-opacity=".15" stroke-width="1"/></pattern></defs>
+<pattern id="knit" width="7" height="6" patternUnits="userSpaceOnUse"><path d="M0 1L4 5M5 1L2 5" stroke="#ffffff" stroke-opacity=".15" stroke-width="1"/></pattern><pattern id="burglar-stripes" width="10" height="16" patternUnits="userSpaceOnUse"><rect width="10" height="16" fill="#fff4d3"/><rect width="10" height="8" fill="#171a1d"/></pattern></defs>
 <g transform="translate(0)">
 <path d="M7 33l9 4-7 5m82-11-9 4 7 5" fill="none" stroke="#f0c64a" stroke-width="3" stroke-linecap="round"/>
 <path d="M29 92q21 14 43 0" stroke="#212027" stroke-opacity=".38" stroke-width="7" stroke-linecap="round"/>
@@ -50,4 +50,13 @@
 <path d="M29 49c7-8 17-1 12 6s-12-1-5-5m22-1c7-8 17-1 12 6s-12-1-5-5" fill="none" stroke="#66354b" stroke-width="4" stroke-linecap="round"/><path d="M45 75q5 7 11 0" fill="none" stroke="#fbdbcf" stroke-width="3"/><path d="M48 78v10q4 6 7-1v-9" fill="#dd6b94" stroke="#874654" stroke-width="2"/>
 <circle cx="79" cy="71" r="4" fill="#f1bd5b" stroke="#643d25" stroke-width="2"/>
 </g>
+<g transform="translate(400)"><path d="M9 110L14 91Q20 82 37 80H63Q80 82 86 91L91 110Z" fill="url(#burglar-stripes)" stroke="#352a27" stroke-width="3"/><g transform="translate(10 0) scale(.8)"><ellipse cx="50" cy="58" rx="31" ry="37" fill="url(#skin)" stroke="#352a27" stroke-width="2.4"/>
+<ellipse cx="20" cy="58" rx="5" ry="9" fill="#d4a37d" stroke="#3b2b26" stroke-width="2"/><ellipse cx="80" cy="58" rx="5" ry="9" fill="#d4a37d" stroke="#3b2b26" stroke-width="2"/>
+<path d="M18 43q-3-34 32-37 35 2 33 37z" fill="#25262b" stroke="#25262b" stroke-width="3"/><path d="M20 25h60v17H20z" fill="#25262b" stroke="#27252a" stroke-width="2.7"/><path d="M18 10q32-17 64 0" stroke="#fbdedb" stroke-width="2" fill="none" opacity=".6"/><path d="M20 25h60v17H20z" fill="url(#knit)" /><circle cx="50" cy="8" r="7" fill="#25262b" stroke="#333" stroke-width="2"/>
+<path d="M19 65q2 43 30 42 31 1 33-43-6 8-17 10-15 5-30 0-11-1-16-9" fill="url(#beard)" stroke="#39251e" stroke-width="2.5"/>
+<path d="M27 75q0 15 15 25m30-26q0 15-15 26" fill="none" stroke="#b57942" stroke-width="2.3" opacity=".8"/>
+<path d="M41 61q8-4 9 4 2-8 10-4l12 8q-12 11-23 3-12 8-23-3Z" fill="#513227" stroke="#35231e" stroke-width="1.5"/>
+<path d="M19 46Q32 41 47 47L53 47Q68 41 81 46L77 60Q64 65 53 57L47 57Q34 65 23 60Z" fill="#171a1d" stroke="#292526" stroke-width="2"/><ellipse cx="37" cy="53" rx="7" ry="4" fill="#ffe6b6"/><ellipse cx="63" cy="53" rx="7" ry="4" fill="#ffe6b6"/><circle cx="39" cy="53" r="2" fill="#171a1d"/><circle cx="65" cy="53" r="2" fill="#171a1d"/><path d="M43 72q7 8 14 0" stroke="#fff4d3" stroke-width="3" fill="none"/>
+
+</g></g>
 </svg>

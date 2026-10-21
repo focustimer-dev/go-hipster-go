@@ -10,7 +10,7 @@ const geminiIntent="intent://gemini.google.com/app#Intent;scheme=https;package=c
 let copiedPrompt=null;
 const tempoNames={slow:"Slow",relaxed:"Relaxed",moderate:"Mid-tempo",brisk:"Brisk",fast:"Fast"};
 const tempoSteps=Object.keys(tempoNames);
-const moods=new Set(["go","happy","angry","sad","weird"]);
+const moods=new Set(["go","happy","angry","sad","weird","criminal"]);
 function stored(key){try{return localStorage.getItem(key)}catch(e){return null}}
 function store(key,v){try{localStorage.setItem(key,v)}catch(e){}}
 function status(message){const e=doc.getElementById("copyStatus");if(e)e.textContent=message}
@@ -100,10 +100,12 @@ function nextCrateSparkPhrase(){
  return crateSparkWords[0][pick%10]+" / "+crateSparkWords[1][Math.floor(pick/10)%10]+" / "+crateSparkWords[2][Math.floor(pick/100)%10];
 }
 const thesis="Curate 12 verified deep-cut recordings around a cohesive sonic thesis. Explore surprising links across scenes, eras, rhythm, voice, production and instrumentation. Keep the transitions listenable, not just clever. Avoid recycled example-artist lists and never invent track matches.";
+const criminalBrief="Criminal mood: Build a cohesive playlist of lesser-known criminal and gangster anthems, strongly preferring non-English vocals. Explore narcocorridos, Sicilian mafia songs, and relevant scenes across the Caribbean, Africa and Latin America as discovery routes, not quotas. Every song must openly concern criminal activity in its lyrics or narrative; a menacing sound, an artist's reputation or a place of origin is not enough. Verify the theme from reliable lyrics or credible song-level sources; skip uncertain matches and do not invent translations. Give a brief English explanation of each song's criminal subject. Favor deep cuts over obvious staples, with no fixed artist roster. This theme takes precedence over random discovery lenses and crate sparks; honor the selected tempo.";
 function goPrompt(ai,service,mood){
+ const moodBrief=mood==="criminal"?"\n\n"+criminalBrief:"";
  if(ai==="gemini"&&service==="youtube"){
   // Gemini's installed Skill owns the workflow. Only session choices belong in GO.
-  return goCommand(ai,service,mood)+"\nService: YouTube Music. Create one playlist if the connected app permits; report what actually happened."+
+  return goCommand(ai,service,mood)+"\nService: YouTube Music. Create one playlist if the connected app permits; report what actually happened."+moodBrief+
    (tempo?"\nTempo: "+tempoNames[tempo]+".":"")+
    (freshCrateLens?"\nDiscovery lens: "+freshCrateLens:"")+
    (crateSparkPhrase?"\nCrate spark: "+crateSparkPhrase:"");
@@ -112,7 +114,7 @@ function goPrompt(ai,service,mood){
  if(ai==="chatgpt"&&service==="spotify")handoff="Resolve exact Spotify track versions and publish in the chosen order if an authorized writer is exposed. Read back the saved count/order if possible.";
  else if(ai==="gemini"&&service==="spotify")handoff="Gemini's Spotify connected app does not create playlists. Give me a verified ordered tracklist, and use Spotify only for supported search/playback.";
  else handoff="Target "+serviceNames[service]+", but only write if this AI actually exposes a connected, authorized playlist writer. Otherwise give the verified ordered tracklist; don't claim it was saved.";
- return goCommand(ai,service,mood)+"\n\n"+thesis+(freshCrateLens?"\n\nFresh-crate discovery lens: "+freshCrateLens+" Treat this as a search route, not a forced genre or an artist list. Prefer recordings absent from recent visible playlists; keep the requested mood and sonic cohesion.":"")+(crateSparkPhrase?"\n\nRandom crate spark: "+crateSparkPhrase+". Use this as a loose metaphor for musical discovery, NOT as a track title, factual instrument claim or rigid requirement. Find independently verified recordings; respect my mood and tempo.":"")+(tempo?"\n\nTempo preference: "+tempoNames[tempo]+". Favor recordings with this perceived pace while respecting the selected mood. Treat this as a curation preference, not a verified BPM filter; do not invent BPM values.":"")+"\n\n"+handoff;
+ return goCommand(ai,service,mood)+"\n\n"+thesis+moodBrief+(freshCrateLens?"\n\nFresh-crate discovery lens: "+freshCrateLens+" Treat this as a search route, not a forced genre or an artist list. Prefer recordings absent from recent visible playlists; keep the requested mood and sonic cohesion.":"")+(crateSparkPhrase?"\n\nRandom crate spark: "+crateSparkPhrase+". Use this as a loose metaphor for musical discovery, NOT as a track title, factual instrument claim or rigid requirement. Find independently verified recordings; respect my mood and tempo.":"")+(tempo?"\n\nTempo preference: "+tempoNames[tempo]+". Favor recordings with this perceived pace while respecting the selected mood. Treat this as a curation preference, not a verified BPM filter; do not invent BPM values.":"")+"\n\n"+handoff;
 }
 const params=new URLSearchParams(location.search);
 const isLegacyGemini=location.pathname.startsWith("/gemini/");

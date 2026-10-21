@@ -62,3 +62,7 @@ The Gemini installation prompt continues to require Task mode for attempted GitH
 GO with Gemini + YouTube Music now copies a **stage-one, curator-only** prompt. It does **not** ask for a provider-generated playlist, and does not contain a pasted `@YouTubeMusic` invocation. The Gemini Skill should return the intended verified artist/title/version tracks in order, plus notes and **CURATED — NOT PUBLISHED** status. A second-stage **approximate YouTube Music playlist** is optional and must be requested explicitly in the same Gemini chat after reviewing the crate. That separate action may use the native Connected App if selected, but its results cannot be called exact without item-level verification. Keep the original crate intact for comparisons.
 
 This deliberately changes Gemini's previous automatic playlist-generation behavior because field tests showed Google returning entirely different 25-song mixes for a carefully curated twelve-track set. The Jukebox still creates fresh random sonic lenses and crate sparks; ChatGPT and other service workflows remain unchanged.
+
+### Criminal mood
+
+Select **Criminal** for lesser-known criminal/gangster anthems, strongly favoring non-English vocals. Discovery routes include narcocorridos, Sicilian mafia songs, and relevant Caribbean, African and Latin American scenes. Songs must explicitly concern crime, supported by lyrics or credible song-level sources; the prompt asks for a short English explanation and skips uncertain matches. Mood and tempo take priority over randomized discovery cues.

@@ -16,13 +16,21 @@ function harness(write,search='',page='launch',storage=new Map()){
  const elements=Object.fromEntries(ids.map(id=>[id,new Element()]));
  const ais=['chatgpt','gemini','claude'].map(ai=>new Element({ai}));
  const services=['spotify','youtube','apple'].map(service=>new Element({service}));
- const moods=['happy','angry','sad','weird'].map(mood=>new Element({mood}));
+ const moods=['happy','angry','sad','weird','criminal'].map(mood=>new Element({mood}));
  const groups={'[data-ai]':ais,'[data-service]':services,'[data-mood]':moods,'[data-setup]':[]};
  const doc={body:{dataset:{page},appendChild(){}},getElementById:id=>elements[id]||null,querySelectorAll:q=>groups[q]||[],createElement:()=>Object.assign(new Element(),{style:{},select(){},remove(){}}),execCommand:()=>false};
  vm.runInNewContext(fs.readFileSync('launcher/assets/app.js','utf8'),{document:doc,navigator:{clipboard:{writeText:write}},localStorage:{getItem(key){return storage.get(key)||null},setItem(key,value){storage.set(key,value)}},URL,URLSearchParams,location:{search,pathname:'/',href:'https://example.test/'},history:{replaceState(){}}});
  return {elements,ais,services,moods};
 }
 (async()=>{
+ for(const ai of ['chatgpt','gemini','claude']) for(const service of ['spotify','youtube','apple']){
+  let copied='';const h=harness(async s=>copied=s,`?ai=${ai}&service=${service}&mood=criminal&tempo=fast`);
+  assert.equal(h.moods[4].attrs['aria-pressed'],'true');
+  await h.elements.goButton.click();
+  assert.match(copied,/go criminal/);assert.match(copied,/strongly preferring non-English/);assert.match(copied,/Every song must openly concern criminal activity/);assert.match(copied,/skip uncertain matches/);
+  await h.moods[4].click();assert.equal(h.moods[4].attrs['aria-pressed'],'false');assert.doesNotMatch(h.elements.prompt.textContent,/Criminal mood:/);
+ }
+
  const jukeboxHtml=fs.readFileSync('launcher/index.html','utf8');
  assert.equal((jukeboxHtml.match(/id="welcomeSetup"/g)||[]).length,1,'One setup disclosure exists');
  assert.equal((jukeboxHtml.match(/id="stripSetupPrompt"/g)||[]).length,1,'One copy setup action exists');
