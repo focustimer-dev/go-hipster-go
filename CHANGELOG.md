@@ -1,3 +1,9 @@
+# 3.6.2 — Gemini architectural cleanup
+
+- Give Gemini one authoritative native YouTube Music default with explicit-service and approved-setup overrides, and one publish-first GO flow.
+- Generate the five-file Gemini skill from selected canonical musical sections; remove unrelated Claude/ChatGPT/Spotify-default/CLI instructions and broken escapes without deleting the full original skill.
+- Preserve the complete global-scenes and sonic-taxonomy references. Prune host-specific Gemini examples and verification history, rebuild Gemini Gem knowledge from the filtered source, and add ZIP regression tests.
+
 # 3.6.1 — Shorter GO, deeper Criminal machinery
 
 - Keep Criminal regional research, Patois nuance and song-level theme verification in the installed skill references, not in the copied PWA prompt. Rotate seven Criminal story angles.
