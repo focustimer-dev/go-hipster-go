@@ -10,7 +10,7 @@
 
 ## Download the Gemini skill — no terminal required
 
-**[Download the latest Gemini Skills ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip)** · [See the versioned v3.5.7 release](https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.5.7/go-hipster-go-gemini-app-skill.zip)
+**[Download the latest Gemini Skills ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip)** · [See the versioned v3.6.0 release](https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.6.0/go-hipster-go-gemini-app-skill.zip)
 
 This is the **five-file, instruction-only** package ready for Gemini's Skills uploader: `SKILL.md` plus four `references/` files. No Python scripts, credentials or desktop installation needed.
 
@@ -24,15 +24,15 @@ If using Gemini to install directly from GitHub, **choose Task mode before pasti
 
 Start by selecting **Task mode** in Gemini before pasting the Jukebox's repository-install prompt. Verify that the task actually creates a persistent Skill; otherwise switch to the **browser-based** ZIP upload route. Do not look for the ZIP uploader in the native mobile app.
 
-The Jukebox's **Copy setup check** now explicitly asks Gemini to load the **latest main-branch** `SKILL.md` and its four reference documents, install a persistent Skill if its actual interface supports that, and **confirm version 3.5.7**. Reading a GitHub URL into one chat is *not* the same as installing a persistent Skill. If Gemini can only read the repository, use the current [five-file Gemini Skill ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip) and the app's **Customize → Skills** upload. Confirm that it persists across a new conversation. Do not claim the installer can act on the user's behalf unless Gemini actually reports installation.
+The Jukebox's **Copy setup check** now explicitly asks Gemini to load the **latest main-branch** `SKILL.md` and its four reference documents, install a persistent Skill if its actual interface supports that, and **confirm version 3.6.0**. Reading a GitHub URL into one chat is *not* the same as installing a persistent Skill. If Gemini can only read the repository, use the current [five-file Gemini Skill ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip) and the app's **Customize → Skills** upload. Confirm that it persists across a new conversation. Do not claim the installer can act on the user's behalf unless Gemini actually reports installation.
 
-## GO means make a playlist (v3.5.7)
+## GO means make a playlist (v3.6.0)
 
 Gemini's installed Skill carries all the research, verification, sonic sequencing and publication rules. The Jukebox passes the destination, mood, optional tempo, sound-led discovery lens and crate spark. **Plain `go` now curates AND attempts to create one playable YouTube Music playlist by default.** `go live` remains a synonym for older prompts, not a required mode. There is no Curate only checkbox in the Jukebox. If requested explicitly, `go, text only` skips writing.
 
 The curator's intended 12 artist/title/version recordings are selected first, then the actual provider's **playlist** action is tried once. Google's theme generator may substitute tracks or ignore order/count. Do not silently call those exact: label the mix **APPROXIMATE** unless item-level read-back establishes fidelity. If the connected writer fails or is unavailable, return the original crate, mark **PLAYLIST NOT CREATED**, and offer one actionable next step. A playlist card is not necessarily saved; the user may need **Save to library**.
 
-**Installing or refreshing the Skill:** the Gemini Task-mode GitHub install prompt should confirm **v3.5.7** is genuinely installed and persists. If it only reads the repository, upload the [five-file Gemini Skill ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip) from Gemini desktop/mobile web, not the native app.
+**Installing or refreshing the Skill:** the Gemini Task-mode GitHub install prompt should confirm **v3.6.0** is genuinely installed and persists. If it only reads the repository, upload the [five-file Gemini Skill ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip) from Gemini desktop/mobile web, not the native app.
 
 ## Previous two-stage workflow (v3.5.5)
 

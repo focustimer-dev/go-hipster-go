@@ -17,7 +17,7 @@ description: Setup services, then go: real global deep cuts with sardonic, speci
 license: MIT
 compatibility: Requires file-reading capability. Optional web/catalog lookup for track verification and Python 3.10+ to run included validation/randomness scripts. Streaming accounts and OAuth are NOT bundled.
 metadata:
-  version: "3.5.7"
+  version: "3.6.0"
 ---
 
 # Go, Hipster, Go! — Agent Skill v3
@@ -100,6 +100,8 @@ This changes the default listening workflow, not the music taxonomy or its Easte
 
 Treat short requests as an expressive **overlay on the four discovery axes**, not a genre picker or fixed artist list. Parse any modifiers and track-count request before choosing the sonic thesis; the publishing preflight above remains first among external actions. Keep the normal 12-track default when the listener gives only a mood or speed modifier.
 
+- **`go happy`** — explore celebration, play, contentment, relief, buoyancy or release; follow the mood matrix instead of equating happiness with fast disco.
+- **`go criminal`** — use the Criminal narrative routes and mood matrix; verify explicit crime themes, strongly prefer non-English vocals and allow occasional Jamaican Patois dancehall.
 - **`go fast`** — prioritize perceived forward momentum, urgent rhythm, insistent patterns, propulsion and energy. Fast does not imply cheerful, electronic, loud or a verified BPM.
 - **`go angry`** — emphasize friction, dissonance, bite, confrontational vocals or agitated groove. Anger is a mood, **not an automatic tempo increase**: brooding slow rage is valid.
 - **`go chill`** — favor ease, warmth, breathing room, softened dynamics and inviting texture. Chill may be rhythmically busy or quick; it need not be slow, ambient or bland.
@@ -114,6 +116,9 @@ Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation;
 **Count fidelity:** before publishing, check the number of distinct ordered selections against the requested count; don't silently turn 12 into 6. After writing, reconcile the saved count and track order where provider results allow it. If the host has a fixed cap or truncates output, report the actual result as incomplete rather than claiming the requested list was published. **DeBarge eligibility applies to every `go` variant**: `go fast`, `go angry`, `go chill`, `go slow`, `go weird`, **`go sad`**, their combinations, `go short`, `go long`, and numeric requests such as `go fast 20` or `go weird slow 30`. Ordinary length targets, even numeric ones, **must not suppress the one-in-100 roll**; on a genuine hit, the Protocol's 25 entries intentionally override the ordinary requested count, energy, mood and diversity. Only a listener's **explicit no-surprises/no-overrides strict length**, `no DeBarge`, or `unique songs only` constraint excludes the random surprise. Run the single eligibility check/roll once per *new* playlist, not per modifier, candidate theme, publication retry or follow-up.
 
 ## Fresh-crate discovery and repeat control
+
+**Load before choosing a thesis:** read the Mood interpretation matrix, Peculiarity by audible mechanism and Freshness procedure in [sonic taxonomy](references/sonic-taxonomy.md), then consult the Category discovery index in [global scenes](references/global-scenes.md). Use these for every ordinary mood and freeform GO, not just Weird. The taxonomy is an expandable research map, not a fixed menu. Compare three distinct routes internally, then choose a coherent thesis. Preserve named examples for context, not automatic selections. Honor a supplied mood interpretation as a starting angle beneath explicit user preferences.
+
 
 When a Jukebox GO includes a **Random crate spark** phrase, treat it as a new metaphorical angle on the music. The independent word combination is an exploration hint, not evidence that an instrument occurs on a recording, a song title to search for, or a requirement that the playlist contain specific genres. Allow a fresh spark to shift the open-ended thesis genuinely away from the most recently familiar post-punk/dub/funk cluster when another musically convincing direction exists. Respect user-requested mood, speed, exclusion and artist constraints above the seed. A Jukebox can supply random words across separate Gemini conversations, but **a Gemini Skill invoked directly without a supplied spark cannot claim it rolled a random phrase** unless an actual random source is available.
 
@@ -383,6 +388,104 @@ The additions below widen what the curator can *consider*. Source links support 
 - For open-ended `go`, consider under-covered scenes and languages before settling on a canonical shortlist, but **never force a regional, religious, Indigenous or identity quota**. A promising audible bridge always outranks token diversity.
 - Verify artist credit, language, Nation/community identification, gender self-description and historical context when stated. These example names are discovery doors, not a ready-to-publish playlist.
 
+
+## Category discovery index — expand the search before choosing artists
+
+The following 44 routes add to the incumbent map; they do not replace it. Some are genres, some are traditions, and some are explicitly labeled archival search routes. Never promote a compilation title or marketing term into a universal genre. The short descriptions are research scopes, not guarantees about every recording. Mood suitability must be established independently; no route is locked to Happy, Angry, Sad or Weird.
+
+### Index navigation
+
+- Percussive and electronic dance laboratories
+- Island and coastal dance traditions
+- Overlooked electric and cassette routes
+- Guitar, percussion and dance crossings
+- Multipart voice and patient song
+- Experimental material and form
+- Criminal narrative routes
+
+Sources below establish research doors, not streaming availability or exact-track verification. Open the relevant release notes and verify the individual recording before making factual claims. Preserve the distinctions between language, ethnicity, geography, genre and mood. Named artists elsewhere in this document are historical touchstones, never default playlist slots.
+
+### Percussive and electronic dance laboratories
+
+| Route | Research scope | Source |
+|---|---|---|
+| Singeli | Tanzanian electronic dance; investigate compact rapid rhythmic turns. | [N](https://nyegenyegetapes.bandcamp.com/) |
+| Electro Acholi / acholitronix | Northern Ugandan electronic dance routes; distinguish from other Ugandan scenes. | [N](https://nyegenyegetapes.bandcamp.com/) |
+| Balani show / electro balani | Malian electronic dance; investigate percussion layering. | [N](https://nyegenyegetapes.bandcamp.com/) |
+| Shangaan electro | South African electronic dance; distinguish from older bubblegum. | [N](https://nyegenyegetapes.bandcamp.com/) |
+| Kadodi | Research credited percussion ensembles and separately documented electronic adaptations. | [N](https://nyegenyegetapes.bandcamp.com/) |
+| Jaglara | Sudanese electronic dance recordings; verify local provenance and arrangement. | [O](https://ostinatorecords.bandcamp.com/) |
+
+### Island and coastal dance traditions
+
+| Route | Research scope | Source |
+|---|---|---|
+| Funaná | Cabo Verde; investigate accordion and scraped-percussion interaction. | [A](https://analogafrica.bandcamp.com/) |
+| Rebita | Angolan dance repertoire and archival band recordings. | [A](https://analogafrica.bandcamp.com/) |
+| Maloya | Réunion; preserve song/dance and historical context. | [U](https://ich.unesco.org/en/lists?term%5B%5D=vocabulary_thesaurus-1) |
+| Sega tipik | Mauritian tradition; distinguish from other island sega practices. | [U](https://ich.unesco.org/en/lists?term%5B%5D=vocabulary_thesaurus-1) |
+| Sega tambour of Rodrigues | Rodrigues repertoire; verify performers and exact recording. | [U](https://ich.unesco.org/en/lists?term%5B%5D=vocabulary_thesaurus-1) |
+| Sega tambour Chagos | Chagossian repertoire; preserve community context. | [U](https://ich.unesco.org/en/lists?term%5B%5D=vocabulary_thesaurus-1) |
+| Gwoka | Guadeloupe song, dance and percussion tradition. | [U](https://ich.unesco.org/en/lists?term%5B%5D=vocabulary_thesaurus-1) |
+
+### Overlooked electric and cassette routes
+
+| Route | Research scope | Source |
+|---|---|---|
+| Somali diaspora digital recordings | 1990s Saudi-based Somali recordings documented by 808 Xamar. | [O](https://ostinatorecords.bandcamp.com/) |
+| Djibouti broadcast ensembles | RTD archival repertoire; do not assume all performers share one origin. | [O](https://ostinatorecords.bandcamp.com/) |
+| Beja electric music | Research documented Beja recordings rather than generic desert-blues tags. | [O](https://ostinatorecords.bandcamp.com/) |
+| Uzbek disco | Soviet Central Asian archival pop route; verify actual language and date. | [O](https://ostinatorecords.bandcamp.com/) |
+| Tajik folktronica | Archival descriptor to investigate, not a claim about all Tajik music. | [O](https://ostinatorecords.bandcamp.com/) |
+| Uyghur rock | Keep distinct from other Central Asian languages and scenes. | [O](https://ostinatorecords.bandcamp.com/) |
+| Tatar jazz | Investigate documented arrangements and performer credits. | [O](https://ostinatorecords.bandcamp.com/) |
+| Libyan reggae | Tape and band recordings distinct from Jamaican originals. | [H](https://habibifunkrecords.bandcamp.com/music) |
+| Libyan cassette pop | Research beyond the familiar reissue lead singles. | [H](https://habibifunkrecords.bandcamp.com/music) |
+| Sudanese tape-era song | Vocal and band recordings; distinguish from contemporary jaglara. | [H](https://habibifunkrecords.bandcamp.com/music) |
+| Bourj Hammoud recordings | A localized archival route, not a formal genre label. | [H](https://habibifunkrecords.bandcamp.com/music) |
+
+### Guitar, percussion and dance crossings
+
+| Route | Research scope | Source |
+|---|---|---|
+| Cameroonian bikutsi | Investigate guitar/percussion relationships; distinguish from makossa. | [A](https://analogafrica.bandcamp.com/) |
+| Gandjal | Research the documented Cameroonian Golden Sounds repertoire. | [A](https://analogafrica.bandcamp.com/) |
+| Afro-Colombian champeta crossings | Trace actual musical exchanges and recordings, not generic fusion. | [P](https://palenquerecords.bandcamp.com/album/nkumba-system-y-palenque-records-bikutsi-de-afrocolombia) |
+| Palenque ensemble traditions | Research credited local ensembles separately from electronic champeta. | [P](https://palenquerecords.bandcamp.com/album/nkumba-system-y-palenque-records-bikutsi-de-afrocolombia) |
+| Pará dance archives | Explore the documented Jambú repertoire; identify the actual style per track. | [A](https://analogafrica.bandcamp.com/) |
+| Jaipongan | West Javanese/Sundanese dance-music route; distinguish from keroncong. | [J](https://www.sublimefrequencies.com/products/576932-radio-java) |
+| Keroncong | Indonesian song tradition; investigate small-ensemble texture. | [J](https://www.sublimefrequencies.com/products/576932-radio-java) |
+| Dangdut | Investigate overlooked regional recordings, not just famous pop hits. | [J](https://www.sublimefrequencies.com/products/576932-radio-java) |
+| Thai shadow music | Electric instrumental archival route; do not equate with all Thai psych. | [S](https://www.sublimefrequencies.com/categories/catalog?page=2) |
+| South Asian steel-guitar film interpretations | Instrumental arrangement route; verify original film and performer. | [S](https://www.sublimefrequencies.com/categories/catalog?page=2) |
+
+### Multipart voice and patient song
+
+| Route | Research scope | Source |
+|---|---|---|
+| Albanian iso-polyphony | Investigate drone and interweaving voices. | [U](https://ich.unesco.org/en/lists?term%5B%5D=vocabulary_thesaurus-1) |
+| Corsican cantu in paghjella | Distinguish secular/liturgical practice and concert adaptation. | [U](https://ich.unesco.org/en/lists?term%5B%5D=vocabulary_thesaurus-1) |
+| Sardinian canto a tenore | Multipart pastoral singing; preserve context. | [U](https://ich.unesco.org/en/lists?term%5B%5D=vocabulary_thesaurus-1) |
+| Lithuanian sutartinės | Multipart song tradition; investigate interlocking entrances. | [U](https://ich.unesco.org/en/lists?term%5B%5D=vocabulary_thesaurus-1) |
+| Shashmaqom | Modal art-music route; use a suitable credited recording or movement. | [U](https://ich.unesco.org/en/lists?term%5B%5D=vocabulary_thesaurus-1) |
+| Morna | Cabo Verde song tradition; assess each song rather than assigning automatic sadness. | [U](https://ich.unesco.org/en/lists?term%5B%5D=vocabulary_thesaurus-1) |
+| Sevdalinka | Traditional urban song; verify text before describing its narrative. | [U](https://ich.unesco.org/en/lists?term%5B%5D=vocabulary_thesaurus-1) |
+
+### Experimental material and form
+
+| Route | Research scope | Source |
+|---|---|---|
+| Indonesian homemade-instrument experimentation | Research extended voice and built instruments without treating the whole region as one genre. | [X](https://www.sublimefrequencies.com/products/626116-senyawa-sujud) |
+| Regional radio collage | Montage route; reject falsely attributed standalone songs. | [S](https://www.sublimefrequencies.com/categories/catalog?page=2) |
+| Ceremonial street-recording archives | Use only suitable credited material with its context intact. | [S](https://www.sublimefrequencies.com/categories/catalog?page=2) |
+
+
+### Criminal narrative routes
+
+Explore narcocorridos, Sicilian mafia songs, Calabrian canti di malavita, Russian blatnaya pesnya/blatnyak, crime-focused Brazilian funk proibidão, Greek underworld rebetiko/hasiklidika, and gunman-focused early Jamaican dancehall. Retain other Caribbean, African and Latin American routes when song-level evidence supports the theme. No compulsory regional itinerary, fixed artist list or assumption that all music in these scenes concerns crime. Require an explicit criminal narrative; a title, prison reference or artist reputation alone is insufficient. Use the mood matrix in sonic-taxonomy.md for narrative range and the Jamaican Patois change of pace.
+
+Research sources: [Calabrian repertoire](https://amiatarecords.com/shop/n8nf4y2t7trzum4vchoz40ewgs18a5), [Russian thieves' song scholarship](https://publish.iupress.indiana.edu/read/songs-to-seven-strings-russian-guitar-poetry-and-soviet-mass-song/section/39ae0780-eb53-4416-8601-aa087bd4c1d8), [rebetiko scholarship](https://www2.umbc.edu/eol/3/magrini/rebetika.htm), [proibidão context](https://djmag.com/longreads/baile-funk-criminalisation-brazils-funk-scene), [early Gunman riddim context](https://vprecords.com/shaggy-taps-vintage-dancehall-with-new-badman-riddim-first-singles-drop-august-22/).
+
 # END SOURCE: references/global-scenes.md
 
 ---
@@ -419,6 +522,46 @@ Source: expanded v2 axes, with the original v1 emphasis on audible qualities.
 2. Identify essential vs optional traits. A cross-scene suggestion must have a credible audible connection.
 3. Specific production gear, instrumentation, tempos, and release dates are unconfirmed until supported by a reliable source; don't invent precision.
 4. Follow the sound beyond the listed examples; don't make all playlists converge on the same reference artists.
+
+
+## Mood interpretation matrix
+
+These are listening hypotheses, never claims that an entire culture feels one way. Choose one main interpretation and a compatible secondary shade; vary them on the next open-ended request. User specifics and tempo win. A fast sad request can be cathartic; slow anger can be quietly menacing. Read the category index in global-scenes.md before defaulting to familiar examples.
+
+| Mood | Interpretations to rotate | Avoid the shortcut |
+|---|---|---|
+| Happy | communal celebration; mischievous play; private contentment; relief after hardship; romantic buoyancy; ecstatic release | major key, disco or fast automatically means happy |
+| Angry | cold contempt; righteous protest; simmering resentment; betrayed intimacy; defiant solidarity; explosive catharsis | metal, shouting or higher tempo automatically means angry |
+| Sad | homesickness; grief; resignation; heartbreak; lonely urban drift; bittersweet acceptance | slow piano, English breakup lyrics or minor key by default |
+| Weird | unstable tuning; interlocking or asymmetric time; surreal narratives; homemade sound sources; radically edited form; uncanny restraint | unfamiliar language is weird; abrasive is always better |
+| Criminal | heists; smuggling; fugitives; criminal betrayal; prison escapes; criminal codes | prison, geography or artist reputation proves a crime narrative |
+
+For Criminal, strongly prefer non-English vocals; occasional Jamaican Patois dancehall can offer a more English-accessible change of pace. Verify explicit criminal subject matter at song level. Songs can boast, confess, mourn or narrate. Keep the established DeBarge exception intact.
+
+## Peculiarity by audible mechanism
+
+These are search categories, not invented microgenre names. Combine one or two with a real scene; never claim a technique or instrument without evidence.
+
+| Family | Distinct search routes |
+|---|---|
+| Time | additive meter; interlocking pulses; lopsided swing; shifting accents; elastic rubato; stop-start silence |
+| Pitch | beating close intervals; alternate tuning; modal ambiguity; sliding pitch; unresolved drones; detuned unisons |
+| Voice | overlapping entrances; antiphonal response; spoken/sung friction; intimate unaccompanied voice; extended vocal technique; dense multipart singing |
+| Material | prepared strings; homemade instruments; struck metal; breath and reeds; bowed overtones; small acoustic ensembles amplified harshly |
+| Studio | tape-splice form; feedback networks; dub subtraction; granular fragments; deliberate digital clipping; dry close-miked detail |
+| Structure | miniature song forms; patiently accumulating cycles; abrupt edits; deceptive repetition; instrumental negative space; acoustic/electronic call-and-response |
+| Archive | regional radio sessions; small-label singles; cassette compilations with credited tracks; film cues outside famous scores; private-press songcraft; live community ensembles |
+
+Archival scarcity is not musical merit. A compilation excerpt or radio collage is not automatically a standalone song; reject unverifiable credits. Preserve sacred, ceremonial and community context rather than treating it as spooky decoration. Never infer mood from language, nationality, religion or identity.
+
+## Freshness procedure
+
+1. Choose a mood interpretation, an audible mechanism and a discovery category before searching artist names. Compare three genuinely different possible theses, then use the strongest; do not print an internal scoring system.
+2. For an unconstrained ordinary set, research beyond one label or compilation and beyond the named reference artists. Trace original releases, local contemporaries and collaborators. Do not swap twelve obvious compilation staples for twelve other staples from one compilation.
+3. When recent lists are accessible, exclude the last up to three sets' normalized artist/title/version recordings and prefer different artists. Also vary the dominant scene, source compilation and sonic thesis. Reissues, alternate uploads, aliases and featured credits do not reset a repeated recording.
+4. If a specific request needs an exception, honor it and explain briefly. No mandatory nation, language, era, label or genre quota; no arbitrary sacrifice of cohesion for obscurity.
+5. When history is unavailable, diversify the research and avoid named-example defaults, but never claim listener-specific novelty or persistent memory. The PWA stores only discovery cue IDs, not the resulting songs or listening history.
+6. When the listener says stale, replace the discovery strategy and actual selections, not merely adjectives, title or ordering. Ask for prior lists only if essential to a precise exclusion request; do not block an ordinary GO.
 
 # END SOURCE: references/sonic-taxonomy.md
 

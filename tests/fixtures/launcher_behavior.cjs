@@ -23,6 +23,31 @@ function harness(write,search='',page='launch',storage=new Map()){
  return {elements,ais,services,moods};
 }
 (async()=>{
+ // Exercise the full cue cycle, reload persistence, and the cycle boundary.
+ const cycleStore=new Map();let cycleCopies=[];
+ let cycle=harness(async s=>cycleCopies.push(s),'?mood=happy','launch',cycleStore);
+ for(let i=0;i<56;i++){
+  if(i===28)cycle=harness(async s=>cycleCopies.push(s),'?mood=happy','launch',cycleStore);
+  await cycle.elements.goButton.click();
+ }
+ const lenses=cycleCopies.map(s=>s.match(/Fresh-crate discovery lens: ([^\n]+)/)[1]);
+ assert.equal(new Set(lenses).size,56,'All cues are used before recycling, including after reload');
+ const angles=cycleCopies.slice(0,6).map(s=>s.match(/This run’s interpretation: ([^.]+)/)[1]);
+ assert.equal(new Set(angles).size,6,'Each mood angle appears before repeating');
+ await cycle.elements.goButton.click();
+ assert.notEqual(cycleCopies[56].match(/Fresh-crate discovery lens: ([^\n]+)/)[1],lenses[55]);
+ await cycle.moods[1].click();
+ assert.doesNotMatch(cycle.elements.prompt.textContent,/This run’s interpretation:/,'Changing mood clears the previous angle');
+ for(const selectedMood of ['happy','angry','sad','weird'])for(const ai of ['chatgpt','gemini','claude'])for(const service of ['spotify','youtube','apple']){
+  let result='';const h=harness(async s=>result=s,`?ai=${ai}&service=${service}&mood=${selectedMood}&tempo=slow`);
+  await h.elements.goButton.click();
+  assert.match(result,/Mood range:/);assert.match(result,/This run’s interpretation:/);
+  assert.match(result,/Slow/);assert.match(result,/do not claim history access when unavailable/);
+ }
+ const badStore=new Map([['ghg-crate-routes-v2','not-json'],['ghg-mood-angles-v1-happy','[0,0,-2,900,"bad"]']]);
+ const recovered=harness(async()=>{},'?mood=happy','launch',badStore);
+ await recovered.elements.goButton.click();
+ assert.match(recovered.elements.prompt.textContent,/This run’s interpretation:/,'Corrupt or obsolete cue storage recovers');
  const apple=harness(async()=>{},"?ai=chatgpt&service=apple");
  assert.match(apple.elements.prompt.textContent,/@Go, Hipster, Go! @Apple Music go/);
  assert.match(apple.elements.prompt.textContent,/playlist widget/);
@@ -74,7 +99,7 @@ function harness(write,search='',page='launch',storage=new Map()){
  assert.doesNotMatch(geminiPrompt,/@YouTubeMusic/,'Short GO does not activate a music service');
  assert.ok(geminiPrompt.split(/\\s+/).length<85,'Gemini prompt stays concise');
  const geminiSetup=harness(async()=>{},'?ai=gemini&service=youtube','setup').elements.setupPromptText.textContent;
- assert.match(geminiSetup,/3.5.7/,'Setup asks for installed version verification');
+ assert.match(geminiSetup,/3.6.0/,'Setup asks for installed version verification');
  assert.match(geminiSetup,/persistent Skill/,'Setup distinguishes reading a repo from installation');
  assert.match(geminiSetup,/choose Task mode beneath the Gemini prompt box/,'Gemini setup requires Task mode before pasting');
  assert.match(geminiSetup,/do not schedule a recurring task/,'Gemini install task must not be scheduled');

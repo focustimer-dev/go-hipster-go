@@ -213,3 +213,101 @@ The additions below widen what the curator can *consider*. Source links support 
 - Treat all historical summaries as hypotheses and research leads, not automatic provenance claims.
 - For open-ended `go`, consider under-covered scenes and languages before settling on a canonical shortlist, but **never force a regional, religious, Indigenous or identity quota**. A promising audible bridge always outranks token diversity.
 - Verify artist credit, language, Nation/community identification, gender self-description and historical context when stated. These example names are discovery doors, not a ready-to-publish playlist.
+
+
+## Category discovery index — expand the search before choosing artists
+
+The following 44 routes add to the incumbent map; they do not replace it. Some are genres, some are traditions, and some are explicitly labeled archival search routes. Never promote a compilation title or marketing term into a universal genre. The short descriptions are research scopes, not guarantees about every recording. Mood suitability must be established independently; no route is locked to Happy, Angry, Sad or Weird.
+
+### Index navigation
+
+- Percussive and electronic dance laboratories
+- Island and coastal dance traditions
+- Overlooked electric and cassette routes
+- Guitar, percussion and dance crossings
+- Multipart voice and patient song
+- Experimental material and form
+- Criminal narrative routes
+
+Sources below establish research doors, not streaming availability or exact-track verification. Open the relevant release notes and verify the individual recording before making factual claims. Preserve the distinctions between language, ethnicity, geography, genre and mood. Named artists elsewhere in this document are historical touchstones, never default playlist slots.
+
+### Percussive and electronic dance laboratories
+
+| Route | Research scope | Source |
+|---|---|---|
+| Singeli | Tanzanian electronic dance; investigate compact rapid rhythmic turns. | [N](https://nyegenyegetapes.bandcamp.com/) |
+| Electro Acholi / acholitronix | Northern Ugandan electronic dance routes; distinguish from other Ugandan scenes. | [N](https://nyegenyegetapes.bandcamp.com/) |
+| Balani show / electro balani | Malian electronic dance; investigate percussion layering. | [N](https://nyegenyegetapes.bandcamp.com/) |
+| Shangaan electro | South African electronic dance; distinguish from older bubblegum. | [N](https://nyegenyegetapes.bandcamp.com/) |
+| Kadodi | Research credited percussion ensembles and separately documented electronic adaptations. | [N](https://nyegenyegetapes.bandcamp.com/) |
+| Jaglara | Sudanese electronic dance recordings; verify local provenance and arrangement. | [O](https://ostinatorecords.bandcamp.com/) |
+
+### Island and coastal dance traditions
+
+| Route | Research scope | Source |
+|---|---|---|
+| Funaná | Cabo Verde; investigate accordion and scraped-percussion interaction. | [A](https://analogafrica.bandcamp.com/) |
+| Rebita | Angolan dance repertoire and archival band recordings. | [A](https://analogafrica.bandcamp.com/) |
+| Maloya | Réunion; preserve song/dance and historical context. | [U](https://ich.unesco.org/en/lists?term%5B%5D=vocabulary_thesaurus-1) |
+| Sega tipik | Mauritian tradition; distinguish from other island sega practices. | [U](https://ich.unesco.org/en/lists?term%5B%5D=vocabulary_thesaurus-1) |
+| Sega tambour of Rodrigues | Rodrigues repertoire; verify performers and exact recording. | [U](https://ich.unesco.org/en/lists?term%5B%5D=vocabulary_thesaurus-1) |
+| Sega tambour Chagos | Chagossian repertoire; preserve community context. | [U](https://ich.unesco.org/en/lists?term%5B%5D=vocabulary_thesaurus-1) |
+| Gwoka | Guadeloupe song, dance and percussion tradition. | [U](https://ich.unesco.org/en/lists?term%5B%5D=vocabulary_thesaurus-1) |
+
+### Overlooked electric and cassette routes
+
+| Route | Research scope | Source |
+|---|---|---|
+| Somali diaspora digital recordings | 1990s Saudi-based Somali recordings documented by 808 Xamar. | [O](https://ostinatorecords.bandcamp.com/) |
+| Djibouti broadcast ensembles | RTD archival repertoire; do not assume all performers share one origin. | [O](https://ostinatorecords.bandcamp.com/) |
+| Beja electric music | Research documented Beja recordings rather than generic desert-blues tags. | [O](https://ostinatorecords.bandcamp.com/) |
+| Uzbek disco | Soviet Central Asian archival pop route; verify actual language and date. | [O](https://ostinatorecords.bandcamp.com/) |
+| Tajik folktronica | Archival descriptor to investigate, not a claim about all Tajik music. | [O](https://ostinatorecords.bandcamp.com/) |
+| Uyghur rock | Keep distinct from other Central Asian languages and scenes. | [O](https://ostinatorecords.bandcamp.com/) |
+| Tatar jazz | Investigate documented arrangements and performer credits. | [O](https://ostinatorecords.bandcamp.com/) |
+| Libyan reggae | Tape and band recordings distinct from Jamaican originals. | [H](https://habibifunkrecords.bandcamp.com/music) |
+| Libyan cassette pop | Research beyond the familiar reissue lead singles. | [H](https://habibifunkrecords.bandcamp.com/music) |
+| Sudanese tape-era song | Vocal and band recordings; distinguish from contemporary jaglara. | [H](https://habibifunkrecords.bandcamp.com/music) |
+| Bourj Hammoud recordings | A localized archival route, not a formal genre label. | [H](https://habibifunkrecords.bandcamp.com/music) |
+
+### Guitar, percussion and dance crossings
+
+| Route | Research scope | Source |
+|---|---|---|
+| Cameroonian bikutsi | Investigate guitar/percussion relationships; distinguish from makossa. | [A](https://analogafrica.bandcamp.com/) |
+| Gandjal | Research the documented Cameroonian Golden Sounds repertoire. | [A](https://analogafrica.bandcamp.com/) |
+| Afro-Colombian champeta crossings | Trace actual musical exchanges and recordings, not generic fusion. | [P](https://palenquerecords.bandcamp.com/album/nkumba-system-y-palenque-records-bikutsi-de-afrocolombia) |
+| Palenque ensemble traditions | Research credited local ensembles separately from electronic champeta. | [P](https://palenquerecords.bandcamp.com/album/nkumba-system-y-palenque-records-bikutsi-de-afrocolombia) |
+| Pará dance archives | Explore the documented Jambú repertoire; identify the actual style per track. | [A](https://analogafrica.bandcamp.com/) |
+| Jaipongan | West Javanese/Sundanese dance-music route; distinguish from keroncong. | [J](https://www.sublimefrequencies.com/products/576932-radio-java) |
+| Keroncong | Indonesian song tradition; investigate small-ensemble texture. | [J](https://www.sublimefrequencies.com/products/576932-radio-java) |
+| Dangdut | Investigate overlooked regional recordings, not just famous pop hits. | [J](https://www.sublimefrequencies.com/products/576932-radio-java) |
+| Thai shadow music | Electric instrumental archival route; do not equate with all Thai psych. | [S](https://www.sublimefrequencies.com/categories/catalog?page=2) |
+| South Asian steel-guitar film interpretations | Instrumental arrangement route; verify original film and performer. | [S](https://www.sublimefrequencies.com/categories/catalog?page=2) |
+
+### Multipart voice and patient song
+
+| Route | Research scope | Source |
+|---|---|---|
+| Albanian iso-polyphony | Investigate drone and interweaving voices. | [U](https://ich.unesco.org/en/lists?term%5B%5D=vocabulary_thesaurus-1) |
+| Corsican cantu in paghjella | Distinguish secular/liturgical practice and concert adaptation. | [U](https://ich.unesco.org/en/lists?term%5B%5D=vocabulary_thesaurus-1) |
+| Sardinian canto a tenore | Multipart pastoral singing; preserve context. | [U](https://ich.unesco.org/en/lists?term%5B%5D=vocabulary_thesaurus-1) |
+| Lithuanian sutartinės | Multipart song tradition; investigate interlocking entrances. | [U](https://ich.unesco.org/en/lists?term%5B%5D=vocabulary_thesaurus-1) |
+| Shashmaqom | Modal art-music route; use a suitable credited recording or movement. | [U](https://ich.unesco.org/en/lists?term%5B%5D=vocabulary_thesaurus-1) |
+| Morna | Cabo Verde song tradition; assess each song rather than assigning automatic sadness. | [U](https://ich.unesco.org/en/lists?term%5B%5D=vocabulary_thesaurus-1) |
+| Sevdalinka | Traditional urban song; verify text before describing its narrative. | [U](https://ich.unesco.org/en/lists?term%5B%5D=vocabulary_thesaurus-1) |
+
+### Experimental material and form
+
+| Route | Research scope | Source |
+|---|---|---|
+| Indonesian homemade-instrument experimentation | Research extended voice and built instruments without treating the whole region as one genre. | [X](https://www.sublimefrequencies.com/products/626116-senyawa-sujud) |
+| Regional radio collage | Montage route; reject falsely attributed standalone songs. | [S](https://www.sublimefrequencies.com/categories/catalog?page=2) |
+| Ceremonial street-recording archives | Use only suitable credited material with its context intact. | [S](https://www.sublimefrequencies.com/categories/catalog?page=2) |
+
+
+### Criminal narrative routes
+
+Explore narcocorridos, Sicilian mafia songs, Calabrian canti di malavita, Russian blatnaya pesnya/blatnyak, crime-focused Brazilian funk proibidão, Greek underworld rebetiko/hasiklidika, and gunman-focused early Jamaican dancehall. Retain other Caribbean, African and Latin American routes when song-level evidence supports the theme. No compulsory regional itinerary, fixed artist list or assumption that all music in these scenes concerns crime. Require an explicit criminal narrative; a title, prison reference or artist reputation alone is insufficient. Use the mood matrix in sonic-taxonomy.md for narrative range and the Jamaican Patois change of pace.
+
+Research sources: [Calabrian repertoire](https://amiatarecords.com/shop/n8nf4y2t7trzum4vchoz40ewgs18a5), [Russian thieves' song scholarship](https://publish.iupress.indiana.edu/read/songs-to-seven-strings-russian-guitar-poetry-and-soviet-mass-song/section/39ae0780-eb53-4416-8601-aa087bd4c1d8), [rebetiko scholarship](https://www2.umbc.edu/eol/3/magrini/rebetika.htm), [proibidão context](https://djmag.com/longreads/baile-funk-criminalisation-brazils-funk-scene), [early Gunman riddim context](https://vprecords.com/shaggy-taps-vintage-dancehall-with-new-badman-riddim-first-singles-drop-august-22/).

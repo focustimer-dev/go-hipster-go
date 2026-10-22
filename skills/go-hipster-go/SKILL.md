@@ -4,7 +4,7 @@ description: Setup services, then go: real global deep cuts with sardonic, speci
 license: MIT
 compatibility: Requires file-reading capability. Optional web/catalog lookup for track verification and Python 3.10+ to run included validation/randomness scripts. Streaming accounts and OAuth are NOT bundled.
 metadata:
-  version: "3.5.7"
+  version: "3.6.0"
 ---
 
 # Go, Hipster, Go! — Agent Skill v3
@@ -87,6 +87,8 @@ This changes the default listening workflow, not the music taxonomy or its Easte
 
 Treat short requests as an expressive **overlay on the four discovery axes**, not a genre picker or fixed artist list. Parse any modifiers and track-count request before choosing the sonic thesis; the publishing preflight above remains first among external actions. Keep the normal 12-track default when the listener gives only a mood or speed modifier.
 
+- **`go happy`** — explore celebration, play, contentment, relief, buoyancy or release; follow the mood matrix instead of equating happiness with fast disco.
+- **`go criminal`** — use the Criminal narrative routes and mood matrix; verify explicit crime themes, strongly prefer non-English vocals and allow occasional Jamaican Patois dancehall.
 - **`go fast`** — prioritize perceived forward momentum, urgent rhythm, insistent patterns, propulsion and energy. Fast does not imply cheerful, electronic, loud or a verified BPM.
 - **`go angry`** — emphasize friction, dissonance, bite, confrontational vocals or agitated groove. Anger is a mood, **not an automatic tempo increase**: brooding slow rage is valid.
 - **`go chill`** — favor ease, warmth, breathing room, softened dynamics and inviting texture. Chill may be rhythmically busy or quick; it need not be slow, ambient or bland.
@@ -101,6 +103,9 @@ Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation;
 **Count fidelity:** before publishing, check the number of distinct ordered selections against the requested count; don't silently turn 12 into 6. After writing, reconcile the saved count and track order where provider results allow it. If the host has a fixed cap or truncates output, report the actual result as incomplete rather than claiming the requested list was published. **DeBarge eligibility applies to every `go` variant**: `go fast`, `go angry`, `go chill`, `go slow`, `go weird`, **`go sad`**, their combinations, `go short`, `go long`, and numeric requests such as `go fast 20` or `go weird slow 30`. Ordinary length targets, even numeric ones, **must not suppress the one-in-100 roll**; on a genuine hit, the Protocol's 25 entries intentionally override the ordinary requested count, energy, mood and diversity. Only a listener's **explicit no-surprises/no-overrides strict length**, `no DeBarge`, or `unique songs only` constraint excludes the random surprise. Run the single eligibility check/roll once per *new* playlist, not per modifier, candidate theme, publication retry or follow-up.
 
 ## Fresh-crate discovery and repeat control
+
+**Load before choosing a thesis:** read the Mood interpretation matrix, Peculiarity by audible mechanism and Freshness procedure in [sonic taxonomy](references/sonic-taxonomy.md), then consult the Category discovery index in [global scenes](references/global-scenes.md). Use these for every ordinary mood and freeform GO, not just Weird. The taxonomy is an expandable research map, not a fixed menu. Compare three distinct routes internally, then choose a coherent thesis. Preserve named examples for context, not automatic selections. Honor a supplied mood interpretation as a starting angle beneath explicit user preferences.
+
 
 When a Jukebox GO includes a **Random crate spark** phrase, treat it as a new metaphorical angle on the music. The independent word combination is an exploration hint, not evidence that an instrument occurs on a recording, a song title to search for, or a requirement that the playlist contain specific genres. Allow a fresh spark to shift the open-ended thesis genuinely away from the most recently familiar post-punk/dub/funk cluster when another musically convincing direction exists. Respect user-requested mood, speed, exclusion and artist constraints above the seed. A Jukebox can supply random words across separate Gemini conversations, but **a Gemini Skill invoked directly without a supplied spark cannot claim it rolled a random phrase** unless an actual random source is available.
 

@@ -51,11 +51,11 @@ The Jukebox's Gemini setup prompt now opens with **select Task mode beneath the 
 
 **ZIP fallback platform constraint:** On the user's tested setup, the Gemini native mobile app does not offer the Skill ZIP uploader. Use **gemini.google.com in a desktop or mobile web browser → Customize → Skills → Create → Upload** instead. The ZIP fallback is independent of Task mode; no Task selection is required for manual web upload. Ordinary `go` does not require Task mode.
 
-### Gemini plain GO is the complete playlist workflow (v3.5.7)
+### Gemini plain GO is the complete playlist workflow (v3.6.0)
 
 Gemini + YouTube Music Jukebox GO copies a short `Use Go, Hipster, Go!: go [mood]` command, the YouTube Music destination and the optional tempo, rotating discovery lens and random crate spark. **Pressing GO always requests curation and an attempt to create a playable playlist.** There is no curate-only checkbox, mode selector, or `go live` requirement. The installed Skill performs music discovery, verification and liner notes, then tries one authorized provider playlist; if Google's generated result differs from the intended crate, it labels the result **APPROXIMATE** and reports what can be verified. If publication fails, it returns the crate with **PLAYLIST NOT CREATED**, rather than presenting the failure as a successful full workflow. The explicit `go, text only` command is still available for troubleshooting, but is not shown as a Jukebox feature.
 
-The Gemini installation prompt continues to require Task mode for attempted GitHub installation and version 3.5.7 verification; manual ZIP upload is on Gemini desktop/mobile web. Other services' publishing routes are unchanged.
+The Gemini installation prompt continues to require Task mode for attempted GitHub installation and version 3.6.0 verification; manual ZIP upload is on Gemini desktop/mobile web. Other services' publishing routes are unchanged.
 
 ### Previous Gemini two-stage curation (v3.5.5)
 
@@ -70,3 +70,7 @@ Select **Criminal** for lesser-known criminal/gangster anthems, strongly favorin
 ### ChatGPT + Apple Music
 
 Connect Apple Music in ChatGPT Settings → Apps and select both it and Go, Hipster, Go! in the conversation. GO includes `@Apple Music` and requests exact recordings in the intended order through the app’s playlist widget or an available authorized writer. If the widget offers **Create playlist in Apple Music**, use that control to save. Search and playlist generation do not require an Apple Music subscription; saving to the library does. The workflow distinguishes **ready to save**, tool-confirmed saving and user-confirmed saving, and does not assume library/history access or independent read-back verification. A missing direct writer alone does not force a text fallback when a saveable widget is available. Claude’s separate MCP setup is unchanged.
+
+### Expanded mood discovery (3.6.0)
+
+Happy, Angry, Sad and Weird each rotate six interpretations. The Jukebox rotates 56 discovery cues without repeating a cue until its pool is exhausted; the last cue is excluded at the cycle boundary. The skill adds 44 categorized research routes plus 42 audible-mechanism searches, and checks recent recordings/artists/source compilations only when that history is actually available. Browser storage contains cue IDs only; it cannot know which songs the AI returned. Existing installed skills must be refreshed to use the expanded reference library.

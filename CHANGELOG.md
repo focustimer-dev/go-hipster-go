@@ -1,3 +1,7 @@
+# 3.6.0 — Mood and category discovery
+
+Expanded mood interpretations, category research routes, audible-mechanism taxonomy and full-pool cue rotation. Preserved service routing, criminal verification, five-file Gemini packaging and the DeBarge exception.
+
 ## 3.5.7 — GO is the complete product again
 
 - Plain `go` now curates and attempts to create one playable playlist across supported services, including Gemini + YouTube Music; `go live` is only a backwards-compatible alias.

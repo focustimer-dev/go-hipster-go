@@ -18,7 +18,7 @@ class CurationContractTests(unittest.TestCase):
         self.assertIn("last *up to three* sets",skill)
         self.assertIn("Fresh-crate diversity regression",cases)
         self.assertIn("crypto.getRandomValues",app)
-        self.assertIn("ghg-crate-routes-v1",app)
+        self.assertIn("ghg-crate-routes-v2",app)
         self.assertIn("Fresh-crate discovery lens",app)
         self.assertIn("Random crate spark",app)
         self.assertIn("nextCrateSparkPhrase",app)

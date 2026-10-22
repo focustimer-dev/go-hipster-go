@@ -35,7 +35,9 @@ class NwwPilotTests(unittest.TestCase):
         m = self.metrics
         self.assertEqual(m["distinct_method_labels"], 16)
         self.assertEqual(m["cross_family_method_count"], 14)
-        self.assertEqual(len(m["exact_phrase_missing"]), 11)
+        # This probe reads the current taxonomy, not the pilot's historical snapshot.
+        # 3.6.0 adds extended voice coverage; this is not a listening-quality result.
+        self.assertEqual(len(m["exact_phrase_missing"]), 10)
         self.assertEqual(m["sampled_artist_names_not_in_baseline"], 36)
         self.assertEqual(m["baseline_concentration_france_uk_usa_exact"], 24)
         self.assertEqual(m["candidate_recordings_verified"], 0)

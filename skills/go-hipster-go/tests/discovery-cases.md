@@ -1,4 +1,4 @@
-## v3.5.7 default-GO publication contract — current acceptance
+## v3.6.0 default-GO publication contract — current acceptance
 
 - Plain `go` in Gemini + YouTube Music must curate and attempt one authorized playable playlist. No `go live` requirement, no visible curate-only option. `go, text only` is the explicit no-publish override.
 - In a real connected Gemini test, preserve the intended list, call one available native **YouTube Music playlist** action, and report provider count, visible substitutions, and saved state honestly. If no writer is present, return the finished crate plus **PLAYLIST NOT CREATED**.

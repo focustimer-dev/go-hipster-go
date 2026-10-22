@@ -28,3 +28,43 @@ Source: expanded v2 axes, with the original v1 emphasis on audible qualities.
 2. Identify essential vs optional traits. A cross-scene suggestion must have a credible audible connection.
 3. Specific production gear, instrumentation, tempos, and release dates are unconfirmed until supported by a reliable source; don't invent precision.
 4. Follow the sound beyond the listed examples; don't make all playlists converge on the same reference artists.
+
+
+## Mood interpretation matrix
+
+These are listening hypotheses, never claims that an entire culture feels one way. Choose one main interpretation and a compatible secondary shade; vary them on the next open-ended request. User specifics and tempo win. A fast sad request can be cathartic; slow anger can be quietly menacing. Read the category index in global-scenes.md before defaulting to familiar examples.
+
+| Mood | Interpretations to rotate | Avoid the shortcut |
+|---|---|---|
+| Happy | communal celebration; mischievous play; private contentment; relief after hardship; romantic buoyancy; ecstatic release | major key, disco or fast automatically means happy |
+| Angry | cold contempt; righteous protest; simmering resentment; betrayed intimacy; defiant solidarity; explosive catharsis | metal, shouting or higher tempo automatically means angry |
+| Sad | homesickness; grief; resignation; heartbreak; lonely urban drift; bittersweet acceptance | slow piano, English breakup lyrics or minor key by default |
+| Weird | unstable tuning; interlocking or asymmetric time; surreal narratives; homemade sound sources; radically edited form; uncanny restraint | unfamiliar language is weird; abrasive is always better |
+| Criminal | heists; smuggling; fugitives; criminal betrayal; prison escapes; criminal codes | prison, geography or artist reputation proves a crime narrative |
+
+For Criminal, strongly prefer non-English vocals; occasional Jamaican Patois dancehall can offer a more English-accessible change of pace. Verify explicit criminal subject matter at song level. Songs can boast, confess, mourn or narrate. Keep the established DeBarge exception intact.
+
+## Peculiarity by audible mechanism
+
+These are search categories, not invented microgenre names. Combine one or two with a real scene; never claim a technique or instrument without evidence.
+
+| Family | Distinct search routes |
+|---|---|
+| Time | additive meter; interlocking pulses; lopsided swing; shifting accents; elastic rubato; stop-start silence |
+| Pitch | beating close intervals; alternate tuning; modal ambiguity; sliding pitch; unresolved drones; detuned unisons |
+| Voice | overlapping entrances; antiphonal response; spoken/sung friction; intimate unaccompanied voice; extended vocal technique; dense multipart singing |
+| Material | prepared strings; homemade instruments; struck metal; breath and reeds; bowed overtones; small acoustic ensembles amplified harshly |
+| Studio | tape-splice form; feedback networks; dub subtraction; granular fragments; deliberate digital clipping; dry close-miked detail |
+| Structure | miniature song forms; patiently accumulating cycles; abrupt edits; deceptive repetition; instrumental negative space; acoustic/electronic call-and-response |
+| Archive | regional radio sessions; small-label singles; cassette compilations with credited tracks; film cues outside famous scores; private-press songcraft; live community ensembles |
+
+Archival scarcity is not musical merit. A compilation excerpt or radio collage is not automatically a standalone song; reject unverifiable credits. Preserve sacred, ceremonial and community context rather than treating it as spooky decoration. Never infer mood from language, nationality, religion or identity.
+
+## Freshness procedure
+
+1. Choose a mood interpretation, an audible mechanism and a discovery category before searching artist names. Compare three genuinely different possible theses, then use the strongest; do not print an internal scoring system.
+2. For an unconstrained ordinary set, research beyond one label or compilation and beyond the named reference artists. Trace original releases, local contemporaries and collaborators. Do not swap twelve obvious compilation staples for twelve other staples from one compilation.
+3. When recent lists are accessible, exclude the last up to three sets' normalized artist/title/version recordings and prefer different artists. Also vary the dominant scene, source compilation and sonic thesis. Reissues, alternate uploads, aliases and featured credits do not reset a repeated recording.
+4. If a specific request needs an exception, honor it and explain briefly. No mandatory nation, language, era, label or genre quota; no arbitrary sacrifice of cohesion for obscurity.
+5. When history is unavailable, diversify the research and avoid named-example defaults, but never claim listener-specific novelty or persistent memory. The PWA stores only discovery cue IDs, not the resulting songs or listening history.
+6. When the listener says stale, replace the discovery strategy and actual selections, not merely adjectives, title or ordering. Ask for prior lists only if essential to a precise exclusion request; do not block an ordinary GO.
