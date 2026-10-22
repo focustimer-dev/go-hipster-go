@@ -106,8 +106,17 @@ function harness(write,search='',page='launch',storage=new Map()){
  assert.doesNotMatch(geminiPrompt,/@YouTubeMusic/,'Short GO does not activate a music service');
  assert.ok(geminiPrompt.split(/\\s+/).length<85,'Gemini prompt stays concise');
  const geminiSetup=harness(async()=>{},'?ai=gemini&service=youtube','setup').elements.setupPromptText.textContent;
- assert.match(geminiSetup,/3.6.2/,'Setup asks for installed version verification');
+ assert.match(geminiSetup,/3.6.3/,'Setup asks for installed version verification');
  assert.match(geminiSetup,/persistent Skill/,'Setup distinguishes reading a repo from installation');
+ assert.match(geminiSetup,/go-hipster-go-gemini-app-skill\.zip/,'Setup installs the Gemini-specific release ZIP');
+ assert.match(geminiSetup,/adapters\/gemini\/GEM_KNOWLEDGE\.md/,'Setup identifies the host-filtered GitHub knowledge');
+ assert.doesNotMatch(geminiSetup,/Read https:\/\/github\.com\/focustimer-dev\/go-hipster-go\/blob\/main\/SKILL\.md and its four references/,'Setup must not load shared root skill as Gemini native');
+ const setupHtml=fs.readFileSync('launcher/setup/index.html','utf8');
+ assert.match(setupHtml,/If you can't tell what you're doing ironically from what you actually enjoy, welcome aboard/);
+ assert.match(setupHtml,/Manager, Emeritus/);
+ assert.doesNotMatch(setupHtml,/Department of Questionable Sonic Decisions/);
+ assert.match(criminalCopies[0],/Optional thread only; vary subjects and regions across the set/);
+
  assert.match(geminiSetup,/choose Task mode beneath the Gemini prompt box/,'Gemini setup requires Task mode before pasting');
  assert.match(geminiSetup,/do not schedule a recurring task/,'Gemini install task must not be scheduled');
  assert.match(geminiSetup,/desktop or mobile WEB BROWSER/,'ZIP fallback must use Gemini web');
