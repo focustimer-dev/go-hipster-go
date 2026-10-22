@@ -1,3 +1,9 @@
+# 3.6.3 — Gemini setup source and Jukebox tone refinements
+
+- Gemini Task-mode setup points to the published Gemini-specific five-file Skill ZIP and GitHub's generated Gemini knowledge mirror, not the multi-platform root skill.
+- Explicit version in generated Gemini Skill frontmatter, optional PWA mood angles and track uniqueness / provider count reconciliation in Gemini instructions.
+- Replace Setup tab's quotation with the exact Manager, Emeritus line and add regression tests; retain the existing musical scene maps, visual aesthetic and publishing pathways.
+
 # 3.6.2 — Gemini architectural cleanup
 
 - Give Gemini one authoritative native YouTube Music default with explicit-service and approved-setup overrides, and one publish-first GO flow.

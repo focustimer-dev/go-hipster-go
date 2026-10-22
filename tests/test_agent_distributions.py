@@ -87,6 +87,12 @@ class PortableAgentTests(unittest.TestCase):
             self.assertNotIn("scripts/", text)
             self.assertNotIn("python ", text.lower())
             self.assertIn("Gemini default", text)
+            self.assertIn("version: 3.6.3", text.split("---", 2)[1])
+            self.assertIn("## Creative cue and count safeguards", text)
+            self.assertIn("optional subplot", text)
+            self.assertIn("Pre-publish deduplication", text)
+            self.assertEqual(text, (ROOT / "adapters/gemini/GEM_KNOWLEDGE.md").read_text(encoding="utf-8").split("# BEGIN SOURCE: SKILL.md\n\n", 1)[1].split("\n# END SOURCE: SKILL.md", 1)[0])
+
             self.assertIn("## Gemini setup", text)
             self.assertIn("## Resource routing", text)
             self.assertNotIn("Spotify is the default service", text)
