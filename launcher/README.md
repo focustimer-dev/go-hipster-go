@@ -65,7 +65,7 @@ This deliberately changes Gemini's previous automatic playlist-generation behavi
 
 ### Criminal mood
 
-Select **Criminal** for lesser-known criminal/gangster anthems, strongly favoring non-English vocals. Discovery routes include narcocorridos, Sicilian mafia songs, and relevant Caribbean, African and Latin American scenes. Songs must explicitly concern crime, supported by lyrics or credible song-level sources; the prompt asks for a short English explanation and skips uncertain matches. Mood and tempo take priority over randomized discovery cues.
+Select **Criminal** for lesser-known criminal/gangster anthems, strongly favoring non-English vocals. Discovery routes include narcocorridos, Sicilian mafia songs, Calabrian canti di malavita, Russian blatnaya pesnya/blatnyak, crime-focused Brazilian funk proibidão, Greek underworld rebetiko/hasiklidika, gunman-focused early Jamaican dancehall, and relevant Caribbean, African and Latin American scenes. These are options, not quotas. Jamaican Patois dancehall can provide an occasional more English-accessible change of pace. Narratives include heists, smuggling, fugitives, criminal betrayal, prison escapes and criminal codes, whether boastful, confessional, mournful or narrative. Genre labels and imprisonment alone do not establish a criminal subject; sequence for cohesion rather than completing a checklist. Songs must explicitly concern crime, supported by lyrics or credible song-level sources; the prompt asks for a short English explanation and skips uncertain matches. Mood and tempo take priority over randomized discovery cues.
 
 ### ChatGPT + Apple Music
 

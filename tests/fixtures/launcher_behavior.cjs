@@ -40,6 +40,7 @@ function harness(write,search='',page='launch',storage=new Map()){
   assert.equal(h.moods[4].attrs['aria-pressed'],'true');
   await h.elements.goButton.click();
   assert.match(copied,/go criminal/);assert.match(copied,/strongly preferring non-English/);assert.match(copied,/Every song must openly concern criminal activity/);assert.match(copied,/skip uncertain matches/);
+  for(const route of ["blatnaya pesnya/blatnyak","canti di malavita","funk proibidao","rebetiko/hasiklidika","Jamaican Patois dancehall","heists, smuggling, fugitives","prison escapes and criminal codes","not quotas or a mandatory itinerary"]) assert.ok(copied.includes(route),`${ai}/${service} includes ${route}`);
   await h.moods[4].click();assert.equal(h.moods[4].attrs['aria-pressed'],'false');assert.doesNotMatch(h.elements.prompt.textContent,/Criminal mood:/);
  }
 
