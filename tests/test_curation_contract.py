@@ -37,6 +37,24 @@ class CurationContractTests(unittest.TestCase):
         self.assertIn("Report observed differences honestly",skill)
         self.assertIn("Gemini artist-anchor collapse and count integrity",cases)
 
+    def test_lean_jukebox_preserves_mood_and_verification(self):
+        skill=(ROOT/"SKILL.md").read_text(encoding="utf-8")
+        scenes=(ROOT/"references/global-scenes.md").read_text(encoding="utf-8")
+        taxonomy=(ROOT/"references/sonic-taxonomy.md").read_text(encoding="utf-8")
+        verification=(ROOT/"references/verification.md").read_text(encoding="utf-8")
+        app=(ROOT/"launcher/assets/app.js").read_text(encoding="utf-8")
+        for marker in ("Lean Jukebox contract", "Apple Music handoff", "DeBarge Protocol"):
+            self.assertIn(marker,skill)
+        for marker in ("Russian chanson", "'Ndrangheta", "Jamaican Patois"):
+            self.assertIn(marker,scenes)
+        self.assertIn("Rotate story angles",taxonomy)
+        self.assertIn("song-specific",verification)
+        self.assertIn("do **not** invent",verification)
+        self.assertIn('"criminal":[',app)
+        self.assertIn("song-level crime narratives",app)
+        self.assertNotIn("const criminalBrief=",app)
+        self.assertNotIn("Mood range: ",app)
+
     def test_debarge_protocol_is_preserved(self):
         t=(ROOT / "SKILL.md").read_text(encoding="utf-8")
         self.assertIn('roll uniformly from 1 to 100; on **1**',t)

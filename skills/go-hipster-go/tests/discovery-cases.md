@@ -275,3 +275,10 @@ Run the *same* six-track curated list on both hosts if possible. Record: host an
 `Host/service | Requested | Confirmed item count or unknown | Exact | Substituted | Missing | Unknown | Order checked? | Saved URL confirmed? | Sonic fit notes`
 
 Pass publication reporting when every claimed number is grounded in a provider result, with explicit uncertainty otherwise. Musical quality remains human-reviewed, not a CI pass/fail claim.
+
+## Lean GO + Criminal rotating stories (manual qualitative regression)
+
+- In the updated installed v3.6.1 skill, run Criminal GO twice with the same AI and music destination. The PWA should send a short fresh mood angle, lens and spark, without repeating niche lists. Check that seven distinct Criminal angles are offered before cycling.
+- Confirm the *curator* still finds documented crime narratives, prefers non-English vocals, uses trustworthy song-specific sources for each English explanation, never guesses translations, treats Jamaican Patois sensitively, and selects listenable transitions rather than filling region quotas. An unverified candidate must be rejected in a strictly verified crate.
+- Run Happy, Angry, Sad, Weird and plain GO with independent tempo choices; validate sonic variety, verifiable tracks and no fake listening-history access. The test harness checks prompt structure, not audible quality.
+- Confirm ChatGPT + Apple Music uses a saveable playlist widget when offered and differentiates ready-to-save from saved. Confirm ChatGPT + Spotify and Gemini + YouTube Music attempt actual authorized playlist creation or preserve the verified crate on failure. A retry should not reroll DeBarge.

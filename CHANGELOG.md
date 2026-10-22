@@ -1,3 +1,10 @@
+# 3.6.1 — Shorter GO, deeper Criminal machinery
+
+- Keep Criminal regional research, Patois nuance and song-level theme verification in the installed skill references, not in the copied PWA prompt. Rotate seven Criminal story angles.
+- Thin GO prompts across all moods to current session choices (mood, narrative angle, perceived tempo, search lens, spark, service). Keep freshness, sequencing, DeBarge and publishing policy in the skill.
+- Preserve Apple Music playlist-widget handoff and honest saved-status reporting; update regression tests, mirrored plugin files and the generated ChatGPT/Gemini knowledge bundles.
+- Refresh installed skills after deployment: changing GitHub or the static PWA does not update a previously uploaded/installed skill.
+
 # 3.6.0 — Mood and category discovery
 
 Expanded mood interpretations, category research routes, audible-mechanism taxonomy and full-pool cue rotation. Preserved service routing, criminal verification, five-file Gemini packaging and the DeBarge exception.

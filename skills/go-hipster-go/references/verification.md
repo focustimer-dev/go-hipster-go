@@ -19,6 +19,10 @@ Use `verification.status` on each entry: `verified` with a source URL, or `unver
 
 A partial or unverified discovery playlist is fine if openly labeled; a **strictly verified** or **publish-ready** playlist must not silently include unresolved candidates. The validator's `--strict` flag checks minimum verification metadata, not factual truth; independent listening/catalog validation is still needed.
 
+## Criminal mood: verify the song's actual story
+
+For each Criminal pick, require **song-specific** lyrics or credible song-level scholarship, liner notes or reporting explicitly establishing a criminal act, smuggling, fugitives, a criminal network or another crime-centered narrative. Genre-level scholarship is for finding leads, never evidence that *this song* concerns crime. A threatening beat, artist reputation, imprisonment alone, neighborhood or gunman-named riddim does not qualify. Do **not** invent lyrics, translations or plot details; when the evidence or language interpretation is uncertain, skip that entry in a strictly verified Criminal crate. Briefly explain the documented criminal subject in English and vary perspectives (bravado, witness, remorse, betrayal and consequence) only when supported by that song's evidence.
+
 ## When a later failure contradicts an earlier creation
 
 **A failure returned after one or more writes is not proof of zero published.** A host may create multiple playlist objects, then fail to populate every item, set description metadata, verify contents, or complete another Premium-gated attempt. Separate these outcomes:
