@@ -49,7 +49,7 @@ class CurationContractTests(unittest.TestCase):
             self.assertIn(marker,scenes)
         self.assertIn("Rotate story angles",taxonomy)
         self.assertIn("song-specific",verification)
-        self.assertIn("do **not** invent",verification)
+        self.assertIn("Do **not** invent",verification)
         self.assertIn('"criminal":[',app)
         self.assertIn("song-level crime narratives",app)
         self.assertNotIn("const criminalBrief=",app)
