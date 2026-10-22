@@ -4,7 +4,7 @@ description: Setup services, then go: real global deep cuts with sardonic, speci
 license: MIT
 compatibility: Requires file-reading capability. Optional web/catalog lookup for track verification and Python 3.10+ to run included validation/randomness scripts. Streaming accounts and OAuth are NOT bundled.
 metadata:
-  version: "3.6.0"
+  version: "3.6.1"
 ---
 
 # Go, Hipster, Go! — Agent Skill v3
@@ -88,7 +88,7 @@ This changes the default listening workflow, not the music taxonomy or its Easte
 Treat short requests as an expressive **overlay on the four discovery axes**, not a genre picker or fixed artist list. Parse any modifiers and track-count request before choosing the sonic thesis; the publishing preflight above remains first among external actions. Keep the normal 12-track default when the listener gives only a mood or speed modifier.
 
 - **`go happy`** — explore celebration, play, contentment, relief, buoyancy or release; follow the mood matrix instead of equating happiness with fast disco.
-- **`go criminal`** — use the Criminal narrative routes and mood matrix; verify explicit crime themes, strongly prefer non-English vocals and allow occasional Jamaican Patois dancehall.
+- **`go criminal`** — use the Criminal narrative routes, rotating story angles and song-level narrative verification in the references; strongly prefer non-English vocals, with occasional Jamaican Patois dancehall as a stylistic reset. Never infer crime from a genre, artist reputation, imprisonment alone or a menacing sound.
 - **`go fast`** — prioritize perceived forward momentum, urgent rhythm, insistent patterns, propulsion and energy. Fast does not imply cheerful, electronic, loud or a verified BPM.
 - **`go angry`** — emphasize friction, dissonance, bite, confrontational vocals or agitated groove. Anger is a mood, **not an automatic tempo increase**: brooding slow rage is valid.
 - **`go chill`** — favor ease, warmth, breathing room, softened dynamics and inviting texture. Chill may be rhythmically busy or quick; it need not be slow, ambient or bland.
@@ -103,6 +103,10 @@ Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation;
 **Count fidelity:** before publishing, check the number of distinct ordered selections against the requested count; don't silently turn 12 into 6. After writing, reconcile the saved count and track order where provider results allow it. If the host has a fixed cap or truncates output, report the actual result as incomplete rather than claiming the requested list was published. **DeBarge eligibility applies to every `go` variant**: `go fast`, `go angry`, `go chill`, `go slow`, `go weird`, **`go sad`**, their combinations, `go short`, `go long`, and numeric requests such as `go fast 20` or `go weird slow 30`. Ordinary length targets, even numeric ones, **must not suppress the one-in-100 roll**; on a genuine hit, the Protocol's 25 entries intentionally override the ordinary requested count, energy, mood and diversity. Only a listener's **explicit no-surprises/no-overrides strict length**, `no DeBarge`, or `unique songs only` constraint excludes the random surprise. Run the single eligibility check/roll once per *new* playlist, not per modifier, candidate theme, publication retry or follow-up.
 
 ## Fresh-crate discovery and repeat control
+
+**Lean Jukebox contract:** The installed skill owns verification, mood matrices, niche research routes, fresh-crate checks, sonic thesis, sequencing, DeBarge rules and publishing reconciliation. The PWA sends a brief `go [mood]` plus current track count, tempo, one narrative angle, discovery lens, metaphorical spark and service handoff. These are *run inputs*, not a replacement for instructions. Apply all installed rules even when GO doesn't repeat them. User constraints outrank rotating cues; random lenses and sparks never override Criminal's song-level evidence requirement. If a skill is not actually installed, never claim its referenced knowledge was read.
+
+**Apple Music handoff:** In ChatGPT, an actually connected Apple Music playlist widget with a user-operated save control is a valid destination even when a direct playlist-writing tool isn't exposed. Resolve real catalog recordings where possible and preserve the intended order. Search and playlist generation do not themselves require an Apple Music subscription; saving to the listener's library does. Label a generated widget **ready to save** until the listener or tool confirms it saved. Distinguish user confirmation from independent read-back, do not assume library/history access, and never invent exact saved items or order. If neither a saveable widget nor an authorized writer exists, return the verified original crate and explain the limitation.
 
 **Load before choosing a thesis:** read the Mood interpretation matrix, Peculiarity by audible mechanism and Freshness procedure in [sonic taxonomy](references/sonic-taxonomy.md), then consult the Category discovery index in [global scenes](references/global-scenes.md). Use these for every ordinary mood and freeform GO, not just Weird. The taxonomy is an expandable research map, not a fixed menu. Compare three distinct routes internally, then choose a coherent thesis. Preserve named examples for context, not automatic selections. Honor a supplied mood interpretation as a starting angle beneath explicit user preferences.
 

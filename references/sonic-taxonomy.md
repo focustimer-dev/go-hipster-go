@@ -42,7 +42,7 @@ These are listening hypotheses, never claims that an entire culture feels one wa
 | Weird | unstable tuning; interlocking or asymmetric time; surreal narratives; homemade sound sources; radically edited form; uncanny restraint | unfamiliar language is weird; abrasive is always better |
 | Criminal | heists; smuggling; fugitives; criminal betrayal; prison escapes; criminal codes | prison, geography or artist reputation proves a crime narrative |
 
-For Criminal, strongly prefer non-English vocals; occasional Jamaican Patois dancehall can offer a more English-accessible change of pace. Verify explicit criminal subject matter at song level. Songs can boast, confess, mourn or narrate. Keep the established DeBarge exception intact.
+For Criminal, strongly prefer non-English vocals; occasional Jamaican Patois dancehall can offer a more English-accessible change of pace without assuming comprehension. Verify explicit crime at **song level**; see verification.md. Songs may boast, confess, mourn, warn, question or narrate. Rotate story angles: heists and criminal ingenuity; smuggling routes; fugitives and evasion; betrayal inside criminal networks; prison escapes; underworld codes and loyalty; and criminal bravado with its consequences. The selected angle is a discovery hypothesis, not a quota across twelve songs. Avoid twelve interchangeable tough-guy declarations. Criminal's documented narrative requirement outranks random discovery lenses and crate sparks; the user's tempo still applies. Keep the DeBarge exception intact.
 
 ## Peculiarity by audible mechanism
 

@@ -32,28 +32,32 @@ function harness(write,search='',page='launch',storage=new Map()){
  }
  const lenses=cycleCopies.map(s=>s.match(/Fresh-crate discovery lens: ([^\n]+)/)[1]);
  assert.equal(new Set(lenses).size,56,'All cues are used before recycling, including after reload');
- const angles=cycleCopies.slice(0,6).map(s=>s.match(/This run’s interpretation: ([^.]+)/)[1]);
- assert.equal(new Set(angles).size,6,'Each mood angle appears before repeating');
+ const angles=cycleCopies.slice(0,6).map(s=>s.match(/Mood angle: ([^.]+)/)[1]);
+ assert.equal(new Set(angles).size,6,'Happy angles rotate before repeating');
+ const criminalCopies=[];const criminal=harness(async s=>criminalCopies.push(s),'?mood=criminal','launch',new Map());
+ for(let i=0;i<7;i++)await criminal.elements.goButton.click();
+ const criminalAngles=criminalCopies.map(s=>s.match(/Mood angle: ([^.]+)/)[1]);
+ assert.equal(new Set(criminalAngles).size,7,'Seven Criminal story angles before repeating');
  await cycle.elements.goButton.click();
  assert.notEqual(cycleCopies[56].match(/Fresh-crate discovery lens: ([^\n]+)/)[1],lenses[55]);
  await cycle.moods[1].click();
- assert.doesNotMatch(cycle.elements.prompt.textContent,/This run’s interpretation:/,'Changing mood clears the previous angle');
+ assert.doesNotMatch(cycle.elements.prompt.textContent,/Mood angle:/,'Changing mood clears the previous angle');
  for(const selectedMood of ['happy','angry','sad','weird'])for(const ai of ['chatgpt','gemini','claude'])for(const service of ['spotify','youtube','apple']){
   let result='';const h=harness(async s=>result=s,`?ai=${ai}&service=${service}&mood=${selectedMood}&tempo=slow`);
   await h.elements.goButton.click();
-  assert.match(result,/Mood range:/);assert.match(result,/This run’s interpretation:/);
-  assert.match(result,/Slow/);assert.match(result,/do not claim history access when unavailable/);
+  assert.match(result,/Mood angle:/);
+  assert.match(result,/Tempo preference: Slow/);
+  assert.doesNotMatch(result,/Mood range:|do not claim history access when unavailable/);
  }
  const badStore=new Map([['ghg-crate-routes-v2','not-json'],['ghg-mood-angles-v1-happy','[0,0,-2,900,"bad"]']]);
  const recovered=harness(async()=>{},'?mood=happy','launch',badStore);
  await recovered.elements.goButton.click();
- assert.match(recovered.elements.prompt.textContent,/This run’s interpretation:/,'Corrupt or obsolete cue storage recovers');
+ assert.match(recovered.elements.prompt.textContent,/Mood angle:/,'Corrupt or obsolete cue storage recovers');
  const apple=harness(async()=>{},"?ai=chatgpt&service=apple");
  assert.match(apple.elements.prompt.textContent,/@Go, Hipster, Go! @Apple Music go/);
  assert.match(apple.elements.prompt.textContent,/playlist widget/);
- assert.match(apple.elements.prompt.textContent,/Do not fall back to text merely/);
- assert.match(apple.elements.prompt.textContent,/Report ready to save/);
- assert.match(apple.elements.prompt.textContent,/saving to my library requires an Apple Music subscription/);
+ assert.match(apple.elements.prompt.textContent,/distinguish ready to save from saved/);
+ assert.doesNotMatch(apple.elements.prompt.textContent,/subscription/);
  assert.match(apple.elements.setupPromptText.textContent,/do not require an Apple Music subscription/);
  assert.match(apple.elements.setupPromptText.textContent,/even without a direct playlist-writing tool/);
  const claudeApple=harness(async()=>{},"?ai=claude&service=apple");
@@ -64,8 +68,11 @@ function harness(write,search='',page='launch',storage=new Map()){
   let copied='';const h=harness(async s=>copied=s,`?ai=${ai}&service=${service}&mood=criminal&tempo=fast`);
   assert.equal(h.moods[4].attrs['aria-pressed'],'true');
   await h.elements.goButton.click();
-  assert.match(copied,/go criminal/);assert.match(copied,/strongly preferring non-English/);assert.match(copied,/Every song must openly concern criminal activity/);assert.match(copied,/skip uncertain matches/);
-  for(const route of ["blatnaya pesnya/blatnyak","canti di malavita","funk proibidao","rebetiko/hasiklidika","Jamaican Patois dancehall","heists, smuggling, fugitives","prison escapes and criminal codes","not quotas or a mandatory itinerary"]) assert.ok(copied.includes(route),`${ai}/${service} includes ${route}`);
+  assert.match(copied,/go criminal/);assert.match(copied,/song-level crime narratives/);
+  assert.match(copied,/strongly prefer non-English/);assert.match(copied,/Mood angle:/);
+  assert.match(copied,/Tempo preference: Fast/);
+  assert.doesNotMatch(copied,/blatnaya pesnya|canti di malavita|funk proibidao|rebetiko\/hasiklidika/);
+  assert.ok(copied.split(/\s+/).length<115,ai+'/'+service+' Criminal prompt stays short');
   await h.moods[4].click();assert.equal(h.moods[4].attrs['aria-pressed'],'false');assert.doesNotMatch(h.elements.prompt.textContent,/Criminal mood:/);
  }
 
@@ -99,7 +106,7 @@ function harness(write,search='',page='launch',storage=new Map()){
  assert.doesNotMatch(geminiPrompt,/@YouTubeMusic/,'Short GO does not activate a music service');
  assert.ok(geminiPrompt.split(/\\s+/).length<85,'Gemini prompt stays concise');
  const geminiSetup=harness(async()=>{},'?ai=gemini&service=youtube','setup').elements.setupPromptText.textContent;
- assert.match(geminiSetup,/3.6.0/,'Setup asks for installed version verification');
+ assert.match(geminiSetup,/3.6.1/,'Setup asks for installed version verification');
  assert.match(geminiSetup,/persistent Skill/,'Setup distinguishes reading a repo from installation');
  assert.match(geminiSetup,/choose Task mode beneath the Gemini prompt box/,'Gemini setup requires Task mode before pasting');
  assert.match(geminiSetup,/do not schedule a recurring task/,'Gemini install task must not be scheduled');

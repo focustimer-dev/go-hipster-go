@@ -17,7 +17,7 @@ description: Setup services, then go: real global deep cuts with sardonic, speci
 license: MIT
 compatibility: Requires file-reading capability. Optional web/catalog lookup for track verification and Python 3.10+ to run included validation/randomness scripts. Streaming accounts and OAuth are NOT bundled.
 metadata:
-  version: "3.6.0"
+  version: "3.6.1"
 ---
 
 # Go, Hipster, Go! — Agent Skill v3
@@ -101,7 +101,7 @@ This changes the default listening workflow, not the music taxonomy or its Easte
 Treat short requests as an expressive **overlay on the four discovery axes**, not a genre picker or fixed artist list. Parse any modifiers and track-count request before choosing the sonic thesis; the publishing preflight above remains first among external actions. Keep the normal 12-track default when the listener gives only a mood or speed modifier.
 
 - **`go happy`** — explore celebration, play, contentment, relief, buoyancy or release; follow the mood matrix instead of equating happiness with fast disco.
-- **`go criminal`** — use the Criminal narrative routes and mood matrix; verify explicit crime themes, strongly prefer non-English vocals and allow occasional Jamaican Patois dancehall.
+- **`go criminal`** — use the Criminal narrative routes, rotating story angles and song-level narrative verification in the references; strongly prefer non-English vocals, with occasional Jamaican Patois dancehall as a stylistic reset. Never infer crime from a genre, artist reputation, imprisonment alone or a menacing sound.
 - **`go fast`** — prioritize perceived forward momentum, urgent rhythm, insistent patterns, propulsion and energy. Fast does not imply cheerful, electronic, loud or a verified BPM.
 - **`go angry`** — emphasize friction, dissonance, bite, confrontational vocals or agitated groove. Anger is a mood, **not an automatic tempo increase**: brooding slow rage is valid.
 - **`go chill`** — favor ease, warmth, breathing room, softened dynamics and inviting texture. Chill may be rhythmically busy or quick; it need not be slow, ambient or bland.
@@ -116,6 +116,10 @@ Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation;
 **Count fidelity:** before publishing, check the number of distinct ordered selections against the requested count; don't silently turn 12 into 6. After writing, reconcile the saved count and track order where provider results allow it. If the host has a fixed cap or truncates output, report the actual result as incomplete rather than claiming the requested list was published. **DeBarge eligibility applies to every `go` variant**: `go fast`, `go angry`, `go chill`, `go slow`, `go weird`, **`go sad`**, their combinations, `go short`, `go long`, and numeric requests such as `go fast 20` or `go weird slow 30`. Ordinary length targets, even numeric ones, **must not suppress the one-in-100 roll**; on a genuine hit, the Protocol's 25 entries intentionally override the ordinary requested count, energy, mood and diversity. Only a listener's **explicit no-surprises/no-overrides strict length**, `no DeBarge`, or `unique songs only` constraint excludes the random surprise. Run the single eligibility check/roll once per *new* playlist, not per modifier, candidate theme, publication retry or follow-up.
 
 ## Fresh-crate discovery and repeat control
+
+**Lean Jukebox contract:** The installed skill owns verification, mood matrices, niche research routes, fresh-crate checks, sonic thesis, sequencing, DeBarge rules and publishing reconciliation. The PWA sends a brief `go [mood]` plus current track count, tempo, one narrative angle, discovery lens, metaphorical spark and service handoff. These are *run inputs*, not a replacement for instructions. Apply all installed rules even when GO doesn't repeat them. User constraints outrank rotating cues; random lenses and sparks never override Criminal's song-level evidence requirement. If a skill is not actually installed, never claim its referenced knowledge was read.
+
+**Apple Music handoff:** In ChatGPT, an actually connected Apple Music playlist widget with a user-operated save control is a valid destination even when a direct playlist-writing tool isn't exposed. Resolve real catalog recordings where possible and preserve the intended order. Search and playlist generation do not themselves require an Apple Music subscription; saving to the listener's library does. Label a generated widget **ready to save** until the listener or tool confirms it saved. Distinguish user confirmation from independent read-back, do not assume library/history access, and never invent exact saved items or order. If neither a saveable widget nor an authorized writer exists, return the verified original crate and explain the limitation.
 
 **Load before choosing a thesis:** read the Mood interpretation matrix, Peculiarity by audible mechanism and Freshness procedure in [sonic taxonomy](references/sonic-taxonomy.md), then consult the Category discovery index in [global scenes](references/global-scenes.md). Use these for every ordinary mood and freeform GO, not just Weird. The taxonomy is an expandable research map, not a fixed menu. Compare three distinct routes internally, then choose a coherent thesis. Preserve named examples for context, not automatic selections. Honor a supplied mood interpretation as a starting angle beneath explicit user preferences.
 
@@ -482,7 +486,7 @@ Sources below establish research doors, not streaming availability or exact-trac
 
 ### Criminal narrative routes
 
-Explore narcocorridos, Sicilian mafia songs, Calabrian canti di malavita, Russian blatnaya pesnya/blatnyak, crime-focused Brazilian funk proibidão, Greek underworld rebetiko/hasiklidika, and gunman-focused early Jamaican dancehall. Retain other Caribbean, African and Latin American routes when song-level evidence supports the theme. No compulsory regional itinerary, fixed artist list or assumption that all music in these scenes concerns crime. Require an explicit criminal narrative; a title, prison reference or artist reputation alone is insufficient. Use the mood matrix in sonic-taxonomy.md for narrative range and the Jamaican Patois change of pace.
+Explore narcocorridos; Sicilian mafia songs; Calabrian canti di malavita and the documented 'Ndrangheta repertoire; Russian blatnaya pesnya/blatnyak (thieves' songs, **not** all Russian chanson); crime-focused Brazilian funk proibidão (**not** all baile funk); Greek underworld rebetiko/hasiklidika (**not** all rebetiko); gunman-focused early Jamaican dancehall (**not** every song on a gunman-named riddim); and documented crime narratives from the Caribbean, Africa and Latin America. These are discovery routes, not quotas, a mandatory itinerary or a fixed artist roster. Strongly prefer non-English vocals; Jamaican Patois dancehall may offer an occasional more English-accessible rhythmic change of pace, though Patois is a distinct language variety and understanding is not automatic. Cross scene boundaries only when real recordings share compelling rhythm, voices, arrangements or production. Search local contemporaries rather than repeatedly defaulting to example artists. Require song-specific evidence of crime as defined in verification.md; a title, prison reference, scene or artist reputation is not enough. Rotate narrative angles with sonic-taxonomy.md.
 
 Research sources: [Calabrian repertoire](https://amiatarecords.com/shop/n8nf4y2t7trzum4vchoz40ewgs18a5), [Russian thieves' song scholarship](https://publish.iupress.indiana.edu/read/songs-to-seven-strings-russian-guitar-poetry-and-soviet-mass-song/section/39ae0780-eb53-4416-8601-aa087bd4c1d8), [rebetiko scholarship](https://www2.umbc.edu/eol/3/magrini/rebetika.htm), [proibidão context](https://djmag.com/longreads/baile-funk-criminalisation-brazils-funk-scene), [early Gunman riddim context](https://vprecords.com/shaggy-taps-vintage-dancehall-with-new-badman-riddim-first-singles-drop-august-22/).
 
@@ -536,7 +540,7 @@ These are listening hypotheses, never claims that an entire culture feels one wa
 | Weird | unstable tuning; interlocking or asymmetric time; surreal narratives; homemade sound sources; radically edited form; uncanny restraint | unfamiliar language is weird; abrasive is always better |
 | Criminal | heists; smuggling; fugitives; criminal betrayal; prison escapes; criminal codes | prison, geography or artist reputation proves a crime narrative |
 
-For Criminal, strongly prefer non-English vocals; occasional Jamaican Patois dancehall can offer a more English-accessible change of pace. Verify explicit criminal subject matter at song level. Songs can boast, confess, mourn or narrate. Keep the established DeBarge exception intact.
+For Criminal, strongly prefer non-English vocals; occasional Jamaican Patois dancehall can offer a more English-accessible change of pace without assuming comprehension. Verify explicit crime at **song level**; see verification.md. Songs may boast, confess, mourn, warn, question or narrate. Rotate story angles: heists and criminal ingenuity; smuggling routes; fugitives and evasion; betrayal inside criminal networks; prison escapes; underworld codes and loyalty; and criminal bravado with its consequences. The selected angle is a discovery hypothesis, not a quota across twelve songs. Avoid twelve interchangeable tough-guy declarations. Criminal's documented narrative requirement outranks random discovery lenses and crate sparks; the user's tempo still applies. Keep the DeBarge exception intact.
 
 ## Peculiarity by audible mechanism
 
@@ -726,6 +730,10 @@ Use `verification.status` on each entry: `verified` with a source URL, or `unver
 - Explicit handling when the exact track or mix is unavailable
 
 A partial or unverified discovery playlist is fine if openly labeled; a **strictly verified** or **publish-ready** playlist must not silently include unresolved candidates. The validator's `--strict` flag checks minimum verification metadata, not factual truth; independent listening/catalog validation is still needed.
+
+## Criminal mood: verify the song's actual story
+
+For each Criminal pick, require **song-specific** lyrics or credible song-level scholarship, liner notes or reporting explicitly establishing a criminal act, smuggling, fugitives, a criminal network or another crime-centered narrative. Genre-level scholarship is for finding leads, never evidence that *this song* concerns crime. A threatening beat, artist reputation, imprisonment alone, neighborhood or gunman-named riddim does not qualify. Do **not** invent lyrics, translations or plot details; when the evidence or language interpretation is uncertain, skip that entry in a strictly verified Criminal crate. Briefly explain the documented criminal subject in English and vary perspectives (bravado, witness, remorse, betrayal and consequence) only when supported by that song's evidence.
 
 ## When a later failure contradicts an earlier creation
 
