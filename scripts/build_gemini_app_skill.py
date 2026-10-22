@@ -19,100 +19,104 @@ REFERENCES = (
 )
 
 
+def section_map(canonical: str):
+    return {x.split("\n", 1)[0][3:].strip(): x.strip() for x in
+            re.split(r"(?=^## )", canonical, flags=re.M) if x.startswith("## ")}
+
+
+def common_sections(canonical: str):
+    parts = section_map(canonical)
+    keys = ("Intent and activation", "Voice: the Insufferable Record-Store Clerk",
+            "Playlist writing: sell the music, not a spreadsheet",
+            "Go modifiers and playlist length", "Fresh-crate discovery and repeat control",
+            "Curate in seven steps", "Deliberate irony and Easter egg", "Scope")
+    if any(k not in parts for k in keys):
+        raise ValueError("Canonical skill sections changed")
+    intent = parts[keys[0]]
+    parts[keys[0]] = intent.split("\n", 1)[0] + "\n\n" + intent[intent.index("Curate **real recordings**"):]
+    parts[keys[1]] = re.sub(r"(?m)^- Publishing limitation:.*\n", "", parts[keys[1]])
+    parts[keys[2]] = (parts[keys[2]].replace("including in **Claude**", "including in **Gemini**")
+                       .replace("Spotify's playlist description field", "a playlist description field")
+                       .replace("Spotify/YouTube result status", "YouTube Music result status"))
+    fresh = re.sub(r"\*\*Apple Music handoff:\*\*.*?(?=\n\n)", "", parts[keys[4]],
+                   count=1, flags=re.S)
+    if "**Gemini + YouTube Music — publication is the default" not in fresh:
+        raise ValueError("Gemini policy anchor changed")
+    parts[keys[4]] = fresh.split("**Gemini + YouTube Music — publication is the default")[0].strip()
+    egg, n = re.subn(
+        r"Never claim 1% without using a true random facility; when Python is available run .*? once and read the result\.",
+        "Never claim a 1% random result without a genuine random facility in this conversation. Do not run scripts.",
+        parts["Deliberate irony and Easter egg"], count=1)
+    if n != 1:
+        raise ValueError("DeBarge random rule changed")
+    parts["Deliberate irony and Easter egg"] = egg
+    return "\n\n".join(parts[k] for k in keys)
+
+
+def render_reference(relative: str, content: str) -> str:
+    if relative == "references/verification.md":
+        content, n = re.subn(
+            r"Use .verification.status. on each entry:.*?\n\n",
+            "For each recording, distinguish verified facts from unresolved claims. Never guess catalog or service IDs.\n\n",
+            content, count=1, flags=re.S)
+        if n != 1:
+            raise ValueError("Verification schema wording changed")
+        content = re.sub(
+            r"The validator's .--strict. flag checks minimum verification metadata, not factual truth; independent listening/catalog validation is still needed\.",
+            "A verified result needs actual trustworthy sources, not just well-formed metadata.", content)
+        content, n = re.subn(
+            r"\*\*Real Claude field report, updated .*?(?=\n\n## After a service reports playlist creation)",
+            "", content, count=1, flags=re.S)
+        if n != 1:
+            raise ValueError("Claude report changed")
+        return content.replace("\n\n\n\n", "\n\n")
+    if relative == "references/curation-examples.md":
+        content = content.split("## Host-aware recovery", 1)[0].rstrip() + "\n"
+        content = re.sub(r"(?m)^\*\*Example, publish(?:ing|er) (?:success|missing):.*\n", "", content)
+        return content.replace("Do not claim Claude, ChatGPT, Gemini or Spotify saved the text",
+                               "Do not claim the streaming provider saved the text")
+    return content
+
+
 def render(canonical: str) -> str:
-    body = canonical[canonical.index("## Intent and activation"):]
-    old_roll = r"Never claim 1% without using a true random facility; when Python is available run .*? once and read the result\."
-    new_roll = ("Never claim a 1% chance unless an actual random facility is available "
-                "in this Gemini conversation. Do not run scripts. If no reliable random "
-                "source is available, skip the spontaneous Easter egg; an explicitly "
-                "requested DeBarge Protocol still works.")
-    body, count = re.subn(old_roll, new_roll, body)
-    if count != 1:
-        raise ValueError("Canonical DeBarge paragraph changed; review the Gemini rendering")
-    start = body.index("For structured export, follow")
-    end = body.index("List unresolved tracks clearly.", start)
-    body = (body[:start] + "For structured export, provide an ordered artist/title list "
-            "or JSON when requested; no script execution is required. " + body[end:])
-    old_adapter = "Use [the adapter contract](adapters/README.md) and the provider guides."
-    if old_adapter not in body:
-        raise ValueError("Canonical adapter paragraph changed; review the Gemini rendering")
-    body = body.replace(old_adapter,
-                        "For YouTube Music, use only real connected-app actions exposed "
-                        "in this conversation when authorized. Do not promise exact tracks "
-                        "or ordering if the resulting playlist cannot be confirmed.")
-    body = body.replace(" See [evaluation prompts](tests/discovery-cases.md).", "")
-    # Do not ship ChatGPT-specific app-selection instructions in Gemini packages.
-    chatgpt_clause = ("**Give host-appropriate next steps only.** In ordinary **ChatGPT**, "
-                      "a user who has a multi-app selection control can include Go, Hipster, Go! "
-                      "and Spotify in the next message and ask to publish the existing "
-                      "selections. In **Gemini**, do not give ChatGPT-specific instructions to "
-                      "select multiple plugins in a composer. Instead, when available, suggest "
-                      "the actual **`@YouTubeMusic`** Connected App or Gemini Connected Apps settings.")
-    if chatgpt_clause not in body:
-        raise ValueError("Canonical publishing fallback changed; review Gemini host routing")
-    body = body.replace(chatgpt_clause, "**Gemini-specific next step:** Where supported, "
-                        "use the actual **`@YouTubeMusic`** Connected App or Gemini Connected "
-                        "Apps settings. Never copy app-selection controls from other hosts.")
-    if "composer" in body.lower():
-        raise ValueError("ChatGPT-specific composer instruction leaked into Gemini package")
-    if "scripts/" in body or "python " in body.lower():
-        raise ValueError("A code-running instruction remains in the Gemini skill")
-    return (
-        "---\n"
-        "name: go-hipster-go\n"
-        "description: A smug, snarky, passive-aggressive record-store clerk "
-        "curates real deep-cut playlists; setup selects a preferred music "
-        "service and go attempts authorized YouTube Music publishing. Keep "
-        "dry musical commentary, verified tracks and honest save status.\n"
-        "---\n\n"
-        "# Go, Hipster, Go! — Gemini Apps\n\n"
-        "## The personality is mandatory in Gemini\n\n"
-        "You are an insufferably smug, arch, passive-aggressive record-store "
-        "clerk. Open a normal playlist with a dry, self-important barb, weave "
-        "two or three varied little jabs into specific sonic reasons and "
-        "transitions, and finish with a smug sign-off. The running joke is "
-        "your absurdly unearned superiority, not cruelty to musicians or "
-        "listeners. Do NOT start with cheerful generic assistant boilerplate "
-        "like 'Certainly! Here is your playlist.' If YouTube Music returns "
-        "a neutral provider card, retain this voice in your own narration "
-        "before or after it; never pretend to control the provider UI. "
-        "Publishing failures, uncertainty, counts and track names must be "
-        "plainly truthful. Dial down the attitude for genuine distress or "
-        "a request for less snark.\n\n"
-        "**This is an instruction-only music-curation skill. It requires no code "
-        "execution.** Never refuse to curate because executable scripts cannot run. "
-        "All included reference files are plain-text musical knowledge.\n\n"
-        "**First-run command:** On `setup`, check actual streaming connections, "
-        "ask for the preferred listening and publishing service, offer the "
-        "twelve-track/private/adventurous/snarky defaults, and return a "
-        "Hipster Music Setup v1 profile. Persist only with real host support "
-        "and the listener\u0027s approval; otherwise say session-only. "
-        "Setup does not create a playlist or trigger DeBarge.\n\n"
-        "**Gemini default is publish-first:** Ordinary go and go live mean the same "
-        "complete workflow. Curate and preserve the exact intended recording list, "
-        "then attempt ONE connected YouTube Music playlist; use exact insertion only "
-        "where genuinely supported. Clearly distinguish an APPROXIMATE provider mix "
-        "from the original crate, and distinguish a generated preview from Save to "
-        "library. If publishing fails, return the crate and say PLAYLIST NOT CREATED. "
-        "Only an explicit 'go, text only' skips the attempt. All musical research, "
-        "verification and provider rules live in the installed Skill, not the "
-        "Jukebox handoff. No credentials or invented writer actions.\\n\\n"
-        "## Gemini-native playlist creation — not ChatGPT\n"
-        "\n"
-        "Gemini's Go, Hipster, Go! Skill owns the research, verification, curation "
-        "and provider handling. On plain **go** or **go live**, make a complete "
-        "ordered artist/title/version crate FIRST, then attempt ONE authorized "
-        "YouTube Music PLAYLIST generation. Request exact insertion only if the "
-        "connected app truly supports it; otherwise request a thematic playlist "
-        "inspired by the intended crate and mark that generated result APPROXIMATE. "
-        "Do not overwrite the intended list, invent exact song matches, or assert "
-        "a saved playlist from a preview. If it fails, return the original crate "
-        "with PLAYLIST NOT CREATED; never substitute twelve YouTube search cards. "
-        "Do not automatically retry, infer app activation from @ text or reroll "
-        "DeBarge. Only an explicit 'go, text only' skips publishing.\\n"
-        "\\n"
-        + body
-    )
+    preface = """---
+name: go-hipster-go
+description: Use for Go, Hipster, Go! go, mood, speed and length commands, setup, obscure global music discovery, and verified deep-cut playlists with authorized Gemini YouTube Music publishing.
+---
+
+# Go, Hipster, Go! — Gemini Apps
+
+## The personality is mandatory in Gemini
+
+Play an insufferably smug, passive-aggressive record-store clerk. Open with a dry barb, add two or three varied little jabs grounded in real musical reasons and close smugly. If YouTube Music returns a neutral provider card, add truthful commentary, never invented service details. Lower the snark for distress or on request. Full voice rules follow below.
+
+This is an instruction-only skill needing no code execution. Do not refuse curation because scripts cannot run.
+
+## Gemini-native playlist creation
+
+**Service precedence:** Explicit service in this request > accessible listener-approved setup preference > visible current-conversation preference > YouTube Music (Gemini default). No inherited Spotify default. Never silently substitute YouTube Music when Spotify is expressly requested. Gemini Spotify may support search or playback but cannot be assumed to expose a writer; ask before switching destination.
+
+**Publish-first GO:** An ordinary go or go live curates 12 real, verified, ordered artist/title/version recordings by default (or the requested count), then attempts ONE connected and authorized YouTube Music playlist when selected and actually available. Non-mutating capability preflight happens before costly discovery; missing writer never blocks curation. Only explicit go, text only skips publishing. No saved account or typed @mention proves tool availability; setup never triggers a playlist.
+
+**Fidelity and status:** Retain the exact intended ordered crate FIRST. Exact insertion is requested only if the provider supports it. A theme-generated playlist is **APPROXIMATE**; report visible count and differences, never silently substitute it for the crate. A generated card is not automatically saved: distinguish **Save to library**, user confirmation, writer-confirmed creation, and item-level readback. If no playlist exists, return the original crate and **PLAYLIST NOT CREATED**. Never invent matches, saved counts, order or URLs, generate individual YouTube video search cards instead of a playlist, reroll DeBarge or auto-retry. Offer one genuine next step such as selecting the real @YouTubeMusic connected app.
+
+## Gemini setup
+
+On setup, setup status, or setup change inspect actual connected music tools and optional user-approved preferences. With none, default to YouTube Music, 12 tracks, adventurous crate-digging, private where supported, and the comic persona. Do not interrogate every go or store preferences without approved real persistence. Setup does not publish, make an empty playlist, or roll DeBarge.
+
+## Resource routing
+
+Read both [sonic-taxonomy.md](references/sonic-taxonomy.md) and [global-scenes.md](references/global-scenes.md) before choosing the thesis. Use all four discovery axes and the complete niche research map. Read [verification.md](references/verification.md) to verify artist/title/version and song-level crime lyrics and narrative for Criminal; reject uncertain strictly verified picks. Consult [curation-examples.md](references/curation-examples.md) for optional musical-bridge and voice examples, never a fixed artist roster. PWA angles, lenses and sparks are hypotheses rather than quotas or verified instrument claims.
+
+"""
+    result = preface + common_sections(canonical) + "\n"
+    forbidden = ("scripts/", "python ", "add_playlist_items", "--strict",
+                 "Spotify is the default service", "Spotify by default",
+                 "In ordinary **ChatGPT**", "Apple Music handoff",
+                 "Real Claude field report", "\\n\\n##")
+    if any(x.lower() in result.lower() for x in forbidden):
+        raise ValueError("Gemini skill contains non-Gemini policy or malformed Markdown")
+    return result
 
 
 def build(root: Path, output: Path) -> None:
@@ -121,7 +125,7 @@ def build(root: Path, output: Path) -> None:
     with ZipFile(output, "w", ZIP_DEFLATED) as bundle:
         bundle.writestr("SKILL.md", text)
         for relative in REFERENCES:
-            bundle.write(root / relative, relative)
+            bundle.writestr(relative, render_reference(relative, (root / relative).read_text(encoding="utf-8")))
     print("Created", output)
 
 

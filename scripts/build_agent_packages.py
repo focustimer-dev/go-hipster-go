@@ -27,9 +27,19 @@ GEM_BUNDLE = Path("adapters/gemini/GEM_KNOWLEDGE.md")
 
 
 def gem_knowledge():
-    contents = (ROOT / CHATGPT_BUNDLE).read_text(encoding="utf-8")
-    return (contents.replace("ChatGPT knowledge bundle", "Gemini Skill knowledge bundle")
-            .replace("used together with Project instructions", "used together with Gem instructions"))
+    """Reuse the Gemini-filtered skill for Gem knowledge, not the multi-host source."""
+    from build_gemini_app_skill import render, render_reference, REFERENCES
+    canon = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+    parts = ["# Go, Hipster, Go! — Gemini Skill knowledge bundle\n\n",
+             "Generated from the filtered Gemini skill and four reference files.\n\n",
+             "# BEGIN SOURCE: SKILL.md\n\n", render(canon),
+             "\n# END SOURCE: SKILL.md\n"]
+    for path in REFERENCES:
+        data = (ROOT / path).read_text(encoding="utf-8")
+        parts.extend(["\n---\n\n# BEGIN SOURCE: " + path + "\n\n",
+                      render_reference(path, data).strip(),
+                      "\n\n# END SOURCE: " + path + "\n"])
+    return "".join(parts)
 
 
 def sync(check: bool):
