@@ -53,7 +53,10 @@ class PortableAgentTests(unittest.TestCase):
             assert json.loads(z.read("plugin.json"))["name"] == "go-hipster-go"
             assert "skills/go-hipster-go/SKILL.md" in z.namelist()
             assert "skills/setup/SKILL.md" in z.namelist()
-        assert (ROOT / "dist/hipster-music-generator-chatgpt-plugin.zip").read_bytes() == (ROOT / "dist/go-hipster-go-chatgpt-plugin.zip").read_bytes()
+        self.assertEqual(
+            {p.name for p in (ROOT / "dist").glob("*.zip")},
+            {"go-hipster-go-gemini-app-skill.zip", "go-hipster-go-claude-skill.zip", "go-hipster-go-claude-plugin.zip", "go-hipster-go-chatgpt-plugin.zip"}
+        )
 
     def test_gemini_app_upload_zip(self):
         import re
@@ -144,6 +147,8 @@ class PortableAgentTests(unittest.TestCase):
         self.assertIn("Download the Gemini skill — no terminal required", gem)
         self.assertIn("gh release create", workflow)
         self.assertIn("gh release upload", workflow)
+        self.assertIn("gh release delete-asset", workflow)
+        self.assertNotIn("dist/hipster-music-generator-", workflow)
 
     def test_claude_and_muse_onboarding_assets(self):
         root=(ROOT/"SKILL.md").read_text(encoding="utf-8")

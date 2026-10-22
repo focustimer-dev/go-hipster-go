@@ -4,7 +4,6 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 from zipfile import ZipFile, ZIP_DEFLATED
-from shutil import copyfile
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILL_PATH = Path("skills/go-hipster-go")
@@ -96,14 +95,15 @@ def make_zips():
     # Gemini Apps cannot rely on code execution. Ship text-only skill + references.
     from build_gemini_app_skill import build as build_gemini_app
     build_gemini_app(ROOT, gemini_zip)
-    # Legacy ZIP filenames are aliases containing the new identity.
-    for renamed, legacy in (
-        ("go-hipster-go-claude-skill.zip", "hipster-music-generator-claude-skill.zip"),
-        ("go-hipster-go-chatgpt-plugin.zip", "hipster-music-generator-chatgpt-plugin.zip"),
-        ("go-hipster-go-claude-plugin.zip", "hipster-music-generator-claude-plugin.zip"),
-        ("go-hipster-go-gemini-app-skill.zip", "hipster-music-generator-gemini-app-skill.zip"),
+    # Retire exact old-name aliases, including leftovers from earlier local builds.
+    # Do not remove user-created or unknown archives from dist/.
+    for obsolete in (
+        "hipster-music-generator-gemini-app-skill.zip",
+        "hipster-music-generator-claude-skill.zip",
+        "hipster-music-generator-claude-plugin.zip",
+        "hipster-music-generator-chatgpt-plugin.zip",
     ):
-        copyfile(output / renamed, output / legacy)
+        (output / obsolete).unlink(missing_ok=True)
     print("Created", skill_zip.relative_to(ROOT), "and",
           plugin_zip.relative_to(ROOT), "and", gemini_zip.relative_to(ROOT), "and", chatgpt_zip.relative_to(ROOT))
 

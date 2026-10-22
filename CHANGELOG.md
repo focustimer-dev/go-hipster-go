@@ -1,3 +1,8 @@
+## Release hygiene (v3.6.3, October 22, 2026)
+
+- Retired four duplicate `hipster-music-generator-*.zip` release aliases; only the canonical `go-hipster-go-*.zip` platform packages remain.
+- Packaging removes stale local alias outputs, CI checks for exactly four ZIPs, and release automation deletes only the four old-named assets from the active release. Historical releases remain untouched. No skill behavior or music taxonomy changes.
+
 # 3.6.3 — Gemini setup source and Jukebox tone refinements
 
 - Gemini Task-mode setup points to the published Gemini-specific five-file Skill ZIP and GitHub's generated Gemini knowledge mirror, not the multi-platform root skill.

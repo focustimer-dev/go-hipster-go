@@ -73,8 +73,14 @@ jobs:
               assert 'assets/icon.svg' in z.namelist()
               import json
               assert json.loads(z.read('plugin.json'))['name'] == 'go-hipster-go'
-          for name in ('gemini-app-skill', 'claude-skill', 'claude-plugin', 'chatgpt-plugin'):
-              assert (Path('dist') / f'hipster-music-generator-{name}.zip').read_bytes() == (Path('dist') / f'go-hipster-go-{name}.zip').read_bytes()
+          expected={
+              "go-hipster-go-gemini-app-skill.zip",
+              "go-hipster-go-claude-skill.zip",
+              "go-hipster-go-claude-plugin.zip",
+              "go-hipster-go-chatgpt-plugin.zip",
+          }
+          actual={p.name for p in Path('dist').glob('*.zip')}
+          assert actual == expected, f'Unexpected package ZIPs: {sorted(actual ^ expected)}'
           print('Gemini and Claude skill/plugin ZIPs verified.')
           PY
       - name: Determine versioned release tag
@@ -94,10 +100,6 @@ jobs:
             dist/go-hipster-go-claude-skill.zip
             dist/go-hipster-go-claude-plugin.zip
             dist/go-hipster-go-chatgpt-plugin.zip
-            dist/hipster-music-generator-gemini-app-skill.zip
-            dist/hipster-music-generator-claude-skill.zip
-            dist/hipster-music-generator-claude-plugin.zip
-            dist/hipster-music-generator-chatgpt-plugin.zip
           )
           if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
             gh release upload "$RELEASE_TAG" "${files[@]}" --clobber
@@ -108,6 +110,18 @@ jobs:
               --notes 'Ready-to-upload Gemini, Claude and ChatGPT plugin/skill ZIPs; each requires the music-service authorization separately.' \
               --latest
           fi
+          # Only retire the four known pre-rename aliases from this version's release.
+          # Historical releases and the four current Go, Hipster, Go! ZIPs are untouched.
+          for legacy in \
+            hipster-music-generator-gemini-app-skill.zip \
+            hipster-music-generator-claude-skill.zip \
+            hipster-music-generator-claude-plugin.zip \
+            hipster-music-generator-chatgpt-plugin.zip
+          do
+            if gh release view "$RELEASE_TAG" --json assets --jq '.assets[].name' | grep -Fxq "$legacy"; then
+              gh release delete-asset "$RELEASE_TAG" "$legacy" --yes
+            fi
+          done
           gh release view "$RELEASE_TAG" --json url,assets
       - name: Save ChatGPT installable ZIP as workflow artifact
         uses: actions/upload-artifact@v4
