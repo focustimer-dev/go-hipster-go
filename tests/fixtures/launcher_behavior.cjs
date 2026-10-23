@@ -120,7 +120,10 @@ function harness(write,search='',page='launch',storage=new Map()){
  assert.match(atlasCopies.at(-1),/East Africa/);
  const country=atlas.atlasCountries.find(b=>b.dataset.atlasRegion==='west-africa');
  await country.click();
- assert.match(atlas.elements.prompt.textContent,/West Africa/,'Tapping real country polygon adds its regional research route');
+ assert.doesNotMatch(atlas.elements.prompt.textContent,/West Africa/,'Immediate post-pinch click cannot stamp an accidental location');
+ await new Promise(resolve=>setTimeout(resolve,730));
+ await country.click();
+ assert.match(atlas.elements.prompt.textContent,/West Africa/,'Deliberate country tap works after gesture protection');
  await atlas.elements.atlasPaintAll.click();
  assert.match(atlas.elements.prompt.textContent,/Africa/,'Whole-continent inking compresses prompt to one term');
  assert.equal(atlas.elements.openAi.attrs['aria-disabled'],'true');
