@@ -82,6 +82,7 @@ function harness(write,search='',page='launch',storage=new Map()){
  assert.equal(atlas.elements.crateGeoCount.textContent,'ANYWHERE','Zoom alone must not restrict discovery');
  assert.equal(atlas.elements.atlasHome.hidden,false,'Return-to-world control available');
  assert.equal(atlas.crateRegions.filter(b=>!b.hidden).length,4,'Only African regional buttons visible');
+ assert.equal(atlas.elements.crateAtlasMap.attrs.viewBox, '304 128 190 231', 'ViewBox moves on focus in environments without animation');
  // One-finger gestures still belong to normal page scrolling.
  const svg=atlas.elements.crateAtlasMap;
  let consumed=false;
@@ -109,7 +110,7 @@ function harness(write,search='',page='launch',storage=new Map()){
  const afterWheel=svg.getAttribute('viewBox').split(/\s+/).map(Number);
  assert.ok(afterWheel[2]<beforeWheel[2],'Trackpad pinch zooms map');
 
- assert.equal(atlas.elements.crateAtlasMap.attrs.viewBox, '304 128 190 231', 'ViewBox moves on focus in environments without animation');
+
  await atlas.crateRegions.find(b=>b.dataset.crateRegion==='east-africa').click();
  assert.equal(atlas.elements.crateGeoCount.textContent,'1 STAMP');
  assert.match(atlas.elements.prompt.textContent,/Regional exploration: East Africa/);
