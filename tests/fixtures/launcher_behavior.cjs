@@ -4,9 +4,10 @@ const fs=require('node:fs');
 class Element{
  constructor(dataset={}){this.dataset=dataset;this.attrs={};this.events={};this.textContent='';this.hidden=false;this.open=false;this.classList={toggle(){}};}
  focus(){this.focused=true}
- replaceChildren(){}
- append(){}
+ replaceChildren(){this.children=[]}
+ append(...children){this.children=(this.children||[]).concat(children)}
  setAttribute(k,v){this.attrs[k]=v}
+ getAttribute(k){return this.attrs[k]||'0 0 720 372'}
  addEventListener(k,f){this.events[k]=f}
  querySelector(){return this.span||(this.span=new Element())}
  async click(){const event={preventDefault(){this.prevented=true}};await this.events.click?.(event);return event}
