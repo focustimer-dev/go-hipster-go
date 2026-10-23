@@ -106,6 +106,7 @@ function nextCrateSparkPhrase(){
 function goPrompt(ai,service,mood){
  const parts=[goCommand(ai,service,mood),"Curate 12 verified deep cuts using the installed skill; sequence for audible cohesion."];
  if(mood==="criminal")parts.push("Criminal: explicit song-level crime narratives; strongly prefer non-English vocals.");
+ if(crateSelected.size)parts.push(crateRegionPrompt());
  const brief=moodDiscoveryBrief(mood);if(brief)parts.push(brief.trim());
  if(tempo)parts.push("Tempo preference: "+tempoNames[tempo]+".");
  if(freshCrateLens)parts.push("Fresh-crate discovery lens: "+freshCrateLens);
@@ -116,6 +117,35 @@ function goPrompt(ai,service,mood){
  else if(ai==="gemini"&&service==="spotify")parts.push("Gemini Spotify supports search/playback, not playlist creation; provide the verified ordered crate.");
  else parts.push("Service: "+serviceNames[service]+". Publish only with an authorized writer; otherwise preserve the verified crate.");
  return parts.join("\n");
+}
+const crateRegions=[{"id":"north-america","label":"North America","continent":"americas-north"},{"id":"mexico-central","label":"Mexico & Central America","continent":"americas-north"},{"id":"caribbean","label":"Caribbean","continent":"americas-north"},{"id":"northern-south-america","label":"Northern South America","continent":"americas-south"},{"id":"southern-south-america","label":"Southern South America","continent":"americas-south"},{"id":"atlantic-europe","label":"Atlantic & Western Europe","continent":"europe"},{"id":"mediterranean-europe","label":"Mediterranean & Balkans","continent":"europe"},{"id":"northern-europe","label":"Northern Europe","continent":"europe"},{"id":"eastern-europe","label":"Eastern Europe","continent":"europe"},{"id":"north-africa","label":"North Africa","continent":"africa"},{"id":"west-africa","label":"West Africa","continent":"africa"},{"id":"east-africa","label":"East Africa","continent":"africa"},{"id":"central-southern-africa","label":"Central & Southern Africa","continent":"africa"},{"id":"middle-east","label":"Middle East & Caucasus","continent":"asia"},{"id":"central-asia","label":"Central Asia","continent":"asia"},{"id":"south-asia","label":"South Asia","continent":"asia"},{"id":"east-asia","label":"East Asia","continent":"asia"},{"id":"southeast-asia","label":"Southeast Asia","continent":"asia"},{"id":"northern-asia","label":"Northern Asia","continent":"asia"},{"id":"oceania","label":"Oceania","continent":"oceania"}];
+const crateContinents=[{"id":"americas-north","label":"N. America"},{"id":"americas-south","label":"S. America"},{"id":"europe","label":"Europe"},{"id":"africa","label":"Africa"},{"id":"asia","label":"Asia"},{"id":"oceania","label":"Oceania"}];
+const crateStorageKey="ghg-crate-map-regions-v1";
+const validCrateRegions=new Set(crateRegions.map(r=>r.id));
+function readCrateRegions(){try{const raw=JSON.parse(stored(crateStorageKey)||"[]");return new Set(Array.isArray(raw)?raw.filter(v=>validCrateRegions.has(v)):[])}catch(e){return new Set()}}
+let crateSelected=readCrateRegions();
+function crateRegionPrompt(){
+ if(!crateSelected.size)return "";
+ const all=[];
+ for(const group of crateContinents){
+  const members=crateRegions.filter(r=>r.continent===group.id);
+  if(members.every(r=>crateSelected.has(r.id))){all.push(group.label);continue}
+  for(const r of members)if(crateSelected.has(r.id))all.push(r.label);
+ }
+ return "Regional exploration: "+all.join(", ")+". Explore these scenes first, not as track quotas; other cultures can bridge the sound.";
+}
+function renderCrateMap(){
+ doc.querySelectorAll("[data-crate-region]").forEach(b=>b.setAttribute("aria-pressed",String(crateSelected.has(b.dataset.crateRegion))));
+ doc.querySelectorAll("[data-crate-continent]").forEach(b=>{
+  const members=crateRegions.filter(r=>r.continent===b.dataset.crateContinent);
+  b.setAttribute("aria-pressed",String(members.every(r=>crateSelected.has(r.id))));
+ });
+ const count=doc.getElementById("crateGeoCount");if(count)count.textContent=crateSelected.size?crateSelected.size+" REGION"+(crateSelected.size===1?"":"S"):"ANYWHERE";
+ const status=doc.getElementById("crateGeoStatus");if(status)status.textContent=crateSelected.size?crateSelected.size+" region"+(crateSelected.size===1?"":"s")+" selected. Discovery only—not country quotas.":"No regions selected. Surprise me.";
+}
+function updateCrateMap(){
+ store(crateStorageKey,JSON.stringify([...crateSelected]));
+ copiedPrompt=null;selectionChanged();
 }
 const params=new URLSearchParams(location.search);
 const isLegacyGemini=location.pathname.startsWith("/gemini/");
@@ -183,6 +213,7 @@ function renderSetup(){
 }
 function renderLaunch(){
  renderSelections();
+ renderCrateMap();
  const slider=doc.getElementById("tempoSlider"),tempoValue=doc.getElementById("tempoValue"),anyTempo=doc.getElementById("anyTempo");
  if(slider){slider.value=tempo?tempoSteps.indexOf(tempo)+1:3;slider.setAttribute("aria-valuetext",tempo?tempoNames[tempo]:"Any tempo — move to choose a pace")}
  const tempoControl=doc.getElementById("tempoControl");if(tempoControl)tempoControl.setAttribute("data-tempo",tempo||"any");
@@ -273,6 +304,19 @@ async function copyGo(){
 doc.querySelectorAll("[data-mood]").forEach(b=>b.addEventListener("click",()=>{
  mood=mood===b.dataset.mood?"go":b.dataset.mood;copiedPrompt=null;selectionChanged();
 }));
+doc.querySelectorAll("[data-crate-region]").forEach(b=>{
+ const change=()=>{const id=b.dataset.crateRegion;if(!validCrateRegions.has(id))return;
+  if(crateSelected.has(id))crateSelected.delete(id);else crateSelected.add(id);updateCrateMap();};
+ b.addEventListener("click",change);
+ b.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();change()}});
+});
+doc.querySelectorAll("[data-crate-continent]").forEach(b=>b.addEventListener("click",()=>{
+ const members=crateRegions.filter(r=>r.continent===b.dataset.crateContinent);
+ const all=members.every(r=>crateSelected.has(r.id));
+ for(const r of members){if(all)crateSelected.delete(r.id);else crateSelected.add(r.id)}
+ updateCrateMap();
+}));
+const crateClear=doc.getElementById("crateGeoClear");if(crateClear)crateClear.addEventListener("click",()=>{crateSelected.clear();updateCrateMap()});
 const tempoSlider=doc.getElementById("tempoSlider");
 function selectTempo(){tempo=tempoSteps[Number(tempoSlider.value)-1]||"";copiedPrompt=null;selectionChanged()}
 if(tempoSlider){

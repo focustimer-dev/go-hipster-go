@@ -1,3 +1,8 @@
+## v3.6.3 PWA Crate Atlas enhancement
+
+- Add a collapsed, tactile Mercator world map with six continent paint shortcuts and twenty selectable music-research territories. Colored land regions synchronize with accessible text chips; selections persist locally and steer, rather than constrain, the next GO prompt.
+- Default remains unselected (anywhere); no playlist import, account connection, data entry, geographic quotas or new skill release required.
+
 ## Release hygiene (v3.6.3, October 22, 2026)
 
 - Retired four duplicate `hipster-music-generator-*.zip` release aliases; only the canonical `go-hipster-go-*.zip` platform packages remain.
