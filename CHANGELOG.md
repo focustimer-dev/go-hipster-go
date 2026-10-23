@@ -1,3 +1,11 @@
+## Map-first Crate Atlas polish (October 23, 2026)
+
+- Combine shared country edges into only musical listening zone/coastline boundaries, preserving geography for selecting a regional prompt without visually claiming country-level precision.
+- Remove visible continent button grid, ink-all shortcut, header stamp count, redundant status footer and empty-state box from the main atlas. Keep a single Whole World navigation action.
+- Reduce selected states to the colored map and compact, removable passport stamps, with 44px hit areas and short readable abbreviations.
+- Put continent/region name buttons and clear-all action behind a collapsed accessibility-first "Choose by name" fallback. Existing saved selections, touchscreen navigation, prompt generation and service handoff are preserved.
+- Visual audit confirms the parchment map/record-shop identity and scopes all changes to the atlas.
+
 ## Crate Atlas gesture and North America specificity
 
 - Two-finger pinch and drag to navigate the atlas, plus trackpad wheel pan/pinch; normal one-finger page scroll untouched. Suppress incidental map taps after gestures and preserve Whole World reset.

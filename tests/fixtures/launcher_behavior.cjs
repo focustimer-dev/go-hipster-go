@@ -14,7 +14,7 @@ class Element{
  async click(){const event={preventDefault(){this.prevented=true}};await this.events.click?.(event);return event}
 }
 function harness(write,search='',page='launch',storage=new Map()){
- const ids=['welcomeSetup','dismissWelcome','crateGeo','atlasStampCount','atlasLocator','atlasHome','atlasPaintAll','atlasInstruction','atlasStamps','crateAtlasMap','crateGeoCount','crateGeoStatus','crateGeoClear','aiLabel','copyTailoredSetup','recipeIntro','recipeSteps','recipeResources','recipeCaveat','openSelectedAi','tempoControl','tempoSlider','tempoValue','anyTempo','copyStatus','routeStatus','prompt','moodName','receiptCode','openAi','browserAi','manualOpenAi','receiptSummary','goHint','goButton','stripSetupPrompt','setupPromptText','setupPromptDetails','setupTipStatus','openSetupAi','promptDetails','shareButton'];
+ const ids=['welcomeSetup','dismissWelcome','crateGeo','atlasPassport','atlasNamedRegions','atlasLocator','atlasHome','atlasInstruction','atlasStamps','crateAtlasMap','crateGeoStatus','crateGeoClear','aiLabel','copyTailoredSetup','recipeIntro','recipeSteps','recipeResources','recipeCaveat','openSelectedAi','tempoControl','tempoSlider','tempoValue','anyTempo','copyStatus','routeStatus','prompt','moodName','receiptCode','openAi','browserAi','manualOpenAi','receiptSummary','goHint','goButton','stripSetupPrompt','setupPromptText','setupPromptDetails','setupTipStatus','openSetupAi','promptDetails','shareButton'];
  const elements=Object.fromEntries(ids.map(id=>[id,new Element()]));
  const ais=['chatgpt','gemini','claude'].map(ai=>new Element({ai}));
  const services=['spotify','youtube','apple'].map(service=>new Element({service}));
@@ -23,10 +23,11 @@ function harness(write,search='',page='launch',storage=new Map()){
  const crateRegions=[...launchMarkup.matchAll(/data-crate-region="([^"]+)" data-continent="([^"]+)"/g)].map(m=>new Element({crateRegion:m[1],continent:m[2]}));
  const crateContinents=[...launchMarkup.matchAll(/data-crate-continent="([^"]+)"/g)].map(m=>new Element({crateContinent:m[1]}));
  const atlasCountries=[...launchMarkup.matchAll(/data-atlas-country="([^"]+)" data-atlas-region="([^"]+)" data-atlas-continent="([^"]+)"/g)].map(m=>new Element({atlasCountry:m[1],atlasRegion:m[2],atlasContinent:m[3]}));
- const groups={'[data-ai]':ais,'[data-service]':services,'[data-mood]':moods,'[data-crate-region]':crateRegions,'[data-crate-continent]':crateContinents,'[data-atlas-country]':atlasCountries,'[data-setup]':[]};
+ const atlasZones=[...launchMarkup.matchAll(/class="crate-map-zone" data-atlas-zone="([^"]*)"/g)].map(m=>new Element({atlasZone:m[1]}));
+ const groups={'[data-ai]':ais,'[data-service]':services,'[data-mood]':moods,'[data-crate-region]':crateRegions,'[data-crate-continent]':crateContinents,'[data-atlas-country]':atlasCountries,'[data-atlas-zone]':atlasZones,'[data-setup]':[]};
  const doc={body:{dataset:{page},appendChild(){}},getElementById:id=>elements[id]||null,querySelectorAll:q=>groups[q]||[],createElement:()=>Object.assign(new Element(),{style:{},select(){},remove(){}}),execCommand:()=>false};
  vm.runInNewContext(fs.readFileSync('launcher/assets/app.js','utf8'),{document:doc,navigator:{clipboard:{writeText:write}},localStorage:{getItem(key){return storage.get(key)||null},setItem(key,value){storage.set(key,value)}},URL,URLSearchParams,location:{search,pathname:'/',href:'https://example.test/'},history:{replaceState(){}}});
- return {elements,ais,services,moods,crateRegions,crateContinents,atlasCountries};
+ return {elements,ais,services,moods,crateRegions,crateContinents,atlasCountries,atlasZones};
 }
 (async()=>{
  // Exercise the full cue cycle, reload persistence, and the cycle boundary.
@@ -68,18 +69,24 @@ function harness(write,search='',page='launch',storage=new Map()){
  assert.equal((geographicMarkup.match(/data-atlas-country="CAN"/g)||[]).length,2,'Canada has distinct East and West path hit targets');
  assert.equal((geographicMarkup.match(/data-atlas-region="mexico"/g)||[]).length,1,'Mexico has its own hit area');
  assert.match(geographicMarkup,/data-atlas-region="central-america"/);
- assert.match(geographicMarkup,/Two fingers move and zoom the map/);
+ assert.match(geographicMarkup,/class="crate-zone-boundaries"/,'Map draws unified listening-zone and coastline borders');
+ const atlasCss=fs.readFileSync('launcher/assets/hipster.css','utf8');
+ assert.match(atlasCss,/\.crate-map-countries \.crate-map-zone path\{fill:[^}]+stroke:none/,'Country borders are suppressed');
+ assert.match(geographicMarkup,/class="crate-accessibility"/);
+ assert.ok(geographicMarkup.indexOf('class="crate-accessibility"')<geographicMarkup.indexOf('data-crate-continent='),'Text continent controls are behind the disclosure');
+ assert.doesNotMatch(geographicMarkup,/id="atlasPaintAll"|id="crateGeoCount"|id="atlasStampCount"/,'No redundant map confirmations');
+ assert.match(geographicMarkup,/id="atlasPassport"/);
  assert.equal((geographicMarkup.match(/data-crate-continent=/g)||[]).length,6);
  assert.match(geographicMarkup,/id="atlasStamps"/);
  assert.match(geographicMarkup,/id="crateAtlasMap"/);
  const atlasStore=new Map(),atlasCopies=[];
  let atlas=harness(async text=>atlasCopies.push(text),'?ai=gemini&service=youtube&mood=criminal','launch',atlasStore);
- assert.equal(atlas.elements.crateGeoCount.textContent,'ANYWHERE');
+ assert.equal(atlas.elements.atlasPassport.hidden,true,'Blank map has no passport strip');
  assert.doesNotMatch(atlas.elements.prompt.textContent,/Regional exploration:/);
  const africa=atlas.crateContinents.find(b=>b.dataset.crateContinent==='africa');
  await africa.click();
  assert.equal(africa.attrs['aria-pressed'],'true','Continent click zooms without selecting any regions');
- assert.equal(atlas.elements.crateGeoCount.textContent,'ANYWHERE','Zoom alone must not restrict discovery');
+ assert.equal(atlas.elements.atlasPassport.hidden,true,'Zoom alone must not restrict discovery');
  assert.equal(atlas.elements.atlasHome.hidden,false,'Return-to-world control available');
  assert.equal(atlas.crateRegions.filter(b=>!b.hidden).length,4,'Only African regional buttons visible');
  assert.equal(atlas.elements.crateAtlasMap.attrs.viewBox, '304 128 190 231', 'ViewBox moves on focus in environments without animation');
@@ -97,7 +104,7 @@ function harness(write,search='',page='launch',storage=new Map()){
  const zoomed=svg.getAttribute('viewBox').split(/\s+/).map(Number);
  assert.ok(zoomed[2]<190&&zoomed[3]<231,'Pinching outward magnifies the selected continent');
  await atlas.atlasCountries.find(b=>b.dataset.atlasRegion==='east-africa').click();
- assert.equal(atlas.elements.crateGeoCount.textContent,'ANYWHERE','A pinch cannot accidentally select country underneath');
+ assert.equal(atlas.elements.atlasPassport.hidden,true,'A pinch cannot accidentally select a region');
  const oldX=zoomed[0],oldY=zoomed[1];
  svg.events.touchmove({touches:[touch(105,150),touch(265,150)],cancelable:true,preventDefault(){}});
  const panned=svg.getAttribute('viewBox').split(/\s+/).map(Number);
@@ -112,10 +119,12 @@ function harness(write,search='',page='launch',storage=new Map()){
 
 
  await atlas.crateRegions.find(b=>b.dataset.crateRegion==='east-africa').click();
- assert.equal(atlas.elements.crateGeoCount.textContent,'1 STAMP');
+ assert.equal(atlas.elements.atlasPassport.hidden,false,'Selection reveals the passport');
  assert.match(atlas.elements.prompt.textContent,/Regional exploration: East Africa/);
  assert.match(atlasStore.get('ghg-crate-map-regions-v1'),/east-africa/);
- assert.equal(atlas.elements.atlasStamps.children.length,1,'Selected region creates a removable passport stamp');
+ assert.equal(atlas.elements.atlasStamps.children.length,1,'Selected region creates a removable stamp');
+ assert.equal(atlas.elements.atlasStamps.children[0].children[0].textContent,'E AFR','Compact stamp label is regional');
+ assert.equal(atlas.atlasZones.find(z=>z.dataset.atlasZone==='east-africa').attrs['data-selected'],'true','Map matches stamp selection');
  await atlas.elements.goButton.click();
  assert.match(atlasCopies.at(-1),/East Africa/);
  const country=atlas.atlasCountries.find(b=>b.dataset.atlasRegion==='west-africa');
@@ -124,7 +133,7 @@ function harness(write,search='',page='launch',storage=new Map()){
  await new Promise(resolve=>setTimeout(resolve,730));
  await country.click();
  assert.match(atlas.elements.prompt.textContent,/West Africa/,'Deliberate country tap works after gesture protection');
- await atlas.elements.atlasPaintAll.click();
+ for(const id of ['north-africa','central-southern-africa'])await atlas.crateRegions.find(b=>b.dataset.crateRegion===id).click();
  assert.match(atlas.elements.prompt.textContent,/Africa/,'Whole-continent inking compresses prompt to one term');
  assert.equal(atlas.elements.openAi.attrs['aria-disabled'],'true');
  await atlas.elements.atlasStamps.children[0].click();
@@ -133,7 +142,7 @@ function harness(write,search='',page='launch',storage=new Map()){
  assert.equal(atlas.elements.atlasHome.hidden,true);
  await atlas.crateContinents.find(b=>b.dataset.crateContinent==='europe').click();
  assert.equal(atlas.crateRegions.filter(b=>!b.hidden).length,4);
- assert.equal(atlas.elements.atlasLocator.textContent,'CONTINENT / Europe');
+ assert.equal(atlas.elements.atlasLocator.textContent,'LISTENING MAP / Europe');
 
  // North America is not a redundant listening category: US/Canada sides,
  // Mexico and Central America are each independent.
@@ -149,7 +158,7 @@ function harness(write,search='',page='launch',storage=new Map()){
  assert.doesNotMatch(atlas.elements.prompt.textContent,/Mexico & Central America/,'Mexico is no longer bundled with Central America');
  assert.doesNotMatch(atlas.elements.prompt.textContent,/Regional exploration: N\. America/,'The generic continent cannot override detailed region selections');
  const legacyNorth=harness(async()=>{},'?mood=criminal','launch',new Map([['ghg-crate-map-regions-v1','["north-america","mexico-central"]']]));
- assert.equal(legacyNorth.elements.crateGeoCount.textContent,'6 STAMPS','Previous broad areas migrate to six precise regions');
+ assert.equal(legacyNorth.elements.atlasStamps.children.length,6,'Legacy broad areas migrate to six precise stamps');
  assert.match(legacyNorth.elements.prompt.textContent,/US East/);
  assert.match(legacyNorth.elements.prompt.textContent,/Canada West/);
  assert.match(legacyNorth.elements.prompt.textContent,/Mexico/);
@@ -158,12 +167,12 @@ function harness(write,search='',page='launch',storage=new Map()){
  atlas=harness(async()=>{},'?mood=criminal','launch',atlasStore);
  assert.match(atlas.elements.prompt.textContent,/West Africa/,'Inked regions survive reloading');
  await atlas.elements.crateGeoClear.click();
- assert.equal(atlas.elements.crateGeoCount.textContent,'ANYWHERE');
+ assert.equal(atlas.elements.atlasPassport.hidden,true,'Clearing hides passport');
  assert.doesNotMatch(atlas.elements.prompt.textContent,/Regional exploration:/);
  const badAtlas=harness(async()=>{},'?mood=criminal','launch',new Map([['ghg-crate-map-regions-v1','["ghost-region",3,"caribbean"]']]));
- assert.equal(badAtlas.elements.crateGeoCount.textContent,'1 STAMP','Invalid persisted region IDs ignored');
+ assert.equal(badAtlas.elements.atlasStamps.children.length,1,'Invalid persisted region IDs ignored');
  await badAtlas.crateRegions.find(b=>b.dataset.crateRegion==='caribbean').click();
- assert.equal(badAtlas.elements.crateGeoCount.textContent,'ANYWHERE');
+ assert.equal(badAtlas.elements.atlasPassport.hidden,true,'Removing final stamp hides passport');
  const apple=harness(async()=>{},"?ai=chatgpt&service=apple");
  assert.match(apple.elements.prompt.textContent,/@Go, Hipster, Go! @Apple Music go/);
  assert.match(apple.elements.prompt.textContent,/playlist widget/);

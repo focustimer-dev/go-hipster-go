@@ -180,6 +180,7 @@ function toggleCrateRegion(id){
  lastCrateStamp=added?id:null;
  updateCrateMap();
 }
+const crateStampNames={"us-west":"US W","us-east":"US E","canada-west":"CAN W","canada-east":"CAN E","mexico":"MEX","central-america":"CENT AM","caribbean":"CARIB","northern-south-america":"N S AM","southern-south-america":"S S AM","atlantic-europe":"W EUR","mediterranean-europe":"MED / BALK","northern-europe":"N EUR","eastern-europe":"E EUR","north-africa":"N AFR","west-africa":"W AFR","east-africa":"E AFR","central-southern-africa":"C / S AFR","middle-east":"MID EAST","central-asia":"C ASIA","south-asia":"S ASIA","east-asia":"E ASIA","southeast-asia":"SE ASIA","northern-asia":"N ASIA","oceania":"OCEANIA"};
 function renderCrateMap(){
  const focused=Boolean(atlasFocus),panel=doc.getElementById("crateGeo");
  if(panel)panel.setAttribute("data-focus",String(focused||atlasUserNavigated));
@@ -188,32 +189,32 @@ function renderCrateMap(){
   b.setAttribute("aria-pressed",String(crateSelected.has(b.dataset.crateRegion)));
  });
  doc.querySelectorAll("[data-crate-continent]").forEach(b=>b.setAttribute("aria-pressed",String(atlasFocus===b.dataset.crateContinent)));
+ doc.querySelectorAll("[data-atlas-zone]").forEach(z=>z.setAttribute("data-selected",String(crateSelected.has(z.dataset.atlasZone))));
  doc.querySelectorAll("[data-atlas-country]").forEach(path=>{
   path.setAttribute("data-inked",String(crateSelected.has(path.dataset.atlasRegion)));
   path.setAttribute("data-remote",String(focused&&path.dataset.atlasContinent!==atlasFocus));
  });
- const count=doc.getElementById("crateGeoCount");if(count)count.textContent=crateSelected.size?crateSelected.size+" STAMP"+(crateSelected.size===1?"":"S"):"ANYWHERE";
- const st=doc.getElementById("crateGeoStatus");if(st)st.textContent=crateSelected.size?crateSelected.size+" musical territor"+(crateSelected.size===1?"y":"ies")+" on the itinerary. Your next GO will explore them first.":"No region selected. The whole world is fair game.";
- const sc=doc.getElementById("atlasStampCount");if(sc)sc.textContent=crateSelected.size?crateSelected.size+" INKED":"NO STAMPS YET";
- const loc=doc.getElementById("atlasLocator");if(loc)loc.textContent=focused?"CONTINENT / "+atlasNames[atlasFocus]:"WORLD ATLAS · 24 LISTENING TERRITORIES";
+ const st=doc.getElementById("crateGeoStatus");
+ if(st)st.textContent=crateSelected.size?crateSelected.size+" regions selected. Tap a stamp to remove a region.":"No regions selected. All areas are available.";
+ const loc=doc.getElementById("atlasLocator");
+ if(loc)loc.textContent=focused?"LISTENING MAP / "+atlasNames[atlasFocus]:"LISTENING MAP · 24 REGIONS";
  const home=doc.getElementById("atlasHome");if(home)home.hidden=!(focused||atlasUserNavigated);
- const all=doc.getElementById("atlasPaintAll");
- if(all){all.hidden=!focused;if(focused){const members=crateRegions.filter(r=>r.continent===atlasFocus);all.textContent=members.every(r=>crateSelected.has(r.id))?"CLEAR THIS CONTINENT":"INK ALL REGIONS";}}
- const inst=doc.getElementById("atlasInstruction");if(inst)inst.textContent=focused?"TAP LAND TO STAMP · TWO FINGERS TO PAN OR PINCH":atlasUserNavigated?"TAP LAND TO CHOOSE A CONTINENT · TWO FINGERS TO PAN OR PINCH":"TAP LAND TO ZOOM · TWO FINGERS TO PAN OR PINCH";
+ const hint=doc.getElementById("atlasInstruction");
+ if(hint)hint.textContent=focused?"TAP TO INK / UNINK · PINCH TO EXPLORE":atlasUserNavigated?"TAP TO EXPLORE · PINCH TO MOVE":"TAP LAND TO EXPLORE · PINCH WITH TWO FINGERS";
+ const passport=doc.getElementById("atlasPassport");if(passport)passport.hidden=!crateSelected.size;
  const holder=doc.getElementById("atlasStamps");
  if(holder){
   holder.replaceChildren();
-  if(!crateSelected.size){const p=doc.createElement("p");p.className="crate-passport-empty";p.textContent="The whole planet is fair game. As it should be.";holder.append(p);}
-  else{
-   let i=0;
-   for(const reg of crateRegions){
-    if(!crateSelected.has(reg.id))continue;i++;
-    const stamp=doc.createElement("button");stamp.type="button";stamp.className="crate-stamp"+(reg.id===lastCrateStamp?" is-new":"");
-    stamp.setAttribute("aria-label","Remove "+reg.label+" from listening passport");
-    const strong=doc.createElement("strong");strong.textContent=reg.label;
-    const small=doc.createElement("small");small.textContent="VISIT STAMP / "+String(i).padStart(2,"0")+" · REMOVE ×";
-    stamp.append(strong,small);stamp.addEventListener("click",()=>toggleCrateRegion(reg.id));holder.append(stamp);
-   }
+  for(const reg of crateRegions){
+   if(!crateSelected.has(reg.id))continue;
+   const stamp=doc.createElement("button");stamp.type="button";
+   stamp.className="crate-stamp"+(reg.id===lastCrateStamp?" is-new":"");
+   stamp.setAttribute("aria-label","Remove "+reg.label+" from listening regions");
+   stamp.setAttribute("title",reg.label+" — tap to remove");
+   const strong=doc.createElement("strong");strong.textContent=crateStampNames[reg.id]||reg.label;
+   const x=doc.createElement("span");x.className="crate-stamp-x";x.setAttribute("aria-hidden","true");x.textContent="×";
+   stamp.append(strong,x);stamp.addEventListener("click",()=>toggleCrateRegion(reg.id));
+   holder.append(stamp);
   }
  }
  lastCrateStamp=null;

@@ -423,7 +423,7 @@ body[data-page=setup] summary:focus-visible,#setupPromptText:focus-visible{outli
 @media(max-width:520px){.mood-grid{grid-template-columns:repeat(6,minmax(0,1fr))}.mood-grid .mood{grid-column:span 2}.mood-grid .mood:nth-last-child(-n+2){grid-column:span 3}}
 
 
-/* Cartographer's Desk: engraved map, intuitive drilldown, and passport ink. */
+/* The Crate Atlas: one map, one way home, compact passport ink. */
 .crate-geo{margin:20px 17px 24px;border:2px solid var(--ink);background:#f1e6cd;box-shadow:4px 4px 0 #272523}
 .crate-geo-summary{min-height:59px;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;gap:9px;cursor:pointer;list-style:none}
 .crate-geo-summary::-webkit-details-marker{display:none}
@@ -432,65 +432,63 @@ body[data-page=setup] summary:focus-visible,#setupPromptText:focus-visible{outli
 .crate-geo-identity{display:grid;gap:3px}
 .crate-geo-identity strong{font:800 clamp(.9rem,3vw,1.2rem)/1.05 Georgia,serif;letter-spacing:-.015em}
 .crate-geo-identity small{font:700 .59rem/1.2 ui-monospace,monospace;letter-spacing:.12em;color:#6d4c43}
-.crate-geo-count{padding:7px 8px;border:1px solid #5a3e36;background:#f3d6b9;color:#44271e;font:800 .64rem/1.2 ui-monospace,monospace;white-space:nowrap}
-.crate-geo-body{padding:15px 13px 13px;border-top:2px solid var(--ink)}
-.crate-geo-help{margin:0 0 14px;font-size:.83rem;line-height:1.52;max-width:65ch}
-.crate-atlas-heading{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:31px;margin-bottom:9px}
-.crate-atlas-locator{font:800 .66rem/1.4 ui-monospace,monospace;letter-spacing:.06em;color:#55423d}
-.crate-atlas-locator span{color:var(--red2)}
-#atlasHome{background:transparent;border:0;border-bottom:1px dotted #5f463e;padding:7px 0;color:#742c2c;font:800 .68rem ui-monospace,monospace;min-height:40px}
-.crate-continents{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
-.crate-continents button{min-height:38px;padding:7px 10px;border:1px solid #5e544b;background:#e4d6b8;color:#28231f;font:800 .67rem ui-monospace,monospace;letter-spacing:.015em}
-.crate-continents button[aria-pressed=true]{background:#8f252c;border-color:#8f252c;color:#fff5db}
-.crate-continents button:hover:not([aria-pressed=true]){background:#f7dfac}
+.crate-geo-body{padding:12px;border-top:2px solid var(--ink)}
+.crate-atlas-heading{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:40px;margin-bottom:7px}
+.crate-atlas-locator{font:800 .66rem/1.4 ui-monospace,monospace;letter-spacing:.045em;color:#55423d}
+#atlasHome{background:transparent;border:0;border-bottom:1px dotted #5f463e;padding:9px 4px;color:#742c2c;font:800 .69rem ui-monospace,monospace;min-height:44px;white-space:nowrap}
+#atlasHome:hover{background:#e3d7bf}
 .crate-map-frame{position:relative;overflow:hidden;background:#e2d3b5;border:2px solid #7c6953;box-shadow:inset 0 0 0 4px #efe0bb,0 4px 12px #34241928}
-.crate-mercator{display:block;width:100%;height:auto;aspect-ratio:720 / 372;background:transparent;touch-action:pan-y;cursor:grab}
+.crate-mercator{display:block;width:100%;height:auto;aspect-ratio:720/372;background:transparent;touch-action:pan-y;cursor:grab}
+.crate-map-frame:active .crate-mercator{cursor:grabbing}
 .crate-map-ocean{fill:#d1dad1}
 .crate-map-grid{stroke:#9ba49b;stroke-width:.65;opacity:.55;fill:none;pointer-events:none}
-.crate-map-countries path{fill:#bcb99a;stroke:#756b5c;stroke-width:1.05;stroke-linejoin:round;vector-effect:non-scaling-stroke;cursor:zoom-in;transition:fill .18s ease}
-.crate-map-countries path:hover{fill:#e5c385}
-.crate-map-countries path[data-inked=true]{fill:#a7353c;stroke:#6a3030}
-.crate-map-countries path[data-inked=true]:hover{fill:#c1494c}
+.crate-map-countries .crate-map-zone path{fill:#bcb99a;stroke:none;cursor:zoom-in;transition:fill .16s ease}
+.crate-map-zone:hover path{fill:#e3c68d}
+.crate-map-zone[data-selected=true] path{fill:#a7353c}
+.crate-map-zone[data-selected=true]:hover path{fill:#bb4448}
+.crate-zone-boundaries{fill:none;stroke:#706859;stroke-width:1.06;stroke-linejoin:round;vector-effect:non-scaling-stroke;pointer-events:none}
 .crate-geo[data-focus=true] .crate-mercator{height:clamp(290px,46vw,390px);aspect-ratio:auto}
-.crate-geo[data-focus=true] .crate-map-countries path{cursor:crosshair}
-.crate-geo[data-focus=true] .crate-map-countries path[data-remote=true]{pointer-events:none;opacity:.52}
+.crate-geo[data-focus=true] .crate-map-zone path{cursor:crosshair}
+.crate-geo[data-focus=true] .crate-map-zone path[data-remote=true]{pointer-events:none;opacity:.55}
 .crate-map-seal{position:absolute;top:12px;right:16px;transform:rotate(9deg);color:#873940;border:2px double #873940;border-radius:50%;width:76px;height:76px;display:grid;place-content:center;text-align:center;font:800 .54rem/1.38 ui-monospace,monospace;letter-spacing:.04em;opacity:.5;pointer-events:none}
 .crate-map-coordinate{position:absolute;bottom:8px;left:10px;background:#f1e8d2c9;padding:2px 5px;font:700 .55rem ui-monospace,monospace;color:#514941;pointer-events:none}
-.crate-atlas-nav{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:42px}
-.crate-geo-note{color:#675950;font:700 .65rem/1.5 ui-monospace,monospace;letter-spacing:.02em;margin:8px 0}
-#atlasPaintAll{min-height:42px;padding:7px 10px;background:#f3dcaa;border:1px solid #705645;font:800 .64rem ui-monospace,monospace;color:#452e28;white-space:nowrap}
-.crate-regions{display:flex;flex-wrap:wrap;gap:7px}
-.crate-regions button{min-height:44px;padding:8px 11px;border:1px solid #75685a;background:#f9f0da;color:#302923;font:700 .78rem/1.2 Arial,system-ui,sans-serif}
-.crate-regions button[aria-pressed=true]{background:#9a3039;color:#fff6e8;border-color:#69262b}
-.crate-regions button:not([hidden]):hover{box-shadow:inset 0 -3px 0 #d5ab68}
-.crate-passport{background:#e8ddc2;margin-top:13px;border:1px dashed #9e8573;padding:10px 10px 13px}
-.crate-passport-title{display:flex;align-items:center;justify-content:space-between;gap:8px;border-bottom:1px solid #b4a68e;padding-bottom:7px;font:800 .66rem/1.35 ui-monospace,monospace;letter-spacing:.035em;color:#554039}
-.crate-passport-count{color:#8a2b33;font-size:.59rem;white-space:nowrap}
-.crate-passport-stamps{display:flex;flex-wrap:wrap;gap:9px;padding-top:11px;min-height:36px}
-.crate-passport-empty{font:italic .85rem/1.35 Georgia,serif;color:#6e6153;margin:0}
-.crate-stamp{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;max-width:100%;min-height:47px;padding:6px 11px 5px;border:2px solid #96363d;border-radius:2px;box-shadow:inset 0 0 0 1px #96363d;color:#832b36;background:#efdfc5;transform:rotate(-2deg);cursor:pointer}
-.crate-stamp:nth-child(even){transform:rotate(2deg)}
-.crate-stamp strong{font:900 .7rem/1.1 ui-monospace,monospace;text-align:left;letter-spacing:.03em;text-transform:uppercase}
-.crate-stamp small{font:700 .53rem ui-monospace,monospace;letter-spacing:.08em}
-.crate-stamp.is-new{animation:crate-stamp-in .3s cubic-bezier(.2,.8,.2,1) both}
-@keyframes crate-stamp-in{from{opacity:0;transform:translateY(-5px) rotate(-8deg) scale(1.15)}to{opacity:1;transform:translateY(0) rotate(-2deg) scale(1)}}
-.crate-geo-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid #a99479;padding-top:12px;margin-top:12px}
-#crateGeoStatus{font-size:.73rem;line-height:1.4;flex:1;color:#635349}
-#crateGeoClear{min-height:44px;border:1px solid var(--ink);background:transparent;padding:8px 10px;font:800 .67rem ui-monospace,monospace;color:var(--ink)}
+.crate-atlas-nav{margin-top:7px;min-height:20px}
+.crate-geo-note{margin:0;color:#63594d;font:700 .65rem/1.5 ui-monospace,monospace;letter-spacing:.02em}
+.crate-passport{margin:11px 0 5px;padding:2px 0}
+.crate-passport-stamps{display:flex;flex-wrap:wrap;gap:4px 7px;min-height:44px;align-items:center}
+.crate-stamp{position:relative;display:inline-flex;align-items:center;gap:8px;min-height:44px;max-width:100%;padding:8px 10px;background:transparent;border:0;color:#7c3039;cursor:pointer;transform:rotate(-1deg);white-space:nowrap}
+.crate-stamp:nth-child(even){transform:rotate(1deg)}
+.crate-stamp::before{content:"";position:absolute;inset:5px 2px;border:1.5px double currentColor;border-radius:2px;opacity:.85;pointer-events:none}
+.crate-stamp strong{font:800 .64rem/1.2 ui-monospace,monospace;letter-spacing:.025em;position:relative}
+.crate-stamp-x{font:800 .83rem/1 ui-monospace,monospace;position:relative;color:#6f5550}
+.crate-stamp:hover{color:#ac333d;background:#eadcc1}
+.crate-stamp.is-new{animation:crate-stamp-in .24s cubic-bezier(.16,1,.3,1) both}
+@keyframes crate-stamp-in{from{opacity:0;transform:translateY(-4px) rotate(-5deg) scale(1.07)}to{opacity:1;transform:translateY(0) rotate(-1deg) scale(1)}}
+.crate-accessibility{margin-top:8px;border-top:1px dashed #b3a38a}
+.crate-accessibility>summary{list-style:none;min-height:44px;display:flex;align-items:center;gap:4px;cursor:pointer;color:#5f5348;font:800 .67rem/1.3 ui-monospace,monospace}
+.crate-accessibility>summary::-webkit-details-marker{display:none}
+.crate-accessibility>summary:before{content:"+";margin-right:6px;color:#9b3942}
+.crate-accessibility[open]>summary:before{content:"−"}
+.crate-accessibility>summary span{font-size:.56rem;font-weight:600;color:#6f6457}
+.crate-accessibility-help{font-size:.8rem;line-height:1.45;color:#4b4239;margin:1px 0 11px}
+.crate-continents,.crate-regions{display:flex;flex-wrap:wrap;gap:7px}
+.crate-continents{margin-bottom:12px}
+.crate-continents button,.crate-regions button{min-height:44px;padding:9px 11px;border:1px solid #75685a;background:#f9f0da;color:#302923;font:700 .76rem/1.2 Arial,system-ui,sans-serif}
+.crate-continents button[aria-pressed=true],.crate-regions button[aria-pressed=true]{background:#9a3039;color:#fff6e8;border-color:#69262b}
+.crate-continents button:not([hidden]):hover,.crate-regions button:not([hidden]):hover{box-shadow:inset 0 -3px 0 #d5ab68}
+#crateGeoClear{min-height:44px;margin-top:12px;padding:9px 11px;border:1px solid #6b5e50;background:transparent;font:800 .65rem ui-monospace,monospace;color:#6b2e2f}
 #crateGeoClear:hover{background:#e5c385}
+.crate-sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 .crate-geo [hidden]{display:none!important}
-.crate-geo button:focus-visible,.crate-geo-summary:focus-visible{outline:3px solid #eb8d2a;outline-offset:3px}
+.crate-geo button:focus-visible,.crate-geo-summary:focus-visible,.crate-accessibility>summary:focus-visible{outline:3px solid #eb8d2a;outline-offset:2px}
 @media(max-width:450px){
-.crate-geo{margin:18px 12px 22px}
-.crate-geo-body{padding:11px 9px}
-.crate-geo-identity strong{font-size:.96rem}
-.crate-continents button{flex:1 1 auto;font-size:.64rem;min-height:42px}
-.crate-map-seal{width:55px;height:55px;font-size:.41rem;right:9px;top:9px}
-.crate-map-coordinate{font-size:.49rem}
-.crate-atlas-locator{font-size:.6rem}
-.crate-stamp strong{font-size:.64rem}
+ .crate-geo{margin:18px 12px 22px}
+ .crate-geo-body{padding:10px 9px}
+ .crate-geo-identity strong{font-size:.96rem}
+ .crate-map-seal{width:55px;height:55px;font-size:.41rem;right:9px;top:9px}
+ .crate-map-coordinate{font-size:.49rem}
+ .crate-atlas-locator{font-size:.6rem}
+ .crate-geo-note{font-size:.61rem}
+ .crate-accessibility>summary span{font-size:.49rem}
 }
-@media(prefers-reduced-motion:reduce){.crate-map-countries path{transition:none}.crate-stamp.is-new{animation:none}}
-
-/* Two-finger navigation does not occupy the page's one-finger vertical scroll. */
-.crate-map-frame:active .crate-mercator{cursor:grabbing}
+@media(prefers-reduced-motion:reduce){.crate-map-zone path{transition:none}.crate-stamp.is-new{animation:none}}
