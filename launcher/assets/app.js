@@ -194,7 +194,6 @@ function renderCrateMap(){
  doc.querySelectorAll("[data-atlas-zone]").forEach(z=>z.setAttribute("data-selected",String(crateSelected.has(z.dataset.atlasZone))));
  doc.querySelectorAll("[data-atlas-country]").forEach(path=>{
   path.setAttribute("data-inked",String(crateSelected.has(path.dataset.atlasRegion)));
-  path.setAttribute("data-remote",String(focused&&path.dataset.atlasContinent!==atlasFocus));
  });
  const st=doc.getElementById("crateGeoStatus");
  const selectionStatus=crateSelected.size?crateSelected.size+" region"+(crateSelected.size===1?"":"s")+" selected. Tap a stamp to remove a region.":"No regions selected. All areas are available.";
@@ -456,7 +455,18 @@ function atlasViewForGesture(base,anchor,screen,rect,zoom){
 }
 function atlasBindGestures(){
  const map=doc.getElementById("crateAtlasMap");if(!map)return;
+ const stopZoom=()=>{
+  if(atlasZoomFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasZoomFrame);
+  atlasZoomFrame=0;
+ };
+ // Freeze the geometry under a new press, rather than moving the target
+ // between pointer-down and click while a continent zoom is still running.
+ map.addEventListener("pointerdown",()=>{stopZoom();flushAtlasNavigation()});
  map.addEventListener("touchstart",event=>{
+  if(event.touches.length===1&&!atlasTouchGesture){
+   stopZoom();flushAtlasNavigation();atlasSuppressTapUntil=0;
+   return;
+  }
   if(event.touches.length!==2){if(event.touches.length>2)atlasTouchGesture=null;return;}
   flushAtlasNavigation();
   const view=atlasView(),screen=atlasGesturePoints(event.touches),rect=map.getBoundingClientRect();
@@ -512,7 +522,13 @@ doc.querySelectorAll("[data-atlas-country]").forEach(path=>{
   if(atlasTouchGesture||Date.now()<atlasSuppressTapUntil)return;
   const cont=path.dataset.atlasContinent;
   if(!atlasFocus){focusCrateContinent(cont);return}
-  if(cont===atlasFocus&&validCrateRegions.has(path.dataset.atlasRegion))toggleCrateRegion(path.dataset.atlasRegion);
+  // Panning/pinching changes which land is visible, not which land may be
+  // selected. A tap on another continent uses its actual painted hit path
+  // and updates the named controls without moving the map away from the tap.
+  if(validCrateRegions.has(path.dataset.atlasRegion)){
+   atlasFocus=cont;
+   toggleCrateRegion(path.dataset.atlasRegion);
+  }
  });
 });
 doc.querySelectorAll("[data-crate-continent]").forEach(b=>b.addEventListener("click",()=>focusCrateContinent(b.dataset.crateContinent)));

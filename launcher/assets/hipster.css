@@ -453,7 +453,6 @@ body[data-page=setup] summary:focus-visible,#setupPromptText:focus-visible{outli
 .crate-zone-boundaries{fill:none;stroke:var(--atlas-boundary);stroke-width:1.06;stroke-linejoin:round;vector-effect:non-scaling-stroke;pointer-events:none}
 .crate-geo[data-focus=true] .crate-mercator{height:clamp(290px,46vw,390px);aspect-ratio:auto}
 .crate-geo[data-focus=true] .crate-map-zone path{cursor:crosshair}
-.crate-geo[data-focus=true] .crate-map-zone path[data-remote=true]{pointer-events:none;opacity:.55}
 .crate-map-seal{position:absolute;top:12px;right:16px;transform:rotate(9deg);color:#873940;border:2px double #873940;border-radius:50%;width:76px;height:76px;display:grid;place-content:center;text-align:center;font:800 .54rem/1.38 ui-monospace,monospace;letter-spacing:.04em;opacity:.5;pointer-events:none}
 .crate-map-coordinate{position:absolute;bottom:8px;left:10px;background:#f1e8d2c9;padding:2px 5px;font:700 .55rem ui-monospace,monospace;color:#514941;pointer-events:none}
 .crate-atlas-nav{margin-top:7px;min-height:20px}

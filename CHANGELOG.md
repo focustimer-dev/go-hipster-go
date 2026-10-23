@@ -1,3 +1,10 @@
+## Atlas selection follows the visible map
+
+- Keep all visible listening zones tappable after zooming or panning beyond the last focused continent. A cross-continent tap selects the actual zone and updates named controls without recentering the camera.
+- Stop an in-progress continent zoom when a new press begins so the target does not move between press and release.
+- Let a fresh one-finger tap select immediately after a pinch while continuing to suppress the pinch gesture's incidental synthetic click.
+- Cover cross-continent selection, stable camera position and intentional post-pinch taps in regression tests.
+
 ## Jukebox accessibility and atlas input refinement (October 23, 2026)
 
 - Keep passport stamp DOM nodes stable and move keyboard focus to the next/previous stamp, or Choose by name after the final removal.

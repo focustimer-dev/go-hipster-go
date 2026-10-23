@@ -162,6 +162,31 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.equal(atlas.crateRegions.filter(b=>!b.hidden).length,4);
  assert.equal(atlas.elements.atlasLocator.textContent,'LISTENING MAP / Europe');
 
+ // Visible shapes stay selectable after navigating beyond a focused continent.
+ const crossAtlas=harness(async()=>{});
+ await crossAtlas.crateContinents.find(b=>b.dataset.crateContinent==='europe').click();
+ const crossView=crossAtlas.elements.crateAtlasMap.getAttribute('viewBox');
+ await crossAtlas.atlasCountries.find(b=>b.dataset.atlasRegion==='north-africa').click();
+ assert.match(crossAtlas.elements.prompt.textContent,/North Africa/,'Adjacent continent can be selected without Whole World');
+ assert.equal(crossAtlas.elements.atlasLocator.textContent,'LISTENING MAP / Africa','Named controls follow the tapped region');
+ assert.equal(crossAtlas.elements.crateAtlasMap.getAttribute('viewBox'),crossView,'Cross-continent selection does not move the target away');
+ await crossAtlas.atlasCountries.find(b=>b.dataset.atlasRegion==='mediterranean-europe').click();
+ assert.match(crossAtlas.elements.prompt.textContent,/Mediterranean & Balkans/,'Can select back across the boundary without reset');
+ assert.match(crossAtlas.elements.prompt.textContent,/North Africa/,'Cross-continent selection preserves earlier stamps');
+ assert.doesNotMatch(atlasCss,/path\[data-remote=true\]\{pointer-events:none/,'Painted regions must not be disabled by a stale continent focus');
+
+ // A fresh one-finger tap after a pinch is not the pinch's synthetic click.
+ const touchAtlas=crossAtlas.elements.crateAtlasMap;
+ touchAtlas.events.touchstart({touches:[touch(120,120),touch(220,120)]});
+ touchAtlas.events.touchmove({touches:[touch(110,120),touch(230,120)],cancelable:true,preventDefault(){}});
+ touchAtlas.events.touchend({touches:[]});
+ const eastAsia=crossAtlas.atlasCountries.find(b=>b.dataset.atlasRegion==='east-asia');
+ await eastAsia.click();
+ assert.doesNotMatch(crossAtlas.elements.prompt.textContent,/East Asia/,'Pinch synthetic click remains suppressed');
+ touchAtlas.events.touchstart({touches:[touch(150,130)]});
+ await eastAsia.click();
+ assert.match(crossAtlas.elements.prompt.textContent,/East Asia/,'A deliberate fresh tap works immediately after pinch');
+
  // North America is not a redundant listening category: US/Canada sides,
  // Mexico and Central America are each independent.
  await atlas.elements.atlasHome.click();
@@ -218,6 +243,12 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  const callbacks=[...frames.values()];frames.clear();for(const callback of callbacks)callback(0);
  assert.equal(viewWrites,1,'A burst paints one map frame');
  assert.ok(Number(batchedMap.getAttribute('viewBox').split(' ')[2])<720,'Batched input retains accumulated zoom');
+ await batched.crateContinents.find(b=>b.dataset.crateContinent==='europe').click();
+ assert.equal(frames.size,1,'Opening a continent schedules a zoom');
+ const pressedView=batchedMap.getAttribute('viewBox');
+ batchedMap.events.pointerdown();
+ assert.equal(frames.size,0,'A new press stops the camera from moving under the pointer');
+ assert.equal(batchedMap.getAttribute('viewBox'),pressedView,'Stopping a zoom preserves the visible hit geometry');
  const apple=harness(async()=>{},"?ai=chatgpt&service=apple");
  assert.match(apple.elements.prompt.textContent,/@Go, Hipster, Go! @Apple Music go/);
  assert.match(apple.elements.prompt.textContent,/playlist widget/);
