@@ -4,26 +4,28 @@ const fs=require('node:fs');
 class Element{
  constructor(dataset={}){this.dataset=dataset;this.attrs={};this.events={};this.textContent='';this.hidden=false;this.open=false;this.classList={toggle(){}};}
  focus(){this.focused=true}
- replaceChildren(){}
- append(){}
+ replaceChildren(){this.children=[]}
+ append(...children){this.children=(this.children||[]).concat(children)}
  setAttribute(k,v){this.attrs[k]=v}
+ getAttribute(k){return this.attrs[k]||'0 0 720 372'}
  addEventListener(k,f){this.events[k]=f}
  querySelector(){return this.span||(this.span=new Element())}
  async click(){const event={preventDefault(){this.prevented=true}};await this.events.click?.(event);return event}
 }
 function harness(write,search='',page='launch',storage=new Map()){
- const ids=['welcomeSetup','dismissWelcome','crateGeoCount','crateGeoStatus','crateGeoClear','aiLabel','copyTailoredSetup','recipeIntro','recipeSteps','recipeResources','recipeCaveat','openSelectedAi','tempoControl','tempoSlider','tempoValue','anyTempo','copyStatus','routeStatus','prompt','moodName','receiptCode','openAi','browserAi','manualOpenAi','receiptSummary','goHint','goButton','stripSetupPrompt','setupPromptText','setupPromptDetails','setupTipStatus','openSetupAi','promptDetails','shareButton'];
+ const ids=['welcomeSetup','dismissWelcome','crateGeo','atlasStampCount','atlasLocator','atlasHome','atlasPaintAll','atlasInstruction','atlasStamps','crateAtlasMap','crateGeoCount','crateGeoStatus','crateGeoClear','aiLabel','copyTailoredSetup','recipeIntro','recipeSteps','recipeResources','recipeCaveat','openSelectedAi','tempoControl','tempoSlider','tempoValue','anyTempo','copyStatus','routeStatus','prompt','moodName','receiptCode','openAi','browserAi','manualOpenAi','receiptSummary','goHint','goButton','stripSetupPrompt','setupPromptText','setupPromptDetails','setupTipStatus','openSetupAi','promptDetails','shareButton'];
  const elements=Object.fromEntries(ids.map(id=>[id,new Element()]));
  const ais=['chatgpt','gemini','claude'].map(ai=>new Element({ai}));
  const services=['spotify','youtube','apple'].map(service=>new Element({service}));
  const moods=['happy','angry','sad','weird','criminal'].map(mood=>new Element({mood}));
  const launchMarkup=fs.readFileSync('launcher/index.html','utf8');
- const crateRegions=[...launchMarkup.matchAll(/data-crate-region="([^"]+)"/g)].map(m=>new Element({crateRegion:m[1]}));
+ const crateRegions=[...launchMarkup.matchAll(/data-crate-region="([^"]+)" data-continent="([^"]+)"/g)].map(m=>new Element({crateRegion:m[1],continent:m[2]}));
  const crateContinents=[...launchMarkup.matchAll(/data-crate-continent="([^"]+)"/g)].map(m=>new Element({crateContinent:m[1]}));
- const groups={'[data-ai]':ais,'[data-service]':services,'[data-mood]':moods,'[data-crate-region]':crateRegions,'[data-crate-continent]':crateContinents,'[data-setup]':[]};
+ const atlasCountries=[...launchMarkup.matchAll(/data-atlas-country="([^"]+)" data-atlas-region="([^"]+)" data-atlas-continent="([^"]+)"/g)].map(m=>new Element({atlasCountry:m[1],atlasRegion:m[2],atlasContinent:m[3]}));
+ const groups={'[data-ai]':ais,'[data-service]':services,'[data-mood]':moods,'[data-crate-region]':crateRegions,'[data-crate-continent]':crateContinents,'[data-atlas-country]':atlasCountries,'[data-setup]':[]};
  const doc={body:{dataset:{page},appendChild(){}},getElementById:id=>elements[id]||null,querySelectorAll:q=>groups[q]||[],createElement:()=>Object.assign(new Element(),{style:{},select(){},remove(){}}),execCommand:()=>false};
  vm.runInNewContext(fs.readFileSync('launcher/assets/app.js','utf8'),{document:doc,navigator:{clipboard:{writeText:write}},localStorage:{getItem(key){return storage.get(key)||null},setItem(key,value){storage.set(key,value)}},URL,URLSearchParams,location:{search,pathname:'/',href:'https://example.test/'},history:{replaceState(){}}});
- return {elements,ais,services,moods,crateRegions,crateContinents};
+ return {elements,ais,services,moods,crateRegions,crateContinents,atlasCountries};
 }
 (async()=>{
  // Exercise the full cue cycle, reload persistence, and the cycle boundary.
@@ -56,41 +58,54 @@ function harness(write,search='',page='launch',storage=new Map()){
  const recovered=harness(async()=>{},'?mood=happy','launch',badStore);
  await recovered.elements.goButton.click();
  assert.match(recovered.elements.prompt.textContent,/Mood angle:/,'Corrupt or obsolete cue storage recovers');
- // The map is optional, accessible, and never requests listening history.
+ // Cartographer's Desk: authentic land polygons and continent drilldown.
  const geographicMarkup=fs.readFileSync('launcher/index.html','utf8');
- assert.equal((geographicMarkup.match(/<rect class="crate-map-region"/g)||[]).length,20,'20 clickable map territories');
- assert.equal((geographicMarkup.match(/<button type="button" data-crate-region=/g)||[]).length,20,'20 mobile-friendly territory chips');
- assert.equal((geographicMarkup.match(/data-crate-continent=/g)||[]).length,6,'Six continent paint shortcuts');
- assert.match(geographicMarkup,/viewBox="0 0 720 372"/,'Mercator land map has stable viewport');
+ assert.ok((geographicMarkup.match(/data-atlas-country=/g)||[]).length>=175,'Actual country-shaped hit paths rather than rectangular overlays');
+ assert.equal((geographicMarkup.match(/<rect class="crate-map-region"/g)||[]).length,0,'No old rectangular hitboxes');
+ assert.equal((geographicMarkup.match(/<button type="button" data-crate-region=/g)||[]).length,20);
+ assert.equal((geographicMarkup.match(/data-crate-continent=/g)||[]).length,6);
+ assert.match(geographicMarkup,/id="atlasStamps"/);
+ assert.match(geographicMarkup,/id="crateAtlasMap"/);
  const atlasStore=new Map(),atlasCopies=[];
  let atlas=harness(async text=>atlasCopies.push(text),'?ai=gemini&service=youtube&mood=criminal','launch',atlasStore);
  assert.equal(atlas.elements.crateGeoCount.textContent,'ANYWHERE');
  assert.doesNotMatch(atlas.elements.prompt.textContent,/Regional exploration:/);
+ const africa=atlas.crateContinents.find(b=>b.dataset.crateContinent==='africa');
+ await africa.click();
+ assert.equal(africa.attrs['aria-pressed'],'true','Continent click zooms without selecting any regions');
+ assert.equal(atlas.elements.crateGeoCount.textContent,'ANYWHERE','Zoom alone must not restrict discovery');
+ assert.equal(atlas.elements.atlasHome.hidden,false,'Return-to-world control available');
+ assert.equal(atlas.crateRegions.filter(b=>!b.hidden).length,4,'Only African regional buttons visible');
+ assert.equal(atlas.elements.crateAtlasMap.attrs.viewBox, '200.2 139.8 425.6 219.9', 'ViewBox moves on focus in environments without animation');
  await atlas.crateRegions.find(b=>b.dataset.crateRegion==='east-africa').click();
- assert.ok(atlas.crateRegions.filter(b=>b.dataset.crateRegion==='east-africa').every(b=>b.attrs['aria-pressed']==='true'),'Map and regional chips stay synchronized');
+ assert.equal(atlas.elements.crateGeoCount.textContent,'1 STAMP');
  assert.match(atlas.elements.prompt.textContent,/Regional exploration: East Africa/);
- assert.match(atlas.elements.crateGeoCount.textContent,/1 REGION/);
  assert.match(atlasStore.get('ghg-crate-map-regions-v1'),/east-africa/);
+ assert.equal(atlas.elements.atlasStamps.children.length,1,'Selected region creates a removable passport stamp');
  await atlas.elements.goButton.click();
- assert.match(atlasCopies.at(-1),/East Africa/,'GO copies geography preference');
- const europe=atlas.crateContinents.find(b=>b.dataset.crateContinent==='europe');
- await europe.click();
- assert.equal(atlas.elements.crateGeoCount.textContent,'5 REGIONS','Continent paints four territories');
- assert.match(atlas.elements.prompt.textContent,/East Africa/);
- assert.match(atlas.elements.prompt.textContent,/Europe/,'All regions in one continent shorten copied prompt');
- assert.equal(atlas.elements.openAi.attrs['aria-disabled'],'true','Changing map invalidates old copied GO');
- await atlas.crateRegions.find(b=>b.dataset.crateRegion==='mediterranean-europe').click();
- assert.equal(europe.attrs['aria-pressed'],'false','Individual territory refines a painted continent');
- assert.match(atlas.elements.prompt.textContent,/Atlantic & Western Europe/);
+ assert.match(atlasCopies.at(-1),/East Africa/);
+ const country=atlas.atlasCountries.find(b=>b.dataset.atlasRegion==='west-africa');
+ await country.click();
+ assert.match(atlas.elements.prompt.textContent,/West Africa/,'Tapping real country polygon adds its regional research route');
+ await atlas.elements.atlasPaintAll.click();
+ assert.match(atlas.elements.prompt.textContent,/Africa/,'Whole-continent inking compresses prompt to one term');
+ assert.equal(atlas.elements.openAi.attrs['aria-disabled'],'true');
+ await atlas.elements.atlasStamps.children[0].click();
+ assert.doesNotMatch(atlas.elements.prompt.textContent,/Regional exploration: Africa\./,'Stamp is removable without reset');
+ await atlas.elements.atlasHome.click();
+ assert.equal(atlas.elements.atlasHome.hidden,true);
+ await atlas.crateContinents.find(b=>b.dataset.crateContinent==='europe').click();
+ assert.equal(atlas.crateRegions.filter(b=>!b.hidden).length,4);
+ assert.equal(atlas.elements.atlasLocator.textContent,'CONTINENT / Europe');
  atlas=harness(async()=>{},'?mood=criminal','launch',atlasStore);
- assert.match(atlas.elements.prompt.textContent,/East Africa/,'Selections survive local reload');
+ assert.match(atlas.elements.prompt.textContent,/West Africa/,'Inked regions survive reloading');
  await atlas.elements.crateGeoClear.click();
  assert.equal(atlas.elements.crateGeoCount.textContent,'ANYWHERE');
  assert.doesNotMatch(atlas.elements.prompt.textContent,/Regional exploration:/);
  const badAtlas=harness(async()=>{},'?mood=criminal','launch',new Map([['ghg-crate-map-regions-v1','["ghost-region",3,"caribbean"]']]));
- assert.equal(badAtlas.elements.crateGeoCount.textContent,'1 REGION','Invalid persisted region IDs ignored');
- await badAtlas.crateRegions.find(b=>b.dataset.crateRegion==='caribbean').events.keydown({key:' ',preventDefault(){}});
- assert.equal(badAtlas.elements.crateGeoCount.textContent,'ANYWHERE','Keyboard toggles region');
+ assert.equal(badAtlas.elements.crateGeoCount.textContent,'1 STAMP','Invalid persisted region IDs ignored');
+ await badAtlas.crateRegions.find(b=>b.dataset.crateRegion==='caribbean').click();
+ assert.equal(badAtlas.elements.crateGeoCount.textContent,'ANYWHERE');
  const apple=harness(async()=>{},"?ai=chatgpt&service=apple");
  assert.match(apple.elements.prompt.textContent,/@Go, Hipster, Go! @Apple Music go/);
  assert.match(apple.elements.prompt.textContent,/playlist widget/);
