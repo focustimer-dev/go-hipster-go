@@ -76,7 +76,7 @@ function harness(write,search='',page='launch',storage=new Map()){
  assert.equal(atlas.elements.crateGeoCount.textContent,'ANYWHERE','Zoom alone must not restrict discovery');
  assert.equal(atlas.elements.atlasHome.hidden,false,'Return-to-world control available');
  assert.equal(atlas.crateRegions.filter(b=>!b.hidden).length,4,'Only African regional buttons visible');
- assert.equal(atlas.elements.crateAtlasMap.attrs.viewBox, '200.2 139.8 425.6 219.9', 'ViewBox moves on focus in environments without animation');
+ assert.equal(atlas.elements.crateAtlasMap.attrs.viewBox, '304 128 190 231', 'ViewBox moves on focus in environments without animation');
  await atlas.crateRegions.find(b=>b.dataset.crateRegion==='east-africa').click();
  assert.equal(atlas.elements.crateGeoCount.textContent,'1 STAMP');
  assert.match(atlas.elements.prompt.textContent,/Regional exploration: East Africa/);

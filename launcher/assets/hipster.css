@@ -451,6 +451,7 @@ body[data-page=setup] summary:focus-visible,#setupPromptText:focus-visible{outli
 .crate-map-countries path:hover{fill:#e5c385}
 .crate-map-countries path[data-inked=true]{fill:#a7353c;stroke:#6a3030}
 .crate-map-countries path[data-inked=true]:hover{fill:#c1494c}
+.crate-geo[data-focus=true] .crate-mercator{height:clamp(290px,46vw,390px);aspect-ratio:auto}
 .crate-geo[data-focus=true] .crate-map-countries path{cursor:crosshair}
 .crate-geo[data-focus=true] .crate-map-countries path[data-remote=true]{pointer-events:none;opacity:.52}
 .crate-map-seal{position:absolute;top:12px;right:16px;transform:rotate(9deg);color:#873940;border:2px double #873940;border-radius:50%;width:76px;height:76px;display:grid;place-content:center;text-align:center;font:800 .54rem/1.38 ui-monospace,monospace;letter-spacing:.04em;opacity:.5;pointer-events:none}
