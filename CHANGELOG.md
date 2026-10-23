@@ -1,3 +1,9 @@
+## Jukebox Crate Atlas — Cartographer's Desk refinement
+
+- Replace hand-drawn, rectangle-clipped hit regions with geographic country polygons rendered directly as local, offline-capable SVG; continent click-to-zoom and precisely bounded country selection.
+- Add selected-region passport ink stamps and an optional whole-continent selection action, preserving the original paper record-store aesthetic, empty-anywhere default, prompt generation and region storage semantics.
+- Preserve keyboard access through labeled region controls and reduced-motion map navigation; no new service integrations or generated skill ZIP updates.
+
 ## v3.6.3 PWA Crate Atlas enhancement
 
 - Add a collapsed, tactile Mercator world map with six continent paint shortcuts and twenty selectable music-research territories. Colored land regions synchronize with accessible text chips; selections persist locally and steer, rather than constrain, the next GO prompt.

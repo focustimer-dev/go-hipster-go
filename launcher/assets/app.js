@@ -120,6 +120,11 @@ function goPrompt(ai,service,mood){
 }
 const crateRegions=[{"id":"north-america","label":"North America","continent":"americas-north"},{"id":"mexico-central","label":"Mexico & Central America","continent":"americas-north"},{"id":"caribbean","label":"Caribbean","continent":"americas-north"},{"id":"northern-south-america","label":"Northern South America","continent":"americas-south"},{"id":"southern-south-america","label":"Southern South America","continent":"americas-south"},{"id":"atlantic-europe","label":"Atlantic & Western Europe","continent":"europe"},{"id":"mediterranean-europe","label":"Mediterranean & Balkans","continent":"europe"},{"id":"northern-europe","label":"Northern Europe","continent":"europe"},{"id":"eastern-europe","label":"Eastern Europe","continent":"europe"},{"id":"north-africa","label":"North Africa","continent":"africa"},{"id":"west-africa","label":"West Africa","continent":"africa"},{"id":"east-africa","label":"East Africa","continent":"africa"},{"id":"central-southern-africa","label":"Central & Southern Africa","continent":"africa"},{"id":"middle-east","label":"Middle East & Caucasus","continent":"asia"},{"id":"central-asia","label":"Central Asia","continent":"asia"},{"id":"south-asia","label":"South Asia","continent":"asia"},{"id":"east-asia","label":"East Asia","continent":"asia"},{"id":"southeast-asia","label":"Southeast Asia","continent":"asia"},{"id":"northern-asia","label":"Northern Asia","continent":"asia"},{"id":"oceania","label":"Oceania","continent":"oceania"}];
 const crateContinents=[{"id":"americas-north","label":"N. America"},{"id":"americas-south","label":"S. America"},{"id":"europe","label":"Europe"},{"id":"africa","label":"Africa"},{"id":"asia","label":"Asia"},{"id":"oceania","label":"Oceania"}];
+const atlasViews={"world":[0,0,720,372],"americas-north":[-20,-12,430.2,242],"americas-south":[66.2,195.4,355.3,183.6],"europe":[290,3,222,199],"africa":[200.2,139.8,425.6,219.9],"asia":[408,2,312,280],"oceania":[551,203,189,169]};
+const atlasNames={"americas-north":"N. America","americas-south":"S. America","europe":"Europe","africa":"Africa","asia":"Asia","oceania":"Oceania"};
+let atlasFocus=null, atlasZoomFrame=0;
+let lastCrateStamp=null;
+let lastCrateStamp=null;
 const crateStorageKey="ghg-crate-map-regions-v1";
 const validCrateRegions=new Set(crateRegions.map(r=>r.id));
 function readCrateRegions(){try{const raw=JSON.parse(stored(crateStorageKey)||"[]");return new Set(Array.isArray(raw)?raw.filter(v=>validCrateRegions.has(v)):[])}catch(e){return new Set()}}
@@ -134,14 +139,71 @@ function crateRegionPrompt(){
  }
  return "Regional exploration: "+all.join(", ")+". Explore these scenes first, not as track quotas; other cultures can bridge the sound.";
 }
+function atlasBoxText(a){return a.map(v=>Math.round(v*10)/10).join(" ")}
+function animateAtlasView(view){
+ const map=doc.getElementById("crateAtlasMap");if(!map)return;
+ const goal=atlasViews[view||"world"]||atlasViews.world,raw=map.getAttribute("viewBox")||"0 0 720 372";
+ const from=raw.split(/\s+/).map(Number);
+ if(atlasZoomFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasZoomFrame);
+ const reduced=typeof window!=="undefined"&&window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+ if(typeof requestAnimationFrame!=="function"||reduced||from.length!==4||from.some(n=>!Number.isFinite(n))){map.setAttribute("viewBox",atlasBoxText(goal));return;}
+ let started=null;
+ const frame=time=>{
+  if(started===null)started=time;
+  const t=Math.min(1,(time-started)/300),e=1-Math.pow(1-t,3);
+  map.setAttribute("viewBox",atlasBoxText(goal.map((v,i)=>from[i]+(v-from[i])*e)));
+  if(t<1)atlasZoomFrame=requestAnimationFrame(frame);else atlasZoomFrame=0;
+ };
+ atlasZoomFrame=requestAnimationFrame(frame);
+}
+function focusCrateContinent(id){
+ atlasFocus=id===atlasFocus?null:id;
+ renderCrateMap();animateAtlasView(atlasFocus);
+}
+function toggleCrateRegion(id){
+ if(!validCrateRegions.has(id))return;
+ const added=!crateSelected.has(id);
+ if(added)crateSelected.add(id);else crateSelected.delete(id);
+ lastCrateStamp=added?id:null;
+ updateCrateMap();
+}
 function renderCrateMap(){
- doc.querySelectorAll("[data-crate-region]").forEach(b=>b.setAttribute("aria-pressed",String(crateSelected.has(b.dataset.crateRegion))));
- doc.querySelectorAll("[data-crate-continent]").forEach(b=>{
-  const members=crateRegions.filter(r=>r.continent===b.dataset.crateContinent);
-  b.setAttribute("aria-pressed",String(members.every(r=>crateSelected.has(r.id))));
+ const focused=Boolean(atlasFocus),panel=doc.getElementById("crateGeo");
+ if(panel)panel.setAttribute("data-focus",String(focused));
+ doc.querySelectorAll("[data-crate-region]").forEach(b=>{
+  b.hidden=!focused||b.dataset.continent!==atlasFocus;
+  b.setAttribute("aria-pressed",String(crateSelected.has(b.dataset.crateRegion)));
  });
- const count=doc.getElementById("crateGeoCount");if(count)count.textContent=crateSelected.size?crateSelected.size+" REGION"+(crateSelected.size===1?"":"S"):"ANYWHERE";
- const status=doc.getElementById("crateGeoStatus");if(status)status.textContent=crateSelected.size?crateSelected.size+" region"+(crateSelected.size===1?"":"s")+" selected. Discovery only—not country quotas.":"No regions selected. Surprise me.";
+ doc.querySelectorAll("[data-crate-continent]").forEach(b=>b.setAttribute("aria-pressed",String(atlasFocus===b.dataset.crateContinent)));
+ doc.querySelectorAll("[data-atlas-country]").forEach(path=>{
+  path.setAttribute("data-inked",String(crateSelected.has(path.dataset.atlasRegion)));
+  path.setAttribute("data-remote",String(focused&&path.dataset.atlasContinent!==atlasFocus));
+ });
+ const count=doc.getElementById("crateGeoCount");if(count)count.textContent=crateSelected.size?crateSelected.size+" STAMP"+(crateSelected.size===1?"":"S"):"ANYWHERE";
+ const st=doc.getElementById("crateGeoStatus");if(st)st.textContent=crateSelected.size?crateSelected.size+" musical territor"+(crateSelected.size===1?"y":"ies")+" on the itinerary. Your next GO will explore them first.":"No region selected. The whole world is fair game.";
+ const sc=doc.getElementById("atlasStampCount");if(sc)sc.textContent=crateSelected.size?crateSelected.size+" INKED":"NO STAMPS YET";
+ const loc=doc.getElementById("atlasLocator");if(loc)loc.textContent=focused?"CONTINENT / "+atlasNames[atlasFocus]:"WORLD ATLAS · 20 LISTENING TERRITORIES";
+ const home=doc.getElementById("atlasHome");if(home)home.hidden=!focused;
+ const all=doc.getElementById("atlasPaintAll");
+ if(all){all.hidden=!focused;if(focused){const members=crateRegions.filter(r=>r.continent===atlasFocus);all.textContent=members.every(r=>crateSelected.has(r.id))?"CLEAR THIS CONTINENT":"INK ALL REGIONS";}}
+ const inst=doc.getElementById("atlasInstruction");if(inst)inst.textContent=focused?"TAP A COUNTRY TO STAMP ITS REGION, OR USE THE LABELS BELOW":"TAP LAND TO ZOOM, OR CHOOSE A CONTINENT ABOVE";
+ const holder=doc.getElementById("atlasStamps");
+ if(holder){
+  holder.replaceChildren();
+  if(!crateSelected.size){const p=doc.createElement("p");p.className="crate-passport-empty";p.textContent="The whole planet is fair game. As it should be.";holder.append(p);}
+  else{
+   let i=0;
+   for(const reg of crateRegions){
+    if(!crateSelected.has(reg.id))continue;i++;
+    const stamp=doc.createElement("button");stamp.type="button";stamp.className="crate-stamp"+(reg.id===lastCrateStamp?" is-new":"");
+    stamp.setAttribute("aria-label","Remove "+reg.label+" from listening passport");
+    const strong=doc.createElement("strong");strong.textContent=reg.label;
+    const small=doc.createElement("small");small.textContent="VISIT STAMP / "+String(i).padStart(2,"0")+" · REMOVE ×";
+    stamp.append(strong,small);stamp.addEventListener("click",()=>toggleCrateRegion(reg.id));holder.append(stamp);
+   }
+  }
+ }
+ lastCrateStamp=null;
 }
 function updateCrateMap(){
  store(crateStorageKey,JSON.stringify([...crateSelected]));
@@ -305,18 +367,24 @@ doc.querySelectorAll("[data-mood]").forEach(b=>b.addEventListener("click",()=>{
  mood=mood===b.dataset.mood?"go":b.dataset.mood;copiedPrompt=null;selectionChanged();
 }));
 doc.querySelectorAll("[data-crate-region]").forEach(b=>{
- const change=()=>{const id=b.dataset.crateRegion;if(!validCrateRegions.has(id))return;
-  if(crateSelected.has(id))crateSelected.delete(id);else crateSelected.add(id);updateCrateMap();};
- b.addEventListener("click",change);
- b.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();change()}});
+ b.addEventListener("click",()=>toggleCrateRegion(b.dataset.crateRegion));
 });
-doc.querySelectorAll("[data-crate-continent]").forEach(b=>b.addEventListener("click",()=>{
- const members=crateRegions.filter(r=>r.continent===b.dataset.crateContinent);
- const all=members.every(r=>crateSelected.has(r.id));
+doc.querySelectorAll("[data-atlas-country]").forEach(path=>{
+ path.addEventListener("click",()=>{
+  const cont=path.dataset.atlasContinent;
+  if(!atlasFocus){focusCrateContinent(cont);return}
+  if(cont===atlasFocus)toggleCrateRegion(path.dataset.atlasRegion);
+ });
+});
+doc.querySelectorAll("[data-crate-continent]").forEach(b=>b.addEventListener("click",()=>focusCrateContinent(b.dataset.crateContinent)));
+const atlasHome=doc.getElementById("atlasHome");if(atlasHome)atlasHome.addEventListener("click",()=>{atlasFocus=null;renderCrateMap();animateAtlasView(null)});
+const atlasAll=doc.getElementById("atlasPaintAll");if(atlasAll)atlasAll.addEventListener("click",()=>{
+ if(!atlasFocus)return;
+ const members=crateRegions.filter(r=>r.continent===atlasFocus),all=members.every(r=>crateSelected.has(r.id));
  for(const r of members){if(all)crateSelected.delete(r.id);else crateSelected.add(r.id)}
- updateCrateMap();
-}));
-const crateClear=doc.getElementById("crateGeoClear");if(crateClear)crateClear.addEventListener("click",()=>{crateSelected.clear();updateCrateMap()});
+ lastCrateStamp=null;updateCrateMap();
+});
+const crateClear=doc.getElementById("crateGeoClear");if(crateClear)crateClear.addEventListener("click",()=>{crateSelected.clear();lastCrateStamp=null;updateCrateMap()});
 const tempoSlider=doc.getElementById("tempoSlider");
 function selectTempo(){tempo=tempoSteps[Number(tempoSlider.value)-1]||"";copiedPrompt=null;selectionChanged()}
 if(tempoSlider){
