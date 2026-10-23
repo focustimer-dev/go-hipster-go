@@ -467,12 +467,6 @@ doc.querySelectorAll("[data-atlas-country]").forEach(path=>{
 });
 doc.querySelectorAll("[data-crate-continent]").forEach(b=>b.addEventListener("click",()=>focusCrateContinent(b.dataset.crateContinent)));
 const atlasHome=doc.getElementById("atlasHome");if(atlasHome)atlasHome.addEventListener("click",()=>{atlasFocus=null;atlasUserNavigated=false;renderCrateMap();animateAtlasView(null)});
-const atlasAll=doc.getElementById("atlasPaintAll");if(atlasAll)atlasAll.addEventListener("click",()=>{
- if(!atlasFocus)return;
- const members=crateRegions.filter(r=>r.continent===atlasFocus),all=members.every(r=>crateSelected.has(r.id));
- for(const r of members){if(all)crateSelected.delete(r.id);else crateSelected.add(r.id)}
- lastCrateStamp=null;updateCrateMap();
-});
 const crateClear=doc.getElementById("crateGeoClear");if(crateClear)crateClear.addEventListener("click",()=>{crateSelected.clear();lastCrateStamp=null;updateCrateMap()});
 const tempoSlider=doc.getElementById("tempoSlider");
 function selectTempo(){tempo=tempoSteps[Number(tempoSlider.value)-1]||"";copiedPrompt=null;selectionChanged()}
