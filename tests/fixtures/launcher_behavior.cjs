@@ -2,18 +2,20 @@ const assert=require('node:assert/strict');
 const vm=require('node:vm');
 const fs=require('node:fs');
 class Element{
- constructor(dataset={}){this.dataset=dataset;this.attrs={};this.events={};this.textContent='';this.hidden=false;this.open=false;this.classList={toggle(){}};}
- focus(){this.focused=true}
+ constructor(dataset={}){this.dataset=dataset;this.attrs={};this.events={};this.children=[];this.textContent='';this.hidden=false;this.open=false;this.classList={toggle(){}};}
+ focus(){this.focused=true;if(this.ownerDocument)this.ownerDocument.activeElement=this}
  replaceChildren(){this.children=[]}
- append(...children){this.children=(this.children||[]).concat(children)}
+ append(...children){for(const child of children)this.insertBefore(child,null)}
+ insertBefore(child,before){child.remove();const index=before?this.children.indexOf(before):this.children.length;this.children.splice(index,0,child);child.parentElement=this}
+ remove(){if(this.parentElement){const siblings=this.parentElement.children;siblings.splice(siblings.indexOf(this),1);this.parentElement=null}if(this.ownerDocument?.activeElement===this)this.ownerDocument.activeElement=this.ownerDocument.body}
  setAttribute(k,v){this.attrs[k]=v}
  getAttribute(k){return this.attrs[k]||'0 0 720 372'}
  getBoundingClientRect(){return {left:0,top:0,width:360,height:300}}
  addEventListener(k,f){this.events[k]=f}
- querySelector(){return this.span||(this.span=new Element())}
- async click(){const event={preventDefault(){this.prevented=true}};await this.events.click?.(event);return event}
+ querySelector(){return this.span||(this.span=Object.assign(new Element(),{ownerDocument:this.ownerDocument}))}
+ async click(){this.focus();const event={preventDefault(){this.prevented=true}};await this.events.click?.(event);return event}
 }
-function harness(write,search='',page='launch',storage=new Map()){
+function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  const ids=['welcomeSetup','dismissWelcome','crateGeo','atlasPassport','atlasNamedRegions','atlasLocator','atlasHome','atlasInstruction','atlasStamps','crateAtlasMap','crateGeoStatus','crateGeoClear','aiLabel','copyTailoredSetup','recipeIntro','recipeSteps','recipeResources','recipeCaveat','openSelectedAi','tempoControl','tempoSlider','tempoValue','anyTempo','copyStatus','routeStatus','prompt','moodName','receiptCode','openAi','browserAi','manualOpenAi','receiptSummary','goHint','goButton','stripSetupPrompt','setupPromptText','setupPromptDetails','setupTipStatus','openSetupAi','promptDetails','shareButton'];
  const elements=Object.fromEntries(ids.map(id=>[id,new Element()]));
  const ais=['chatgpt','gemini','claude'].map(ai=>new Element({ai}));
@@ -25,9 +27,10 @@ function harness(write,search='',page='launch',storage=new Map()){
  const atlasCountries=[...launchMarkup.matchAll(/data-atlas-country="([^"]+)" data-atlas-region="([^"]+)" data-atlas-continent="([^"]+)"/g)].map(m=>new Element({atlasCountry:m[1],atlasRegion:m[2],atlasContinent:m[3]}));
  const atlasZones=[...launchMarkup.matchAll(/class="crate-map-zone" data-atlas-zone="([^"]*)"/g)].map(m=>new Element({atlasZone:m[1]}));
  const groups={'[data-ai]':ais,'[data-service]':services,'[data-mood]':moods,'[data-crate-region]':crateRegions,'[data-crate-continent]':crateContinents,'[data-atlas-country]':atlasCountries,'[data-atlas-zone]':atlasZones,'[data-setup]':[]};
- const doc={body:{dataset:{page},appendChild(){}},getElementById:id=>elements[id]||null,querySelectorAll:q=>groups[q]||[],createElement:()=>Object.assign(new Element(),{style:{},select(){},remove(){}}),execCommand:()=>false};
- vm.runInNewContext(fs.readFileSync('launcher/assets/app.js','utf8'),{document:doc,navigator:{clipboard:{writeText:write}},localStorage:{getItem(key){return storage.get(key)||null},setItem(key,value){storage.set(key,value)}},URL,URLSearchParams,location:{search,pathname:'/',href:'https://example.test/'},history:{replaceState(){}}});
- return {elements,ais,services,moods,crateRegions,crateContinents,atlasCountries,atlasZones};
+ const doc={activeElement:null,body:{dataset:{page},appendChild(){}},getElementById:id=>elements[id]||null,querySelectorAll:q=>groups[q]||[],createElement:()=>Object.assign(new Element(),{ownerDocument:doc,style:{},select(){}}),execCommand:()=>false};
+ for(const node of [...Object.values(elements),...Object.values(groups).flat()])node.ownerDocument=doc;
+ vm.runInNewContext(fs.readFileSync('launcher/assets/app.js','utf8'),{document:doc,navigator:{clipboard:{writeText:write}},localStorage:{getItem(key){return storage.get(key)||null},setItem(key,value){storage.set(key,value)}},URL,URLSearchParams,location:{search,pathname:'/',href:'https://example.test/'},history:{replaceState(){}},...runtime});
+ return {elements,ais,services,moods,crateRegions,crateContinents,atlasCountries,atlasZones,doc};
 }
 (async()=>{
  // Exercise the full cue cycle, reload persistence, and the cycle boundary.
@@ -118,6 +121,14 @@ function harness(write,search='',page='launch',storage=new Map()){
  svg.events.wheel({clientX:160,clientY:130,deltaX:0,deltaY:-50,ctrlKey:true,cancelable:true,preventDefault(){}});
  const afterWheel=svg.getAttribute('viewBox').split(/\s+/).map(Number);
  assert.ok(afterWheel[2]<beforeWheel[2],'Trackpad pinch zooms map');
+ let pageScrollBlocked=false;
+ const ordinaryView=svg.getAttribute('viewBox');
+ svg.events.wheel({clientX:160,clientY:130,deltaX:0,deltaY:100,cancelable:true,preventDefault(){pageScrollBlocked=true}});
+ assert.equal(pageScrollBlocked,false,'Ordinary mouse/trackpad scrolling stays with the page');
+ assert.equal(svg.getAttribute('viewBox'),ordinaryView,'Ordinary scrolling does not pan the map');
+ let panHandled=false;
+ svg.events.wheel({clientX:160,clientY:130,deltaX:20,deltaY:10,shiftKey:true,cancelable:true,preventDefault(){panHandled=true}});
+ assert.equal(panHandled,true,'Shift-scroll intentionally pans the map');
 
 
  await atlas.crateRegions.find(b=>b.dataset.crateRegion==='east-africa').click();
@@ -127,6 +138,11 @@ function harness(write,search='',page='launch',storage=new Map()){
  assert.equal(atlas.elements.atlasStamps.children.length,1,'Selected region creates a removable stamp');
  assert.equal(atlas.elements.atlasStamps.children[0].children[0].textContent,'E AFR','Compact stamp label is regional');
  assert.equal(atlas.atlasZones.find(z=>z.dataset.atlasZone==='east-africa').attrs['data-selected'],'true','Map matches stamp selection');
+ const originalStamp=atlas.elements.atlasStamps.children[0];
+ originalStamp.focus();
+ svg.events.wheel({clientX:160,clientY:130,deltaX:0,deltaY:-10,ctrlKey:true,cancelable:true,preventDefault(){}});
+ assert.equal(atlas.elements.atlasStamps.children[0],originalStamp,'Viewport movement preserves stamp nodes');
+ assert.equal(atlas.doc.activeElement,originalStamp,'Viewport movement preserves keyboard focus');
  await atlas.elements.goButton.click();
  assert.match(atlasCopies.at(-1),/East Africa/);
  const country=atlas.atlasCountries.find(b=>b.dataset.atlasRegion==='west-africa');
@@ -175,6 +191,33 @@ function harness(write,search='',page='launch',storage=new Map()){
  assert.equal(badAtlas.elements.atlasStamps.children.length,1,'Invalid persisted region IDs ignored');
  await badAtlas.crateRegions.find(b=>b.dataset.crateRegion==='caribbean').click();
  assert.equal(badAtlas.elements.atlasPassport.hidden,true,'Removing final stamp hides passport');
+
+ const focusAtlas=harness(async()=>{});
+ const choose=id=>focusAtlas.crateRegions.find(b=>b.dataset.crateRegion===id).click();
+ await choose('us-east');await choose('canada-west');await choose('us-west');
+ let stamps=focusAtlas.elements.atlasStamps.children;
+ assert.deepEqual(stamps.map(b=>b.dataset.crateStampRegion),['us-west','us-east','canada-west'],'Stamp ordering stays geographic, not click order');
+ const survivingStamp=stamps[1];
+ await stamps[0].click();
+ assert.equal(focusAtlas.doc.activeElement,survivingStamp,'Removing a stamp focuses the next stamp');
+ await focusAtlas.moods[0].click();
+ assert.equal(focusAtlas.elements.atlasStamps.children[0],survivingStamp,'Unrelated mood changes preserve stamp identity');
+ await focusAtlas.elements.atlasStamps.children[1].click();
+ assert.equal(focusAtlas.doc.activeElement,survivingStamp,'Removing the last stamp in a list focuses the previous stamp');
+ await survivingStamp.click();
+ assert.equal(focusAtlas.doc.activeElement,focusAtlas.elements.atlasNamedRegions.querySelector('summary'),'Removing the final selection focuses Choose by name');
+
+ let nextFrame=0;const frames=new Map();
+ const batched=harness(async()=>{},'','launch',new Map(),{requestAnimationFrame:callback=>{frames.set(++nextFrame,callback);return nextFrame},cancelAnimationFrame:id=>frames.delete(id)});
+ const batchedMap=batched.elements.crateAtlasMap;
+ let viewWrites=0;const originalSet=batchedMap.setAttribute.bind(batchedMap);
+ batchedMap.setAttribute=(key,value)=>{if(key==='viewBox')viewWrites++;originalSet(key,value)};
+ for(let i=0;i<20;i++)batchedMap.events.wheel({clientX:160,clientY:130,deltaX:0,deltaY:-1,ctrlKey:true,cancelable:true,preventDefault(){}});
+ assert.equal(frames.size,1,'A burst of map events schedules one frame');
+ assert.equal(viewWrites,0,'Map viewBox waits for the frame');
+ const callbacks=[...frames.values()];frames.clear();for(const callback of callbacks)callback(0);
+ assert.equal(viewWrites,1,'A burst paints one map frame');
+ assert.ok(Number(batchedMap.getAttribute('viewBox').split(' ')[2])<720,'Batched input retains accumulated zoom');
  const apple=harness(async()=>{},"?ai=chatgpt&service=apple");
  assert.match(apple.elements.prompt.textContent,/@Go, Hipster, Go! @Apple Music go/);
  assert.match(apple.elements.prompt.textContent,/playlist widget/);
