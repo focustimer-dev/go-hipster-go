@@ -8,6 +8,7 @@ class Element{
  append(...children){this.children=(this.children||[]).concat(children)}
  setAttribute(k,v){this.attrs[k]=v}
  getAttribute(k){return this.attrs[k]||'0 0 720 372'}
+ getBoundingClientRect(){return {left:0,top:0,width:360,height:300}}
  addEventListener(k,f){this.events[k]=f}
  querySelector(){return this.span||(this.span=new Element())}
  async click(){const event={preventDefault(){this.prevented=true}};await this.events.click?.(event);return event}
@@ -62,7 +63,12 @@ function harness(write,search='',page='launch',storage=new Map()){
  const geographicMarkup=fs.readFileSync('launcher/index.html','utf8');
  assert.ok((geographicMarkup.match(/data-atlas-country=/g)||[]).length>=175,'Actual country-shaped hit paths rather than rectangular overlays');
  assert.equal((geographicMarkup.match(/<rect class="crate-map-region"/g)||[]).length,0,'No old rectangular hitboxes');
- assert.equal((geographicMarkup.match(/<button type="button" data-crate-region=/g)||[]).length,20);
+ assert.equal((geographicMarkup.match(/<button type="button" data-crate-region=/g)||[]).length,24);
+ assert.equal((geographicMarkup.match(/data-atlas-country="USA"/g)||[]).length,2,'US has distinct East and West path hit targets');
+ assert.equal((geographicMarkup.match(/data-atlas-country="CAN"/g)||[]).length,2,'Canada has distinct East and West path hit targets');
+ assert.equal((geographicMarkup.match(/data-atlas-region="mexico"/g)||[]).length,1,'Mexico has its own hit area');
+ assert.match(geographicMarkup,/data-atlas-region="central-america"/);
+ assert.match(geographicMarkup,/Two fingers move and zoom the map/);
  assert.equal((geographicMarkup.match(/data-crate-continent=/g)||[]).length,6);
  assert.match(geographicMarkup,/id="atlasStamps"/);
  assert.match(geographicMarkup,/id="crateAtlasMap"/);
@@ -76,6 +82,33 @@ function harness(write,search='',page='launch',storage=new Map()){
  assert.equal(atlas.elements.crateGeoCount.textContent,'ANYWHERE','Zoom alone must not restrict discovery');
  assert.equal(atlas.elements.atlasHome.hidden,false,'Return-to-world control available');
  assert.equal(atlas.crateRegions.filter(b=>!b.hidden).length,4,'Only African regional buttons visible');
+ // One-finger gestures still belong to normal page scrolling.
+ const svg=atlas.elements.crateAtlasMap;
+ let consumed=false;
+ svg.events.touchstart({touches:[{clientX:120,clientY:115}]});
+ svg.events.touchmove({touches:[{clientX:120,clientY:160}],cancelable:true,preventDefault(){consumed=true}});
+ assert.equal(consumed,false,'One finger does not hijack Jukebox scrolling');
+ const touch=(x,y)=>({clientX:x,clientY:y});
+ svg.events.touchstart({touches:[touch(120,120),touch(220,120)]});
+ let consumedPinch=false;
+ svg.events.touchmove({touches:[touch(85,130),touch(245,130)],cancelable:true,preventDefault(){consumedPinch=true}});
+ assert.equal(consumedPinch,true,'Two finger pinch is handled without page zoom');
+ const zoomed=svg.getAttribute('viewBox').split(/\s+/).map(Number);
+ assert.ok(zoomed[2]<190&&zoomed[3]<231,'Pinching outward magnifies the selected continent');
+ await atlas.atlasCountries.find(b=>b.dataset.atlasRegion==='east-africa').click();
+ assert.equal(atlas.elements.crateGeoCount.textContent,'ANYWHERE','A pinch cannot accidentally select country underneath');
+ const oldX=zoomed[0],oldY=zoomed[1];
+ svg.events.touchmove({touches:[touch(105,150),touch(265,150)],cancelable:true,preventDefault(){}});
+ const panned=svg.getAttribute('viewBox').split(/\s+/).map(Number);
+ assert.ok(panned[0]!==oldX||panned[1]!==oldY,'Two-finger translation pans map');
+ svg.events.touchend({touches:[]});
+ assert.equal(atlas.elements.atlasHome.hidden,false,'Return-home accessible after pinch');
+ // Ctrl-wheel from a trackpad should also zoom without selecting countries.
+ const beforeWheel=svg.getAttribute('viewBox').split(/\s+/).map(Number);
+ svg.events.wheel({clientX:160,clientY:130,deltaX:0,deltaY:-50,ctrlKey:true,cancelable:true,preventDefault(){}});
+ const afterWheel=svg.getAttribute('viewBox').split(/\s+/).map(Number);
+ assert.ok(afterWheel[2]<beforeWheel[2],'Trackpad pinch zooms map');
+
  assert.equal(atlas.elements.crateAtlasMap.attrs.viewBox, '304 128 190 231', 'ViewBox moves on focus in environments without animation');
  await atlas.crateRegions.find(b=>b.dataset.crateRegion==='east-africa').click();
  assert.equal(atlas.elements.crateGeoCount.textContent,'1 STAMP');
@@ -97,6 +130,27 @@ function harness(write,search='',page='launch',storage=new Map()){
  await atlas.crateContinents.find(b=>b.dataset.crateContinent==='europe').click();
  assert.equal(atlas.crateRegions.filter(b=>!b.hidden).length,4);
  assert.equal(atlas.elements.atlasLocator.textContent,'CONTINENT / Europe');
+
+ // North America is not a redundant listening category: US/Canada sides,
+ // Mexico and Central America are each independent.
+ await atlas.elements.atlasHome.click();
+ await atlas.crateContinents.find(b=>b.dataset.crateContinent==='americas-north').click();
+ assert.equal(atlas.crateRegions.filter(b=>!b.hidden).length,7,'North America has seven distinct listening territories');
+ await atlas.crateRegions.find(b=>b.dataset.crateRegion==='us-west').click();
+ await atlas.crateRegions.find(b=>b.dataset.crateRegion==='canada-east').click();
+ await atlas.crateRegions.find(b=>b.dataset.crateRegion==='mexico').click();
+ assert.match(atlas.elements.prompt.textContent,/US West/);
+ assert.match(atlas.elements.prompt.textContent,/Canada East/);
+ assert.match(atlas.elements.prompt.textContent,/Mexico/);
+ assert.doesNotMatch(atlas.elements.prompt.textContent,/Mexico & Central America/,'Mexico is no longer bundled with Central America');
+ assert.doesNotMatch(atlas.elements.prompt.textContent,/Regional exploration: N\. America/,'The generic continent cannot override detailed region selections');
+ const legacyNorth=harness(async()=>{},'?mood=criminal','launch',new Map([['ghg-crate-map-regions-v1','["north-america","mexico-central"]']]));
+ assert.equal(legacyNorth.elements.crateGeoCount.textContent,'6 STAMPS','Previous broad areas migrate to six precise regions');
+ assert.match(legacyNorth.elements.prompt.textContent,/US East/);
+ assert.match(legacyNorth.elements.prompt.textContent,/Canada West/);
+ assert.match(legacyNorth.elements.prompt.textContent,/Mexico/);
+ assert.match(legacyNorth.elements.prompt.textContent,/Central America/);
+ assert.doesNotMatch(legacyNorth.elements.prompt.textContent,/North America/);
  atlas=harness(async()=>{},'?mood=criminal','launch',atlasStore);
  assert.match(atlas.elements.prompt.textContent,/West Africa/,'Inked regions survive reloading');
  await atlas.elements.crateGeoClear.click();
