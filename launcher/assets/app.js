@@ -118,22 +118,35 @@ function goPrompt(ai,service,mood){
  else parts.push("Service: "+serviceNames[service]+". Publish only with an authorized writer; otherwise preserve the verified crate.");
  return parts.join("\n");
 }
-const crateRegions=[{"id":"north-america","label":"North America","continent":"americas-north"},{"id":"mexico-central","label":"Mexico & Central America","continent":"americas-north"},{"id":"caribbean","label":"Caribbean","continent":"americas-north"},{"id":"northern-south-america","label":"Northern South America","continent":"americas-south"},{"id":"southern-south-america","label":"Southern South America","continent":"americas-south"},{"id":"atlantic-europe","label":"Atlantic & Western Europe","continent":"europe"},{"id":"mediterranean-europe","label":"Mediterranean & Balkans","continent":"europe"},{"id":"northern-europe","label":"Northern Europe","continent":"europe"},{"id":"eastern-europe","label":"Eastern Europe","continent":"europe"},{"id":"north-africa","label":"North Africa","continent":"africa"},{"id":"west-africa","label":"West Africa","continent":"africa"},{"id":"east-africa","label":"East Africa","continent":"africa"},{"id":"central-southern-africa","label":"Central & Southern Africa","continent":"africa"},{"id":"middle-east","label":"Middle East & Caucasus","continent":"asia"},{"id":"central-asia","label":"Central Asia","continent":"asia"},{"id":"south-asia","label":"South Asia","continent":"asia"},{"id":"east-asia","label":"East Asia","continent":"asia"},{"id":"southeast-asia","label":"Southeast Asia","continent":"asia"},{"id":"northern-asia","label":"Northern Asia","continent":"asia"},{"id":"oceania","label":"Oceania","continent":"oceania"}];
+const crateRegions=[{"id":"us-west","label":"US West","continent":"americas-north"},{"id":"us-east","label":"US East","continent":"americas-north"},{"id":"canada-west","label":"Canada West","continent":"americas-north"},{"id":"canada-east","label":"Canada East","continent":"americas-north"},{"id":"mexico","label":"Mexico","continent":"americas-north"},{"id":"central-america","label":"Central America","continent":"americas-north"},{"id":"caribbean","label":"Caribbean","continent":"americas-north"},{"id":"northern-south-america","label":"Northern South America","continent":"americas-south"},{"id":"southern-south-america","label":"Southern South America","continent":"americas-south"},{"id":"atlantic-europe","label":"Atlantic & Western Europe","continent":"europe"},{"id":"mediterranean-europe","label":"Mediterranean & Balkans","continent":"europe"},{"id":"northern-europe","label":"Northern Europe","continent":"europe"},{"id":"eastern-europe","label":"Eastern Europe","continent":"europe"},{"id":"north-africa","label":"North Africa","continent":"africa"},{"id":"west-africa","label":"West Africa","continent":"africa"},{"id":"east-africa","label":"East Africa","continent":"africa"},{"id":"central-southern-africa","label":"Central & Southern Africa","continent":"africa"},{"id":"middle-east","label":"Middle East & Caucasus","continent":"asia"},{"id":"central-asia","label":"Central Asia","continent":"asia"},{"id":"south-asia","label":"South Asia","continent":"asia"},{"id":"east-asia","label":"East Asia","continent":"asia"},{"id":"southeast-asia","label":"Southeast Asia","continent":"asia"},{"id":"northern-asia","label":"Northern Asia","continent":"asia"},{"id":"oceania","label":"Oceania","continent":"oceania"}];
 const crateContinents=[{"id":"americas-north","label":"N. America"},{"id":"americas-south","label":"S. America"},{"id":"europe","label":"Europe"},{"id":"africa","label":"Africa"},{"id":"asia","label":"Asia"},{"id":"oceania","label":"Oceania"}];
 const atlasViews={"world":[0,0,720,372],"americas-north":[7,16,302,220],"americas-south":[162,186,180,181],"europe":[290,3,222,199],"africa":[304,128,190,231],"asia":[408,2,312,280],"oceania":[551,203,189,169]};
 const atlasNames={"americas-north":"N. America","americas-south":"S. America","europe":"Europe","africa":"Africa","asia":"Asia","oceania":"Oceania"};
 let atlasFocus=null, atlasZoomFrame=0;
+let atlasUserNavigated=false, atlasTouchGesture=null, atlasSuppressTapUntil=0;
 let lastCrateStamp=null;
 const crateStorageKey="ghg-crate-map-regions-v1";
 const validCrateRegions=new Set(crateRegions.map(r=>r.id));
-function readCrateRegions(){try{const raw=JSON.parse(stored(crateStorageKey)||"[]");return new Set(Array.isArray(raw)?raw.filter(v=>validCrateRegions.has(v)):[])}catch(e){return new Set()}}
+function readCrateRegions(){
+ try{
+  const raw=JSON.parse(stored(crateStorageKey)||"[]");
+  if(!Array.isArray(raw))return new Set();
+  const selected=new Set();
+  const migration={"north-america":["us-west","us-east","canada-west","canada-east"],"mexico-central":["mexico","central-america"]};
+  for(const id of raw){
+   const children=migration[id]||[id];
+   for(const child of children)if(validCrateRegions.has(child))selected.add(child);
+  }
+  return selected;
+ }catch(e){return new Set()}
+}
 let crateSelected=readCrateRegions();
 function crateRegionPrompt(){
  if(!crateSelected.size)return "";
  const all=[];
  for(const group of crateContinents){
   const members=crateRegions.filter(r=>r.continent===group.id);
-  if(members.every(r=>crateSelected.has(r.id))){all.push(group.label);continue}
+  if(group.id!=="americas-north"&&members.every(r=>crateSelected.has(r.id))){all.push(group.label);continue}
   for(const r of members)if(crateSelected.has(r.id))all.push(r.label);
  }
  return "Regional exploration: "+all.join(", ")+". Explore these scenes first, not as track quotas; other cultures can bridge the sound.";
@@ -157,6 +170,7 @@ function animateAtlasView(view){
 }
 function focusCrateContinent(id){
  atlasFocus=id===atlasFocus?null:id;
+ atlasUserNavigated=false;
  renderCrateMap();animateAtlasView(atlasFocus);
 }
 function toggleCrateRegion(id){
@@ -168,7 +182,7 @@ function toggleCrateRegion(id){
 }
 function renderCrateMap(){
  const focused=Boolean(atlasFocus),panel=doc.getElementById("crateGeo");
- if(panel)panel.setAttribute("data-focus",String(focused));
+ if(panel)panel.setAttribute("data-focus",String(focused||atlasUserNavigated));
  doc.querySelectorAll("[data-crate-region]").forEach(b=>{
   b.hidden=!focused||b.dataset.continent!==atlasFocus;
   b.setAttribute("aria-pressed",String(crateSelected.has(b.dataset.crateRegion)));
@@ -181,11 +195,11 @@ function renderCrateMap(){
  const count=doc.getElementById("crateGeoCount");if(count)count.textContent=crateSelected.size?crateSelected.size+" STAMP"+(crateSelected.size===1?"":"S"):"ANYWHERE";
  const st=doc.getElementById("crateGeoStatus");if(st)st.textContent=crateSelected.size?crateSelected.size+" musical territor"+(crateSelected.size===1?"y":"ies")+" on the itinerary. Your next GO will explore them first.":"No region selected. The whole world is fair game.";
  const sc=doc.getElementById("atlasStampCount");if(sc)sc.textContent=crateSelected.size?crateSelected.size+" INKED":"NO STAMPS YET";
- const loc=doc.getElementById("atlasLocator");if(loc)loc.textContent=focused?"CONTINENT / "+atlasNames[atlasFocus]:"WORLD ATLAS · 20 LISTENING TERRITORIES";
- const home=doc.getElementById("atlasHome");if(home)home.hidden=!focused;
+ const loc=doc.getElementById("atlasLocator");if(loc)loc.textContent=focused?"CONTINENT / "+atlasNames[atlasFocus]:"WORLD ATLAS · 24 LISTENING TERRITORIES";
+ const home=doc.getElementById("atlasHome");if(home)home.hidden=!(focused||atlasUserNavigated);
  const all=doc.getElementById("atlasPaintAll");
  if(all){all.hidden=!focused;if(focused){const members=crateRegions.filter(r=>r.continent===atlasFocus);all.textContent=members.every(r=>crateSelected.has(r.id))?"CLEAR THIS CONTINENT":"INK ALL REGIONS";}}
- const inst=doc.getElementById("atlasInstruction");if(inst)inst.textContent=focused?"TAP A COUNTRY TO STAMP ITS REGION, OR USE THE LABELS BELOW":"TAP LAND TO ZOOM, OR CHOOSE A CONTINENT ABOVE";
+ const inst=doc.getElementById("atlasInstruction");if(inst)inst.textContent=focused?"TAP LAND TO STAMP · TWO FINGERS TO PAN OR PINCH":atlasUserNavigated?"TAP LAND TO CHOOSE A CONTINENT · TWO FINGERS TO PAN OR PINCH":"TAP LAND TO ZOOM · TWO FINGERS TO PAN OR PINCH";
  const holder=doc.getElementById("atlasStamps");
  if(holder){
   holder.replaceChildren();
@@ -368,15 +382,90 @@ doc.querySelectorAll("[data-mood]").forEach(b=>b.addEventListener("click",()=>{
 doc.querySelectorAll("[data-crate-region]").forEach(b=>{
  b.addEventListener("click",()=>toggleCrateRegion(b.dataset.crateRegion));
 });
+
+/* Direct map manipulation: two fingertips move/pinch the atlas; a single finger
+   still scrolls the Jukebox. Desktop trackpads can scroll/pinch inside the map. */
+function atlasView(){const map=doc.getElementById("crateAtlasMap");return (map?.getAttribute("viewBox")||"0 0 720 372").trim().split(/\s+/).map(Number)}
+function atlasGesturePoints(touches){
+ const a=touches[0],b=touches[1];
+ return {x:(a.clientX+b.clientX)/2,y:(a.clientY+b.clientY)/2,
+         distance:Math.max(1,Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY))}
+}
+function atlasScreenAnchor(map,view,x,y,rect){
+ const scale=Math.min(rect.width/view[2],rect.height/view[3]);
+ const marginX=(rect.width-view[2]*scale)/2,marginY=(rect.height-view[3]*scale)/2;
+ return [view[0]+(x-rect.left-marginX)/scale,view[1]+(y-rect.top-marginY)/scale];
+}
+function atlasConstrain(view){
+ const [x,y,w,h]=view;
+ return [Math.min(720-w+12,Math.max(-12,x)),Math.min(372-h+12,Math.max(-12,y)),w,h];
+}
+function atlasViewForGesture(base,anchor,screen,rect,zoom){
+ const ratio=Math.max(Math.max(48/base[2],40/base[3]),Math.min(Math.min(720/base[2],372/base[3]),zoom));
+ const width=base[2]*ratio,height=base[3]*ratio;
+ const scale=Math.min(rect.width/width,rect.height/height);
+ const padX=(rect.width-width*scale)/2,padY=(rect.height-height*scale)/2;
+ return atlasConstrain([anchor[0]-(screen.x-rect.left-padX)/scale,anchor[1]-(screen.y-rect.top-padY)/scale,width,height]);
+}
+function atlasBindGestures(){
+ const map=doc.getElementById("crateAtlasMap");if(!map)return;
+ map.addEventListener("touchstart",event=>{
+  if(event.touches.length!==2){if(event.touches.length>2)atlasTouchGesture=null;return;}
+  const view=atlasView(),screen=atlasGesturePoints(event.touches),rect=map.getBoundingClientRect();
+  if(atlasZoomFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasZoomFrame);
+  atlasZoomFrame=0;
+  atlasTouchGesture={view,anchor:atlasScreenAnchor(map,view,screen.x,screen.y,rect),distance:screen.distance,rect};
+  atlasSuppressTapUntil=Date.now()+700;
+ },{passive:true});
+ map.addEventListener("touchmove",event=>{
+  if(!atlasTouchGesture||event.touches.length!==2)return;
+  if(event.cancelable)event.preventDefault();
+  const screen=atlasGesturePoints(event.touches),s=atlasTouchGesture;
+  const view=atlasViewForGesture(s.view,s.anchor,screen,s.rect,s.distance/screen.distance);
+  map.setAttribute("viewBox",atlasBoxText(view));
+  atlasUserNavigated=true;
+  atlasSuppressTapUntil=Date.now()+700;
+ },{passive:false});
+ const end=event=>{
+  if(!atlasTouchGesture||event.touches.length>=2)return;
+  atlasTouchGesture=null;atlasSuppressTapUntil=Date.now()+700;
+  renderCrateMap();
+ };
+ map.addEventListener("touchend",end,{passive:true});
+ map.addEventListener("touchcancel",end,{passive:true});
+ map.addEventListener("wheel",event=>{
+  // In-map trackpad scrolling pans; Ctrl/⌘+wheel pinch zooms.
+  if(event.cancelable)event.preventDefault();
+  if(atlasZoomFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasZoomFrame);
+  atlasZoomFrame=0;
+  const view=atlasView(),rect=map.getBoundingClientRect();
+  const center={x:event.clientX,y:event.clientY};
+  const anchor=atlasScreenAnchor(map,view,center.x,center.y,rect);
+  let result;
+  if(event.ctrlKey||event.metaKey){
+   const factor=Math.exp(Math.max(-100,Math.min(100,event.deltaY))*.008);
+   result=atlasViewForGesture(view,anchor,center,rect,factor);
+  }else{
+   const scale=Math.min(rect.width/view[2],rect.height/view[3]);
+   result=atlasConstrain([view[0]+event.deltaX/scale,view[1]+event.deltaY/scale,view[2],view[3]]);
+  }
+  map.setAttribute("viewBox",atlasBoxText(result));
+  atlasUserNavigated=true;atlasSuppressTapUntil=Date.now()+500;
+  renderCrateMap();
+ },{passive:false});
+}
+
+atlasBindGestures();
 doc.querySelectorAll("[data-atlas-country]").forEach(path=>{
  path.addEventListener("click",()=>{
+  if(atlasTouchGesture||Date.now()<atlasSuppressTapUntil)return;
   const cont=path.dataset.atlasContinent;
   if(!atlasFocus){focusCrateContinent(cont);return}
-  if(cont===atlasFocus)toggleCrateRegion(path.dataset.atlasRegion);
+  if(cont===atlasFocus&&validCrateRegions.has(path.dataset.atlasRegion))toggleCrateRegion(path.dataset.atlasRegion);
  });
 });
 doc.querySelectorAll("[data-crate-continent]").forEach(b=>b.addEventListener("click",()=>focusCrateContinent(b.dataset.crateContinent)));
-const atlasHome=doc.getElementById("atlasHome");if(atlasHome)atlasHome.addEventListener("click",()=>{atlasFocus=null;renderCrateMap();animateAtlasView(null)});
+const atlasHome=doc.getElementById("atlasHome");if(atlasHome)atlasHome.addEventListener("click",()=>{atlasFocus=null;atlasUserNavigated=false;renderCrateMap();animateAtlasView(null)});
 const atlasAll=doc.getElementById("atlasPaintAll");if(atlasAll)atlasAll.addEventListener("click",()=>{
  if(!atlasFocus)return;
  const members=crateRegions.filter(r=>r.continent===atlasFocus),all=members.every(r=>crateSelected.has(r.id));

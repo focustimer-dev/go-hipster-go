@@ -1,3 +1,9 @@
+## Crate Atlas gesture and North America specificity
+
+- Two-finger pinch and drag to navigate the atlas, plus trackpad wheel pan/pinch; normal one-finger page scroll untouched. Suppress incidental map taps after gestures and preserve Whole World reset.
+- Replace generic North America and joint Mexico–Central America listening presets with separate US West/East, Canada West/East, Mexico and Central America territories. Geo-boundaries approximate; no country false attribution.
+- Migrate old saved broad selections to the new detailed IDs, preserve the existing browser key, and assert gesture/country/prompt consistency in the Node regression harness.
+
 ## Crate Atlas map framing (Impeccable QA)
 
 - Tighten North America, South America and Africa continent view boxes after live-browser inspection. Preserve original world view and tap geography.
