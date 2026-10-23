@@ -8,4 +8,5 @@ class LauncherBehaviorTests(unittest.TestCase):
     @unittest.skipUnless(shutil.which('node'), 'Node is required for launcher interaction tests')
     def test_copy_and_selection_contract(self):
         root = pathlib.Path(__file__).resolve().parents[1]
-        subprocess.run(['node', 'tests/fixtures/launcher_behavior.cjs'], cwd=root, check=True, capture_output=True, text=True)
+        process = subprocess.run(['node', 'tests/fixtures/launcher_behavior.cjs'], cwd=root, capture_output=True, text=True)
+        self.assertEqual(process.returncode, 0, 'Launcher Node test failed:\\n' + process.stdout + '\\n' + process.stderr)
