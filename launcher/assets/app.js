@@ -124,7 +124,6 @@ const atlasViews={"world":[0,0,720,372],"americas-north":[-20,-12,430.2,242],"am
 const atlasNames={"americas-north":"N. America","americas-south":"S. America","europe":"Europe","africa":"Africa","asia":"Asia","oceania":"Oceania"};
 let atlasFocus=null, atlasZoomFrame=0;
 let lastCrateStamp=null;
-let lastCrateStamp=null;
 const crateStorageKey="ghg-crate-map-regions-v1";
 const validCrateRegions=new Set(crateRegions.map(r=>r.id));
 function readCrateRegions(){try{const raw=JSON.parse(stored(crateStorageKey)||"[]");return new Set(Array.isArray(raw)?raw.filter(v=>validCrateRegions.has(v)):[])}catch(e){return new Set()}}
