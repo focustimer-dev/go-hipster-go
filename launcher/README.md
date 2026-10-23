@@ -79,3 +79,7 @@ Happy, Angry, Sad and Weird each rotate six interpretations; Criminal rotates se
 ### Gemini source of truth and optional mood threads (v3.6.3)
 
 The setup prompt now targets the published Gemini five-file ZIP and its readable `adapters/gemini/GEM_KNOWLEDGE.md` mirror, not the multi-platform root SKILL.md. Task-mode installation is only complete when Gemini confirms a persisted Skill; manually select the Skill in Gemini when automatic activation doesn't occur. GO rotates **optional** narrative threads: these never require all tracks to match one subplot. The Setup tab's Manager, Emeritus quote is intentionally static.
+
+### Crate Atlas: optional Mercator map
+
+The Jukebox includes a collapsed, optional “Paint your crate map” selector with six continent-wide paint shortcuts and 20 finer regional territories. The simplified Mercator land silhouette and bounding-box territories are approximations for musical discovery, not political boundaries. Selecting anywhere on the map or the associated text chips toggles a territory; tapping an entire continent paints/unpaints all its regions. Geography is a **soft research steer**, not a track quota or evidence of any song's origin. A blank map means no geographic instruction. Only selected region IDs persist in local browser storage (no account credentials, playlist or listening history); CLEAR MAP resets them. The copied GO prompt is invalidated and must be recopied when changed. Keyboard focus and alternative text chips are supported.
