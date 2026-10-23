@@ -99,3 +99,15 @@ North America now offers **US West**, **US East**, **Canada West**, **Canada Eas
 The Cartographer's Desk now displays only **listening-zone and coastline boundaries**, not every country border. A deterministic SVG edge-cancellation step derived these boundaries from the existing 24-zone geographic hit areas; individual country paths remain invisible as borders but retain precise tap targets and accessibility fallback geography. This avoids suggesting that discovery zones coincide with official political borders. The map remains fully offline and has no new provider integrations.
 
 The primary interface is now the atlas itself (tap world to focus a continent, tap a zone to toggle; pinch/two-finger pan to navigate) and a single **Whole World** view reset. Colored regions and compact removable passport stamps are the only visible selection feedback. An unobtrusive collapsed **Choose by name** disclosure retains continent and region text controls, 44px targets, and **Clear all selections** for keyboard/assistive technology use. All existing local region preferences and GO prompts are unchanged; neither the ZIP skill nor music taxonomy needs to change.
+
+### Jukebox accessibility and navigation refinement
+
+The printed ticker is now static. Atlas labels use the existing functional type scale: 12px stamp names and locator text, with 14px navigation and instructions at the default browser font setting. Stamp artwork stays compact inside its 44px minimum touch target. Paper controls share a high-contrast focus treatment; the selected map borders are easier to distinguish without adding country borders.
+
+Removing a stamp moves keyboard focus to the next stamp, the previous stamp at the end of the list, or **Choose by name** when the final selection is removed. Other selections and map movement preserve existing stamp nodes. Continuous map input is batched into animation frames and no longer rebuilds selection controls.
+
+Touch navigation still uses two fingers to pan and pinch to zoom, leaving one-finger page scrolling available. On desktop, **Shift + scroll** deliberately pans the atlas and trackpad pinch (or Ctrl/Command + wheel) zooms it. Ordinary mouse-wheel and trackpad scrolling moves the page, including when the pointer is over the atlas. This replaces the earlier unconditional desktop wheel capture.
+
+The existing CSS token system now owns repeated atlas paper, ink, selection, boundary and control-material colors. Functional controls wrap at narrow widths and enlarged text settings; the optional **Choose by name** disclosure stays available without implementation-specific visible labels.
+
+All visible zones remain tappable after panning or zooming beyond the continent first opened. Tapping a zone on another continent selects it and updates the named controls without moving the camera; **Whole World** is a convenience reset, not a prerequisite to changing regions. A new press stops any unfinished continent zoom so the shape stays under the finger, and a deliberate fresh tap after a pinch works immediately while the gesture's incidental synthetic click stays suppressed.

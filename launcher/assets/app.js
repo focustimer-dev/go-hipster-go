@@ -125,6 +125,8 @@ const atlasNames={"americas-north":"N. America","americas-south":"S. America","e
 let atlasFocus=null, atlasZoomFrame=0;
 let atlasUserNavigated=false, atlasTouchGesture=null, atlasSuppressTapUntil=0;
 let lastCrateStamp=null;
+const atlasStampNodes=new Map();
+let atlasNavigationFrame=0,atlasPendingView=null;
 const crateStorageKey="ghg-crate-map-regions-v1";
 const validCrateRegions=new Set(crateRegions.map(r=>r.id));
 function readCrateRegions(){
@@ -153,6 +155,7 @@ function crateRegionPrompt(){
 }
 function atlasBoxText(a){return a.map(v=>Math.round(v*10)/10).join(" ")}
 function animateAtlasView(view){
+ flushAtlasNavigation();
  const map=doc.getElementById("crateAtlasMap");if(!map)return;
  const goal=atlasViews[view||"world"]||atlasViews.world,raw=map.getAttribute("viewBox")||"0 0 720 372";
  const from=raw.split(/\s+/).map(Number);
@@ -182,8 +185,7 @@ function toggleCrateRegion(id){
 }
 const crateStampNames={"us-west":"US W","us-east":"US E","canada-west":"CAN W","canada-east":"CAN E","mexico":"MEX","central-america":"CENT AM","caribbean":"CARIB","northern-south-america":"N S AM","southern-south-america":"S S AM","atlantic-europe":"W EUR","mediterranean-europe":"MED / BALK","northern-europe":"N EUR","eastern-europe":"E EUR","north-africa":"N AFR","west-africa":"W AFR","east-africa":"E AFR","central-southern-africa":"C / S AFR","middle-east":"MID EAST","central-asia":"C ASIA","south-asia":"S ASIA","east-asia":"E ASIA","southeast-asia":"SE ASIA","northern-asia":"N ASIA","oceania":"OCEANIA"};
 function renderCrateMap(){
- const focused=Boolean(atlasFocus),panel=doc.getElementById("crateGeo");
- if(panel)panel.setAttribute("data-focus",String(focused||atlasUserNavigated));
+ const focused=Boolean(atlasFocus);
  doc.querySelectorAll("[data-crate-region]").forEach(b=>{
   b.hidden=!focused||b.dataset.continent!==atlasFocus;
   b.setAttribute("aria-pressed",String(crateSelected.has(b.dataset.crateRegion)));
@@ -192,29 +194,59 @@ function renderCrateMap(){
  doc.querySelectorAll("[data-atlas-zone]").forEach(z=>z.setAttribute("data-selected",String(crateSelected.has(z.dataset.atlasZone))));
  doc.querySelectorAll("[data-atlas-country]").forEach(path=>{
   path.setAttribute("data-inked",String(crateSelected.has(path.dataset.atlasRegion)));
-  path.setAttribute("data-remote",String(focused&&path.dataset.atlasContinent!==atlasFocus));
  });
  const st=doc.getElementById("crateGeoStatus");
- if(st)st.textContent=crateSelected.size?crateSelected.size+" regions selected. Tap a stamp to remove a region.":"No regions selected. All areas are available.";
+ const selectionStatus=crateSelected.size?crateSelected.size+" region"+(crateSelected.size===1?"":"s")+" selected. Tap a stamp to remove a region.":"No regions selected. All areas are available.";
+ if(st&&st.textContent!==selectionStatus)st.textContent=selectionStatus;
+ renderAtlasNavigation();
+ renderCrateStamps();
+}
+function renderAtlasNavigation(){
+ const focused=Boolean(atlasFocus),panel=doc.getElementById("crateGeo");
+ if(panel)panel.setAttribute("data-focus",String(focused||atlasUserNavigated));
  const loc=doc.getElementById("atlasLocator");
  if(loc)loc.textContent=focused?"LISTENING MAP / "+atlasNames[atlasFocus]:"LISTENING MAP · 24 REGIONS";
  const home=doc.getElementById("atlasHome");if(home)home.hidden=!(focused||atlasUserNavigated);
  const hint=doc.getElementById("atlasInstruction");
- if(hint)hint.textContent=focused?"TAP TO INK / UNINK · PINCH TO EXPLORE":atlasUserNavigated?"TAP TO EXPLORE · PINCH TO MOVE":"TAP LAND TO EXPLORE · PINCH WITH TWO FINGERS";
+ if(hint){
+  const desktop=typeof window!=="undefined"&&window.matchMedia&&window.matchMedia("(pointer: fine)").matches;
+  const action=focused?"TAP TO INK / UNINK":"TAP LAND TO EXPLORE";
+  hint.textContent=action+(desktop?" · SHIFT + SCROLL TO PAN · PINCH TO ZOOM":" · TWO FINGERS TO PAN / PINCH");
+ }
+}
+function renderCrateStamps(){
  const passport=doc.getElementById("atlasPassport");if(passport)passport.hidden=!crateSelected.size;
  const holder=doc.getElementById("atlasStamps");
  if(holder){
-  holder.replaceChildren();
+  const activeId=doc.activeElement?.dataset?.crateStampRegion;
+  const previousIds=Array.from(holder.children,node=>node.dataset.crateStampRegion);
+  for(const [id,node] of atlasStampNodes){
+   if(!crateSelected.has(id)){node.remove();atlasStampNodes.delete(id)}
+  }
+  let index=0;
   for(const reg of crateRegions){
    if(!crateSelected.has(reg.id))continue;
-   const stamp=doc.createElement("button");stamp.type="button";
-   stamp.className="crate-stamp"+(reg.id===lastCrateStamp?" is-new":"");
-   stamp.setAttribute("aria-label","Remove "+reg.label+" from listening regions");
-   stamp.setAttribute("title",reg.label+" — tap to remove");
-   const strong=doc.createElement("strong");strong.textContent=crateStampNames[reg.id]||reg.label;
-   const x=doc.createElement("span");x.className="crate-stamp-x";x.setAttribute("aria-hidden","true");x.textContent="×";
-   stamp.append(strong,x);stamp.addEventListener("click",()=>toggleCrateRegion(reg.id));
-   holder.append(stamp);
+   let stamp=atlasStampNodes.get(reg.id);
+   if(!stamp){
+    stamp=doc.createElement("button");stamp.type="button";
+    stamp.dataset.crateStampRegion=reg.id;
+    stamp.className="crate-stamp";
+    stamp.setAttribute("aria-label","Remove "+reg.label+" from listening regions");
+    stamp.setAttribute("title",reg.label+" — tap to remove");
+    const strong=doc.createElement("strong");strong.textContent=crateStampNames[reg.id]||reg.label;
+    const x=doc.createElement("span");x.className="crate-stamp-x";x.setAttribute("aria-hidden","true");x.textContent="×";
+    stamp.append(strong,x);stamp.addEventListener("click",()=>toggleCrateRegion(reg.id));
+    atlasStampNodes.set(reg.id,stamp);
+   }
+   stamp.classList.toggle("is-new",reg.id===lastCrateStamp);
+   if(holder.children[index]!==stamp)holder.insertBefore(stamp,holder.children[index]||null);
+   index++;
+  }
+  if(activeId&&!crateSelected.has(activeId)){
+   const remaining=crateRegions.filter(reg=>crateSelected.has(reg.id));
+   const next=remaining[Math.min(previousIds.indexOf(activeId),remaining.length-1)];
+   const target=next?atlasStampNodes.get(next.id):doc.getElementById("atlasNamedRegions");
+   if(target){const summary=next?target:target.querySelector("summary");if(summary)summary.focus({preventScroll:true})}
   }
  }
  lastCrateStamp=null;
@@ -387,6 +419,19 @@ doc.querySelectorAll("[data-crate-region]").forEach(b=>{
 /* Direct map manipulation: two fingertips move/pinch the atlas; a single finger
    still scrolls the Jukebox. Desktop trackpads can scroll/pinch inside the map. */
 function atlasView(){const map=doc.getElementById("crateAtlasMap");return (map?.getAttribute("viewBox")||"0 0 720 372").trim().split(/\s+/).map(Number)}
+function flushAtlasNavigation(){
+ if(atlasNavigationFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasNavigationFrame);
+ atlasNavigationFrame=0;
+ if(atlasPendingView){doc.getElementById("crateAtlasMap")?.setAttribute("viewBox",atlasBoxText(atlasPendingView));atlasPendingView=null}
+}
+function queueAtlasNavigation(view){
+ atlasPendingView=view;
+ if(typeof requestAnimationFrame!=="function"){flushAtlasNavigation();return}
+ if(!atlasNavigationFrame)atlasNavigationFrame=requestAnimationFrame(()=>{
+  atlasNavigationFrame=0;
+  if(atlasPendingView){doc.getElementById("crateAtlasMap")?.setAttribute("viewBox",atlasBoxText(atlasPendingView));atlasPendingView=null}
+ });
+}
 function atlasGesturePoints(touches){
  const a=touches[0],b=touches[1];
  return {x:(a.clientX+b.clientX)/2,y:(a.clientY+b.clientY)/2,
@@ -410,8 +455,20 @@ function atlasViewForGesture(base,anchor,screen,rect,zoom){
 }
 function atlasBindGestures(){
  const map=doc.getElementById("crateAtlasMap");if(!map)return;
+ const stopZoom=()=>{
+  if(atlasZoomFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasZoomFrame);
+  atlasZoomFrame=0;
+ };
+ // Freeze the geometry under a new press, rather than moving the target
+ // between pointer-down and click while a continent zoom is still running.
+ map.addEventListener("pointerdown",()=>{stopZoom();flushAtlasNavigation()});
  map.addEventListener("touchstart",event=>{
+  if(event.touches.length===1&&!atlasTouchGesture){
+   stopZoom();flushAtlasNavigation();atlasSuppressTapUntil=0;
+   return;
+  }
   if(event.touches.length!==2){if(event.touches.length>2)atlasTouchGesture=null;return;}
+  flushAtlasNavigation();
   const view=atlasView(),screen=atlasGesturePoints(event.touches),rect=map.getBoundingClientRect();
   if(atlasZoomFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasZoomFrame);
   atlasZoomFrame=0;
@@ -423,23 +480,25 @@ function atlasBindGestures(){
   if(event.cancelable)event.preventDefault();
   const screen=atlasGesturePoints(event.touches),s=atlasTouchGesture;
   const view=atlasViewForGesture(s.view,s.anchor,screen,s.rect,s.distance/screen.distance);
-  map.setAttribute("viewBox",atlasBoxText(view));
+  queueAtlasNavigation(view);
   atlasUserNavigated=true;
   atlasSuppressTapUntil=Date.now()+700;
  },{passive:false});
  const end=event=>{
   if(!atlasTouchGesture||event.touches.length>=2)return;
   atlasTouchGesture=null;atlasSuppressTapUntil=Date.now()+700;
-  renderCrateMap();
+  flushAtlasNavigation();renderAtlasNavigation();
  };
  map.addEventListener("touchend",end,{passive:true});
  map.addEventListener("touchcancel",end,{passive:true});
  map.addEventListener("wheel",event=>{
-  // In-map trackpad scrolling pans; Ctrl/⌘+wheel pinch zooms.
+  // Ordinary wheel/trackpad scrolling belongs to the page. Deliberate modifiers
+  // pan the map (Shift) or zoom it (trackpad pinch / Ctrl / Command).
+  if(!event.ctrlKey&&!event.metaKey&&!event.shiftKey)return;
   if(event.cancelable)event.preventDefault();
   if(atlasZoomFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasZoomFrame);
   atlasZoomFrame=0;
-  const view=atlasView(),rect=map.getBoundingClientRect();
+  const view=atlasPendingView||atlasView(),rect=map.getBoundingClientRect();
   const center={x:event.clientX,y:event.clientY};
   const anchor=atlasScreenAnchor(map,view,center.x,center.y,rect);
   let result;
@@ -448,11 +507,12 @@ function atlasBindGestures(){
    result=atlasViewForGesture(view,anchor,center,rect,factor);
   }else{
    const scale=Math.min(rect.width/view[2],rect.height/view[3]);
-   result=atlasConstrain([view[0]+event.deltaX/scale,view[1]+event.deltaY/scale,view[2],view[3]]);
+   const unit=event.deltaMode===1?16:event.deltaMode===2?rect.height:1;
+   result=atlasConstrain([view[0]+event.deltaX*unit/scale,view[1]+event.deltaY*unit/scale,view[2],view[3]]);
   }
-  map.setAttribute("viewBox",atlasBoxText(result));
-  atlasUserNavigated=true;atlasSuppressTapUntil=Date.now()+500;
-  renderCrateMap();
+  queueAtlasNavigation(result);
+  if(!atlasUserNavigated){atlasUserNavigated=true;renderAtlasNavigation()}
+  atlasSuppressTapUntil=Date.now()+500;
  },{passive:false});
 }
 
@@ -462,7 +522,13 @@ doc.querySelectorAll("[data-atlas-country]").forEach(path=>{
   if(atlasTouchGesture||Date.now()<atlasSuppressTapUntil)return;
   const cont=path.dataset.atlasContinent;
   if(!atlasFocus){focusCrateContinent(cont);return}
-  if(cont===atlasFocus&&validCrateRegions.has(path.dataset.atlasRegion))toggleCrateRegion(path.dataset.atlasRegion);
+  // Panning/pinching changes which land is visible, not which land may be
+  // selected. A tap on another continent uses its actual painted hit path
+  // and updates the named controls without moving the map away from the tap.
+  if(validCrateRegions.has(path.dataset.atlasRegion)){
+   atlasFocus=cont;
+   toggleCrateRegion(path.dataset.atlasRegion);
+  }
  });
 });
 doc.querySelectorAll("[data-crate-continent]").forEach(b=>b.addEventListener("click",()=>focusCrateContinent(b.dataset.crateContinent)));

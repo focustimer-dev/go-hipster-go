@@ -1,3 +1,19 @@
+## Atlas selection follows the visible map
+
+- Keep all visible listening zones tappable after zooming or panning beyond the last focused continent. A cross-continent tap selects the actual zone and updates named controls without recentering the camera.
+- Stop an in-progress continent zoom when a new press begins so the target does not move between press and release.
+- Let a fresh one-finger tap select immediately after a pinch while continuing to suppress the pinch gesture's incidental synthetic click.
+- Cover cross-continent selection, stable camera position and intentional post-pinch taps in regression tests.
+
+## Jukebox accessibility and atlas input refinement (October 23, 2026)
+
+- Keep passport stamp DOM nodes stable and move keyboard focus to the next/previous stamp, or Choose by name after the final removal.
+- Replace the perpetual ticker animation with a static printed strip. Strengthen focus contrast on paper and retain visible selected/copy states with reduced motion.
+- Make atlas stamp labels 12px and instructions/navigation 14px at default text settings; remove the tiny implementation-specific subtitle. Keep compact outlines and 44px hit areas.
+- Preserve normal page scrolling over the map. Shift + scroll deliberately pans on desktop; pinch and two-finger touch navigation remain available.
+- Batch map updates into animation frames without rebuilding stamps or walking country paths during navigation. Add regression coverage for focus recovery, retained nodes, ordinary scrolling and event bursts.
+- Consolidate repeated atlas/control colors into the existing CSS tokens, strengthen zone boundaries and let controls and long headings reflow at enlarged text settings.
+
 ## Atlas audit cleanup — map language and removed controls
 
 - Tooltips now name **listening territories**, not countries, matching the zone-only borders and avoiding false geographic precision.
