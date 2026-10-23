@@ -70,6 +70,8 @@ function harness(write,search='',page='launch',storage=new Map()){
  assert.equal((geographicMarkup.match(/data-atlas-region="mexico"/g)||[]).length,1,'Mexico has its own hit area');
  assert.match(geographicMarkup,/data-atlas-region="central-america"/);
  assert.match(geographicMarkup,/class="crate-zone-boundaries"/,'Map draws unified listening-zone and coastline borders');
+ assert.match(geographicMarkup,/<title>Central Asia · listening territory<\/title>/,'Hover names listening zones, not countries');
+ assert.doesNotMatch(geographicMarkup,/<title>Afghanistan ·/,'Country names no longer imply geographic precision in tooltip');
  const atlasCss=fs.readFileSync('launcher/assets/hipster.css','utf8');
  assert.match(atlasCss,/\.crate-map-countries \.crate-map-zone path\{fill:[^}]+stroke:none/,'Country borders are suppressed');
  assert.match(geographicMarkup,/class="crate-accessibility"/);

@@ -1,3 +1,9 @@
+## Atlas audit cleanup — map language and removed controls
+
+- Tooltips now name **listening territories**, not countries, matching the zone-only borders and avoiding false geographic precision.
+- Delete an obsolete Ink All click handler whose control was intentionally removed from the map-first interface.
+- Keep country-shaped pointer hit areas under the hood, and preserve the visible map, compact stamps, accessibility fallback, and Whole World behavior.
+
 ## Map-first Crate Atlas polish (October 23, 2026)
 
 - Combine shared country edges into only musical listening zone/coastline boundaries, preserving geography for selecting a regional prompt without visually claiming country-level precision.
