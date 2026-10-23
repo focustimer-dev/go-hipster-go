@@ -1,3 +1,8 @@
+## Crate Atlas map framing (Impeccable QA)
+
+- Tighten North America, South America and Africa continent view boxes after live-browser inspection. Preserve original world view and tap geography.
+- Enlarge the focused map viewport, particularly on phones, without extra controls or dependencies; update interaction regression expectations.
+
 ## Jukebox Crate Atlas — Cartographer's Desk refinement
 
 - Replace hand-drawn, rectangle-clipped hit regions with geographic country polygons rendered directly as local, offline-capable SVG; continent click-to-zoom and precisely bounded country selection.
