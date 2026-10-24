@@ -136,3 +136,8 @@ Each GO combines one selected-mood image, one texture and one setting. Each comp
 Obvious fast-language cues are filtered for Slow/Relaxed, and explicit slow/still cues for Brisk/Fast. These conservative text filters are not BPM verification. The selected mood, tempo and Criminal song-level evidence requirement always outrank sparks; Angry is not limited to metal, and Criminal is not restricted to rap. The prompt remains short and the UI is unchanged.
 
 After editing the JSON, run `python scripts/sync_mood_sparks.py`; `--check` verifies the embedded standalone bank. The PWA requires no additional fetch.
+
+
+### Touch ownership on the atlas
+
+One-finger movement over the map remains native vertical page scrolling (`touch-action: pan-y`); it never changes the map camera. Two fingers started together claim touchstart with a non-passive, conditionally cancelled listener, then pan/pinch the map. Starting cancellation prevents the browser taking the gesture before the custom pinch handler. A browser-owned scroll already in progress is not forcibly stolen; lift and start with two fingers. Movement suppresses synthetic region clicks; a fresh deliberate tap restores selection. Physical-device verification remains necessary because synthetic event tests cannot prove browser gesture arbitration.

@@ -11,7 +11,7 @@ class Element{
  setAttribute(k,v){this.attrs[k]=v}
  getAttribute(k){return this.attrs[k]||'0 0 720 372'}
  getBoundingClientRect(){return {left:0,top:0,width:360,height:300}}
- addEventListener(k,f){this.events[k]=f}
+ addEventListener(k,f,options){this.events[k]=f;this.eventOptions||={};this.eventOptions[k]=options}
  querySelector(){return this.span||(this.span=Object.assign(new Element(),{ownerDocument:this.ownerDocument}))}
  async click(){this.focus();const event={preventDefault(){this.prevented=true}};await this.events.click?.(event);return event}
 }
@@ -98,11 +98,17 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  // One-finger gestures still belong to normal page scrolling.
  const svg=atlas.elements.crateAtlasMap;
  let consumed=false;
- svg.events.touchstart({touches:[{clientX:120,clientY:115}]});
+ svg.events.touchstart({touches:[{clientX:120,clientY:115}],cancelable:true,preventDefault(){consumed=true}});
+ assert.equal(consumed,false,'One-finger start remains available to native scrolling');
  svg.events.touchmove({touches:[{clientX:120,clientY:160}],cancelable:true,preventDefault(){consumed=true}});
  assert.equal(consumed,false,'One finger does not hijack Jukebox scrolling');
+ await atlas.atlasCountries.find(b=>b.dataset.atlasRegion==='east-africa').click();
+ assert.equal(atlas.elements.atlasPassport.hidden,true,'Scrolling cannot accidentally stamp a territory');
  const touch=(x,y)=>({clientX:x,clientY:y});
- svg.events.touchstart({touches:[touch(120,120),touch(220,120)]});
+ let claimedStart=false;
+ svg.events.touchstart({touches:[touch(120,120),touch(220,120)],cancelable:true,preventDefault(){claimedStart=true}});
+ assert.equal(claimedStart,true,'Two-finger start claims the gesture before the browser takes over');
+ assert.equal(svg.eventOptions.touchstart.passive,false,'Touchstart permits cancellation only for two fingers');
  let consumedPinch=false;
  svg.events.touchmove({touches:[touch(85,130),touch(245,130)],cancelable:true,preventDefault(){consumedPinch=true}});
  assert.equal(consumedPinch,true,'Two finger pinch is handled without page zoom');

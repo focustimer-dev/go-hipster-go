@@ -483,14 +483,18 @@ function atlasBindGestures(){
    return;
   }
   if(event.touches.length!==2){if(event.touches.length>2)atlasTouchGesture=null;return;}
+  // Claim a two-finger gesture before the browser commits to native scrolling.
+  // One-finger starts above remain uncancelled.
+  if(event.cancelable)event.preventDefault();
   flushAtlasNavigation();
   const view=atlasView(),screen=atlasGesturePoints(event.touches),rect=map.getBoundingClientRect();
   if(atlasZoomFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasZoomFrame);
   atlasZoomFrame=0;
   atlasTouchGesture={view,anchor:atlasScreenAnchor(map,view,screen.x,screen.y,rect),distance:screen.distance,rect};
   atlasSuppressTapUntil=Date.now()+700;
- },{passive:true});
+ },{passive:false});
  map.addEventListener("touchmove",event=>{
+  if(event.touches.length===1){atlasSuppressTapUntil=Date.now()+700;return;}
   if(!atlasTouchGesture||event.touches.length!==2)return;
   if(event.cancelable)event.preventDefault();
   const screen=atlasGesturePoints(event.touches),s=atlasTouchGesture;
