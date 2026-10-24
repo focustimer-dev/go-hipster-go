@@ -189,3 +189,9 @@ body.gig-poster .manual-workbench .manual-intro{padding:6px 0 16px}
 body.gig-poster .manual-workbench .manual-prompt>summary,body.gig-poster .manual-workbench .manual-install>summary,body.gig-poster .manual-workbench .resource-shelf>summary{height:auto;white-space:normal;overflow-wrap:anywhere}
 body.gig-poster ::selection{background:var(--ink);color:var(--paper)}
 @media(prefers-reduced-motion:reduce){body.gig-poster .mood .face,body.gig-poster .mood[aria-pressed=true] .face{animation:none!important;transition:none;transform:none!important}}
+
+/* Literal instructions, clerk voice; small supporting copy stays small. */
+body.gig-poster .poster-explainer{font:400 .875rem/1.5 Arial,Helvetica,sans-serif;color:var(--ink);max-width:65ch;margin:8px 0 12px}
+body.gig-poster #tempoHelp{position:static;width:auto;height:auto;clip-path:none;overflow:visible;font:400 .75rem/1.4 Arial,Helvetica,sans-serif;color:var(--ink);margin:4px 0 0}
+body.gig-poster .atlas-intro{display:block;font:400 .75rem/1.4 Arial,Helvetica,sans-serif;color:var(--ink);margin:0 0 6px}
+body.gig-poster .footnote,body.gig-poster .footnote a{color:var(--ink)}
