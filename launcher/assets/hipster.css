@@ -593,3 +593,16 @@ body[data-page=launch] .receipt:before,body[data-page=launch] .receipt:after{dis
 }
 @media(max-width:360px){body[data-page=launch] .hero-title .headline{font-size:1.4rem}body[data-page=launch] .hero-title .sticker{font-size:.5rem}}
 @media(prefers-reduced-motion:reduce){body[data-page=launch] .go-button:active,body[data-page=launch] .go-button[data-copy-state=copying]{transform:none}}
+
+/* A copied request earns its ink; ordinary choices get quiet key feedback. */
+body[data-page=launch] .receipt-copy{display:table;min-height:32px;max-width:100%;margin:10px 0 4px;padding:4px 8px;border:3px double transparent;font:700 var(--type-label)/1.4 ui-monospace,Consolas,monospace;letter-spacing:.03em;color:var(--ink2)}
+body[data-page=launch] .receipt[data-copy-state=copied] .receipt-copy{border-color:var(--red2);color:var(--red2);transform:rotate(-2deg);animation:clerk-ink 180ms cubic-bezier(.16,1,.3,1) both}
+@keyframes clerk-ink{from{opacity:.5;transform:rotate(-2deg) scale(1.06)}to{opacity:1;transform:rotate(-2deg) scale(1)}}
+body[data-page=launch] .mood-grid .mood:active{box-shadow:inset 0 2px 3px #25232030}
+body[data-page=launch] .mood .face{transition:transform 120ms ease-out}
+body[data-page=launch] .mood:active .face{transform:translateY(2px)}
+@media(prefers-reduced-motion:reduce){
+ body[data-page=launch] .mood .face{transition:none}
+ body[data-page=launch] .mood:active .face{transform:none}
+ body[data-page=launch] .receipt[data-copy-state=copied] .receipt-copy{animation:none;transform:none}
+}
