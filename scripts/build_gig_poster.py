@@ -20,6 +20,7 @@ s=s[:a]+'''    <div class="hero-title poster-hero">
       <img class="poster-bird" src="/editions/gig-poster/assets/bird-globe.webp" width="1292" height="1196" alt="" aria-hidden="true">
       <span class="sticker">Locally<br>sourced<br>pretension</span>
     </div>
+    <p class="poster-explainer">Press GO to copy your music request. Paste and send it in your AI. We supply the taste. You handle the paste.</p>
 
 '''+s[b:]
 # Setup stays visible until explicitly dismissed, without an extra disclosure tap.
@@ -34,7 +35,10 @@ s=s.replace('<h3 class="panel-head"','<h2 class="panel-head"').replace('THE ROBO
 s=s.replace('CHOOSE YOUR SERVICES','PICK YOUR SERVICES').replace('THE ROBOT','PICK YOUR AI').replace('THE NEEDLE','PICK YOUR DESTINATION').replace('SHAPE YOUR MIX','SET THE TEMPO').replace('<h3 class="counter-label">MOOD</h3>','<h2 class="counter-label">WHAT’S THE VIBE?</h2>')
 s=s.replace('<details class="crate-geo" id="crateGeo">','<details class="crate-geo" id="crateGeo" open>')
 s=s.replace('      <small>TAKE YOUR TASTE ABROAD</small>','')
-s=s.replace('<div class="handoff" aria-label="Copy and open your AI">','<p class="poster-instructions">Paste and send in your AI.</p>\n    <div class="handoff" aria-label="Copy and open your AI">')
+# The workflow is explained at the top; the real copy status handles the next step.
+s=s.replace('Start your search here. No regional quotas; blank means worldwide. We do allow records to travel.', 'No stamps? Worldwide. Pick regions to steer the search, not fence it in.')
+s=s.replace('Choose a mood, then press GO to copy your prompt.', 'Pick a mood, or press GO for a surprise.')
+s=re.sub(r'<p class="footnote">The AI and music apps.*?</p>', '<p class="footnote">Select the skill and music app in your AI. Playlist saving happens there. <a href="/setup/">Setup instructions →</a></p>', s, count=1)
 # Two-spot-color halftone from the guide's screenprint/gig-poster language.
 s=s.replace('<pattern id="atlasHatch"', '<pattern id="posterSelectedHalftone" width="7" height="7" patternUnits="userSpaceOnUse"><rect width="7" height="7" fill="#dfb045"/><circle cx="1.75" cy="1.75" r="1.1" fill="#103135"/><circle cx="5.25" cy="5.25" r="1.1" fill="#103135"/></pattern>\n              <pattern id="atlasHatch"')
 s=s.replace('href="/setup/"','href="/editions/gig-poster/setup/"')
