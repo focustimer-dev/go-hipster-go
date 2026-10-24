@@ -81,7 +81,13 @@ jobs:
           }
           actual={p.name for p in Path('dist').glob('*.zip')}
           assert actual == expected, f'Unexpected package ZIPs: {sorted(actual ^ expected)}'
-          print('Gemini and Claude skill/plugin ZIPs verified.')
+          for package in sorted(Path('dist').glob('*.zip')):
+              with ZipFile(package) as z:
+                  skill_path=next(n for n in z.namelist() if n.endswith('SKILL.md') and 'setup' not in n)
+                  assert 'Regional discovery and recording quality' in z.read(skill_path).decode('utf-8'), f'{package.name}: regional guidance missing'
+                  taxonomy_path=next(n for n in z.namelist() if n.endswith('references/sonic-taxonomy.md'))
+                  assert 'Recording-level selection gate' in z.read(taxonomy_path).decode('utf-8'), f'{package.name}: recording quality guidance missing'
+          print('All four platform ZIPs verified, including regional and recording-quality guidance.')
           PY
       - name: Determine versioned release tag
         id: version
