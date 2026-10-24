@@ -4,9 +4,11 @@
 
 The Jukebox explains the copy → paste → send handoff beside its headline. Copy and recovery actions stay literal; supporting copy uses the dry, begrudgingly helpful record-store-clerk voice documented in `assets/BRAND_GUIDE.md`.
 
-After a successful GO copy, a local `ghg-jukebox-used-v1` flag enables a compact layout on the next page load. The smaller “Back for more” sleeve and folded service choices keep the chosen pairing visible and editable. Informational route copy and the first-time strip recede; unsupported-pair warnings remain visible. The flag does not certify installation, connection or playlist saving. Blocked storage falls back to the full first-use view.
+After a successful GO copy, a local `ghg-jukebox-used-v1` flag enables the smaller “Back for more” sleeve on the next page load. Informational route copy and the first-time strip recede; unsupported-pair warnings remain visible. Service controls remain visible on every visit. The flag does not certify installation, connection or playlist saving.
 
-Tempo and the atlas are optional disclosures before the mood-to-GO workbench. Tempo now has six native range positions: zero is **Any**; one through five are Slow, Relaxed, Mid-tempo, Brisk and Fast. Any adds no tempo instruction to the prompt. The atlas describes geography as a search preference without quotas, retaining compact stamps and existing hit areas.
+The Jukebox uses a single paper counter: services, mix choices, and the raised yellow GO key. Service keys and mood keys carry selection borders; informational text has no surrounding card. Mobile moods use three keys above two, keeping full labels readable. The ticker, decorative section letters, dark mood tray and duplicate framing are removed from this surface; the Manual keeps its existing styling.
+
+Tempo stays visible with five native range positions, Slow through Fast, and a separate **Any** bypass. Any adds no tempo instruction; touching the parked center fader explicitly selects Mid-tempo. The optional atlas retains its native disclosure, compact stamps, hit areas and search-without-quotas semantics.
 
 The Manual's tailored check is the main setup path. Selected-platform help uses Try this / If it fails / Connect your music / Confirm it worked. Universal installation and all-platform downloads live together under **Other installation methods**. Existing installation prompts, release URLs and service capability limits are preserved.
 
