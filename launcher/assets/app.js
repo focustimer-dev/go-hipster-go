@@ -29,7 +29,7 @@ const resourceInfo={
  claude:[{name:"Claude Skill ZIP",url:releases+"go-hipster-go-claude-skill.zip"},{name:"Claude Plugin ZIP",url:releases+"go-hipster-go-claude-plugin.zip"},{name:"Which one? Claude guide",url:repo+"/blob/main/adapters/claude/README.md"}]
 };
 function routeInfo(ai,service){
- if(ai==="chatgpt"&&service==="spotify")return {tone:"ready",message:"ChatGPT + Spotify: playlist creation and exact-track insertion can work when both apps and their writer actions are available.",note:"You still need to select and authorize both apps in ChatGPT; mentioning them in text alone may not activate them."};
+ if(ai==="chatgpt"&&service==="spotify")return {tone:"ready",message:"ChatGPT + Spotify: can create a playlist when both apps are selected and playlist tools are available. Choose them in your conversation.",note:"You still need to select and authorize both apps in ChatGPT; mentioning them in text alone may not activate them."};
  if(ai==="gemini"&&service==="youtube")return {tone:"ready",message:"Gemini + YouTube Music: GO curates and attempts one playable playlist.",note:"If the connected app cannot create it, the Skill keeps the verified crate and reports what failed. Provider substitutions are never passed off as exact matches."};
  if(ai==="gemini"&&service==="spotify")return {tone:"warn",message:"Gemini + Spotify: search and playback work on supported mobile accounts, but Google's Spotify connection cannot create playlists.",note:"You can still curate an exact text tracklist and play/search Spotify; don't expect a new saved Spotify playlist."};
  if(ai==="claude"&&service==="spotify")return {tone:"ready",message:"Claude + Spotify: connected discovery works; prompted playlists are a Premium feature and provider save behavior can vary.",note:"Enable Spotify in Claude's connectors and verify whether the available writer can actually create/save the playlist."};
@@ -275,12 +275,13 @@ function selectionChanged(){
  moodAngle="";
  render();
  if(body.dataset.page==="launch")status("Prompt changed. Press GO to copy the current selection.");
- else status("Selection updated. Copy your tailored setup check below.");
+ else status("Selection updated. Copy the setup check above.");
  const tip=doc.getElementById("setupTipStatus");if(tip)tip.textContent="";
 }
 function renderSelections(){
  doc.querySelectorAll("[data-ai]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.ai===ai)));
  doc.querySelectorAll("[data-service]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.service===service)));
+ const pair=doc.getElementById("dealerPair");if(pair)pair.textContent=aiNames[ai]+" · "+serviceNames[service];
  const info=routeInfo(ai,service),r=doc.getElementById("routeStatus");
  if(r){const span=r.querySelector("span");if(span)span.textContent=info.message;r.classList.toggle("warn",info.tone==="warn")}
  const setupText=doc.getElementById("setupPromptText");if(setupText)setupText.textContent=setupPrompt(ai,service);
@@ -297,10 +298,10 @@ function renderSetup(){
  const q=routeInfo(ai,service);
  const intro=doc.getElementById("recipeIntro"),steps=doc.getElementById("recipeSteps"),links=doc.getElementById("recipeResources");
  if(!intro||!steps||!links)return;
- intro.textContent="YOUR MIX: "+aiNames[ai]+" × "+serviceNames[service]+". The check will identify anything missing. Already connected? It should tell you to run GO.";
+ intro.textContent="YOUR MIX: "+aiNames[ai]+" × "+serviceNames[service]+". Copy the check, then paste and send it in your AI. It will check what’s missing. Already set up? Back to the Jukebox. We won’t make a ceremony of it.";
  let install="",connection="";
  if(ai==="chatgpt")install="In ChatGPT, select Go, Hipster, Go!. If missing, install/load it using the project source or app directory.";
- else if(ai==="gemini")install="For a repository install, choose Task mode beneath the Gemini prompt box before pasting the setup check. Ask it to install the Gemini-specific skill ZIP from the latest GitHub release; this is a one-time task, not a scheduled task. The root SKILL.md also contains instructions for other AI platforms. If it only reads GitHub or cannot persist the Skill, use Gemini WEB or MOBILE WEB (gemini.google.com) → Customize → Skills → Create → Upload the five-file ZIP. ZIP upload is not available in the native app. Verify v3.6.3 was installed.";
+ else if(ai==="gemini")install="In Gemini, choose Task mode beneath the prompt box, then paste and send the setup check. Ask it to install the Gemini-specific Skill from the latest release. This is a one-time installation task, not a recurring task.";
  else install="In Claude Customize, install Go, Hipster, Go!. Use the Skill ZIP for Skills, or the Plugin ZIP for Plugins; they are not interchangeable.";
  if(service==="spotify"&&ai==="gemini")connection="On Gemini mobile, link Spotify if offered. Google's connected app supports search/play, not playlist creation.";
  else if(service==="spotify"&&ai==="claude")connection="Connect Spotify in Claude. Premium is required for personalized prompted playlists; inspect whether saving is supported here.";
@@ -309,7 +310,12 @@ function renderSetup(){
  else if(service==="apple"&&ai==="claude")connection="Connect an Apple Music MCP connector compatible with your Claude app: local on Desktop, hosted for web/mobile. Verify it can find recordings, create playlists and add tracks.";
  else if(service==="apple"&&ai==="chatgpt")connection="In ChatGPT Settings → Apps, connect Apple Music and select it alongside Go, Hipster, Go! in your conversation. Search and playlist generation do not require a subscription. Saving the result to your library requires an Apple Music subscription.";
  else connection="Check whether "+serviceNames[service]+" is available as a connected writer in "+aiNames[ai]+". If not, use a text playlist instead.";
- const stepsText=[install,connection,"Copy the tailored setup prompt to verify the connection. When your AI confirms everything is ready, go back to the Jukebox and press GO."];
+ let fallback="Use the selected platform’s download links below and its installation instructions. Keep the setup check handy.";
+ if(ai==="gemini"){
+  fallback="Open Gemini desktop or mobile WEB → Customize → Skills → Create → Upload. Use the Gemini Skill ZIP below. The native Gemini app does not offer ZIP upload.";
+ }else if(ai==="claude")fallback="Match the download to the uploader: Skill ZIP for Skills, Plugin ZIP for Plugins. The labels are doing useful work here.";
+ const confirmation=ai==="gemini"?"Check that v3.6.3 is installed as a persistent Skill in a new conversation. Reading the files once does not count. Then return to the Jukebox and press GO.":"Run the setup check above. When your AI confirms the skill and music connection are ready, return to the Jukebox and press GO.";
+ const stepsText=["Try this: "+install,"If it fails: "+fallback,"Connect your music: "+connection,"Confirm it worked: "+confirmation];
  if(ai==="chatgpt"&&service==="apple")stepsText.push("After GO, use Create playlist in Apple Music if the playlist widget offers it. Until you complete that save step, the playlist is ready to save, not saved.");
  steps.replaceChildren();for(const text of stepsText){const li=doc.createElement("li");li.textContent=text;steps.append(li)}
  setupLinks(links,resourceInfo[ai]);
@@ -323,11 +329,14 @@ function renderLaunch(){
  renderSelections();
  renderCrateMap();
  const slider=doc.getElementById("tempoSlider"),tempoValue=doc.getElementById("tempoValue"),anyTempo=doc.getElementById("anyTempo");
- if(slider){slider.value=tempo?tempoSteps.indexOf(tempo)+1:3;slider.setAttribute("aria-valuetext",tempo?tempoNames[tempo]:"Any tempo — move to choose a pace")}
+ if(slider){slider.value=tempo?tempoSteps.indexOf(tempo)+1:0;slider.setAttribute("aria-valuetext",tempo?tempoNames[tempo]:"Any tempo — no pace preference")}
  const tempoControl=doc.getElementById("tempoControl");if(tempoControl)tempoControl.setAttribute("data-tempo",tempo||"any");
  if(tempoValue)tempoValue.textContent=tempo?tempoNames[tempo]:"Any tempo";
+ const tempoSummary=doc.getElementById("tempoSummary");if(tempoSummary)tempoSummary.textContent=tempo?tempoNames[tempo]:"Any tempo";
+ const tempoHelp=doc.getElementById("tempoHelp");if(tempoHelp)tempoHelp.textContent=tempo?"Move the fader or choose Any tempo to clear this preference. Your mood stays selected.":"No pace preference. Move the fader to choose one. Opinions remain optional.";
  if(anyTempo)anyTempo.setAttribute("aria-pressed",String(!tempo));
  doc.querySelectorAll("[data-mood]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.mood===mood)));
+ const moodHelp=doc.getElementById("moodHelp");if(moodHelp)moodHelp.textContent=mood==="criminal"?"Songs about crime. Artist reputations are not evidence. Tap Criminal again to clear.":mood==="go"?"No mood? We’ll use our judgment.":mood[0].toUpperCase()+mood.slice(1)+" selected. Tap it again to clear.";
  const e={prompt:doc.getElementById("prompt"),mood:doc.getElementById("moodName"),code:doc.getElementById("receiptCode"),open:doc.getElementById("openAi"),browser:doc.getElementById("browserAi")};
  if(!e.prompt)return;
  e.prompt.textContent=goPrompt(ai,service,mood);
@@ -406,7 +415,8 @@ async function copyGo(){
  if(button){button.disabled=false;button.setAttribute("aria-busy","false")}
  copiedPrompt=ok?prompt:null;updateHandoff();
  if(prompt!==goPrompt(ai,service,mood)){status("Selection changed while copying. Press GO again for the current prompt.");return}
- if(ok)status(ai==="gemini"&&service==="youtube"?"GO copied. Open Gemini and select Go, Hipster, Go!. It should curate the crate and attempt one YouTube Music playlist; check the actual result.":"Copied. Open "+aiNames[ai]+", paste and send. Select your skill and music app if needed.");
+ if(ok)store("ghg-jukebox-used-v1","yes");
+ if(ok)status(ai==="gemini"&&service==="youtube"?"GO copied. Open Gemini and select Go, Hipster, Go!. It should curate the crate and attempt one YouTube Music playlist; check the actual result.":"Copied. Open "+aiNames[ai]+", paste and send. Select your skill and music app if needed. The clerk has finished the paperwork.");
  else{const details=doc.getElementById("promptDetails");if(details)details.open=true;status("Clipboard blocked. Copy the full prompt in the receipt below, then use its manual Open link.")}
 }
 doc.querySelectorAll("[data-mood]").forEach(b=>b.addEventListener("click",()=>{
@@ -538,7 +548,7 @@ const tempoSlider=doc.getElementById("tempoSlider");
 function selectTempo(){tempo=tempoSteps[Number(tempoSlider.value)-1]||"";copiedPrompt=null;selectionChanged()}
 if(tempoSlider){
  tempoSlider.addEventListener("input",selectTempo);
- // A tap on the parked center cap also chooses Mid-tempo from bypass.
+ // Pointer and keyboard selection use the same six positions, including Any.
  tempoSlider.addEventListener("pointerup",()=>{if(!tempo)selectTempo()});
  tempoSlider.addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();selectTempo()}});
 }

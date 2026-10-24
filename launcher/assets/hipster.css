@@ -335,8 +335,8 @@ a{color:inherit}
 .fader-stops{position:relative;margin:0 22px;height:0;color:var(--ink)}
 .fader-stops span{position:absolute;top:0;transform:translateX(-50%);font-size:.75rem;line-height:1.5;white-space:nowrap}
 .fader-stops span:before{content:"";display:block;position:absolute;width:1px;height:9px;background:var(--ink);left:50%;bottom:calc(100% + 2px)}
-.fader-stops span:nth-child(1){left:0}.fader-stops span:nth-child(2){left:25%}.fader-stops span:nth-child(3){left:50%}.fader-stops span:nth-child(4){left:75%}.fader-stops span:nth-child(5){left:100%}
-[data-tempo=slow] [data-pace=slow],[data-tempo=relaxed] [data-pace=relaxed],[data-tempo=moderate] [data-pace=moderate],[data-tempo=brisk] [data-pace=brisk],[data-tempo=fast] [data-pace=fast]{font-weight:700;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:2px}
+.fader-stops span:nth-child(1){left:0}.fader-stops span:nth-child(2){left:20%}.fader-stops span:nth-child(3){left:40%}.fader-stops span:nth-child(4){left:60%}.fader-stops span:nth-child(5){left:80%}.fader-stops span:nth-child(6){left:100%}
+[data-tempo=any] [data-pace=any],[data-tempo=slow] [data-pace=slow],[data-tempo=relaxed] [data-pace=relaxed],[data-tempo=moderate] [data-pace=moderate],[data-tempo=brisk] [data-pace=brisk],[data-tempo=fast] [data-pace=fast]{font-weight:700;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:2px}
 .tempo-control[data-tempo=any] .fader-bed{background:#d6d0bf}
 .tempo-control:not([data-tempo=any]) #tempoValue{color:var(--red2)}
 @media(max-width:390px){.tempo-control{padding:12px}.fader-bed{padding-left:4px;padding-right:4px}}
@@ -496,7 +496,7 @@ body[data-page=setup] summary:focus-visible,#setupPromptText:focus-visible{outli
 @media(max-width:30rem){
  .fader-bed{padding-bottom:10px}
  .fader-stops{display:flex;justify-content:space-between;gap:4px;margin:0;height:auto}
- .fader-stops span{position:static;transform:none;white-space:normal;overflow-wrap:anywhere;max-width:22%;text-align:center;line-height:1.4}
+ .fader-stops span{position:static;transform:none;white-space:normal;overflow-wrap:anywhere;max-width:17%;text-align:center;line-height:1.4}
  .fader-stops span:before{display:none}
  .brandrow{flex-wrap:wrap}
  .est{margin-inline-start:auto}
@@ -506,4 +506,54 @@ body[data-page=setup] summary:focus-visible,#setupPromptText:focus-visible{outli
 @media(forced-colors:active){
  :focus-visible{outline:3px solid Highlight!important;outline-offset:3px!important;box-shadow:none!important}
  .mood-grid .mood[aria-pressed=true],.switch button[aria-pressed=true],.crate-regions button[aria-pressed=true]{outline:2px solid Highlight;outline-offset:-4px}
+}
+
+/* A helpful clerk: one request path, with refinements kept off the counter. */
+.hero-purpose{font-size:var(--type-body);line-height:1.5;max-width:60ch;margin:12px 0}
+.clerk-aside{display:block;font:italic var(--type-control)/1.5 Georgia,serif;color:var(--ink2);margin-top:3px}
+body[data-page=launch] .hero-title .headline{font-size:clamp(2.4rem,9vw,4.5rem)}
+html[data-returning=true] body[data-page=launch] .hero-title{padding-bottom:10px;margin-bottom:14px}
+html[data-returning=true] body[data-page=launch] .hero-title .headline{font-size:1.75rem;line-height:1.1;margin:8px 0}
+html[data-returning=true] .hero-title br{display:none}
+html[data-returning=true] .hero-title .sticker,html[data-returning=true] .hero-title .hero-note{display:none}
+html[data-returning=true] .hero-purpose{font-size:var(--type-control);margin:8px 0 0}
+.brand-sub{font-size:.6875rem;line-height:1.4;letter-spacing:.09em}
+.refinements{margin:10px 0 22px;border-block:1px solid var(--ink)}
+.tempo-drawer>summary{min-height:52px;display:flex;align-items:center;gap:12px;cursor:pointer;list-style:none;padding:10px 14px;font-size:var(--type-control)}
+.tempo-drawer>summary::-webkit-details-marker{display:none}
+.tempo-drawer>summary strong{font-family:ui-monospace,monospace}
+.tempo-drawer>summary span{margin-inline-start:auto;color:var(--ink2)}
+.tempo-drawer>summary:after{content:"+";color:var(--red2);font:700 1.3rem Georgia,serif}
+.tempo-drawer[open]>summary:after{content:"−"}
+.tempo-drawer .tempo-control{margin:0;padding:14px;border:0;border-top:1px dashed var(--line)}
+.tempo-control[data-tempo=any] #tempoSlider::-webkit-slider-thumb{border-style:dashed;background:var(--control-metal);box-shadow:none}
+.tempo-control[data-tempo=any] #tempoSlider::-moz-range-thumb{border-style:dashed;background:var(--control-metal);box-shadow:none}
+.refinements>.crate-geo{margin:0;border:0;border-top:1px dashed var(--line);box-shadow:none;background:transparent}
+.refinements .crate-geo-summary{min-height:56px}
+.crate-geo-identity small{font-size:var(--type-label);letter-spacing:.06em}
+.atlas-intro{font-size:var(--type-control);line-height:1.5;max-width:65ch;color:var(--atlas-ink);margin:0 0 12px}
+body[data-page=launch] .go-button{min-height:140px;padding:12px 16px}
+body[data-page=launch] .go-button .star-glyph{width:108px}
+body[data-page=launch] .grind .sideprint{min-height:140px}
+body[data-page=launch] .mood-hint{margin-bottom:8px}
+@media(max-width:520px){body[data-page=launch] .go-button .star-glyph{width:86px}.tempo-drawer>summary{flex-wrap:wrap}}
+
+.dealer-drawer{margin:0 0 10px}
+.dealer-summary{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;min-height:52px;list-style:none;cursor:pointer;border-bottom:2px solid var(--ink);padding:8px 0;font:700 var(--type-control)/1.4 ui-monospace,monospace}
+.dealer-summary::-webkit-details-marker{display:none}
+.dealer-summary:after{content:"+";color:var(--red2);font:700 1.3rem Georgia,serif}
+.dealer-drawer[open]>.dealer-summary:after{content:"−"}
+.dealer-pair{margin-inline-start:auto;font:400 var(--type-control)/1.4 Arial,sans-serif}
+.dealer-drawer[open] .dealer-pair{display:none}
+.dealer-drawer[open] .selector-grid{margin-top:12px}
+html[data-returning=true] .welcome-setup,html[data-returning=true] body[data-page=launch] .connector-status:not(.warn){display:none}
+
+.return-sleeve{display:none}
+html[data-returning=true] .hero-title .first-sleeve{display:none}
+html[data-returning=true] .hero-title .return-sleeve{display:inline}
+@media(min-width:360px) and (max-width:520px){
+ html[data-returning=true] .mood-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;padding:5px 4px 8px}
+ html[data-returning=true] .mood-grid .mood{grid-column:auto;min-height:90px;padding:8px 2px 6px}
+ html[data-returning=true] .mood .face{width:44px;height:50px}
+ html[data-returning=true] .mood .word{max-width:100%;overflow-wrap:anywhere}
 }

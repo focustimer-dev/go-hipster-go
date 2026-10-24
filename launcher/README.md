@@ -1,5 +1,15 @@
 # Hipster, Go! — PWA launcher
 
+## The clerk's counter: first use and return visits
+
+The Jukebox explains the copy → paste → send handoff beside its headline. Copy and recovery actions stay literal; supporting copy uses the dry, begrudgingly helpful record-store-clerk voice documented in `assets/BRAND_GUIDE.md`.
+
+After a successful GO copy, a local `ghg-jukebox-used-v1` flag enables a compact layout on the next page load. The smaller “Back for more” sleeve and folded service choices keep the chosen pairing visible and editable. Informational route copy and the first-time strip recede; unsupported-pair warnings remain visible. The flag does not certify installation, connection or playlist saving. Blocked storage falls back to the full first-use view.
+
+Tempo and the atlas are optional disclosures before the mood-to-GO workbench. Tempo now has six native range positions: zero is **Any**; one through five are Slow, Relaxed, Mid-tempo, Brisk and Fast. Any adds no tempo instruction to the prompt. The atlas describes geography as a search preference without quotas, retaining compact stamps and existing hit areas.
+
+The Manual's tailored check is the main setup path. Selected-platform help uses Try this / If it fails / Connect your music / Confirm it worked. Universal installation and all-platform downloads live together under **Other installation methods**. Existing installation prompts, release URLs and service capability limits are preserved.
+
 Live URLs:
 - [Launch](https://hipster-go.samelling.workers.dev/) — Jukebox: prepare requests for ChatGPT, Gemini or Claude and Spotify, YouTube Music or Apple Music
 - [Setup](https://hipster-go.samelling.workers.dev/setup/) — Manual: tailored setup checks, connection guidance and current skill/plugin downloads

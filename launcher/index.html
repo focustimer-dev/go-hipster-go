@@ -7,6 +7,7 @@
   <meta name="description" content="Go, Hipster, Go!: hand-aged deep-crate music discovery for people who own too many tote bags.">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" type="image/svg+xml" href="/icon.svg?v=nautical-1">
+  <script>try{if(localStorage.getItem("ghg-jukebox-used-v1"))document.documentElement.dataset.returning="true"}catch(e){}</script>
   <link rel="stylesheet" href="/assets/hipster.css">
   <title>Go, Hipster, Go! — Press GO, Question Everything</title>
 </head>
@@ -68,13 +69,15 @@
       <button type="button" id="dismissWelcome" class="welcome-dismiss" aria-label="Dismiss setup tip" title="Hide this tip; setup help stays in the Manual">×</button>
     </aside>
     <div class="hero-title">
-      <span class="kicker">VOL. 001 / A MUSICAL EMERGENCY</span>
-      <h1 class="headline">YOUR TASTE<br>IS A <em>PROBLEM.</em></h1>
+      <h1 class="headline"><span class="first-sleeve">YOUR TASTE<br> IS A <em>PROBLEM.</em></span><span class="return-sleeve">BACK FOR <em>MORE.</em></span></h1>
       <span class="sticker">Locally sourced<br>pretension</span>
+      <p class="hero-purpose">Build a music request, copy it, then paste it into your AI. <span class="clerk-aside">Yes, you still have to press Send.</span></p>
       <p class="hero-note">We found a solution in the back of a record shop that no longer exists. You're welcome.</p>
     </div>
 
-    <div class="section-title"><span><span class="num">A</span> CHOOSE YOUR DEALERS</span><small>we’re judging both choices.</small></div>
+    <details class="dealer-drawer" id="dealerDetails" open>
+      <summary class="dealer-summary"><span>CHOOSE YOUR DEALERS</span><span class="dealer-pair" id="dealerPair">ChatGPT · Spotify</span></summary>
+      <script>if(document.documentElement.dataset.returning==="true")document.getElementById("dealerDetails").open=false</script>
     <div class="selector-grid">
       <section class="panel" aria-labelledby="aiLabel">
         <h2 class="panel-head" id="aiLabel" tabindex="-1">01 / THE ROBOT</h2>
@@ -93,30 +96,26 @@
         </div>
       </section>
     </div>
+    </details>
     <div class="connector-status" id="routeStatus" role="status"><span>Choose your platforms. We'll explain what each pairing can actually do.</span></div>
 
-    <div class="section-title"><span><span class="num">B</span> CHOOSE A MOOD, THEN GO</span><small>no vinyl was harmed</small></div>
-    <div class="mood-grid" role="group" aria-label="Mood presets">
-      <button class="mood" data-mood="happy" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">HAPPY</span></button>
-      <button class="mood" data-mood="angry" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">ANGRY</span></button>
-      <button class="mood" data-mood="sad" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">SAD</span></button>
-      <button class="mood" data-mood="weird" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">WEIRD</span></button>
-    <button class="mood" data-mood="criminal" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">CRIMINAL</span></button>
-</div>
-    <p class="mood-hint">No mood selected? It’s a surprise. Tap a selected mood again to clear it.</p>
+    <div class="refinements" aria-label="Optional music preferences">
+    <details class="tempo-drawer" id="tempoDetails"><summary><strong>TEMPO</strong><span id="tempoSummary">Any tempo</span></summary>
     <div class="tempo-control" id="tempoControl" data-tempo="any">
       <div class="tempo-heading"><label for="tempoSlider">TEMPO <span id="tempoValue">Any tempo</span></label><button id="anyTempo" type="button" aria-pressed="true">Any tempo</button></div>
       <div class="fader-bed">
-      <input id="tempoSlider" type="range" min="1" max="5" step="1" value="3" aria-describedby="tempoHelp" aria-valuetext="Any tempo — move to choose a pace">
-      <div class="fader-stops" aria-hidden="true"><span data-pace="slow">Slow</span><span data-pace="relaxed">Relaxed</span><span data-pace="moderate">Mid</span><span data-pace="brisk">Brisk</span><span data-pace="fast">Fast</span></div>
+      <input id="tempoSlider" type="range" min="0" max="5" step="1" value="0" aria-describedby="tempoHelp" aria-valuetext="Any tempo — no pace preference">
+      <div class="fader-stops" aria-hidden="true"><span data-pace="any">Any</span><span data-pace="slow">Slow</span><span data-pace="relaxed">Relaxed</span><span data-pace="moderate">Mid</span><span data-pace="brisk">Brisk</span><span data-pace="fast">Fast</span></div>
       </div>
-      <p id="tempoHelp">Slide to choose a pace. Your mood stays selected.</p>
+      <p id="tempoHelp">No pace preference. Move the fader to choose one. Opinions remain optional.</p>
     </div>
+    </details>
     <details class="crate-geo" id="crateGeo">
       <summary class="crate-geo-summary">
         <span class="crate-geo-identity"><strong>THE CRATE ATLAS</strong><small>TAKE YOUR TASTE ABROAD</small></span>
       </summary>
       <div class="crate-geo-body">
+        <p class="atlas-intro">Start your search here. No regional quotas; blank means worldwide. We do allow records to travel.</p>
         <div class="crate-atlas-heading">
           <span class="crate-atlas-locator" id="atlasLocator">WORLD ATLAS <span>·</span> 24 LISTENING TERRITORIES</span>
           <button id="atlasHome" type="button" hidden>← WHOLE WORLD</button>
@@ -415,6 +414,16 @@
         <span class="crate-sr-only" id="crateGeoStatus" role="status" aria-live="polite">No regions selected.</span>
       </div>
     </details>
+    </div>
+    <div class="section-title"><span><span class="num">B</span> CHOOSE A MOOD, THEN GO</span><small>no vinyl was harmed</small></div>
+    <div class="mood-grid" role="group" aria-label="Mood presets">
+      <button class="mood" data-mood="happy" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">HAPPY</span></button>
+      <button class="mood" data-mood="angry" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">ANGRY</span></button>
+      <button class="mood" data-mood="sad" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">SAD</span></button>
+      <button class="mood" data-mood="weird" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">WEIRD</span></button>
+    <button class="mood" data-mood="criminal" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">CRIMINAL</span></button>
+</div>
+    <p class="mood-hint" id="moodHelp" role="status">No mood? We’ll use our judgment.</p>
     <div class="grind">
       <button type="button" class="go-button" id="goButton" aria-label="GO! Copy a surprise playlist prompt">
         <svg class="star-glyph" viewBox="0 0 1024 1024" aria-hidden="true" focusable="false">

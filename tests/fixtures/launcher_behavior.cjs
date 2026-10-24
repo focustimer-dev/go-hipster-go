@@ -16,7 +16,7 @@ class Element{
  async click(){this.focus();const event={preventDefault(){this.prevented=true}};await this.events.click?.(event);return event}
 }
 function harness(write,search='',page='launch',storage=new Map(),runtime={}){
- const ids=['welcomeSetup','dismissWelcome','crateGeo','atlasPassport','atlasNamedRegions','atlasLocator','atlasHome','atlasInstruction','atlasStamps','crateAtlasMap','crateGeoStatus','crateGeoClear','aiLabel','copyTailoredSetup','recipeIntro','recipeSteps','recipeResources','recipeCaveat','openSelectedAi','tempoControl','tempoSlider','tempoValue','anyTempo','copyStatus','routeStatus','prompt','moodName','receiptCode','openAi','browserAi','manualOpenAi','receiptSummary','goHint','goButton','stripSetupPrompt','setupPromptText','setupPromptDetails','setupTipStatus','openSetupAi','promptDetails','shareButton'];
+ const ids=['welcomeSetup','dismissWelcome','crateGeo','atlasPassport','atlasNamedRegions','atlasLocator','atlasHome','atlasInstruction','atlasStamps','crateAtlasMap','crateGeoStatus','crateGeoClear','aiLabel','copyTailoredSetup','recipeIntro','recipeSteps','recipeResources','recipeCaveat','openSelectedAi','dealerPair','tempoControl','tempoDetails','tempoSummary','tempoHelp','moodHelp','tempoSlider','tempoValue','anyTempo','copyStatus','routeStatus','prompt','moodName','receiptCode','openAi','browserAi','manualOpenAi','receiptSummary','goHint','goButton','stripSetupPrompt','setupPromptText','setupPromptDetails','setupTipStatus','openSetupAi','promptDetails','shareButton'];
  const elements=Object.fromEntries(ids.map(id=>[id,new Element()]));
  const ais=['chatgpt','gemini','claude'].map(ai=>new Element({ai}));
  const services=['spotify','youtube','apple'].map(service=>new Element({service}));
@@ -337,7 +337,8 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  await h.moods[2].click();await e.goButton.click();assert.match(copies.at(-1),/go sad/);assert.match(copies.at(-1),/Tempo preference: Fast/);
  await e.anyTempo.click();await e.goButton.click();assert.doesNotMatch(copies.at(-1),/Tempo preference:/);assert.match(copies.at(-1),/go sad/);
  await e.anyTempo.click();assert.equal(e.tempoControl.attrs['data-tempo'],'any');
- await e.tempoSlider.events.pointerup();assert.equal(e.tempoControl.attrs['data-tempo'],'moderate','Tapping the parked cap selects the center pace');
+ await e.tempoSlider.events.pointerup();assert.equal(e.tempoControl.attrs['data-tempo'],'any','The Any notch stays bypassed when tapped');
+ e.tempoSlider.value='3';await e.tempoSlider.events.input();assert.equal(e.tempoControl.attrs['data-tempo'],'moderate','Mid-tempo has its own position, separate from Any');
  await e.goButton.click();assert.match(copies.at(-1),/Tempo preference: Mid-tempo/);
  let restored=harness(async()=>{},'?tempo=slow');assert.match(restored.elements.prompt.textContent,/Tempo preference: Slow/);
  restored=harness(async()=>{},'?tempo=bogus');assert.doesNotMatch(restored.elements.prompt.textContent,/Tempo preference:/);
@@ -348,5 +349,32 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  await h.services[0].click();await h.ais[1].click();assert.match(e.recipeIntro.textContent,/Gemini × Spotify/,'Manual preserves service across AI changes');assert.equal(e.copyTailoredSetup.attrs['data-copy-state'],'idle');assert.equal(e.openSelectedAi.textContent,'OPEN GEMINI');
  h=harness(async()=>{throw Error('blocked')},'','setup');await h.elements.copyTailoredSetup.click();assert.equal(h.elements.setupPromptDetails.open,true);assert.equal(h.elements.copyTailoredSetup.attrs['data-copy-state'],'idle');
  h=harness(()=>new Promise(resolve=>{finish=resolve}),'','setup');const setupPending=h.elements.copyTailoredSetup.click();await h.ais[1].click();finish();await setupPending;assert.equal(h.elements.openSelectedAi.attrs['data-copy-ready'],'false');
+
+ const usedStore=new Map();const used=harness(async()=>{},'','launch',usedStore);
+ assert.equal(used.elements.tempoSlider.value,0,'Any tempo starts at the dedicated zero notch');
+ for(const [value,label] of [[1,'Slow'],[2,'Relaxed'],[3,'Mid-tempo'],[4,'Brisk'],[5,'Fast']]){
+  used.elements.tempoSlider.value=String(value);await used.elements.tempoSlider.events.input();
+  assert.equal(used.elements.tempoSummary.textContent,label,'Collapsed tempo summary follows the actual preference');
+  assert.match(used.elements.prompt.textContent,new RegExp('Tempo preference: '+label));
+ }
+ used.elements.tempoSlider.value='0';await used.elements.tempoSlider.events.input();
+ assert.equal(used.elements.tempoSummary.textContent,'Any tempo');
+ assert.doesNotMatch(used.elements.prompt.textContent,/Tempo preference:/,'Any tempo adds no false pace instruction');
+ assert.equal(usedStore.has('ghg-jukebox-used-v1'),false,'Selecting preferences alone does not claim a completed visit');
+ await used.elements.goButton.click();
+ assert.equal(usedStore.get('ghg-jukebox-used-v1'),'yes','Successful GO remembers repeat-use layout');
+ const root={dataset:{}};const bootstrap=jukeboxHtml.match(/<script>([\s\S]*?)<\/script>/)[1];
+ vm.runInNewContext(bootstrap,{document:{documentElement:root},localStorage:{getItem:key=>usedStore.get(key)}});
+ assert.equal(root.dataset.returning,'true','Repeat-use layout is established before the stylesheet loads');
+ const dealers={open:true};const folded=jukeboxHtml.match(/<script>(if\(document\.documentElement[\s\S]*?)<\/script>/)[1];
+ vm.runInNewContext(folded,{document:{documentElement:root,getElementById:()=>dealers}});
+ assert.equal(dealers.open,false,'Returning users keep service choices available behind their saved pairing');
+ const deniedStore=new Map(),denied=harness(async()=>{throw Error('blocked')},'','launch',deniedStore);
+ await denied.elements.goButton.click();
+ assert.equal(deniedStore.has('ghg-jukebox-used-v1'),false,'Failed clipboard copy does not mark first use complete');
+ await used.moods[4].click();assert.match(used.elements.moodHelp.textContent,/Songs about crime/,'Criminal explains narrative meaning at selection');
+ assert.equal((setupHtml.match(/data-setup="universal"/g)||[]).length,1,'Universal installation has one secondary home');
+ assert.ok(jukeboxHtml.indexOf('id="crateGeo"')<jukeboxHtml.indexOf('class="mood-grid"'),'Optional exploration precedes the mood-to-GO workbench');
+ assert.ok(jukeboxHtml.indexOf('class="mood-grid"')<jukeboxHtml.indexOf('id="goButton"'),'Mood choice leads directly to GO');
  console.log('PASS: mood selection, reset, current-copy handoff, setup invalidation, blocked clipboard, copy race');
 })().catch(e=>{console.error(e);process.exit(1)});
