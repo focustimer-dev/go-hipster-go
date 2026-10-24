@@ -132,3 +132,7 @@ The local correction batch covers selected map styling, footer contrast, label s
 ## Manual extension
 
 The approved Manual comp extends this world at `/editions/gig-poster/setup/`: two-line Anton title, engraved hand holding a record leaflet, compact service keys, stacked primary copy and secondary AI actions, thin-rule disclosures and readable fine print. Body instructions use Arial at .9375rem with 1.5 line height. The shared setup renderer retains route-specific instructions and truthful capability notes; real instructions are longer than the image study. Hero minimum height is 27cqw, with the illustration confined to the right. Canonical production files remain unchanged.
+
+## First-visit setup notice
+
+A compact outlined notice sits between hero and service choices: FIRST VISIT? SORT OUT THE CONNECTIONS. One setup check. Then we can discuss your taste. Its setup link opens the matching Manual; Dismiss uses the existing browser-local dismissal key. Returning-hero state alone does not hide the notice. Dismissing never removes the persistent Manual tab, and visiting the Manual is not treated as successful installation.
