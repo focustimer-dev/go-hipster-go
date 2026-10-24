@@ -128,3 +128,7 @@ The local correction batch covers selected map styling, footer contrast, label s
 - Don't replace the live PWA merely because this alternate was selected.
 - Don't treat an automated mismatch or an unverified fix as a design invariant.
 - Don't bury recovery actions or capability limitations in decorative copy.
+
+## Manual extension
+
+The approved Manual comp extends this world at `/editions/gig-poster/setup/`: two-line Anton title, engraved hand holding a record leaflet, compact service keys, stacked primary copy and secondary AI actions, thin-rule disclosures and readable fine print. Body instructions use Arial at .9375rem with 1.5 line height. The shared setup renderer retains route-specific instructions and truthful capability notes; real instructions are longer than the image study. Hero minimum height is 27cqw, with the illustration confined to the right. Canonical production files remain unchanged.

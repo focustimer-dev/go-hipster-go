@@ -99,14 +99,14 @@ body.gig-poster .footer a{color:var(--ink);text-decoration:underline;text-underl
 
 /* The Manual: shared print stock and keys, readable setup instructions. */
 body.gig-poster .manual-intro{margin:4px 0 12px;padding:0;border:0}
-body.gig-poster .manual-hero{position:relative;margin:0 0 12px;min-height:38cqw}
+body.gig-poster .manual-hero{position:relative;margin:0 0 12px;min-height:27cqw}
 body.gig-poster .manual-hero .headline{margin:0;padding:0;font:400 13.2cqw/.95 Poster,sans-serif;letter-spacing:-.025em;color:var(--ink);text-shadow:none;width:100%;border:0}
 body.gig-poster .manual-hero .headline span{display:block;white-space:nowrap}
 body.gig-poster .manual-print{position:absolute;width:36%;height:auto;max-height:30cqw;object-fit:contain;right:0;bottom:0;pointer-events:none}
 body.gig-poster .manual-intro p{font:400 clamp(.9375rem,2.6cqw,1.2rem)/1.45 Arial,sans-serif;margin:0;max-width:70ch;color:var(--ink)}
 body.gig-poster .manual-intro .clerk-aside{display:block;color:var(--ink);font-style:italic;margin-top:4px}
 body.gig-poster .manual-workbench .setup-recipe{background:none;border:0;border-top:1px solid var(--ink);box-shadow:none;padding:10px 0 0;margin:8px 0 0}
-body.gig-poster .setup-recipe>h2,body.gig-poster .manual-fine-title{font:400 clamp(1.65rem,6cqw,3.5rem)/1.05 Poster,sans-serif;letter-spacing:-.015em;color:var(--ink);margin:0 0 8px}
+body.gig-poster[data-page=setup] .manual-workbench .setup-recipe>h2,body.gig-poster .manual-fine-title{font:400 clamp(1.65rem,6cqw,3.5rem)/1.05 Poster,sans-serif;letter-spacing:-.015em;color:var(--ink);margin:0 0 8px}
 body.gig-poster .setup-recipe .recipe-intro{font:400 .9375rem/1.5 Arial,sans-serif;margin:0 0 12px;color:var(--ink)}
 body.gig-poster .setup-actions{display:grid;grid-template-columns:1fr;gap:8px;margin:0 0 8px}
 body.gig-poster .setup-actions .resource{display:flex;align-items:center;justify-content:center;width:100%;min-height:48px;margin:0;padding:10px;font:400 clamp(1.25rem,4.5cqw,2.4rem)/1.2 Poster,sans-serif;text-align:center;border:1px solid var(--ink);color:var(--ink);background:transparent;box-shadow:none}
