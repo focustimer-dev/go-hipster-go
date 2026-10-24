@@ -557,3 +557,10 @@ html[data-returning=true] .hero-title .return-sleeve{display:inline}
  html[data-returning=true] .mood .face{width:44px;height:50px}
  html[data-returning=true] .mood .word{max-width:100%;overflow-wrap:anywhere}
 }
+
+/* Keep the sleeve sticker beside the headline, without adding a row. */
+body[data-page=launch] .hero-title{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:16px;align-items:center}
+body[data-page=launch] .hero-title .headline{font-size:clamp(1.8rem,7.5vw,4.5rem)}
+body[data-page=launch] .hero-title .sticker{position:static;margin:8px 6px 8px 0;justify-self:end}
+body[data-page=launch] .hero-purpose{grid-column:1 / -1}
+@media(max-width:390px){body[data-page=launch] .hero-title{column-gap:10px}}
