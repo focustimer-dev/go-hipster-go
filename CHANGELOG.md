@@ -1,3 +1,12 @@
+## The helpful clerk: PWA flow and voice
+
+- Explain the copy/paste handoff near the headline, with restrained record-clerk snark in supporting copy and plain recovery instructions.
+- Remember a successful GO copy locally and compact the next visit: smaller sleeve, editable saved-service summary, optional refinements and a direct mood-to-GO workbench. Preserve unsupported-pair warnings.
+- Give Any tempo a dedicated zero notch and keep the collapsed tempo summary synchronized. Any remains a bypass, never an accidental Mid-tempo preference.
+- Explain the atlas's soft geographic steer and Criminal's crime-narrative meaning at the point of use.
+- Consolidate generic installation routes into one secondary disclosure and split tailored setup instructions into clear stages.
+- Document the clerk's voice and add regression coverage for all six tempo positions, returning layout initialization, failed-copy behavior and preserved installation routes.
+
 ## Atlas selection follows the visible map
 
 - Keep all visible listening zones tappable after zooming or panning beyond the last focused continent. A cross-continent tap selects the actual zone and updates named controls without recentering the camera.

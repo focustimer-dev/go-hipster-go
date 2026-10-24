@@ -1,5 +1,15 @@
 # Go, Hipster, Go! — Visual identity
 
+## The clerk's voice
+
+The PWA sounds like a begrudgingly helpful record-store clerk: precise, dry and quietly convinced the listener will benefit from supervision. Condescension is about the elaborate ritual and the clerk's own standards, never cruelty toward the listener.
+
+- Put the action and next step first. Buttons name their action; supporting copy may raise an eyebrow.
+- A success can say “The clerk has finished the paperwork.” A handoff can say “Yes, you still have to press Send.” Neither hides what the user must do.
+- Errors, blocked permissions and recovery instructions stay literal and blame-free. No joke may conceal a limitation, connection requirement or unsaved result.
+- Use the voice sparingly. Every label need not audition for the liner notes.
+- Preserve the record-shop world across the Jukebox and Manual. Functional explanations should be as dependable as the attitude is unnecessary.
+
 ## The five-point deep cut
 
 The logo is a geometric, garnet-red, five-point star reconstructed from the supplied faceted-star reference. Five alternating wedges are truly **transparent** rather than filled by a simulated gray checkerboard. It evokes obscure record labels, angular 1980s sleeve art and an almost unjustified level of confidence.
