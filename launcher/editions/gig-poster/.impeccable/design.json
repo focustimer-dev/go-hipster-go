@@ -1,0 +1,173 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-24T14:41:05.045963+00:00",
+  "title": "Design System: Go, Hipster, Go! \u2014 Gig Poster edition",
+  "extensions": {
+    "colorMeta": {
+      "petrol": {
+        "role": "primary",
+        "displayName": "Petrol ink",
+        "tonalRamp": [
+          "oklch(15% 0.045 196)",
+          "oklch(26% 0.045 196)",
+          "oklch(38% 0.045 196)",
+          "oklch(49% 0.045 196)",
+          "oklch(61% 0.045 196)",
+          "oklch(72% 0.045 196)",
+          "oklch(84% 0.045 196)",
+          "oklch(95% 0.045 196)"
+        ]
+      },
+      "mustard-stock": {
+        "role": "primary",
+        "displayName": "Mustard stock",
+        "tonalRamp": [
+          "oklch(15% 0.14 85)",
+          "oklch(26% 0.14 85)",
+          "oklch(38% 0.14 85)",
+          "oklch(49% 0.14 85)",
+          "oklch(61% 0.14 85)",
+          "oklch(72% 0.14 85)",
+          "oklch(84% 0.14 85)",
+          "oklch(95% 0.14 85)"
+        ]
+      },
+      "warm-highlight": {
+        "role": "secondary",
+        "displayName": "Warm highlight",
+        "tonalRamp": [
+          "oklch(15% 0.13 90)",
+          "oklch(26% 0.13 90)",
+          "oklch(38% 0.13 90)",
+          "oklch(49% 0.13 90)",
+          "oklch(61% 0.13 90)",
+          "oklch(72% 0.13 90)",
+          "oklch(84% 0.13 90)",
+          "oklch(95% 0.13 90)"
+        ]
+      },
+      "star-red": {
+        "role": "secondary",
+        "displayName": "Star red",
+        "tonalRamp": [
+          "oklch(15% 0.15 31)",
+          "oklch(26% 0.15 31)",
+          "oklch(38% 0.15 31)",
+          "oklch(49% 0.15 31)",
+          "oklch(61% 0.15 31)",
+          "oklch(72% 0.15 31)",
+          "oklch(84% 0.15 31)",
+          "oklch(95% 0.15 31)"
+        ]
+      },
+      "focus-paper": {
+        "role": "secondary",
+        "displayName": "Focus paper",
+        "tonalRamp": [
+          "oklch(15% 0.14 89)",
+          "oklch(26% 0.14 89)",
+          "oklch(38% 0.14 89)",
+          "oklch(49% 0.14 89)",
+          "oklch(61% 0.14 89)",
+          "oklch(72% 0.14 89)",
+          "oklch(84% 0.14 89)",
+          "oklch(95% 0.14 89)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Condensed poster",
+        "purpose": "Hero headline and key display labels."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "go-press",
+        "value": "translateY(2px)",
+        "purpose": "Tactile copy press; removed for reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "narrow-masthead",
+        "value": "360px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Service key",
+      "kind": "button",
+      "description": "Service key extracted from the alternate edition.",
+      "html": "<button class=\"ds-key\" aria-pressed=\"false\">ChatGPT</button>",
+      "css": ".ds-key{font-family:Arial,Helvetica,sans-serif;color:#103135;background:#dfb045;border:1px solid #103135;min-height:44px;border-radius:2px;padding:7px 14px}.ds-key:hover{background:#edc65d}.ds-key:focus-visible{outline:3px solid #103135;outline-offset:3px;box-shadow:0 0 0 6px #dfb045}.ds-key:active{background:#103135;color:#dfb045}",
+      "refersTo": "service-key"
+    },
+    {
+      "name": "Selected service key",
+      "kind": "button",
+      "description": "Selected service key extracted from the alternate edition.",
+      "html": "<button class=\"ds-selected\" aria-pressed=\"true\">ChatGPT</button>",
+      "css": ".ds-selected{font-family:Arial,Helvetica,sans-serif;color:#103135;background:#dfb045;border:1px solid #103135;min-height:44px;background:#103135;color:#dfb045;border-radius:2px;padding:7px 14px;text-decoration:underline;text-underline-offset:4px}.ds-selected:hover{opacity:.9}.ds-selected:focus-visible{outline:3px solid #103135;outline-offset:3px;box-shadow:0 0 0 6px #dfb045}",
+      "refersTo": "service-key-selected"
+    },
+    {
+      "name": "Tempo range",
+      "kind": "input",
+      "description": "Tempo range extracted from the alternate edition.",
+      "html": "<label class=\"ds-tempo\">SET THE TEMPO <input type=\"range\" min=\"1\" max=\"5\" value=\"3\" aria-label=\"Tempo\"></label>",
+      "css": ".ds-tempo{font:bold 13px Courier New,monospace;color:#103135}.ds-tempo input{display:block;accent-color:#103135;min-height:36px}.ds-tempo input:focus-visible{outline:3px solid #103135;outline-offset:3px;box-shadow:0 0 0 6px #dfb045}"
+    },
+    {
+      "name": "Navigation",
+      "kind": "nav",
+      "description": "Navigation extracted from the alternate edition.",
+      "html": "<nav class=\"ds-nav\"><a href=\"#jukebox\" aria-current=\"page\">JUKEBOX</a><a href=\"#manual\">MANUAL</a></nav>",
+      "css": ".ds-nav{display:flex;gap:16px;font:bold 16px Arial,sans-serif}.ds-nav a{color:#103135;min-height:44px;display:flex;align-items:center}.ds-nav a[aria-current]{text-decoration:underline;text-underline-offset:6px}.ds-nav a:hover{text-decoration-thickness:3px}.ds-nav a:focus-visible{outline:3px solid #103135;outline-offset:3px;box-shadow:0 0 0 6px #dfb045}"
+    },
+    {
+      "name": "Region stamp",
+      "kind": "chip",
+      "description": "Region stamp extracted from the alternate edition.",
+      "html": "<button class=\"ds-stamp\" aria-label=\"Remove Oceania\">OCEANIA \u00d7</button>",
+      "css": ".ds-stamp{font-family:Arial,Helvetica,sans-serif;color:#103135;background:#dfb045;border:1px solid #103135;min-height:44px;font:bold 12px Courier New,monospace;border-radius:0;padding:8px}.ds-stamp:hover{background:#edc65d}.ds-stamp:focus-visible{outline:3px solid #103135;outline-offset:3px;box-shadow:0 0 0 6px #dfb045}"
+    },
+    {
+      "name": "GO strip",
+      "kind": "button",
+      "description": "GO strip extracted from the alternate edition.",
+      "html": "<button class=\"ds-go\"><b>GO!</b><span>COPY PROMPT \u00b7 12 TRACKS</span></button>",
+      "css": ".ds-go{display:flex;align-items:center;gap:24px;width:100%;min-height:96px;padding:10px 3%;border:0;border-radius:2px;background:#103135;color:#dfb045;font-family:Arial,sans-serif}.ds-go b{font-size:54px}.ds-go:hover{opacity:.95}.ds-go:active{transform:translateY(2px)}.ds-go:focus-visible{outline:3px solid #103135;outline-offset:3px;box-shadow:0 0 0 6px #dfb045}@media(prefers-reduced-motion:reduce){.ds-go:active{transform:none}}",
+      "refersTo": "go"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Gig Poster",
+    "overview": "A small-run gig poster becomes a usable music-request instrument. Mustard stock, petrol ink, condensed display type and engraved illustrations carry the personality; literal controls and readable status carry the work. The voice is a begrudgingly helpful record-store clerk: precise condescension without cruelty or obstruction.",
+    "keyCharacteristics": [
+      "Mustard stock and deep petrol ink.",
+      "Monumental condensed type and engraved art.",
+      "Flat physical keys and clear inverse selection.",
+      "Compact controls with honest handoff and recovery."
+    ],
+    "rules": [
+      {
+        "name": "The Ink Rule",
+        "body": "Selection must remain legible as an explicit inverse state, rather than relying on a subtle hue shift.",
+        "section": "colors"
+      }
+    ],
+    "dos": [
+      "Do preserve readable labels, visible focus and truthful copy status.",
+      "Do use actual engraved assets and the licensed self-hosted Anton font.",
+      "Do keep service, tempo, region and mood mechanics shared with the canonical app."
+    ],
+    "donts": [
+      "Don't replace the live PWA merely because this alternate was selected.",
+      "Don't treat an automated mismatch or an unverified fix as a design invariant.",
+      "Don't bury recovery actions or capability limitations in decorative copy."
+    ]
+  }
+}
