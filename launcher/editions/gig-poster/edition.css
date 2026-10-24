@@ -163,3 +163,27 @@ body.gig-poster[data-page=launch] .receipt[data-copy-state=copied] .receipt-copy
  body.gig-poster :is(.switch button,.resource,.action,.crate-stamp):active:not(:disabled):not([aria-disabled=true]){transform:none}
  body.gig-poster #copyTailoredSetup[data-copy-state=copied],body.gig-poster[data-page=launch] .receipt[data-copy-state=copied] .receipt-copy{animation:none;transform:none}
 }
+
+/* Paper-cut misfits: one short character performance per selection. */
+body.gig-poster .mood .face{transform-origin:50% 85%}
+body.gig-poster .mood{overflow:hidden;position:relative}
+body.gig-poster .mood[aria-pressed=true] .word{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px}
+body.gig-poster .mood[data-mood=happy][aria-pressed=true] .face{animation:clerk-happy 420ms cubic-bezier(.16,1,.3,1)}
+body.gig-poster .mood[data-mood=angry][aria-pressed=true] .face{animation:clerk-angry 360ms cubic-bezier(.16,1,.3,1)}
+body.gig-poster .mood[data-mood=sad][aria-pressed=true] .face{animation:clerk-sad 520ms cubic-bezier(.16,1,.3,1)}
+body.gig-poster .mood[data-mood=weird][aria-pressed=true] .face{animation:clerk-weird 480ms cubic-bezier(.16,1,.3,1)}
+body.gig-poster .mood[data-mood=criminal][aria-pressed=true] .face{animation:clerk-criminal 460ms cubic-bezier(.16,1,.3,1)}
+@keyframes clerk-happy{0%,100%{transform:none}30%{transform:translateY(-7%) rotate(-6deg)}60%{transform:translateY(-2%) rotate(3deg)}}
+@keyframes clerk-angry{0%,100%{transform:none}20%{transform:translateX(-5%) rotate(-4deg)}45%{transform:translateX(5%) rotate(4deg)}70%{transform:translateX(-2%)}}
+@keyframes clerk-sad{0%,100%{transform:none}45%{transform:translateY(7%) rotate(7deg)}75%{transform:translateY(3%) rotate(3deg)}}
+@keyframes clerk-weird{0%,100%{transform:none}25%{transform:rotate(-10deg) skewX(4deg)}55%{transform:rotate(8deg) skewX(-3deg)}80%{transform:rotate(-3deg)}}
+@keyframes clerk-criminal{0%,100%{transform:none}35%{transform:translateX(7%) rotate(-5deg)}70%{transform:translateX(4%) rotate(-2deg)}}
+@media(hover:hover) and (pointer:fine){body.gig-poster .mood:not([aria-pressed=true]):hover .face{transform:rotate(-3deg)}body.gig-poster .mood .face{transition:transform 150ms cubic-bezier(.16,1,.3,1)}}
+/* Keep the Manual title and engraving in separate columns, including text zoom. */
+body.gig-poster .manual-hero{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(0,1fr);align-items:center;gap:2%;min-height:0;padding:6px 0}
+body.gig-poster[data-page=setup] .manual-workbench .manual-hero .headline{font:400 clamp(2rem,11.6cqw,6.8rem)/1.02 Poster,sans-serif;width:auto;min-width:0;margin:0;letter-spacing:-.025em}
+body.gig-poster .manual-print{position:static;width:100%;max-height:none;align-self:center}
+body.gig-poster .manual-workbench .manual-intro{padding:6px 0 16px}
+body.gig-poster .manual-workbench .manual-prompt>summary,body.gig-poster .manual-workbench .manual-install>summary,body.gig-poster .manual-workbench .resource-shelf>summary{height:auto;white-space:normal;overflow-wrap:anywhere}
+body.gig-poster ::selection{background:var(--ink);color:var(--paper)}
+@media(prefers-reduced-motion:reduce){body.gig-poster .mood .face,body.gig-poster .mood[aria-pressed=true] .face{animation:none!important;transition:none;transform:none!important}}
