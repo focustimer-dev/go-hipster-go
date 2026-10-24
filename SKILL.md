@@ -1,10 +1,10 @@
 ---
 name: go-hipster-go
-description: Setup services, then go: real global deep cuts with sardonic, specific track notes, vivid playlist descriptions, and authorized Spotify/YouTube Music publishing where available.
+description: "Setup services, then go: real global deep cuts with sardonic, specific track notes, vivid playlist descriptions, and authorized Spotify/YouTube Music publishing where available."
 license: MIT
 compatibility: Requires file-reading capability. Optional web/catalog lookup for track verification and Python 3.10+ to run included validation/randomness scripts. Streaming accounts and OAuth are NOT bundled.
 metadata:
-  version: "3.6.2"
+  version: "3.6.3"
 ---
 
 # Go, Hipster, Go! — Agent Skill v3
@@ -114,6 +114,8 @@ Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation;
 When a Jukebox GO includes a **Random crate spark** phrase, treat it as a new metaphorical angle on the music. The independent word combination is an exploration hint, not evidence that an instrument occurs on a recording, a song title to search for, or a requirement that the playlist contain specific genres. Allow a fresh spark to shift the open-ended thesis genuinely away from the most recently familiar post-punk/dub/funk cluster when another musically convincing direction exists. Respect user-requested mood, speed, exclusion and artist constraints above the seed. A Jukebox can supply random words across separate Gemini conversations, but **a Gemini Skill invoked directly without a supplied spark cannot claim it rolled a random phrase** unless an actual random source is available.
 
 When a PWA prompt supplies a **Fresh-crate discovery lens**, use it as a starting hypothesis for finding candidates, not as a mandatory genre, regional quota, verified instrumentation claim or reason to ignore the listener's mood/tempo. A new GO should explore a different sonically defensible corner of the catalog rather than cycle through the same reference artists and obvious compilation cuts. For an open-ended request, compare genuinely different rhythm, voice, texture and arrangement routes before selecting a thesis. Build a broader candidate shortlist than the final track count and look beyond named research leads to credible labelmates, overlooked collaborators, local contemporaries, original issues and alternate scenes. Verify the final recordings and preserve cohesion; novelty alone is not quality.
+
+**Regional discovery and recording quality:** Apply the recording-level selection gate in [sonic taxonomy](references/sonic-taxonomy.md). Selected regions take precedence over rotating lenses; verify scene connections rather than using geography as a sonic adjective. The [regional research routes](references/global-scenes.md) supplies research hypotheses, not established facts about recordings or a fixed artist roster. Skip incompatible hints; do not broaden geography just to use a seed.
 
 **Track-level recent-repeat check:** When earlier playlists are actually visible in the current conversation, supplied by the listener, or available through an authorized playlist read-back, compare normalized **artist + title + recording/version** against the last *up to three* sets. For an ordinary new playlist, exclude repeated recordings by default and prefer different artists, even when the mood repeats. Allow direct listener requests, an explicitly requested callback or a compelling, explained exception; never silently replace an exact user-requested recording. Within one normal set, avoid repeated artist/title pairs or recycled alternate uploads masquerading as variety. Do **not** imply that Gemini, the PWA or another host can read earlier playlists or listening history across sessions unless those records are genuinely accessible. If history is unavailable, still diversify the search route and be candid about the missing cross-session exclusion list when repeat avoidance is discussed.
 

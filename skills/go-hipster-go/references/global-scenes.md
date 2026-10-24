@@ -311,3 +311,25 @@ Sources below establish research doors, not streaming availability or exact-trac
 Explore narcocorridos; Sicilian mafia songs; Calabrian canti di malavita and the documented 'Ndrangheta repertoire; Russian blatnaya pesnya/blatnyak (thieves' songs, **not** all Russian chanson); crime-focused Brazilian funk proibidão (**not** all baile funk); Greek underworld rebetiko/hasiklidika (**not** all rebetiko); gunman-focused early Jamaican dancehall (**not** every song on a gunman-named riddim); and documented crime narratives from the Caribbean, Africa and Latin America. These are discovery routes, not quotas, a mandatory itinerary or a fixed artist roster. Strongly prefer non-English vocals; Jamaican Patois dancehall may offer an occasional more English-accessible rhythmic change of pace, though Patois is a distinct language variety and understanding is not automatic. Cross scene boundaries only when real recordings share compelling rhythm, voices, arrangements or production. Search local contemporaries rather than repeatedly defaulting to example artists. Require song-specific evidence of crime as defined in verification.md; a title, prison reference, scene or artist reputation is not enough. Rotate narrative angles with sonic-taxonomy.md.
 
 Research sources: [Calabrian repertoire](https://amiatarecords.com/shop/n8nf4y2t7trzum4vchoz40ewgs18a5), [Russian thieves' song scholarship](https://publish.iupress.indiana.edu/read/songs-to-seven-strings-russian-guitar-poetry-and-soviet-mass-song/section/39ae0780-eb53-4416-8601-aa087bd4c1d8), [rebetiko scholarship](https://www2.umbc.edu/eol/3/magrini/rebetika.htm), [proibidão context](https://djmag.com/longreads/baile-funk-criminalisation-brazils-funk-scene), [early Gunman riddim context](https://vprecords.com/shaggy-taps-vintage-dancehall-with-new-badman-riddim-first-singles-drop-august-22/).
+
+
+## US East and West discovery routes
+
+Use `discovery-lenses.json` for 16 focused research routes per US half, derived from the listener's East/West survey. The catalog deliberately omits famous example artists from generated prompts. It retains broader styles only with a narrower recording-level angle. Research descriptors such as Portland tape-pop archives and Western private-press country are not claims of formal genre status. Do not promote unverified compound labels from a survey into music history.
+
+East routes: Sacred Steel; D.C. go-go; Baltimore club; Jersey club; Miami bass; Florida breaks; New York no wave; New York Latin freestyle; Detroit techno; Detroit ghettotech; Chicago acid house; Chicago footwork/juke; Memphis cassette rap; Piedmont blues; Louisiana swamp pop; shape-note singing.
+
+West routes: Waila; South Texas conjunto; West Coast electro-hop; Chicano/lowrider soul; Paisley Underground; Los Angeles deathrock; Bay Area hyphy; Bay Area mobb music; Los Angeles jerkin; Los Angeles beat scene; Portland tape-pop research; Olympia DIY pop; Western swing; Western private-press country research; Palm Desert rock; Hawaiian slack-key guitar.
+
+These are not a blanket mood classification or availability guarantee. Sacred or community traditions must retain context rather than become novelty inserts. Match release provenance to actual map zones; scenes cross state and cultural boundaries, so do not infer geographic fit from a name alone.
+
+Research entry points (catalogs establish doors, not every claim in the survey):
+- [Smithsonian Folkways: Piedmont blues](https://folkways.si.edu/classic-piedmont-blues/african-american-music-folk/album/smithsonian)
+- [Smithsonian Folkways: Sacred Steel catalog](https://folkways.si.edu/genre/gospel)
+- [Canyon Records: Waila](https://canyonrecords.bandcamp.com/album/waila)
+- [Baltimore Entertainment Archive](https://bearc.org/)
+- [Baltimore club artist catalog](https://rodlee.bandcamp.com/)
+- [Numero: Los Angeles release stories](https://numerogroup.com/blogs/stories/tagged/los-angeles)
+- [Numero: private-press research](https://numerogroup.com/collections/private-press)
+
+For routes without a cited recording here, research credible artist, label or archive sources before treating any candidate's scene affiliation as verified. Preserve the survey as a research input, not a verified 100-genre ontology.

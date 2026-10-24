@@ -115,6 +115,8 @@ When a Jukebox GO includes a **Random crate spark** phrase, treat it as a new me
 
 When a PWA prompt supplies a **Fresh-crate discovery lens**, use it as a starting hypothesis for finding candidates, not as a mandatory genre, regional quota, verified instrumentation claim or reason to ignore the listener's mood/tempo. A new GO should explore a different sonically defensible corner of the catalog rather than cycle through the same reference artists and obvious compilation cuts. For an open-ended request, compare genuinely different rhythm, voice, texture and arrangement routes before selecting a thesis. Build a broader candidate shortlist than the final track count and look beyond named research leads to credible labelmates, overlooked collaborators, local contemporaries, original issues and alternate scenes. Verify the final recordings and preserve cohesion; novelty alone is not quality.
 
+**Regional discovery and recording quality:** Apply the recording-level selection gate in [sonic taxonomy](references/sonic-taxonomy.md). Selected regions take precedence over rotating lenses; verify scene connections rather than using geography as a sonic adjective. The [regional research routes](references/global-scenes.md) supplies research hypotheses, not established facts about recordings or a fixed artist roster. Skip incompatible hints; do not broaden geography just to use a seed.
+
 **Track-level recent-repeat check:** When earlier playlists are actually visible in the current conversation, supplied by the listener, or available through an authorized playlist read-back, compare normalized **artist + title + recording/version** against the last *up to three* sets. For an ordinary new playlist, exclude repeated recordings by default and prefer different artists, even when the mood repeats. Allow direct listener requests, an explicitly requested callback or a compelling, explained exception; never silently replace an exact user-requested recording. Within one normal set, avoid repeated artist/title pairs or recycled alternate uploads masquerading as variety. Do **not** imply that Gemini, the PWA or another host can read earlier playlists or listening history across sessions unless those records are genuinely accessible. If history is unavailable, still diversify the search route and be candid about the missing cross-session exclusion list when repeat avoidance is discussed.
 
 ## Curate in seven steps
@@ -459,6 +461,28 @@ Explore narcocorridos; Sicilian mafia songs; Calabrian canti di malavita and the
 
 Research sources: [Calabrian repertoire](https://amiatarecords.com/shop/n8nf4y2t7trzum4vchoz40ewgs18a5), [Russian thieves' song scholarship](https://publish.iupress.indiana.edu/read/songs-to-seven-strings-russian-guitar-poetry-and-soviet-mass-song/section/39ae0780-eb53-4416-8601-aa087bd4c1d8), [rebetiko scholarship](https://www2.umbc.edu/eol/3/magrini/rebetika.htm), [proibidão context](https://djmag.com/longreads/baile-funk-criminalisation-brazils-funk-scene), [early Gunman riddim context](https://vprecords.com/shaggy-taps-vintage-dancehall-with-new-badman-riddim-first-singles-drop-august-22/).
 
+
+## US East and West discovery routes
+
+Use `discovery-lenses.json` for 16 focused research routes per US half, derived from the listener's East/West survey. The catalog deliberately omits famous example artists from generated prompts. It retains broader styles only with a narrower recording-level angle. Research descriptors such as Portland tape-pop archives and Western private-press country are not claims of formal genre status. Do not promote unverified compound labels from a survey into music history.
+
+East routes: Sacred Steel; D.C. go-go; Baltimore club; Jersey club; Miami bass; Florida breaks; New York no wave; New York Latin freestyle; Detroit techno; Detroit ghettotech; Chicago acid house; Chicago footwork/juke; Memphis cassette rap; Piedmont blues; Louisiana swamp pop; shape-note singing.
+
+West routes: Waila; South Texas conjunto; West Coast electro-hop; Chicano/lowrider soul; Paisley Underground; Los Angeles deathrock; Bay Area hyphy; Bay Area mobb music; Los Angeles jerkin; Los Angeles beat scene; Portland tape-pop research; Olympia DIY pop; Western swing; Western private-press country research; Palm Desert rock; Hawaiian slack-key guitar.
+
+These are not a blanket mood classification or availability guarantee. Sacred or community traditions must retain context rather than become novelty inserts. Match release provenance to actual map zones; scenes cross state and cultural boundaries, so do not infer geographic fit from a name alone.
+
+Research entry points (catalogs establish doors, not every claim in the survey):
+- [Smithsonian Folkways: Piedmont blues](https://folkways.si.edu/classic-piedmont-blues/african-american-music-folk/album/smithsonian)
+- [Smithsonian Folkways: Sacred Steel catalog](https://folkways.si.edu/genre/gospel)
+- [Canyon Records: Waila](https://canyonrecords.bandcamp.com/album/waila)
+- [Baltimore Entertainment Archive](https://bearc.org/)
+- [Baltimore club artist catalog](https://rodlee.bandcamp.com/)
+- [Numero: Los Angeles release stories](https://numerogroup.com/blogs/stories/tagged/los-angeles)
+- [Numero: private-press research](https://numerogroup.com/collections/private-press)
+
+For routes without a cited recording here, research credible artist, label or archive sources before treating any candidate's scene affiliation as verified. Preserve the survey as a research input, not a verified 100-genre ontology.
+
 # END SOURCE: references/global-scenes.md
 
 ---
@@ -535,6 +559,19 @@ Archival scarcity is not musical merit. A compilation excerpt or radio collage i
 4. If a specific request needs an exception, honor it and explain briefly. No mandatory nation, language, era, label or genre quota; no arbitrary sacrifice of cohesion for obscurity.
 5. When history is unavailable, diversify the research and avoid named-example defaults, but never claim listener-specific novelty or persistent memory. The PWA stores only discovery cue IDs, not the resulting songs or listening history.
 6. When the listener says stale, replace the discovery strategy and actual selections, not merely adjectives, title or ordering. Ask for prior lists only if essential to a precise exclusion request; do not block an ordinary GO.
+
+
+## Recording-level selection gate
+
+Seek accessible pleasure with a fingerprint. A familiar hook is welcome; popularity, polished production and broad genre names are not automatic exclusions. Obscurity, unusual provenance, lo-fi sound and ironic framing are not quality certificates either.
+
+Before accepting each ordinary selection, require:
+- Fit with the listener's selected regions, mood and tempo. Treat a regional scene as a research lead, not proof of a song's suitability. For Criminal, verify the explicit crime narrative at song level; do not weaken it to fill a regional quota. If the non-English preference materially limits a requested region, be candid rather than silently escaping the geography.
+- A concrete, supported musical reason: phrasing, arrangement, groove, melodic turn, texture or a persuasive transition. Generic genre adjectives do not suffice. Never invent listening evidence.
+- A useful contribution to the sequence beyond novelty or a funny backstory. A pop reference must remain pleasurable without the joke; do not use an ironic excuse for filler.
+- Search beyond predictable signature tracks and repeated compilation selections. Broader genres need narrower research angles, not blanket bans; known artists remain eligible when the recording earns its place or the user requests it.
+
+Use the region-tagged discovery catalog as a set of research doors. Regional entries are starting hypotheses with recording-level verification still required. Geography-neutral musical lenses remain available in every region; geographically specific lenses require a compatible selected region. With no region selection, the full worldwide pool is eligible. Local scenes and diaspora links must be independently documented for a specific release; language and artist identity alone do not establish the connection.
 
 # END SOURCE: references/sonic-taxonomy.md
 

@@ -68,3 +68,16 @@ Archival scarcity is not musical merit. A compilation excerpt or radio collage i
 4. If a specific request needs an exception, honor it and explain briefly. No mandatory nation, language, era, label or genre quota; no arbitrary sacrifice of cohesion for obscurity.
 5. When history is unavailable, diversify the research and avoid named-example defaults, but never claim listener-specific novelty or persistent memory. The PWA stores only discovery cue IDs, not the resulting songs or listening history.
 6. When the listener says stale, replace the discovery strategy and actual selections, not merely adjectives, title or ordering. Ask for prior lists only if essential to a precise exclusion request; do not block an ordinary GO.
+
+
+## Recording-level selection gate
+
+Seek accessible pleasure with a fingerprint. A familiar hook is welcome; popularity, polished production and broad genre names are not automatic exclusions. Obscurity, unusual provenance, lo-fi sound and ironic framing are not quality certificates either.
+
+Before accepting each ordinary selection, require:
+- Fit with the listener's selected regions, mood and tempo. Treat a regional scene as a research lead, not proof of a song's suitability. For Criminal, verify the explicit crime narrative at song level; do not weaken it to fill a regional quota. If the non-English preference materially limits a requested region, be candid rather than silently escaping the geography.
+- A concrete, supported musical reason: phrasing, arrangement, groove, melodic turn, texture or a persuasive transition. Generic genre adjectives do not suffice. Never invent listening evidence.
+- A useful contribution to the sequence beyond novelty or a funny backstory. A pop reference must remain pleasurable without the joke; do not use an ironic excuse for filler.
+- Search beyond predictable signature tracks and repeated compilation selections. Broader genres need narrower research angles, not blanket bans; known artists remain eligible when the recording earns its place or the user requests it.
+
+Use the region-tagged discovery catalog as a set of research doors. Regional entries are starting hypotheses with recording-level verification still required. Geography-neutral musical lenses remain available in every region; geographically specific lenses require a compatible selected region. With no region selection, the full worldwide pool is eligible. Local scenes and diaspora links must be independently documented for a specific release; language and artist identity alone do not establish the connection.
