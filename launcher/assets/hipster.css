@@ -508,105 +508,88 @@ body[data-page=setup] summary:focus-visible,#setupPromptText:focus-visible{outli
  .mood-grid .mood[aria-pressed=true],.switch button[aria-pressed=true],.crate-regions button[aria-pressed=true]{outline:2px solid Highlight;outline-offset:-4px}
 }
 
-/* A helpful clerk: one request path, with refinements kept off the counter. */
+/* Jukebox counter: one paper surface, selection keys, one raised action.
+   Shared Manual styles above remain independent. */
+body[data-page=launch]{--counter-gap:24px;--counter-rule:1px solid var(--line)}
 .hero-purpose{font-size:var(--type-body);line-height:1.5;max-width:60ch;margin:12px 0}
 .clerk-aside{display:block;font:italic var(--type-control)/1.5 Georgia,serif;color:var(--ink2);margin-top:3px}
-body[data-page=launch] .hero-title .headline{font-size:clamp(2.4rem,9vw,4.5rem)}
-html[data-returning=true] body[data-page=launch] .hero-title{padding-bottom:10px;margin-bottom:14px}
-html[data-returning=true] body[data-page=launch] .hero-title .headline{font-size:1.75rem;line-height:1.1;margin:8px 0}
-html[data-returning=true] .hero-title br{display:none}
-html[data-returning=true] .hero-title .sticker,html[data-returning=true] .hero-title .hero-note{display:none}
-html[data-returning=true] .hero-purpose{font-size:var(--type-control);margin:8px 0 0}
 .brand-sub{font-size:.6875rem;line-height:1.4;letter-spacing:.09em}
-.refinements{margin:10px 0 22px;border-block:1px solid var(--ink)}
-.tempo-drawer>summary{min-height:52px;display:flex;align-items:center;gap:12px;cursor:pointer;list-style:none;padding:10px 14px;font-size:var(--type-control)}
-.tempo-drawer>summary::-webkit-details-marker{display:none}
-.tempo-drawer>summary strong{font-family:ui-monospace,monospace}
-.tempo-drawer>summary span{margin-inline-start:auto;color:var(--ink2)}
-.tempo-drawer>summary:after{content:"+";color:var(--red2);font:700 1.3rem Georgia,serif}
-.tempo-drawer[open]>summary:after{content:"−"}
-.tempo-drawer .tempo-control{margin:0;padding:14px;border:0;border-top:1px dashed var(--line)}
-.tempo-control[data-tempo=any] #tempoSlider::-webkit-slider-thumb{border-style:dashed;background:var(--control-metal);box-shadow:none}
-.tempo-control[data-tempo=any] #tempoSlider::-moz-range-thumb{border-style:dashed;background:var(--control-metal);box-shadow:none}
-.refinements>.crate-geo{margin:0;border:0;border-top:1px dashed var(--line);box-shadow:none;background:transparent}
-.refinements .crate-geo-summary{min-height:56px}
-.crate-geo-identity small{font-size:var(--type-label);letter-spacing:.06em}
-.atlas-intro{font-size:var(--type-control);line-height:1.5;max-width:65ch;color:var(--atlas-ink);margin:0 0 12px}
-body[data-page=launch] .go-button{min-height:140px;padding:12px 16px}
-body[data-page=launch] .go-button .star-glyph{width:108px}
-body[data-page=launch] .grind .sideprint{min-height:140px}
-body[data-page=launch] .mood-hint{margin-bottom:8px}
-@media(max-width:520px){body[data-page=launch] .go-button .star-glyph{width:86px}.tempo-drawer>summary{flex-wrap:wrap}}
-
-.dealer-drawer{margin:0 0 10px}
-.dealer-summary{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;min-height:52px;list-style:none;cursor:pointer;border-bottom:2px solid var(--ink);padding:8px 0;font:700 var(--type-control)/1.4 ui-monospace,monospace}
-.dealer-summary::-webkit-details-marker{display:none}
-.dealer-summary:after{content:"+";color:var(--red2);font:700 1.3rem Georgia,serif}
-.dealer-drawer[open]>.dealer-summary:after{content:"−"}
-.dealer-pair{margin-inline-start:auto;font:400 var(--type-control)/1.4 Arial,sans-serif}
-.dealer-drawer[open] .dealer-pair{display:none}
-.dealer-drawer[open] .selector-grid{margin-top:12px}
-html[data-returning=true] .welcome-setup,html[data-returning=true] body[data-page=launch] .connector-status:not(.warn){display:none}
-
 .return-sleeve{display:none}
 html[data-returning=true] .hero-title .first-sleeve{display:none}
 html[data-returning=true] .hero-title .return-sleeve{display:inline}
-@media(min-width:360px) and (max-width:520px){
- html[data-returning=true] .mood-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;padding:5px 4px 8px}
- html[data-returning=true] .mood-grid .mood{grid-column:auto;min-height:90px;padding:8px 2px 6px}
- html[data-returning=true] .mood .face{width:44px;height:50px}
- html[data-returning=true] .mood .word{max-width:100%;overflow-wrap:anywhere}
-}
-
-/* Keep the sleeve sticker beside the headline, without adding a row. */
-body[data-page=launch] .hero-title{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:16px;align-items:center}
-body[data-page=launch] .hero-title .headline{font-size:clamp(1.8rem,7.5vw,4.5rem)}
+html[data-returning=true] .hero-title br{display:none}
+html[data-returning=true] .hero-title .sticker,html[data-returning=true] .welcome-setup,
+html[data-returning=true] body[data-page=launch] .connector-status:not(.warn){display:none}
+body[data-page=launch] .hero-title{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0 16px;align-items:center;border-bottom:0;padding:0;margin:4px 0 var(--counter-gap)}
+body[data-page=launch] .hero-title .headline{font-size:clamp(1.8rem,7.5vw,4.5rem);letter-spacing:-.035em}
 body[data-page=launch] .hero-title .sticker{position:static;margin:8px 6px 8px 0;justify-self:end}
-body[data-page=launch] .hero-purpose{grid-column:1 / -1}
-@media(max-width:390px){body[data-page=launch] .hero-title{column-gap:10px}}
-
-/* Mobile correction: visible controls, compact furniture, one raised GO key. */
-body[data-page=launch] .dealer-drawer{margin:0}
-body[data-page=launch] .tempo-control{margin:8px 0 12px;padding:10px 12px;border:0;background:transparent}
-body[data-page=launch] .tempo-heading label span{display:inline;margin-left:8px}
-body[data-page=launch] .tempo-control p{font-size:.75rem;margin:4px 0 0}
-body[data-page=launch] .fader-bed{margin-top:6px}
+body[data-page=launch] .hero-purpose{grid-column:1 / -1;margin:8px 0}
+html[data-returning=true] body[data-page=launch] .hero-title .headline{font-size:1.75rem;line-height:1.1;margin:8px 0}
+.counter-heading{font:700 1rem/1.3 ui-monospace,Consolas,monospace;letter-spacing:.02em;margin:0 0 14px}
+.counter-label,body[data-page=launch] .panel-head{font:700 var(--type-label)/1.4 ui-monospace,Consolas,monospace;letter-spacing:.03em;margin:0 0 8px}
+body[data-page=launch] .selector-grid{gap:16px}
+body[data-page=launch] .selector-grid .panel{padding:0;margin:0;border:0;background:transparent;box-shadow:none}
+body[data-page=launch] .switch{gap:4px}
+body[data-page=launch] .switch button{background:var(--bone);border:1px solid var(--ink);box-shadow:none;min-height:46px;padding:8px 6px;font-size:var(--type-label)}
+body[data-page=launch] .switch button[aria-pressed=true]{background:var(--red2);color:var(--bone);box-shadow:inset 0 2px 3px #0004}
+body[data-page=launch] .connector-status{background:transparent;border:0;padding:0;margin:12px 0 var(--counter-gap);gap:0}
+body[data-page=launch] .connector-status:before{display:none}
+body[data-page=launch] .connector-status span{font-size:var(--type-label);line-height:1.5;color:var(--ink2)}
+body[data-page=launch] .connector-status.warn{border:1px solid var(--red2);background:var(--bone);padding:10px}
+.mix-heading{border-top:var(--counter-rule);padding-top:var(--counter-gap)}
+.refinements{margin:0 0 20px;border:0}
+body[data-page=launch] .tempo-control{margin:0;padding:0;border:0;background:transparent}
+body[data-page=launch] .tempo-heading label{font:700 var(--type-label)/1.4 ui-monospace,Consolas,monospace}
+body[data-page=launch] .tempo-heading label span{display:inline;margin-left:10px;font:400 var(--type-control)/1.4 Arial,sans-serif}
+body[data-page=launch] .tempo-heading button{min-height:44px;min-width:60px;padding:8px 12px;background:var(--bone)}
+body[data-page=launch] .tempo-heading button[aria-pressed=true]{background:var(--ink);color:var(--bone)}
+body[data-page=launch] .tempo-control p{font-size:var(--type-label);margin:8px 0 0}
+body[data-page=launch] .tempo-control .fader-bed{margin-top:4px;background:transparent;box-shadow:none;padding-inline:0}
 body[data-page=launch] .fader-stops span:nth-child(1){left:0}
 body[data-page=launch] .fader-stops span:nth-child(2){left:25%}
 body[data-page=launch] .fader-stops span:nth-child(3){left:50%}
 body[data-page=launch] .fader-stops span:nth-child(4){left:75%}
 body[data-page=launch] .fader-stops span:nth-child(5){left:100%}
-body[data-page=launch] .tempo-control[data-tempo=any] #tempoSlider{opacity:.45}
-body[data-page=launch] .grind{display:block;background:transparent;border:0;box-shadow:none;overflow:visible;margin:14px 0}
-body[data-page=launch] .grind:before,body[data-page=launch] .grind .sideprint{display:none}
-body[data-page=launch] .go-button{width:100%;min-height:116px;background:var(--red2);border:3px solid var(--ink);box-shadow:0 7px 0 var(--ink),inset 0 2px 0 #ffffff50;padding:12px 18px}
-body[data-page=launch] .go-button:active,body[data-page=launch] .go-button[data-copy-state=copying]{transform:translateY(6px);box-shadow:0 1px 0 var(--ink),inset 0 2px 3px #0005}
-body[data-page=launch] .go-button:focus-visible{outline:3px solid var(--focus-ink);outline-offset:10px}
+body[data-page=launch] .tempo-control[data-tempo=any] #tempoSlider::-webkit-slider-thumb{border-style:dashed;background:var(--control-metal);box-shadow:none}
+body[data-page=launch] .tempo-control[data-tempo=any] #tempoSlider::-moz-range-thumb{border-style:dashed;background:var(--control-metal);box-shadow:none}
+.refinements>.crate-geo{margin:16px 0 0;border:0;box-shadow:none;background:transparent}
+.refinements .crate-geo-summary{min-height:48px;padding:8px 0;border:0}
+.crate-geo-identity small{font-size:var(--type-label);letter-spacing:.03em}
+.atlas-intro{font-size:var(--type-control);line-height:1.5;max-width:65ch;color:var(--atlas-ink);margin:0 0 12px}
+body[data-page=launch] .mood-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:0 0 10px;padding:0;background:transparent;border:0;box-shadow:none}
+body[data-page=launch] .mood-grid .mood{grid-column:auto;min-height:106px;padding:10px 4px;gap:6px;border:1px solid var(--line);background:var(--bone);color:var(--ink);box-shadow:none;transform:none}
+body[data-page=launch] .mood-grid .mood:hover{border-color:var(--ink)}
+body[data-page=launch] .mood-grid .mood[aria-pressed=true]{background:var(--yellow);border:2px solid var(--red2);padding:9px 3px;transform:none}
+body[data-page=launch] .mood .face{width:48px;height:54px}
+body[data-page=launch] .mood .word{font-size:var(--type-label);letter-spacing:0;white-space:nowrap;overflow-wrap:normal}
+body[data-page=launch] .mood-hint{font-size:var(--type-label);line-height:1.5;min-height:1.5em;margin:0 0 16px}
+body[data-page=launch] .grind{display:block;background:transparent;border:0;box-shadow:none;overflow:visible;margin:0 0 20px}
+body[data-page=launch] .grind:before{display:none}
+body[data-page=launch] .go-button{width:100%;min-height:116px;background:var(--yellow);color:var(--ink);border:2px solid var(--ink);box-shadow:0 6px 0 var(--ink),inset 0 2px 0 #ffffff50;padding:12px 18px}
+body[data-page=launch] .go-button .star-glyph{width:86px}
+body[data-page=launch] .go-button .go-copy b{color:var(--ink);text-shadow:none}
+body[data-page=launch] .go-button .go-copy>span:not(.go-stamp){color:var(--ink);font-size:var(--type-label);letter-spacing:.02em}
+body[data-page=launch] .go-button:active,body[data-page=launch] .go-button[data-copy-state=copying]{transform:translateY(5px);box-shadow:0 1px 0 var(--ink),inset 0 2px 3px #0005}
+body[data-page=launch] .go-button:focus-visible{outline:3px solid var(--focus-ink);outline-offset:9px}
+.receipt-heading{margin-top:var(--counter-gap);font-size:var(--type-control)}
+body[data-page=launch] .receipt{border:0;border-top:1px dashed var(--atlas-border);border-bottom:1px dashed var(--atlas-border);box-shadow:none;transform:none;margin:0;padding:14px 0;background:transparent}
+body[data-page=launch] .receipt:before,body[data-page=launch] .receipt:after{display:none}
 @media(max-width:540px){
  body[data-page=launch] .masthead{padding:12px 14px 10px}
  body[data-page=launch] .brandrow{flex-wrap:nowrap;gap:6px}
  body[data-page=launch] .est{display:none}
  body[data-page=launch] .brand-sub{font-size:.6rem;max-width:none;letter-spacing:.03em}
  body[data-page=launch] .topnav{padding-top:10px}
- body[data-page=launch] .main{padding-top:10px}
- body[data-page=launch] .hero-title{margin-bottom:10px;padding-bottom:8px}
- body[data-page=launch] .hero-purpose{font-size:.875rem;line-height:1.4;margin:8px 0}
- body[data-page=launch] .selector-grid{gap:6px}
- body[data-page=launch] .selector-grid .panel{padding:8px;margin-bottom:8px;box-shadow:2px 3px 0 var(--ink)}
- body[data-page=launch] .panel-head{margin-bottom:6px;font-size:.6875rem}
- body[data-page=launch] .switch button{min-height:44px;padding:6px 3px;font-size:.75rem}
- body[data-page=launch] .connector-status{padding:7px 9px;margin:0 0 8px}
- body[data-page=launch] .connector-status span{font-size:.75rem;line-height:1.4}
- body[data-page=launch] .mood-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;padding:5px 4px 8px}
- body[data-page=launch] .mood-grid .mood{grid-column:auto;min-height:90px;padding:8px 2px 6px}
- body[data-page=launch] .mood .face{width:44px;height:50px}
- body[data-page=launch] .mood .word{font-size:.6875rem;max-width:100%;overflow-wrap:anywhere}
- body[data-page=launch] .section-title{margin-bottom:6px}
- body[data-page=launch] .section-title small{display:none}
+ body[data-page=launch] .main{padding:14px 14px 24px}
+ body[data-page=launch] .hero-title{column-gap:10px}
+ body[data-page=launch] .hero-purpose{font-size:var(--type-control);line-height:1.5}
+ body[data-page=launch] .selector-grid{grid-template-columns:1fr;gap:14px}
+ body[data-page=launch] .switch button{padding-inline:4px}
+ body[data-page=launch] .mood-grid{grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+ body[data-page=launch] .mood-grid .mood{grid-column:span 2;min-height:86px;padding:6px 4px}
+ body[data-page=launch] .mood-grid .mood:nth-last-child(-n+2){grid-column:span 3}
+ body[data-page=launch] .mood-grid .mood[aria-pressed=true]{padding:5px 3px}
+ body[data-page=launch] .mood .face{width:38px;height:43px}
 }
-
-/* Shared selector stock; the red star sits on a contrasting yellow key. */
-body[data-page=launch] .selector-grid .panel{background:var(--bone)}
-body[data-page=launch] .go-button{background:var(--yellow);color:var(--ink)}
-body[data-page=launch] .go-button .go-copy b{color:var(--ink);text-shadow:none}
-body[data-page=launch] .go-button .go-copy>span:not(.go-stamp){color:var(--ink)}
+@media(max-width:360px){body[data-page=launch] .hero-title .headline{font-size:1.4rem}body[data-page=launch] .hero-title .sticker{font-size:.5rem}}
+@media(prefers-reduced-motion:reduce){body[data-page=launch] .go-button:active,body[data-page=launch] .go-button[data-copy-state=copying]{transform:none}}

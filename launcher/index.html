@@ -44,7 +44,6 @@
       <a href="/setup/"><span class="ticket">02</span> THE MANUAL</a>
     </nav>
   </header>
-  <div class="ticker" aria-hidden="true"><div class="track">✳ 100% ARTISANAL ALGORITHMIC OBSCURITY ✳ NO GRAMMY WINNERS WERE CONSULTED ✳ CERTIFIED BEARD-OIL ADJACENT ✳ THIS PLAYLIST IS NOT A PERSONALITY ✳&nbsp;&nbsp; ✳ 100% ARTISANAL ALGORITHMIC OBSCURITY ✳ NO GRAMMY WINNERS WERE CONSULTED ✳ CERTIFIED BEARD-OIL ADJACENT ✳ THIS PLAYLIST IS NOT A PERSONALITY ✳&nbsp;&nbsp;</div></div>
   <main class="main">
     <aside class="welcome-setup" id="welcomeSetup" aria-label="First-time setup help">
       <details id="welcomeDisclosure">
@@ -74,10 +73,11 @@
       <p class="hero-purpose">Build a music request, copy it, then paste it into your AI. <span class="clerk-aside">Yes, you still have to press Send.</span></p>
     </div>
 
-    <div class="dealer-drawer" id="dealerDetails">
+    <section class="service-counter" aria-labelledby="servicesHeading">
+      <h2 class="counter-heading" id="servicesHeading">CHOOSE YOUR SERVICES</h2>
     <div class="selector-grid">
       <section class="panel" aria-labelledby="aiLabel">
-        <h2 class="panel-head" id="aiLabel" tabindex="-1">01 / THE ROBOT</h2>
+        <h3 class="panel-head" id="aiLabel" tabindex="-1">THE ROBOT</h3>
         <div class="switch" role="group" aria-label="AI assistant">
           <button data-ai="chatgpt" type="button" aria-pressed="true">CHATGPT</button>
           <button data-ai="gemini" type="button" aria-pressed="false">GEMINI</button>
@@ -85,7 +85,7 @@
         </div>
       </section>
       <section class="panel panel-alt" aria-labelledby="musicLabel">
-        <h2 class="panel-head" id="musicLabel">02 / THE NEEDLE</h2>
+        <h3 class="panel-head" id="musicLabel">THE NEEDLE</h3>
         <div class="switch" role="group" aria-label="Streaming destination">
           <button data-service="spotify" type="button" aria-pressed="true">SPOTIFY</button>
           <button data-service="youtube" type="button" aria-pressed="false">YOUTUBE MUSIC</button>
@@ -93,12 +93,13 @@
         </div>
       </section>
     </div>
-    </div>
+    </section>
     <div class="connector-status" id="routeStatus" role="status"><span>Choose your platforms. We'll explain what each pairing can actually do.</span></div>
 
+    <h2 class="counter-heading mix-heading">SHAPE YOUR MIX</h2>
     <div class="refinements" aria-label="Optional music preferences">
     <div class="tempo-control" id="tempoControl" data-tempo="any">
-      <div class="tempo-heading"><label for="tempoSlider">TEMPO <span id="tempoValue">Any tempo</span></label><button id="anyTempo" type="button" aria-pressed="true">Any tempo</button></div>
+      <div class="tempo-heading"><label for="tempoSlider">TEMPO <span id="tempoValue">Any tempo</span></label><button id="anyTempo" type="button" aria-pressed="true">Any</button></div>
       <div class="fader-bed">
       <input id="tempoSlider" type="range" min="1" max="5" step="1" value="3" aria-describedby="tempoHelp" aria-valuetext="Any tempo — no pace preference">
       <div class="fader-stops" aria-hidden="true"><span data-pace="slow">Slow</span><span data-pace="relaxed">Relaxed</span><span data-pace="moderate">Mid</span><span data-pace="brisk">Brisk</span><span data-pace="fast">Fast</span></div>
@@ -410,7 +411,7 @@
       </div>
     </details>
     </div>
-    <div class="section-title"><span><span class="num">B</span> CHOOSE A MOOD, THEN GO</span><small>no vinyl was harmed</small></div>
+    <h3 class="counter-label">MOOD</h3>
     <div class="mood-grid" role="group" aria-label="Mood presets">
       <button class="mood" data-mood="happy" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">HAPPY</span></button>
       <button class="mood" data-mood="angry" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">ANGRY</span></button>
@@ -493,7 +494,6 @@
 </svg>
         <span class="go-copy"><b>GO!<span class="go-stamp" aria-hidden="true">COPIED</span></b><span id="goHint">Copy surprise prompt · 12 tracks</span></span>
       </button>
-      <span class="sideprint" aria-hidden="true">INDEPENDENTLY CURATED</span>
     </div>
 
 
@@ -506,7 +506,7 @@
       </div>
     </div>
 
-    <div class="section-title"><span><span class="num">C</span> YOUR MIXTAPE RECEIPT</span><small>zero returns · all sales final</small></div>
+    <h2 class="counter-heading receipt-heading">YOUR MIXTAPE RECEIPT</h2>
     <section class="receipt" aria-label="Prompt to send to your AI">
       <div class="receipt-top"><span>NO. <span id="receiptCode">GO-001</span></span><span>MOOD / <span id="moodName">SURPRISE</span></span></div>
       <p class="receipt-summary" id="receiptSummary">ChatGPT · Spotify · Surprise · 12 tracks</p>
@@ -519,7 +519,6 @@
       </details>
     </section>
     <p class="footnote">The AI and music apps still need to be selected/connected in their own interface. This launcher prepares the request; it does not publish or pretend a mix was saved. For the upload instructions, visit <a href="/setup/"><b>the excessively comprehensive manual</b></a>.</p>
-    <div class="badge-row"><span class="tiny-mark">★ FIXED GEAR ★ BAD INTERNET ★ BETTER RECORDS</span><span class="copyright">Unnecessarily limited edition.</span></div>
   </main>
   <footer class="footer">† EST. 2007 is an aesthetic condition, not a legal assertion. No artisanal beard oils were tested on animals. <a href="/setup/">Installation &amp; nerd stuff →</a></footer>
 </div>
