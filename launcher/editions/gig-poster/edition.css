@@ -16,10 +16,10 @@ body.gig-poster .topnav a,body.gig-poster .topnav a[aria-current=page]{padding:8
 body.gig-poster .topnav a[aria-current=page]{text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:2px}
 body.gig-poster .topnav a+a{border-left:1px solid var(--ink);padding-left:16px}
 body.gig-poster[data-page=launch] .hero-title{display:block;position:relative;margin:4px 0 10px;padding:0;border:0;min-height:0}
-body.gig-poster[data-page=launch] .hero-title .headline,html[data-returning=true] body.gig-poster[data-page=launch] .hero-title .headline{position:relative;z-index:1;width:69%;max-width:none;margin:0;padding:0;border:0;font:400 19.2cqw/.91 Poster,sans-serif;letter-spacing:-.025em;color:var(--ink);text-shadow:none;transform:none;animation:none;overflow-wrap:normal}
+body.gig-poster[data-page=launch] .hero-title .headline,html[data-returning=true] body.gig-poster[data-page=launch] .hero-title .headline{position:relative;z-index:1;width:69%;max-width:none;margin:0;padding:0;border:0;font:400 17.2cqw/.86 Poster,sans-serif;letter-spacing:-.025em;color:var(--ink);text-shadow:none;transform:scaleX(.92);transform-origin:left center;animation:none;overflow-wrap:normal}
 body.gig-poster .poster-line{display:block;white-space:nowrap}
 body.gig-poster .poster-bird{position:absolute;width:49%;height:auto;right:-1%;top:1%;pointer-events:none}
-body.gig-poster[data-page=launch] .hero-title .sticker,html[data-returning=true] body.gig-poster[data-page=launch] .hero-title .sticker{display:block;position:absolute;right:1%;bottom:2%;margin:0;padding:0;border:0;background:none;box-shadow:none;color:var(--ink);font:700 clamp(.625rem,2.2cqw,1.2rem)/1.05 'Courier New',monospace;transform:rotate(-14deg);text-align:center}
+body.gig-poster[data-page=launch] .hero-title .sticker,html[data-returning=true] body.gig-poster[data-page=launch] .hero-title .sticker{display:block;position:absolute;right:1%;top:auto;bottom:2%;margin:0;padding:0;border:0;background:none;box-shadow:none;color:var(--ink);font:700 clamp(.625rem,2.2cqw,1.2rem)/1.05 'Courier New',monospace;transform:rotate(-14deg);text-align:center}
 body.gig-poster .service-counter>h2,body.gig-poster .mix-heading,body.gig-poster .tempo-heading label{display:none}
 body.gig-poster[data-page=launch] .selector-grid{display:block}
 body.gig-poster[data-page=launch] .selector-grid .panel{margin:0;padding:8px 0 10px;border:0;border-top:1px solid var(--ink);background:none;box-shadow:none}
