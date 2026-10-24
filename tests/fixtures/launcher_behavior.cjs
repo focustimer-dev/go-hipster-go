@@ -382,7 +382,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  await stamped.moods[0].click();
  assert.equal(stamped.elements.promptReceipt.attrs['data-copy-state'],'idle','Changed preferences invalidate the stamped request');
  assert.equal(stamped.elements.receiptCopy.textContent,'REQUEST DRAFT');
- assert.match(stamped.elements.moodHelp.textContent,/Happy selected.*Optimism.*Tap it again to clear/);
+ assert.match(stamped.elements.moodHelp.textContent,/Happy selected.*Optimism/);
  const unstamped=harness(async()=>{throw Error('blocked')});
  await unstamped.elements.goButton.click();
  assert.equal(unstamped.elements.receiptCopy.textContent,'REQUEST DRAFT','Clipboard failures cannot earn a stamp');
