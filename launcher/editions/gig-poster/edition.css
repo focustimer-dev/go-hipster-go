@@ -1,6 +1,6 @@
 @font-face{font-family:Poster;src:url('/editions/gig-poster/assets/anton.woff') format('woff');font-weight:400;font-display:swap}
 body.gig-poster[data-page=launch]{--ink:#103135;--ink2:#23433b;--paper:#dfb045;--bone:#edc65d;--red:#a83223;--red2:#103135;--yellow:#dfb045;--line:#10313588;--focus-ink:#103135;--focus-paper:#f5cf64;--control-metal:#dfb045;--control-track:#103135;--atlas-paper:#dfb045;--atlas-paper-light:#eac45d;--atlas-paper-hover:#d3a23a;--atlas-ink:#103135;--atlas-accent:#103135;--atlas-border:#103135;--atlas-land:#103135;--atlas-water:transparent;--atlas-boundary:#dfb045;--atlas-selected:#a83223;background:#103135;color:var(--ink);font-family:Arial,Helvetica,sans-serif}
-body.gig-poster .site{width:min(100%,960px);background:var(--paper) url('/editions/gig-poster/assets/stock.webp') repeat;background-size:520px;border:0;box-shadow:none;container-type:inline-size}
+body.gig-poster .site{width:min(100%,960px);background:var(--paper) url('/editions/gig-poster/assets/stock.webp') repeat;background-size:520px;background-blend-mode:luminosity;border:0;box-shadow:none;container-type:inline-size}
 body.gig-poster .site:before{display:none}
 body.gig-poster[data-page=launch] .main{padding:0 3% 22px}
 body.gig-poster[data-page=launch] .masthead{display:flex;align-items:center;justify-content:space-between;gap:12px;background:none;color:var(--ink);border:0;padding:12px 3% 8px}
@@ -59,8 +59,8 @@ body.gig-poster .crate-mercator{background:none;aspect-ratio:720/372}
 body.gig-poster .crate-map-ocean{fill:transparent}
 body.gig-poster .crate-map-grid,body.gig-poster .crate-map-countries>path{display:none}
 body.gig-poster .crate-map-zone path{fill:var(--ink);stroke:var(--paper);stroke-width:.6}
-body.gig-poster .crate-map-zone path[data-selected=true]{fill:var(--paper);stroke:var(--ink);stroke-width:1.6}
-body.gig-poster .crate-geo-note{font:700 .6875rem/1.4 'Courier New',monospace;margin:4px 0 6px;color:var(--ink);letter-spacing:0}
+body.gig-poster .crate-map-zone[data-selected=true] path{fill:var(--paper);stroke:var(--ink);stroke-width:1.6}
+body.gig-poster .crate-geo-note{font:700 .75rem/1.4 'Courier New',monospace;margin:4px 0 6px;color:var(--ink);letter-spacing:0}
 body.gig-poster .crate-stamp{background:transparent;color:var(--ink);border-color:var(--ink);box-shadow:none;font-family:'Courier New',monospace;font-size:.75rem}
 body.gig-poster .crate-named-regions{margin-top:4px}
 body.gig-poster .crate-named-regions>summary{min-height:44px;font-size:.75rem;color:var(--ink)}
@@ -75,7 +75,7 @@ body.gig-poster[data-page=launch] .mood .word{font:400 clamp(.8125rem,2.8cqw,1.4
 body.gig-poster[data-page=launch] .mood-hint{font:400 .75rem/1.4 Arial,sans-serif;margin:6px 0 10px;min-height:1.4em;color:var(--ink)}
 body.gig-poster[data-page=launch] .grind{margin:0;padding:0;background:none;box-shadow:none;border:0}
 body.gig-poster[data-page=launch] .go-button{display:flex;align-items:center;gap:4%;width:100%;min-height:96px;border:0;border-radius:2px;padding:10px 3%;background:var(--ink);color:var(--paper);box-shadow:none}
-body.gig-poster[data-page=launch] .go-button .star-glyph{width:11%;min-width:35px;max-width:90px;filter:none}
+body.gig-poster[data-page=launch] .go-button .star-glyph{width:16%;min-width:50px;max-width:130px;filter:brightness(1.6) saturate(.8)}
 body.gig-poster[data-page=launch] .go-copy{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:8%;width:100%}
 body.gig-poster[data-page=launch] .go-button .go-copy b{font:400 clamp(3.6rem,15cqw,8.5rem)/1 Poster,sans-serif;color:var(--paper);text-shadow:none;letter-spacing:0}
 body.gig-poster[data-page=launch] .go-button .go-copy>span:not(.go-stamp){font:400 clamp(.9rem,3.2cqw,1.8rem)/1.25 Poster,sans-serif;color:var(--paper);max-width:none;letter-spacing:.01em}
@@ -94,3 +94,5 @@ body.gig-poster .footer{background:none;color:var(--ink);border-top:1px solid va
 body.gig-poster .topnav a:focus-visible,body.gig-poster button:focus-visible,body.gig-poster summary:focus-visible{outline:3px solid var(--ink);outline-offset:3px;box-shadow:0 0 0 6px var(--paper)}
 @media(max-width:360px){body.gig-poster .brand-name{font-size:1rem}body.gig-poster .topnav{gap:8px}body.gig-poster .topnav a{font-size:.75rem}body.gig-poster .topnav a+a{padding-left:8px}body.gig-poster .brand-star{width:20px}}
 @media(prefers-reduced-motion:reduce){body.gig-poster .go-button:active{transform:none}}
+
+body.gig-poster .footer a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
