@@ -604,3 +604,9 @@ body[data-page=launch] .go-button:focus-visible{outline:3px solid var(--focus-in
  body[data-page=launch] .section-title{margin-bottom:6px}
  body[data-page=launch] .section-title small{display:none}
 }
+
+/* Shared selector stock; the red star sits on a contrasting yellow key. */
+body[data-page=launch] .selector-grid .panel{background:var(--bone)}
+body[data-page=launch] .go-button{background:var(--yellow);color:var(--ink)}
+body[data-page=launch] .go-button .go-copy b{color:var(--ink);text-shadow:none}
+body[data-page=launch] .go-button .go-copy>span:not(.go-stamp){color:var(--ink)}
