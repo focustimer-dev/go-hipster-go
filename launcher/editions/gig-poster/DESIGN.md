@@ -136,3 +136,7 @@ The approved Manual comp extends this world at `/editions/gig-poster/setup/`: tw
 ## First-visit setup notice
 
 A compact outlined notice sits between hero and service choices: FIRST VISIT? SORT OUT THE CONNECTIONS. One setup check. Then we can discuss your taste. Its setup link opens the matching Manual; Dismiss uses the existing browser-local dismissal key. Returning-hero state alone does not hide the notice. Dismissing never removes the persistent Manual tab, and visiting the Manual is not treated as successful installation.
+
+## Interaction feedback
+
+Print-counter feedback uses immediate color/underline states and a 1px press on keys/actions. Successful copy alone earns one 180ms ink-settle; it follows real copied state, never a pointer click. The fader changes knob ink while held, disclosures show plus/minus and a dashed open rule, removable region stamps invert on hover/press. Fine-pointer hover decoration is gated; reduced-motion removes translation and the success animation while retaining state, focus and confirmation text. No dependencies, audio, haptics, waits or changed workflows.
