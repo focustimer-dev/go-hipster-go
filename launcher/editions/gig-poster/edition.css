@@ -59,7 +59,7 @@ body.gig-poster .crate-mercator{background:none;aspect-ratio:720/372}
 body.gig-poster .crate-map-ocean{fill:transparent}
 body.gig-poster .crate-map-grid,body.gig-poster .crate-map-countries>path{display:none}
 body.gig-poster .crate-map-zone path{fill:var(--ink);stroke:var(--paper);stroke-width:1.15;vector-effect:non-scaling-stroke;stroke-linejoin:round}
-body.gig-poster .crate-map-zone[data-selected=true] path{fill:var(--paper);stroke:var(--ink);stroke-width:1.8;vector-effect:non-scaling-stroke}
+body.gig-poster .crate-map-zone[data-selected=true] path{fill:url(#posterSelectedHalftone);stroke:var(--ink);stroke-width:1.8;vector-effect:non-scaling-stroke}
 body.gig-poster .crate-geo-note{font:700 .75rem/1.4 'Courier New',monospace;margin:4px 0 6px;color:var(--ink);letter-spacing:0}
 body.gig-poster .crate-stamp{background:transparent;color:var(--ink);border-color:var(--ink);box-shadow:none;font-family:'Courier New',monospace;font-size:.75rem}
 body.gig-poster .crate-named-regions{margin-top:4px}

@@ -27,5 +27,6 @@ s=s.replace('CHOOSE YOUR SERVICES','PICK YOUR SERVICES').replace('THE ROBOT','PI
 s=s.replace('<details class="crate-geo" id="crateGeo">','<details class="crate-geo" id="crateGeo" open>')
 s=s.replace('      <small>TAKE YOUR TASTE ABROAD</small>','')
 s=s.replace('<div class="handoff" aria-label="Copy and open your AI">','<p class="poster-instructions">Paste and send in your AI.</p>\n    <div class="handoff" aria-label="Copy and open your AI">')
-s=s.replace('href="/assets/app.js"','href="/assets/app.js"')
+# Two-spot-color halftone from the guide's screenprint/gig-poster language.
+s=s.replace('<pattern id="atlasHatch"', '<pattern id="posterSelectedHalftone" width="7" height="7" patternUnits="userSpaceOnUse"><rect width="7" height="7" fill="#dfb045"/><circle cx="1.75" cy="1.75" r="1.1" fill="#103135"/><circle cx="5.25" cy="5.25" r="1.1" fill="#103135"/></pattern>\n              <pattern id="atlasHatch"')
 out=ROOT/'launcher/editions/gig-poster/index.html';out.parent.mkdir(parents=True,exist_ok=True);out.write_text(s)
