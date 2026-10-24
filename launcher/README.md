@@ -141,3 +141,8 @@ After editing the JSON, run `python scripts/sync_mood_sparks.py`; `--check` veri
 ### Touch ownership on the atlas
 
 One finger drags the map; two fingers pan/pinch-zoom it. A six-pixel drag threshold preserves region taps. `touch-action: none` on the SVG gives camera gestures to the map; scrolling the surrounding page works outside the map. Adding or lifting a finger rebases the gesture to the current camera, avoiding jumps. Drags and pinches suppress synthetic selections; a fresh deliberate tap restores selection. Cancellation flushes pending camera updates. Physical-phone verification remains necessary because synthetic tests cannot prove browser gesture arbitration.
+
+
+### Counter-stamp hero
+
+The returning sleeve asks **Back for more?**. The headline uses a compact garnet double-rule ink impression with a single 200ms press on arrival. Text is always visible, with no sound, delay or controls inside the decoration. Reduced motion shows a stationary stamp without the ink-set animation. The hero retains its existing instructions and first/return behavior.
