@@ -29,7 +29,9 @@ body.gig-poster:is([data-page=launch],[data-page=setup]) .switch button{font:400
 body.gig-poster:is([data-page=launch],[data-page=setup]) .switch button[aria-pressed=true]{background:var(--ink);color:var(--paper);box-shadow:none;text-decoration:underline;text-underline-offset:4px}
 body.gig-poster:is([data-page=launch],[data-page=setup]) .connector-status{margin:0 0 6px;padding:0;border:0;background:none;min-height:0}
 body.gig-poster:is([data-page=launch],[data-page=setup]) .connector-status span{font-size:.75rem;line-height:1.4;color:var(--ink)}
-body.gig-poster:is([data-page=launch],[data-page=setup]) .connector-status.warn{padding:8px;border:2px solid var(--ink);background:var(--bone)}
+body.gig-poster:is([data-page=launch],[data-page=setup]) .connector-status.warn{padding:4px 0 8px;border:0;background:transparent}
+body.gig-poster:is([data-page=launch],[data-page=setup]) .connector-status:before{display:none}
+body.gig-poster:is([data-page=launch],[data-page=setup]) .connector-status.warn span{font:400 .8125rem/1.5 Arial,Helvetica,sans-serif;color:var(--ink)}
 body.gig-poster .refinements{margin:0 0 8px;border:0}
 body.gig-poster:is([data-page=launch],[data-page=setup]) .tempo-control{position:relative;border-top:1px solid var(--ink);padding:28px 74px 8px 0;margin:0}
 body.gig-poster .tempo-control:before{content:'SET THE TEMPO';position:absolute;left:0;top:6px;font:700 .8rem/1.2 'Courier New',monospace}
