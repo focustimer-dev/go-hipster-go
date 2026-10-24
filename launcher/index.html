@@ -74,9 +74,7 @@
       <p class="hero-purpose">Build a music request, copy it, then paste it into your AI. <span class="clerk-aside">Yes, you still have to press Send.</span></p>
     </div>
 
-    <details class="dealer-drawer" id="dealerDetails" open>
-      <summary class="dealer-summary"><span>CHOOSE YOUR DEALERS</span><span class="dealer-pair" id="dealerPair">ChatGPT · Spotify</span></summary>
-      <script>if(document.documentElement.dataset.returning==="true")document.getElementById("dealerDetails").open=false</script>
+    <div class="dealer-drawer" id="dealerDetails">
     <div class="selector-grid">
       <section class="panel" aria-labelledby="aiLabel">
         <h2 class="panel-head" id="aiLabel" tabindex="-1">01 / THE ROBOT</h2>
@@ -95,20 +93,18 @@
         </div>
       </section>
     </div>
-    </details>
+    </div>
     <div class="connector-status" id="routeStatus" role="status"><span>Choose your platforms. We'll explain what each pairing can actually do.</span></div>
 
     <div class="refinements" aria-label="Optional music preferences">
-    <details class="tempo-drawer" id="tempoDetails"><summary><strong>TEMPO</strong><span id="tempoSummary">Any tempo</span></summary>
     <div class="tempo-control" id="tempoControl" data-tempo="any">
       <div class="tempo-heading"><label for="tempoSlider">TEMPO <span id="tempoValue">Any tempo</span></label><button id="anyTempo" type="button" aria-pressed="true">Any tempo</button></div>
       <div class="fader-bed">
-      <input id="tempoSlider" type="range" min="0" max="5" step="1" value="0" aria-describedby="tempoHelp" aria-valuetext="Any tempo — no pace preference">
-      <div class="fader-stops" aria-hidden="true"><span data-pace="any">Any</span><span data-pace="slow">Slow</span><span data-pace="relaxed">Relaxed</span><span data-pace="moderate">Mid</span><span data-pace="brisk">Brisk</span><span data-pace="fast">Fast</span></div>
+      <input id="tempoSlider" type="range" min="1" max="5" step="1" value="3" aria-describedby="tempoHelp" aria-valuetext="Any tempo — no pace preference">
+      <div class="fader-stops" aria-hidden="true"><span data-pace="slow">Slow</span><span data-pace="relaxed">Relaxed</span><span data-pace="moderate">Mid</span><span data-pace="brisk">Brisk</span><span data-pace="fast">Fast</span></div>
       </div>
-      <p id="tempoHelp">No pace preference. Move the fader to choose one. Opinions remain optional.</p>
+      <p id="tempoHelp">Any is on. Move the fader to choose a pace.</p>
     </div>
-    </details>
     <details class="crate-geo" id="crateGeo">
       <summary class="crate-geo-summary">
         <span class="crate-geo-identity"><strong>THE CRATE ATLAS</strong><small>TAKE YOUR TASTE ABROAD</small></span>

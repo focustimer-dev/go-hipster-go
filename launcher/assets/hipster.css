@@ -564,3 +564,43 @@ body[data-page=launch] .hero-title .headline{font-size:clamp(1.8rem,7.5vw,4.5rem
 body[data-page=launch] .hero-title .sticker{position:static;margin:8px 6px 8px 0;justify-self:end}
 body[data-page=launch] .hero-purpose{grid-column:1 / -1}
 @media(max-width:390px){body[data-page=launch] .hero-title{column-gap:10px}}
+
+/* Mobile correction: visible controls, compact furniture, one raised GO key. */
+body[data-page=launch] .dealer-drawer{margin:0}
+body[data-page=launch] .tempo-control{margin:8px 0 12px;padding:10px 12px;border:0;background:transparent}
+body[data-page=launch] .tempo-heading label span{display:inline;margin-left:8px}
+body[data-page=launch] .tempo-control p{font-size:.75rem;margin:4px 0 0}
+body[data-page=launch] .fader-bed{margin-top:6px}
+body[data-page=launch] .fader-stops span:nth-child(1){left:0}
+body[data-page=launch] .fader-stops span:nth-child(2){left:25%}
+body[data-page=launch] .fader-stops span:nth-child(3){left:50%}
+body[data-page=launch] .fader-stops span:nth-child(4){left:75%}
+body[data-page=launch] .fader-stops span:nth-child(5){left:100%}
+body[data-page=launch] .tempo-control[data-tempo=any] #tempoSlider{opacity:.45}
+body[data-page=launch] .grind{display:block;background:transparent;border:0;box-shadow:none;overflow:visible;margin:14px 0}
+body[data-page=launch] .grind:before,body[data-page=launch] .grind .sideprint{display:none}
+body[data-page=launch] .go-button{width:100%;min-height:116px;background:var(--red2);border:3px solid var(--ink);box-shadow:0 7px 0 var(--ink),inset 0 2px 0 #ffffff50;padding:12px 18px}
+body[data-page=launch] .go-button:active,body[data-page=launch] .go-button[data-copy-state=copying]{transform:translateY(6px);box-shadow:0 1px 0 var(--ink),inset 0 2px 3px #0005}
+body[data-page=launch] .go-button:focus-visible{outline:3px solid var(--focus-ink);outline-offset:10px}
+@media(max-width:540px){
+ body[data-page=launch] .masthead{padding:12px 14px 10px}
+ body[data-page=launch] .brandrow{flex-wrap:nowrap;gap:6px}
+ body[data-page=launch] .est{display:none}
+ body[data-page=launch] .brand-sub{font-size:.6rem;max-width:none;letter-spacing:.03em}
+ body[data-page=launch] .topnav{padding-top:10px}
+ body[data-page=launch] .main{padding-top:10px}
+ body[data-page=launch] .hero-title{margin-bottom:10px;padding-bottom:8px}
+ body[data-page=launch] .hero-purpose{font-size:.875rem;line-height:1.4;margin:8px 0}
+ body[data-page=launch] .selector-grid{gap:6px}
+ body[data-page=launch] .selector-grid .panel{padding:8px;margin-bottom:8px;box-shadow:2px 3px 0 var(--ink)}
+ body[data-page=launch] .panel-head{margin-bottom:6px;font-size:.6875rem}
+ body[data-page=launch] .switch button{min-height:44px;padding:6px 3px;font-size:.75rem}
+ body[data-page=launch] .connector-status{padding:7px 9px;margin:0 0 8px}
+ body[data-page=launch] .connector-status span{font-size:.75rem;line-height:1.4}
+ body[data-page=launch] .mood-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;padding:5px 4px 8px}
+ body[data-page=launch] .mood-grid .mood{grid-column:auto;min-height:90px;padding:8px 2px 6px}
+ body[data-page=launch] .mood .face{width:44px;height:50px}
+ body[data-page=launch] .mood .word{font-size:.6875rem;max-width:100%;overflow-wrap:anywhere}
+ body[data-page=launch] .section-title{margin-bottom:6px}
+ body[data-page=launch] .section-title small{display:none}
+}

@@ -329,11 +329,11 @@ function renderLaunch(){
  renderSelections();
  renderCrateMap();
  const slider=doc.getElementById("tempoSlider"),tempoValue=doc.getElementById("tempoValue"),anyTempo=doc.getElementById("anyTempo");
- if(slider){slider.value=tempo?tempoSteps.indexOf(tempo)+1:0;slider.setAttribute("aria-valuetext",tempo?tempoNames[tempo]:"Any tempo — no pace preference")}
+ if(slider){slider.value=tempo?tempoSteps.indexOf(tempo)+1:3;slider.setAttribute("aria-valuetext",tempo?tempoNames[tempo]:"Any tempo — no pace preference")}
  const tempoControl=doc.getElementById("tempoControl");if(tempoControl)tempoControl.setAttribute("data-tempo",tempo||"any");
  if(tempoValue)tempoValue.textContent=tempo?tempoNames[tempo]:"Any tempo";
  const tempoSummary=doc.getElementById("tempoSummary");if(tempoSummary)tempoSummary.textContent=tempo?tempoNames[tempo]:"Any tempo";
- const tempoHelp=doc.getElementById("tempoHelp");if(tempoHelp)tempoHelp.textContent=tempo?"Move the fader or choose Any tempo to clear this preference. Your mood stays selected.":"No pace preference. Move the fader to choose one. Opinions remain optional.";
+ const tempoHelp=doc.getElementById("tempoHelp");if(tempoHelp)tempoHelp.textContent=tempo?"Move the fader or choose Any tempo to clear this preference. Your mood stays selected.":"Any is on. Move the fader to choose a pace.";
  if(anyTempo)anyTempo.setAttribute("aria-pressed",String(!tempo));
  doc.querySelectorAll("[data-mood]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.mood===mood)));
  const moodHelp=doc.getElementById("moodHelp");if(moodHelp)moodHelp.textContent=mood==="criminal"?"Songs about crime. Artist reputations are not evidence. Tap Criminal again to clear.":mood==="go"?"No mood? We’ll use our judgment.":mood[0].toUpperCase()+mood.slice(1)+" selected. Tap it again to clear.";
