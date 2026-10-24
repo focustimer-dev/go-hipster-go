@@ -95,15 +95,17 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.equal(atlas.elements.atlasHome.hidden,false,'Return-to-world control available');
  assert.equal(atlas.crateRegions.filter(b=>!b.hidden).length,4,'Only African regional buttons visible');
  assert.equal(atlas.elements.crateAtlasMap.attrs.viewBox, '304 128 190 231', 'ViewBox moves on focus in environments without animation');
- // One-finger gestures still belong to normal page scrolling.
+ // One finger pans the camera; taps remain region selections.
  const svg=atlas.elements.crateAtlasMap;
  let consumed=false;
  svg.events.touchstart({touches:[{clientX:120,clientY:115}],cancelable:true,preventDefault(){consumed=true}});
- assert.equal(consumed,false,'One-finger start remains available to native scrolling');
+ assert.equal(consumed,false,'A stationary one-finger start leaves tapping available');
  svg.events.touchmove({touches:[{clientX:120,clientY:160}],cancelable:true,preventDefault(){consumed=true}});
- assert.equal(consumed,false,'One finger does not hijack Jukebox scrolling');
+ assert.equal(consumed,true,'One finger drags the map');
+ assert.notEqual(svg.getAttribute('viewBox'),'304 128 190 231','One-finger dragging changes camera position');
+ svg.events.touchend({touches:[]});
  await atlas.atlasCountries.find(b=>b.dataset.atlasRegion==='east-africa').click();
- assert.equal(atlas.elements.atlasPassport.hidden,true,'Scrolling cannot accidentally stamp a territory');
+ assert.equal(atlas.elements.atlasPassport.hidden,true,'Dragging cannot accidentally stamp a territory');
  const touch=(x,y)=>({clientX:x,clientY:y});
  let claimedStart=false;
  svg.events.touchstart({touches:[touch(120,120),touch(220,120)],cancelable:true,preventDefault(){claimedStart=true}});
@@ -190,6 +192,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  await eastAsia.click();
  assert.doesNotMatch(crossAtlas.elements.prompt.textContent,/East Asia/,'Pinch synthetic click remains suppressed');
  touchAtlas.events.touchstart({touches:[touch(150,130)]});
+ touchAtlas.events.touchend({touches:[]});
  await eastAsia.click();
  assert.match(crossAtlas.elements.prompt.textContent,/East Asia/,'A deliberate fresh tap works immediately after pinch');
 

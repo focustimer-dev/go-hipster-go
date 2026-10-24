@@ -442,7 +442,7 @@ body[data-page=setup] summary:focus-visible,#setupPromptText:focus-visible{outli
 #atlasHome{background:transparent;border:0;border-bottom:1px dotted #5f463e;padding:9px 4px;color:var(--atlas-accent);font:800 var(--type-control) ui-monospace,monospace;min-height:44px;white-space:nowrap}
 #atlasHome:hover{background:var(--atlas-paper-hover)}
 .crate-map-frame{position:relative;overflow:hidden;background:#e2d3b5;border:2px solid #7c6953;box-shadow:inset 0 0 0 4px #efe0bb,0 4px 12px #34241928}
-.crate-mercator{display:block;width:100%;height:auto;aspect-ratio:720/372;background:transparent;touch-action:pan-y;cursor:grab}
+.crate-mercator{display:block;width:100%;height:auto;aspect-ratio:720/372;background:transparent;touch-action:none;cursor:grab}
 .crate-map-frame:active .crate-mercator{cursor:grabbing}
 .crate-map-ocean{fill:var(--atlas-water)}
 .crate-map-grid{stroke:#9ba49b;stroke-width:.65;opacity:.55;fill:none;pointer-events:none}

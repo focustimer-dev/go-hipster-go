@@ -211,7 +211,7 @@ function renderAtlasNavigation(){
  if(hint){
   const desktop=typeof window!=="undefined"&&window.matchMedia&&window.matchMedia("(pointer: fine)").matches;
   const action=focused?"TAP TO INK / UNINK":"TAP LAND TO EXPLORE";
-  hint.textContent=action+(desktop?" · SHIFT + SCROLL TO PAN · PINCH TO ZOOM":" · TWO FINGERS TO PAN / PINCH");
+  hint.textContent=action+(desktop?" · SHIFT + SCROLL TO PAN · PINCH TO ZOOM":" · DRAG TO PAN · TWO FINGERS TO ZOOM");
  }
 }
 function renderCrateStamps(){
@@ -448,7 +448,7 @@ function queueAtlasNavigation(view){
  });
 }
 function atlasGesturePoints(touches){
- const a=touches[0],b=touches[1];
+ const a=touches[0],b=touches[1]||a;
  return {x:(a.clientX+b.clientX)/2,y:(a.clientY+b.clientY)/2,
          distance:Math.max(1,Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY))}
 }
@@ -477,39 +477,33 @@ function atlasBindGestures(){
  // Freeze the geometry under a new press, rather than moving the target
  // between pointer-down and click while a continent zoom is still running.
  map.addEventListener("pointerdown",()=>{stopZoom();flushAtlasNavigation()});
- map.addEventListener("touchstart",event=>{
-  if(event.touches.length===1&&!atlasTouchGesture){
-   stopZoom();flushAtlasNavigation();atlasSuppressTapUntil=0;
-   return;
-  }
-  if(event.touches.length!==2){if(event.touches.length>2)atlasTouchGesture=null;return;}
-  // Claim a two-finger gesture before the browser commits to native scrolling.
-  // One-finger starts above remain uncancelled.
-  if(event.cancelable)event.preventDefault();
-  flushAtlasNavigation();
+ const beginTouch=(event,continuing=false)=>{
+  if(event.touches.length<1||event.touches.length>2){atlasTouchGesture=null;flushAtlasNavigation();return;}
+  stopZoom();flushAtlasNavigation();
   const view=atlasView(),screen=atlasGesturePoints(event.touches),rect=map.getBoundingClientRect();
-  if(atlasZoomFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasZoomFrame);
-  atlasZoomFrame=0;
-  atlasTouchGesture={view,anchor:atlasScreenAnchor(map,view,screen.x,screen.y,rect),distance:screen.distance,rect};
-  atlasSuppressTapUntil=Date.now()+700;
- },{passive:false});
- map.addEventListener("touchmove",event=>{
-  if(event.touches.length===1){atlasSuppressTapUntil=Date.now()+700;return;}
-  if(!atlasTouchGesture||event.touches.length!==2)return;
-  if(event.cancelable)event.preventDefault();
-  const screen=atlasGesturePoints(event.touches),s=atlasTouchGesture;
-  const view=atlasViewForGesture(s.view,s.anchor,screen,s.rect,s.distance/screen.distance);
-  queueAtlasNavigation(view);
-  atlasUserNavigated=true;
-  atlasSuppressTapUntil=Date.now()+700;
- },{passive:false});
- const end=event=>{
-  if(!atlasTouchGesture||event.touches.length>=2)return;
-  atlasTouchGesture=null;atlasSuppressTapUntil=Date.now()+700;
-  flushAtlasNavigation();renderAtlasNavigation();
+  atlasTouchGesture={view,anchor:atlasScreenAnchor(map,view,screen.x,screen.y,rect),distance:screen.distance,rect,count:event.touches.length,start:screen,moved:continuing};
+  if(event.touches.length===2){if(event.cancelable)event.preventDefault();atlasSuppressTapUntil=Date.now()+700;}
+  else if(!continuing)atlasSuppressTapUntil=0;
  };
- map.addEventListener("touchend",end,{passive:true});
- map.addEventListener("touchcancel",end,{passive:true});
+ map.addEventListener("touchstart",event=>beginTouch(event),{passive:false});
+ map.addEventListener("touchmove",event=>{
+  const s=atlasTouchGesture;if(!s||event.touches.length!==s.count)return;
+  const screen=atlasGesturePoints(event.touches);
+  if(s.count===1&&!s.moved&&Math.hypot(screen.x-s.start.x,screen.y-s.start.y)<6)return;
+  if(event.cancelable)event.preventDefault();
+  s.moved=true;
+  queueAtlasNavigation(atlasViewForGesture(s.view,s.anchor,screen,s.rect,s.count===2?s.distance/screen.distance:1));
+  atlasUserNavigated=true;atlasSuppressTapUntil=Date.now()+700;
+ },{passive:false});
+ const endTouch=event=>{
+  const s=atlasTouchGesture;if(!s)return;
+  flushAtlasNavigation();
+  if(s.moved||s.count===2)atlasSuppressTapUntil=Date.now()+700;
+  if(event.touches.length===1)beginTouch(event,true);else atlasTouchGesture=null;
+  renderAtlasNavigation();
+ };
+ map.addEventListener("touchend",endTouch,{passive:true});
+ map.addEventListener("touchcancel",()=>{atlasTouchGesture=null;atlasSuppressTapUntil=Date.now()+700;flushAtlasNavigation();renderAtlasNavigation()},{passive:true});
  map.addEventListener("wheel",event=>{
   // Ordinary wheel/trackpad scrolling belongs to the page. Deliberate modifiers
   // pan the map (Shift) or zoom it (trackpad pinch / Ctrl / Command).
