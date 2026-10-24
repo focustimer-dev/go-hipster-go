@@ -1,5 +1,8 @@
 """Structural guardrails for curation iteration; not evidence of music quality."""
 import unittest
+import json
+import subprocess
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -127,6 +130,14 @@ class CurationContractTests(unittest.TestCase):
         self.assertIn('**unknown**',reference)
         self.assertIn('item list or playlist read-back',reference)
         self.assertIn('positionally',reference)
+
+    def test_mood_spark_bank_is_complete_and_embedded(self):
+        bank=json.loads((ROOT / "references/mood-spark-bank.json").read_text())
+        self.assertEqual(set(bank), {"happy", "angry", "sad", "weird", "criminal"})
+        for values in bank.values():
+            self.assertEqual(len(values), 50)
+            self.assertEqual(len(set(values)), 50)
+        subprocess.run([sys.executable, str(ROOT / "scripts/sync_mood_sparks.py"), "--check"], check=True)
 
 if __name__ == "__main__":
     unittest.main()

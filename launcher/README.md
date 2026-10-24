@@ -125,3 +125,32 @@ Touch navigation still uses two fingers to pan and pinch to zoom, leaving one-fi
 The existing CSS token system now owns repeated atlas paper, ink, selection, boundary and control-material colors. Functional controls wrap at narrow widths and enlarged text settings; the optional **Choose by name** disclosure stays available without implementation-specific visible labels.
 
 All visible zones remain tappable after panning or zooming beyond the continent first opened. Tapping a zone on another continent selects it and updates the named controls without moving the camera; **Whole World** is a convenience reset, not a prerequisite to changing regions. A new press stops any unfinished continent zoom so the shape stays under the finger, and a deliberate fresh tap after a pinch works immediately while the gesture's incidental synthetic click stays suppressed.
+
+
+## Mood-aware crate sparks
+
+`references/mood-spark-bank.json` contains 250 creative images (50 per mood), adapted from the user-provided **Categorized Musical Moods** document on 2026-10-24. Two labels are normalized: Spastic Neon Jitter → Erratic Neon Jitter; Savage Tribal Pound → Heavy Percussive Pound. These are metaphors, not verified instruments, genres, track titles or crime narratives.
+
+Each GO combines one selected-mood image, one texture and one setting. Each component exhausts its own pool before recycling; component history survives page reloads on that browser when local storage is available. This replaces the old 1,000-combination picker which remembered only three tuples and let the deterministic fallback linger on the same setting and emotional phrase. Each mood offers 5,000 combinations before tempo filtering; the total does not guarantee unique tracks or playlists. No listening history or streaming account data is stored. Without storage, cross-request repeat avoidance cannot be guaranteed.
+
+Obvious fast-language cues are filtered for Slow/Relaxed, and explicit slow/still cues for Brisk/Fast. These conservative text filters are not BPM verification. The selected mood, tempo and Criminal song-level evidence requirement always outrank sparks; Angry is not limited to metal, and Criminal is not restricted to rap. The prompt remains short and the UI is unchanged.
+
+After editing the JSON, run `python scripts/sync_mood_sparks.py`; `--check` verifies the embedded standalone bank. The PWA requires no additional fetch.
+
+
+### Touch ownership on the atlas
+
+One finger drags the map; two fingers pan/pinch-zoom it. A six-pixel drag threshold preserves region taps. `touch-action: none` on the SVG gives camera gestures to the map; scrolling the surrounding page works outside the map. Adding or lifting a finger rebases the gesture to the current camera, avoiding jumps. Drags and pinches suppress synthetic selections; a fresh deliberate tap restores selection. Cancellation flushes pending camera updates. Physical-phone verification remains necessary because synthetic tests cannot prove browser gesture arbitration.
+
+
+### Counter-stamp hero
+
+The returning sleeve asks **Back for more?**. The headline uses a compact garnet double-rule ink impression with a single 200ms press on arrival. Text is always visible, with no sound, delay or controls inside the decoration. Reduced motion shows a stationary stamp without the ink-set animation. The hero retains its existing instructions and first/return behavior.
+
+
+The hero recognizes first and returning visits with one clerk aside in its existing line: “We’ll work with what you’ve got.” becomes “We kept your place. Against our better judgment.” The visible instructions explicitly include paste **and send**, so the aside carries personality without carrying a required step. The existing local successful-copy flag controls both headline and aside; no additional tracking, listeners, animation or layout regions are added.
+
+
+### Revisit the introduction without resetting preferences
+
+Open `/?intro=1` to force the first-visit hero and setup tip on that URL, even after a successful GO. This is a display override, not a storage reset: remove `intro=1` to resume normal returning behavior. It persists through selection URL updates, adds no visible controls, and never changes saved service choices or the completed-visit flag. A separately dismissed setup tip keeps its existing dismissal preference.

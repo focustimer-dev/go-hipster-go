@@ -11,7 +11,7 @@ class Element{
  setAttribute(k,v){this.attrs[k]=v}
  getAttribute(k){return this.attrs[k]||'0 0 720 372'}
  getBoundingClientRect(){return {left:0,top:0,width:360,height:300}}
- addEventListener(k,f){this.events[k]=f}
+ addEventListener(k,f,options){this.events[k]=f;this.eventOptions||={};this.eventOptions[k]=options}
  querySelector(){return this.span||(this.span=Object.assign(new Element(),{ownerDocument:this.ownerDocument}))}
  async click(){this.focus();const event={preventDefault(){this.prevented=true}};await this.events.click?.(event);return event}
 }
@@ -95,14 +95,22 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.equal(atlas.elements.atlasHome.hidden,false,'Return-to-world control available');
  assert.equal(atlas.crateRegions.filter(b=>!b.hidden).length,4,'Only African regional buttons visible');
  assert.equal(atlas.elements.crateAtlasMap.attrs.viewBox, '304 128 190 231', 'ViewBox moves on focus in environments without animation');
- // One-finger gestures still belong to normal page scrolling.
+ // One finger pans the camera; taps remain region selections.
  const svg=atlas.elements.crateAtlasMap;
  let consumed=false;
- svg.events.touchstart({touches:[{clientX:120,clientY:115}]});
+ svg.events.touchstart({touches:[{clientX:120,clientY:115}],cancelable:true,preventDefault(){consumed=true}});
+ assert.equal(consumed,false,'A stationary one-finger start leaves tapping available');
  svg.events.touchmove({touches:[{clientX:120,clientY:160}],cancelable:true,preventDefault(){consumed=true}});
- assert.equal(consumed,false,'One finger does not hijack Jukebox scrolling');
+ assert.equal(consumed,true,'One finger drags the map');
+ assert.notEqual(svg.getAttribute('viewBox'),'304 128 190 231','One-finger dragging changes camera position');
+ svg.events.touchend({touches:[]});
+ await atlas.atlasCountries.find(b=>b.dataset.atlasRegion==='east-africa').click();
+ assert.equal(atlas.elements.atlasPassport.hidden,true,'Dragging cannot accidentally stamp a territory');
  const touch=(x,y)=>({clientX:x,clientY:y});
- svg.events.touchstart({touches:[touch(120,120),touch(220,120)]});
+ let claimedStart=false;
+ svg.events.touchstart({touches:[touch(120,120),touch(220,120)],cancelable:true,preventDefault(){claimedStart=true}});
+ assert.equal(claimedStart,true,'Two-finger start claims the gesture before the browser takes over');
+ assert.equal(svg.eventOptions.touchstart.passive,false,'Touchstart permits cancellation only for two fingers');
  let consumedPinch=false;
  svg.events.touchmove({touches:[touch(85,130),touch(245,130)],cancelable:true,preventDefault(){consumedPinch=true}});
  assert.equal(consumedPinch,true,'Two finger pinch is handled without page zoom');
@@ -184,6 +192,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  await eastAsia.click();
  assert.doesNotMatch(crossAtlas.elements.prompt.textContent,/East Asia/,'Pinch synthetic click remains suppressed');
  touchAtlas.events.touchstart({touches:[touch(150,130)]});
+ touchAtlas.events.touchend({touches:[]});
  await eastAsia.click();
  assert.match(crossAtlas.elements.prompt.textContent,/East Asia/,'A deliberate fresh tap works immediately after pinch');
 
@@ -364,8 +373,13 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  await used.elements.goButton.click();
  assert.equal(usedStore.get('ghg-jukebox-used-v1'),'yes','Successful GO remembers repeat-use layout');
  const root={dataset:{}};const bootstrap=jukeboxHtml.match(/<script>([\s\S]*?)<\/script>/)[1];
- vm.runInNewContext(bootstrap,{document:{documentElement:root},localStorage:{getItem:key=>usedStore.get(key)}});
+ vm.runInNewContext(bootstrap,{document:{documentElement:root},localStorage:{getItem:key=>usedStore.get(key)},URLSearchParams,location:{search:""}});
  assert.equal(root.dataset.returning,'true','Repeat-use layout is established before the stylesheet loads');
+ const introRoot={dataset:{}};
+ vm.runInNewContext(bootstrap,{document:{documentElement:introRoot},localStorage:{getItem:key=>usedStore.get(key)},URLSearchParams,location:{search:'?intro=1'}});
+ assert.equal(introRoot.dataset.returning,undefined,'URL override previews the first visit despite saved successful use');
+ assert.equal(usedStore.get('ghg-jukebox-used-v1'),'yes','Intro preview preserves normal returning state');
+
  assert.ok(!jukeboxHtml.includes('<details class="dealer-drawer"'),'Service controls require no disclosure tap');
  assert.ok(!jukeboxHtml.includes('id="tempoDetails"'),'Tempo requires no disclosure tap');
  const deniedStore=new Map(),denied=harness(async()=>{throw Error('blocked')},'','launch',deniedStore);
@@ -391,5 +405,22 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.equal(racingStamp.elements.receiptCopy.textContent,'COPYING…');
  await racingStamp.moods[1].click();release();await copyingStamp;
  assert.equal(racingStamp.elements.receiptCopy.textContent,'REQUEST DRAFT','An outdated in-flight copy cannot stamp the new request');
+ const sparkBank=JSON.parse(fs.readFileSync('references/mood-spark-bank.json','utf8'));
+ for(const selected of ['happy','angry','sad','weird','criminal']){
+  const sparkStore=new Map(),outputs=[];
+  let sparkHarness=harness(async t=>outputs.push(t),'?mood='+selected,'launch',sparkStore);
+  for(let n=0;n<50;n++){
+   if(n===25)sparkHarness=harness(async t=>outputs.push(t),'?mood='+selected,'launch',sparkStore);
+   await sparkHarness.elements.goButton.click();
+  }
+  const parts=outputs.map(t=>t.match(/Random crate spark: ([^\n]+)/)[1].replace(/\.$/,'').split(' / '));
+  assert.equal(new Set(parts.map(p=>p[2])).size,50,'Every mood image is used before recycling, including across reloads');
+  assert.ok(parts.every(p=>sparkBank[selected].map(s=>s.toLowerCase()).includes(p[2])),'Images stay in the selected mood');
+  assert.equal(new Set(parts.slice(0,10).map(p=>p[0])).size,10,'Texture rotates independently');
+  assert.equal(new Set(parts.slice(0,10).map(p=>p[1])).size,10,'Setting rotates independently');
+ }
+ const slowCopies=[],slowSparks=harness(async t=>slowCopies.push(t),'?mood=angry&tempo=slow');
+ for(let i=0;i<50;i++)await slowSparks.elements.goButton.click();
+ assert.ok(slowCopies.every(t=>!/blast beats|breakcore|frenz|redline|tempo push|headbang|mosh/i.test(t.match(/Random crate spark: ([^\n]+)/)[1])),'Slow anger avoids overt speed-conflicting sparks');
  console.log('PASS: mood selection, reset, current-copy handoff, setup invalidation, blocked clipboard, copy race');
 })().catch(e=>{console.error(e);process.exit(1)});

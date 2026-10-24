@@ -82,25 +82,25 @@ function moodDiscoveryBrief(mood){
    Store only recent cue IDs; no music history or account data is recorded. */
 const crateSparkWords=[
  ["papery handclaps","elastic low end","hollow percussion","unsteady guitar","dubbed-out space","wiry organ","hushed harmonies","brittle synths","rough-edged strings","shifting drum accents"],
- ["at the night ferry","under an empty arcade","beneath rain-streaked windows","past a deserted ballroom","through a late-night radio","inside a faded cinema","on a slow mountain bus","after the last dance","beside an old tape machine","at a half-lit market"],
- ["longing with momentum","tension that never quite breaks","playful rhythmic friction","melodies that take a wrong turn","a groove that keeps changing shape","warmth in an unlikely place","subtle call-and-response","an eerie but inviting pulse","room for sudden silence","voices just out of alignment"]
+ ["at the night ferry","under an empty arcade","beneath rain-streaked windows","past a deserted ballroom","through a late-night radio","inside a faded cinema","on a slow mountain bus","after the last dance","beside an old tape machine","at a half-lit market"]
 ];
+// MOOD_SPARK_BANK_BEGIN
+const moodSparkBank={"sad":["Melancholic Rain Drift","Lonely Bedroom Echo","Fading Ember Grief","Empty Highway Ache","Weeping Cello Drone","Somber Winter Piano","Hollow Heart Tremor","Drowning In Reverie","Distant Fog Lament","Unsent Letters Sigh","Tearful Acoustic Strum","Bleak Horizon Solitude","Heavy Chest Sigh","Lingering Ghost Memory","Quiet Apartment Blues","Fractured Soul Waltz","Muffled Sob Texture","Gray Autumn Dusk","Wistful Midnight Drift","Slow Sinking Abyss","Bitter Farewell Chord","Pale Sunlight Melancholy","Submerged Vocal Cry","Abandoned House Creak","Softly Broken Chords","Desolate Desert Wind","Cold Rainy Window","Nostalgic Yearning Haze","Vanishing Trace Silence","Low Vibrato Weep","Forgotten Lullaby Hum","Bleeding Watercolor Tone","Solitary Bench Reflections","Velvet Shadow Gloom","Fragile Glass Heart","Deep Trench Sorrow","Twilight Separation Ache","Lingering Cold Touch","Muted Brass Mourning","Lost In Shadows","Resigned Heavy Breath","Hollow Bell Toll","Somber Minor Progression","Drifting Away Slow","Tear-Stained Tape Loop","Frozen Pond Stillness","Quiet Defeat Drone","Haunting Reverberant Whisper","Ghost Ship Drift","Eternal Midnight Blues"],"angry":["Searing Guitar Shred","Relentless Blast Beats","Ferocious Riff Assault","Crushing Industrial Grind","Raw Cybernetic Fury","Blood-Boiling Distortions","Spiteful Grudge Groove","Screaming Feedback Havoc","Throat-Tearing Growl","Sledgehammer Bass Slam","Blinding Hate Surge","Punishing Breakcore Frenzy","Razor-Wire Static","Unhinged Metalcore Breakdown","Snarl And Bite","Scorched Earth Drop","Violent Tremolo Strike","Volcanic Magma Eruption","Brawling Pit Mayhem","Vengeful Drum Assault","Redline Overdrive Peak","Clanging Chain Strike","Guttural Roar Surge","Malicious Code Corruption","Piercing Siren Panic","Shattered Glass Impact","Toxic Fume Rage","Frenzied Mosh Clash","Deafening Feedback Wall","Hardcore Punch-Out","Sonic Teeth Gnashing","Bitter Spite Spit","Rampaging War Engine","Chugging Down-Tuned Riffs","Brutal Concrete Slam","Vicious Bassbite Attack","Stabbing Synth Stabs","Anarchic Riot Wave","Thunderous Fury Stomp","Boiling Blood Rhythm","Jagged Metal Scrape","Destructive Waveform Crash","Merciless Tempo Push","Seething Resentment Pulse","Uncaged Wild Beast","Furious Headbang Loop","Crushed Bone Sub","Acid Fire Spurt","Heavy Percussive Pound","Cataclysmic Noise Swarm"],"weird":["Bent Tape Wobble","Glitched Dream Logic","Alien Circus March","Warped Vinyl Slime","Subaquatic Clock Tick","Disorienting Polyrhythm Drift","Haunted Toybox Melody","Microtonal Meadow Flute","Dripping Slime Synth","Uncanny Valley Hum","Backward Vocal Reversal","Twisted Carousel Organ","Bouncing Rubber Bass","Psychedelic Frog Choir","Broken Radio Chimes","Liquid Crystal Drip","Melting Wax Drone","Fluorescent Bug Buzz","Dimension Slip Echo","Erratic Neon Jitter","Detuned Arcade Madness","Phantasmal Funhouse Mirror","Whispering Fungus Forest","Wobbling Jello Beat","Martian Swamp Lullaby","Elastic Pitch Bender","Surrealist Dream Sequence","Creepy Marionette Stumble","Quantum Foam Fizzle","Cryptid Footstep Crunch","Static-Soaked Static Glitch","Astral Jester Waltz","Inverted Echo Chamber","Bubbling Cauldron Pluck","Glitchy Clockwork Beetle","Fractured Hologram Tone","Spooky Theremin Wobble","Hypnotic Spiral Pulse","Hallucinogenic Rainbow Shimmer","Stuttering Time Warp","Odd Meter Stumble","Ghost In Microwave","Wonky Bass Squiggle","Floating Upside Down","Shuffling Skeleton Bones","Murky Cavern Gurgle","Vaporous Slime Bounce","Out-Of-Tune Musicbox","Cosmic Static Sneeze","Bizarre Twilight Carnival"],"happy":["Sun-Drenched Whistle","Golden Hour Bounce","Upbeat Ukulele Strum","Joyful Brass Blast","Carefree Bubblegum Pop","Careless Whispering Breeze","Sparkling Pool Splash","Bouncy Morning Coffee","Jubilant Handclap Rhythm","Warm Woolen Sweater","Radiant Sunset Smile","Cheerful Roadtrip Vibe","Giddy Sugar Rush","Blithe Prairie Stroll","Pure Childhood Glee","Sweet Honeycomb Groove","Bubbly Synth Flutter","Playful Puppy Bounce","High-Five Funk Jam","Carefree Summer Vacation","Smiling Sunflower Sway","Confetti Explosion Pop","Floating Balloon Bounce","Bright Neon Sparkle","Lively Campfire Singalong","Warm Hug Acoustic","Breezy Bicycle Coast","Skipping Pavement Groove","Crisp Morning Air","Vibrant Spring Bloom","Roller-Skating Disco Sparkle","Triumphant Happy Tears","Sweet Strawberry Jam","Sunny Balcony Serenade","Euphoric Festival Bounce","Optimistic Tomorrow Melody","Glistening Dewdrop Chime","Laughing Friend Echo","Peppy Sidewalk Strut","Cozy Cocoa Warmth","Heartfelt Grin Melody","Carefree Beach Cruise","Tropical Breeze Sway","Cheerful Whistle Chorus","Sunlit Daisy Meadow","Sparkling Citrus Fizz","Warm Glow Harmony","Playful Kazoo Parade","Golden Ribbon Dance","Blissful Saturday Morning"],"criminal":["Gritty Street Swagger","Lowrider Hydraulic Bounce","Menacing 808 Knock","Smoked-Out Velvet Lounge","Cold-Blooded Corner Stare","Heavy Gold Chain","Sinister Trap Whistle","Mafia Speakeasy Brass","Ruthless Kingpin Strut","Muffled Trunk Rattle","Dark Alley Stroll","Midnight Drive-By Bass","Ice-Cold Pimp Walk","Unforgiving Concrete Jungle","Raw Boom-Bap Knock","Shadowy Syndicate Meeting","Chrome Rim Glint","Chilling Minor Piano","Smoldering Cigar Smoke","G-Funk Whine Glide","Cutthroat Hustler Stride","Heavy Mobster Waltz","Cold Steel Clink","Menacing Midnight Stalker","Bulletproof Tint Cruise","Gritty Vinyl Crackle","Blacked-Out Sedan Glide","Ruthless Turf Patrol","High-Stakes Card Game","Heavy Velvet Trenchcoat","Dark Trap Menace","Subwoofer Ground Quake","Shady Rooftop Deal","Low-Key Heist Tension","Diamond Cut Precision","Sinister Brass Swell","Streetlight Shadow Lurk","Slow-Rolling Cadillac Beat","Brick Wall Standoff","Dangerous Money Talk","Relentless Corner Pressure","Smokey Backroom Poker","Ghostly Street Violin","Heavy Artillery Bump","Tough Guy Sneer","Midnight Block Watch","Razor-Sharp Flow Vibe","Chilling Godfather Melody","Dark Crown Sovereign","Street Code Silence"]};
+// MOOD_SPARK_BANK_END
 let crateSparkPhrase="";
+function compatibleSpark(cue){
+ // These are creative filters, not BPM measurements or genre judgements.
+ if(["slow","relaxed"].includes(tempo)&&/blast beats|breakcore|frenz|redline|tempo push|headbang|mosh|sugar rush|upbeat/i.test(cue))return false;
+ if(["brisk","fast"].includes(tempo)&&/slow|stillness|quiet defeat drone|sinking abyss/i.test(cue))return false;
+ return true;
+}
 function nextCrateSparkPhrase(){
- const key="ghg-crate-sparks-v1",size=1000;
- let recent=[];
- try{const saved=JSON.parse(stored(key)||"[]");if(Array.isArray(saved))recent=saved.filter(n=>Number.isInteger(n)&&n>=0&&n<size).slice(0,3)}catch(e){}
- const options=Array.from({length:size},(_,i)=>i).filter(i=>!recent.includes(i));
- let pick;
- if(typeof crypto!=="undefined"&&typeof crypto.getRandomValues==="function"){
-  const a=new Uint32Array(1);crypto.getRandomValues(a);pick=options[a[0]%options.length];
- }else{
-  const n=Number(stored("ghg-crate-spark-cycle-v1"))||0;
-  pick=options[Math.abs(Math.trunc(n))%options.length];
-  store("ghg-crate-spark-cycle-v1",String(n+1));
- }
- store(key,JSON.stringify([pick,...recent].slice(0,3)));
- return crateSparkWords[0][pick%10]+" / "+crateSparkWords[1][Math.floor(pick/10)%10]+" / "+crateSparkWords[2][Math.floor(pick/100)%10];
+ const cues=(moodSparkBank[mood]||Object.values(moodSparkBank).flat()).filter(compatibleSpark);
+ const key="ghg-crate-sparks-v2-"+mood+"-"+(tempo||"any");
+ const image=nextDiscoveryCue(cues,key+"-image");
+ const texture=nextDiscoveryCue(crateSparkWords[0],"ghg-crate-sparks-v2-texture");
+ const setting=nextDiscoveryCue(crateSparkWords[1],"ghg-crate-sparks-v2-setting");
+ return texture+" / "+setting+" / "+image.toLowerCase();
 }
 // The skill owns curation policy; GO sends only current creative inputs and service.
 function goPrompt(ai,service,mood){
@@ -211,7 +211,7 @@ function renderAtlasNavigation(){
  if(hint){
   const desktop=typeof window!=="undefined"&&window.matchMedia&&window.matchMedia("(pointer: fine)").matches;
   const action=focused?"TAP TO INK / UNINK":"TAP LAND TO EXPLORE";
-  hint.textContent=action+(desktop?" · SHIFT + SCROLL TO PAN · PINCH TO ZOOM":" · TWO FINGERS TO PAN / PINCH");
+  hint.textContent=action+(desktop?" · SHIFT + SCROLL TO PAN · PINCH TO ZOOM":" · DRAG TO PAN · TWO FINGERS TO ZOOM");
  }
 }
 function renderCrateStamps(){
@@ -448,7 +448,7 @@ function queueAtlasNavigation(view){
  });
 }
 function atlasGesturePoints(touches){
- const a=touches[0],b=touches[1];
+ const a=touches[0],b=touches[1]||a;
  return {x:(a.clientX+b.clientX)/2,y:(a.clientY+b.clientY)/2,
          distance:Math.max(1,Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY))}
 }
@@ -477,35 +477,33 @@ function atlasBindGestures(){
  // Freeze the geometry under a new press, rather than moving the target
  // between pointer-down and click while a continent zoom is still running.
  map.addEventListener("pointerdown",()=>{stopZoom();flushAtlasNavigation()});
- map.addEventListener("touchstart",event=>{
-  if(event.touches.length===1&&!atlasTouchGesture){
-   stopZoom();flushAtlasNavigation();atlasSuppressTapUntil=0;
-   return;
-  }
-  if(event.touches.length!==2){if(event.touches.length>2)atlasTouchGesture=null;return;}
-  flushAtlasNavigation();
+ const beginTouch=(event,continuing=false)=>{
+  if(event.touches.length<1||event.touches.length>2){atlasTouchGesture=null;flushAtlasNavigation();return;}
+  stopZoom();flushAtlasNavigation();
   const view=atlasView(),screen=atlasGesturePoints(event.touches),rect=map.getBoundingClientRect();
-  if(atlasZoomFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasZoomFrame);
-  atlasZoomFrame=0;
-  atlasTouchGesture={view,anchor:atlasScreenAnchor(map,view,screen.x,screen.y,rect),distance:screen.distance,rect};
-  atlasSuppressTapUntil=Date.now()+700;
- },{passive:true});
- map.addEventListener("touchmove",event=>{
-  if(!atlasTouchGesture||event.touches.length!==2)return;
-  if(event.cancelable)event.preventDefault();
-  const screen=atlasGesturePoints(event.touches),s=atlasTouchGesture;
-  const view=atlasViewForGesture(s.view,s.anchor,screen,s.rect,s.distance/screen.distance);
-  queueAtlasNavigation(view);
-  atlasUserNavigated=true;
-  atlasSuppressTapUntil=Date.now()+700;
- },{passive:false});
- const end=event=>{
-  if(!atlasTouchGesture||event.touches.length>=2)return;
-  atlasTouchGesture=null;atlasSuppressTapUntil=Date.now()+700;
-  flushAtlasNavigation();renderAtlasNavigation();
+  atlasTouchGesture={view,anchor:atlasScreenAnchor(map,view,screen.x,screen.y,rect),distance:screen.distance,rect,count:event.touches.length,start:screen,moved:continuing};
+  if(event.touches.length===2){if(event.cancelable)event.preventDefault();atlasSuppressTapUntil=Date.now()+700;}
+  else if(!continuing)atlasSuppressTapUntil=0;
  };
- map.addEventListener("touchend",end,{passive:true});
- map.addEventListener("touchcancel",end,{passive:true});
+ map.addEventListener("touchstart",event=>beginTouch(event),{passive:false});
+ map.addEventListener("touchmove",event=>{
+  const s=atlasTouchGesture;if(!s||event.touches.length!==s.count)return;
+  const screen=atlasGesturePoints(event.touches);
+  if(s.count===1&&!s.moved&&Math.hypot(screen.x-s.start.x,screen.y-s.start.y)<6)return;
+  if(event.cancelable)event.preventDefault();
+  s.moved=true;
+  queueAtlasNavigation(atlasViewForGesture(s.view,s.anchor,screen,s.rect,s.count===2?s.distance/screen.distance:1));
+  atlasUserNavigated=true;atlasSuppressTapUntil=Date.now()+700;
+ },{passive:false});
+ const endTouch=event=>{
+  const s=atlasTouchGesture;if(!s)return;
+  flushAtlasNavigation();
+  if(s.moved||s.count===2)atlasSuppressTapUntil=Date.now()+700;
+  if(event.touches.length===1)beginTouch(event,true);else atlasTouchGesture=null;
+  renderAtlasNavigation();
+ };
+ map.addEventListener("touchend",endTouch,{passive:true});
+ map.addEventListener("touchcancel",()=>{atlasTouchGesture=null;atlasSuppressTapUntil=Date.now()+700;flushAtlasNavigation();renderAtlasNavigation()},{passive:true});
  map.addEventListener("wheel",event=>{
   // Ordinary wheel/trackpad scrolling belongs to the page. Deliberate modifiers
   // pan the map (Shift) or zoom it (trackpad pinch / Ctrl / Command).
