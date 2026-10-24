@@ -69,9 +69,9 @@ body.gig-poster[data-page=launch] .mood-grid{display:grid;grid-template-columns:
 body.gig-poster[data-page=launch] .mood-grid .mood,body.gig-poster[data-page=launch] .mood-grid .mood:nth-last-child(-n+2){grid-column:auto;min-height:90px;padding:4px 2px 6px;gap:2px;border:0;border-right:1px solid var(--ink);border-radius:0;background:none;box-shadow:none;color:var(--ink);transform:none}
 body.gig-poster[data-page=launch] .mood-grid .mood:last-child{border-right:0}
 body.gig-poster[data-page=launch] .mood-grid .mood[aria-pressed=true]{background:var(--ink);color:var(--paper);padding:4px 2px 6px;border:0;border-right:1px solid var(--ink);box-shadow:none}
-body.gig-poster[data-page=launch] .mood .face{background-image:url('/editions/gig-poster/assets/clerks.webp');width:100%;height:auto;aspect-ratio:1;background-size:500% 100%;margin:0;filter:none}
+body.gig-poster[data-page=launch] .mood .face{background-image:url('/editions/gig-poster/assets/clerks.webp');width:100%;height:auto;aspect-ratio:.85;background-size:500% 100%;margin:0;filter:none}
 body.gig-poster[data-page=launch] .mood[aria-pressed=true] .face{filter:brightness(0) saturate(100%) invert(76%) sepia(70%) saturate(537%) hue-rotate(353deg) brightness(93%) contrast(87%)}
-body.gig-poster[data-page=launch] .mood .word{font:400 clamp(.7rem,2.8cqw,1.4rem)/1.2 Poster,sans-serif;letter-spacing:0;text-transform:capitalize;white-space:nowrap}
+body.gig-poster[data-page=launch] .mood .word{font:400 clamp(.8125rem,2.8cqw,1.4rem)/1.2 Poster,sans-serif;letter-spacing:0;text-transform:capitalize;white-space:nowrap}
 body.gig-poster[data-page=launch] .mood-hint{font:400 .75rem/1.4 Arial,sans-serif;margin:6px 0 10px;min-height:1.4em;color:var(--ink)}
 body.gig-poster[data-page=launch] .grind{margin:0;padding:0;background:none;box-shadow:none;border:0}
 body.gig-poster[data-page=launch] .go-button{display:flex;align-items:center;gap:4%;width:100%;min-height:96px;border:0;border-radius:2px;padding:10px 3%;background:var(--ink);color:var(--paper);box-shadow:none}
