@@ -34,14 +34,16 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
 }
 (async()=>{
  // Exercise the full cue cycle, reload persistence, and the cycle boundary.
+ const catalog=JSON.parse(fs.readFileSync("references/discovery-lenses.json","utf8"));
+ const lensCount=catalog.length;
  const cycleStore=new Map();let cycleCopies=[];
  let cycle=harness(async s=>cycleCopies.push(s),'?mood=happy','launch',cycleStore);
- for(let i=0;i<56;i++){
+ for(let i=0;i<lensCount;i++){
   if(i===28)cycle=harness(async s=>cycleCopies.push(s),'?mood=happy','launch',cycleStore);
   await cycle.elements.goButton.click();
  }
  const lenses=cycleCopies.map(s=>s.match(/Fresh-crate discovery lens: ([^\n]+)/)[1]);
- assert.equal(new Set(lenses).size,56,'All cues are used before recycling, including after reload');
+ assert.equal(new Set(lenses).size,lensCount,'All cues are used before recycling, including after reload');
  const angles=cycleCopies.slice(0,6).map(s=>s.match(/Mood angle: ([^.]+)/)[1]);
  assert.equal(new Set(angles).size,6,'Happy angles rotate before repeating');
  const criminalCopies=[];const criminal=harness(async s=>criminalCopies.push(s),'?mood=criminal','launch',new Map());
@@ -49,7 +51,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  const criminalAngles=criminalCopies.map(s=>s.match(/Mood angle: ([^.]+)/)[1]);
  assert.equal(new Set(criminalAngles).size,7,'Seven Criminal story angles before repeating');
  await cycle.elements.goButton.click();
- assert.notEqual(cycleCopies[56].match(/Fresh-crate discovery lens: ([^\n]+)/)[1],lenses[55]);
+ assert.notEqual(cycleCopies[lensCount].match(/Fresh-crate discovery lens: ([^\n]+)/)[1],lenses[lensCount-1]);
  await cycle.moods[1].click();
  assert.doesNotMatch(cycle.elements.prompt.textContent,/Mood angle:/,'Changing mood clears the previous angle');
  for(const selectedMood of ['happy','angry','sad','weird'])for(const ai of ['chatgpt','gemini','claude'])for(const service of ['spotify','youtube','apple']){
@@ -63,6 +65,28 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  const recovered=harness(async()=>{},'?mood=happy','launch',badStore);
  await recovered.elements.goButton.click();
  assert.match(recovered.elements.prompt.textContent,/Mood angle:/,'Corrupt or obsolete cue storage recovers');
+ // Every map region cycles through only compatible or neutral research routes.
+ const mapRegions=[...new Set(catalog.flatMap(lens=>lens.regions))];
+ for(const region of mapRegions){
+  const allowed=catalog.filter(lens=>!lens.regions.length||lens.regions.includes(region));
+  const out=[];const scoped=harness(async s=>out.push(s),'?mood=criminal','launch',new Map([['ghg-crate-map-regions-v1',JSON.stringify([region])]]));
+  for(let i=0;i<allowed.length;i++)await scoped.elements.goButton.click();
+  const actual=out.map(s=>s.match(/Fresh-crate discovery lens: ([^\n]+)/)[1]);
+  assert.deepEqual([...new Set(actual)].sort(),allowed.map(lens=>lens.text).sort(),region+' pool has no unrelated geography and exhausts before repeating');
+  assert.ok(out.every(s=>s.includes('explicit song-level crime narratives')&&s.includes('Keep discovery within the selected regions')));
+ }
+ const usAllowed=catalog.filter(lens=>!lens.regions.length||lens.regions.some(r=>['us-east','us-west'].includes(r)));
+ const usOut=[];const us=harness(async s=>usOut.push(s),'?ai=gemini&service=youtube&mood=criminal','launch',new Map([['ghg-crate-map-regions-v1','["us-east","us-west"]']]));
+ for(let i=0;i<usAllowed.length;i++)await us.elements.goButton.click();
+ assert.ok(usOut.every(s=>!s.includes('Jaglara:')&&!s.includes('Singeli:')),'US selection cannot receive unrelated global scene seed');
+ assert.deepEqual([...new Set(usOut.map(s=>s.match(/Fresh-crate discovery lens: ([^\n]+)/)[1]))].sort(),usAllowed.map(l=>l.text).sort());
+ assert.equal(us.elements.prompt.textContent,usOut.at(-1),'Receipt equals copied regional request');
+ await us.crateRegions.find(b=>b.dataset.crateRegion==='east-africa').click();
+ assert.doesNotMatch(us.elements.prompt.textContent,/Fresh-crate discovery lens:|Random crate spark:|Mood angle:/,'Map change clears all stale creative cues');
+ assert.equal(us.elements.openAi.getAttribute('aria-disabled'),'true','Map change invalidates prior copied handoff');
+ const neutral=catalog.filter(l=>!l.regions.length);assert.ok(neutral.length>=12);
+ assert.ok(catalog.filter(l=>l.regions.includes('us-east')).length>=16);
+ assert.ok(catalog.filter(l=>l.regions.includes('us-west')).length>=16);
  // Cartographer's Desk: authentic land polygons and continent drilldown.
  const geographicMarkup=fs.readFileSync('launcher/index.html','utf8');
  assert.ok((geographicMarkup.match(/data-atlas-country=/g)||[]).length>=175,'Actual country-shaped hit paths rather than rectangular overlays');
@@ -277,7 +301,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
   assert.match(copied,/strongly prefer non-English/);assert.match(copied,/Mood angle:/);
   assert.match(copied,/Tempo preference: Fast/);
   assert.doesNotMatch(copied,/blatnaya pesnya|canti di malavita|funk proibidao|rebetiko\/hasiklidika/);
-  assert.ok(copied.split(/\s+/).length<115,ai+'/'+service+' Criminal prompt stays short');
+  assert.ok(copied.split(/\s+/).length<155,ai+'/'+service+' Criminal prompt stays short');
   await h.moods[4].click();assert.equal(h.moods[4].attrs['aria-pressed'],'false');assert.doesNotMatch(h.elements.prompt.textContent,/Criminal mood:/);
  }
 

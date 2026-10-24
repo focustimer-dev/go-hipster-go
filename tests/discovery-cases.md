@@ -282,3 +282,12 @@ Pass publication reporting when every claimed number is grounded in a provider r
 - Confirm the *curator* still finds documented crime narratives, prefers non-English vocals, uses trustworthy song-specific sources for each English explanation, never guesses translations, treats Jamaican Patois sensitively, and selects listenable transitions rather than filling region quotas. An unverified candidate must be rejected in a strictly verified crate.
 - Run Happy, Angry, Sad, Weird and plain GO with independent tempo choices; validate sonic variety, verifiable tracks and no fake listening-history access. The test harness checks prompt structure, not audible quality.
 - Confirm ChatGPT + Apple Music uses a saveable playlist widget when offered and differentiates ready-to-save from saved. Confirm ChatGPT + Spotify and Gemini + YouTube Music attempt actual authorized playlist creation or preserve the verified crate on failure. A retry should not reroll DeBarge.
+
+
+## Regional lens and recording-quality regression
+
+- US East + US West, fast Criminal: generate only US-compatible or geography-neutral lenses; no unrelated Jaglara/Singeli research instruction. Keep verified crime narratives and non-English preference; report scarcity rather than silently escaping selected regions.
+- East Africa: allow matching regional routes and neutral musical lenses; do not inject US routes. Worldwide: retain the complete global catalog.
+- Generate a cue, change regions, then inspect/share/manual-copy: previous lens, mood angle and spark must be absent; GO regenerates compatible cues and the receipt matches clipboard.
+- Compare a broad pop route, an obscure tradition and an underground club route: each final recording needs a concrete supported musical contribution. Neither chart familiarity nor obscurity decides quality. No fixed famous-artist roster, novelty-only filler or invented listening claims.
+- Catalog routing tests verify compatibility and repeat control, not subjective listening quality, song-level crime evidence or streaming availability.
