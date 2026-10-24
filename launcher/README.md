@@ -146,3 +146,6 @@ One finger drags the map; two fingers pan/pinch-zoom it. A six-pixel drag thresh
 ### Counter-stamp hero
 
 The returning sleeve asks **Back for more?**. The headline uses a compact garnet double-rule ink impression with a single 200ms press on arrival. Text is always visible, with no sound, delay or controls inside the decoration. Reduced motion shows a stationary stamp without the ink-set animation. The hero retains its existing instructions and first/return behavior.
+
+
+The hero recognizes first and returning visits with one clerk aside in its existing line: “We’ll work with what you’ve got.” becomes “We kept your place. Against our better judgment.” The visible instructions explicitly include paste **and send**, so the aside carries personality without carrying a required step. The existing local successful-copy flag controls both headline and aside; no additional tracking, listeners, animation or layout regions are added.
