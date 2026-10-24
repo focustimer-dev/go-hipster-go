@@ -337,7 +337,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  await h.moods[2].click();await e.goButton.click();assert.match(copies.at(-1),/go sad/);assert.match(copies.at(-1),/Tempo preference: Fast/);
  await e.anyTempo.click();await e.goButton.click();assert.doesNotMatch(copies.at(-1),/Tempo preference:/);assert.match(copies.at(-1),/go sad/);
  await e.anyTempo.click();assert.equal(e.tempoControl.attrs['data-tempo'],'any');
- await e.tempoSlider.events.pointerup();assert.equal(e.tempoControl.attrs['data-tempo'],'any','The Any notch stays bypassed when tapped');
+ await e.tempoSlider.events.pointerup();assert.equal(e.tempoControl.attrs['data-tempo'],'moderate','Touching the parked fader explicitly selects its pace');
  e.tempoSlider.value='3';await e.tempoSlider.events.input();assert.equal(e.tempoControl.attrs['data-tempo'],'moderate','Mid-tempo has its own position, separate from Any');
  await e.goButton.click();assert.match(copies.at(-1),/Tempo preference: Mid-tempo/);
  let restored=harness(async()=>{},'?tempo=slow');assert.match(restored.elements.prompt.textContent,/Tempo preference: Slow/);
@@ -351,13 +351,13 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  h=harness(()=>new Promise(resolve=>{finish=resolve}),'','setup');const setupPending=h.elements.copyTailoredSetup.click();await h.ais[1].click();finish();await setupPending;assert.equal(h.elements.openSelectedAi.attrs['data-copy-ready'],'false');
 
  const usedStore=new Map();const used=harness(async()=>{},'','launch',usedStore);
- assert.equal(used.elements.tempoSlider.value,0,'Any tempo starts at the dedicated zero notch');
+ assert.equal(used.elements.tempoSlider.value,3,'Bypassed fader parks at the center; Any remains separate');
  for(const [value,label] of [[1,'Slow'],[2,'Relaxed'],[3,'Mid-tempo'],[4,'Brisk'],[5,'Fast']]){
   used.elements.tempoSlider.value=String(value);await used.elements.tempoSlider.events.input();
   assert.equal(used.elements.tempoSummary.textContent,label,'Collapsed tempo summary follows the actual preference');
   assert.match(used.elements.prompt.textContent,new RegExp('Tempo preference: '+label));
  }
- used.elements.tempoSlider.value='0';await used.elements.tempoSlider.events.input();
+ await used.elements.anyTempo.click();
  assert.equal(used.elements.tempoSummary.textContent,'Any tempo');
  assert.doesNotMatch(used.elements.prompt.textContent,/Tempo preference:/,'Any tempo adds no false pace instruction');
  assert.equal(usedStore.has('ghg-jukebox-used-v1'),false,'Selecting preferences alone does not claim a completed visit');
@@ -366,9 +366,8 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  const root={dataset:{}};const bootstrap=jukeboxHtml.match(/<script>([\s\S]*?)<\/script>/)[1];
  vm.runInNewContext(bootstrap,{document:{documentElement:root},localStorage:{getItem:key=>usedStore.get(key)}});
  assert.equal(root.dataset.returning,'true','Repeat-use layout is established before the stylesheet loads');
- const dealers={open:true};const folded=jukeboxHtml.match(/<script>(if\(document\.documentElement[\s\S]*?)<\/script>/)[1];
- vm.runInNewContext(folded,{document:{documentElement:root,getElementById:()=>dealers}});
- assert.equal(dealers.open,false,'Returning users keep service choices available behind their saved pairing');
+ assert.ok(!jukeboxHtml.includes('<details class="dealer-drawer"'),'Service controls require no disclosure tap');
+ assert.ok(!jukeboxHtml.includes('id="tempoDetails"'),'Tempo requires no disclosure tap');
  const deniedStore=new Map(),denied=harness(async()=>{throw Error('blocked')},'','launch',deniedStore);
  await denied.elements.goButton.click();
  assert.equal(deniedStore.has('ghg-jukebox-used-v1'),false,'Failed clipboard copy does not mark first use complete');
