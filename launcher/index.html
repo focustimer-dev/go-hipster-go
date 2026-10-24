@@ -507,8 +507,9 @@
     </div>
 
     <h2 class="counter-heading receipt-heading">YOUR MIXTAPE RECEIPT</h2>
-    <section class="receipt" aria-label="Prompt to send to your AI">
+    <section class="receipt" id="promptReceipt" data-copy-state="idle" aria-label="Prompt to send to your AI">
       <div class="receipt-top"><span>NO. <span id="receiptCode">GO-001</span></span><span>MOOD / <span id="moodName">SURPRISE</span></span></div>
+      <p class="receipt-copy" id="receiptCopy">REQUEST DRAFT</p>
       <p class="receipt-summary" id="receiptSummary">ChatGPT · Spotify · Surprise · 12 tracks</p>
       <details id="promptDetails">
         <summary>View full prompt / copy manually</summary>

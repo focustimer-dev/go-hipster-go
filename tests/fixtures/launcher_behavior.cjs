@@ -16,7 +16,7 @@ class Element{
  async click(){this.focus();const event={preventDefault(){this.prevented=true}};await this.events.click?.(event);return event}
 }
 function harness(write,search='',page='launch',storage=new Map(),runtime={}){
- const ids=['welcomeSetup','dismissWelcome','crateGeo','atlasPassport','atlasNamedRegions','atlasLocator','atlasHome','atlasInstruction','atlasStamps','crateAtlasMap','crateGeoStatus','crateGeoClear','aiLabel','copyTailoredSetup','recipeIntro','recipeSteps','recipeResources','recipeCaveat','openSelectedAi','dealerPair','tempoControl','tempoDetails','tempoSummary','tempoHelp','moodHelp','tempoSlider','tempoValue','anyTempo','copyStatus','routeStatus','prompt','moodName','receiptCode','openAi','browserAi','manualOpenAi','receiptSummary','goHint','goButton','stripSetupPrompt','setupPromptText','setupPromptDetails','setupTipStatus','openSetupAi','promptDetails','shareButton'];
+ const ids=['welcomeSetup','dismissWelcome','crateGeo','atlasPassport','atlasNamedRegions','atlasLocator','atlasHome','atlasInstruction','atlasStamps','crateAtlasMap','crateGeoStatus','crateGeoClear','aiLabel','copyTailoredSetup','recipeIntro','recipeSteps','recipeResources','recipeCaveat','openSelectedAi','dealerPair','tempoControl','tempoDetails','tempoSummary','tempoHelp','moodHelp','tempoSlider','tempoValue','anyTempo','copyStatus','routeStatus','prompt','moodName','receiptCode','promptReceipt','receiptCopy','openAi','browserAi','manualOpenAi','receiptSummary','goHint','goButton','stripSetupPrompt','setupPromptText','setupPromptDetails','setupTipStatus','openSetupAi','promptDetails','shareButton'];
  const elements=Object.fromEntries(ids.map(id=>[id,new Element()]));
  const ais=['chatgpt','gemini','claude'].map(ai=>new Element({ai}));
  const services=['spotify','youtube','apple'].map(service=>new Element({service}));
@@ -375,5 +375,21 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.equal((setupHtml.match(/data-setup="universal"/g)||[]).length,1,'Universal installation has one secondary home');
  assert.ok(jukeboxHtml.indexOf('id="crateGeo"')<jukeboxHtml.indexOf('class="mood-grid"'),'Optional exploration precedes the mood-to-GO workbench');
  assert.ok(jukeboxHtml.indexOf('class="mood-grid"')<jukeboxHtml.indexOf('id="goButton"'),'Mood choice leads directly to GO');
+ const stamped=harness(async()=>{});
+ assert.equal(stamped.elements.receiptCopy.textContent,'REQUEST DRAFT');
+ await stamped.elements.goButton.click();
+ assert.equal(stamped.elements.receiptCopy.textContent,'COPIED TO CLIPBOARD','Only successful current copies earn a receipt stamp');
+ await stamped.moods[0].click();
+ assert.equal(stamped.elements.promptReceipt.attrs['data-copy-state'],'idle','Changed preferences invalidate the stamped request');
+ assert.equal(stamped.elements.receiptCopy.textContent,'REQUEST DRAFT');
+ assert.match(stamped.elements.moodHelp.textContent,/Happy selected.*Optimism.*Tap it again to clear/);
+ const unstamped=harness(async()=>{throw Error('blocked')});
+ await unstamped.elements.goButton.click();
+ assert.equal(unstamped.elements.receiptCopy.textContent,'REQUEST DRAFT','Clipboard failures cannot earn a stamp');
+ let release;const racingStamp=harness(()=>new Promise(resolve=>{release=resolve}));
+ const copyingStamp=racingStamp.elements.goButton.click();
+ assert.equal(racingStamp.elements.receiptCopy.textContent,'COPYING…');
+ await racingStamp.moods[1].click();release();await copyingStamp;
+ assert.equal(racingStamp.elements.receiptCopy.textContent,'REQUEST DRAFT','An outdated in-flight copy cannot stamp the new request');
  console.log('PASS: mood selection, reset, current-copy handoff, setup invalidation, blocked clipboard, copy race');
 })().catch(e=>{console.error(e);process.exit(1)});

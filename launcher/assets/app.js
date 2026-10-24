@@ -267,7 +267,11 @@ let tempo=params.get("tempo")||"";if(!Object.hasOwn(tempoNames,tempo))tempo="";
 function updateHandoff(){
  const ready=copiedPrompt===goPrompt(ai,service,mood);
  const button=doc.getElementById("goButton");
- if(button)button.setAttribute("data-copy-state",button.disabled?"copying":ready?"copied":"idle");
+ const state=button&&button.disabled?"copying":ready?"copied":"idle";
+ if(button)button.setAttribute("data-copy-state",state);
+ const receipt=doc.getElementById("promptReceipt"),mark=doc.getElementById("receiptCopy");
+ if(receipt)receipt.setAttribute("data-copy-state",state);
+ if(mark)mark.textContent=state==="copied"?"COPIED TO CLIPBOARD":state==="copying"?"COPYING…":"REQUEST DRAFT";
  for(const id of ["openAi","browserAi"]){const a=doc.getElementById(id);if(a)a.setAttribute("aria-disabled",String(!ready))}
  const a=doc.getElementById("openAi");if(a)a.textContent=ready?"NEXT: OPEN "+aiNames[ai].toUpperCase():"COPY WITH GO FIRST";
 }
@@ -336,7 +340,8 @@ function renderLaunch(){
  const tempoHelp=doc.getElementById("tempoHelp");if(tempoHelp)tempoHelp.textContent=tempo?"Move the fader or choose Any tempo to clear this preference. Your mood stays selected.":"Any is on. Move the fader to choose a pace.";
  if(anyTempo)anyTempo.setAttribute("aria-pressed",String(!tempo));
  doc.querySelectorAll("[data-mood]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.mood===mood)));
- const moodHelp=doc.getElementById("moodHelp");if(moodHelp)moodHelp.textContent=mood==="criminal"?"Songs about crime. Artist reputations are not evidence. Tap Criminal again to clear.":mood==="go"?"No mood? We’ll use our judgment.":mood[0].toUpperCase()+mood.slice(1)+" selected. Tap it again to clear.";
+ const clerkNotes={happy:"Optimism. An ambitious brief.",angry:"A grievance with a rhythm section.",sad:"Melancholy. Filed under essential listening.",weird:"The neighbors may have questions."};
+ const moodHelp=doc.getElementById("moodHelp");if(moodHelp)moodHelp.textContent=mood==="criminal"?"Songs about crime. Artist reputations are not evidence. Tap Criminal again to clear.":mood==="go"?"No mood? We’ll use our judgment.":mood[0].toUpperCase()+mood.slice(1)+" selected. "+clerkNotes[mood]+" Tap it again to clear.";
  const e={prompt:doc.getElementById("prompt"),mood:doc.getElementById("moodName"),code:doc.getElementById("receiptCode"),open:doc.getElementById("openAi"),browser:doc.getElementById("browserAi")};
  if(!e.prompt)return;
  e.prompt.textContent=goPrompt(ai,service,mood);

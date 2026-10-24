@@ -10,6 +10,8 @@ The Jukebox uses a single paper counter: services, mix choices, and the raised y
 
 Tempo stays visible with five native range positions, Slow through Fast, and a separate **Any** bypass. Any adds no tempo instruction; touching the parked center fader explicitly selects Mid-tempo. The optional atlas retains its native disclosure, compact stamps, hit areas and search-without-quotas semantics.
 
+The receipt reads **Request draft** until the current prompt is copied successfully, then earns a **Copied to clipboard** ink stamp. Changing preferences clears the stamp; blocked or outdated copies cannot mark a new request ready. This confirms clipboard copying only, never music-service publication. Mood helpers retain literal selection/clear instructions with short clerk asides. Press feedback and receipt ink respect reduced motion, with no sound, artificial delay, new assets or dependencies.
+
 The Manual's tailored check is the main setup path. Selected-platform help uses Try this / If it fails / Connect your music / Confirm it worked. Universal installation and all-platform downloads live together under **Other installation methods**. Existing installation prompts, release URLs and service capability limits are preserved.
 
 Live URLs:
