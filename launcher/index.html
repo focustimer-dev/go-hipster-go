@@ -7,7 +7,7 @@
   <meta name="description" content="Go, Hipster, Go!: hand-aged deep-crate music discovery for people who own too many tote bags.">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" type="image/svg+xml" href="/icon.svg?v=nautical-1">
-  <script>try{if(localStorage.getItem("ghg-jukebox-used-v1"))document.documentElement.dataset.returning="true"}catch(e){}</script>
+  <script>try{if(new URLSearchParams(location.search).get("intro")!=="1"&&localStorage.getItem("ghg-jukebox-used-v1"))document.documentElement.dataset.returning="true"}catch(e){}</script>
   <link rel="stylesheet" href="/assets/hipster.css">
   <title>Go, Hipster, Go! — Press GO, Question Everything</title>
 </head>

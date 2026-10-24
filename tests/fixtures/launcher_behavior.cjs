@@ -373,8 +373,13 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  await used.elements.goButton.click();
  assert.equal(usedStore.get('ghg-jukebox-used-v1'),'yes','Successful GO remembers repeat-use layout');
  const root={dataset:{}};const bootstrap=jukeboxHtml.match(/<script>([\s\S]*?)<\/script>/)[1];
- vm.runInNewContext(bootstrap,{document:{documentElement:root},localStorage:{getItem:key=>usedStore.get(key)}});
+ vm.runInNewContext(bootstrap,{document:{documentElement:root},localStorage:{getItem:key=>usedStore.get(key)},URLSearchParams,location:{search:""}});
  assert.equal(root.dataset.returning,'true','Repeat-use layout is established before the stylesheet loads');
+ const introRoot={dataset:{}};
+ vm.runInNewContext(bootstrap,{document:{documentElement:introRoot},localStorage:{getItem:key=>usedStore.get(key)},URLSearchParams,location:{search:'?intro=1'}});
+ assert.equal(introRoot.dataset.returning,undefined,'URL override previews the first visit despite saved successful use');
+ assert.equal(usedStore.get('ghg-jukebox-used-v1'),'yes','Intro preview preserves normal returning state');
+
  assert.ok(!jukeboxHtml.includes('<details class="dealer-drawer"'),'Service controls require no disclosure tap');
  assert.ok(!jukeboxHtml.includes('id="tempoDetails"'),'Tempo requires no disclosure tap');
  const deniedStore=new Map(),denied=harness(async()=>{throw Error('blocked')},'','launch',deniedStore);

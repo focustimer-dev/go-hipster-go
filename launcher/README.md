@@ -149,3 +149,8 @@ The returning sleeve asks **Back for more?**. The headline uses a compact garnet
 
 
 The hero recognizes first and returning visits with one clerk aside in its existing line: “We’ll work with what you’ve got.” becomes “We kept your place. Against our better judgment.” The visible instructions explicitly include paste **and send**, so the aside carries personality without carrying a required step. The existing local successful-copy flag controls both headline and aside; no additional tracking, listeners, animation or layout regions are added.
+
+
+### Revisit the introduction without resetting preferences
+
+Open `/?intro=1` to force the first-visit hero and setup tip on that URL, even after a successful GO. This is a display override, not a storage reset: remove `intro=1` to resume normal returning behavior. It persists through selection URL updates, adds no visible controls, and never changes saved service choices or the completed-visit flag. A separately dismissed setup tip keeps its existing dismissal preference.
