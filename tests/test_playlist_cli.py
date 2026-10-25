@@ -32,6 +32,30 @@ class PlaylistCliTests(unittest.TestCase):
         self.example['publishing']['status']='published'
         self.assertTrue(module.validate_playlist(self.example))
 
+    def test_artist_spacing_catches_repeated_blocks_and_low_diversity(self):
+        artists = ["Koma Wetan", "Altin Gün", "Lalalar", "Lalalar",
+                   "Vordan Karmir", "Bedford Falls", "Koma Wetan",
+                   "Omar Souleyman", "Omar Souleyman",
+                   "47SOUL", "47SOUL", "47SOUL"]
+        data = {"mode":"standard", "tracks":[{"artist":artist} for artist in artists]}
+        issues = module.artist_spacing_issues(data)
+        self.assertTrue(any("consecutive" in item for item in issues))
+        self.assertTrue(any("only 7 distinct" in item for item in issues))
+        self.assertTrue(any("appears 3 times" in item for item in issues))
+
+    def test_artist_spacing_accepts_diverse_sequence(self):
+        artists = ["Koma Wetan", "Altin Gün", "Lalalar", "Vordan Karmir",
+                   "Bedford Falls", "Omar Souleyman", "47SOUL",
+                   "Koma Wetan", "Artist Eight", "Artist Nine",
+                   "Omar Souleyman", "Artist Ten"]
+        data = {"mode":"standard", "tracks":[{"artist":artist} for artist in artists]}
+        self.assertEqual(module.artist_spacing_issues(data), [])
+
+    def test_artist_spacing_normalizes_case_and_skips_debarge(self):
+        data = {"mode":"standard", "tracks":[{"artist":"47SOUL"}, {"artist":" 47soul "}]}
+        self.assertTrue(any("consecutive" in item for item in module.artist_spacing_issues(data)))
+        self.assertEqual(module.artist_spacing_issues(module.debarge_playlist()), [])
+
     def test_debarge_has_25_same_recording(self):
         p=module.debarge_playlist()
         self.assertEqual(len(p['tracks']),25)
