@@ -1,0 +1,40 @@
+name: Live release smoke
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'launcher/**'
+      - 'scripts/smoke_live.mjs'
+      - '.github/workflows/live-smoke.yml'
+  workflow_dispatch:
+    inputs:
+      expected_commit:
+        description: 'Full commit SHA that should be deployed (blank uses this workflow ref)'
+        required: false
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: live-pwa-smoke
+  cancel-in-progress: true
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save --package-lock=false playwright@1.62.1
+      - run: npx playwright install --with-deps chromium
+      - name: Verify the live release
+        env:
+          EXPECTED_COMMIT: ${{ inputs.expected_commit || github.sha }}
+        run: node scripts/smoke_live.mjs --expected-commit "$EXPECTED_COMMIT"
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: live-smoke-failure
+          path: artifacts/live-smoke/
+          if-no-files-found: ignore

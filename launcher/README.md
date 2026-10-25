@@ -162,3 +162,18 @@ Normal GO copies only the invocation, selected regions, mood angle, tempo, one m
 ### Explicit mentions
 
 Copied GO starts with `@go-hipster-go` and the selected music service. YouTube Music uses `@YouTube Music`, including the space; all destinations retain their display names. These are text routing hints, not proof of app activation or authorization; select the matching host suggestions where available.
+
+
+## Live release smoke check
+
+`Live release smoke` runs once for relevant main-branch pushes and can be run manually from Actions. Supply the full expected deployed commit for a manual check; blank uses the selected workflow ref. A source-only push without a matching deployment is expected to fail this release check, while ordinary offline CI remains separate. The checker allows a bounded propagation window.
+
+It compares the actual JavaScript, shared CSS and edition CSS bytes on the Jukebox and Manual with the expected commit, then checks directly available controls, pinned shuffle, Undo, clipboard-to-receipt fidelity and initialized Manual guidance in a fresh Chromium context. It neither connects music accounts nor publishes playlists. Failure screenshots come from that clean context.
+
+For a local check, install Playwright 1.62.1 and its Chromium browser, then run:
+
+```bash
+node scripts/smoke_live.mjs --expected-commit FULL_COMMIT_SHA
+```
+
+The workflow installs the browser dependency only for the check; the PWA adds no runtime dependency. Offline mismatch tests run with the normal Python suite.
