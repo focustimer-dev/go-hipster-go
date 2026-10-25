@@ -201,3 +201,23 @@ body.gig-poster[data-page=launch]{--receipt-ink:#742019}
 body.gig-poster[data-page=launch] .receipt[data-copy-state=copied] .receipt-copy{background:var(--receipt-ink);color:var(--paper);border-color:var(--receipt-ink)}
 body.gig-poster[data-page=launch] .go-button .go-stamp{background:var(--receipt-ink);color:var(--paper);border-color:var(--paper)}
 body.gig-poster[data-page=launch] .handoff #openAi[aria-disabled=false]{background:var(--receipt-ink);color:var(--paper);border-color:var(--receipt-ink)}
+
+/* Expanded Manual: a continuous reading sheet, with the print texture kept behind the prose. */
+body.gig-poster[data-page=setup] :is(.manual-install-body,.resource-shelf-body){padding:4px 0 20px;max-width:65ch}
+body.gig-poster[data-page=setup] .recipe-steps{list-style:decimal;margin:0;padding:0 0 0 1.6rem;background:var(--bone)}
+body.gig-poster[data-page=setup] .recipe-steps li{margin:0;padding:16px 18px 16px 8px;background:none;border:0;border-bottom:1px solid var(--line);font:400 1rem/1.55 Arial,Helvetica,sans-serif;overflow-wrap:anywhere}
+body.gig-poster[data-page=setup] .recipe-steps li:last-child{border-bottom:0}
+body.gig-poster[data-page=setup] .recipe-steps li::before{content:none}
+body.gig-poster[data-page=setup] .recipe-steps li::marker{font:700 .875rem 'Courier New',monospace;color:var(--ink)}
+body.gig-poster[data-page=setup] .recipe-step-title{display:block;margin:0 0 5px;font-weight:700;line-height:1.35}
+body.gig-poster[data-page=setup] .recipe-steps p{margin:0;max-width:62ch;font-size:1rem;line-height:1.55}
+body.gig-poster[data-page=setup] .recipe-resources{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr));gap:8px;margin:16px 0 0}
+body.gig-poster[data-page=setup] .recipe-resources .resource{display:flex;align-items:center;min-height:48px;margin:0;padding:10px 12px;font:700 .9375rem/1.4 Arial,Helvetica,sans-serif;overflow-wrap:anywhere}
+body.gig-poster[data-page=setup] :is(.manual-prompt,.manual-install,.resource-shelf)>summary{display:flex;align-items:center;justify-content:space-between;gap:16px;list-style:none;letter-spacing:0;text-transform:none}
+body.gig-poster[data-page=setup] :is(.manual-prompt,.manual-install,.resource-shelf)>summary::-webkit-details-marker{display:none}
+body.gig-poster[data-page=setup] :is(.manual-prompt,.manual-install,.resource-shelf)>summary::after{content:'+';float:none;flex:none;font:700 1.25rem/1 Arial,sans-serif}
+body.gig-poster[data-page=setup] :is(.manual-prompt,.manual-install,.resource-shelf)[open]>summary::after{content:'−'}
+body.gig-poster[data-page=setup] .manual-prompt .receipt-fold{background:var(--bone);border:0;padding:0}
+body.gig-poster[data-page=setup] .manual-prompt .receipt-fold pre{margin:0 0 16px;padding:16px;background:none;color:var(--ink);font:.875rem/1.6 ui-monospace,monospace;max-height:26rem;scrollbar-color:var(--ink) var(--bone)}
+body.gig-poster[data-page=setup] .resource-shelf-body p{font:400 1rem/1.55 Arial,Helvetica,sans-serif;max-width:65ch}
+@media(max-width:420px){body.gig-poster[data-page=setup] .recipe-steps li{padding-right:12px}body.gig-poster[data-page=setup] .recipe-resources{grid-template-columns:1fr}}

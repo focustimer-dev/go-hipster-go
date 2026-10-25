@@ -313,12 +313,12 @@ function renderSetup(){
  else connection="Check whether "+serviceNames[service]+" is available as a connected writer in "+aiNames[ai]+". If not, use a text playlist instead.";
  let fallback="Use the selected platform’s download links below and its installation instructions. Keep the setup check handy.";
  if(ai==="gemini"){
-  fallback="Open Gemini desktop or mobile WEB → Customize → Skills → Create → Upload. Use the Gemini Skill ZIP below. The native Gemini app does not offer ZIP upload.";
+  fallback="In Gemini web, open Customize → Skills → Create → Upload and use the Gemini Skill ZIP below. Use a desktop or mobile browser if the native app has no upload control.";
  }else if(ai==="claude")fallback="Match the download to the uploader: Skill ZIP for Skills, Plugin ZIP for Plugins. The labels are doing useful work here.";
- const confirmation=ai==="gemini"?"Check that v3.7.2 is installed as a persistent Skill in a new conversation. Reading the files once does not count. Then return to the Jukebox and press GO.":"Run the setup check above. When your AI confirms the skill and music connection are ready, return to the Jukebox and press GO.";
- const stepsText=["Try this: "+install,"If it fails: "+fallback,"Connect your music: "+connection,"Confirm it worked: "+confirmation];
- if(ai==="chatgpt"&&service==="apple")stepsText.push("After GO, use Create playlist in Apple Music if the playlist widget offers it. Until you complete that save step, the playlist is ready to save, not saved.");
- steps.replaceChildren();for(const text of stepsText){const li=doc.createElement("li");li.textContent=text;steps.append(li)}
+ const confirmation=ai==="gemini"?"In a new conversation, confirm the latest release is available as a saved Skill. Reading the files once is not installation. Then return to the Jukebox and press GO.":"Run the setup check above. When your AI confirms the skill and music connection are ready, return to the Jukebox and press GO.";
+ const stepsText=[["Install the skill",install],["If installation fails",fallback],["Connect your music",connection],["Check you’re ready",confirmation]];
+ if(ai==="chatgpt"&&service==="apple")stepsText.push(["Save after GO","Use Create playlist in Apple Music if the playlist widget offers it. Until you complete that step, the playlist is ready to save, not saved."]);
+ steps.replaceChildren();for(const [title,text] of stepsText){const li=doc.createElement("li"),heading=doc.createElement("strong"),body=doc.createElement("p");heading.className="recipe-step-title";heading.textContent=title;body.textContent=text;li.append(heading,body);steps.append(li)}
  setupLinks(links,resourceInfo[ai]);
  const caveat=doc.getElementById("recipeCaveat");if(caveat)caveat.textContent=q.note;
  const setupReady=copiedPrompt===setupPrompt(ai,service);

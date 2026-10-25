@@ -343,6 +343,12 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.match(geminiSetup,/adapters\/gemini\/SKILL\.md/,'Setup saves only the small Gemini entry');
  assert.doesNotMatch(geminiSetup,/GEM_KNOWLEDGE|Task mode/,'Install does not preload the combined bundle or require Task mode');
  assert.doesNotMatch(geminiSetup,/Read https:\/\/github\.com\/focustimer-dev\/go-hipster-go\/blob\/main\/SKILL\.md and its four references/,'Setup must not load shared root skill as Gemini native');
+ const manualSteps=harness(async()=>{},'?ai=gemini&service=youtube','setup').elements.recipeSteps.children;
+ assert.equal(manualSteps.length,4);
+ assert.deepEqual(manualSteps.map(li=>li.children[0].textContent),['Install the skill','If installation fails','Connect your music','Check you’re ready']);
+ assert.ok(manualSteps.every(li=>li.children.length===2),'Every step separates its heading from the instruction');
+ assert.match(manualSteps[3].children[1].textContent,/latest release/,'Visible confirmation does not freeze an old version');
+ assert.doesNotMatch(manualSteps.map(li=>li.children[1].textContent).join(' '),/Task mode|v3\.7\.1/);
  const setupHtml=fs.readFileSync('launcher/setup/index.html','utf8');
  assert.match(setupHtml,/If you can't tell what you're doing ironically from what you actually enjoy, welcome aboard/);
  assert.match(setupHtml,/Manager, Emeritus/);
