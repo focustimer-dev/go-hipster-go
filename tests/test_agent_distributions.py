@@ -67,12 +67,16 @@ class PortableAgentTests(unittest.TestCase):
             names = set(z.namelist())
             self.assertEqual(names, set(__import__("scripts.build_gemini_app_skill", fromlist=["REFERENCES"]).REFERENCES) | {
                 "SKILL.md",
+                "references/workflow.md",
                 "references/global-scenes.md",
                 "references/sonic-taxonomy.md",
                 "references/curation-examples.md",
                 "references/verification.md",
             })
-            text = z.read("SKILL.md").decode("utf-8")
+            entry = z.read("SKILL.md").decode("utf-8")
+            self.assertLess(len(entry), 6500)
+            self.assertIn("references/workflow.md", entry)
+            text = entry + z.read("references/workflow.md").decode("utf-8")
             self.assertTrue(text.startswith("---\nname: go-hipster-go\n"))
             self.assertIn("passive-aggressive record-store clerk", text[:700])
             self.assertIn("## The personality is mandatory in Gemini", text[:1300])
@@ -94,7 +98,12 @@ class PortableAgentTests(unittest.TestCase):
             self.assertIn("## Creative cue and count safeguards", text)
             self.assertIn("optional subplot", text)
             self.assertIn("Pre-publish deduplication", text)
-            self.assertEqual(text, (ROOT / "adapters/gemini/GEM_KNOWLEDGE.md").read_text(encoding="utf-8").split("# BEGIN SOURCE: SKILL.md\n\n", 1)[1].split("\n# END SOURCE: SKILL.md", 1)[0])
+            from scripts.build_gemini_app_skill import render
+            full = render((ROOT / "SKILL.md").read_text())
+            self.assertIn(full[full.index("## Intent and activation"):], text)
+            online = (ROOT / "adapters/gemini/SKILL.md").read_text()
+            self.assertNotIn("](references/", online)
+            self.assertIn("raw.githubusercontent.com", online)
 
             self.assertIn("## Gemini setup", text)
             self.assertIn("## Resource routing", text)
