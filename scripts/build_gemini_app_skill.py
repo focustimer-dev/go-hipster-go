@@ -158,11 +158,31 @@ Read both [sonic-taxonomy.md](references/sonic-taxonomy.md) and [global-scenes.m
     return result
 
 
+def modular_files(canonical: str, online: bool = False) -> dict[str, str]:
+    """Keep installation small; preserve all policy in a deferred workflow reference."""
+    full = render(canonical)
+    split = full.index("## Intent and activation")
+    entry, workflow = full[:split], full[split:]
+    entry += "## Detailed workflow\n\nBefore curating, read [workflow.md](references/workflow.md) for the full voice, sequencing, freshness and surprise rules. Load only references relevant to the request; do not crawl all regions or preload references during installation. If a required reference cannot be read, report that limitation rather than claiming the full skill is loaded.\n"
+    files = {"SKILL.md": entry, "references/workflow.md": workflow}
+    if online:
+        base = "https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/"
+        import re
+        def link(match):
+            path = match.group(1)
+            target = "adapters/gemini/references/workflow.md" if path == "references/workflow.md" else path
+            return "](" + base + target + ")"
+        for path, content in list(files.items()):
+            files[path] = re.sub(r"\]\((references/[^)]+)\)", link, content)
+    return files
+
+
 def build(root: Path, output: Path) -> None:
-    text = render((root / "SKILL.md").read_text(encoding="utf-8"))
+    files = modular_files((root / "SKILL.md").read_text(encoding="utf-8"))
     output.parent.mkdir(parents=True, exist_ok=True)
     with ZipFile(output, "w", ZIP_DEFLATED) as bundle:
-        bundle.writestr("SKILL.md", text)
+        for path, text in files.items():
+            bundle.writestr(path, text)
         for relative in REFERENCES:
             bundle.writestr(relative, render_reference(relative, (root / relative).read_text(encoding="utf-8")))
     print("Created", output)
