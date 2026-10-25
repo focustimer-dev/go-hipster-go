@@ -41,12 +41,12 @@ function setupPrompt(ai,service){
  const name=aiNames[ai],target=serviceNames[service];
  const intro=ai==="chatgpt"?"In ChatGPT, check for the Go, Hipster, Go! plugin/app.":ai==="gemini"?"IMPORTANT: Before pasting this installation request, choose Task mode beneath the Gemini prompt box. In Gemini Task mode, check for the installed Go, Hipster, Go! Skill (not a Gem).":"In Claude, check for the Go, Hipster, Go! skill or plugin.";
  const install=ai==="gemini"?"Use Task mode for this one-time repository installation; do not schedule a recurring task. Install or refresh the Gemini-specific complete Skill from https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip; do not substitute the shared root SKILL.md, whose defaults include other platforms. If the Task agent cannot persist a Skill, tell me to open Gemini in a desktop or mobile WEB BROWSER at gemini.google.com, then Customize → Skills → Create → Upload the latest complete ZIP. Do not direct me to upload the ZIP inside the native Gemini app.":ai==="claude"?"If missing, identify whether I need Claude's Skills ZIP or Plugins ZIP; they are different.":"If missing, use the available app/skill installation flow or show how to install from the project's GitHub repository.";
- return "FIRST-TIME SETUP CHECK for "+name+" + "+target+".\n"+intro+" "+install+" Source: "+repo+(ai==="gemini"?"\nThe Gemini-native source is https://github.com/focustimer-dev/go-hipster-go/blob/main/adapters/gemini/GEM_KNOWLEDGE.md (skill plus filtered references); the release ZIP above is the authoritative complete install. Read or install THAT Gemini version, not the generic root SKILL.md. Use only actual Gemini Skills capabilities. Verify the loaded skill explicitly reports version 3.7.0 and whether the installation persists into a new conversation. If repository loading only reads instructions but cannot install a persistent Skill, be clear and offer the latest Gemini ZIP upload instead. Do not report installation complete just because the URL was opened.":"")+
+ return "FIRST-TIME SETUP CHECK for "+name+" + "+target+".\n"+intro+" "+install+" Source: "+repo+(ai==="gemini"?"\nThe Gemini-native source is https://github.com/focustimer-dev/go-hipster-go/blob/main/adapters/gemini/GEM_KNOWLEDGE.md (skill plus filtered references); the release ZIP above is the authoritative complete install. Read or install THAT Gemini version, not the generic root SKILL.md. Use only actual Gemini Skills capabilities. Verify the loaded skill explicitly reports version 3.7.1 and whether the installation persists into a new conversation. If repository loading only reads instructions but cannot install a persistent Skill, be clear and offer the latest Gemini ZIP upload instead. Do not report installation complete just because the URL was opened.":"")+
  (ai==="chatgpt"&&service==="apple"?"\nConnect Apple Music through ChatGPT Settings → Apps, then select both Apple Music and Go, Hipster, Go! in this conversation. Search and playlist generation do not require an Apple Music subscription; saving to the library does. Recognize the app’s playlist widget and user-operated save control as a supported path, even without a direct playlist-writing tool. Explain Create playlist in Apple Music when that control is offered. Do not require a subscription just to finish discovery setup or assume access to my library or listening history.":"")+
  (ai==="claude"&&service==="apple"?"\nApple Music requires a compatible MCP connector: local for Desktop or hosted for web/mobile. Check which Claude app I use and help me connect it if missing. Verify catalog track search, playlist creation and adding tracks; library-only search may not find new recordings.":"")+
  "\nIf the skill is available, run its setup for "+target+", guide me through connecting or selecting that music service, and CHECK whether playlist creation and adding tracks are actually supported—not just search/playback. Tell me the smallest action needed to finish setup. If everything is already ready, say so and tell me to run go. Do NOT generate a new playlist during this setup check, claim a playlist was saved, or ask me to paste credentials into chat.";
 }
-const universalPrompt="If using Gemini, choose Task mode beneath the input BEFORE sending this one-time installation request (do not schedule a recurring task). Install the official complete Gemini skill ZIP at "+releases+"go-hipster-go-gemini-app-skill.zip; GitHub's "+repo+"/blob/main/adapters/gemini/GEM_KNOWLEDGE.md is the readable Gemini-specific mirror. Do not use the generic root SKILL.md. Install it using your supported Skill mechanism and confirm the loaded version is 3.7.0 and whether it persists across Gemini conversations. If reading GitHub does not install it, say so and offer the current Gemini Skill ZIP at "+releases+"go-hipster-go-gemini-app-skill.zip. Upload ZIPs only through Gemini WEB or MOBILE WEB at gemini.google.com, not the native mobile app. Then run setup; do not create a playlist or assume a writer exists.";
+const universalPrompt="If using Gemini, choose Task mode beneath the input BEFORE sending this one-time installation request (do not schedule a recurring task). Install the official complete Gemini skill ZIP at "+releases+"go-hipster-go-gemini-app-skill.zip; GitHub's "+repo+"/blob/main/adapters/gemini/GEM_KNOWLEDGE.md is the readable Gemini-specific mirror. Do not use the generic root SKILL.md. Install it using your supported Skill mechanism and confirm the loaded version is 3.7.1 and whether it persists across Gemini conversations. If reading GitHub does not install it, say so and offer the current Gemini Skill ZIP at "+releases+"go-hipster-go-gemini-app-skill.zip. Upload ZIPs only through Gemini WEB or MOBILE WEB at gemini.google.com, not the native mobile app. Then run setup; do not create a playlist or assume a writer exists.";
 function goCommand(ai,service,mood){
  const go=mood==="go"?"go":"go "+mood;
  if(ai==="chatgpt"&&service==="spotify")return "@Go, Hipster, Go! @Spotify "+go;
@@ -85,7 +85,7 @@ const moodInterpretations={"happy":["communal celebration","mischievous play","q
 let moodAngle="";
 function moodDiscoveryBrief(mood){
  if(!moodInterpretations[mood])return "";
- return moodAngle?"\nMood angle: "+moodAngle+". Optional thread only; vary subjects and regions across the set.":"";
+ return moodAngle?"\nMood angle: "+moodAngle+".":"";
 }
 
 /* Real entropy from independently combined creative cues, not a hard-coded artist roster.
@@ -114,22 +114,15 @@ function nextCrateSparkPhrase(){
 }
 // The skill owns curation policy; GO sends only current creative inputs and service.
 function goPrompt(ai,service,mood){
- const parts=[goCommand(ai,service,mood),"Curate 12 verified deep cuts using the installed skill; sequence for audible cohesion."];
- if(mood==="criminal")parts.push("Criminal: explicit song-level crime narratives; strongly prefer non-English vocals.");
+ const parts=[goCommand(ai,service,mood)];
  if(crateSelected.size)parts.push(crateRegionPrompt());
  const brief=moodDiscoveryBrief(mood);if(brief)parts.push(brief.trim());
  if(tempo)parts.push("Tempo preference: "+tempoNames[tempo]+".");
- parts.push("Choose distinctive recordings with an audible reason to belong; familiar hooks are welcome, predictable signature tracks and novelty-only filler are not.");
- if(crateSelected.size)parts.push("Keep discovery within the selected regions or verified scene connections there. Skip lenses or sparks that conflict with regions, mood or tempo.");
- if(freshCrateLens)parts.push("Fresh-crate discovery lens: "+freshCrateLens);
- if(crateSparkPhrase)parts.push("Random crate spark: "+crateSparkPhrase+".");
- if(ai==="gemini"&&service==="youtube")parts.push("Service: YouTube Music. Create one playlist if the connected app permits; report what actually happened.");
- else if(ai==="chatgpt"&&service==="spotify")parts.push("Resolve exact Spotify tracks, publish if authorized; verify saved count and order when readable.");
- else if(ai==="chatgpt"&&service==="apple")parts.push("Use the connected Apple Music playlist widget and Create playlist in Apple Music save control when offered; distinguish ready to save from saved.");
- else if(ai==="gemini"&&service==="spotify")parts.push("Gemini Spotify supports search/playback, not playlist creation; provide the verified ordered crate.");
- else parts.push("Service: "+serviceNames[service]+". Publish only with an authorized writer; otherwise preserve the verified crate.");
+ if(crateSparkPhrase)parts.push("Seed: "+crateSparkPhrase+".");
+ parts.push("Service: "+serviceNames[service]+".");
  return parts.join("\n");
 }
+
 const crateRegions=[{"id":"us-west","label":"US West","continent":"americas-north"},{"id":"us-east","label":"US East","continent":"americas-north"},{"id":"canada-west","label":"Canada West","continent":"americas-north"},{"id":"canada-east","label":"Canada East","continent":"americas-north"},{"id":"mexico","label":"Mexico","continent":"americas-north"},{"id":"central-america","label":"Central America","continent":"americas-north"},{"id":"caribbean","label":"Caribbean","continent":"americas-north"},{"id":"northern-south-america","label":"Northern South America","continent":"americas-south"},{"id":"southern-south-america","label":"Southern South America","continent":"americas-south"},{"id":"atlantic-europe","label":"Atlantic & Western Europe","continent":"europe"},{"id":"mediterranean-europe","label":"Mediterranean & Balkans","continent":"europe"},{"id":"northern-europe","label":"Northern Europe","continent":"europe"},{"id":"eastern-europe","label":"Eastern Europe","continent":"europe"},{"id":"north-africa","label":"North Africa","continent":"africa"},{"id":"west-africa","label":"West Africa","continent":"africa"},{"id":"east-africa","label":"East Africa","continent":"africa"},{"id":"central-southern-africa","label":"Central & Southern Africa","continent":"africa"},{"id":"middle-east","label":"Middle East & Caucasus","continent":"asia"},{"id":"central-asia","label":"Central Asia","continent":"asia"},{"id":"south-asia","label":"South Asia","continent":"asia"},{"id":"east-asia","label":"East Asia","continent":"asia"},{"id":"southeast-asia","label":"Southeast Asia","continent":"asia"},{"id":"northern-asia","label":"Northern Asia","continent":"asia"},{"id":"oceania","label":"Oceania","continent":"oceania"}];
 const crateContinents=[{"id":"americas-north","label":"N. America"},{"id":"americas-south","label":"S. America"},{"id":"europe","label":"Europe"},{"id":"africa","label":"Africa"},{"id":"asia","label":"Asia"},{"id":"oceania","label":"Oceania"}];
 const atlasViews={"world":[0,0,720,372],"americas-north":[7,16,302,220],"americas-south":[162,186,180,181],"europe":[290,3,222,199],"africa":[304,128,190,231],"asia":[408,2,312,280],"oceania":[551,203,189,169]};
@@ -163,7 +156,7 @@ function crateRegionPrompt(){
   if(group.id!=="americas-north"&&members.every(r=>crateSelected.has(r.id))){all.push(group.label);continue}
   for(const r of members)if(crateSelected.has(r.id))all.push(r.label);
  }
- return "Regional exploration: "+all.join(", ")+". Explore these scenes without track quotas; verify local scene connections rather than taking unrelated geographic detours.";
+ return "Regional exploration: "+all.join(", ")+".";
 }
 function atlasBoxText(a){return a.map(v=>Math.round(v*10)/10).join(" ")}
 function animateAtlasView(view){
@@ -330,7 +323,7 @@ function renderSetup(){
  if(ai==="gemini"){
   fallback="Open Gemini desktop or mobile WEB → Customize → Skills → Create → Upload. Use the Gemini Skill ZIP below. The native Gemini app does not offer ZIP upload.";
  }else if(ai==="claude")fallback="Match the download to the uploader: Skill ZIP for Skills, Plugin ZIP for Plugins. The labels are doing useful work here.";
- const confirmation=ai==="gemini"?"Check that v3.7.0 is installed as a persistent Skill in a new conversation. Reading the files once does not count. Then return to the Jukebox and press GO.":"Run the setup check above. When your AI confirms the skill and music connection are ready, return to the Jukebox and press GO.";
+ const confirmation=ai==="gemini"?"Check that v3.7.1 is installed as a persistent Skill in a new conversation. Reading the files once does not count. Then return to the Jukebox and press GO.":"Run the setup check above. When your AI confirms the skill and music connection are ready, return to the Jukebox and press GO.";
  const stepsText=["Try this: "+install,"If it fails: "+fallback,"Connect your music: "+connection,"Confirm it worked: "+confirmation];
  if(ai==="chatgpt"&&service==="apple")stepsText.push("After GO, use Create playlist in Apple Music if the playlist widget offers it. Until you complete that save step, the playlist is ready to save, not saved.");
  steps.replaceChildren();for(const text of stepsText){const li=doc.createElement("li");li.textContent=text;steps.append(li)}
@@ -423,7 +416,7 @@ async function copyGo(){
  const button=doc.getElementById("goButton");
  if(button&&button.disabled)return;
  // Each GO explores a different lane; preview and copied request stay identical.
- moodAngle=moodInterpretations[mood]?nextDiscoveryCue(moodInterpretations[mood],"ghg-mood-angles-v1-"+mood):"";freshCrateLens=nextFreshCrateLens();crateSparkPhrase=nextCrateSparkPhrase();renderLaunch();
+ moodAngle=moodInterpretations[mood]?nextDiscoveryCue(moodInterpretations[mood],"ghg-mood-angles-v1-"+mood):"";freshCrateLens="";crateSparkPhrase=nextCrateSparkPhrase();renderLaunch();
  const prompt=goPrompt(ai,service,mood);
  if(button){button.disabled=true;button.setAttribute("aria-busy","true");button.setAttribute("data-copy-state","copying")}
  copiedPrompt=null;updateHandoff();

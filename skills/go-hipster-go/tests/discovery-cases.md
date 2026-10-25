@@ -291,3 +291,7 @@ Pass publication reporting when every claimed number is grounded in a provider r
 - Generate a cue, change regions, then inspect/share/manual-copy: previous lens, mood angle and spark must be absent; GO regenerates compatible cues and the receipt matches clipboard.
 - Compare a broad pop route, an obscure tradition and an underground club route: each final recording needs a concrete supported musical contribution. Neither chart familiarity nor obscurity decides quality. No fixed famous-artist roster, novelty-only filler or invented listening claims.
 - Catalog routing tests verify compatibility and repeat control, not subjective listening quality, song-level crime evidence or streaming availability.
+
+## Compact handoff regression
+
+Send only `go criminal`, US East/West, Slow, one mood angle, `Seed:` and YouTube Music. Require 12 by default, verified song-level crime narratives and strong non-English preference, compatible regional routes, metaphor-only seed interpretation and an honest publication result. Do not request missing boilerplate. Repeat with sad/slow Central & Southern Africa; do not force a fast genre route to satisfy the seed. Legacy longer requests and explicit lens instructions remain supported beneath user constraints.
