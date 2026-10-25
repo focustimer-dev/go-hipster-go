@@ -340,7 +340,8 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.match(geminiSetup,/3.7.2/,'Setup asks for installed version verification');
  assert.match(geminiSetup,/persistent Skill/,'Setup distinguishes reading a repo from installation');
  assert.match(geminiSetup,/go-hipster-go-gemini-app-skill\.zip/,'Setup installs the Gemini-specific release ZIP');
- assert.match(geminiSetup,/adapters\/gemini\/GEM_KNOWLEDGE\.md/,'Setup identifies the host-filtered GitHub knowledge');
+ assert.match(geminiSetup,/adapters\/gemini\/SKILL\.md/,'Setup saves only the small Gemini entry');
+ assert.doesNotMatch(geminiSetup,/GEM_KNOWLEDGE|Task mode/,'Install does not preload the combined bundle or require Task mode');
  assert.doesNotMatch(geminiSetup,/Read https:\/\/github\.com\/focustimer-dev\/go-hipster-go\/blob\/main\/SKILL\.md and its four references/,'Setup must not load shared root skill as Gemini native');
  const setupHtml=fs.readFileSync('launcher/setup/index.html','utf8');
  assert.match(setupHtml,/If you can't tell what you're doing ironically from what you actually enjoy, welcome aboard/);
@@ -348,8 +349,8 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.doesNotMatch(setupHtml,/Department of Questionable Sonic Decisions/);
  assert.doesNotMatch(criminalCopies[0],/Optional thread only; vary subjects and regions across the set/);
 
- assert.match(geminiSetup,/choose Task mode beneath the Gemini prompt box/,'Gemini setup requires Task mode before pasting');
- assert.match(geminiSetup,/do not schedule a recurring task/,'Gemini install task must not be scheduled');
+ assert.match(geminiSetup,/Save only the entry now/,'Install is bounded to saving one entry');
+ assert.match(geminiSetup,/do not fetch its references/,'Installation does not crawl runtime references');
  assert.match(geminiSetup,/desktop or mobile WEB BROWSER/,'ZIP fallback must use Gemini web');
  assert.match(geminiSetup,/Do not direct me to upload the ZIP inside the native Gemini app/,'Native app ZIP upload is not offered');
  const nonGemSetup=harness(async()=>{},'?ai=chatgpt&service=spotify','setup').elements.setupPromptText.textContent;
