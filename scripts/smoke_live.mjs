@@ -20,14 +20,59 @@ export function verifyCommit(commit) {
   return commit;
 }
 
-export async function checkRelease(browser, baseURL, expectedCommit, sourceCache = new Map()) {
+export const profiles = [
+  { name: 'desktop', viewport: { width: 1280, height: 900 }, textScale: 1 },
+  { name: 'phone', viewport: { width: 390, height: 844 }, textScale: 1, isMobile: true, hasTouch: true },
+  { name: 'phone-large-text', viewport: { width: 390, height: 844 }, textScale: 2, isMobile: true, hasTouch: true },
+];
+export function verifyGeometry(snapshot, label) {
+  const problems = [];
+  if (snapshot.scrollWidth > snapshot.clientWidth + 1) problems.push(`horizontal page overflow (${snapshot.scrollWidth}px > ${snapshot.clientWidth}px)`);
+  for (const rect of snapshot.targets) {
+    if (rect.width < 43.5 || rect.height < 43.5) problems.push(`${rect.label} tap target is ${rect.width} × ${rect.height}px, expected at least 44 × 44`);
+    if (rect.left < -1 || rect.right > snapshot.clientWidth + 1) problems.push(`${rect.label} extends outside the page`);
+  }
+  for (let i = 0; i < snapshot.targets.length; i++) {
+    for (const other of snapshot.targets.slice(i + 1)) {
+      const rect = snapshot.targets[i];
+      const x = Math.min(rect.right, other.right) - Math.max(rect.left, other.left);
+      const y = Math.min(rect.bottom, other.bottom) - Math.max(rect.top, other.top);
+      if (x > 1 && y > 1) problems.push(`${rect.label} overlaps ${other.label}`);
+    }
+  }
+  if (problems.length) {
+    const error = new Error(`${label}: ${problems.join('; ')}`);
+    error.name = 'LayoutSmokeError';
+    throw error;
+  }
+}
+async function checkGeometry(page, label, selectors) {
+  const snapshot = await page.evaluate(selectors => ({
+    clientWidth: document.documentElement.clientWidth,
+    scrollWidth: document.documentElement.scrollWidth,
+    targets: [...document.querySelectorAll(selectors)].filter(el => el.getClientRects().length && getComputedStyle(el).visibility !== 'hidden').map(el => {
+      const r = el.getBoundingClientRect();
+      return { label: el.id || el.getAttribute('aria-label') || el.textContent.trim(), left: r.left, right: r.right, top: r.top, bottom: r.bottom, width: r.width, height: r.height };
+    }),
+  }), selectors);
+  verifyGeometry(snapshot, label);
+}
+
+export async function checkRelease(browser, baseURL, expectedCommit, sourceCache = new Map(), profile = profiles[0]) {
   verifyCommit(expectedCommit);
   const origin = new URL(baseURL).origin;
-  const context = await browser.newContext({ permissions: ['clipboard-read', 'clipboard-write'] });
+  const context = await browser.newContext({ viewport: profile.viewport, isMobile: profile.isMobile || false, hasTouch: profile.hasTouch || false, permissions: ['clipboard-read', 'clipboard-write'] });
   const page = await context.newPage();
   page.setDefaultTimeout(15000);
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
+  async function applyTextScale() {
+    if (profile.textScale !== 1) {
+      // 200% base text exercises rem-based text reflow; this is not OS font emulation.
+      await page.addStyleTag({ content: `html { font-size: ${profile.textScale * 100}% !important; }` });
+    }
+  }
+  const mainTargets = '#goButton, #shuffleCrate, #pinMood, #pinPace, #pinRegions, #undoShuffle, [data-mood], [data-ai], [data-service]';
   async function responseBytes(url) {
     const response = await context.request.get(url, { timeout: 15000 });
     assert.equal(response.status(), 200, `${url}: HTTP ${response.status()}`);
@@ -48,6 +93,8 @@ export async function checkRelease(browser, baseURL, expectedCommit, sourceCache
   try {
     const home = await page.goto(`${origin}/?ai=gemini&service=youtube&mood=angry&tempo=slow`, { waitUntil: 'networkidle' });
     assert.equal(home.status(), 200, 'Jukebox did not load');
+    await applyTextScale();
+    await checkGeometry(page, `${profile.name}: Jukebox`, mainTargets);
     await checkAssets();
     for (const selector of ['#goButton', '#shuffleCrate', '#pinMood', '#pinPace', '#pinRegions', '#tempoSlider', '[data-mood="angry"]', '[data-ai="gemini"]']) {
       assert.ok(await page.locator(selector).isVisible(), `${selector}: control is not directly available`);
@@ -61,6 +108,7 @@ export async function checkRelease(browser, baseURL, expectedCommit, sourceCache
     assert.doesNotMatch(shuffled, /Regional exploration:/, 'Pinned Worldwide selection changed');
     assert.doesNotMatch(shuffled, /Tempo preference: Slow/, 'Unpinned pace did not change');
     assert.equal(await page.locator('#receiptCopy').textContent(), 'REQUEST DRAFT', 'Shuffle incorrectly claims a copy');
+    await checkGeometry(page, `${profile.name}: shuffled`, mainTargets);
     await page.locator('#pinPace').click();
     assert.ok(await page.locator('#shuffleCrate').isDisabled(), 'All pinned must disable shuffle');
     await page.locator('#pinPace').click();
@@ -70,8 +118,16 @@ export async function checkRelease(browser, baseURL, expectedCommit, sourceCache
     await page.waitForFunction(() => document.querySelector('#receiptCopy')?.textContent === 'COPIED TO CLIPBOARD');
     assert.equal(await page.evaluate(() => navigator.clipboard.readText()), await page.locator('#prompt').textContent(), 'Receipt and clipboard differ');
     assert.equal(await page.locator('#promptReceipt').getAttribute('data-copy-state'), 'copied');
+    await checkGeometry(page, `${profile.name}: receipt`, mainTargets);
+    await page.locator('#atlasNamedRegions > summary').click();
+    await page.getByRole('button', { name: 'AFRICA', exact: true }).click();
+    await page.getByRole('button', { name: 'North Africa', exact: true }).click();
+    assert.ok(await page.getByRole('button', { name: 'Remove North Africa from listening regions', exact: true }).isVisible(), 'Atlas did not create its stamp');
+    await checkGeometry(page, `${profile.name}: expanded atlas`, `${mainTargets}, .crate-continents button, .crate-regions button, #crateGeoClear`);
+    assert.equal(await page.locator('#promptReceipt').getAttribute('data-copy-state'), 'idle', 'Manual region changes must invalidate the copied receipt');
     const manual = await page.goto(`${origin}/setup/?ai=gemini&service=youtube`, { waitUntil: 'networkidle' });
     assert.equal(manual.status(), 200, 'Manual did not load');
+    await applyTextScale();
     await checkAssets();
     await page.locator('.manual-install > summary').click();
     assert.equal(await page.locator('#recipeSteps .recipe-step-title').count(), 4, 'Manual steps did not initialize');
@@ -80,11 +136,12 @@ export async function checkRelease(browser, baseURL, expectedCommit, sourceCache
     assert.match(instructions, /latest release/);
     assert.doesNotMatch(instructions, /Task mode|v3\.7\.1/, 'Known stale installation instructions returned');
     assert.match(await page.locator('#setupPromptText').textContent(), /adapters\/gemini\/SKILL\.md/);
+    await checkGeometry(page, `${profile.name}: Manual`, '#copyTailoredSetup, #openSelectedAi, #recipeResources a, [data-ai], [data-service]');
     assert.deepEqual(errors, [], 'Uncaught browser errors');
-    return { release: expectedCommit, assets: criticalAssets.size, pages: ['Jukebox', 'Manual'], controls: 'GO, Shuffle, pins, Undo, clipboard and receipt passed' };
+    return { profile: profile.name, viewport: profile.viewport, baseTextScale: profile.textScale, release: expectedCommit, assets: criticalAssets.size, pages: ['Jukebox', 'Manual'], controls: 'GO, Shuffle, pins, Undo, clipboard and receipt passed' };
   } catch (error) {
     await mkdir('artifacts/live-smoke', { recursive: true });
-    await page.screenshot({ path: 'artifacts/live-smoke/failure.png', fullPage: true, timeout: 5000 }).catch(() => {});
+    await page.screenshot({ path: `artifacts/live-smoke/${profile.name}-failure.png`, fullPage: true, timeout: 5000 }).catch(() => {});
     throw error;
   } finally {
     await context.close();
@@ -104,11 +161,21 @@ async function main() {
     // Bounded propagation window when a main push immediately precedes deployment.
     for (let attempt = 1; attempt <= 4; attempt++) {
       try {
-        console.log(JSON.stringify({ status: 'PASS', ...await checkRelease(browser, url, expected, sourceCache) }, null, 2));
+        const results = [], failures = [];
+        for (const profile of profiles) {
+          try { results.push(await checkRelease(browser, url, expected, sourceCache, profile)); }
+          catch (error) { failures.push(error); }
+        }
+        if (failures.length) {
+          const error = new Error(failures.map(e => e.message).join('\n'));
+          error.noRetry = failures.some(e => e.name === 'LayoutSmokeError');
+          throw error;
+        }
+        console.log(JSON.stringify({ status: 'PASS', results }, null, 2));
         return;
       } catch (error) {
         console.error(`Attempt ${attempt}/4: ${error.message}`);
-        if (attempt === 4) throw error;
+        if (attempt === 4 || error.noRetry) throw error;
         await new Promise(resolve => setTimeout(resolve, 10000));
       }
     }

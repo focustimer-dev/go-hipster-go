@@ -168,7 +168,7 @@ Copied GO starts with `@go-hipster-go` and the selected music service. YouTube M
 
 `Live release smoke` runs once for relevant main-branch pushes and can be run manually from Actions. Supply the full expected deployed commit for a manual check; blank uses the selected workflow ref. A source-only push without a matching deployment is expected to fail this release check, while ordinary offline CI remains separate. The checker allows a bounded propagation window.
 
-It compares the actual JavaScript, shared CSS and edition CSS bytes on the Jukebox and Manual with the expected commit, then checks directly available controls, pinned shuffle, Undo, clipboard-to-receipt fidelity and initialized Manual guidance in a fresh Chromium context. It neither connects music accounts nor publishes playlists. Failure screenshots come from that clean context.
+It compares the actual JavaScript, shared CSS and edition CSS bytes on the Jukebox and Manual with the expected commit, then checks directly available controls, pinned shuffle, Undo, clipboard-to-receipt fidelity and initialized Manual guidance in fresh Chromium contexts. Profiles cover 1280px desktop, 390px touch/mobile, and the same phone viewport with 200% base text. The last pass tests rem-based text reflow rather than emulating Android system font settings. Each pass checks horizontal overflow, control overlap, and 44×44px targets on primary, shuffle, mood, service and expanded atlas/Manual controls. Layout failures are reported by profile and do not consume propagation retries. It neither connects music accounts nor publishes playlists. Failure screenshots come from that clean context.
 
 For a local check, install Playwright 1.62.1 and its Chromium browser, then run:
 

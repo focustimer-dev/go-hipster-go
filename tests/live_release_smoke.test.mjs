@@ -15,3 +15,15 @@ test('an ambiguous release reference is rejected', () => {
   for (const value of ['', 'main', 'abc1234']) assert.throws(() => verifyCommit(value));
   assert.equal(verifyCommit('a'.repeat(40)), 'a'.repeat(40));
 });
+
+const { verifyGeometry } = await import('../scripts/smoke_live.mjs');
+const target = (label, left, top, width = 44, height = 44) => ({ label, left, top, width, height, right: left + width, bottom: top + height });
+test('phone geometry permits wrapping into another row', () => {
+  assert.doesNotThrow(() => verifyGeometry({ clientWidth: 390, scrollWidth: 390, targets: [target('Shuffle', 0, 0), target('Pin', 0, 48)] }, 'phone'));
+});
+test('phone geometry rejects overflow, undersized targets and overlap', () => {
+  assert.throws(() => verifyGeometry({ clientWidth: 390, scrollWidth: 410, targets: [] }, 'phone'), /horizontal page overflow/);
+  assert.throws(() => verifyGeometry({ clientWidth: 390, scrollWidth: 390, targets: [target('Pin', 0, 0, 30)] }, 'phone'), /tap target/);
+  assert.throws(() => verifyGeometry({ clientWidth: 390, scrollWidth: 390, targets: [target('Shuffle', 0, 0), target('Pin', 30, 0)] }, 'phone'), /overlaps/);
+  assert.throws(() => verifyGeometry({ clientWidth: 390, scrollWidth: 390, targets: [target('Pin', 370, 0)] }, 'phone'), /outside the page/);
+});
