@@ -1,3 +1,13 @@
+## Pre-publication artist diversity and spacing regression (2026-10-25)
+
+- Reproduce the failure with the 12-track *Mountains Have Had Enough* sequence: repeated Lalalar, Omar Souleyman and three consecutive 47SOUL tracks. The standard-sequence lint must flag the adjacent runs, seven distinct artists and the three-track concentration.
+- The normal 12-track cross-scene target is **at least nine distinct lead artists**, generally at most two songs per artist, and no adjacent repeats. Prefer two intervening artists between repeated tracks. Reorder alone is not a fix for overconcentration; replace weaker repeats with verified artists when sound and availability support it.
+- Retain musical coherence and user-requested artist spotlights; numerical diversity is a default editorial target, not permission to add filler or overwrite artist-focused instructions.
+- Do not confuse different spellings/aliases, multiple uploads or remixes of one artist with additional artist diversity.
+- DeBarge Protocol remains exempt. Existing playlists are not automatically edited by a skill code change; use authorized provider actions and read back the result.
+- Run `python scripts/playlist_cli.py lint-sequence path/to/playlist.json` before publishing a normal manifest; warnings require a better selection or an explained artistic/user-directed exception.
+- This unit/contract check does not prove actual music-service playlist editing or saved order.
+
 ## v3.6.0 default-GO publication contract — current acceptance
 
 - Plain `go` in Gemini + YouTube Music must curate and attempt one authorized playable playlist. No `go live` requirement, no visible curate-only option. `go, text only` is the explicit no-publish override.
