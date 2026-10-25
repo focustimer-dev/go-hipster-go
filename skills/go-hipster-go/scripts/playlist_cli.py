@@ -2,6 +2,8 @@
 """Offline tools for Go, Hipster, Go!. Python 3.10+, no dependencies."""
 from __future__ import annotations
 import argparse
+from collections import Counter
+from math import ceil
 import json
 import re
 import secrets
@@ -82,6 +84,43 @@ def validate_playlist(data: object, strict: bool = False) -> list[str]:
     return errs
 
 
+
+def artist_spacing_issues(data: object) -> list[str]:
+    """Editorial preflight warnings for ordinary playlists; not catalog verification.
+
+    Deliberate artist-led sets may override these warnings with user intent.
+    The exceptional DeBarge Protocol is deliberately exempt.
+    """
+    if not isinstance(data, dict) or data.get("mode") != "standard":
+        return []
+    tracks = data.get("tracks")
+    if not isinstance(tracks, list):
+        return []
+    names = []
+    for track in tracks:
+        raw = track.get("artist") if isinstance(track, dict) else None
+        names.append(" ".join(raw.split()).casefold() if isinstance(raw, str) else "")
+    issues = []
+    for i, name in enumerate(names):
+        if not name:
+            continue
+        if i >= 1 and name == names[i - 1]:
+            issues.append(f"same lead artist in consecutive positions {i} and {i + 1}")
+        elif i >= 2 and name == names[i - 2]:
+            issues.append(f"same lead artist too close at positions {i - 1} and {i + 1}")
+    counts = Counter(name for name in names if name)
+    n = len(tracks)
+    if n >= 10:
+        target = ceil(n * 0.70)
+        if len(counts) < target:
+            issues.append(f"only {len(counts)} distinct lead artists in {n} tracks; aim for at least {target}")
+        maximum = max(2, ceil(n / 6))
+        for name, count in counts.items():
+            if count > maximum:
+                issues.append(f"artist '{name}' appears {count} times in {n} tracks; aim for at most {maximum}")
+    return issues
+
+
 def check_skill(root:Path=ROOT)->list[str]:
     errs=[]; f=root/'SKILL.md'
     if not f.exists(): return ['SKILL.md missing']
@@ -129,6 +168,8 @@ def main(argv=None)->int:
     sub=p.add_subparsers(dest='command',required=True)
     v=sub.add_parser('validate',help='Validate structural playlist JSON; NOT catalog truth')
     v.add_argument('path',type=Path); v.add_argument('--strict',action='store_true')
+    q=sub.add_parser('lint-sequence',help='Editorial artist diversity/spacing check; exceptional artist-led sets may override')
+    q.add_argument('path',type=Path)
     sub.add_parser('roll',help='Uniform 1:100 roll; call only once per eligible playlist')
     d=sub.add_parser('debarge',help='Create explicit 25-track joke payload')
     d.add_argument('--output',type=Path,required=True)
@@ -146,11 +187,11 @@ def main(argv=None)->int:
         try: data=json.loads(a.path.read_text(encoding='utf-8-sig'))
         except (OSError,ValueError) as ex:
             print(f'ERROR: cannot read JSON: {ex}',file=sys.stderr);return 2
-        errs=validate_playlist(data,strict=a.strict)
+        errs=artist_spacing_issues(data) if a.command=='lint-sequence' else validate_playlist(data,strict=a.strict)
     if errs:
         for e in errs: print('FAIL:',e,file=sys.stderr)
         return 1
-    print('PASS: '+('skill metadata and links' if a.command=='check-skill' else 'playlist structure')+' (not evidence of online verification).')
+    print('PASS: '+('skill metadata and links' if a.command=='check-skill' else 'artist spacing and diversity' if a.command=='lint-sequence' else 'playlist structure')+' (not evidence of online verification).')
     return 0
 
 
