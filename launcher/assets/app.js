@@ -188,7 +188,10 @@ function renderCrateMap(){
   b.setAttribute("aria-pressed",String(crateSelected.has(b.dataset.crateRegion)));
  });
  doc.querySelectorAll("[data-crate-continent]").forEach(b=>b.setAttribute("aria-pressed",String(atlasFocus===b.dataset.crateContinent)));
- doc.querySelectorAll("[data-atlas-zone]").forEach(z=>z.setAttribute("data-selected",String(crateSelected.has(z.dataset.atlasZone))));
+ doc.querySelectorAll("[data-atlas-zone]").forEach(z=>{
+  z.setAttribute("data-selected",String(crateSelected.has(z.dataset.atlasZone)));
+  z.setAttribute("data-press",String(z.dataset.atlasZone===lastCrateStamp));
+ });
  doc.querySelectorAll("[data-atlas-country]").forEach(path=>{
   path.setAttribute("data-inked",String(crateSelected.has(path.dataset.atlasRegion)));
  });
@@ -202,7 +205,10 @@ function renderAtlasNavigation(){
  const focused=Boolean(atlasFocus),panel=doc.getElementById("crateGeo");
  if(panel)panel.setAttribute("data-focus",String(focused||atlasUserNavigated));
  const loc=doc.getElementById("atlasLocator");
- if(loc)loc.textContent=focused?"LISTENING MAP / "+atlasNames[atlasFocus]:"LISTENING MAP · 24 REGIONS";
+ if(loc){
+  const place=focused?atlasNames[atlasFocus]:"WHOLE WORLD";
+  loc.textContent=place+" / "+(crateSelected.size?crateSelected.size+" STAMP"+(crateSelected.size===1?"":"S"):"OPEN CRATE");
+ }
  const home=doc.getElementById("atlasHome");if(home)home.hidden=!(focused||atlasUserNavigated);
  const hint=doc.getElementById("atlasInstruction");
  if(hint){

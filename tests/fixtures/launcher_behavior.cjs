@@ -192,7 +192,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.equal(atlas.elements.atlasHome.hidden,true);
  await atlas.crateContinents.find(b=>b.dataset.crateContinent==='europe').click();
  assert.equal(atlas.crateRegions.filter(b=>!b.hidden).length,4);
- assert.equal(atlas.elements.atlasLocator.textContent,'LISTENING MAP / Europe');
+ assert.equal(atlas.elements.atlasLocator.textContent,'Europe / 3 STAMPS');
 
  // Visible shapes stay selectable after navigating beyond a focused continent.
  const crossAtlas=harness(async()=>{});
@@ -200,7 +200,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  const crossView=crossAtlas.elements.crateAtlasMap.getAttribute('viewBox');
  await crossAtlas.atlasCountries.find(b=>b.dataset.atlasRegion==='north-africa').click();
  assert.match(crossAtlas.elements.prompt.textContent,/North Africa/,'Adjacent continent can be selected without Whole World');
- assert.equal(crossAtlas.elements.atlasLocator.textContent,'LISTENING MAP / Africa','Named controls follow the tapped region');
+ assert.equal(crossAtlas.elements.atlasLocator.textContent,'Africa / 1 STAMP','Named controls follow the tapped region');
  assert.equal(crossAtlas.elements.crateAtlasMap.getAttribute('viewBox'),crossView,'Cross-continent selection does not move the target away');
  await crossAtlas.atlasCountries.find(b=>b.dataset.atlasRegion==='mediterranean-europe').click();
  assert.match(crossAtlas.elements.prompt.textContent,/Mediterranean & Balkans/,'Can select back across the boundary without reset');
@@ -255,6 +255,9 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  await choose('us-east');await choose('canada-west');await choose('us-west');
  let stamps=focusAtlas.elements.atlasStamps.children;
  assert.deepEqual(stamps.map(b=>b.dataset.crateStampRegion),['us-west','us-east','canada-west'],'Stamp ordering stays geographic, not click order');
+ assert.equal(focusAtlas.elements.atlasLocator.textContent,'WHOLE WORLD / 3 STAMPS');
+ assert.equal(focusAtlas.atlasZones.find(z=>z.dataset.atlasZone==='us-west').attrs['data-press'],'true','Only the latest selection receives the press effect');
+ assert.equal(focusAtlas.atlasZones.find(z=>z.dataset.atlasZone==='us-east').attrs['data-press'],'false');
  const survivingStamp=stamps[1];
  await stamps[0].click();
  assert.equal(focusAtlas.doc.activeElement,survivingStamp,'Removing a stamp focuses the next stamp');
