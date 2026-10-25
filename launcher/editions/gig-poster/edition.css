@@ -281,8 +281,8 @@ body.gig-poster .receipt-regions{margin:6px 0 12px;font:400 .875rem/1.5 Arial,sa
 body.gig-poster[data-page=launch] .receipt .receipt-copy{font:400 1.3rem/1.25 Poster,sans-serif;margin:6px 0;padding:4px 8px;letter-spacing:0;min-height:0}
 body.gig-poster[data-page=launch] .receipt[data-copy-state=idle] .receipt-copy{border:1px dashed var(--ink);background:transparent;color:var(--ink)}
 body.gig-poster[data-page=launch] .receipt[data-copy-state=copying] .receipt-copy{border:1px solid var(--ink);background:transparent;color:var(--ink)}
-body.gig-poster[data-page=launch] .receipt[data-copy-state=copied] .receipt-sheet{animation:receipt-feed 560ms cubic-bezier(.16,1,.3,1) both}
-body.gig-poster[data-page=launch] .receipt[data-copy-state=copied] .receipt-copy{animation:receipt-final-stamp 200ms 400ms cubic-bezier(.16,1,.3,1) both;transform:rotate(-2deg);border:3px double var(--receipt-ink)}
+body.gig-poster[data-page=launch] .receipt[data-copy-state=copied] .receipt-sheet{animation:receipt-feed 1200ms cubic-bezier(.32,.08,.42,1) both}
+body.gig-poster[data-page=launch] .receipt[data-copy-state=copied] .receipt-copy{animation:receipt-final-stamp 260ms 1300ms cubic-bezier(.16,1,.3,1) both;transform:rotate(-2deg);border:3px double var(--receipt-ink)}
 @keyframes receipt-feed{from{clip-path:inset(0 0 100% 0);transform:translateY(-14px)}to{clip-path:inset(0);transform:translateY(0)}}
 @keyframes receipt-final-stamp{from{opacity:0;transform:rotate(-5deg) scale(1.12)}to{opacity:1;transform:rotate(-2deg) scale(1)}}
 body.gig-poster .receipt-sheet .receipt-fold{background:transparent;border:0}
