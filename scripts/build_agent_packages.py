@@ -85,6 +85,16 @@ def sync(check: bool):
         else:
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(original)
+    from build_gemini_app_skill import modular_files
+    online = modular_files((ROOT / "SKILL.md").read_text(encoding="utf-8"), online=True)
+    for relative, data in online.items():
+        target = ROOT / "adapters/gemini" / relative
+        if check:
+            if not target.is_file() or target.read_text(encoding="utf-8") != data:
+                mismatches.append(str(target.relative_to(ROOT)))
+        else:
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(data, encoding="utf-8")
     target = ROOT / GEM_BUNDLE
     desired = gem_knowledge()
     if check:
