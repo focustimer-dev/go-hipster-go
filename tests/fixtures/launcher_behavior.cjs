@@ -297,7 +297,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
   let copied='';const h=harness(async s=>copied=s,`?ai=${ai}&service=${service}&mood=criminal&tempo=fast`);
   assert.equal(h.moods[4].attrs['aria-pressed'],'true');
   await h.elements.goButton.click();
-  const mention=ai==='gemini'&&service==='youtube'?'YouTubeMusic':{spotify:'Spotify',youtube:'YouTube Music',apple:'Apple Music'}[service];
+  const mention={spotify:'Spotify',youtube:'YouTube Music',apple:'Apple Music'}[service];
   assert.equal(copied.split('\n')[0],'@go-hipster-go @'+mention+' go criminal','Every host/service pairing names both destinations');
   assert.match(copied,/go criminal/);assert.doesNotMatch(copied,/song-level crime narratives/);
   assert.doesNotMatch(copied,/strongly prefer non-English/);assert.match(copied,/Mood angle:/);
@@ -328,13 +328,13 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.doesNotMatch(repeatCopies[0],/Fresh-crate discovery lens:/,'The skill selects its research route');
  assert.match(repeatCopies[0],/Seed:/,'GO adds an independently combined random phrase');
  const geminiPrompt=harness(async()=>{},'?ai=gemini&service=youtube').elements.prompt.textContent;
- assert.match(geminiPrompt,/^@go-hipster-go @YouTubeMusic go\n/,'Gemini GO explicitly names the skill and service');
+ assert.match(geminiPrompt,/^@go-hipster-go @YouTube Music go\n/,'Gemini GO explicitly names the skill and service');
  assert.match(geminiPrompt,/Service: YouTube Music\./,'Destination is run-specific; publication policy lives in the skill');
  assert.doesNotMatch(geminiPrompt,/go live|curate-only/,'GO has no internal mode jargon');
  const geminiPage=fs.readFileSync('launcher/index.html','utf8');
  assert.doesNotMatch(geminiPage,/geminiCurateOnly|geminiCurateOption/,'No curate-only widget on the Jukebox');
  assert.doesNotMatch(geminiPrompt,/Stage 1|TWO-STAGE|YouTube Music PLAYLIST generation action|CURATED — NOT PUBLISHED/,'Repeated policy stays in installed Skill');
- assert.match(geminiPrompt,/@YouTubeMusic/,'Gemini uses its service mention spelling; text alone does not prove activation');
+ assert.match(geminiPrompt,/@YouTube Music/,'Gemini uses its service mention spelling; text alone does not prove activation');
  assert.ok(geminiPrompt.split(/\\s+/).length<85,'Gemini prompt stays concise');
  const geminiSetup=harness(async()=>{},'?ai=gemini&service=youtube','setup').elements.setupPromptText.textContent;
  assert.match(geminiSetup,/3.7.1/,'Setup asks for installed version verification');

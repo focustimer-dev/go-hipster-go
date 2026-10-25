@@ -50,7 +50,7 @@ const universalPrompt="If using Gemini, choose Task mode beneath the input BEFOR
 function goCommand(ai,service,mood){
  const go=mood==="go"?"go":"go "+mood;
  // Text mentions express routing intent; the host may require selecting suggestions.
- const musicMention=ai==="gemini"&&service==="youtube"?"YouTubeMusic":serviceNames[service];
+ const musicMention=serviceNames[service];
  return "@go-hipster-go @"+musicMention+" "+go;
 }
 // DISCOVERY_CATALOG_BEGIN

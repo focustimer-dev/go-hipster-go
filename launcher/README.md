@@ -161,4 +161,4 @@ Normal GO copies only the invocation, selected regions, mood angle, tempo, one m
 
 ### Explicit mentions
 
-Copied GO starts with `@go-hipster-go` and the selected music service. Gemini YouTube Music uses `@YouTubeMusic`; other destinations retain their display names. These are text routing hints, not proof of app activation or authorization; select the matching host suggestions where available.
+Copied GO starts with `@go-hipster-go` and the selected music service. YouTube Music uses `@YouTube Music`, including the space; all destinations retain their display names. These are text routing hints, not proof of app activation or authorization; select the matching host suggestions where available.
