@@ -6,7 +6,7 @@ Generated from the filtered Gemini skill and regional reference files.
 
 ---
 name: go-hipster-go
-version: 3.7.0
+version: 3.7.1
 description: Use for Go, Hipster, Go! go, mood, speed and length commands, setup, obscure global music discovery, and verified deep-cut playlists with authorized Gemini YouTube Music publishing.
 ---
 
@@ -104,7 +104,11 @@ Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation;
 
 ## Fresh-crate discovery and repeat control
 
-**Lean Jukebox contract:** The installed skill owns verification, mood matrices, niche research routes, fresh-crate checks, sonic thesis, sequencing, DeBarge rules and publishing reconciliation. The PWA sends a brief `go [mood]` plus current track count, tempo, one narrative angle, discovery lens, metaphorical spark and service handoff. These are *run inputs*, not a replacement for instructions. Apply all installed rules even when GO doesn't repeat them. User constraints outrank rotating cues; random lenses and sparks never override Criminal's song-level evidence requirement. If a skill is not actually installed, never claim its referenced knowledge was read.
+**Lean Jukebox contract:** The normal copied request is a compact invocation plus run-specific selections: mood, optional region list, optional mood angle, optional tempo, one optional `Seed:` and destination service. Default to 12 tracks when no count is supplied; honor an explicit count. `go` retains its ordinary curate-and-attempt-publication meaning. The installed skill owns verification, recording quality, geography, mood interpretation, sequencing, personality, provider capability checks and honest publication reporting even when the prompt repeats none of those rules. Do not ask the listener to paste the longer policy back in.
+
+**Choose routes after intent:** Interpret region, mood and tempo first; then compare compatible routes from the regional references and select a sonic thesis. The default Jukebox does not supply a rotating genre lens. A listener-supplied lens remains optional and subordinate to explicit selections. Discard any conflicting cue without widening geography or weakening the requested mood/pace to accommodate it. For Criminal, apply the full song-level evidence and strong non-English preference even when the copied prompt says only `go criminal`.
+
+**Seed semantics:** Treat `Seed:` and the older `Random crate spark:` as equivalent optional metaphors, not verified instruments, titles, geographic instructions, lyrical evidence or forced genres. A mood angle is an optional interpretation, not a mandatory theme for every song. Omitted regions mean worldwide exploration; omitted tempo means no pace preference. Defaults and selected service do not grant tool access. Preserve the existing platform-specific publishing, widget and fallback rules; do not silently switch providers. If the skill is not installed, direct the listener to the setup flow rather than pretending these references were read.
 
 
 

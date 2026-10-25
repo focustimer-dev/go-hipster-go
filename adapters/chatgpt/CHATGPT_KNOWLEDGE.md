@@ -1814,7 +1814,7 @@ description: "Setup services, then go: real global deep cuts with sardonic, spec
 license: MIT
 compatibility: Requires file-reading capability. Optional web/catalog lookup for track verification and Python 3.10+ to run included validation/randomness scripts. Streaming accounts and OAuth are NOT bundled.
 metadata:
-  version: "3.7.0"
+  version: "3.7.1"
 ---
 
 # Go, Hipster, Go! — Agent Skill v3
@@ -1914,7 +1914,11 @@ Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation;
 
 ## Fresh-crate discovery and repeat control
 
-**Lean Jukebox contract:** The installed skill owns verification, mood matrices, niche research routes, fresh-crate checks, sonic thesis, sequencing, DeBarge rules and publishing reconciliation. The PWA sends a brief `go [mood]` plus current track count, tempo, one narrative angle, discovery lens, metaphorical spark and service handoff. These are *run inputs*, not a replacement for instructions. Apply all installed rules even when GO doesn't repeat them. User constraints outrank rotating cues; random lenses and sparks never override Criminal's song-level evidence requirement. If a skill is not actually installed, never claim its referenced knowledge was read.
+**Lean Jukebox contract:** The normal copied request is a compact invocation plus run-specific selections: mood, optional region list, optional mood angle, optional tempo, one optional `Seed:` and destination service. Default to 12 tracks when no count is supplied; honor an explicit count. `go` retains its ordinary curate-and-attempt-publication meaning. The installed skill owns verification, recording quality, geography, mood interpretation, sequencing, personality, provider capability checks and honest publication reporting even when the prompt repeats none of those rules. Do not ask the listener to paste the longer policy back in.
+
+**Choose routes after intent:** Interpret region, mood and tempo first; then compare compatible routes from the regional references and select a sonic thesis. The default Jukebox does not supply a rotating genre lens. A listener-supplied lens remains optional and subordinate to explicit selections. Discard any conflicting cue without widening geography or weakening the requested mood/pace to accommodate it. For Criminal, apply the full song-level evidence and strong non-English preference even when the copied prompt says only `go criminal`.
+
+**Seed semantics:** Treat `Seed:` and the older `Random crate spark:` as equivalent optional metaphors, not verified instruments, titles, geographic instructions, lyrical evidence or forced genres. A mood angle is an optional interpretation, not a mandatory theme for every song. Omitted regions mean worldwide exploration; omitted tempo means no pace preference. Defaults and selected service do not grant tool access. Preserve the existing platform-specific publishing, widget and fallback rules; do not silently switch providers. If the skill is not installed, direct the listener to the setup flow rather than pretending these references were read.
 
 **Apple Music handoff:** In ChatGPT, an actually connected Apple Music playlist widget with a user-operated save control is a valid destination even when a direct playlist-writing tool isn't exposed. Resolve real catalog recordings where possible and preserve the intended order. Search and playlist generation do not themselves require an Apple Music subscription; saving to the listener's library does. Label a generated widget **ready to save** until the listener or tool confirms it saved. Distinguish user confirmation from independent read-back, do not assume library/history access, and never invent exact saved items or order. If neither a saveable widget nor an authorized writer exists, return the verified original crate and explain the limitation.
 

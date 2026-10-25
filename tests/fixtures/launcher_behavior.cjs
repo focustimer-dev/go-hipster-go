@@ -42,8 +42,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
   if(i===28)cycle=harness(async s=>cycleCopies.push(s),'?mood=happy','launch',cycleStore);
   await cycle.elements.goButton.click();
  }
- const lenses=cycleCopies.map(s=>s.match(/Fresh-crate discovery lens: ([^\n]+)/)[1]);
- assert.equal(new Set(lenses).size,lensCount,'All cues are used before recycling, including after reload');
+ assert.ok(cycleCopies.every(t=>!t.includes('Fresh-crate discovery lens:')),'Default GO never injects a competing genre lens');
  const angles=cycleCopies.slice(0,6).map(s=>s.match(/Mood angle: ([^.]+)/)[1]);
  assert.equal(new Set(angles).size,6,'Happy angles rotate before repeating');
  const criminalCopies=[];const criminal=harness(async s=>criminalCopies.push(s),'?mood=criminal','launch',new Map());
@@ -51,7 +50,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  const criminalAngles=criminalCopies.map(s=>s.match(/Mood angle: ([^.]+)/)[1]);
  assert.equal(new Set(criminalAngles).size,7,'Seven Criminal story angles before repeating');
  await cycle.elements.goButton.click();
- assert.notEqual(cycleCopies[lensCount].match(/Fresh-crate discovery lens: ([^\n]+)/)[1],lenses[lensCount-1]);
+
  await cycle.moods[1].click();
  assert.doesNotMatch(cycle.elements.prompt.textContent,/Mood angle:/,'Changing mood clears the previous angle');
  for(const selectedMood of ['happy','angry','sad','weird'])for(const ai of ['chatgpt','gemini','claude'])for(const service of ['spotify','youtube','apple']){
@@ -59,6 +58,9 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
   await h.elements.goButton.click();
   assert.match(result,/Mood angle:/);
   assert.match(result,/Tempo preference: Slow/);
+  assert.match(result,/Service:/);
+  assert.ok(result.split(/\s+/).length<65,'Normal GO remains compact for every pairing');
+  assert.doesNotMatch(result,/Curate 12 verified|Choose distinctive|Keep discovery|Fresh-crate discovery lens:|Resolve exact Spotify|playlist widget/);
   assert.doesNotMatch(result,/Mood range:|do not claim history access when unavailable/);
  }
  const badStore=new Map([['ghg-crate-routes-v2','not-json'],['ghg-mood-angles-v1-happy','[0,0,-2,900,"bad"]']]);
@@ -71,18 +73,16 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
   const allowed=catalog.filter(lens=>!lens.regions.length||lens.regions.includes(region));
   const out=[];const scoped=harness(async s=>out.push(s),'?mood=criminal','launch',new Map([['ghg-crate-map-regions-v1',JSON.stringify([region])]]));
   for(let i=0;i<allowed.length;i++)await scoped.elements.goButton.click();
-  const actual=out.map(s=>s.match(/Fresh-crate discovery lens: ([^\n]+)/)[1]);
-  assert.deepEqual([...new Set(actual)].sort(),allowed.map(lens=>lens.text).sort(),region+' pool has no unrelated geography and exhausts before repeating');
-  assert.ok(out.every(s=>s.includes('explicit song-level crime narratives')&&s.includes('Keep discovery within the selected regions')));
+  assert.ok(out.every(t=>!t.includes('Fresh-crate discovery lens:')),'Region selection does not inject a genre');
+  assert.ok(out.every(t=>t.includes('go criminal')&&t.includes('Regional exploration:')),'Compact request preserves intent');
  }
  const usAllowed=catalog.filter(lens=>!lens.regions.length||lens.regions.some(r=>['us-east','us-west'].includes(r)));
  const usOut=[];const us=harness(async s=>usOut.push(s),'?ai=gemini&service=youtube&mood=criminal','launch',new Map([['ghg-crate-map-regions-v1','["us-east","us-west"]']]));
  for(let i=0;i<usAllowed.length;i++)await us.elements.goButton.click();
  assert.ok(usOut.every(s=>!s.includes('Jaglara:')&&!s.includes('Singeli:')),'US selection cannot receive unrelated global scene seed');
- assert.deepEqual([...new Set(usOut.map(s=>s.match(/Fresh-crate discovery lens: ([^\n]+)/)[1]))].sort(),usAllowed.map(l=>l.text).sort());
  assert.equal(us.elements.prompt.textContent,usOut.at(-1),'Receipt equals copied regional request');
  await us.crateRegions.find(b=>b.dataset.crateRegion==='east-africa').click();
- assert.doesNotMatch(us.elements.prompt.textContent,/Fresh-crate discovery lens:|Random crate spark:|Mood angle:/,'Map change clears all stale creative cues');
+ assert.doesNotMatch(us.elements.prompt.textContent,/Fresh-crate discovery lens:|Seed:|Mood angle:/,'Map change clears all stale creative cues');
  assert.equal(us.elements.openAi.getAttribute('aria-disabled'),'true','Map change invalidates prior copied handoff');
  const neutral=catalog.filter(l=>!l.regions.length);assert.ok(neutral.length>=12);
  assert.ok(catalog.filter(l=>l.regions.includes('us-east')).length>=16);
@@ -284,8 +284,8 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.equal(batchedMap.getAttribute('viewBox'),pressedView,'Stopping a zoom preserves the visible hit geometry');
  const apple=harness(async()=>{},"?ai=chatgpt&service=apple");
  assert.match(apple.elements.prompt.textContent,/@Go, Hipster, Go! @Apple Music go/);
- assert.match(apple.elements.prompt.textContent,/playlist widget/);
- assert.match(apple.elements.prompt.textContent,/distinguish ready to save from saved/);
+ assert.match(apple.elements.prompt.textContent,/Service: Apple Music/);
+ assert.doesNotMatch(apple.elements.prompt.textContent,/distinguish ready to save from saved/);
  assert.doesNotMatch(apple.elements.prompt.textContent,/subscription/);
  assert.match(apple.elements.setupPromptText.textContent,/do not require an Apple Music subscription/);
  assert.match(apple.elements.setupPromptText.textContent,/even without a direct playlist-writing tool/);
@@ -297,11 +297,11 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
   let copied='';const h=harness(async s=>copied=s,`?ai=${ai}&service=${service}&mood=criminal&tempo=fast`);
   assert.equal(h.moods[4].attrs['aria-pressed'],'true');
   await h.elements.goButton.click();
-  assert.match(copied,/go criminal/);assert.match(copied,/song-level crime narratives/);
-  assert.match(copied,/strongly prefer non-English/);assert.match(copied,/Mood angle:/);
+  assert.match(copied,/go criminal/);assert.doesNotMatch(copied,/song-level crime narratives/);
+  assert.doesNotMatch(copied,/strongly prefer non-English/);assert.match(copied,/Mood angle:/);
   assert.match(copied,/Tempo preference: Fast/);
   assert.doesNotMatch(copied,/blatnaya pesnya|canti di malavita|funk proibidao|rebetiko\/hasiklidika/);
-  assert.ok(copied.split(/\s+/).length<155,ai+'/'+service+' Criminal prompt stays short');
+  assert.ok(copied.split(/\s+/).length<65,ai+'/'+service+' Criminal prompt stays short');
   await h.moods[4].click();assert.equal(h.moods[4].attrs['aria-pressed'],'false');assert.doesNotMatch(h.elements.prompt.textContent,/Criminal mood:/);
  }
 
@@ -323,11 +323,11 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  let repeatCopies=[];const repeat=harness(async s=>repeatCopies.push(s));
  await repeat.elements.goButton.click();await repeat.elements.goButton.click();
  assert.equal(repeatCopies.length,2,'Each GO press copies once');
- assert.match(repeatCopies[0],/Fresh-crate discovery lens:/,'A GO copies a fresh discovery lens');
- assert.match(repeatCopies[0],/Random crate spark:/,'GO adds an independently combined random phrase');
+ assert.doesNotMatch(repeatCopies[0],/Fresh-crate discovery lens:/,'The skill selects its research route');
+ assert.match(repeatCopies[0],/Seed:/,'GO adds an independently combined random phrase');
  const geminiPrompt=harness(async()=>{},'?ai=gemini&service=youtube').elements.prompt.textContent;
  assert.match(geminiPrompt,/Use Go, Hipster, Go!: go\./,'Plain GO is the full experience');
- assert.match(geminiPrompt,/Create one playlist if the connected app permits/,'GO requests a playable playlist');
+ assert.match(geminiPrompt,/Service: YouTube Music\./,'Destination is run-specific; publication policy lives in the skill');
  assert.doesNotMatch(geminiPrompt,/go live|curate-only/,'GO has no internal mode jargon');
  const geminiPage=fs.readFileSync('launcher/index.html','utf8');
  assert.doesNotMatch(geminiPage,/geminiCurateOnly|geminiCurateOption/,'No curate-only widget on the Jukebox');
@@ -335,7 +335,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.doesNotMatch(geminiPrompt,/@YouTubeMusic/,'Short GO does not activate a music service');
  assert.ok(geminiPrompt.split(/\\s+/).length<85,'Gemini prompt stays concise');
  const geminiSetup=harness(async()=>{},'?ai=gemini&service=youtube','setup').elements.setupPromptText.textContent;
- assert.match(geminiSetup,/3.7.0/,'Setup asks for installed version verification');
+ assert.match(geminiSetup,/3.7.1/,'Setup asks for installed version verification');
  assert.match(geminiSetup,/persistent Skill/,'Setup distinguishes reading a repo from installation');
  assert.match(geminiSetup,/go-hipster-go-gemini-app-skill\.zip/,'Setup installs the Gemini-specific release ZIP');
  assert.match(geminiSetup,/adapters\/gemini\/GEM_KNOWLEDGE\.md/,'Setup identifies the host-filtered GitHub knowledge');
@@ -344,7 +344,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.match(setupHtml,/If you can't tell what you're doing ironically from what you actually enjoy, welcome aboard/);
  assert.match(setupHtml,/Manager, Emeritus/);
  assert.doesNotMatch(setupHtml,/Department of Questionable Sonic Decisions/);
- assert.match(criminalCopies[0],/Optional thread only; vary subjects and regions across the set/);
+ assert.doesNotMatch(criminalCopies[0],/Optional thread only; vary subjects and regions across the set/);
 
  assert.match(geminiSetup,/choose Task mode beneath the Gemini prompt box/,'Gemini setup requires Task mode before pasting');
  assert.match(geminiSetup,/do not schedule a recurring task/,'Gemini install task must not be scheduled');
@@ -354,7 +354,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.doesNotMatch(nonGemSetup,/Task mode|native Gemini app/,'ChatGPT setup is not altered');
 
  assert.notEqual(repeatCopies[0],repeatCopies[1],'Repeats rotate even with no browser crypto');
- assert.notEqual(repeatCopies[0].match(/Random crate spark: ([^\n]+)/)[1],repeatCopies[1].match(/Random crate spark: ([^\n]+)/)[1],'Each GO changes the spark, even without browser crypto');
+ assert.notEqual(repeatCopies[0].match(/Seed: ([^\n]+)/)[1],repeatCopies[1].match(/Seed: ([^\n]+)/)[1],'Each GO changes the spark, even without browser crypto');
  assert.doesNotMatch(harness(async()=>{},'?ai=gemini&service=youtube').elements.prompt.textContent,/@youtube-music/,'Do not suggest unofficial @youtube-music spelling');
  assert.equal(repeat.elements.prompt.textContent,repeatCopies[1],'Receipt matches the copied fresh crate');
  let copies=[];let h=harness(async text=>copies.push(text)),e=h.elements;
@@ -437,7 +437,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
    if(n===25)sparkHarness=harness(async t=>outputs.push(t),'?mood='+selected,'launch',sparkStore);
    await sparkHarness.elements.goButton.click();
   }
-  const parts=outputs.map(t=>t.match(/Random crate spark: ([^\n]+)/)[1].replace(/\.$/,'').split(' / '));
+  const parts=outputs.map(t=>t.match(/Seed: ([^\n]+)/)[1].replace(/\.$/,'').split(' / '));
   assert.equal(new Set(parts.map(p=>p[2])).size,50,'Every mood image is used before recycling, including across reloads');
   assert.ok(parts.every(p=>sparkBank[selected].map(s=>s.toLowerCase()).includes(p[2])),'Images stay in the selected mood');
   assert.equal(new Set(parts.slice(0,10).map(p=>p[0])).size,10,'Texture rotates independently');
@@ -445,6 +445,6 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  }
  const slowCopies=[],slowSparks=harness(async t=>slowCopies.push(t),'?mood=angry&tempo=slow');
  for(let i=0;i<50;i++)await slowSparks.elements.goButton.click();
- assert.ok(slowCopies.every(t=>!/blast beats|breakcore|frenz|redline|tempo push|headbang|mosh/i.test(t.match(/Random crate spark: ([^\n]+)/)[1])),'Slow anger avoids overt speed-conflicting sparks');
+ assert.ok(slowCopies.every(t=>!/blast beats|breakcore|frenz|redline|tempo push|headbang|mosh/i.test(t.match(/Seed: ([^\n]+)/)[1])),'Slow anger avoids overt speed-conflicting sparks');
  console.log('PASS: mood selection, reset, current-copy handoff, setup invalidation, blocked clipboard, copy race');
 })().catch(e=>{console.error(e);process.exit(1)});
