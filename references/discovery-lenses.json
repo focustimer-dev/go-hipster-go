@@ -762,5 +762,135 @@
     "kind": "research-route",
     "text": "Hawaiian slack-key guitar: investigate suitable credited performances with distinctive phrasing; preserve context rather than using the tradition as ambient scenery.",
     "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "review-hawaiian-falsetto",
+    "regions": [
+      "oceania",
+      "us-west"
+    ],
+    "kind": "research-route",
+    "text": "Hawaiian falsetto: explore credited leo kiʻekiʻe performances for distinctive vocal phrasing; verify the recording and fit rather than defaulting to familiar Hawaiian hits.",
+    "basis": "Source supports the vocal practice, not a fixed tempo or lyrical theme.",
+    "source_entries": [
+      "oceania:add-21"
+    ],
+    "evidence_urls": [
+      "https://folkways.si.edu/na-leo-hawaii/music/article/smithsonian"
+    ],
+    "review_status": "route-supported-recordings-unverified"
+  },
+  {
+    "id": "review-hawaiian-himeni",
+    "regions": [
+      "oceania",
+      "us-west"
+    ],
+    "kind": "research-route",
+    "text": "Hawaiian hīmeni: investigate documented Hawaiian-language hymn performances when the requested mood and context fit; do not assume sacred repertoire is generic atmosphere.",
+    "basis": "Source supports Hawaiian-language hymn practice; no universal mood assignment.",
+    "source_entries": [
+      "oceania:add-23"
+    ],
+    "evidence_urls": [
+      "https://folkways.si.edu/na-leo-hawaii/music/article/smithsonian"
+    ],
+    "review_status": "route-supported-recordings-unverified"
+  },
+  {
+    "id": "review-costa-rica-cimarrona",
+    "regions": [
+      "central-america"
+    ],
+    "kind": "research-route",
+    "text": "Costa Rican cimarrona ensembles: research credited local groups and distinctive arrangements; establish the actual instrumentation, pace and recording availability before selecting.",
+    "basis": "Cultural directory establishes a local ensemble and locality, not every imported sonic claim.",
+    "source_entries": [
+      "central-america:add-33"
+    ],
+    "evidence_urls": [
+      "https://si.cultura.cr/agrupaciones-y-organizaciones/cimarrona-los-guilas"
+    ],
+    "review_status": "route-supported-recordings-unverified"
+  },
+  {
+    "id": "review-belize-garifuna-guitar",
+    "regions": [
+      "central-america"
+    ],
+    "kind": "research-route",
+    "text": "Belizean Garifuna guitar-song routes: investigate credited paranda recordings and their vocal phrasing; distinguish listening songs from dance or ritual repertoires and verify every selection.",
+    "basis": "Catalog documents paranda examples and guitar/voice material; verify the individual arrangement.",
+    "source_entries": [
+      "central-america:03"
+    ],
+    "evidence_urls": [
+      "https://folkways.si.edu/traditional-music-of-the-garifuna-of-belize/american-indian-world/album/smithsonian"
+    ],
+    "review_status": "route-supported-recordings-unverified"
+  },
+  {
+    "id": "review-cameroon-mvet",
+    "regions": [
+      "central-southern-africa"
+    ],
+    "kind": "research-route",
+    "text": "Cameroonian Bulu mvet storytelling: research documented voice-and-string performances and their arrangement; preserve performance context and verify the text before assigning narrative themes.",
+    "basis": "Catalog establishes Bulu storyteller and mvet context; not song-level crime evidence.",
+    "source_entries": [
+      "central-africa:add-08"
+    ],
+    "evidence_urls": [
+      "https://folkways.si.edu/bulu-songs-from-the-cameroons/world/music/album/smithsonian"
+    ],
+    "review_status": "route-supported-recordings-unverified"
+  },
+  {
+    "id": "review-chad-balafon",
+    "regions": [
+      "central-southern-africa"
+    ],
+    "kind": "research-route",
+    "text": "Chadian balafon ensembles: investigate documented interlocking melodic performances; verify credited locality, recording and perceived pace instead of treating archival music as automatically strange.",
+    "basis": "Catalog supports balafon ensemble and interwoven figures, not all Chad recordings or fixed meters.",
+    "source_entries": [
+      "central-africa:add-35"
+    ],
+    "evidence_urls": [
+      "https://folkways.si.edu/music-of-chad/islamica-world/album/smithsonian"
+    ],
+    "review_status": "route-supported-recordings-unverified"
+  },
+  {
+    "id": "review-namibia-oviritje",
+    "regions": [
+      "central-southern-africa"
+    ],
+    "kind": "research-route",
+    "text": "Namibian Oviritje: investigate credited local releases beyond the most familiar names; establish each recording’s audible character and tempo rather than inferring them from an award category.",
+    "basis": "Awards source supports the named category only; imported instrumental details remain unverified.",
+    "source_entries": [
+      "southern-africa:add-32"
+    ],
+    "evidence_urls": [
+      "https://www.nama.com.na/entry-categories/best-oviritje-album"
+    ],
+    "review_status": "route-supported-recordings-unverified"
+  },
+  {
+    "id": "review-namibia-shambo",
+    "regions": [
+      "central-southern-africa"
+    ],
+    "kind": "research-route",
+    "text": "Namibian Shambo: research documented local artists and releases, then verify the actual groove, voice and mood fit; the category name is a search route, not a sonic guarantee.",
+    "basis": "Awards inventory supports category existence only; no default energy or instrumentation.",
+    "source_entries": [
+      "southern-africa:add-33"
+    ],
+    "evidence_urls": [
+      "https://www.nama.com.na/faq"
+    ],
+    "review_status": "route-supported-recordings-unverified"
   }
 ]

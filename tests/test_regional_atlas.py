@@ -52,3 +52,20 @@ class RegionalAtlasTests(unittest.TestCase):
             seen.update(ids)
             self.assertIn('unverified research leads', text)
         self.assertEqual(len(seen), 200)
+
+    def test_reviewed_lenses_have_evidence_and_real_source_handles(self):
+        rows = json.loads((ROOT / 'references/discovery-lenses.json').read_text())
+        reviewed = [row for row in rows if row['id'].startswith('review-')]
+        self.assertEqual(len(reviewed), 8)
+        for row in reviewed:
+            self.assertTrue(row['evidence_urls'])
+            self.assertEqual(row['review_status'], 'route-supported-recordings-unverified')
+            self.assertTrue(set(row['regions']) <= {'oceania', 'us-west', 'central-america', 'central-southern-africa'})
+            for handle in row['source_entries']:
+                region, entry = handle.split(':')
+                suffix = '-additions' if entry.startswith('add-') else ''
+                text = (ROOT / f'references/regions/{region}{suffix}.md').read_text()
+                self.assertIn(f'`{handle}`', text)
+        review = (ROOT / 'references/regional-review.md').read_text()
+        self.assertIn('song-level crime narrative evidence', review)
+        self.assertIn('discard the cue', review)

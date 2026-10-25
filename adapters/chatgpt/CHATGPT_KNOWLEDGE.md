@@ -4,8 +4,49 @@ A generated, text-forward snapshot of the **canonical** repository skill. This i
 
 **Source:** https://github.com/focustimer-dev/go-hipster-go
 
-**Files included:** `references/regions/oceania-additions.md`, `references/regions/central-america-additions.md`, `references/regions/central-africa-additions.md`, `references/regions/southern-africa-additions.md`, `references/regional-atlas.md`, `references/regions/us-west.md`, `references/regions/us-east.md`, `references/regions/canada-west.md`, `references/regions/canada-east.md`, `references/regions/mexico.md`, `references/regions/central-america.md`, `references/regions/caribbean.md`, `references/regions/northern-south-america.md`, `references/regions/southern-south-america.md`, `references/regions/atlantic-europe.md`, `references/regions/mediterranean-europe.md`, `references/regions/northern-europe.md`, `references/regions/eastern-europe.md`, `references/regions/north-africa.md`, `references/regions/west-africa.md`, `references/regions/east-africa.md`, `references/regions/central-southern-africa.md`, `references/regions/middle-east.md`, `references/regions/central-asia.md`, `references/regions/south-asia.md`, `references/regions/east-asia.md`, `references/regions/southeast-asia.md`, `references/regions/northern-asia.md`, `references/regions/oceania.md`, `SKILL.md`, `references/global-scenes.md`, `references/sonic-taxonomy.md`, `references/curation-examples.md`, `references/verification.md`.
+**Files included:** `references/regional-review.md`, `references/regions/oceania-additions.md`, `references/regions/central-america-additions.md`, `references/regions/central-africa-additions.md`, `references/regions/southern-africa-additions.md`, `references/regional-atlas.md`, `references/regions/us-west.md`, `references/regions/us-east.md`, `references/regions/canada-west.md`, `references/regions/canada-east.md`, `references/regions/mexico.md`, `references/regions/central-america.md`, `references/regions/caribbean.md`, `references/regions/northern-south-america.md`, `references/regions/southern-south-america.md`, `references/regions/atlantic-europe.md`, `references/regions/mediterranean-europe.md`, `references/regions/northern-europe.md`, `references/regions/eastern-europe.md`, `references/regions/north-africa.md`, `references/regions/west-africa.md`, `references/regions/east-africa.md`, `references/regions/central-southern-africa.md`, `references/regions/middle-east.md`, `references/regions/central-asia.md`, `references/regions/south-asia.md`, `references/regions/east-asia.md`, `references/regions/southeast-asia.md`, `references/regions/northern-asia.md`, `references/regions/oceania.md`, `SKILL.md`, `references/global-scenes.md`, `references/sonic-taxonomy.md`, `references/curation-examples.md`, `references/verification.md`.
 
+
+---
+
+# BEGIN SOURCE: references/regional-review.md
+
+# Focused regional route review
+
+Reviewed 2026-10-24. Scope: the four 50-entry additions and obvious overlap with their baseline regions. Preserve all source handles for traceability; this is not historical validation of all 920 entries.
+
+## Selection rules
+
+Use the eight source-supported routes below as a small discovery shortlist, not a mandatory itinerary. Sources establish only the bounded claims stated. A category inventory establishes a name, not its tempo, instrumentation or quality. Repertoires and vocal techniques are not interchangeable with commercial subgenres. Imported wording remains visible as source material; this review overrides it where narrower.
+
+For every mood and tempo, first ask whether the route can plausibly serve the request. If not, discard the cue and choose another compatible route; do not bend the mood, pace or geography. Never infer Criminal eligibility from a scene, artist biography or menacing sound: require song-level crime narrative evidence. Avoid a default bias toward field recordings, ceremonial material or prestigious archives. A contemporary local release can be the stronger choice. No global claim of streaming availability or actual listening is made here.
+
+## Source-supported shortlist
+
+| Lens ID | Source handle | Type | Evidence boundary and source |
+| --- | --- | --- | --- |
+| `review-hawaiian-falsetto` | `oceania:add-21` | vocal practice | Source supports the vocal practice, not a fixed tempo or lyrical theme. [Source 1](https://folkways.si.edu/na-leo-hawaii/music/article/smithsonian) |
+| `review-hawaiian-himeni` | `oceania:add-23` | song repertoire | Source supports Hawaiian-language hymn practice; no universal mood assignment. [Source 1](https://folkways.si.edu/na-leo-hawaii/music/article/smithsonian) |
+| `review-costa-rica-cimarrona` | `central-america:add-33` | ensemble scene | Cultural directory establishes a local ensemble and locality, not every imported sonic claim. [Source 1](https://si.cultura.cr/agrupaciones-y-organizaciones/cimarrona-los-guilas) |
+| `review-belize-garifuna-guitar` | `central-america:03` | song repertoire | Catalog documents paranda examples and guitar/voice material; verify the individual arrangement. [Source 1](https://folkways.si.edu/traditional-music-of-the-garifuna-of-belize/american-indian-world/album/smithsonian) |
+| `review-cameroon-mvet` | `central-africa:add-08` | instrument-centered narrative practice | Catalog establishes Bulu storyteller and mvet context; not song-level crime evidence. [Source 1](https://folkways.si.edu/bulu-songs-from-the-cameroons/world/music/album/smithsonian) |
+| `review-chad-balafon` | `central-africa:add-35` | ensemble repertoire | Catalog supports balafon ensemble and interwoven figures, not all Chad recordings or fixed meters. [Source 1](https://folkways.si.edu/music-of-chad/islamica-world/album/smithsonian) |
+| `review-namibia-oviritje` | `southern-africa:add-32` | named popular-music category | Awards source supports the named category only; imported instrumental details remain unverified. [Source 1](https://www.nama.com.na/entry-categories/best-oviritje-album) |
+| `review-namibia-shambo` | `southern-africa:add-33` | named popular-music category | Awards inventory supports category existence only; no default energy or instrumentation. [Source 1](https://www.nama.com.na/faq) |
+
+## Consolidate overlap without erasing source history
+
+Treat the existing cross-references in the addition files as shared research families, not additional diversity credits. In particular: pub rock repeats its baseline route; desert reggae/rock refines an existing combined route; Pacific dub overlaps Wellington dub-roots; bubblegum repeats township synth-pop; marrabenta and famo repeat their baseline routes. Cape jazz and ghoema refine the combined jazz entry. Amapiano variants need independently useful distinctions before promotion. A named practice narrower than a baseline umbrella can still be valuable, but does not become an unrelated genre merely because it has a new ID.
+
+Hawaiian routes belong to cultural Oceania and the application's existing US West research convention. Both tags are deliberate; do not infer a universal political or geographic boundary from this overlap. Preserve the credited recording locality. Central and Southern African files stay separate in research while matching the existing combined map region.
+
+## Retain for research, do not automate yet
+
+Keep claimed microstyles without adequate checked evidence as unreviewed leads, including semba lamento/cadenciado, mokomoto and kimbamba. Awards listings alone do not substantiate detailed descriptions of Epera or Sikokoshi. Do not promote mbolé until an adequate scene/recording source is checked. Do not treat named ceremonial performances (including welcoming calls and ancestral ritual songs) as automatic mood ingredients. Public release and appropriate contextual documentation must be established for the actual recording.
+
+This is an eight-route first pass, not a certification of the remaining source rows. The atlas retains 920 source entries; it does not claim 920 unique genres.
+
+# END SOURCE: references/regional-review.md
 
 ---
 
@@ -15,7 +56,7 @@ A generated, text-forward snapshot of the **canonical** repository skill. This i
 
 Parent map region: `oceania`. Stable source-entry IDs: `oceania:add-01`–`oceania:add-50`.
 
-These are listener-supplied, unverified research leads, not 50 independently verified new genres. Preserve the distinctions between scenes, song repertoires, performance practices and commercial genre labels. Apply the regional atlas verification, recording-quality, mood and tempo rules. These additions do not enter the automatic lens pool. Source links below are supplied research routes, not evidence independently checked during import.
+These are listener-supplied, unverified research leads, not 50 independently verified new genres. Preserve the distinctions between scenes, song repertoires, performance practices and commercial genre labels. Apply the regional atlas verification, recording-quality, mood and tempo rules. Only the separately source-supported shortlist in the focused regional review may enter the automatic lens pool; these source entries remain unverified as written. Source links below are supplied research routes, not evidence independently checked during import.
 
 [Imported Drive source](https://drive.google.com/file/d/1gMTMjx1kqqNFCTe1KYt8NRUQr3j008nl/view), retrieved 2026-10-24 (America/New_York).
 
@@ -93,7 +134,7 @@ These are listener-supplied, unverified research leads, not 50 independently ver
 
 Parent map region: `central-america`. Stable source-entry IDs: `central-america:add-01`–`central-america:add-50`.
 
-These are listener-supplied, unverified research leads, not 50 independently verified new genres. Preserve the distinctions between scenes, song repertoires, performance practices and commercial genre labels. Apply the regional atlas verification, recording-quality, mood and tempo rules. These additions do not enter the automatic lens pool. Source links below are supplied research routes, not evidence independently checked during import.
+These are listener-supplied, unverified research leads, not 50 independently verified new genres. Preserve the distinctions between scenes, song repertoires, performance practices and commercial genre labels. Apply the regional atlas verification, recording-quality, mood and tempo rules. Only the separately source-supported shortlist in the focused regional review may enter the automatic lens pool; these source entries remain unverified as written. Source links below are supplied research routes, not evidence independently checked during import.
 
 [Imported Drive source](https://drive.google.com/file/d/1_HcaPhW11h90JmuuocI4Ra4DnQeF0Quq/view), retrieved 2026-10-24 (America/New_York).
 
@@ -171,7 +212,7 @@ These are listener-supplied, unverified research leads, not 50 independently ver
 
 Parent map region: `central-southern-africa`. Stable source-entry IDs: `central-africa:add-01`–`central-africa:add-50`.
 
-These are listener-supplied, unverified research leads, not 50 independently verified new genres. Preserve the distinctions between scenes, song repertoires, performance practices and commercial genre labels. Apply the regional atlas verification, recording-quality, mood and tempo rules. These additions do not enter the automatic lens pool. Source links below are supplied research routes, not evidence independently checked during import.
+These are listener-supplied, unverified research leads, not 50 independently verified new genres. Preserve the distinctions between scenes, song repertoires, performance practices and commercial genre labels. Apply the regional atlas verification, recording-quality, mood and tempo rules. Only the separately source-supported shortlist in the focused regional review may enter the automatic lens pool; these source entries remain unverified as written. Source links below are supplied research routes, not evidence independently checked during import.
 
 [Imported Drive source](https://drive.google.com/file/d/19aKVy2TzEHTQrhxBrU_HmuApRu55tTlo/view), retrieved 2026-10-24 (America/New_York).
 
@@ -249,7 +290,7 @@ These are listener-supplied, unverified research leads, not 50 independently ver
 
 Parent map region: `central-southern-africa`. Stable source-entry IDs: `southern-africa:add-01`–`southern-africa:add-50`.
 
-These are listener-supplied, unverified research leads, not 50 independently verified new genres. Preserve the distinctions between scenes, song repertoires, performance practices and commercial genre labels. Apply the regional atlas verification, recording-quality, mood and tempo rules. These additions do not enter the automatic lens pool. Source links below are supplied research routes, not evidence independently checked during import.
+These are listener-supplied, unverified research leads, not 50 independently verified new genres. Preserve the distinctions between scenes, song repertoires, performance practices and commercial genre labels. Apply the regional atlas verification, recording-quality, mood and tempo rules. Only the separately source-supported shortlist in the focused regional review may enter the automatic lens pool; these source entries remain unverified as written. Source links below are supplied research routes, not evidence independently checked during import.
 
 [Imported Drive source](https://drive.google.com/file/d/1dQuv7bVJ8ndXe8yc5fsTlYB23Zj-UNEj/view), retrieved 2026-10-24 (America/New_York).
 
@@ -332,6 +373,8 @@ Honor the selected geography, mood and tempo above discovery cues. A tradition's
 For discovery, compare several compatible routes and dig beyond named touchstones: local labels, collaborators, overlooked releases and contemporary scenes. A famous name here is context, not a selection instruction. Admit accessible pop only when its particular groove, voice or arrangement earns the place; reject anonymous mood filler. Obscurity is not a quality test. Keep irony audible and purposeful. Do not impose acoustic, ceremonial or archival music merely to demonstrate breadth. Use only publicly released, appropriately documented recordings; do not infer access to restricted ceremonial material.
 
 Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
+
+See the [focused regional review](regional-review.md) for the source-supported shortlist, overlap decisions and material not ready for automatic discovery.
 
 ## Lookup
 
@@ -1884,7 +1927,7 @@ When a PWA prompt supplies a **Fresh-crate discovery lens**, use it as a startin
 
 **Regional discovery and recording quality:** Apply the recording-level selection gate in [sonic taxonomy](references/sonic-taxonomy.md). Selected regions take precedence over rotating lenses; verify scene connections rather than using geography as a sonic adjective. The [regional research routes](references/global-scenes.md) supplies research hypotheses, not established facts about recordings or a fixed artist roster. Skip incompatible hints; do not broaden geography just to use a seed.
 
-**Address regional research precisely:** Read the [regional atlas](references/regional-atlas.md) when regions are selected or a regional scene needs deeper exploration. Match the region label/ID to the files below; load only the relevant files. Treat the 920 imported source entries (including overlapping additions) as unverified search leads, not a factual taxonomy or automatic track roster. Verify compound labels and recording-level claims before using them. Existing mood, geography, recording-quality and Criminal evidence rules take precedence.
+**Address regional research precisely:** Read the [focused regional review](references/regional-review.md) before using the expanded Oceania, Central America or Central & Southern Africa routes; its source boundaries and overlap decisions take precedence over imported descriptions. Read the [regional atlas](references/regional-atlas.md) when regions are selected or a regional scene needs deeper exploration. Match the region label/ID to the files below; load only the relevant files. Treat the 920 imported source entries (including overlapping additions) as unverified search leads, not a factual taxonomy or automatic track roster. Verify compound labels and recording-level claims before using them. Existing mood, geography, recording-quality and Criminal evidence rules take precedence.
 
 - [US West](references/regions/us-west.md)
 - [US East](references/regions/us-east.md)

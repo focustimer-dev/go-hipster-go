@@ -1,0 +1,896 @@
+[
+  {
+    "id": "legacy-00",
+    "regions": [],
+    "kind": "musical-lens",
+    "text": "Rhythm first: asymmetrical hand-percussion accents, interlocking guitar patterns and a convincing pocket.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-01",
+    "regions": [],
+    "kind": "musical-lens",
+    "text": "Voice first: intimate or unusual vocal phrasing against restrained, textural accompaniment.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-02",
+    "regions": [],
+    "kind": "musical-lens",
+    "text": "Production first: dub-space, spring or tape echo and spacious low-end where actually documented.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-03",
+    "regions": [],
+    "kind": "musical-lens",
+    "text": "Motion first: restless post-punk-style grooves connected to rhythmically surprising regional recordings.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-04",
+    "regions": [],
+    "kind": "musical-lens",
+    "text": "Texture first: wiry organ or electric-key timbres meeting guitar-led folk or soundtrack arrangements.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-05",
+    "regions": [],
+    "kind": "musical-lens",
+    "text": "Contrast first: brittle drum machines beside warm live bass or hand-played rhythms.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-06",
+    "regions": [],
+    "kind": "musical-lens",
+    "text": "Arrangement first: call-and-response, shifting ensemble layers and accumulating tension.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-07",
+    "regions": [],
+    "kind": "musical-lens",
+    "text": "Atmosphere first: dreamy vocal harmonies or modal drones with a clear rhythmic through-line.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-08",
+    "regions": [],
+    "kind": "musical-lens",
+    "text": "Beat first: clipped syncopation, early sample collage or hypnotic repetition across different eras.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-09",
+    "regions": [],
+    "kind": "musical-lens",
+    "text": "Melody first: bittersweet melodic turns carried by unexpectedly propulsive backing.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-10",
+    "regions": [],
+    "kind": "musical-lens",
+    "text": "Timbre first: fuzzed or tremulous guitar against smooth keys or airy instrumental colors.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-11",
+    "regions": [],
+    "kind": "musical-lens",
+    "text": "Structure first: long-form builds, sudden negative space and patiently evolving motifs.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-12",
+    "regions": [
+      "east-africa"
+    ],
+    "kind": "research-route",
+    "text": "Singeli: investigate tanzanian electronic dance; investigate compact rapid rhythmic turns.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-13",
+    "regions": [
+      "east-africa"
+    ],
+    "kind": "research-route",
+    "text": "Electro Acholi / acholitronix: investigate northern ugandan electronic dance routes; distinguish from other ugandan scenes.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-14",
+    "regions": [
+      "west-africa"
+    ],
+    "kind": "research-route",
+    "text": "Balani show / electro balani: investigate malian electronic dance; investigate percussion layering.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-15",
+    "regions": [
+      "central-southern-africa"
+    ],
+    "kind": "research-route",
+    "text": "Shangaan electro: investigate south african electronic dance; distinguish from older bubblegum.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-16",
+    "regions": [
+      "east-africa"
+    ],
+    "kind": "research-route",
+    "text": "Kadodi: investigate research credited percussion ensembles and separately documented electronic adaptations.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-17",
+    "regions": [
+      "east-africa"
+    ],
+    "kind": "research-route",
+    "text": "Jaglara: investigate sudanese electronic dance recordings; verify local provenance and arrangement.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-18",
+    "regions": [
+      "west-africa"
+    ],
+    "kind": "research-route",
+    "text": "Funaná: investigate cabo verde; investigate accordion and scraped-percussion interaction.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-19",
+    "regions": [
+      "central-southern-africa"
+    ],
+    "kind": "research-route",
+    "text": "Rebita: investigate angolan dance repertoire and archival band recordings.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-20",
+    "regions": [
+      "east-africa"
+    ],
+    "kind": "research-route",
+    "text": "Maloya: investigate réunion; preserve song/dance and historical context.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-21",
+    "regions": [
+      "east-africa"
+    ],
+    "kind": "research-route",
+    "text": "Sega tipik: investigate mauritian tradition; distinguish from other island sega practices.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-22",
+    "regions": [
+      "east-africa"
+    ],
+    "kind": "research-route",
+    "text": "Sega tambour of Rodrigues: investigate rodrigues repertoire; verify performers and exact recording.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-23",
+    "regions": [
+      "east-africa"
+    ],
+    "kind": "research-route",
+    "text": "Sega tambour Chagos: investigate chagossian repertoire; preserve community context.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-24",
+    "regions": [
+      "caribbean"
+    ],
+    "kind": "research-route",
+    "text": "Gwoka: investigate guadeloupe song, dance and percussion tradition.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-25",
+    "regions": [
+      "middle-east"
+    ],
+    "kind": "research-route",
+    "text": "Somali diaspora digital recordings: investigate 1990s saudi-based somali recordings documented by 808 xamar.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-26",
+    "regions": [
+      "east-africa"
+    ],
+    "kind": "research-route",
+    "text": "Djibouti broadcast ensembles: investigate rtd archival repertoire; do not assume all performers share one origin.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-27",
+    "regions": [
+      "east-africa"
+    ],
+    "kind": "research-route",
+    "text": "Beja electric music: investigate research documented beja recordings rather than generic desert-blues tags.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-28",
+    "regions": [
+      "central-asia"
+    ],
+    "kind": "research-route",
+    "text": "Uzbek disco: investigate soviet central asian archival pop route; verify actual language and date.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-29",
+    "regions": [
+      "central-asia"
+    ],
+    "kind": "research-route",
+    "text": "Tajik folktronica: investigate archival descriptor to investigate, not a claim about all tajik music.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-30",
+    "regions": [
+      "east-asia"
+    ],
+    "kind": "research-route",
+    "text": "Uyghur rock: investigate keep distinct from other central asian languages and scenes.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-31",
+    "regions": [
+      "northern-asia"
+    ],
+    "kind": "research-route",
+    "text": "Tatar jazz: investigate investigate documented arrangements and performer credits.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-32",
+    "regions": [
+      "north-africa"
+    ],
+    "kind": "research-route",
+    "text": "Libyan reggae: investigate tape and band recordings distinct from jamaican originals.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-33",
+    "regions": [
+      "north-africa"
+    ],
+    "kind": "research-route",
+    "text": "Libyan cassette pop: investigate research beyond the familiar reissue lead singles.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-34",
+    "regions": [
+      "east-africa"
+    ],
+    "kind": "research-route",
+    "text": "Sudanese tape-era song: investigate vocal and band recordings; distinguish from contemporary jaglara.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-35",
+    "regions": [
+      "middle-east"
+    ],
+    "kind": "research-route",
+    "text": "Bourj Hammoud recordings: investigate a localized archival route, not a formal genre label.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-36",
+    "regions": [
+      "central-southern-africa"
+    ],
+    "kind": "research-route",
+    "text": "Cameroonian bikutsi: investigate investigate guitar/percussion relationships; distinguish from makossa.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-37",
+    "regions": [
+      "central-southern-africa"
+    ],
+    "kind": "research-route",
+    "text": "Gandjal: investigate research the documented cameroonian golden sounds repertoire.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-38",
+    "regions": [
+      "northern-south-america"
+    ],
+    "kind": "research-route",
+    "text": "Afro-Colombian champeta crossings: investigate trace actual musical exchanges and recordings, not generic fusion.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-39",
+    "regions": [
+      "northern-south-america"
+    ],
+    "kind": "research-route",
+    "text": "Palenque ensemble traditions: investigate research credited local ensembles separately from electronic champeta.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-40",
+    "regions": [
+      "southern-south-america"
+    ],
+    "kind": "research-route",
+    "text": "Pará dance archives: investigate explore the documented jambú repertoire; identify the actual style per track.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-41",
+    "regions": [
+      "southeast-asia"
+    ],
+    "kind": "research-route",
+    "text": "Jaipongan: investigate west javanese/sundanese dance-music route; distinguish from keroncong.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-42",
+    "regions": [
+      "southeast-asia"
+    ],
+    "kind": "research-route",
+    "text": "Keroncong: investigate indonesian song tradition; investigate small-ensemble texture.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-43",
+    "regions": [
+      "southeast-asia"
+    ],
+    "kind": "research-route",
+    "text": "Dangdut: investigate investigate overlooked regional recordings, not just famous pop hits.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-44",
+    "regions": [
+      "southeast-asia"
+    ],
+    "kind": "research-route",
+    "text": "Thai shadow music: investigate electric instrumental archival route; do not equate with all thai psych.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-45",
+    "regions": [
+      "south-asia"
+    ],
+    "kind": "research-route",
+    "text": "South Asian steel-guitar film interpretations: investigate instrumental arrangement route; verify original film and performer.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-46",
+    "regions": [
+      "mediterranean-europe"
+    ],
+    "kind": "research-route",
+    "text": "Albanian iso-polyphony: investigate investigate drone and interweaving voices.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-47",
+    "regions": [
+      "mediterranean-europe"
+    ],
+    "kind": "research-route",
+    "text": "Corsican cantu in paghjella: investigate distinguish secular/liturgical practice and concert adaptation.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-48",
+    "regions": [
+      "mediterranean-europe"
+    ],
+    "kind": "research-route",
+    "text": "Sardinian canto a tenore: investigate multipart pastoral singing; preserve context.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-49",
+    "regions": [
+      "northern-europe"
+    ],
+    "kind": "research-route",
+    "text": "Lithuanian sutartinės: investigate multipart song tradition; investigate interlocking entrances.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-50",
+    "regions": [
+      "central-asia"
+    ],
+    "kind": "research-route",
+    "text": "Shashmaqom: investigate modal art-music route; use a suitable credited recording or movement.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-51",
+    "regions": [
+      "west-africa"
+    ],
+    "kind": "research-route",
+    "text": "Morna: investigate cabo verde song tradition; assess each song rather than assigning automatic sadness.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-52",
+    "regions": [
+      "mediterranean-europe"
+    ],
+    "kind": "research-route",
+    "text": "Sevdalinka: investigate traditional urban song; verify text before describing its narrative.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-53",
+    "regions": [
+      "southeast-asia"
+    ],
+    "kind": "research-route",
+    "text": "Indonesian homemade-instrument experimentation: investigate research extended voice and built instruments without treating the whole region as one genre.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-54",
+    "regions": [],
+    "kind": "musical-lens",
+    "text": "Regional radio collage: investigate montage route; reject falsely attributed standalone songs.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "legacy-55",
+    "regions": [],
+    "kind": "musical-lens",
+    "text": "Ceremonial street-recording archives: investigate use only suitable credited material with its context intact.",
+    "basis": "Existing global-scenes and sonic-taxonomy research map; verify individual recordings."
+  },
+  {
+    "id": "us-east-sacred-steel",
+    "regions": [
+      "us-east"
+    ],
+    "kind": "research-route",
+    "text": "Sacred Steel: research credited Florida church and live recordings; listen for expressive lead phrasing rather than default showcase tracks.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-east-go-go",
+    "regions": [
+      "us-east"
+    ],
+    "kind": "research-route",
+    "text": "D.C. go-go: investigate overlooked local releases and credited live sets with percussion interplay; avoid introductory hits.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-east-baltimore-club",
+    "regions": [
+      "us-east"
+    ],
+    "kind": "research-route",
+    "text": "Baltimore club: research local producer catalogs and unusual vocal edits; favor a distinctive rhythmic idea over familiar crossover staples.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-east-jersey-club",
+    "regions": [
+      "us-east"
+    ],
+    "kind": "research-route",
+    "text": "Jersey club: investigate overlooked local releases and inventive rhythmic arrangements, not the same viral vocal samples.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-east-miami-bass",
+    "regions": [
+      "us-east"
+    ],
+    "kind": "research-route",
+    "text": "Miami bass: investigate overlooked regional singles and electro arrangements; a recognizable bass sound alone is not a reason to select a track.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-east-florida-breaks",
+    "regions": [
+      "us-east"
+    ],
+    "kind": "research-route",
+    "text": "Florida breaks: research credited Orlando and Tampa releases with unusual break construction; avoid generic compilation filler.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-east-no-wave",
+    "regions": [
+      "us-east"
+    ],
+    "kind": "research-route",
+    "text": "New York no wave: look beyond the standard survey tracks for a convincing relationship between dissonance, rhythm and voice.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-east-freestyle",
+    "regions": [
+      "us-east"
+    ],
+    "kind": "research-route",
+    "text": "New York Latin freestyle: research overlooked singles and unusual arrangements; welcome a strong hook without defaulting to radio staples.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-east-detroit-techno",
+    "regions": [
+      "us-east"
+    ],
+    "kind": "research-route",
+    "text": "Detroit techno: investigate less-circulated local releases with distinctive rhythmic or textural development; verify recording and scene provenance.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-east-ghettotech",
+    "regions": [
+      "us-east"
+    ],
+    "kind": "research-route",
+    "text": "Detroit ghettotech: research credited local releases with specific rhythmic personality; do not substitute generic fast club music.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-east-chicago-acid",
+    "regions": [
+      "us-east"
+    ],
+    "kind": "research-route",
+    "text": "Chicago acid house: look for overlooked releases with evolving arrangements, not a famous bassline or a genre demonstration.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-east-footwork",
+    "regions": [
+      "us-east"
+    ],
+    "kind": "research-route",
+    "text": "Chicago footwork and juke: investigate overlooked local recordings with compelling rhythmic tension; distinguish the routes rather than treating them as interchangeable.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-east-memphis-cassette",
+    "regions": [
+      "us-east"
+    ],
+    "kind": "research-route",
+    "text": "Memphis cassette rap: research credited original recordings and versions beyond the recurring compilation picks; distinguish them from later phonk revivals.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-east-piedmont",
+    "regions": [
+      "us-east"
+    ],
+    "kind": "research-route",
+    "text": "Piedmont blues: investigate less-familiar credited performances where guitar counterpoint and vocal phrasing earn the selection.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-east-swamp-pop",
+    "regions": [
+      "us-east"
+    ],
+    "kind": "research-route",
+    "text": "Louisiana swamp pop: research overlooked regional releases with distinctive phrasing or arrangements; do not rely on nostalgic atmosphere alone.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-east-shape-note",
+    "regions": [
+      "us-east"
+    ],
+    "kind": "research-route",
+    "text": "Shape-note singing: investigate suitable credited ensemble recordings; preserve communal and sacred context, and do not use tradition as novelty.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-west-waila",
+    "regions": [
+      "us-west"
+    ],
+    "kind": "research-route",
+    "text": "Waila: research credited southern Arizona social-dance recordings; preserve community context and select for the actual ensemble interplay.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-west-conjunto",
+    "regions": [
+      "us-west"
+    ],
+    "kind": "research-route",
+    "text": "South Texas conjunto: investigate overlooked credited recordings with distinctive ensemble phrasing; distinguish conjunto from the wider Tejano umbrella.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-west-electro-hop",
+    "regions": [
+      "us-west"
+    ],
+    "kind": "research-route",
+    "text": "West Coast electro-hop: investigate overlooked Los Angeles releases with distinctive drum programming and vocal arrangements; avoid signature-track defaults.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-west-chicano-soul",
+    "regions": [
+      "us-west"
+    ],
+    "kind": "research-route",
+    "text": "Chicano and lowrider soul: research verified West Coast recordings and overlooked local releases; familiar sweetness must come with distinctive performance or arrangement.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-west-paisley",
+    "regions": [
+      "us-west"
+    ],
+    "kind": "research-route",
+    "text": "Paisley Underground: research lesser-circulated Los Angeles recordings with unusual guitar or vocal interplay; skip the standard scene introductions.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-west-deathrock",
+    "regions": [
+      "us-west"
+    ],
+    "kind": "research-route",
+    "text": "Los Angeles deathrock: investigate overlooked credited releases where atmosphere and songcraft work together; costume and obscurity are not sufficient.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-west-hyphy",
+    "regions": [
+      "us-west"
+    ],
+    "kind": "research-route",
+    "text": "Bay Area hyphy: research overlooked local releases with distinctive rhythmic energy; avoid the predictable crossover anthems.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-west-mobb",
+    "regions": [
+      "us-west"
+    ],
+    "kind": "research-route",
+    "text": "Bay Area mobb music: investigate credited regional recordings beyond the standard touchstones; verify lyrical subject independently for Criminal.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-west-jerkin",
+    "regions": [
+      "us-west"
+    ],
+    "kind": "research-route",
+    "text": "Los Angeles jerkin: research credited local releases with inventive sparse arrangements; do not default to viral signature songs.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-west-la-beats",
+    "regions": [
+      "us-west"
+    ],
+    "kind": "research-route",
+    "text": "Los Angeles beat scene: investigate overlooked producer catalogs and distinctive rhythmic development; avoid anonymous study-playlist instrumentals.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-west-portland-tape",
+    "regions": [
+      "us-west"
+    ],
+    "kind": "research-route",
+    "text": "Portland tape-pop archives: research credited local home-recorded releases with strong melodic or production ideas; this is a research route, not a formal genre.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-west-olympia-diy",
+    "regions": [
+      "us-west"
+    ],
+    "kind": "research-route",
+    "text": "Olympia DIY pop: research overlooked local releases with committed performances and memorable melodic choices; lo-fi sound alone is not quality.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-west-western-swing",
+    "regions": [
+      "us-west"
+    ],
+    "kind": "research-route",
+    "text": "Western swing: research overlooked Texas and Oklahoma recordings with striking ensemble exchanges; verify provenance rather than assuming any swing-country record fits.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-west-private-country",
+    "regions": [
+      "us-west"
+    ],
+    "kind": "research-route",
+    "text": "Western private-press country: investigate verified local releases with unusual songwriting or arrangements; private pressing is a research route, not a quality certificate.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-west-desert-rock",
+    "regions": [
+      "us-west"
+    ],
+    "kind": "research-route",
+    "text": "Palm Desert rock: research overlooked locally connected recordings with distinctive groove and arrangement; avoid the standard festival headliners.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "us-west-slack-key",
+    "regions": [
+      "us-west"
+    ],
+    "kind": "research-route",
+    "text": "Hawaiian slack-key guitar: investigate suitable credited performances with distinctive phrasing; preserve context rather than using the tradition as ambient scenery.",
+    "basis": "User East/West survey, reviewed as research leads; verify scene, release and track suitability before selection."
+  },
+  {
+    "id": "review-hawaiian-falsetto",
+    "regions": [
+      "oceania",
+      "us-west"
+    ],
+    "kind": "research-route",
+    "text": "Hawaiian falsetto: explore credited leo kiʻekiʻe performances for distinctive vocal phrasing; verify the recording and fit rather than defaulting to familiar Hawaiian hits.",
+    "basis": "Source supports the vocal practice, not a fixed tempo or lyrical theme.",
+    "source_entries": [
+      "oceania:add-21"
+    ],
+    "evidence_urls": [
+      "https://folkways.si.edu/na-leo-hawaii/music/article/smithsonian"
+    ],
+    "review_status": "route-supported-recordings-unverified"
+  },
+  {
+    "id": "review-hawaiian-himeni",
+    "regions": [
+      "oceania",
+      "us-west"
+    ],
+    "kind": "research-route",
+    "text": "Hawaiian hīmeni: investigate documented Hawaiian-language hymn performances when the requested mood and context fit; do not assume sacred repertoire is generic atmosphere.",
+    "basis": "Source supports Hawaiian-language hymn practice; no universal mood assignment.",
+    "source_entries": [
+      "oceania:add-23"
+    ],
+    "evidence_urls": [
+      "https://folkways.si.edu/na-leo-hawaii/music/article/smithsonian"
+    ],
+    "review_status": "route-supported-recordings-unverified"
+  },
+  {
+    "id": "review-costa-rica-cimarrona",
+    "regions": [
+      "central-america"
+    ],
+    "kind": "research-route",
+    "text": "Costa Rican cimarrona ensembles: research credited local groups and distinctive arrangements; establish the actual instrumentation, pace and recording availability before selecting.",
+    "basis": "Cultural directory establishes a local ensemble and locality, not every imported sonic claim.",
+    "source_entries": [
+      "central-america:add-33"
+    ],
+    "evidence_urls": [
+      "https://si.cultura.cr/agrupaciones-y-organizaciones/cimarrona-los-guilas"
+    ],
+    "review_status": "route-supported-recordings-unverified"
+  },
+  {
+    "id": "review-belize-garifuna-guitar",
+    "regions": [
+      "central-america"
+    ],
+    "kind": "research-route",
+    "text": "Belizean Garifuna guitar-song routes: investigate credited paranda recordings and their vocal phrasing; distinguish listening songs from dance or ritual repertoires and verify every selection.",
+    "basis": "Catalog documents paranda examples and guitar/voice material; verify the individual arrangement.",
+    "source_entries": [
+      "central-america:03"
+    ],
+    "evidence_urls": [
+      "https://folkways.si.edu/traditional-music-of-the-garifuna-of-belize/american-indian-world/album/smithsonian"
+    ],
+    "review_status": "route-supported-recordings-unverified"
+  },
+  {
+    "id": "review-cameroon-mvet",
+    "regions": [
+      "central-southern-africa"
+    ],
+    "kind": "research-route",
+    "text": "Cameroonian Bulu mvet storytelling: research documented voice-and-string performances and their arrangement; preserve performance context and verify the text before assigning narrative themes.",
+    "basis": "Catalog establishes Bulu storyteller and mvet context; not song-level crime evidence.",
+    "source_entries": [
+      "central-africa:add-08"
+    ],
+    "evidence_urls": [
+      "https://folkways.si.edu/bulu-songs-from-the-cameroons/world/music/album/smithsonian"
+    ],
+    "review_status": "route-supported-recordings-unverified"
+  },
+  {
+    "id": "review-chad-balafon",
+    "regions": [
+      "central-southern-africa"
+    ],
+    "kind": "research-route",
+    "text": "Chadian balafon ensembles: investigate documented interlocking melodic performances; verify credited locality, recording and perceived pace instead of treating archival music as automatically strange.",
+    "basis": "Catalog supports balafon ensemble and interwoven figures, not all Chad recordings or fixed meters.",
+    "source_entries": [
+      "central-africa:add-35"
+    ],
+    "evidence_urls": [
+      "https://folkways.si.edu/music-of-chad/islamica-world/album/smithsonian"
+    ],
+    "review_status": "route-supported-recordings-unverified"
+  },
+  {
+    "id": "review-namibia-oviritje",
+    "regions": [
+      "central-southern-africa"
+    ],
+    "kind": "research-route",
+    "text": "Namibian Oviritje: investigate credited local releases beyond the most familiar names; establish each recording’s audible character and tempo rather than inferring them from an award category.",
+    "basis": "Awards source supports the named category only; imported instrumental details remain unverified.",
+    "source_entries": [
+      "southern-africa:add-32"
+    ],
+    "evidence_urls": [
+      "https://www.nama.com.na/entry-categories/best-oviritje-album"
+    ],
+    "review_status": "route-supported-recordings-unverified"
+  },
+  {
+    "id": "review-namibia-shambo",
+    "regions": [
+      "central-southern-africa"
+    ],
+    "kind": "research-route",
+    "text": "Namibian Shambo: research documented local artists and releases, then verify the actual groove, voice and mood fit; the category name is a search route, not a sonic guarantee.",
+    "basis": "Awards inventory supports category existence only; no default energy or instrumentation.",
+    "source_entries": [
+      "southern-africa:add-33"
+    ],
+    "evidence_urls": [
+      "https://www.nama.com.na/faq"
+    ],
+    "review_status": "route-supported-recordings-unverified"
+  }
+]

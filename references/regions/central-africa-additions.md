@@ -2,7 +2,7 @@
 
 Parent map region: `central-southern-africa`. Stable source-entry IDs: `central-africa:add-01`–`central-africa:add-50`.
 
-These are listener-supplied, unverified research leads, not 50 independently verified new genres. Preserve the distinctions between scenes, song repertoires, performance practices and commercial genre labels. Apply the regional atlas verification, recording-quality, mood and tempo rules. These additions do not enter the automatic lens pool. Source links below are supplied research routes, not evidence independently checked during import.
+These are listener-supplied, unverified research leads, not 50 independently verified new genres. Preserve the distinctions between scenes, song repertoires, performance practices and commercial genre labels. Apply the regional atlas verification, recording-quality, mood and tempo rules. Only the separately source-supported shortlist in the focused regional review may enter the automatic lens pool; these source entries remain unverified as written. Source links below are supplied research routes, not evidence independently checked during import.
 
 [Imported Drive source](https://drive.google.com/file/d/19aKVy2TzEHTQrhxBrU_HmuApRu55tTlo/view), retrieved 2026-10-24 (America/New_York).
 

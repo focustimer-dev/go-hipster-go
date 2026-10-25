@@ -8,6 +8,8 @@ For discovery, compare several compatible routes and dig beyond named touchstone
 
 Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
 
+See the [focused regional review](regional-review.md) for the source-supported shortlist, overlap decisions and material not ready for automatic discovery.
+
 ## Lookup
 
 Match the exact region ID or visible label below. Read only the selected regional files; for worldwide discovery, compare a few contrasting regions rather than loading the entire atlas. Route IDs are stable lookup handles, not genre authority or ranking. These files contain 720 source rows (30 per region), not 720 independently verified genres.
