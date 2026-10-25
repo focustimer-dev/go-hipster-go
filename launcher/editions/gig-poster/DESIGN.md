@@ -6,6 +6,7 @@ colors:
   mustard-stock: "#dfb045"
   warm-highlight: "#edc65d"
   star-red: "#a83223"
+  receipt-ink: "#742019"
   focus-paper: "#f5cf64"
 typography:
   display:
@@ -140,3 +141,8 @@ A compact outlined notice sits between hero and service choices: FIRST VISIT? SO
 ## Interaction feedback
 
 Print-counter feedback uses immediate color/underline states and a 1px press on keys/actions. Successful copy alone earns one 180ms ink-settle; it follows real copied state, never a pointer click. The fader changes knob ink while held, disclosures show plus/minus and a dashed open rule, removable region stamps invert on hover/press. Fine-pointer hover decoration is gated; reduced-motion removes translation and the success animation while retaining state, focus and confirmation text. No dependencies, audio, haptics, waits or changed workflows.
+
+
+## Confirmed-copy accent
+
+Reserve deep vermilion (#742019) for the Jukebox's successful clipboard stamp and enabled next-AI handoff. Mustard lettering on this ink and ink against mustard both exceed 5:1 contrast. The existing COPIED TO CLIPBOARD text, bordered stamp and NEXT label remain the state cues; color is supplementary. Drafts and failed copies retain the normal petrol treatment. This adds no new motion or layout change.

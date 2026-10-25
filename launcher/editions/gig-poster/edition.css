@@ -195,3 +195,9 @@ body.gig-poster .poster-explainer{font:400 .875rem/1.5 Arial,Helvetica,sans-seri
 body.gig-poster #tempoHelp{position:static;width:auto;height:auto;clip-path:none;overflow:visible;font:400 .75rem/1.4 Arial,Helvetica,sans-serif;color:var(--ink);margin:4px 0 0}
 body.gig-poster .atlas-intro{display:block;font:400 .75rem/1.4 Arial,Helvetica,sans-serif;color:var(--ink);margin:0 0 6px}
 body.gig-poster .footnote,body.gig-poster .footnote a{color:var(--ink)}
+
+/* A third printing ink is reserved for a confirmed copy and its next action. */
+body.gig-poster[data-page=launch]{--receipt-ink:#742019}
+body.gig-poster[data-page=launch] .receipt[data-copy-state=copied] .receipt-copy{background:var(--receipt-ink);color:var(--paper);border-color:var(--receipt-ink)}
+body.gig-poster[data-page=launch] .go-button .go-stamp{background:var(--receipt-ink);color:var(--paper);border-color:var(--paper)}
+body.gig-poster[data-page=launch] .handoff :is(#openAi,#browserAi)[aria-disabled=false]{background:var(--receipt-ink);color:var(--paper);border-color:var(--receipt-ink)}
