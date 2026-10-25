@@ -158,3 +158,7 @@ Open `/?intro=1` to force the first-visit hero and setup tip on that URL, even a
 ## Compact GO handoff (3.7.1)
 
 Normal GO copies only the invocation, selected regions, mood angle, tempo, one metaphorical seed and destination service. Twelve tracks and all curation/publication rules belong to the installed skill. No rotating genre lens is emitted: the skill selects a compatible regional route after interpreting mood and pace. Old longer prompts remain understood. The Manual owns missing-installation guidance.
+
+### Explicit mentions
+
+Copied GO starts with `@go-hipster-go` and the selected music service. Gemini YouTube Music uses `@YouTubeMusic`; other destinations retain their display names. These are text routing hints, not proof of app activation or authorization; select the matching host suggestions where available.
