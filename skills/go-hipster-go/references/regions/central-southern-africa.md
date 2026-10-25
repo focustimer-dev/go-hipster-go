@@ -48,3 +48,11 @@ Imported from listener-supplied regional survey, [Drive source](https://drive.go
 | `central-southern-africa:28` | **Gqom** | Durban, KwaZulu-Natal, South Africa | Dark, minimalist, broken-beat 125–130 BPM club music featuring hypnotic tom-drum patterns, industrial sirens, and sparse chants. |
 | `central-southern-africa:29` | **Basotho Famo** | Maseru (Lesotho) & Free State Mines | Accordion (koriana) and oil-drum bass music accompanied by lengthy Sesotho poetic recitations (sefela). |
 | `central-southern-africa:30` | **San / Ju/'hoansi Healing Trance Polyphony & Musical Bow** | Kalahari Desert (Botswana & Namibia) | Interlocking yodeled vocal hockets, handclapping polyrhythms, and mouth-resonated hunting bow overtones. |
+
+## Central Africa supplementary leads
+
+Read [central-africa-additions.md](central-africa-additions.md) for 50 additional source entries; overlapping entries are cross-referenced rather than evidence of independent variety.
+
+## Southern Africa supplementary leads
+
+Read [southern-africa-additions.md](southern-africa-additions.md) for 50 additional source entries; overlapping entries are cross-referenced rather than evidence of independent variety.

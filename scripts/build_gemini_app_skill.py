@@ -12,6 +12,11 @@ from zipfile import ZipFile, ZIP_DEFLATED
 
 ROOT = Path(__file__).resolve().parents[1]
 REFERENCES = (
+    "references/regions/oceania-additions.md",
+    "references/regions/central-america-additions.md",
+    "references/regions/central-africa-additions.md",
+    "references/regions/southern-africa-additions.md",
+
     "references/regional-atlas.md",
     "references/regions/us-west.md",
     "references/regions/us-east.md",

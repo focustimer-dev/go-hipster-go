@@ -117,7 +117,7 @@ When a PWA prompt supplies a **Fresh-crate discovery lens**, use it as a startin
 
 **Regional discovery and recording quality:** Apply the recording-level selection gate in [sonic taxonomy](references/sonic-taxonomy.md). Selected regions take precedence over rotating lenses; verify scene connections rather than using geography as a sonic adjective. The [regional research routes](references/global-scenes.md) supplies research hypotheses, not established facts about recordings or a fixed artist roster. Skip incompatible hints; do not broaden geography just to use a seed.
 
-**Address regional research precisely:** Read the [regional atlas](references/regional-atlas.md) when regions are selected or a regional scene needs deeper exploration. Match the region label/ID to the files below; load only the relevant files. Treat the 720 imported survey rows as unverified search leads, not a factual taxonomy or automatic track roster. Verify compound labels and recording-level claims before using them. Existing mood, geography, recording-quality and Criminal evidence rules take precedence.
+**Address regional research precisely:** Read the [regional atlas](references/regional-atlas.md) when regions are selected or a regional scene needs deeper exploration. Match the region label/ID to the files below; load only the relevant files. Treat the 920 imported source entries (including overlapping additions) as unverified search leads, not a factual taxonomy or automatic track roster. Verify compound labels and recording-level claims before using them. Existing mood, geography, recording-quality and Criminal evidence rules take precedence.
 
 - [US West](references/regions/us-west.md)
 - [US East](references/regions/us-east.md)
@@ -144,6 +144,13 @@ When a PWA prompt supplies a **Fresh-crate discovery lens**, use it as a startin
 - [Northern Asia](references/regions/northern-asia.md)
 - [Oceania](references/regions/oceania.md)
 
+Supplementary research files (load for the matching parent region; cross-check overlap):
+- [Oceania additions](references/regions/oceania-additions.md)
+- [Central America additions](references/regions/central-america-additions.md)
+- [Central Africa additions](references/regions/central-africa-additions.md)
+- [Southern Africa additions](references/regions/southern-africa-additions.md)
+
+
 **Track-level recent-repeat check:** When earlier playlists are actually visible in the current conversation, supplied by the listener, or available through an authorized playlist read-back, compare normalized **artist + title + recording/version** against the last *up to three* sets. For an ordinary new playlist, exclude repeated recordings by default and prefer different artists, even when the mood repeats. Allow direct listener requests, an explicitly requested callback or a compelling, explained exception; never silently replace an exact user-requested recording. Within one normal set, avoid repeated artist/title pairs or recycled alternate uploads masquerading as variety. Do **not** imply that Gemini, the PWA or another host can read earlier playlists or listening history across sessions unless those records are genuinely accessible. If history is unavailable, still diversify the search route and be candid about the missing cross-session exclusion list when repeat avoidance is discussed.
 
 ## Curate in seven steps
@@ -169,6 +176,318 @@ Glossy late-period Motown/Motown-adjacent pop-soul, synth-funk, adult-contempora
 Never identify a song from audio if the running agent lacks audio music-recognition capability. Do not pretend to have listened to tracks or created streaming playlists. Respect the user's exclusions, music-service availability, and rights/platform limits.
 
 # END SOURCE: SKILL.md
+
+---
+
+# BEGIN SOURCE: references/regions/oceania-additions.md
+
+# Oceania — 50 additional discovery leads
+
+Parent map region: `oceania`. Stable source-entry IDs: `oceania:add-01`–`oceania:add-50`.
+
+These are listener-supplied, unverified research leads, not 50 independently verified new genres. Preserve the distinctions between scenes, song repertoires, performance practices and commercial genre labels. Apply the regional atlas verification, recording-quality, mood and tempo rules. These additions do not enter the automatic lens pool. Source links below are supplied research routes, not evidence independently checked during import.
+
+[Imported Drive source](https://drive.google.com/file/d/1gMTMjx1kqqNFCTe1KYt8NRUQr3j008nl/view), retrieved 2026-10-24 (America/New_York).
+
+## Addressable additions
+
+| Entry ID | Source label | Source description — verify | Existing relationship |
+| --- | --- | --- | --- |
+| `oceania:add-01` | Māori haka chant | Spoken-sung group challenge or ceremonial performance with precise rhythmic declamation; context matters. | Compare [oceania:11](oceania.md): overlapping or narrower lead; do not count twice or use as independent variety. |
+| `oceania:add-02` | Māori waiata aroha | Māori songs of love, longing or grief, a text-defined song repertoire rather than one beat. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-03` | Māori waiata tangi | Māori lament-song repertory; preserve occasion and whakapapa/context where available. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-04` | Māori pao | Short Māori sung verses often used for expressive or topical commentary. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-05` | Māori poi-song accompaniment | Music composed for Māori poi performance; not the same as every kapa haka item. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-06` | Māori karanga | Formal welcoming call between voices at a pōwhiri; ceremonial vocal art, not dance-pop. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-07` | Aotearoa Māori reggae | Māori-language and identity-centered reggae scene in New Zealand. | Compare [oceania:12](oceania.md): overlapping or narrower lead; do not count twice or use as independent variety. |
+| `oceania:add-08` | Aotearoa Pacific dub | New Zealand's bass-heavy dub and reggae-rooted production scene with Pasifika influence. | Compare [oceania:13](oceania.md): overlapping or narrower lead; do not count twice or use as independent variety. |
+| `oceania:add-09` | Aotearoa Pasifika hip-hop | Rap from Pacific communities in New Zealand, including multilingual identity narratives. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-10` | Australian pub rock | Loud, direct, live-circuit Australian rock bands associated with pub venues. | Compare [oceania:05](oceania.md): overlapping or narrower lead; do not count twice or use as independent variety. |
+| `oceania:add-11` | Australian desert reggae | Central Australian Aboriginal community reggae with localized languages and concerns. | Compare [oceania:03](oceania.md): overlapping or narrower lead; do not count twice or use as independent variety. |
+| `oceania:add-12` | Australian desert rock | Rock recorded by bands from remote Central Australian communities, distinct from generic stoner/desert rock. | Compare [oceania:03](oceania.md): overlapping or narrower lead; do not count twice or use as independent variety. |
+| `oceania:add-13` | First Nations Australian hip-hop | Rap rooted in Aboriginal and Torres Strait Islander communities and experiences. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-14` | Torres Strait Islander ailan-style songs | Torres Strait community harmonies and danceable local song, often with guitars or island-band backing. | Compare [oceania:04](oceania.md): overlapping or narrower lead; do not count twice or use as independent variety. |
+| `oceania:add-15` | Torres Strait Islander gospel | Islander-language Christian vocal repertoire in the Torres Strait's distinctive church-music scene. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-16` | Australian bush-dance tunes | Reels, jigs and other country-dance repertoire for Australian community bush dances, distinct from sung ballads. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-17` | Hawaiian mele oli | Unaccompanied Hawaiian chant repertoire for historical, genealogical and ceremonial narratives. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-18` | Hawaiian hula kahiko music | Chant and percussion accompanying older hula practices; context and stewardship are important. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-19` | Hawaiian hula ʻauana music | Hula-associated modern sung song with later harmonic and string-instrument influences. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-20` | Hawaiian hapa-haole music | Hawaiian popular music combining English and Hawaiian words and Western popular styles. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-21` | Hawaiian leo kiʻekiʻe falsetto | Distinct Hawaiian high-voice/falsetto song practice, often emphasizing a register break. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-22` | Hawaiian steel-guitar music | Hawaiian-origin slide/steel-string instrumental and song accompaniment style. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-23` | Hawaiian himeni | Hawaiian-language hymn and congregational choral traditions rooted in nineteenth-century adaptations. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-24` | Hawaiian Jawaiian | Hawaiʻi local reggae/pop hybrid; distinguish from any broad claim about all Pacific reggae. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-25` | Tahitian hīmene tārava | Complex Tahitian multipart choral style with interlocking voice parts. | Compare [oceania:24](oceania.md): overlapping or narrower lead; do not count twice or use as independent variety. |
+| `oceania:add-26` | Tahitian hīmene rūʻau | Tahitian choral style traditionally presented in seated formations and layered voices. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-27` | Tahitian ʻūtē | Tahitian topical, sometimes humorous call-and-response or alternating lead-song genre. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-28` | Tahitian ʻaparima music | Song-led Tahitian gestural dance with lyrics mirrored by hand movements. | Compare [oceania:24](oceania.md): overlapping or narrower lead; do not count twice or use as independent variety. |
+| `oceania:add-29` | Tahitian pāʻōʻā music | Chant, thigh-slapping and percussion associated with a Tahitian communal performance genre. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-30` | Tahitian hivināu music | Rhythmic Tahitian circle-dance and responsive vocal performance. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-31` | Cook Islands īmene tuki | Distinct a cappella Polynesian hymn style with dramatic short vocal interjections. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-32` | Cook Islands īmene metua | Cook Islands older traditional song and hymn repertoire. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-33` | Cook Islands ʻura paʻu drumming | Cook Islands dance music driven by interlocking slit-drum and skin-drum rhythms. | Compare [oceania:25](oceania.md): overlapping or narrower lead; do not count twice or use as independent variety. |
+| `oceania:add-34` | Samoan sasa music | Seated or standing coordinated slap-dance rhythmic accompaniment and sung cues. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-35` | Samoan maʻuluʻulu songs | Group dance-song repertoire with synchronized actions, distinct from the slap-dance sasa. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-36` | Samoan pese lotu | Samoan-language congregational and choral hymn repertory. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-37` | Tongan tauʻolunga songs | Graceful solo-dance sung poetry and ensemble backing distinct from lakalaka. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-38` | Tongan meʻetuʻupaki music | Tongan paddle-dance song with drum-led accompaniment. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-39` | Tongan ʻotuhaka music | Traditional Tongan group dance-song form with older poetic and movement conventions. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-40` | Tongan kailao accompaniment | Drum/chant patterns accompanying Tongan coordinated martial display. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-41` | Tongan soke music | Rhythmic song and percussion for Tongan stick-dance performance. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-42` | Niuean takalo chant | Niuean formal challenge/war-dance chant; check occasion before reuse. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-43` | Tokelauan fatele | Tokelau massed vocal and percussive dance-song tradition, historically connected to but distinct from Tuvaluan fatele. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-44` | Tuvaluan fakaseasea | Tuvalu gentle group dance and song form, different from the faster fatele. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-45` | CHamoru kantan chamorrita | Guam/Marianas improvised dialogic verse-song tradition in CHamoru. | Compare [oceania:28](oceania.md): overlapping or narrower lead; do not count twice or use as independent variety. |
+| `oceania:add-46` | CHamoru batsu | Marianas adaptation of waltz-like dance-band music in CHamoru repertoire. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-47` | CHamoru cha-cha | Guam's locally performed CHamoru-language cha-cha dance-song scene. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-48` | Marshallese roro | Marshall Islands expressive solo-song traditions, frequently associated with personal stories and emotion. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-49` | Tolai stringband | Papua New Guinea Tolai-region stringband song scene, narrower than the pan-PNG stringband umbrella. | Compare [oceania:14](oceania.md): overlapping or narrower lead; do not count twice or use as independent variety. |
+| `oceania:add-50` | Kwaio panpipe ensembles | Malaita Solomon Islands Kwaio-community bamboo-panpipe repertory distinct from ʻAreʻare ensembles. | Unreviewed; check semantic overlap before treating as a distinct route. |
+
+## Supplied reference routes
+
+- [Smithsonian Folkways: Hawaiian song forms](https://folkways.si.edu/na-leo-hawaii/music/article/smithsonian)
+- [Tonga tourism: dance-song varieties](https://www.tongatourism.travel/discover/people-and-culture/tongan-dance)
+- [Cook Islands īmene tuki study](https://heritage.adventistchurch.com/exhibitions/music/)
+- [Tahitian hīmene and ʻori repertoire, National Library NZ](https://natlib.govt.nz/records/21641679)
+- [Guampedia on CHamoru music](https://www.guampedia.com/chamorro-music-2/)
+- [Pacific field recordings, National Library of New Zealand](https://natlib.govt.nz/records/20484316)
+
+# END SOURCE: references/regions/oceania-additions.md
+
+---
+
+# BEGIN SOURCE: references/regions/central-america-additions.md
+
+# Central America — 50 additional discovery leads
+
+Parent map region: `central-america`. Stable source-entry IDs: `central-america:add-01`–`central-america:add-50`.
+
+These are listener-supplied, unverified research leads, not 50 independently verified new genres. Preserve the distinctions between scenes, song repertoires, performance practices and commercial genre labels. Apply the regional atlas verification, recording-quality, mood and tempo rules. These additions do not enter the automatic lens pool. Source links below are supplied research routes, not evidence independently checked during import.
+
+[Imported Drive source](https://drive.google.com/file/d/1_HcaPhW11h90JmuuocI4Ra4DnQeF0Quq/view), retrieved 2026-10-24 (America/New_York).
+
+## Addressable additions
+
+| Entry ID | Source label | Source description — verify | Existing relationship |
+| --- | --- | --- | --- |
+| `central-america:add-01` | Garifuna abaimahani | Garifuna women's unaccompanied or lightly accompanied narrative-song repertoire in Belize, Honduras and Guatemala. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-02` | Garifuna arumahani | Garifuna men's song repertoire, often preserving stories of place, kinship and experience. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-03` | Garifuna gunchei | Garifuna paired social-dance music with its own step and rhythmic vocabulary. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-04` | Garifuna chumba | Garifuna dance-song and drum tradition; research the specific community performance before tagging tracks. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-05` | Garifuna dügü songs and drumming | Garifuna ancestral ritual music; sacred context requires permission and is not a generic dance-playlist category. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-06` | Garifuna chügü songs and drumming | Garifuna ancestral-remembrance repertoire associated with a distinct ritual gathering; do not conflate with punta. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-07` | Garifuna afeduani | Named Garifuna song type heard in archival Honduran recordings; find a specific credited performance. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-08` | Belizean Kriol mento | Belizean vernacular Caribbean acoustic dance-song practice, separate from the more explicitly local brukdown label. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-09` | Belizean steelpan ensembles | Belize-based steelband performance of Caribbean dance repertoire, a local scene rather than a Belize-invented genre. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-10` | Belizean Maya marimba | Mopan and Q'eqchi' community marimba performance in southern Belize; repertoire varies locally. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-11` | Guatemalan guarimba | Distinct Guatemalan marimba composition/dance style associated with local arranged repertoire. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-12` | Guatemalan Rabinal Achí music | Achi Maya dance-drama sung and accompanied in a formal cultural setting; contextual listening rather than casual sampling. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-13` | Guatemalan son del torito | Highland dance-drama's son repertoire associated with the bull figure and community festivities. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-14` | Guatemalan son de los venados | Musical accompaniment of the Maya deer-dance tradition; performance practices differ by locality. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-15` | Guatemalan Paabank sones | Q'eqchi' Alta Verapaz festive-ceremonial music during Paabank gatherings. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-16` | Guatemalan son de las guacamayas | Music for the macaw-dance sequence documented in Alta Verapaz's Paabank repertories. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-17` | Guatemalan moros y cristianos sones | Reed, percussion or marimba-backed music for local Moros y Cristianos dance-drama versions. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-18` | Honduran Miskitu King Pulanka songs | Music around the Miskitu King Pulanka festive performance, distinct from Garifuna traditions. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-19` | Honduran Lenca guancasco music | Songs and instrumental accompaniment associated with inter-community Lenca guancasco observances. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-20` | Honduran folk marimba ensembles | Regional Honduran marimba dance repertoire, distinct in provenance from Guatemalan orchestras. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-21` | Honduran Miskitu hymnody | Miskitu-language church singing rooted in Honduras's Caribbean coast; scene/repertory, not a newly coined genre. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-22` | Salvadoran historiantes music | Instrumental and vocal music for El Salvador's Historiantes/Moros y Cristianos dramatic dances. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-23` | Salvadoran baile de los cumpas music | Festive music performed for the cross-community dance of Los Cumpas. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-24` | Salvadoran pito y tambor repertory | Local flute-and-drum music for traditional dances and religious processions. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-25` | Nicaraguan mazurca segoviana | Northern Nicaraguan mazurka repertoire for accordion and string ensembles. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-26` | Nicaraguan jamaquello | Northern Nicaragua's named partner-dance rhythm and its associated instrumental pieces. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-27` | Nicaraguan vals norteño | Local waltz repertoire of the northern departments, heard with accordion and strings. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-28` | Nicaraguan zapateado norteño | Northern Nicaraguan footwork-linked instrumental dance repertory. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-29` | Nicaraguan sones del Toro Huaco | Music of the Toro Huaco folk-dance procession in Diriamba. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-30` | Nicaraguan sones del Güegüense | Historical musical numbers from the Nicaraguan satirical dance-drama El Güegüense. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-31` | Nicaraguan sones del Gigante | Music of El Gigante dance-drama tradition in Diriamba. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-32` | Nicaraguan Miskitu vernacular song | Miskitu-language vocal traditions of Nicaragua's Caribbean coast, distinct from Spanish-language folk forms. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-33` | Costa Rican cimarrona music | Brass-and-percussion village street-band repertory for festivities and mascaradas. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-34` | Costa Rican jota guanacasteca | Costa Rican adaptation of jota in local band and marimba music. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-35` | Costa Rican contradanza | Adapted contra-dance repertory preserved in Costa Rican civic and traditional band music. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-36` | Costa Rican danza guanacasteca | Guanacaste's named dance-music form, distinct from its faster parrandera rhythm. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-37` | Costa Rican vals-jota | Local hybrid waltz-jota dance form in Guanacaste traditional band repertoire. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-38` | Costa Rican pasillo | Costa Rican regional adaptation of the Andean-derived pasillo for ensembles and singers. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-39` | Costa Rican son de toros | Festive Guanacaste instrumental music associated with bull-event traditions. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-40` | Costa Rican chiqui-chiqui | Distinct Costa Rican 1980s dance-pop phenomenon with Caribbean and tropical influences. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-41` | Panamanian cumbia chorrerana | La Chorrera-region drummed/played cumbia with identifiable local performance tradition. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-42` | Panamanian cumbia santeña | Los Santos cumbia repertoire and distinctive folk-ensemble/dance context. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-43` | Panamanian cumbia darienita | Darién-region cumbia grounded in Afro-Darién communal practice. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-44` | Panamanian danzón-cumbia | Historically documented combination of danzón phrasing and Panamanian cumbia. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-45` | Panamanian cumbia zapateada | Footwork-centered subtype of Panamanian cumbia, distinct from cumbia atravesá. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-46` | Panamanian congo music | Afro-Colonense drum, call-and-response and song used in congo performance traditions. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-47` | Panamanian bullerengue | Afro-Darién song-and-drum repertory, not interchangeable with Colombian bullerengue. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-48` | Panamanian bunde | Darién-region sung/percussive Afro-descendant communal and devotional tradition. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-49` | Panamanian saloma | Distinctive melodic rural vocal calls used in local song and musical storytelling. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-50` | Panamanian cantadera de décima | Improvised or composed sung ten-line stanzas in Panama's interior folk practice. | Unreviewed; check semantic overlap before treating as a distinct route. |
+
+## Supplied reference routes
+
+- [Ministry of Education of Nicaragua: regional marimba, mazurka, zapateado and dance-drama recordings](https://www.mined.gob.ni/mapatradicionesculturapopular/musica/)
+- [Costa Rican cultural catalog: cimarrona history and named rhythms](https://si.cultura.cr/manifestaciones-culturales/historia-de-las-cimarronas)
+- [Panamanian education portal: congo, bullerengue, mejorana, saloma and other music](https://www.educapanama.edu.pa/?q=node%2F1458)
+- [Panama musical genre catalog: cumbia subtypes](https://musicadepanama.com/generos)
+- [Guatemalan culture ministry: Paabank dance repertoire](https://www.sicultura.gob.gt/el-paabank/)
+- [Smithsonian Folkways Honduras recordings: Garifuna song types](https://folkways.si.edu/country/honduras)
+
+# END SOURCE: references/regions/central-america-additions.md
+
+---
+
+# BEGIN SOURCE: references/regions/central-africa-additions.md
+
+# Central Africa — 50 additional discovery leads
+
+Parent map region: `central-southern-africa`. Stable source-entry IDs: `central-africa:add-01`–`central-africa:add-50`.
+
+These are listener-supplied, unverified research leads, not 50 independently verified new genres. Preserve the distinctions between scenes, song repertoires, performance practices and commercial genre labels. Apply the regional atlas verification, recording-quality, mood and tempo rules. These additions do not enter the automatic lens pool. Source links below are supplied research routes, not evidence independently checked during import.
+
+[Imported Drive source](https://drive.google.com/file/d/19aKVy2TzEHTQrhxBrU_HmuApRu55tTlo/view), retrieved 2026-10-24 (America/New_York).
+
+## Addressable additions
+
+| Entry ID | Source label | Source description — verify | Existing relationship |
+| --- | --- | --- | --- |
+| `central-africa:add-01` | Cameroonian mangambeu | Bamileke social dance-music style known for its strongly marked, shifting dance accents. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-02` | Cameroonian bend-skin | Popular Cameroonian dance-band style rooted in western highlands/Bamileke rhythms. | Compare [central-southern-africa:07](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
+| `central-africa:add-03` | Cameroonian mbolé | Yaoundé-rooted youth street-music scene featuring communal chant and percussion-derived grooves. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-04` | Cameroonian njang | Northwest Cameroon Grassfields dance and musical ensemble tradition. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-05` | Cameroonian ngoso | Coastal Sawa/Douala call-and-response songs linked to community celebrations and dance. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-06` | Cameroonian tchamassi | Bamileke-linked dance-music rhythm, a named traditional repertoire rather than pan-Cameroonian pop. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-07` | Cameroonian bottle-dance music | Northwest Grassfields celebratory music with bottle sounds and percussion; regional performance style. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-08` | Cameroonian mvet epic singing | Beti/Fang poetic storytelling accompanied by the mvet harp-zither; performance protocol varies. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-09` | Cameroonian gospel makossa | Christian music scenes arranging hymns and praise songs in makossa's dance-band vocabulary. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-10` | Cameroonian hip-hop 237 | French, English and local-language rap scene marked by Cameroon’s +237 country code. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-11` | Gabonese Punu ikokou | Punu community dance-song tradition, rhythmically distinct from Congolese guitar pop. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-12` | Gabonese ngombi harp songs | Gabonese plucked-harp-associated vocal repertories; ceremonial uses require contextual care. | Compare [central-southern-africa:08](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
+| `central-africa:add-13` | Gabonese Bwiti songs | Religious songs associated with Bwiti communities; do not treat restricted performances as public samples. | Compare [central-southern-africa:08](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
+| `central-africa:add-14` | Gabonese urban rap | Rap from Gabonese cities, a documented local scene rather than a claim of genre invention. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-15` | Equatoguinean Fang mvet narrative | Equatorial Guinea Fang sung epic storytelling with a mvet harp-zither. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-16` | Equatoguinean balélé | Communal song/dance performances in Equatorial Guinea; local instrumentation can vary. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-17` | Equatoguinean ibanga | Dance-song repertory documented among Equatorial Guinea’s folk traditions. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-18` | Equatoguinean Fang endondom | Named Fang dance and associated music tradition in Equatorial Guinea. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-19` | Equatoguinean Fang mendjang | Named Fang dance-music tradition; not a general substitute for all Fang songs. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-20` | Equatoguinean Bubi buleló | Named Bubi dance-song form from Bioko Island. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-21` | Equatoguinean Ndowe mecuyo | Ndowe coastal masked-dance-associated music; ceremonial setting matters. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-22` | Equatoguinean Annobonese cumbe | Annobón dance-music form reflecting the island’s separate Afro-Atlantic history. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-23` | São Toméan ússua | São Tomé formal partner-dance music with locally developed syncopated rhythmic patterns. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-24` | São Toméan socopé | Organized São Toméan communal song/dance performance with percussion and ensemble roles. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-25` | São Toméan puíta | São Tomé friction-drum-centered dance-song repertory, sometimes linked to remembrance contexts. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-26` | São Toméan bulawê | São Tomé singing-and-percussion dance style with responsive choral phrasing. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-27` | São Toméan danço-congo | São Tomé musical theatre/dance cycle with percussion and dramatic figures. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-28` | São Toméan tchiloli | São Tomé's historical music-theatre form with drums, voices and theatrical scenes. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-29` | Príncipe Auto de Floripes | Príncipe Island's local musical theatre procession, distinct from São Tomé tchiloli. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-30` | Príncipe dêxa | Príncipe song/dance genre often moving with a rolling compound-meter pulse. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-31` | São Toméan puxa | São Tomé and Príncipe's electric dance-band genre with guitars, bass and Creole vocals. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-32` | São Toméan kimbamba | Locally named performance/dance style documented in island music overviews. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-33` | São Toméan lundum | São Tomé Afro-Atlantic lundum-related song/dance repertoire with specific local history. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-34` | Chadian algheita dance music | Chadian reed-horn-and-percussion accompaniment documented in folk field recordings. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-35` | Chadian balafon-orchestra music | Interlocking Chadian xylophone ensemble tradition with percussion. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-36` | Chadian coucouma performance | Bowed string and song tradition documented in central Chad. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-37` | Chadian N’Gambaye guitar songs | Logone-region Ngambay string-song repertory documented by Smithsonian recordings. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-38` | Chadian Sara-Kabba m’belle dance | Song and percussion music documented with Sara Kaba dancers. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-39` | Chadian Sara-Mbaye klague dance | Southern Chad dance-music form recorded in the Moïssala area. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-40` | Chadian Nancere kouroum dance | Tandjilé-region communal dance-and-drum style heard in Chad field recordings. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-41` | Central African Banda-Linda horn polyphony | Interlocking large horn-ensemble music of Banda-Linda musicians in the CAR. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-42` | Central African Gbaya sanza songs | Gbaya lamellophone and voice repertoire from the Central African Republic. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-43` | Central African Baka vocal polyphony | Baka forest-community polyphonic song tradition; distinct from the original Aka entry. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-44` | Central African Ngbaka lamellophone songs | Ngbaka thumb-piano-and-voice local tradition, not a Congolese-rumba offshoot. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-45` | Congolese sebene | Extended guitar-led dance-break portion in Congolese rumba and soukous arrangements. | Compare [central-southern-africa:01](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
+| `central-africa:add-46` | Congolese odemba rumba | Guitar-driven Franco/OK Jazz-associated rumba approach, historically distinct from later soukous. | Compare [central-southern-africa:01](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
+| `central-africa:add-47` | Congolese tcha tcho | Slower, intimate Congolese popular song/dance style associated with Koffi Olomidé's repertoire. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-48` | Congolese four-time soukous | Fast, lean late-century soukous dance-band form known as soukous quatre temps. | Compare [central-southern-africa:01](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
+| `central-africa:add-49` | DRC Luba kasala praise singing | Kasai-area Luba praise-poetry performance, often declaimed; not synonymous with mutuashi. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-50` | DRC likembe song repertory | Congolese lamellophone-led vocal traditions preceding and coexisting with amplified dance bands. | Compare [central-southern-africa:02](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
+
+## Supplied reference routes
+
+- [RILM encyclopedic introduction to Central Africa](https://rme.rilm.org/articles/cgw00021/1.0/cgw00021)
+- [São Tomé and Príncipe cultural tourism office](https://visitsaotomeprincipe.st/pt/cultura-mestica-e-harmoniosa)
+- [São Tomé documented traditions and recordings guide](https://music.bluetreeaudio.com/countries/sao_tome_and_principe/listening-guide)
+- [Equatorial Guinea: list of traditional musical dances](https://xn--embajadadeguineaecuatorialenespaa-yfd.com/manifestaciones-artisticas/)
+- [Chad: Smithsonian Folkways recorded music and ensembles](https://folkways.si.edu/music-of-chad/islamica-world/album/smithsonian)
+- [Equatorial Guinea embassy on mvet and dances](https://embassyofequatorialguinea.guineainfomarket.com/music/)
+
+# END SOURCE: references/regions/central-africa-additions.md
+
+---
+
+# BEGIN SOURCE: references/regions/southern-africa-additions.md
+
+# Southern Africa — 50 additional discovery leads
+
+Parent map region: `central-southern-africa`. Stable source-entry IDs: `southern-africa:add-01`–`southern-africa:add-50`.
+
+These are listener-supplied, unverified research leads, not 50 independently verified new genres. Preserve the distinctions between scenes, song repertoires, performance practices and commercial genre labels. Apply the regional atlas verification, recording-quality, mood and tempo rules. These additions do not enter the automatic lens pool. Source links below are supplied research routes, not evidence independently checked during import.
+
+[Imported Drive source](https://drive.google.com/file/d/1dQuv7bVJ8ndXe8yc5fsTlYB23Zj-UNEj/view), retrieved 2026-10-24 (America/New_York).
+
+## Addressable additions
+
+| Entry ID | Source label | Source description — verify | Existing relationship |
+| --- | --- | --- | --- |
+| `southern-africa:add-01` | Angolan kilapanga | Angolan dance-music rhythm and band repertoire separate from semba. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-02` | Angolan kazukuta | Historic Luanda carnival and neighbourhood dance-song rhythm. | Compare [central-southern-africa:12](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
+| `southern-africa:add-03` | Angolan tarraxinha | Slow, close-dance-oriented electronic kizomba descendant; distinct from straight kizomba. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-04` | Angolan afro-house | Angola's producer-led house scene with syncopated local percussion and bass grooves. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-05` | Angolan rap | Luanda and wider Angola Portuguese-language hip-hop scene. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-06` | Angolan semba lamento | Slower, lyrically mournful named branch of semba. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-07` | Angolan semba cadenciado | Measured, cadenced branch of semba performance, distinct from generic fast party arrangements. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-08` | South African mbube | Earlier powerful Zulu male-vocal harmony style related to, but distinct from, soft isicathamiya. | Compare [central-southern-africa:20](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
+| `southern-africa:add-09` | South African bubblegum | 1980s township disco-pop with bright synthesizers, often named township bubblegum. | Compare [central-southern-africa:24](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
+| `southern-africa:add-10` | Tsonga disco | South African Tsonga-language disco-pop era associated with local electric bands; older than Shangaan electro. | Compare [central-southern-africa:24](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
+| `southern-africa:add-11` | South African Bacardi house | Pretoria's percussion-oriented township house antecedent to some amapiano scenes. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-12` | South African sgija | Amapiano dance-floor substyle with rougher percussion and driving low end. | Compare [central-southern-africa:27](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
+| `southern-africa:add-13` | South African private-school amapiano | Jazzier, melodic, keyboard-forward amapiano substyle. | Compare [central-southern-africa:27](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
+| `southern-africa:add-14` | South African three-step | Regional house rhythm emphasizing a three-step feel, associated with KwaZulu-Natal club production. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-15` | South African Cape jazz | Cape Town jazz idiom with local dance and melody influence. | Compare [central-southern-africa:22](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
+| `southern-africa:add-16` | Cape ghoema / goema | Cape Town carnival-associated syncopated drum and song tradition. | Compare [central-southern-africa:22](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
+| `southern-africa:add-17` | Cape Malay choir music | Cape Muslim community choral repertory combining local, sacred and competition traditions. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-18` | Boeremusiek | Afrikaans accordion/concertina-led country-dance instrumental music. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-19` | Afrikaans sokkie music | Danceable Afrikaans popular-song scene for partner social dancing. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-20` | South African riel dance music | Khoi/San-influenced Northern Cape dance and associated rhythmic/string accompaniment. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-21` | Zulu indlamu music | Songs and drum rhythms for Zulu indlamu dance; repertory rather than streaming genre. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-22` | Xhosa umngqokolo singing | Xhosa women's distinctive overtone singing technique and song tradition. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-23` | Xhosa uhadi songs | Xhosa musical-bow vocal repertory with overtone-rich accompaniment. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-24` | Botswana borankana | Botswana singing, clapping and vigorous group-dance tradition. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-25` | Botswana setapa | Ngwaketse-associated 6/8 social song-and-dance genre. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-26` | Botswana phathisi | Botswana communal song-and-step dance tradition with strong footwork. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-27` | Botswana tsutsube | Kgalagadi-area dance-song tradition with vigorous movement and responsive singing. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-28` | Botswana mokomoto | Botswana regional traditional song/dance form documented in ethnomusicology. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-29` | Botswana gumba-gumba | Botswana party-oriented popular music combining regional rhythms and jazz-band elements. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-30` | Botswana motswako | Setswana-centered rap and hip-hop scene spanning Botswana and South Africa. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-31` | Botswana dikhwaere | Botswana local choral song-and-dance style with organized group performances. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-32` | Namibian oviritje | Namibian Otjiherero-language energetic guitar/keyboard popular-music style. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-33` | Namibian shambo | Oshiwambo-region contemporary dance music with vernacular melodic roots. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-34` | Namibian ma/gaisa | Nama/Damara vernacular dance-pop sound, a distinct national award genre. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-35` | Namibian langarm | Namibian partner-dance band music, historically associated with mixed ballroom and local styles. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-36` | Namibian epera | Named local traditional-pop genre recognized in Namibia music-award classifications. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-37` | Namibian sikokoshi | Namibian regional musical category recognized in national awards; research artist and locality case by case. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-38` | Mozambican marrabenta | Maputo urban electric-guitar dance music with brisk repeating figures. | Compare [central-southern-africa:18](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
+| `southern-africa:add-39` | Mozambican pandza | Urban youth dance-pop made from local rhythms and modern electronic production. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-40` | Mozambican Chopi timbila | Chopi orchestral xylophone music with sung and danced suites. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-41` | Mozambican Makonde mapiko | Makonde masked dance-theatre music with drums and vocal interaction. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-42` | Mozambican tufo | Northern Mozambican women's group song-and-drum tradition, often Muslim-associated. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-43` | Mozambican xigubo | Southern Mozambican vigorous group dance and percussion repertoire. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-44` | Mozambican xingomana | Documented Mozambican traditional song/dance genre with regional repertories. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-45` | Mozambican mandowa | Named Mozambican vernacular song/dance style documented by the country's music portal. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-46` | Zimbabwean mbakumba | Karanga-associated Zimbabwean group dance-music tradition. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-47` | Zimbabwean jerusarema / mbende | Zezuru Shona polyrhythmic dance music with distinct performance convention. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-48` | Zimbabwean muchongoyo | Ndau/Shangani-region vigorous communal dance-and-drum music. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-49` | Zimbabwean amabhiza | Kalanga/Ndebele-community song-and-dance tradition. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-50` | Lesotho famo | Basotho accordion-driven song style with elaborate vocal declamation and social narratives. | Compare [central-southern-africa:29](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
+
+## Supplied reference routes
+
+- [Mozambique music portal: named traditions and genres](https://www.portaldamusica.org.mz/pt/base-de-dados/generos/)
+- [Namibian Annual Music Awards: local named styles](https://www.nama.com.na/faq)
+- [Botswana: scholarly study of borankana, mokomoto and setapa](https://journals.co.za/doi/abs/10.10520/ejc149312)
+- [Malawi/Zimbabwe traditional regional styles: Zimbabwe Independent](https://www.newsday.co.zw/theindependent/life-amp-style/article/200007074/am-hooked-to-traditional-music-matiyanga)
+- [Angola contemporary musical styles reference](https://www.angolamusicas.com/sobre/)
+- [Mozambique traditions background](https://worldmusiccentral.org/world-music-resources/musician-biographies/mozambican-music/)
+
+# END SOURCE: references/regions/southern-africa-additions.md
 
 ---
 
@@ -214,6 +533,17 @@ Match the exact region ID or visible label below. Read only the selected regiona
 | `southeast-asia` | Southeast Asia | [southeast-asia.md](regions/southeast-asia.md) |
 | `northern-asia` | Northern Asia | [northern-asia.md](regions/northern-asia.md) |
 | `oceania` | Oceania | [oceania.md](regions/oceania.md) |
+
+## Supplementary files
+
+The atlas preserves **920 source entries**: 720 baseline rows plus 200 additions. This is a source-entry count, not a count of distinct or verified genres. Some additions narrow or repeat baseline routes. Compare cross-references and deduplicate candidate recordings and musical routes; do not reward repeated labels as diversity. Original baseline handles remain unchanged. Central Africa and Southern Africa remain separate research files under the existing `central-southern-africa` map selection.
+
+| Parent map region | Additions |
+| --- | --- |
+| `oceania` | [oceania](regions/oceania-additions.md) |
+| `central-america` | [central-america](regions/central-america-additions.md) |
+| `central-southern-africa` | [central-africa](regions/central-africa-additions.md) |
+| `central-southern-africa` | [southern-africa](regions/southern-africa-additions.md) |
 
 # END SOURCE: references/regional-atlas.md
 
@@ -556,6 +886,10 @@ Imported from listener-supplied regional survey, [Drive source](https://drive.go
 | `central-america:28` | **Honduran Caramba & Sique** | Interior Highlands (Yoro, Intibucá & Lempira), Honduras | Rural Honduran string-and-percussion folk music featuring the caramba (one-string gourd musical bow) and fast 6/8 guitar strumming. |
 | `central-america:29` | **Panamanian Murga** | Las Tablas & Chitré, Panama | Brass-and-percussion street carnival ensemble blending cumbia melodies with roaring trombones, trumpets, and snare drums. |
 | `central-america:30` | **Central American Indietrónica & Tropical Bass** | San José, Guatemala City & Panama City | Contemporary electronic producers fusing marimba, punta, and cumbia percussion with deep sub-bass and glitchy synth design. |
+
+## Central America supplementary leads
+
+Read [central-america-additions.md](central-america-additions.md) for 50 additional source entries; overlapping entries are cross-referenced rather than evidence of independent variety.
 
 # END SOURCE: references/regions/central-america.md
 
@@ -1184,6 +1518,14 @@ Imported from listener-supplied regional survey, [Drive source](https://drive.go
 | `central-southern-africa:29` | **Basotho Famo** | Maseru (Lesotho) & Free State Mines | Accordion (koriana) and oil-drum bass music accompanied by lengthy Sesotho poetic recitations (sefela). |
 | `central-southern-africa:30` | **San / Ju/'hoansi Healing Trance Polyphony & Musical Bow** | Kalahari Desert (Botswana & Namibia) | Interlocking yodeled vocal hockets, handclapping polyrhythms, and mouth-resonated hunting bow overtones. |
 
+## Central Africa supplementary leads
+
+Read [central-africa-additions.md](central-africa-additions.md) for 50 additional source entries; overlapping entries are cross-referenced rather than evidence of independent variety.
+
+## Southern Africa supplementary leads
+
+Read [southern-africa-additions.md](southern-africa-additions.md) for 50 additional source entries; overlapping entries are cross-referenced rather than evidence of independent variety.
+
 # END SOURCE: references/regions/central-southern-africa.md
 
 ---
@@ -1582,6 +1924,10 @@ Imported from listener-supplied regional survey, [Drive source](https://drive.go
 | `oceania:28` | **Chamorro Kantan Chamorrita & Belembaotuyan** | Guam & Northern Mariana Islands | Improvised four-line Micronesian call-and-response verse battles and gourd-resonated single-string musical bow (belembaotuyan) airs. |
 | `oceania:29` | **Palauan Chesols & Derebesiil** | Koror & Babeldaob, Palau | Microtonal Palauan historical chants (chelitakl) and nostalgic mid-century acoustic guitar, mandolin, and harmonica island ballads. |
 | `oceania:30` | **Marshallese Al & Beet Dance Song** | Majuro & Kwajalein Atolls, Marshall Islands | Atoll navigational wave-chart chants and rhythmic stick-beating (jobwa) and choral harmony dances. |
+
+## Oceania supplementary leads
+
+Read [oceania-additions.md](oceania-additions.md) for 50 additional source entries; overlapping entries are cross-referenced rather than evidence of independent variety.
 
 # END SOURCE: references/regions/oceania.md
 

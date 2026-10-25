@@ -48,3 +48,7 @@ Imported from listener-supplied regional survey, [Drive source](https://drive.go
 | `central-america:28` | **Honduran Caramba & Sique** | Interior Highlands (Yoro, Intibucá & Lempira), Honduras | Rural Honduran string-and-percussion folk music featuring the caramba (one-string gourd musical bow) and fast 6/8 guitar strumming. |
 | `central-america:29` | **Panamanian Murga** | Las Tablas & Chitré, Panama | Brass-and-percussion street carnival ensemble blending cumbia melodies with roaring trombones, trumpets, and snare drums. |
 | `central-america:30` | **Central American Indietrónica & Tropical Bass** | San José, Guatemala City & Panama City | Contemporary electronic producers fusing marimba, punta, and cumbia percussion with deep sub-bass and glitchy synth design. |
+
+## Central America supplementary leads
+
+Read [central-america-additions.md](central-america-additions.md) for 50 additional source entries; overlapping entries are cross-referenced rather than evidence of independent variety.

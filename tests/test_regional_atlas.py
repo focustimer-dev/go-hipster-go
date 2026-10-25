@@ -39,3 +39,16 @@ class RegionalAtlasTests(unittest.TestCase):
                         continue
                     target = link.split('#')[0]
                     self.assertTrue((path.parent / target).is_file(), f'{path}: {link}')
+
+    def test_additions_are_addressable_and_shipped(self):
+        seen = set()
+        for key in ['oceania', 'central-america', 'central-africa', 'southern-africa']:
+            path = f'references/regions/{key}-additions.md'
+            self.assertIn(path, REFERENCES)
+            text = (ROOT / path).read_text()
+            ids = re.findall(r'^\| `([^`]+)` \|', text, re.M)
+            self.assertEqual(ids, [f'{key}:add-{n:02}' for n in range(1, 51)])
+            self.assertFalse(seen.intersection(ids))
+            seen.update(ids)
+            self.assertIn('unverified research leads', text)
+        self.assertEqual(len(seen), 200)

@@ -117,7 +117,7 @@ When a PWA prompt supplies a **Fresh-crate discovery lens**, use it as a startin
 
 **Regional discovery and recording quality:** Apply the recording-level selection gate in [sonic taxonomy](references/sonic-taxonomy.md). Selected regions take precedence over rotating lenses; verify scene connections rather than using geography as a sonic adjective. The [regional research routes](references/global-scenes.md) supplies research hypotheses, not established facts about recordings or a fixed artist roster. Skip incompatible hints; do not broaden geography just to use a seed.
 
-**Address regional research precisely:** Read the [regional atlas](references/regional-atlas.md) when regions are selected or a regional scene needs deeper exploration. Match the region label/ID to the files below; load only the relevant files. Treat the 720 imported survey rows as unverified search leads, not a factual taxonomy or automatic track roster. Verify compound labels and recording-level claims before using them. Existing mood, geography, recording-quality and Criminal evidence rules take precedence.
+**Address regional research precisely:** Read the [regional atlas](references/regional-atlas.md) when regions are selected or a regional scene needs deeper exploration. Match the region label/ID to the files below; load only the relevant files. Treat the 920 imported source entries (including overlapping additions) as unverified search leads, not a factual taxonomy or automatic track roster. Verify compound labels and recording-level claims before using them. Existing mood, geography, recording-quality and Criminal evidence rules take precedence.
 
 - [US West](references/regions/us-west.md)
 - [US East](references/regions/us-east.md)
@@ -143,6 +143,13 @@ When a PWA prompt supplies a **Fresh-crate discovery lens**, use it as a startin
 - [Southeast Asia](references/regions/southeast-asia.md)
 - [Northern Asia](references/regions/northern-asia.md)
 - [Oceania](references/regions/oceania.md)
+
+Supplementary research files (load for the matching parent region; cross-check overlap):
+- [Oceania additions](references/regions/oceania-additions.md)
+- [Central America additions](references/regions/central-america-additions.md)
+- [Central Africa additions](references/regions/central-africa-additions.md)
+- [Southern Africa additions](references/regions/southern-africa-additions.md)
+
 
 **Track-level recent-repeat check:** When earlier playlists are actually visible in the current conversation, supplied by the listener, or available through an authorized playlist read-back, compare normalized **artist + title + recording/version** against the last *up to three* sets. For an ordinary new playlist, exclude repeated recordings by default and prefer different artists, even when the mood repeats. Allow direct listener requests, an explicitly requested callback or a compelling, explained exception; never silently replace an exact user-requested recording. Within one normal set, avoid repeated artist/title pairs or recycled alternate uploads masquerading as variety. Do **not** imply that Gemini, the PWA or another host can read earlier playlists or listening history across sessions unless those records are genuinely accessible. If history is unavailable, still diversify the search route and be candid about the missing cross-session exclusion list when repeat avoidance is discussed.
 

@@ -48,3 +48,7 @@ Imported from listener-supplied regional survey, [Drive source](https://drive.go
 | `oceania:28` | **Chamorro Kantan Chamorrita & Belembaotuyan** | Guam & Northern Mariana Islands | Improvised four-line Micronesian call-and-response verse battles and gourd-resonated single-string musical bow (belembaotuyan) airs. |
 | `oceania:29` | **Palauan Chesols & Derebesiil** | Koror & Babeldaob, Palau | Microtonal Palauan historical chants (chelitakl) and nostalgic mid-century acoustic guitar, mandolin, and harmonica island ballads. |
 | `oceania:30` | **Marshallese Al & Beet Dance Song** | Majuro & Kwajalein Atolls, Marshall Islands | Atoll navigational wave-chart chants and rhythmic stick-beating (jobwa) and choral harmony dances. |
+
+## Oceania supplementary leads
+
+Read [oceania-additions.md](oceania-additions.md) for 50 additional source entries; overlapping entries are cross-referenced rather than evidence of independent variety.

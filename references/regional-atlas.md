@@ -38,3 +38,14 @@ Match the exact region ID or visible label below. Read only the selected regiona
 | `southeast-asia` | Southeast Asia | [southeast-asia.md](regions/southeast-asia.md) |
 | `northern-asia` | Northern Asia | [northern-asia.md](regions/northern-asia.md) |
 | `oceania` | Oceania | [oceania.md](regions/oceania.md) |
+
+## Supplementary files
+
+The atlas preserves **920 source entries**: 720 baseline rows plus 200 additions. This is a source-entry count, not a count of distinct or verified genres. Some additions narrow or repeat baseline routes. Compare cross-references and deduplicate candidate recordings and musical routes; do not reward repeated labels as diversity. Original baseline handles remain unchanged. Central Africa and Southern Africa remain separate research files under the existing `central-southern-africa` map selection.
+
+| Parent map region | Additions |
+| --- | --- |
+| `oceania` | [oceania](regions/oceania-additions.md) |
+| `central-america` | [central-america](regions/central-america-additions.md) |
+| `central-southern-africa` | [central-africa](regions/central-africa-additions.md) |
+| `central-southern-africa` | [southern-africa](regions/southern-africa-additions.md) |
