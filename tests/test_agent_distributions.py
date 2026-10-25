@@ -65,7 +65,7 @@ class PortableAgentTests(unittest.TestCase):
         archive = ROOT / "dist/go-hipster-go-gemini-app-skill.zip"
         with ZipFile(archive) as z:
             names = set(z.namelist())
-            self.assertEqual(names, {
+            self.assertEqual(names, set(__import__("scripts.build_gemini_app_skill", fromlist=["REFERENCES"]).REFERENCES) | {
                 "SKILL.md",
                 "references/global-scenes.md",
                 "references/sonic-taxonomy.md",
@@ -90,7 +90,7 @@ class PortableAgentTests(unittest.TestCase):
             self.assertNotIn("scripts/", text)
             self.assertNotIn("python ", text.lower())
             self.assertIn("Gemini default", text)
-            self.assertIn("version: 3.6.3", text.split("---", 2)[1])
+            self.assertIn("version: 3.7.0", text.split("---", 2)[1])
             self.assertIn("## Creative cue and count safeguards", text)
             self.assertIn("optional subplot", text)
             self.assertIn("Pre-publish deduplication", text)

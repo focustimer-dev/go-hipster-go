@@ -4,7 +4,7 @@ description: "Setup services, then go: real global deep cuts with sardonic, spec
 license: MIT
 compatibility: Requires file-reading capability. Optional web/catalog lookup for track verification and Python 3.10+ to run included validation/randomness scripts. Streaming accounts and OAuth are NOT bundled.
 metadata:
-  version: "3.6.3"
+  version: "3.7.0"
 ---
 
 # Go, Hipster, Go! — Agent Skill v3
@@ -116,6 +116,40 @@ When a Jukebox GO includes a **Random crate spark** phrase, treat it as a new me
 When a PWA prompt supplies a **Fresh-crate discovery lens**, use it as a starting hypothesis for finding candidates, not as a mandatory genre, regional quota, verified instrumentation claim or reason to ignore the listener's mood/tempo. A new GO should explore a different sonically defensible corner of the catalog rather than cycle through the same reference artists and obvious compilation cuts. For an open-ended request, compare genuinely different rhythm, voice, texture and arrangement routes before selecting a thesis. Build a broader candidate shortlist than the final track count and look beyond named research leads to credible labelmates, overlooked collaborators, local contemporaries, original issues and alternate scenes. Verify the final recordings and preserve cohesion; novelty alone is not quality.
 
 **Regional discovery and recording quality:** Apply the recording-level selection gate in [sonic taxonomy](references/sonic-taxonomy.md). Selected regions take precedence over rotating lenses; verify scene connections rather than using geography as a sonic adjective. The [regional research routes](references/global-scenes.md) supplies research hypotheses, not established facts about recordings or a fixed artist roster. Skip incompatible hints; do not broaden geography just to use a seed.
+
+**Address regional research precisely:** Read the [focused regional review](references/regional-review.md) before using the expanded Oceania, Central America or Central & Southern Africa routes; its source boundaries and overlap decisions take precedence over imported descriptions. Read the [regional atlas](references/regional-atlas.md) when regions are selected or a regional scene needs deeper exploration. Match the region label/ID to the files below; load only the relevant files. Treat the 920 imported source entries (including overlapping additions) as unverified search leads, not a factual taxonomy or automatic track roster. Verify compound labels and recording-level claims before using them. Existing mood, geography, recording-quality and Criminal evidence rules take precedence.
+
+- [US West](references/regions/us-west.md)
+- [US East](references/regions/us-east.md)
+- [Canada West](references/regions/canada-west.md)
+- [Canada East](references/regions/canada-east.md)
+- [Mexico](references/regions/mexico.md)
+- [Central America](references/regions/central-america.md)
+- [Caribbean](references/regions/caribbean.md)
+- [Northern South America](references/regions/northern-south-america.md)
+- [Southern South America](references/regions/southern-south-america.md)
+- [Atlantic & Western Europe](references/regions/atlantic-europe.md)
+- [Mediterranean & Balkans](references/regions/mediterranean-europe.md)
+- [Northern Europe](references/regions/northern-europe.md)
+- [Eastern Europe](references/regions/eastern-europe.md)
+- [North Africa](references/regions/north-africa.md)
+- [West Africa](references/regions/west-africa.md)
+- [East Africa](references/regions/east-africa.md)
+- [Central & Southern Africa](references/regions/central-southern-africa.md)
+- [Middle East & Caucasus](references/regions/middle-east.md)
+- [Central Asia](references/regions/central-asia.md)
+- [South Asia](references/regions/south-asia.md)
+- [East Asia](references/regions/east-asia.md)
+- [Southeast Asia](references/regions/southeast-asia.md)
+- [Northern Asia](references/regions/northern-asia.md)
+- [Oceania](references/regions/oceania.md)
+
+Supplementary research files (load for the matching parent region; cross-check overlap):
+- [Oceania additions](references/regions/oceania-additions.md)
+- [Central America additions](references/regions/central-america-additions.md)
+- [Central Africa additions](references/regions/central-africa-additions.md)
+- [Southern Africa additions](references/regions/southern-africa-additions.md)
+
 
 **Track-level recent-repeat check:** When earlier playlists are actually visible in the current conversation, supplied by the listener, or available through an authorized playlist read-back, compare normalized **artist + title + recording/version** against the last *up to three* sets. For an ordinary new playlist, exclude repeated recordings by default and prefer different artists, even when the mood repeats. Allow direct listener requests, an explicitly requested callback or a compelling, explained exception; never silently replace an exact user-requested recording. Within one normal set, avoid repeated artist/title pairs or recycled alternate uploads masquerading as variety. Do **not** imply that Gemini, the PWA or another host can read earlier playlists or listening history across sessions unless those records are genuinely accessible. If history is unavailable, still diversify the search route and be candid about the missing cross-session exclusion list when repeat avoidance is discussed.
 
