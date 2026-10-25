@@ -61,15 +61,15 @@ Update the HTML, shared assets and manifests in this directory, run the reposito
 
 ### Gemini installation: Task mode vs. browser ZIP upload
 
-The Jukebox's Gemini setup prompt now opens with **select Task mode beneath the Gemini prompt box before pasting**. Task mode is for asking Gemini to attempt the multi-step GitHub Skill installation; this is a **one-time install**, not a recurring scheduled task. Confirm Skill v3.7.1 appears as a persistently installed Skill in another conversation. Merely reading GitHub in a Task does not prove installation.
+The Jukebox's Gemini setup prompt now opens with **select Task mode beneath the Gemini prompt box before pasting**. Task mode is for asking Gemini to attempt the multi-step GitHub Skill installation; this is a **one-time install**, not a recurring scheduled task. Confirm Skill v3.7.2 appears as a persistently installed Skill in another conversation. Merely reading GitHub in a Task does not prove installation.
 
 **ZIP fallback platform constraint:** On the user's tested setup, the Gemini native mobile app does not offer the Skill ZIP uploader. Use **gemini.google.com in a desktop or mobile web browser → Customize → Skills → Create → Upload** instead. The ZIP fallback is independent of Task mode; no Task selection is required for manual web upload. Ordinary `go` does not require Task mode.
 
-### Gemini plain GO is the complete playlist workflow (v3.7.1)
+### Gemini plain GO is the complete playlist workflow (v3.7.2)
 
 Gemini + YouTube Music Jukebox GO copies a short `Use Go, Hipster, Go!: go [mood]` command, the YouTube Music destination and the optional tempo, rotating discovery lens and random crate spark. **Pressing GO always requests curation and an attempt to create a playable playlist.** There is no curate-only checkbox, mode selector, or `go live` requirement. The installed Skill performs music discovery, verification and liner notes, then tries one authorized provider playlist; if Google's generated result differs from the intended crate, it labels the result **APPROXIMATE** and reports what can be verified. If publication fails, it returns the crate with **PLAYLIST NOT CREATED**, rather than presenting the failure as a successful full workflow. The explicit `go, text only` command is still available for troubleshooting, but is not shown as a Jukebox feature.
 
-The Gemini installation prompt continues to require Task mode for attempted GitHub installation and version 3.7.1 verification; manual ZIP upload is on Gemini desktop/mobile web. Other services' publishing routes are unchanged.
+The Gemini installation prompt continues to require Task mode for attempted GitHub installation and version 3.7.2 verification; manual ZIP upload is on Gemini desktop/mobile web. Other services' publishing routes are unchanged.
 
 ### Historical Gemini two-stage experiment (v3.5.5, superseded)
 
@@ -86,11 +86,11 @@ Select **Criminal** for strongly non-English criminal and gangster narratives. T
 
 Connect Apple Music in ChatGPT Settings → Apps and select both it and Go, Hipster, Go! in the conversation. GO includes `@Apple Music` and requests exact recordings in the intended order through the app’s playlist widget or an available authorized writer. If the widget offers **Create playlist in Apple Music**, use that control to save. Search and playlist generation do not require an Apple Music subscription; saving to the library does. The workflow distinguishes **ready to save**, tool-confirmed saving and user-confirmed saving, and does not assume library/history access or independent read-back verification. A missing direct writer alone does not force a text fallback when a saveable widget is available. Claude’s separate MCP setup is unchanged.
 
-### Expanded mood discovery (3.7.1)
+### Expanded mood discovery (3.7.2)
 
 Happy, Angry, Sad and Weird each rotate six interpretations; Criminal rotates seven narrative angles. The Jukebox rotates 88 discovery cues (including 16 US East and 16 US West routes), filtering geographic routes to the selected map regions without repeating a cue until its pool is exhausted; the last cue is excluded at the cycle boundary. The skill adds 44 categorized research routes plus 42 audible-mechanism searches, and checks recent recordings/artists/source compilations only when that history is actually available. Browser storage contains cue IDs only; it cannot know which songs the AI returned. Run `python scripts/sync_discovery_lenses.py` after editing `references/discovery-lenses.json`; untagged musical lenses remain eligible everywhere, while geographically tagged routes require a selected-region match. Changing a selection clears the previous lens, angle and spark. Existing installed skills must be refreshed to use the expanded reference library.
 
-### Gemini source of truth and optional mood threads (v3.7.1)
+### Gemini source of truth and optional mood threads (v3.7.2)
 
 The setup prompt now targets the published Gemini five-file ZIP and its readable `adapters/gemini/GEM_KNOWLEDGE.md` mirror, not the multi-platform root SKILL.md. Task-mode installation is only complete when Gemini confirms a persisted Skill; manually select the Skill in Gemini when automatic activation doesn't occur. GO rotates **optional** narrative threads: these never require all tracks to match one subplot. The Setup tab's Manager, Emeritus quote is intentionally static.
 
@@ -155,7 +155,7 @@ The hero recognizes first and returning visits with one clerk aside in its exist
 
 Open `/?intro=1` to force the first-visit hero and setup tip on that URL, even after a successful GO. This is a display override, not a storage reset: remove `intro=1` to resume normal returning behavior. It persists through selection URL updates, adds no visible controls, and never changes saved service choices or the completed-visit flag. A separately dismissed setup tip keeps its existing dismissal preference.
 
-## Compact GO handoff (3.7.1)
+## Compact GO handoff (3.7.2)
 
 Normal GO copies only the invocation, selected regions, mood angle, tempo, one metaphorical seed and destination service. Twelve tracks and all curation/publication rules belong to the installed skill. No rotating genre lens is emitted: the skill selects a compatible regional route after interpreting mood and pace. Old longer prompts remain understood. The Manual owns missing-installation guidance.
 
