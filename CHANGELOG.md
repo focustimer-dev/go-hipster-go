@@ -1,5 +1,11 @@
 ## The helpful clerk: PWA flow and voice
 
+## Unreleased — audible seed generation
+
+- Replace decorative settings and genre-heavy mood imagery with independently rotating rhythm, texture and musical tension pools.
+- Use explicit pace metadata; retain compact prompts, geography precedence and older seed support.
+- Balance cues across vocals, interaction, arrangement, production and dynamics; refresh portable distributions.
+
 - Explain the copy/paste handoff near the headline, with restrained record-clerk snark in supporting copy and plain recovery instructions.
 - Remember a successful GO copy locally and compact the next visit: smaller sleeve, editable saved-service summary, optional refinements and a direct mood-to-GO workbench. Preserve unsupported-pair warnings.
 - Give Any tempo a dedicated zero notch and keep the collapsed tempo summary synchronized. Any remains a bypass, never an accidental Mid-tempo preference.

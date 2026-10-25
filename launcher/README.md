@@ -129,13 +129,11 @@ All visible zones remain tappable after panning or zooming beyond the continent 
 
 ## Mood-aware crate sparks
 
-`references/mood-spark-bank.json` contains 250 creative images (50 per mood), adapted from the user-provided **Categorized Musical Moods** document on 2026-10-24. Two labels are normalized: Spastic Neon Jitter → Erratic Neon Jitter; Savage Tribal Pound → Heavy Percussive Pound. These are metaphors, not verified instruments, genres, track titles or crime narratives.
+`references/seed-cues.json` supplies 24 rhythm cues and 24 texture/interaction cues. `references/mood-spark-bank.json` supplies 20 musical tensions per mood. Each GO independently rotates rhythm / texture / tension, producing 11,520 combinations per mood before pace filtering. Pools cover vocal delivery, instrumental interaction, arrangement, production and dynamics without region or genre assumptions. Imagery carries an audible interpretation; contrast can guide discovery without becoming a checklist for every song.
 
-Each GO combines one selected-mood image, one texture and one setting. Each component exhausts its own pool before recycling; component history survives page reloads on that browser when local storage is available. This replaces the old 1,000-combination picker which remembered only three tuples and let the deterministic fallback linger on the same setting and emotional phrase. Each mood offers 5,000 combinations before tempo filtering; the total does not guarantee unique tracks or playlists. No listening history or streaming account data is stored. Without storage, cross-request repeat avoidance cannot be guaranteed.
+Explicit pace metadata filters rhythm cues for Slow/Relaxed and Brisk/Fast; these are creative compatibility checks, not BPM measurements. Mood and selected geography take precedence. Criminal seeds never establish lyrical evidence. Only cue indices are stored locally; without storage, repeat avoidance across reloads is unavailable. This does not track actual songs or guarantee fresh playlists.
 
-Obvious fast-language cues are filtered for Slow/Relaxed, and explicit slow/still cues for Brisk/Fast. These conservative text filters are not BPM verification. The selected mood, tempo and Criminal song-level evidence requirement always outrank sparks; Angry is not limited to metal, and Criminal is not restricted to rap. The prompt remains short and the UI is unchanged.
-
-After editing the JSON, run `python scripts/sync_mood_sparks.py`; `--check` verifies the embedded standalone bank. The PWA requires no additional fetch.
+After editing either JSON bank, run `python scripts/sync_mood_sparks.py`; `--check` verifies both embedded banks. The prompt remains one compact `Seed:` line, with no runtime fetch or extra controls.
 
 
 ### Touch ownership on the atlas

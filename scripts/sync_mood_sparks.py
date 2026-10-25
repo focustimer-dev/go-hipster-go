@@ -9,7 +9,8 @@ app = ROOT / 'launcher/assets/app.js'
 text = app.read_text()
 start = text.index('// MOOD_SPARK_BANK_BEGIN')
 end = text.index('// MOOD_SPARK_BANK_END', start)
-replacement = '// MOOD_SPARK_BANK_BEGIN\nconst moodSparkBank=' + json.dumps(bank, ensure_ascii=False, separators=(',', ':')) + ';\n'
+cues = json.loads((ROOT / 'references/seed-cues.json').read_text())
+replacement = '// MOOD_SPARK_BANK_BEGIN\nconst moodSparkBank=' + json.dumps(bank, ensure_ascii=False, separators=(',', ':')) + ';\nconst seedCueBank=' + json.dumps(cues, ensure_ascii=False, separators=(',', ':')) + ';\n'
 updated = text[:start] + replacement + text[end:]
 if '--check' in sys.argv:
     if updated != text:

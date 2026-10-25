@@ -135,8 +135,8 @@ class CurationContractTests(unittest.TestCase):
         bank=json.loads((ROOT / "references/mood-spark-bank.json").read_text())
         self.assertEqual(set(bank), {"happy", "angry", "sad", "weird", "criminal"})
         for values in bank.values():
-            self.assertEqual(len(values), 50)
-            self.assertEqual(len(set(values)), 50)
+            self.assertEqual(len(values), 20)
+            self.assertEqual(len(set(values)), 20)
         subprocess.run([sys.executable, str(ROOT / "scripts/sync_mood_sparks.py"), "--check"], check=True)
 
 if __name__ == "__main__":

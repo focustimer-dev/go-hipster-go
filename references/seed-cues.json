@@ -1,0 +1,126 @@
+{
+  "rhythm": [
+    {
+      "text": "interlocking accents",
+      "pace": "any"
+    },
+    {
+      "text": "a pulse with missing footsteps",
+      "pace": "any"
+    },
+    {
+      "text": "drums answering the melody",
+      "pace": "any"
+    },
+    {
+      "text": "a rhythm leaning behind the beat",
+      "pace": "any"
+    },
+    {
+      "text": "offbeats pulling against the downbeat",
+      "pace": "any"
+    },
+    {
+      "text": "percussion leaving the centre open",
+      "pace": "any"
+    },
+    {
+      "text": "a repeating figure changing its emphasis",
+      "pace": "any"
+    },
+    {
+      "text": "bass and drums taking different paths",
+      "pace": "any"
+    },
+    {
+      "text": "handclaps cutting across the pulse",
+      "pace": "any"
+    },
+    {
+      "text": "phrases spilling over the bar line",
+      "pace": "any"
+    },
+    {
+      "text": "a patient pulse with restless details",
+      "pace": "slow"
+    },
+    {
+      "text": "widely spaced beats with busy ornaments",
+      "pace": "slow"
+    },
+    {
+      "text": "a slow tread with sharp syncopation",
+      "pace": "slow"
+    },
+    {
+      "text": "a loping rhythm with sudden gaps",
+      "pace": "slow"
+    },
+    {
+      "text": "a quick pulse with room to breathe",
+      "pace": "fast"
+    },
+    {
+      "text": "racing accents around a steady centre",
+      "pace": "fast"
+    },
+    {
+      "text": "brisk footsteps interrupted by silence",
+      "pace": "fast"
+    },
+    {
+      "text": "rapid figures trading places",
+      "pace": "fast"
+    },
+    {
+      "text": "a melody doing the percussion’s work",
+      "pace": "any"
+    },
+    {
+      "text": "a pulse emerging from overlapping loops",
+      "pace": "any"
+    },
+    {
+      "text": "short phrases answering long ones",
+      "pace": "any"
+    },
+    {
+      "text": "a rhythm gathering extra layers",
+      "pace": "any"
+    },
+    {
+      "text": "a steady ground beneath uneven phrases",
+      "pace": "any"
+    },
+    {
+      "text": "an insistent pulse that keeps shedding notes",
+      "pace": "any"
+    }
+  ],
+  "texture": [
+    "a close voice in a distant room",
+    "dry attacks trailing long shadows",
+    "soft edges around a hard centre",
+    "a melody fraying into overtones",
+    "breath and grain left in the foreground",
+    "bright notes against a dark sustained bed",
+    "small sounds filling a wide space",
+    "a rough surface around a clear melody",
+    "plucked notes leaving long empty spaces",
+    "voices passing a phrase between them",
+    "a low register carrying a fragile upper line",
+    "sharp transients beneath blurred harmonies",
+    "unison lines slowly separating",
+    "a thin melody above a crowded floor",
+    "resonance hanging after each strike",
+    "contrasting registers refusing to blend",
+    "a warm centre with brittle edges",
+    "brief ornaments interrupting held notes",
+    "a voice half hidden inside the ensemble",
+    "acoustic grain beside clean electronic tones",
+    "a melody answered by wordless voices",
+    "dense detail with no dominant soloist",
+    "exposed vocals against restless accompaniment",
+    "a narrow sound opening into a wide room"
+  ]
+}

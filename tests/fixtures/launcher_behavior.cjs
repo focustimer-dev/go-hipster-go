@@ -436,18 +436,35 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  for(const selected of ['happy','angry','sad','weird','criminal']){
   const sparkStore=new Map(),outputs=[];
   let sparkHarness=harness(async t=>outputs.push(t),'?mood='+selected,'launch',sparkStore);
-  for(let n=0;n<50;n++){
-   if(n===25)sparkHarness=harness(async t=>outputs.push(t),'?mood='+selected,'launch',sparkStore);
+  for(let n=0;n<20;n++){
+   if(n===10)sparkHarness=harness(async t=>outputs.push(t),'?mood='+selected,'launch',sparkStore);
    await sparkHarness.elements.goButton.click();
   }
   const parts=outputs.map(t=>t.match(/Seed: ([^\n]+)/)[1].replace(/\.$/,'').split(' / '));
-  assert.equal(new Set(parts.map(p=>p[2])).size,50,'Every mood image is used before recycling, including across reloads');
+  assert.equal(new Set(parts.map(p=>p[2])).size,20,'Every mood image is used before recycling, including across reloads');
   assert.ok(parts.every(p=>sparkBank[selected].map(s=>s.toLowerCase()).includes(p[2])),'Images stay in the selected mood');
-  assert.equal(new Set(parts.slice(0,10).map(p=>p[0])).size,10,'Texture rotates independently');
-  assert.equal(new Set(parts.slice(0,10).map(p=>p[1])).size,10,'Setting rotates independently');
+  assert.equal(new Set(parts.slice(0,10).map(p=>p[0])).size,10,'Rhythm rotates independently');
+  assert.equal(new Set(parts.slice(0,10).map(p=>p[1])).size,10,'Texture rotates independently');
  }
  const slowCopies=[],slowSparks=harness(async t=>slowCopies.push(t),'?mood=angry&tempo=slow');
  for(let i=0;i<50;i++)await slowSparks.elements.goButton.click();
  assert.ok(slowCopies.every(t=>!/blast beats|breakcore|frenz|redline|tempo push|headbang|mosh/i.test(t.match(/Seed: ([^\n]+)/)[1])),'Slow anger avoids overt speed-conflicting sparks');
+ const cueBank=JSON.parse(fs.readFileSync('references/seed-cues.json','utf8'));
+ for(const selected of ['','happy','angry','sad','weird','criminal']){
+  for(const pace of ['','slow','relaxed','brisk','fast']){
+   const copies=[],run=harness(async t=>copies.push(t),'?mood='+selected+'&tempo='+pace);
+   for(let i=0;i<30;i++)await run.elements.goButton.click();
+   for(const prompt of copies){
+    const seed=prompt.match(/Seed: ([^\n]+)/)[1].replace(/\.$/,'').split(' / ');
+    assert.equal(seed.length,3);
+    assert.ok(seed.join(' / ').length<220,'Seed stays compact');
+    const rhythm=cueBank.rhythm.find(c=>c.text===seed[0]);
+    assert.ok(rhythm,'Rhythm comes from reviewed bank');
+    assert.ok(cueBank.texture.includes(seed[1]));
+    if(['slow','relaxed'].includes(pace))assert.notEqual(rhythm.pace,'fast');
+    if(['brisk','fast'].includes(pace))assert.notEqual(rhythm.pace,'slow');
+   }
+  }
+ }
  console.log('PASS: mood selection, reset, current-copy handoff, setup invalidation, blocked clipboard, copy race');
 })().catch(e=>{console.error(e);process.exit(1)});
