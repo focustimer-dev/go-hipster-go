@@ -294,42 +294,23 @@ body.gig-poster[data-page=launch] .receipt[data-copy-state=copied][data-impressi
 @media(max-width:420px){body.gig-poster .shuffle-controls{gap:4px 10px}body.gig-poster #shuffleCrate{padding-inline:9px}body.gig-poster #undoShuffle{font-size:.6875rem}body.gig-poster .receipt-sheet .receipt-top{flex-wrap:wrap}}
 @media(prefers-reduced-motion:reduce){body.gig-poster[data-page=launch] .receipt[data-copy-state=copied] .receipt-sheet,body.gig-poster[data-page=launch] .receipt[data-copy-state=copied] .receipt-copy{animation:none;transform:none;clip-path:none}body.gig-poster .shuffle-lever{transition:none}body.gig-poster #shuffleCrate:active .shuffle-lever{transform:none}}
 
-/* One compact brief, three editable rows. Pinning never duplicates the controls. */
-body.gig-poster .service-drawer{border-block:1px solid var(--ink);margin:12px 0 20px}
-body.gig-poster .service-drawer>summary{position:relative;list-style:none;cursor:pointer;min-height:64px;padding:10px 84px 10px 0;display:flex;flex-direction:column;gap:3px;color:var(--ink)}
-body.gig-poster .service-drawer>summary::-webkit-details-marker{display:none}
-body.gig-poster .service-drawer>summary strong{font:400 1.3rem/1.25 Poster,sans-serif;text-transform:uppercase}
-body.gig-poster .service-change{position:absolute;right:0;top:24px;font:700 .75rem/1.4 'Courier New',monospace;text-decoration:underline;text-underline-offset:3px}
-body.gig-poster .service-drawer[open] .service-change{visibility:hidden}
-body.gig-poster .service-drawer .service-counter>#servicesHeading{display:none}
-body.gig-poster .service-drawer .service-counter{margin:8px 0}
-body.gig-poster .service-drawer .connector-status{margin:8px 0 12px}
-body.gig-poster .brief-title{font:400 clamp(1.8rem,5cqw,2.8rem)/1.1 Poster,sans-serif;color:var(--ink);margin:0 0 8px;letter-spacing:0}
-body.gig-poster .brief-field{position:relative;border-top:1px solid var(--ink)}
-body.gig-poster .brief-field .brief-editor,body.gig-poster .brief-field .crate-geo{margin:0;padding:0;border:0;background:none;box-shadow:none}
-body.gig-poster .brief-field .brief-summary{position:relative;display:block;min-height:72px;list-style:none;cursor:pointer;padding:12px 112px 12px 0;line-height:1.35;overflow-wrap:anywhere}
-body.gig-poster .brief-summary::-webkit-details-marker{display:none}
-body.gig-poster .brief-label{display:block;font:700 .6875rem/1.4 'Courier New',monospace;letter-spacing:.02em;color:var(--ink);margin:0 0 3px}
-body.gig-poster .brief-summary strong{display:block;font:400 1.5rem/1.2 Poster,sans-serif;text-transform:uppercase;color:var(--ink);letter-spacing:0}
-body.gig-poster .brief-summary::after{content:'+';position:absolute;right:94px;top:28px;font:400 1.1rem/1 Arial,sans-serif}
-body.gig-poster details[open]>.brief-summary::after{content:'−'}
-body.gig-poster .brief-pin{position:absolute;right:0;top:14px;display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:44px;min-width:82px;padding:8px;border:1px solid var(--ink);background:transparent;color:var(--ink);font:400 1rem/1.2 Poster,sans-serif;cursor:pointer}
-body.gig-poster .brief-pin[aria-pressed=true]{background:var(--ink);color:var(--paper)}
-body.gig-poster .brief-pin[aria-pressed=true] svg path{fill:currentColor}
-body.gig-poster .brief-pin:hover{outline:1px solid var(--ink);outline-offset:2px}
-body.gig-poster .brief-controls{padding:4px 0 12px}
-body.gig-poster .brief-field .tempo-control{margin:8px 0 12px;width:100%}
-body.gig-poster .brief-field .crate-geo-body{padding:0 0 12px}
-body.gig-poster .brief-field .crate-geo-summary{border:0}
-body.gig-poster .listening-brief .crate-shuffle{margin:0;padding:12px 0 16px}
+/* Pins share the shuffle toolbar; the actual controls remain directly available. */
+body.gig-poster .shuffle-controls{display:flex;align-items:center;flex-wrap:wrap;gap:4px 8px}
+body.gig-poster #shuffleCrate{gap:6px;padding:7px 10px;font-size:1.2rem;min-height:44px}
+body.gig-poster #shuffleCrate .shuffle-lever{width:22px;height:22px}
+body.gig-poster .shuffle-pins{display:inline-flex;gap:4px;align-items:center}
+body.gig-poster .shuffle-pin{display:inline-flex;align-items:center;justify-content:center;gap:4px;min-height:44px;padding:7px 8px;border:1px solid var(--ink);background:transparent;color:var(--ink);font:400 .875rem/1.2 Poster,sans-serif;cursor:pointer}
+body.gig-poster .shuffle-pin svg{flex:none}
+body.gig-poster .shuffle-pin[aria-pressed=true]{background:var(--ink);color:var(--paper)}
+body.gig-poster .shuffle-pin[aria-pressed=true] path{fill:currentColor}
+body.gig-poster .shuffle-pin:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+body.gig-poster .shuffle-pin:hover{outline:1px solid var(--ink);outline-offset:1px}
+body.gig-poster #undoShuffle{margin-left:auto}
+body.gig-poster #shuffleHelp{margin-top:4px}
 body.gig-poster #shuffleCrate:disabled{opacity:.55;cursor:default;background:transparent;color:var(--ink)}
 body.gig-poster #shuffleCrate:disabled .shuffle-lever{transform:none}
-body.gig-poster .brief-controls .mood-grid .mood{min-height:80px}
-body.gig-poster .brief-controls .mood-grid .mood .face{max-height:140px}
-body.gig-poster .brief-controls .mood-hint{margin-bottom:0}
-body.gig-poster .listening-brief summary:focus-visible,body.gig-poster .service-drawer summary:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
-@media(max-width:420px){body.gig-poster .brief-summary strong{font-size:1.25rem}body.gig-poster .brief-label{font-size:.625rem}body.gig-poster .brief-field .brief-summary{padding-right:104px}body.gig-poster .brief-summary::after{right:88px}body.gig-poster .brief-pin{min-width:76px;padding:8px 6px}}
+@media(max-width:420px){body.gig-poster .shuffle-controls{gap:4px}body.gig-poster #shuffleCrate{padding-inline:7px;gap:4px;font-size:1.1rem}body.gig-poster .shuffle-pin{padding-inline:6px;font-size:.8125rem;gap:3px}body.gig-poster .shuffle-pin svg{width:13px;height:13px}}
 
-body.gig-poster .brief-field>details:not([open])>:not(summary){display:none}
-body.gig-poster .brief-controls .tempo-control:before{display:none}
-body.gig-poster .brief-controls .tempo-control{padding-top:0}
+body.gig-poster .shuffle-feedback{display:flex;align-items:center;justify-content:space-between;gap:8px}
+body.gig-poster .shuffle-feedback #shuffleResult{flex:1;margin:4px 0 0}
+body.gig-poster .shuffle-feedback #undoShuffle{flex:none;margin:0;font-size:.6875rem}

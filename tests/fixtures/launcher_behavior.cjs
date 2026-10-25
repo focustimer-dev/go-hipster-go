@@ -424,11 +424,12 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  await used.moods[4].click();assert.match(used.elements.moodHelp.textContent,/Songs about crime/,'Criminal explains narrative meaning at selection');
  assert.equal((setupHtml.match(/data-setup="universal"/g)||[]).length,1,'Universal installation has one secondary home');
  const posterHtml=fs.readFileSync('launcher/editions/gig-poster/index.html','utf8');
- assert.ok(posterHtml.includes('id="serviceDetails"'),'Poster builder retains the compact services disclosure');
- assert.ok(posterHtml.includes('id="welcomeSetup"'),'First-run guidance remains outside the services drawer');
- assert.ok(posterHtml.indexOf('id="welcomeSetup"')<posterHtml.indexOf('id="serviceDetails"'));
- assert.ok(!posterHtml.includes('id="crateGeo" open'),'Atlas respects its collapsed Regions row');
- assert.ok(jukeboxHtml.indexOf('id="briefMood"')<jukeboxHtml.indexOf('id="briefPace"')&&jukeboxHtml.indexOf('id="briefPace"')<jukeboxHtml.indexOf('id="crateGeo"'),'Brief order is mood, pace, regions');
+ assert.ok(!posterHtml.includes('id="serviceDetails"'),'Services stay directly available');
+ assert.ok(!posterHtml.includes('id="briefMood"')&&!posterHtml.includes('id="briefPace"'),'Mood and tempo stay directly available');
+ assert.ok(posterHtml.includes('id="crateGeo" open'),'Atlas retains the prior open-by-default behavior');
+ const pinGroup=jukeboxHtml.slice(jukeboxHtml.indexOf('class="shuffle-controls"'),jukeboxHtml.indexOf('id="shuffleHelp"'));
+ for(const id of ['pinMood','pinPace','pinRegions'])assert.ok(pinGroup.includes('id="'+id+'"'),'Pins live beside the shuffle handle');
+ assert.ok(jukeboxHtml.indexOf('id="crateGeo"')<jukeboxHtml.indexOf('class="mood-grid"'),'Restore the original map-to-mood order');
  assert.ok(jukeboxHtml.indexOf('class="mood-grid"')<jukeboxHtml.indexOf('id="goButton"'),'Mood choice leads directly to GO');
  for(let mask=0;mask<8;mask++){
   const pinCopies=[],pinned=harness(async t=>pinCopies.push(t),'?ai=gemini&service=youtube&mood=angry&tempo=slow');
@@ -449,9 +450,9 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  const defaultsPinned=harness(async()=>{});
  await defaultsPinned.elements.pinMood.click();await defaultsPinned.elements.pinPace.click();await defaultsPinned.elements.pinRegions.click();
  assert.match(defaultsPinned.elements.shuffleHelp.textContent,/All choices pinned/);
- assert.equal(defaultsPinned.elements.briefMoodValue.textContent,'Surprise');
- assert.equal(defaultsPinned.elements.briefPaceValue.textContent,'Any pace');
- assert.equal(defaultsPinned.elements.briefRegionsValue.textContent,'Worldwide');
+ assert.equal(defaultsPinned.elements.pinMood.attrs['aria-pressed'],'true');
+ assert.equal(defaultsPinned.elements.pinPace.attrs['aria-pressed'],'true');
+ assert.equal(defaultsPinned.elements.pinRegions.attrs['aria-pressed'],'true');
  const shuffleCopies=[];
  const dealing=harness(async t=>shuffleCopies.push(t),'?ai=gemini&service=youtube&mood=sad&tempo=slow');
  await dealing.crateRegions.find(r=>r.dataset.crateRegion==='north-africa').click();

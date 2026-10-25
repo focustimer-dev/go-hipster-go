@@ -262,7 +262,6 @@ function updateCrateMap(){
  copiedPrompt=null;selectionChanged();
 }
 const params=new URLSearchParams(location.search);
-const firstServiceVisit=!stored("hmg-ai")&&!params.get("ai");
 const isLegacyGemini=location.pathname.startsWith("/gemini/");
 let ai=(params.get("ai")||(isLegacyGemini?"gemini":stored("hmg-ai"))||"chatgpt").toLowerCase();
 if(!defaultService[ai])ai="chatgpt";
@@ -293,7 +292,6 @@ function selectionChanged(preserveShuffle=false){
 function renderSelections(){
  doc.querySelectorAll("[data-ai]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.ai===ai)));
  doc.querySelectorAll("[data-service]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.service===service)));
- const services=doc.getElementById("serviceSummary");if(services)services.textContent=aiNames[ai]+" · "+serviceNames[service];
  const pair=doc.getElementById("dealerPair");if(pair)pair.textContent=aiNames[ai]+" · "+serviceNames[service];
  const info=routeInfo(ai,service),r=doc.getElementById("routeStatus");
  if(r){const span=r.querySelector("span");if(span)span.textContent=info.message;r.classList.toggle("warn",info.tone==="warn")}
@@ -341,7 +339,7 @@ function renderSetup(){
 function renderLaunch(){
  renderSelections();
  renderCrateMap();
- renderBrief();
+ renderShufflePins();
  const undo=doc.getElementById("undoShuffle");if(undo)undo.hidden=!previousShuffle;
  const slider=doc.getElementById("tempoSlider"),tempoValue=doc.getElementById("tempoValue"),anyTempo=doc.getElementById("anyTempo");
  if(slider){slider.value=tempo?tempoSteps.indexOf(tempo)+1:3;slider.setAttribute("aria-valuetext",tempo?tempoNames[tempo]:"Any tempo — no pace preference")}
@@ -419,22 +417,18 @@ if(welcome){
   const next=doc.getElementById("aiLabel");if(next)next.focus();
  });
 }
-function renderBrief(){
- const selected=crateRegions.filter(r=>crateSelected.has(r.id));
- const regionLabel=selected.length?selected.slice(0,2).map(r=>r.label).join(" + ")+(selected.length>2?" + "+(selected.length-2)+" more":""):"Worldwide";
- const values={mood:mood==="go"?"Surprise":mood[0].toUpperCase()+mood.slice(1),pace:tempoNames[tempo]||"Any pace",regions:regionLabel};
+function renderShufflePins(){
  for(const axis of Object.keys(shufflePins)){
-  const title=axis[0].toUpperCase()+axis.slice(1),value=doc.getElementById("brief"+title+"Value"),pin=doc.getElementById("pin"+title);
-  if(value)value.textContent=values[axis];
-  if(pin){pin.setAttribute("aria-pressed",String(shufflePins[axis]));pin.setAttribute("aria-label",(shufflePins[axis]?"Unpin ":"Pin ")+axis+" during shuffle");const label=pin.querySelector("span");if(label)label.textContent=shufflePins[axis]?"PINNED":"PIN";}
+  const pin=doc.getElementById("pin"+axis[0].toUpperCase()+axis.slice(1));
+  if(pin){pin.setAttribute("aria-pressed",String(shufflePins[axis]));pin.setAttribute("aria-label",(shufflePins[axis]?"Unpin ":"Pin ")+axis+" during shuffle");}
  }
  const allPinned=Object.values(shufflePins).every(Boolean),button=doc.getElementById("shuffleCrate"),help=doc.getElementById("shuffleHelp");
  if(button){button.disabled=allPinned;button.setAttribute("aria-disabled",String(allPinned));}
- if(help)help.textContent=allPinned?"All choices pinned. Unpin one to shuffle.":"Pin what you like. Shuffle the rest. Open a row to change it.";
+ if(help)help.textContent=allPinned?"All choices pinned. Unpin one to shuffle.":"Pin choices to keep them. Shuffle changes the rest.";
 }
 for(const axis of Object.keys(shufflePins)){
  const pin=doc.getElementById("pin"+axis[0].toUpperCase()+axis.slice(1));
- if(pin)pin.addEventListener("click",()=>{shufflePins[axis]=!shufflePins[axis];renderBrief();const result=doc.getElementById("shuffleResult");if(result)result.textContent=(shufflePins[axis]?"Pinned ":"Unpinned ")+axis+".";});
+ if(pin)pin.addEventListener("click",()=>{shufflePins[axis]=!shufflePins[axis];renderShufflePins();const result=doc.getElementById("shuffleResult");if(result)result.textContent=(shufflePins[axis]?"Pinned ":"Unpinned ")+axis+".";});
 }
 function shuffleCrate(){
  if(Object.values(shufflePins).every(Boolean))return;
@@ -622,6 +616,5 @@ const share=doc.getElementById("shareButton");if(share)share.addEventListener("c
  if(!navigator.share){status("No share sheet available. Copy the prompt instead.");return}
  try{await navigator.share({text:goPrompt(ai,service,mood)})}catch(e){if(e.name!=="AbortError")status("Share failed. Copy the prompt instead.")}
 });
-const serviceDetails=doc.getElementById("serviceDetails");if(serviceDetails)serviceDetails.open=firstServiceVisit;
 render();
 })();

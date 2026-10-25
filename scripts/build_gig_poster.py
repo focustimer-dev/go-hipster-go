@@ -14,7 +14,7 @@ s=s.replace('<a href="/" aria-current="page">','<a href="/editions/gig-poster/" 
 welcome=re.search(r'    <aside class="welcome-setup".*?</aside>\n',s,re.S).group()
 s=s.replace(welcome,'')
 
-a=s.index('    <div class="hero-title">');b=s.index('    <details class="service-drawer"',a)
+a=s.index('    <div class="hero-title">');b=s.index('    <section class="service-counter"',a)
 s=s[:a]+'''    <div class="hero-title poster-hero">
       <h1 class="headline"><span class="first-sleeve"><span class="poster-line">YOUR TASTE</span><span class="poster-line">IS A</span><span class="poster-line">PROBLEM.</span></span><span class="return-sleeve"><span class="poster-line">BACK</span><span class="poster-line">FOR</span><span class="poster-line">MORE?</span></span></h1>
       <img class="poster-bird" src="/editions/gig-poster/assets/bird-globe.webp" width="1292" height="1196" alt="" aria-hidden="true">
@@ -30,10 +30,10 @@ welcome="""    <aside class="welcome-setup poster-setup" id="welcomeSetup" aria-
       <div class="poster-setup-actions"><a href="/setup/">SET UP YOUR SERVICES →</a><button type="button" id="dismissWelcome">Dismiss</button></div>
     </aside>
 """
-s=s.replace('    <details class="service-drawer"',welcome+'    <details class="service-drawer"',1)
+s=s.replace('    <section class="service-counter"',welcome+'    <section class="service-counter"',1)
 s=s.replace('<h3 class="panel-head"','<h2 class="panel-head"').replace('THE ROBOT</h3>','THE ROBOT</h2>').replace('THE NEEDLE</h3>','THE NEEDLE</h2>')
 s=s.replace('CHOOSE YOUR SERVICES','PICK YOUR SERVICES').replace('THE ROBOT','PICK YOUR AI').replace('THE NEEDLE','PICK YOUR DESTINATION').replace('SHAPE YOUR MIX','SET THE TEMPO').replace('<h3 class="counter-label">MOOD</h3>','<h2 class="counter-label">WHAT’S THE VIBE?</h2>')
-# The atlas now opens from the Regions row; do not force it open.
+s=s.replace('<details class="crate-geo" id="crateGeo">','<details class="crate-geo" id="crateGeo" open>')
 s=s.replace('      <small>TAKE YOUR TASTE ABROAD</small>','')
 # The workflow is explained at the top; the real copy status handles the next step.
 s=s.replace('Start your search here. No regional quotas; blank means worldwide. We do allow records to travel.', 'No stamps? Worldwide. Pick regions to steer the search, not fence it in.')
