@@ -117,6 +117,33 @@ When a PWA prompt supplies a **Fresh-crate discovery lens**, use it as a startin
 
 **Regional discovery and recording quality:** Apply the recording-level selection gate in [sonic taxonomy](references/sonic-taxonomy.md). Selected regions take precedence over rotating lenses; verify scene connections rather than using geography as a sonic adjective. The [regional research routes](references/global-scenes.md) supplies research hypotheses, not established facts about recordings or a fixed artist roster. Skip incompatible hints; do not broaden geography just to use a seed.
 
+**Address regional research precisely:** Read the [regional atlas](references/regional-atlas.md) when regions are selected or a regional scene needs deeper exploration. Match the region label/ID to the files below; load only the relevant files. Treat the 720 imported survey rows as unverified search leads, not a factual taxonomy or automatic track roster. Verify compound labels and recording-level claims before using them. Existing mood, geography, recording-quality and Criminal evidence rules take precedence.
+
+- [US West](references/regions/us-west.md)
+- [US East](references/regions/us-east.md)
+- [Canada West](references/regions/canada-west.md)
+- [Canada East](references/regions/canada-east.md)
+- [Mexico](references/regions/mexico.md)
+- [Central America](references/regions/central-america.md)
+- [Caribbean](references/regions/caribbean.md)
+- [Northern South America](references/regions/northern-south-america.md)
+- [Southern South America](references/regions/southern-south-america.md)
+- [Atlantic & Western Europe](references/regions/atlantic-europe.md)
+- [Mediterranean & Balkans](references/regions/mediterranean-europe.md)
+- [Northern Europe](references/regions/northern-europe.md)
+- [Eastern Europe](references/regions/eastern-europe.md)
+- [North Africa](references/regions/north-africa.md)
+- [West Africa](references/regions/west-africa.md)
+- [East Africa](references/regions/east-africa.md)
+- [Central & Southern Africa](references/regions/central-southern-africa.md)
+- [Middle East & Caucasus](references/regions/middle-east.md)
+- [Central Asia](references/regions/central-asia.md)
+- [South Asia](references/regions/south-asia.md)
+- [East Asia](references/regions/east-asia.md)
+- [Southeast Asia](references/regions/southeast-asia.md)
+- [Northern Asia](references/regions/northern-asia.md)
+- [Oceania](references/regions/oceania.md)
+
 **Track-level recent-repeat check:** When earlier playlists are actually visible in the current conversation, supplied by the listener, or available through an authorized playlist read-back, compare normalized **artist + title + recording/version** against the last *up to three* sets. For an ordinary new playlist, exclude repeated recordings by default and prefer different artists, even when the mood repeats. Allow direct listener requests, an explicitly requested callback or a compelling, explained exception; never silently replace an exact user-requested recording. Within one normal set, avoid repeated artist/title pairs or recycled alternate uploads masquerading as variety. Do **not** imply that Gemini, the PWA or another host can read earlier playlists or listening history across sessions unless those records are genuinely accessible. If history is unavailable, still diversify the search route and be candid about the missing cross-session exclusion list when repeat avoidance is discussed.
 
 **Gemini + YouTube Music — publication is the default, not an optional second feature.** The installed Skill owns research, recording/version verification, sequence, personality and the default 12 tracks. The Jukebox supplies only the selected service, mood, tempo, optional discovery lens and crate spark. These are creative hints, not evidence of instrumentation or a requirement to repeat the long workflow prompt.

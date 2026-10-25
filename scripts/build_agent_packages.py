@@ -8,6 +8,32 @@ from zipfile import ZipFile, ZIP_DEFLATED
 ROOT = Path(__file__).resolve().parents[1]
 SKILL_PATH = Path("skills/go-hipster-go")
 SOURCES = [
+    "references/regional-atlas.md",
+    "references/regions/us-west.md",
+    "references/regions/us-east.md",
+    "references/regions/canada-west.md",
+    "references/regions/canada-east.md",
+    "references/regions/mexico.md",
+    "references/regions/central-america.md",
+    "references/regions/caribbean.md",
+    "references/regions/northern-south-america.md",
+    "references/regions/southern-south-america.md",
+    "references/regions/atlantic-europe.md",
+    "references/regions/mediterranean-europe.md",
+    "references/regions/northern-europe.md",
+    "references/regions/eastern-europe.md",
+    "references/regions/north-africa.md",
+    "references/regions/west-africa.md",
+    "references/regions/east-africa.md",
+    "references/regions/central-southern-africa.md",
+    "references/regions/middle-east.md",
+    "references/regions/central-asia.md",
+    "references/regions/south-asia.md",
+    "references/regions/east-asia.md",
+    "references/regions/southeast-asia.md",
+    "references/regions/northern-asia.md",
+    "references/regions/oceania.md",
+
     "SKILL.md",
     "references/global-scenes.md",
     "references/sonic-taxonomy.md",
@@ -30,7 +56,7 @@ def gem_knowledge():
     from build_gemini_app_skill import render, render_reference, REFERENCES
     canon = (ROOT / "SKILL.md").read_text(encoding="utf-8")
     parts = ["# Go, Hipster, Go! — Gemini Skill knowledge bundle\n\n",
-             "Generated from the filtered Gemini skill and four reference files.\n\n",
+             "Generated from the filtered Gemini skill and regional reference files.\n\n",
              "# BEGIN SOURCE: SKILL.md\n\n", render(canon),
              "\n# END SOURCE: SKILL.md\n"]
     for path in REFERENCES:

@@ -42,13 +42,10 @@ jobs:
           path=Path('dist/go-hipster-go-gemini-app-skill.zip')
           assert path.is_file()
           with ZipFile(path) as z:
-              assert z.namelist() == [
-                  'SKILL.md',
-                  'references/global-scenes.md',
-                  'references/sonic-taxonomy.md',
-                  'references/curation-examples.md',
-                  'references/verification.md',
-              ]
+              import sys
+              sys.path.insert(0, "scripts")
+              from build_gemini_app_skill import REFERENCES
+              assert set(z.namelist()) == {"SKILL.md", *REFERENCES}
               text=z.read('SKILL.md').decode('utf-8')
               assert '## The personality is mandatory in Gemini' in text
               assert 'DeBarge Protocol' in text and '25 consecutive' in text

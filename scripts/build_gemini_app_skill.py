@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate the script-free Gemini Apps ZIP from the canonical skill.
 
-Only SKILL.md and four textual reference files are included. No executable
+Only SKILL.md and textual reference files are included. No executable
 Python, script invocation, or developer-only adapter is distributed.
 """
 from __future__ import annotations
@@ -12,6 +12,32 @@ from zipfile import ZipFile, ZIP_DEFLATED
 
 ROOT = Path(__file__).resolve().parents[1]
 REFERENCES = (
+    "references/regional-atlas.md",
+    "references/regions/us-west.md",
+    "references/regions/us-east.md",
+    "references/regions/canada-west.md",
+    "references/regions/canada-east.md",
+    "references/regions/mexico.md",
+    "references/regions/central-america.md",
+    "references/regions/caribbean.md",
+    "references/regions/northern-south-america.md",
+    "references/regions/southern-south-america.md",
+    "references/regions/atlantic-europe.md",
+    "references/regions/mediterranean-europe.md",
+    "references/regions/northern-europe.md",
+    "references/regions/eastern-europe.md",
+    "references/regions/north-africa.md",
+    "references/regions/west-africa.md",
+    "references/regions/east-africa.md",
+    "references/regions/central-southern-africa.md",
+    "references/regions/middle-east.md",
+    "references/regions/central-asia.md",
+    "references/regions/south-asia.md",
+    "references/regions/east-asia.md",
+    "references/regions/southeast-asia.md",
+    "references/regions/northern-asia.md",
+    "references/regions/oceania.md",
+
     "references/global-scenes.md",
     "references/sonic-taxonomy.md",
     "references/curation-examples.md",
