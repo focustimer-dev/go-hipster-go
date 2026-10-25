@@ -16,7 +16,7 @@ class Element{
  async click(){this.focus();const event={preventDefault(){this.prevented=true}};await this.events.click?.(event);return event}
 }
 function harness(write,search='',page='launch',storage=new Map(),runtime={}){
- const ids=['welcomeSetup','dismissWelcome','crateGeo','atlasPassport','atlasNamedRegions','atlasLocator','atlasHome','atlasInstruction','atlasStamps','crateAtlasMap','crateGeoStatus','crateGeoClear','aiLabel','copyTailoredSetup','recipeIntro','recipeSteps','recipeResources','recipeCaveat','openSelectedAi','dealerPair','tempoControl','tempoDetails','tempoSummary','tempoHelp','moodHelp','tempoSlider','tempoValue','anyTempo','copyStatus','routeStatus','prompt','moodName','receiptCode','promptReceipt','receiptCopy','openAi','browserAi','manualOpenAi','receiptSummary','goHint','goButton','stripSetupPrompt','setupPromptText','setupPromptDetails','setupTipStatus','openSetupAi','promptDetails','shareButton'];
+ const ids=['shuffleCrate','undoShuffle','shuffleResult','receiptRegions','welcomeSetup','dismissWelcome','crateGeo','atlasPassport','atlasNamedRegions','atlasLocator','atlasHome','atlasInstruction','atlasStamps','crateAtlasMap','crateGeoStatus','crateGeoClear','aiLabel','copyTailoredSetup','recipeIntro','recipeSteps','recipeResources','recipeCaveat','openSelectedAi','dealerPair','tempoControl','tempoDetails','tempoSummary','tempoHelp','moodHelp','tempoSlider','tempoValue','anyTempo','copyStatus','routeStatus','prompt','moodName','receiptCode','promptReceipt','receiptCopy','openAi','browserAi','manualOpenAi','receiptSummary','goHint','goButton','stripSetupPrompt','setupPromptText','setupPromptDetails','setupTipStatus','openSetupAi','promptDetails','shareButton'];
  const elements=Object.fromEntries(ids.map(id=>[id,new Element()]));
  const ais=['chatgpt','gemini','claude'].map(ai=>new Element({ai}));
  const services=['spotify','youtube','apple'].map(service=>new Element({service}));
@@ -425,6 +425,36 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.equal((setupHtml.match(/data-setup="universal"/g)||[]).length,1,'Universal installation has one secondary home');
  assert.ok(jukeboxHtml.indexOf('id="crateGeo"')<jukeboxHtml.indexOf('class="mood-grid"'),'Optional exploration precedes the mood-to-GO workbench');
  assert.ok(jukeboxHtml.indexOf('class="mood-grid"')<jukeboxHtml.indexOf('id="goButton"'),'Mood choice leads directly to GO');
+ const shuffleCopies=[];
+ const dealing=harness(async t=>shuffleCopies.push(t),'?ai=gemini&service=youtube&mood=sad&tempo=slow');
+ await dealing.crateRegions.find(r=>r.dataset.crateRegion==='north-africa').click();
+ const originalBrief=dealing.elements.prompt.textContent;
+ await dealing.elements.shuffleCrate.click();
+ assert.equal(shuffleCopies.length,0,'Shuffle never touches the clipboard');
+ assert.notEqual(dealing.elements.prompt.textContent,originalBrief);
+ assert.match(dealing.elements.prompt.textContent,/Service: YouTube Music/,'Shuffle preserves provider');
+ assert.doesNotMatch(dealing.elements.prompt.textContent,/go sad|Tempo preference: Slow/,'Shuffle changes the selected mood and pace');
+ assert.ok([1,2].includes(dealing.elements.atlasStamps.children.length));
+ assert.equal(dealing.elements.undoShuffle.hidden,false);
+ assert.equal(dealing.elements.receiptCopy.textContent,'REQUEST DRAFT');
+ assert.match(dealing.elements.receiptRegions.textContent,/CRATES \/ /);
+ await dealing.elements.undoShuffle.click();
+ assert.equal(dealing.elements.prompt.textContent,originalBrief,'Undo restores the complete previous brief');
+ assert.equal(dealing.elements.undoShuffle.hidden,true);
+ await dealing.elements.shuffleCrate.click();
+ await dealing.moods[0].click();
+ assert.equal(dealing.elements.undoShuffle.hidden,true,'Manual edits clear an obsolete undo');
+ assert.equal(dealing.elements.shuffleResult.textContent,'');
+ await dealing.elements.shuffleCrate.click();
+ await dealing.elements.goButton.click();
+ assert.equal(shuffleCopies.length,1);
+ assert.equal(dealing.elements.prompt.textContent,shuffleCopies[0],'Copied request matches the dealt and editable brief');
+ assert.equal(dealing.elements.receiptCopy.textContent,'COPIED TO CLIPBOARD');
+ assert.equal(dealing.elements.promptReceipt.attrs['data-impression'],'1');
+ await dealing.elements.goButton.click();
+ assert.equal(dealing.elements.promptReceipt.attrs['data-impression'],'0','Repeated successful copies feed another receipt');
+ await dealing.elements.undoShuffle.click();
+ assert.equal(dealing.elements.receiptCopy.textContent,'REQUEST DRAFT','Undo after copying cannot claim the restored brief is on the clipboard');
  const stamped=harness(async()=>{});
  assert.equal(stamped.elements.receiptCopy.textContent,'REQUEST DRAFT');
  await stamped.elements.goButton.click();

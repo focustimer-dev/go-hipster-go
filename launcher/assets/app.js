@@ -8,6 +8,8 @@ const serviceNames={spotify:"Spotify",youtube:"YouTube Music",apple:"Apple Music
 const destinations={chatgpt:"https://chatgpt.com/",gemini:"https://gemini.google.com/app",claude:"https://claude.ai/"};
 const geminiIntent="intent://gemini.google.com/app#Intent;scheme=https;package=com.google.android.apps.bard;S.browser_fallback_url=https%3A%2F%2Fgemini.google.com%2Fapp;end";
 let copiedPrompt=null;
+let previousShuffle=null;
+let printImpression=0;
 const tempoNames={slow:"Slow",relaxed:"Relaxed",moderate:"Mid-tempo",brisk:"Brisk",fast:"Fast"};
 const tempoSteps=Object.keys(tempoNames);
 const moods=new Set(["go","happy","angry","sad","weird","criminal"]);
@@ -278,7 +280,8 @@ function updateHandoff(){
  for(const id of ["openAi","browserAi"]){const a=doc.getElementById(id);if(a)a.setAttribute("aria-disabled",String(!ready))}
  const a=doc.getElementById("openAi");if(a)a.textContent=ready?"NEXT: OPEN "+aiNames[ai].toUpperCase():"COPY WITH GO FIRST";
 }
-function selectionChanged(){
+function selectionChanged(preserveShuffle=false){
+ if(!preserveShuffle){previousShuffle=null;const result=doc.getElementById("shuffleResult");if(result)result.textContent="";}
  moodAngle="";freshCrateLens="";crateSparkPhrase="";
  render();
  if(body.dataset.page==="launch")status("Prompt changed. Press GO to copy the current selection.");
@@ -335,6 +338,7 @@ function renderSetup(){
 function renderLaunch(){
  renderSelections();
  renderCrateMap();
+ const undo=doc.getElementById("undoShuffle");if(undo)undo.hidden=!previousShuffle;
  const slider=doc.getElementById("tempoSlider"),tempoValue=doc.getElementById("tempoValue"),anyTempo=doc.getElementById("anyTempo");
  if(slider){slider.value=tempo?tempoSteps.indexOf(tempo)+1:3;slider.setAttribute("aria-valuetext",tempo?tempoNames[tempo]:"Any tempo — no pace preference")}
  const tempoControl=doc.getElementById("tempoControl");if(tempoControl)tempoControl.setAttribute("data-tempo",tempo||"any");
@@ -352,6 +356,7 @@ function renderLaunch(){
  e.code.textContent=(ai==="chatgpt"?"CG":ai==="gemini"?"GM":"CL")+"-"+mood.slice(0,3).toUpperCase()+"-01";
  e.open.href=ai==="gemini"?geminiIntent:destinations[ai];e.open.textContent="↗ OPEN "+aiNames[ai].toUpperCase();
  const summary=doc.getElementById("receiptSummary");if(summary)summary.textContent=aiNames[ai]+" · "+serviceNames[service]+" · "+(mood==="go"?"Surprise":mood[0].toUpperCase()+mood.slice(1))+(tempo?" · "+tempoNames[tempo]:"")+" · 12 tracks";
+ const regions=doc.getElementById("receiptRegions");if(regions)regions.textContent="CRATES / "+(crateSelected.size?crateRegions.filter(r=>crateSelected.has(r.id)).map(r=>r.label).join(" · "):"Worldwide");
  const hint=doc.getElementById("goHint");if(hint)hint.textContent="Copy "+(mood==="go"?"surprise":mood)+" prompt · 12 tracks";
  const goButton=doc.getElementById("goButton");if(goButton)goButton.setAttribute("aria-label","GO! Copy "+(mood==="go"?"surprise":mood)+" playlist prompt");
  const manual=doc.getElementById("manualOpenAi");if(manual){manual.href=destinations[ai];manual.textContent="I COPIED IT MANUALLY — OPEN "+aiNames[ai].toUpperCase()}
@@ -410,6 +415,31 @@ if(welcome){
   const next=doc.getElementById("aiLabel");if(next)next.focus();
  });
 }
+function shuffleCrate(){
+ const snapshot={mood,tempo,regions:[...crateSelected],focus:atlasFocus,navigated:atlasUserNavigated,moodAngle,crateSparkPhrase};
+ mood=nextDiscoveryCue([...moods].filter(m=>m!=="go"&&m!==mood),"ghg-shuffle-mood-v1-"+mood);
+ tempo=nextDiscoveryCue(tempoSteps.filter(t=>t!==tempo),"ghg-shuffle-pace-v1-"+(tempo||"any"));
+ const first=nextDiscoveryCue(crateRegions.map(r=>r.id),"ghg-shuffle-region-v1");
+ const count=nextDiscoveryCue([1,2],"ghg-shuffle-count-v1");
+ const firstRegion=crateRegions.find(r=>r.id===first);
+ crateSelected.clear();crateSelected.add(first);
+ if(count===2){const others=crateRegions.filter(r=>r.continent!==firstRegion.continent).map(r=>r.id);crateSelected.add(nextDiscoveryCue(others,"ghg-shuffle-bridge-v1-"+firstRegion.continent))}
+ atlasFocus=null;atlasUserNavigated=false;lastCrateStamp=null;copiedPrompt=null;previousShuffle=snapshot;
+ store(crateStorageKey,JSON.stringify([...crateSelected]));selectionChanged(true);animateAtlasView(null);
+ const label=mood[0].toUpperCase()+mood.slice(1)+" · "+tempoNames[tempo]+" · "+crateRegions.filter(r=>crateSelected.has(r.id)).map(r=>r.label).join(" + ");
+ const result=doc.getElementById("shuffleResult");if(result)result.textContent=label;
+ const control=doc.getElementById("shuffleCrate");if(control){control.setAttribute("data-dealt","true");if(typeof control.animate==="function"&&!(typeof window!=="undefined"&&window.matchMedia("(prefers-reduced-motion: reduce)").matches))control.animate([{transform:"translateY(0)"},{transform:"translateY(2px)"},{transform:"translateY(0)"}],{duration:240,easing:"cubic-bezier(.16,1,.3,1)"})}
+ status("Crate shuffled. Review the new brief, edit any choice, or undo. Press GO when ready.");
+}
+const shuffle=doc.getElementById("shuffleCrate");if(shuffle)shuffle.addEventListener("click",shuffleCrate);
+const undoShuffle=doc.getElementById("undoShuffle");if(undoShuffle)undoShuffle.addEventListener("click",()=>{
+ if(!previousShuffle)return;
+ const old=previousShuffle;previousShuffle=null;mood=old.mood;tempo=old.tempo;atlasFocus=old.focus;atlasUserNavigated=old.navigated;
+ crateSelected.clear();old.regions.forEach(id=>crateSelected.add(id));moodAngle=old.moodAngle;crateSparkPhrase=old.crateSparkPhrase;copiedPrompt=null;
+ store(crateStorageKey,JSON.stringify([...crateSelected]));render();animateAtlasView(atlasFocus);
+ const result=doc.getElementById("shuffleResult");if(result)result.textContent="Previous brief restored.";
+ shuffle?.focus();status("Shuffle undone. Press GO to copy the restored brief.");
+});
 async function copyGo(){
  const button=doc.getElementById("goButton");
  if(button&&button.disabled)return;
@@ -423,7 +453,7 @@ async function copyGo(){
  if(button){button.disabled=false;button.setAttribute("aria-busy","false")}
  copiedPrompt=ok?prompt:null;updateHandoff();
  if(prompt!==goPrompt(ai,service,mood)){status("Selection changed while copying. Press GO again for the current prompt.");return}
- if(ok)store("ghg-jukebox-used-v1","yes");
+ if(ok){store("ghg-jukebox-used-v1","yes");doc.getElementById("promptReceipt")?.setAttribute("data-impression",String(++printImpression%2));}
  if(ok)status(ai==="gemini"&&service==="youtube"?"GO copied. Open Gemini and select Go, Hipster, Go!. It should curate the crate and attempt one YouTube Music playlist; check the actual result.":"Copied. Open "+aiNames[ai]+", paste and send. Select your skill and music app if needed. The clerk has finished the paperwork.");
  else{const details=doc.getElementById("promptDetails");if(details)details.open=true;status("Clipboard blocked. Copy the full prompt in the receipt below, then use its manual Open link.")}
 }

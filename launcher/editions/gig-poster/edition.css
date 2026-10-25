@@ -257,3 +257,39 @@ body.gig-poster .crate-continents button[aria-pressed=true],body.gig-poster .cra
 body.gig-poster .crate-accessibility button:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 @media(max-width:420px){body.gig-poster .crate-atlas-locator{font-size:1rem;max-width:65%}body.gig-poster #atlasHome{font-size:.6875rem;padding-left:8px}body.gig-poster .crate-stamp{padding-inline:11px;gap:8px}}
 @media(prefers-reduced-motion:reduce){body.gig-poster .crate-map-zone[data-press=true] path,body.gig-poster .crate-stamp.is-new{animation:none}body.gig-poster .crate-map-zone path,body.gig-poster .crate-stamp{transition:none}}
+
+/* The clerk deals a brief; only a successful copy feeds the counter receipt. */
+body.gig-poster .crate-shuffle{border-top:1px solid var(--ink);padding:10px 0 12px;margin:8px 0 0}
+body.gig-poster .shuffle-controls{display:flex;align-items:center;flex-wrap:wrap;gap:4px 16px}
+body.gig-poster #shuffleCrate{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:7px 12px;border:1px solid var(--ink);background:transparent;color:var(--ink);font:400 clamp(1.15rem,3cqw,1.5rem)/1.2 Poster,sans-serif;cursor:pointer}
+body.gig-poster .shuffle-lever{flex:none;transition:transform 220ms cubic-bezier(.16,1,.3,1);transform-origin:50% 80%}
+body.gig-poster #shuffleCrate:hover{background:var(--ink);color:var(--paper)}
+body.gig-poster #shuffleCrate:active .shuffle-lever{transform:rotate(18deg)}
+body.gig-poster #undoShuffle{min-height:44px;border:0;border-bottom:1px solid var(--ink);padding:6px 0;background:transparent;color:var(--ink);font:700 .75rem/1.4 'Courier New',monospace;cursor:pointer}
+body.gig-poster #undoShuffle[hidden]{display:none}
+body.gig-poster #shuffleHelp{margin:7px 0 0;font:400 .8125rem/1.45 Arial,sans-serif;max-width:65ch}
+body.gig-poster #shuffleResult{margin:6px 0 0;font:700 .875rem/1.5 Arial,sans-serif;max-width:65ch}
+body.gig-poster #shuffleResult:empty{display:none}
+body.gig-poster[data-page=launch] .receipt-heading{margin:20px 0 0;padding:0 0 10px;border:0;font:400 1.35rem/1.2 Poster,sans-serif}
+body.gig-poster[data-page=launch] .receipt{border:0;border-bottom:1px dashed var(--ink);padding:0 0 12px;margin:0;isolation:isolate}
+body.gig-poster[data-page=launch] .receipt::before{display:block;left:0;right:0;top:0;height:5px;border:0;background:var(--ink);z-index:1}
+body.gig-poster[data-page=launch] .receipt::after{display:none}
+body.gig-poster .receipt-sheet{padding:12px 4px 0;transform-origin:top center;overflow-wrap:anywhere}
+body.gig-poster .receipt-sheet .receipt-top{padding:4px 0 6px;font:700 .75rem/1.5 'Courier New',monospace;letter-spacing:0}
+body.gig-poster .receipt-sheet .receipt-summary{margin:6px 0;font:700 .9375rem/1.5 Arial,sans-serif}
+body.gig-poster .receipt-regions{margin:6px 0 12px;font:400 .875rem/1.5 Arial,sans-serif;max-width:65ch}
+body.gig-poster[data-page=launch] .receipt .receipt-copy{font:400 1.3rem/1.25 Poster,sans-serif;margin:6px 0;padding:4px 8px;letter-spacing:0;min-height:0}
+body.gig-poster[data-page=launch] .receipt[data-copy-state=idle] .receipt-copy{border:1px dashed var(--ink);background:transparent;color:var(--ink)}
+body.gig-poster[data-page=launch] .receipt[data-copy-state=copying] .receipt-copy{border:1px solid var(--ink);background:transparent;color:var(--ink)}
+body.gig-poster[data-page=launch] .receipt[data-copy-state=copied] .receipt-sheet{animation:receipt-feed 560ms cubic-bezier(.16,1,.3,1) both}
+body.gig-poster[data-page=launch] .receipt[data-copy-state=copied] .receipt-copy{animation:receipt-final-stamp 200ms 400ms cubic-bezier(.16,1,.3,1) both;transform:rotate(-2deg);border:3px double var(--receipt-ink)}
+@keyframes receipt-feed{from{clip-path:inset(0 0 100% 0);transform:translateY(-14px)}to{clip-path:inset(0);transform:translateY(0)}}
+@keyframes receipt-final-stamp{from{opacity:0;transform:rotate(-5deg) scale(1.12)}to{opacity:1;transform:rotate(-2deg) scale(1)}}
+body.gig-poster .receipt-sheet .receipt-fold{background:transparent;border:0}
+body.gig-poster .receipt-sheet pre{font:.875rem/1.6 ui-monospace,monospace;border:1px solid var(--line);background:transparent;color:var(--ink);max-height:22rem;scrollbar-color:var(--ink) var(--paper)}
+body.gig-poster[data-page=launch] .receipt[data-copy-state=copied][data-impression="0"] .receipt-sheet{animation-name:receipt-feed-again}
+body.gig-poster[data-page=launch] .receipt[data-copy-state=copied][data-impression="0"] .receipt-copy{animation-name:receipt-stamp-again}
+@keyframes receipt-feed-again{from{clip-path:inset(0 0 100% 0);transform:translateY(-14px)}to{clip-path:inset(0);transform:translateY(0)}}
+@keyframes receipt-stamp-again{from{opacity:0;transform:rotate(-5deg) scale(1.12)}to{opacity:1;transform:rotate(-2deg) scale(1)}}
+@media(max-width:420px){body.gig-poster .shuffle-controls{gap:4px 10px}body.gig-poster #shuffleCrate{padding-inline:9px}body.gig-poster #undoShuffle{font-size:.6875rem}body.gig-poster .receipt-sheet .receipt-top{flex-wrap:wrap}}
+@media(prefers-reduced-motion:reduce){body.gig-poster[data-page=launch] .receipt[data-copy-state=copied] .receipt-sheet,body.gig-poster[data-page=launch] .receipt[data-copy-state=copied] .receipt-copy{animation:none;transform:none;clip-path:none}body.gig-poster .shuffle-lever{transition:none}body.gig-poster #shuffleCrate:active .shuffle-lever{transform:none}}

@@ -420,6 +420,14 @@
     <button class="mood" data-mood="criminal" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">CRIMINAL</span></button>
 </div>
     <p class="mood-hint" id="moodHelp" role="status">No mood? We’ll use our judgment.</p>
+    <section class="crate-shuffle" aria-label="Shuffle your listening brief">
+      <div class="shuffle-controls">
+        <button type="button" id="shuffleCrate" aria-describedby="shuffleHelp"><svg class="shuffle-lever" viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><path d="M5 26h22M10 26v-5h12v5M16 21V12l8-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="5" r="3" fill="currentColor"/></svg><span>SHUFFLE THE CRATE</span></button>
+        <button type="button" id="undoShuffle" hidden>UNDO SHUFFLE</button>
+      </div>
+      <p id="shuffleHelp">Deals mood, pace and 1–2 regions. Review your brief before GO.</p>
+      <p id="shuffleResult" role="status" aria-live="polite"></p>
+    </section>
     <div class="grind">
       <button type="button" class="go-button" id="goButton" aria-label="GO! Copy a surprise playlist prompt">
         <svg class="star-glyph" viewBox="0 0 1024 1024" aria-hidden="true" focusable="false">
@@ -497,6 +505,22 @@
     </div>
 
 
+    <h2 class="counter-heading receipt-heading">YOUR MIXTAPE RECEIPT</h2>
+    <section class="receipt" id="promptReceipt" data-copy-state="idle" aria-label="Prompt to send to your AI">
+      <div class="receipt-sheet">
+      <div class="receipt-top"><span>NO. <span id="receiptCode">GO-001</span></span><span>MOOD / <span id="moodName">SURPRISE</span></span></div>
+      <p class="receipt-copy" id="receiptCopy">REQUEST DRAFT</p>
+      <p class="receipt-summary" id="receiptSummary">ChatGPT · Spotify · Surprise · 12 tracks</p>
+      <p class="receipt-regions" id="receiptRegions">CRATES / Worldwide</p>
+      <details id="promptDetails">
+        <summary>View full prompt / copy manually</summary>
+        <div class="receipt-fold">
+        <pre id="prompt" tabindex="0" aria-label="Copyable music prompt"></pre>
+        <a class="resource subtle" id="manualOpenAi" href="https://chatgpt.com/" rel="noopener">I COPIED IT MANUALLY — OPEN CHATGPT</a>
+        </div>
+      </details>
+      </div>
+    </section>
     <div class="handoff" aria-label="Copy and open your AI">
       <p class="status" id="copyStatus" role="status" aria-live="polite">Choose a mood, then press GO to copy your prompt.</p>
       <a class="action secondary-action" id="openAi" href="https://chatgpt.com/" rel="noopener" aria-disabled="true">COPY WITH GO FIRST</a>
@@ -506,19 +530,6 @@
       </div>
     </div>
 
-    <h2 class="counter-heading receipt-heading">YOUR MIXTAPE RECEIPT</h2>
-    <section class="receipt" id="promptReceipt" data-copy-state="idle" aria-label="Prompt to send to your AI">
-      <div class="receipt-top"><span>NO. <span id="receiptCode">GO-001</span></span><span>MOOD / <span id="moodName">SURPRISE</span></span></div>
-      <p class="receipt-copy" id="receiptCopy">REQUEST DRAFT</p>
-      <p class="receipt-summary" id="receiptSummary">ChatGPT · Spotify · Surprise · 12 tracks</p>
-      <details id="promptDetails">
-        <summary>View full prompt / copy manually</summary>
-        <div class="receipt-fold">
-        <pre id="prompt" tabindex="0" aria-label="Copyable music prompt"></pre>
-        <a class="resource subtle" id="manualOpenAi" href="https://chatgpt.com/" rel="noopener">I COPIED IT MANUALLY — OPEN CHATGPT</a>
-        </div>
-      </details>
-    </section>
     <p class="footnote">The AI and music apps still need to be selected/connected in their own interface. This launcher prepares the request; it does not publish or pretend a mix was saved. For the upload instructions, visit <a href="/setup/"><b>the excessively comprehensive manual</b></a>.</p>
   </main>
   <footer class="footer">† EST. 2007 is an aesthetic condition, not a legal assertion. No artisanal beard oils were tested on animals. <a href="/setup/">Installation &amp; nerd stuff →</a></footer>
