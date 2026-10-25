@@ -32,7 +32,7 @@ For every mood and tempo, first ask whether the route can plausibly serve the re
 | `review-cameroon-mvet` | `central-africa:add-08` | instrument-centered narrative practice | Catalog establishes Bulu storyteller and mvet context; not song-level crime evidence. [Source 1](https://folkways.si.edu/bulu-songs-from-the-cameroons/world/music/album/smithsonian) |
 | `review-chad-balafon` | `central-africa:add-35` | ensemble repertoire | Catalog supports balafon ensemble and interwoven figures, not all Chad recordings or fixed meters. [Source 1](https://folkways.si.edu/music-of-chad/islamica-world/album/smithsonian) |
 | `review-namibia-oviritje` | `southern-africa:add-32` | named popular-music category | Awards source supports the named category only; imported instrumental details remain unverified. [Source 1](https://www.nama.com.na/entry-categories/best-oviritje-album) |
-| `review-namibia-shambo` | `southern-africa:add-33` | named popular-music category | Awards inventory supports category existence only; no default energy or instrumentation. [Source 1](https://www.nama.com.na/faq) |
+| `review-namibia-shambo` | `southern-africa:add-33` | named popular-music category | Awards inventory supports the category. [Label release notes](https://brothersisterrecords.bandcamp.com/album/one-joe-ep) additionally document a specific Namibian Shambo-derived electronic collaboration and individual song subjects; do not generalize its sound or pace to all Shambo. [Source 1](https://www.nama.com.na/faq) |
 
 ## Consolidate overlap without erasing source history
 
@@ -1814,7 +1814,7 @@ description: "Setup services, then go: real global deep cuts with sardonic, spec
 license: MIT
 compatibility: Requires file-reading capability. Optional web/catalog lookup for track verification and Python 3.10+ to run included validation/randomness scripts. Streaming accounts and OAuth are NOT bundled.
 metadata:
-  version: "3.6.3"
+  version: "3.7.0"
 ---
 
 # Go, Hipster, Go! — Agent Skill v3

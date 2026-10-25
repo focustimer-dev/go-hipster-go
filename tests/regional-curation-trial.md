@@ -65,3 +65,8 @@ None of these twelve candidates is accepted as Criminal on the evidence collecte
 - For full playlists, research beyond these anchors, labels and export-facing scenes. Do not turn this test's twelve recordings into a mandatory roster.
 - Require an audio review of perceived tempo, specific musical hook and each adjacent transition before calling any of these sequences successful. Identity verification is not a listening test.
 - A future before/after comparison needs the same fixed briefs, verification access and listening conditions. This trial does not measure improvement against the old skill.
+
+
+## Listener validation and release decision
+
+The listener reported checking every track in these notes and described the selection as spot on, then approved this first version for release. This is listener-reported validation of track choices and fit, not independent verification by the agent. Sequential playback of all proposed transitions was not explicitly confirmed. Retain the documented Oceania breadth and familiar-scene biases as refinement items, not release blockers.

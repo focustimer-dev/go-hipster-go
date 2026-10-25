@@ -6,7 +6,7 @@ Generated from the filtered Gemini skill and regional reference files.
 
 ---
 name: go-hipster-go
-version: 3.6.3
+version: 3.7.0
 description: Use for Go, Hipster, Go! go, mood, speed and length commands, setup, obscure global music discovery, and verified deep-cut playlists with authorized Gemini YouTube Music publishing.
 ---
 
@@ -202,7 +202,7 @@ For every mood and tempo, first ask whether the route can plausibly serve the re
 | `review-cameroon-mvet` | `central-africa:add-08` | instrument-centered narrative practice | Catalog establishes Bulu storyteller and mvet context; not song-level crime evidence. [Source 1](https://folkways.si.edu/bulu-songs-from-the-cameroons/world/music/album/smithsonian) |
 | `review-chad-balafon` | `central-africa:add-35` | ensemble repertoire | Catalog supports balafon ensemble and interwoven figures, not all Chad recordings or fixed meters. [Source 1](https://folkways.si.edu/music-of-chad/islamica-world/album/smithsonian) |
 | `review-namibia-oviritje` | `southern-africa:add-32` | named popular-music category | Awards source supports the named category only; imported instrumental details remain unverified. [Source 1](https://www.nama.com.na/entry-categories/best-oviritje-album) |
-| `review-namibia-shambo` | `southern-africa:add-33` | named popular-music category | Awards inventory supports category existence only; no default energy or instrumentation. [Source 1](https://www.nama.com.na/faq) |
+| `review-namibia-shambo` | `southern-africa:add-33` | named popular-music category | Awards inventory supports the category. [Label release notes](https://brothersisterrecords.bandcamp.com/album/one-joe-ep) additionally document a specific Namibian Shambo-derived electronic collaboration and individual song subjects; do not generalize its sound or pace to all Shambo. [Source 1](https://www.nama.com.na/faq) |
 
 ## Consolidate overlap without erasing source history
 

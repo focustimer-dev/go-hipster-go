@@ -884,12 +884,13 @@
     ],
     "kind": "research-route",
     "text": "Namibian Shambo: research documented local artists and releases, then verify the actual groove, voice and mood fit; the category name is a search route, not a sonic guarantee.",
-    "basis": "Awards inventory supports category existence only; no default energy or instrumentation.",
+    "basis": "Awards inventory supports the category; label notes document a specific Shambo-derived Namibian electronic collaboration. Verify each recording, pace and mood independently.",
     "source_entries": [
       "southern-africa:add-33"
     ],
     "evidence_urls": [
-      "https://www.nama.com.na/faq"
+      "https://www.nama.com.na/faq",
+      "https://brothersisterrecords.bandcamp.com/album/one-joe-ep"
     ],
     "review_status": "route-supported-recordings-unverified"
   }
