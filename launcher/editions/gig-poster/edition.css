@@ -200,4 +200,4 @@ body.gig-poster .footnote,body.gig-poster .footnote a{color:var(--ink)}
 body.gig-poster[data-page=launch]{--receipt-ink:#742019}
 body.gig-poster[data-page=launch] .receipt[data-copy-state=copied] .receipt-copy{background:var(--receipt-ink);color:var(--paper);border-color:var(--receipt-ink)}
 body.gig-poster[data-page=launch] .go-button .go-stamp{background:var(--receipt-ink);color:var(--paper);border-color:var(--paper)}
-body.gig-poster[data-page=launch] .handoff :is(#openAi,#browserAi)[aria-disabled=false]{background:var(--receipt-ink);color:var(--paper);border-color:var(--receipt-ink)}
+body.gig-poster[data-page=launch] .handoff #openAi[aria-disabled=false]{background:var(--receipt-ink);color:var(--paper);border-color:var(--receipt-ink)}
