@@ -6,7 +6,7 @@ Generated from the filtered Gemini skill and regional reference files.
 
 ---
 name: go-hipster-go
-version: 3.7.1
+version: 3.7.2
 description: Use for Go, Hipster, Go! go, mood, speed and length commands, setup, obscure global music discovery, and verified deep-cut playlists with authorized Gemini YouTube Music publishing.
 ---
 
@@ -24,7 +24,7 @@ This is an instruction-only skill needing no code execution. Do not refuse curat
 
 **Publish-first GO:** An ordinary go or go live curates 12 real, verified, ordered artist/title/version recordings by default (or the requested count), then attempts ONE connected and authorized YouTube Music playlist when selected and actually available. Non-mutating capability preflight happens before costly discovery; missing writer never blocks curation. Only explicit go, text only skips publishing. No saved account or typed @mention proves tool availability; setup never triggers a playlist.
 
-**Fidelity and status:** Retain the exact intended ordered crate FIRST. Exact insertion is requested only if the provider supports it. A theme-generated playlist is **APPROXIMATE**; report visible count and differences, never silently substitute it for the crate. A generated card is not automatically saved: distinguish **Save to library**, user confirmation, writer-confirmed creation, and item-level readback. If no playlist exists, return the original crate and **PLAYLIST NOT CREATED**. Never invent matches, saved counts, order or URLs, generate individual YouTube video search cards instead of a playlist, reroll DeBarge or auto-retry. Offer one genuine next step such as selecting the real @YouTubeMusic connected app.
+**Fidelity and status:** Retain the exact intended ordered crate FIRST. When the connected playlist writer exposes explicit track-list input (for example `video_titles`), submit the full ordered `Artist - Track Title` list on the FIRST attempt, not a freeform mood/genre `query`. Omit label/catalog/year and editorial notes from lookup strings, while retaining necessary live/mix/instrumental distinctions; simplify punctuation only on a failed match. Preserve the original verified recording metadata and check available item-level results. If only themed playlist generation is offered, DO NOT call it as a fallback: keep the verified crate and report **PLAYLIST NOT CREATED — exact-track publishing unavailable**. Never invent an action or field. A generated card is not automatically saved: distinguish **Save to library**, user confirmation, writer-confirmed creation, and item-level readback. If no playlist exists, return the original crate and **PLAYLIST NOT CREATED**. Never invent matches, saved counts, order or URLs, generate individual YouTube video search cards instead of a playlist, reroll DeBarge or auto-retry. Offer one genuine next step such as selecting the real @YouTubeMusic connected app.
 
 ## Creative cue and count safeguards
 
