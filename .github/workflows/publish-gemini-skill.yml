@@ -45,8 +45,8 @@ jobs:
               import sys
               sys.path.insert(0, "scripts")
               from build_gemini_app_skill import REFERENCES
-              assert set(z.namelist()) == {"SKILL.md", *REFERENCES}
-              text=z.read('SKILL.md').decode('utf-8')
+              assert set(z.namelist()) == {"SKILL.md", "references/workflow.md", *REFERENCES}
+              text=z.read('SKILL.md').decode('utf-8') + z.read('references/workflow.md').decode('utf-8')
               assert '## The personality is mandatory in Gemini' in text
               assert 'DeBarge Protocol' in text and '25 consecutive' in text
               assert 'scripts/' not in text and 'python ' not in text.lower()
@@ -81,7 +81,10 @@ jobs:
           for package in sorted(Path('dist').glob('*.zip')):
               with ZipFile(package) as z:
                   skill_path=next(n for n in z.namelist() if n.endswith('SKILL.md') and 'setup' not in n)
-                  assert 'Regional discovery and recording quality' in z.read(skill_path).decode('utf-8'), f'{package.name}: regional guidance missing'
+                  policy=z.read(skill_path).decode('utf-8')
+                  if 'references/workflow.md' in z.namelist():
+                      policy += z.read('references/workflow.md').decode('utf-8')
+                  assert 'Regional discovery and recording quality' in policy, f'{package.name}: regional guidance missing'
                   taxonomy_path=next(n for n in z.namelist() if n.endswith('references/sonic-taxonomy.md'))
                   assert 'Recording-level selection gate' in z.read(taxonomy_path).decode('utf-8'), f'{package.name}: recording quality guidance missing'
           print('All four platform ZIPs verified, including regional and recording-quality guidance.')
