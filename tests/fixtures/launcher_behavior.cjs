@@ -16,7 +16,7 @@ class Element{
  async click(){this.focus();const event={preventDefault(){this.prevented=true}};await this.events.click?.(event);return event}
 }
 function harness(write,search='',page='launch',storage=new Map(),runtime={}){
- const ids=['shuffleCrate','undoShuffle','shuffleResult','receiptRegions','welcomeSetup','dismissWelcome','crateGeo','atlasPassport','atlasNamedRegions','atlasLocator','atlasHome','atlasInstruction','atlasStamps','crateAtlasMap','crateGeoStatus','crateGeoClear','aiLabel','copyTailoredSetup','recipeIntro','recipeSteps','recipeResources','recipeCaveat','openSelectedAi','dealerPair','tempoControl','tempoDetails','tempoSummary','tempoHelp','moodHelp','tempoSlider','tempoValue','anyTempo','copyStatus','routeStatus','prompt','moodName','receiptCode','promptReceipt','receiptCopy','openAi','browserAi','manualOpenAi','receiptSummary','goHint','goButton','stripSetupPrompt','setupPromptText','setupPromptDetails','setupTipStatus','openSetupAi','promptDetails','shareButton'];
+ const ids=['pinMood','pinPace','pinRegions','briefMoodValue','briefPaceValue','briefRegionsValue','serviceDetails','serviceSummary','shuffleHelp','shuffleCrate','undoShuffle','shuffleResult','receiptRegions','welcomeSetup','dismissWelcome','crateGeo','atlasPassport','atlasNamedRegions','atlasLocator','atlasHome','atlasInstruction','atlasStamps','crateAtlasMap','crateGeoStatus','crateGeoClear','aiLabel','copyTailoredSetup','recipeIntro','recipeSteps','recipeResources','recipeCaveat','openSelectedAi','dealerPair','tempoControl','tempoDetails','tempoSummary','tempoHelp','moodHelp','tempoSlider','tempoValue','anyTempo','copyStatus','routeStatus','prompt','moodName','receiptCode','promptReceipt','receiptCopy','openAi','browserAi','manualOpenAi','receiptSummary','goHint','goButton','stripSetupPrompt','setupPromptText','setupPromptDetails','setupTipStatus','openSetupAi','promptDetails','shareButton'];
  const elements=Object.fromEntries(ids.map(id=>[id,new Element()]));
  const ais=['chatgpt','gemini','claude'].map(ai=>new Element({ai}));
  const services=['spotify','youtube','apple'].map(service=>new Element({service}));
@@ -423,8 +423,35 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.equal(deniedStore.has('ghg-jukebox-used-v1'),false,'Failed clipboard copy does not mark first use complete');
  await used.moods[4].click();assert.match(used.elements.moodHelp.textContent,/Songs about crime/,'Criminal explains narrative meaning at selection');
  assert.equal((setupHtml.match(/data-setup="universal"/g)||[]).length,1,'Universal installation has one secondary home');
- assert.ok(jukeboxHtml.indexOf('id="crateGeo"')<jukeboxHtml.indexOf('class="mood-grid"'),'Optional exploration precedes the mood-to-GO workbench');
+ const posterHtml=fs.readFileSync('launcher/editions/gig-poster/index.html','utf8');
+ assert.ok(posterHtml.includes('id="serviceDetails"'),'Poster builder retains the compact services disclosure');
+ assert.ok(posterHtml.includes('id="welcomeSetup"'),'First-run guidance remains outside the services drawer');
+ assert.ok(posterHtml.indexOf('id="welcomeSetup"')<posterHtml.indexOf('id="serviceDetails"'));
+ assert.ok(!posterHtml.includes('id="crateGeo" open'),'Atlas respects its collapsed Regions row');
+ assert.ok(jukeboxHtml.indexOf('id="briefMood"')<jukeboxHtml.indexOf('id="briefPace"')&&jukeboxHtml.indexOf('id="briefPace"')<jukeboxHtml.indexOf('id="crateGeo"'),'Brief order is mood, pace, regions');
  assert.ok(jukeboxHtml.indexOf('class="mood-grid"')<jukeboxHtml.indexOf('id="goButton"'),'Mood choice leads directly to GO');
+ for(let mask=0;mask<8;mask++){
+  const pinCopies=[],pinned=harness(async t=>pinCopies.push(t),'?ai=gemini&service=youtube&mood=angry&tempo=slow');
+  await pinned.crateRegions.find(r=>r.dataset.crateRegion==='north-africa').click();
+  const before=pinned.elements.prompt.textContent;
+  for(const [n,id] of ['pinMood','pinPace','pinRegions'].entries())if(mask&(1<<n))await pinned.elements[id].click();
+  assert.equal(pinned.elements.shuffleCrate.disabled,mask===7,'All pinned disables shuffle');
+  await pinned.elements.shuffleCrate.click();
+  const after=pinned.elements.prompt.textContent;
+  assert.equal(pinCopies.length,0,'Pins and shuffle never copy');
+  assert.match(after,/Service: YouTube Music/);
+  if(mask&1)assert.match(after,/go angry/);else assert.doesNotMatch(after,/go angry/);
+  if(mask&2)assert.match(after,/Tempo preference: Slow/);else assert.doesNotMatch(after,/Tempo preference: Slow/);
+  if(mask&4)assert.match(after,/Regional exploration: North Africa\./);
+  if(mask===7){assert.equal(after,before);assert.equal(pinned.elements.undoShuffle.hidden,true)}
+  else{await pinned.elements.undoShuffle.click();assert.equal(pinned.elements.prompt.textContent,before,'Undo restores pinned and unpinned fields');}
+ }
+ const defaultsPinned=harness(async()=>{});
+ await defaultsPinned.elements.pinMood.click();await defaultsPinned.elements.pinPace.click();await defaultsPinned.elements.pinRegions.click();
+ assert.match(defaultsPinned.elements.shuffleHelp.textContent,/All choices pinned/);
+ assert.equal(defaultsPinned.elements.briefMoodValue.textContent,'Surprise');
+ assert.equal(defaultsPinned.elements.briefPaceValue.textContent,'Any pace');
+ assert.equal(defaultsPinned.elements.briefRegionsValue.textContent,'Worldwide');
  const shuffleCopies=[];
  const dealing=harness(async t=>shuffleCopies.push(t),'?ai=gemini&service=youtube&mood=sad&tempo=slow');
  await dealing.crateRegions.find(r=>r.dataset.crateRegion==='north-africa').click();

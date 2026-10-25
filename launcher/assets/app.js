@@ -10,6 +10,7 @@ const geminiIntent="intent://gemini.google.com/app#Intent;scheme=https;package=c
 let copiedPrompt=null;
 let previousShuffle=null;
 let printImpression=0;
+const shufflePins={mood:false,pace:false,regions:false};
 const tempoNames={slow:"Slow",relaxed:"Relaxed",moderate:"Mid-tempo",brisk:"Brisk",fast:"Fast"};
 const tempoSteps=Object.keys(tempoNames);
 const moods=new Set(["go","happy","angry","sad","weird","criminal"]);
@@ -261,6 +262,7 @@ function updateCrateMap(){
  copiedPrompt=null;selectionChanged();
 }
 const params=new URLSearchParams(location.search);
+const firstServiceVisit=!stored("hmg-ai")&&!params.get("ai");
 const isLegacyGemini=location.pathname.startsWith("/gemini/");
 let ai=(params.get("ai")||(isLegacyGemini?"gemini":stored("hmg-ai"))||"chatgpt").toLowerCase();
 if(!defaultService[ai])ai="chatgpt";
@@ -291,6 +293,7 @@ function selectionChanged(preserveShuffle=false){
 function renderSelections(){
  doc.querySelectorAll("[data-ai]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.ai===ai)));
  doc.querySelectorAll("[data-service]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.service===service)));
+ const services=doc.getElementById("serviceSummary");if(services)services.textContent=aiNames[ai]+" · "+serviceNames[service];
  const pair=doc.getElementById("dealerPair");if(pair)pair.textContent=aiNames[ai]+" · "+serviceNames[service];
  const info=routeInfo(ai,service),r=doc.getElementById("routeStatus");
  if(r){const span=r.querySelector("span");if(span)span.textContent=info.message;r.classList.toggle("warn",info.tone==="warn")}
@@ -338,6 +341,7 @@ function renderSetup(){
 function renderLaunch(){
  renderSelections();
  renderCrateMap();
+ renderBrief();
  const undo=doc.getElementById("undoShuffle");if(undo)undo.hidden=!previousShuffle;
  const slider=doc.getElementById("tempoSlider"),tempoValue=doc.getElementById("tempoValue"),anyTempo=doc.getElementById("anyTempo");
  if(slider){slider.value=tempo?tempoSteps.indexOf(tempo)+1:3;slider.setAttribute("aria-valuetext",tempo?tempoNames[tempo]:"Any tempo — no pace preference")}
@@ -415,21 +419,41 @@ if(welcome){
   const next=doc.getElementById("aiLabel");if(next)next.focus();
  });
 }
+function renderBrief(){
+ const selected=crateRegions.filter(r=>crateSelected.has(r.id));
+ const regionLabel=selected.length?selected.slice(0,2).map(r=>r.label).join(" + ")+(selected.length>2?" + "+(selected.length-2)+" more":""):"Worldwide";
+ const values={mood:mood==="go"?"Surprise":mood[0].toUpperCase()+mood.slice(1),pace:tempoNames[tempo]||"Any pace",regions:regionLabel};
+ for(const axis of Object.keys(shufflePins)){
+  const title=axis[0].toUpperCase()+axis.slice(1),value=doc.getElementById("brief"+title+"Value"),pin=doc.getElementById("pin"+title);
+  if(value)value.textContent=values[axis];
+  if(pin){pin.setAttribute("aria-pressed",String(shufflePins[axis]));pin.setAttribute("aria-label",(shufflePins[axis]?"Unpin ":"Pin ")+axis+" during shuffle");const label=pin.querySelector("span");if(label)label.textContent=shufflePins[axis]?"PINNED":"PIN";}
+ }
+ const allPinned=Object.values(shufflePins).every(Boolean),button=doc.getElementById("shuffleCrate"),help=doc.getElementById("shuffleHelp");
+ if(button){button.disabled=allPinned;button.setAttribute("aria-disabled",String(allPinned));}
+ if(help)help.textContent=allPinned?"All choices pinned. Unpin one to shuffle.":"Pin what you like. Shuffle the rest. Open a row to change it.";
+}
+for(const axis of Object.keys(shufflePins)){
+ const pin=doc.getElementById("pin"+axis[0].toUpperCase()+axis.slice(1));
+ if(pin)pin.addEventListener("click",()=>{shufflePins[axis]=!shufflePins[axis];renderBrief();const result=doc.getElementById("shuffleResult");if(result)result.textContent=(shufflePins[axis]?"Pinned ":"Unpinned ")+axis+".";});
+}
 function shuffleCrate(){
+ if(Object.values(shufflePins).every(Boolean))return;
  const snapshot={mood,tempo,regions:[...crateSelected],focus:atlasFocus,navigated:atlasUserNavigated,moodAngle,crateSparkPhrase};
- mood=nextDiscoveryCue([...moods].filter(m=>m!=="go"&&m!==mood),"ghg-shuffle-mood-v1-"+mood);
- tempo=nextDiscoveryCue(tempoSteps.filter(t=>t!==tempo),"ghg-shuffle-pace-v1-"+(tempo||"any"));
- const first=nextDiscoveryCue(crateRegions.map(r=>r.id),"ghg-shuffle-region-v1");
- const count=nextDiscoveryCue([1,2],"ghg-shuffle-count-v1");
- const firstRegion=crateRegions.find(r=>r.id===first);
- crateSelected.clear();crateSelected.add(first);
- if(count===2){const others=crateRegions.filter(r=>r.continent!==firstRegion.continent).map(r=>r.id);crateSelected.add(nextDiscoveryCue(others,"ghg-shuffle-bridge-v1-"+firstRegion.continent))}
- atlasFocus=null;atlasUserNavigated=false;lastCrateStamp=null;copiedPrompt=null;previousShuffle=snapshot;
- store(crateStorageKey,JSON.stringify([...crateSelected]));selectionChanged(true);animateAtlasView(null);
- const label=mood[0].toUpperCase()+mood.slice(1)+" · "+tempoNames[tempo]+" · "+crateRegions.filter(r=>crateSelected.has(r.id)).map(r=>r.label).join(" + ");
- const result=doc.getElementById("shuffleResult");if(result)result.textContent=label;
+ if(!shufflePins.mood)mood=nextDiscoveryCue([...moods].filter(m=>m!=="go"&&m!==mood),"ghg-shuffle-mood-v1-"+mood);
+ if(!shufflePins.pace)tempo=nextDiscoveryCue(tempoSteps.filter(t=>t!==tempo),"ghg-shuffle-pace-v1-"+(tempo||"any"));
+ if(!shufflePins.regions){
+  const first=nextDiscoveryCue(crateRegions.map(r=>r.id),"ghg-shuffle-region-v1");
+  const count=nextDiscoveryCue([1,2],"ghg-shuffle-count-v1"),firstRegion=crateRegions.find(r=>r.id===first);
+  crateSelected.clear();crateSelected.add(first);
+  if(count===2){const others=crateRegions.filter(r=>r.continent!==firstRegion.continent).map(r=>r.id);crateSelected.add(nextDiscoveryCue(others,"ghg-shuffle-bridge-v1-"+firstRegion.continent))}
+  atlasFocus=null;atlasUserNavigated=false;
+ }
+ lastCrateStamp=null;copiedPrompt=null;previousShuffle=snapshot;
+ store(crateStorageKey,JSON.stringify([...crateSelected]));selectionChanged(true);if(!shufflePins.regions)animateAtlasView(null);
+ const changed=Object.keys(shufflePins).filter(k=>!shufflePins[k]),kept=Object.keys(shufflePins).filter(k=>shufflePins[k]);
+ const result=doc.getElementById("shuffleResult");if(result)result.textContent="Shuffled "+changed.join(", ")+"."+(kept.length?" Kept "+kept.join(" and ")+".":"");
  const control=doc.getElementById("shuffleCrate");if(control){control.setAttribute("data-dealt","true");if(typeof control.animate==="function"&&!(typeof window!=="undefined"&&window.matchMedia("(prefers-reduced-motion: reduce)").matches))control.animate([{transform:"translateY(0)"},{transform:"translateY(2px)"},{transform:"translateY(0)"}],{duration:240,easing:"cubic-bezier(.16,1,.3,1)"})}
- status("Crate shuffled. Review the new brief, edit any choice, or undo. Press GO when ready.");
+ status("Crate shuffled. Review the brief, edit any choice, or undo. Press GO when ready.");
 }
 const shuffle=doc.getElementById("shuffleCrate");if(shuffle)shuffle.addEventListener("click",shuffleCrate);
 const undoShuffle=doc.getElementById("undoShuffle");if(undoShuffle)undoShuffle.addEventListener("click",()=>{
@@ -598,5 +622,6 @@ const share=doc.getElementById("shareButton");if(share)share.addEventListener("c
  if(!navigator.share){status("No share sheet available. Copy the prompt instead.");return}
  try{await navigator.share({text:goPrompt(ai,service,mood)})}catch(e){if(e.name!=="AbortError")status("Share failed. Copy the prompt instead.")}
 });
+const serviceDetails=doc.getElementById("serviceDetails");if(serviceDetails)serviceDetails.open=firstServiceVisit;
 render();
 })();

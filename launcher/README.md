@@ -4,11 +4,13 @@
 
 The Jukebox explains the copy → paste → send handoff beside its headline. Copy and recovery actions stay literal; supporting copy uses the dry, begrudgingly helpful record-store-clerk voice documented in `assets/BRAND_GUIDE.md`.
 
-After a successful GO copy, a local `ghg-jukebox-used-v1` flag enables the smaller “Back for more” sleeve on the next page load. Informational route copy and the first-time strip recede; unsupported-pair warnings remain visible. Service controls remain visible on every visit. The flag does not certify installation, connection or playlist saving.
+After a successful GO copy, a local `ghg-jukebox-used-v1` flag enables the smaller “Back for more” sleeve on the next page load. Informational route copy and the first-time strip recede; unsupported-pair warnings remain visible. The selected AI and music service remain visible in a compact Play through summary. The service drawer opens for a first visit and can be expanded at any time. The flag does not certify installation, connection or playlist saving.
 
 The Jukebox uses a single paper counter: services, mix choices, and the raised yellow GO key. Service keys and mood keys carry selection borders; informational text has no surrounding card. Mobile moods use three keys above two, keeping full labels readable. The ticker, decorative section letters, dark mood tray and duplicate framing are removed from this surface; the Manual keeps its existing styling.
 
-Tempo stays visible with five native range positions, Slow through Fast, and a separate **Any** bypass. Any adds no tempo instruction; touching the parked center fader explicitly selects Mid-tempo. The optional atlas retains its native disclosure, compact stamps, hit areas and search-without-quotas semantics.
+The compact **Your brief** groups Mood, Pace and Regions into three expandable rows with visible current values and independent shuffle pins. The portrait picker, tempo slider and atlas stay in those rows rather than lengthening the default page. Pins preserve a field during shuffle, including Surprise, Any pace and Worldwide; manual editing is still allowed. Pins last for the current page session. All three pinned disables shuffle with an explanation. Undo restores the prior brief without claiming it is copied.
+
+Inside Pace, the slider retains five native range positions, Slow through Fast, and a separate **Any** bypass. Any adds no tempo instruction; touching the parked center fader explicitly selects Mid-tempo. The optional atlas retains its native disclosure, compact stamps, hit areas and search-without-quotas semantics.
 
 The receipt reads **Request draft** until the current prompt is copied successfully, then earns a **Copied to clipboard** ink stamp. Changing preferences clears the stamp; blocked or outdated copies cannot mark a new request ready. This confirms clipboard copying only, never music-service publication. Mood helpers confirm the selection with short clerk asides; tapping the selected mood again clears it without repeating that instruction in every aside. Press feedback and receipt ink respect reduced motion, with no sound, artificial delay, new assets or dependencies.
 
@@ -37,7 +39,7 @@ The Launch page has one slim, collapsed **New here? Start with setup** disclosur
 
 Four illustrative bearded/man-bun mood portraits are stored in `launcher/assets/hipster-moods.svg`; text labels and ARIA mood names remain separate. Moods select without copying. Tapping the selected mood again returns to plain `go`. **GO copies the current selection without clearing it.**
 
-Copy confirmation and Open AI sit immediately below GO. Changing AI, service or mood invalidates the previous copy state; Open AI is guarded until the current prompt is copied. Copying a setup prompt also invalidates the music handoff. The receipt shows AI, service, mood and count; the full prompt and explicit manual-copy handoff remain available in a native disclosure. Clipboard failure opens that disclosure. Android sharing remains a separate action using the current prompt.
+The receipt sits immediately below GO; copy confirmation and Open AI follow it. Changing AI, service or mood invalidates the previous copy state; Open AI is guarded until the current prompt is copied. Copying a setup prompt also invalidates the music handoff. The receipt shows AI, service, mood and count; the full prompt and explicit manual-copy handoff remain available in a native disclosure. Clipboard failure opens that disclosure. Android sharing remains a separate action using the current prompt.
 
 The optional tempo slider selects Slow, Relaxed, Mid-tempo, Brisk, or Fast independently of mood. Any tempo clears the preference. Tempo is included in the prompt, receipt and URL; changing it requires a fresh GO copy. These are perceived-pace preferences, not verified BPM filters.
 
