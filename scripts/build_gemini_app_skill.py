@@ -12,6 +12,7 @@ from zipfile import ZipFile, ZIP_DEFLATED
 
 ROOT = Path(__file__).resolve().parents[1]
 REFERENCES = (
+    "references/reference-index.md",
     "references/regional-review.md",
     "references/regions/oceania-additions.md",
     "references/regions/central-america-additions.md",
@@ -145,7 +146,7 @@ On setup, setup status, or setup change inspect actual connected music tools and
 
 ## Resource routing
 
-Read both [sonic-taxonomy.md](references/sonic-taxonomy.md) and [global-scenes.md](references/global-scenes.md) before choosing the thesis. Use all four discovery axes and the complete niche research map. Read [verification.md](references/verification.md) to verify artist/title/version and song-level crime lyrics and narrative for Criminal; reject uncertain strictly verified picks. Consult [curation-examples.md](references/curation-examples.md) for optional musical-bridge and voice examples, never a fixed artist roster. PWA angles, lenses and sparks are hypotheses rather than quotas or verified instrument claims.
+Follow the [reference index](references/reference-index.md) before choosing a thesis. It specifies the required taxonomy, category discovery and verification sections, regional supplements and optional depth. Keep all four axes and the complete research map available. PWA angles, lenses and sparks remain hypotheses, not quotas or verified claims.
 
 """
     result = preface + common_sections(canonical) + "\n"

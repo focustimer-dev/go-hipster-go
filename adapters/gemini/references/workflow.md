@@ -72,7 +72,7 @@ Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation;
 
 
 
-**Load before choosing a thesis:** read the Mood interpretation matrix, Peculiarity by audible mechanism and Freshness procedure in [sonic taxonomy](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/sonic-taxonomy.md), then consult the Category discovery index in [global scenes](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/global-scenes.md). Use these for every ordinary mood and freeform GO, not just Weird. The taxonomy is an expandable research map, not a fixed menu. Compare three distinct routes internally, then choose a coherent thesis. Preserve named examples for context, not automatic selections. Honor a supplied mood interpretation as a starting angle beneath explicit user preferences.
+**Load before choosing a thesis:** follow the [reference index](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/reference-index.md) for every ordinary mood and freeform GO, not just Weird. Compare three distinct routes internally, then choose a coherent thesis. The taxonomy is an expandable research map, not a fixed menu; named examples are context, not automatic selections. Honor a supplied mood interpretation beneath explicit user preferences.
 
 
 For a supplied seed, explore beyond familiar post-punk/dub/funk routes when musically justified. Without a supplied seed or genuine randomness, never claim to have rolled one.
@@ -82,39 +82,7 @@ When a PWA prompt supplies a **Fresh-crate discovery lens**, use it as a startin
 
 **Regional discovery and recording quality:** Apply the recording-level selection gate in [sonic taxonomy](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/sonic-taxonomy.md). Selected regions take precedence over rotating lenses; verify scene connections rather than using geography as a sonic adjective. The [regional research routes](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/global-scenes.md) supplies research hypotheses, not established facts about recordings or a fixed artist roster. Skip incompatible hints; do not broaden geography just to use a seed.
 
-**Address regional research precisely:** Read the [focused regional review](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regional-review.md) before using the expanded Oceania, Central America or Central & Southern Africa routes; its source boundaries and overlap decisions take precedence over imported descriptions. Read the [regional atlas](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regional-atlas.md) when regions are selected or a regional scene needs deeper exploration. Match the region label/ID to the files below; load only the relevant files. Treat the 920 imported source entries (including overlapping additions) as unverified search leads, not a factual taxonomy or automatic track roster. Verify compound labels and recording-level claims before using them. Existing mood, geography, recording-quality and Criminal evidence rules take precedence.
-
-- [US West](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/us-west.md)
-- [US East](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/us-east.md)
-- [Canada West](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/canada-west.md)
-- [Canada East](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/canada-east.md)
-- [Mexico](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/mexico.md)
-- [Central America](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/central-america.md)
-- [Caribbean](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/caribbean.md)
-- [Northern South America](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/northern-south-america.md)
-- [Southern South America](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/southern-south-america.md)
-- [Atlantic & Western Europe](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/atlantic-europe.md)
-- [Mediterranean & Balkans](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/mediterranean-europe.md)
-- [Northern Europe](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/northern-europe.md)
-- [Eastern Europe](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/eastern-europe.md)
-- [North Africa](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/north-africa.md)
-- [West Africa](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/west-africa.md)
-- [East Africa](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/east-africa.md)
-- [Central & Southern Africa](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/central-southern-africa.md)
-- [Middle East & Caucasus](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/middle-east.md)
-- [Central Asia](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/central-asia.md)
-- [South Asia](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/south-asia.md)
-- [East Asia](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/east-asia.md)
-- [Southeast Asia](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/southeast-asia.md)
-- [Northern Asia](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/northern-asia.md)
-- [Oceania](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/oceania.md)
-
-Supplementary research files (load for the matching parent region; cross-check overlap):
-- [Oceania additions](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/oceania-additions.md)
-- [Central America additions](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/central-america-additions.md)
-- [Central Africa additions](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/central-africa-additions.md)
-- [Southern Africa additions](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/southern-africa-additions.md)
-
+**Address regional research precisely:** Use the [regional atlas](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regional-atlas.md) lookup for selected regions and deeper regional exploration, including matching supplementary files. The [focused regional review](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regional-review.md) takes precedence for expanded Oceania, Central America and Central & Southern Africa. Treat all 920 imported source entries (including overlaps) as unverified search leads. Existing mood, geography, recording-quality and Criminal evidence rules take precedence.
 
 **Track-level recent-repeat check:** When earlier playlists are actually visible in the current conversation, supplied by the listener, or available through an authorized playlist read-back, compare normalized **artist + title + recording/version** against the last *up to three* sets. For an ordinary new playlist, exclude repeated recordings by default and prefer different artists, even when the mood repeats. Allow direct listener requests, an explicitly requested callback or a compelling, explained exception; never silently replace an exact user-requested recording. Within one normal set, avoid repeated artist/title pairs or recycled alternate uploads masquerading as variety. Do **not** imply that Gemini, the PWA or another host can read earlier playlists or listening history across sessions unless those records are genuinely accessible. If history is unavailable, still diversify the search route and be candid about the missing cross-session exclusion list when repeat avoidance is discussed.
 

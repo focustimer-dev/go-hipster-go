@@ -21,7 +21,8 @@ class RegionalAtlasTests(unittest.TestCase):
             path = f'references/regions/{rid}.md'
             text = (ROOT / path).read_text()
             self.assertIn(f'`{rid}`', index)
-            self.assertIn(path, skill)
+            self.assertIn('references/regional-atlas.md', skill)
+            self.assertIn(f'(regions/{rid}.md)', index)
             self.assertIn(path, REFERENCES)
             self.assertIn('unverified leads', text)
             self.assertIn('Drive source', text)
@@ -33,7 +34,7 @@ class RegionalAtlasTests(unittest.TestCase):
 
     def test_reference_links_resolve_in_source_and_distribution(self):
         for prefix in [ROOT, ROOT / 'skills/go-hipster-go']:
-            for path in [prefix / 'SKILL.md', *list((prefix / 'references/regions').glob('*.md')), prefix / 'references/regional-atlas.md']:
+            for path in [prefix / 'SKILL.md', *list((prefix / 'references/regions').glob('*.md')), prefix / 'references/regional-atlas.md', prefix / 'references/reference-index.md']:
                 for link in re.findall(r'\]\(([^)]+)\)', path.read_text()):
                     if link.startswith(('https:', 'http:', '#')):
                         continue
