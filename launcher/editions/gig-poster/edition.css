@@ -339,5 +339,4 @@ body.gig-poster{--selection-vermilion:#d64b30}
 body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[aria-pressed=true]{background:var(--selection-vermilion);color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
 body.gig-poster:is([data-page=launch],[data-page=setup]) .mood[aria-pressed=true] .face{filter:none}
 body.gig-poster:is([data-page=launch],[data-page=setup]) .mood[aria-pressed=true] .word{background:var(--ink);color:var(--paper);padding:2px 4px;text-decoration:underline;text-underline-offset:3px}
-body.gig-poster .crate-stamp{background:var(--selection-vermilion);color:var(--ink);border-color:var(--ink)}
 body.gig-poster .crate-map-zone[data-selected=true] path{fill:url(#posterSelectedHalftone);stroke:var(--ink)}
