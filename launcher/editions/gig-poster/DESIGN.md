@@ -146,3 +146,6 @@ Print-counter feedback uses immediate color/underline states and a 1px press on 
 ## Confirmed-copy accent
 
 Reserve deep vermilion (#742019) for the Jukebox's successful clipboard stamp and enabled next-AI handoff. Mustard lettering on this ink and ink against mustard both exceed 5:1 contrast. The existing COPIED TO CLIPBOARD text, bordered stamp and NEXT label remain the state cues; color is supplementary. Drafts and failed copies retain the normal petrol treatment. This adds no new motion or layout change.
+
+## Approved portrait and selection refinement
+Five tightly framed engraved clerk portraits use clerks-v2.webp. Weird is a surreal three-eyed character with looping hair. Selected moods and region stamps use vermilion #d64b30 with petrol ink; mood labels retain mustard on petrol and underlining. Selected map regions use vermilion with petrol diagonal hatching and outlines. Pressed states and removable named stamps remain the non-color cues.

@@ -40,7 +40,7 @@ s=s.replace('Start your search here. No regional quotas; blank means worldwide. 
 s=s.replace('Choose a mood, then press GO to copy your prompt.', 'Pick a mood, or press GO for a surprise.')
 s=re.sub(r'<p class="footnote">The AI and music apps.*?</p>', '<p class="footnote">Select the skill and music app in your AI. Playlist saving happens there. <a href="/setup/">Setup instructions →</a></p>', s, count=1)
 # Two-spot-color halftone from the guide's screenprint/gig-poster language.
-s=s.replace('<pattern id="atlasHatch"', '<pattern id="posterSelectedHalftone" width="7" height="7" patternUnits="userSpaceOnUse"><rect width="7" height="7" fill="#dfb045"/><circle cx="1.75" cy="1.75" r="1.1" fill="#103135"/><circle cx="5.25" cy="5.25" r="1.1" fill="#103135"/></pattern>\n              <pattern id="atlasHatch"')
+s=s.replace('<pattern id="atlasHatch"', '<pattern id="posterSelectedHalftone" width="7" height="7" patternUnits="userSpaceOnUse"><rect width="7" height="7" fill="#d64b30"/><path d="M-2 2L2-2M0 7L7 0M5 9L9 5" stroke="#103135" stroke-width="1.3"/></pattern>\n              <pattern id="atlasHatch"')
 s=s.replace('href="/setup/"','href="/editions/gig-poster/setup/"')
 out=ROOT/'launcher/editions/gig-poster/index.html';out.parent.mkdir(parents=True,exist_ok=True);out.write_text(s)
 
