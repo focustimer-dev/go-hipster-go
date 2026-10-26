@@ -313,3 +313,14 @@ Compare baseline `cd73514fa10809aa695722f5cf781a9be7e081b5` with the routing rev
 Record reference files/sections actually read, repeated reads, returned text size when observable, elapsed time and tool calls. Keep research/catalog calls separate from reference-loading calls. Mark unobservable token counts unknown; instruction size is not measured runtime latency. Repeat each pair at least twice; retain complete outputs privately for blind listener comparison.
 
 Require real recording fidelity, sonic cohesion, discovery breadth, artist diversity, Criminal evidence where relevant and honest publication status. Check regional supplements and review precedence, open-ended under-covered routes, and a second GO with visible history. No candidate cap or reduced verification is permitted. Static packaging tests cannot establish musical equivalence. Treat the revision as a trial until matched runs show lower overhead and no material quality loss.
+
+## Funky acceptance probes — manual, outcomes not yet measured
+
+Run text-only with exactly 12 tracks, no exceptions, and equal verification access:
+
+- `go funky relaxed, worldwide, text only. Exactly 12 tracks, no exceptions.`
+- `go funky fast, Central & Southern Africa and Oceania, text only. Exactly 12 tracks, no exceptions.`
+- `go funky relaxed, Southeast Asia, acoustic instruments preferred, text only. Exactly 12 tracks, no exceptions.`
+- `go funky sad, worldwide, text only. Exactly 12 tracks, no exceptions.`
+
+Check required reference routing, selected-region fidelity, credible recording-level groove observations, exact recording identities, artist diversity and sequencing. Reject unsupported audio claims, geographic stereotypes, rote compilation rosters and Happy/fast substitutions. Compare relaxed and fast interpretations without invented BPM. Test package reachability separately from musical quality; automated passes do not establish a successful listening experience.

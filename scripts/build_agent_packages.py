@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SKILL_PATH = Path("skills/go-hipster-go")
 SOURCES = [
     "references/reference-index.md",
+    "references/funky.md",
     "references/discovery-lenses.json",
     "references/regional-review.md",
     "references/regions/oceania-additions.md",

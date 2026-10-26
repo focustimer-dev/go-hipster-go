@@ -10,6 +10,10 @@ Before choosing a thesis, read these sections (exact headings):
 2. [Global scenes](global-scenes.md): **Category discovery index — expand the search before choosing artists** (including its route tables) and **Responsible cross-scene reasoning**. Compare three distinct routes; then read the relevant scene detail under **Geographic research map**, **Movement and microgenre touchstones**, **Further scene horizons — research leads, not default playlists**, or **US East and West discovery routes**. For unstructured GO, consider an under-covered route before settling on familiar choices.
 3. [Verification](verification.md): apply the recording and publishing evidence rules to every final selection. For Criminal, also apply **Criminal mood: verify the song's actual story**, using song-level narrative evidence rather than genre, reputation or title association.
 
+## Funky requests
+
+For `go funky`, also read [Funky: worldwide groove discovery](funky.md) before choosing the thesis. Use its recording-level groove judgment alongside the ordinary taxonomy, regional and verification routes; other moods need not load it.
+
 ## Regional requests
 
 Read the [regional atlas](regional-atlas.md) safeguards and lookup, then the files for each selected region. Its **Supplementary files** table is part of the lookup: include the matching additions, not just the baseline file. Before using expanded Oceania, Central America or Central & Southern Africa, read the [focused regional review](regional-review.md); its boundaries and overlap decisions take precedence. Central & Southern Africa requires both Central Africa and Southern Africa additions.

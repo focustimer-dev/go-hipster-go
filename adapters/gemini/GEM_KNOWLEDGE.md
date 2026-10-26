@@ -88,6 +88,7 @@ These are **tone examples, not research evidence**. Never attach invented produc
 Treat short requests as an expressive **overlay on the four discovery axes**, not a genre picker or fixed artist list. Parse any modifiers and track-count request before choosing the sonic thesis; the publishing preflight above remains first among external actions. Keep the normal 12-track default when the listener gives only a mood or speed modifier.
 
 - **`go happy`** — explore celebration, play, contentment, relief, buoyancy or release; follow the mood matrix instead of equating happiness with fast disco.
+- **`go funky`** — seek syncopated bass, interlocking rhythms and a compelling pocket across world scenes; follow [Funky discovery](references/funky.md) via the reference index. Judge the actual recording, not its genre tag; preserve region, tempo, evidence and diversity rules.
 - **`go criminal`** — use the Criminal narrative routes, rotating story angles and song-level narrative verification in the references; strongly prefer non-English vocals, with occasional Jamaican Patois dancehall as a stylistic reset. Never infer crime from a genre, artist reputation, imprisonment alone or a menacing sound.
 - **`go fast`** — prioritize perceived forward momentum, urgent rhythm, insistent patterns, propulsion and energy. Fast does not imply cheerful, electronic, loud or a verified BPM.
 - **`go angry`** — emphasize friction, dissonance, bite, confrontational vocals or agitated groove. Anger is a mood, **not an automatic tempo increase**: brooding slow rage is valid.
@@ -96,7 +97,7 @@ Treat short requests as an expressive **overlay on the four discovery axes**, no
 - **`go slow`** — favor unhurried perceived pace, spacious pulse, dubby drag or hypnotic repetition. Slow can be dark, heavy or tense, not necessarily relaxing.
 - **`go weird`** — widen discovery distance and take bolder scene/production detours, **but still require a convincing audible bridge**. Oddity is not an excuse to invent tracks or use randomness instead of taste.
 
-Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation; `go weird slow` suggests patient, alien textures; `go chill fast` can be bright, nimble but gentle; `go sad fast` is urgent and cathartic; `go sad weird` joins yearning to unusual production; `go sad chill` is wistful, gentle and warm. Honor freeform synonyms or phrasing like `go weird and slow`, `go melancholy`, or `go triumphant` as conversational creative direction; the six named words are useful examples, **not an exhaustive whitelist**. Don't claim exact BPM, intensity measurements or audio listening without actual evidence. Modifiers never erase user exclusions, or the music's global/era/microgenre taxonomy.
+Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation; `go weird slow` suggests patient, alien textures; `go chill fast` can be bright, nimble but gentle; `go sad fast` is urgent and cathartic; `go sad weird` joins yearning to unusual production; `go sad chill` is wistful, gentle and warm. Honor freeform synonyms or phrasing like `go weird and slow`, `go melancholy`, or `go triumphant` as conversational creative direction; the named modifiers are useful examples, **not an exhaustive whitelist**. Don't claim exact BPM, intensity measurements or audio listening without actual evidence. Modifiers never erase user exclusions, or the music's global/era/microgenre taxonomy.
 
 **Length:** `go` and `go angry` default to **12 tracks**; `go short` requests **6**; `go long` requests **24**. `go 20`, `go fast 20`, `go weird slow 30`, or an explicit `N tracks` request selects **exactly N**, overriding the short/long shorthand. Aim for up to **50** carefully resolved tracks as a *soft quality target*, **not a schema or platform maximum**; when asked for more, attempt the actual requested count if the current host can handle verification and publishing, otherwise be transparent and propose batches or splitting—never silently cap or downgrade the playlist.
 
@@ -168,6 +169,10 @@ Before choosing a thesis, read these sections (exact headings):
 2. [Global scenes](global-scenes.md): **Category discovery index — expand the search before choosing artists** (including its route tables) and **Responsible cross-scene reasoning**. Compare three distinct routes; then read the relevant scene detail under **Geographic research map**, **Movement and microgenre touchstones**, **Further scene horizons — research leads, not default playlists**, or **US East and West discovery routes**. For unstructured GO, consider an under-covered route before settling on familiar choices.
 3. [Verification](verification.md): apply the recording and publishing evidence rules to every final selection. For Criminal, also apply **Criminal mood: verify the song's actual story**, using song-level narrative evidence rather than genre, reputation or title association.
 
+## Funky requests
+
+For `go funky`, also read [Funky: worldwide groove discovery](funky.md) before choosing the thesis. Use its recording-level groove judgment alongside the ordinary taxonomy, regional and verification routes; other moods need not load it.
+
 ## Regional requests
 
 Read the [regional atlas](regional-atlas.md) safeguards and lookup, then the files for each selected region. Its **Supplementary files** table is part of the lookup: include the matching additions, not just the baseline file. Before using expanded Oceania, Central America or Central & Southern Africa, read the [focused regional review](regional-review.md); its boundaries and overlap decisions take precedence. Central & Southern Africa requires both Central Africa and Southern Africa additions.
@@ -183,6 +188,36 @@ Reuse unchanged reference text only while it remains accessible in the current c
 Use section reads when supported. If the host can only fetch whole files, read the file once and navigate by headings; a fragment link alone does not guarantee a smaller fetch. Report inaccessible required material honestly. Setup and installation do not preload the musical references.
 
 # END SOURCE: references/reference-index.md
+
+---
+
+# BEGIN SOURCE: references/funky.md
+
+# Funky: worldwide groove discovery
+
+## Core brief
+
+Find deep cuts driven by syncopation, interlocking rhythms and a compelling pocket. Treat funkiness as a recording-level musical quality across cultures, eras and acoustic or electronic arrangements. Keep each tradition’s own names and context; a sonic resemblance does not establish American funk influence.
+
+## Discovery
+
+Use the reference index and selected regional files, including required reviews and supplements. Compare three contrasting groove routes before choosing a thesis: bass against drums; interlocking guitar, keys or percussion; rhythmic vocal exchange; sparse, displaced accents; or electronic rhythmic interplay. These are listening hypotheses, not regional facts or a fixed menu. Explore beyond named artists and familiar global-funk compilations; use their credits as leads rather than treating compilation placement as proof of fit.
+
+Let selected regions meaningfully shape discovery. With no region supplied, explore contrasting scenes without continent quotas. Do not broaden explicit geographic limits to fill the set. Do not preload every regional file or create a parallel regional taxonomy here.
+
+## Recording-level judgment
+
+Identify what makes each final recording groove and support that observation with accessible audio or credible track-level documentation. Catalog identity alone does not establish rhythmic characteristics. Never imply listening occurred when only metadata was available. Qualify source-supported observations; replace weak or unsupported candidates when strict verification is requested.
+
+Require a clear majority to embody the chosen groove thesis; retain a contrasting bridge only when its musical function is supported. Do not require bass guitar, slap technique, wah guitar, horns, a particular meter or English vocals. Do not qualify a recording solely because it is danceable, fast, cheerful, from a particular country, tagged funk or marketed as rare. Never invent BPM, syncopation scores or cultural influence claims.
+
+## Modifiers and sequence
+
+Interpret relaxed as an unhurried pocket and fast as propulsion; neither requires happiness, loudness or electronics. Preserve explicit emotional, vocal and geographic constraints. Distinguish Funky from Happy through rhythmic interplay rather than celebratory lyrics, and from Weird through a sustained groove rather than unusualness alone.
+
+Sequence contrasting kinds of groove into a coherent arc. Avoid twelve interchangeable loops; preserve the existing artist-diversity, repeat-control, exact-recording and publishing safeguards. Put one concise, supported groove observation in the usual track note rather than adding a second analytical report. Research more when the fit is weak; do not impose a new search cap or numerical ranking system.
+
+# END SOURCE: references/funky.md
 
 ---
 
@@ -2369,6 +2404,7 @@ These are listening hypotheses, never claims that an entire culture feels one wa
 | Angry | cold contempt; righteous protest; simmering resentment; betrayed intimacy; defiant solidarity; explosive catharsis | metal, shouting or higher tempo automatically means angry |
 | Sad | homesickness; grief; resignation; heartbreak; lonely urban drift; bittersweet acceptance | slow piano, English breakup lyrics or minor key by default |
 | Weird | unstable tuning; interlocking or asymmetric time; surreal narratives; homemade sound sources; radically edited form; uncanny restraint | unfamiliar language is weird; abrasive is always better |
+| Funky | unhurried pocket; springy rhythmic tension; interlocking ensemble parts; sparse displaced accents; propulsive electronic interplay | American funk template, cheerful dance music or a funk tag automatically qualifies |
 | Criminal | heists; smuggling; fugitives; criminal betrayal; prison escapes; criminal codes | prison, geography or artist reputation proves a crime narrative |
 
 For Criminal, strongly prefer non-English vocals; occasional Jamaican Patois dancehall can offer a more English-accessible change of pace without assuming comprehension. Verify explicit crime at **song level**; see verification.md. Songs may boast, confess, mourn, warn, question or narrate. Rotate story angles: heists and criminal ingenuity; smuggling routes; fugitives and evasion; betrayal inside criminal networks; prison escapes; underworld codes and loyalty; and criminal bravado with its consequences. The selected angle is a discovery hypothesis, not a quota across twelve songs. Avoid twelve interchangeable tough-guy declarations. Criminal's documented narrative requirement outranks random discovery lenses and crate sparks; the user's tempo still applies. Keep the DeBarge exception intact.
