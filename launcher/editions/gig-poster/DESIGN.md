@@ -155,3 +155,6 @@ The neutral clerk strip switches to clerks-expressions.webp on aria-pressed=true
 
 ## What is this even?
 An always-visible liner note below the Manual introduction explains the Jukebox prompt, installed AI skill and connected music-service tools. Three plain text columns become a single readable sequence on phones; thin rules and a dashed signoff sit directly on the stock. It adds no disclosure, animation or new interaction.
+
+## Approved Weird replacement
+Weird now uses weird-curly.webp: the user-supplied curly-haired, thin-moustached man facing forward, rendered in the established petrol engraving. Its two-cell strip holds neutral and open-mouth selected expressions. The other four portraits, vermilion selection and petrol passport stamps remain unchanged.
