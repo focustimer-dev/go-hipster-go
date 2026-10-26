@@ -356,3 +356,9 @@ body.gig-poster .manual-liner .liner-signoff{border-top:1px dashed var(--line);p
 /* Approved curly-haired Weird: two registered expressions in a dedicated strip. */
 body.gig-poster:is([data-page=launch],[data-page=setup]) .mood[data-mood=weird] .face{background-image:url('/editions/gig-poster/assets/weird-curly.webp');background-size:200% 100%;background-position:0 0}
 body.gig-poster:is([data-page=launch],[data-page=setup]) .mood[data-mood=weird][aria-pressed=true] .face{background-image:url('/editions/gig-poster/assets/weird-curly.webp');background-position:100% 0}
+
+body.gig-poster .manual-liner>summary{display:flex;align-items:center;justify-content:space-between;gap:16px;list-style:none;font:400 clamp(1.5rem,4.5cqw,2.25rem)/1.2 Poster,sans-serif;min-height:44px}
+body.gig-poster .manual-liner>summary::-webkit-details-marker{display:none}
+body.gig-poster .manual-liner>summary::after{content:'+';font:700 1.25rem/1 Arial,sans-serif}
+body.gig-poster .manual-liner[open]>summary::after{content:'−'}
+body.gig-poster .manual-liner .liner-route strong{font:800 1rem/1.4 Arial,sans-serif}
