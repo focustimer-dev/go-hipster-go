@@ -177,3 +177,5 @@ node scripts/smoke_live.mjs --expected-commit FULL_COMMIT_SHA
 ```
 
 The workflow installs the browser dependency only for the check; the PWA adds no runtime dependency. Offline mismatch tests run with the normal Python suite.
+
+The sixth mood, **The Funk**, sends `go funky` with independent tempo and regional choices. Its gig-poster portrait uses beaded braids, star sunglasses and a tall jumpsuit collar, with a grin on selection.

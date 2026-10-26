@@ -133,7 +133,7 @@ class CurationContractTests(unittest.TestCase):
 
     def test_mood_spark_bank_is_complete_and_embedded(self):
         bank=json.loads((ROOT / "references/mood-spark-bank.json").read_text())
-        self.assertEqual(set(bank), {"happy", "angry", "sad", "weird", "criminal"})
+        self.assertEqual(set(bank), {"happy", "angry", "sad", "weird", "criminal", "funky"})
         for values in bank.values():
             self.assertEqual(len(values), 20)
             self.assertEqual(len(set(values)), 20)

@@ -158,3 +158,6 @@ A collapsed-by-default liner note below the Manual introduction explains the Juk
 
 ## Approved Weird replacement
 Weird now uses weird-curly.webp: the user-supplied curly-haired, thin-moustached man facing forward, rendered in the established petrol engraving. Its two-cell strip holds neutral and open-mouth selected expressions. The other four portraits, vermilion selection and petrol passport stamps remain unchanged.
+
+## The Funk, sixth mood
+Approved two-state petrol-ink portrait: beaded shoulder-length braids, star-shaped sunglasses, high stand-up jumpsuit collar and front zipper. Neutral half-smile becomes a broad grin on selection. The visible name is THE FUNK; the stable mood key and generated command are `funky` / `go funky`. Six columns on desktop, three by two below 600px.

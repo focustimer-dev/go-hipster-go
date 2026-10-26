@@ -67,7 +67,7 @@ body.gig-poster .crate-stamp{background:transparent;color:var(--ink);border-colo
 body.gig-poster .crate-named-regions{margin-top:4px}
 body.gig-poster .crate-named-regions>summary{min-height:44px;font-size:.75rem;color:var(--ink)}
 body.gig-poster .counter-label{padding-top:6px;border-top:1px solid var(--ink)}
-body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;padding:0;margin:0 0 4px;background:none;border:0;box-shadow:none}
+body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0;padding:0;margin:0 0 4px;background:none;border:0;box-shadow:none}
 body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood,body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood:nth-last-child(-n+2){grid-column:auto;min-height:90px;padding:4px 2px 6px;gap:2px;border:0;border-right:1px solid var(--ink);border-radius:0;background:none;box-shadow:none;color:var(--ink);transform:none}
 body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood:last-child{border-right:0}
 body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[aria-pressed=true]{background:var(--ink);color:var(--paper);padding:4px 2px 6px;border:0;border-right:1px solid var(--ink);box-shadow:none}
@@ -362,3 +362,12 @@ body.gig-poster .manual-liner>summary::-webkit-details-marker{display:none}
 body.gig-poster .manual-liner>summary::after{content:'+';font:700 1.25rem/1 Arial,sans-serif}
 body.gig-poster .manual-liner[open]>summary::after{content:'−'}
 body.gig-poster .manual-liner .liner-route strong{font:800 1rem/1.4 Arial,sans-serif}
+
+/* The Funk: approved beaded braids, star shades and high-collar jumpsuit. */
+body.gig-poster:is([data-page=launch],[data-page=setup]) .mood[data-mood=funky] .face{background-image:url('/editions/gig-poster/assets/the-funk.webp');background-size:auto 100%;background-position:15% 0}
+body.gig-poster:is([data-page=launch],[data-page=setup]) .mood[data-mood=funky][aria-pressed=true] .face{background-position:85% 0}
+@media(max-width:600px){
+ body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+ body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood:nth-child(3n){border-right:0}
+ body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood:nth-child(-n+3){border-bottom:1px solid var(--ink)}
+}

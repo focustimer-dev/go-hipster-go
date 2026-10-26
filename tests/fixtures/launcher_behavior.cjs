@@ -20,7 +20,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  const elements=Object.fromEntries(ids.map(id=>[id,new Element()]));
  const ais=['chatgpt','gemini','claude'].map(ai=>new Element({ai}));
  const services=['spotify','youtube','apple'].map(service=>new Element({service}));
- const moods=['happy','angry','sad','weird','criminal'].map(mood=>new Element({mood}));
+ const moods=['happy','angry','sad','weird','criminal','funky'].map(mood=>new Element({mood}));
  const launchMarkup=fs.readFileSync('launcher/index.html','utf8');
  const crateRegions=[...launchMarkup.matchAll(/data-crate-region="([^"]+)" data-continent="([^"]+)"/g)].map(m=>new Element({crateRegion:m[1],continent:m[2]}));
  const crateContinents=[...launchMarkup.matchAll(/data-crate-continent="([^"]+)"/g)].map(m=>new Element({crateContinent:m[1]}));
@@ -33,6 +33,15 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  return {elements,ais,services,moods,crateRegions,crateContinents,atlasCountries,atlasZones,doc};
 }
 (async()=>{
+ const funkCopies=[],funk=harness(async t=>funkCopies.push(t),'?mood=funky&tempo=relaxed');
+ assert.equal(funk.elements.moodName.textContent,'THE FUNK');
+ await funk.elements.goButton.click();
+ assert.match(funkCopies[0],/go funky/);
+ assert.match(funkCopies[0],/Tempo preference: Relaxed/);
+ assert.match(funkCopies[0],/Mood angle:/);
+ assert.doesNotMatch(funkCopies[0],/undefined/);
+ await funk.moods[5].click();
+ assert.equal(funk.elements.moodName.textContent,'SURPRISE');
  // Exercise the full cue cycle, reload persistence, and the cycle boundary.
  const catalog=JSON.parse(fs.readFileSync("references/discovery-lenses.json","utf8"));
  const lensCount=catalog.length;
@@ -500,7 +509,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  await racingStamp.moods[1].click();release();await copyingStamp;
  assert.equal(racingStamp.elements.receiptCopy.textContent,'REQUEST DRAFT','An outdated in-flight copy cannot stamp the new request');
  const sparkBank=JSON.parse(fs.readFileSync('references/mood-spark-bank.json','utf8'));
- for(const selected of ['happy','angry','sad','weird','criminal']){
+ for(const selected of ['happy','angry','sad','weird','criminal','funky']){
   const sparkStore=new Map(),outputs=[];
   let sparkHarness=harness(async t=>outputs.push(t),'?mood='+selected,'launch',sparkStore);
   for(let n=0;n<20;n++){
@@ -517,7 +526,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  for(let i=0;i<50;i++)await slowSparks.elements.goButton.click();
  assert.ok(slowCopies.every(t=>!/blast beats|breakcore|frenz|redline|tempo push|headbang|mosh/i.test(t.match(/Seed: ([^\n]+)/)[1])),'Slow anger avoids overt speed-conflicting sparks');
  const cueBank=JSON.parse(fs.readFileSync('references/seed-cues.json','utf8'));
- for(const selected of ['','happy','angry','sad','weird','criminal']){
+ for(const selected of ['','happy','angry','sad','weird','criminal','funky']){
   for(const pace of ['','slow','relaxed','brisk','fast']){
    const copies=[],run=harness(async t=>copies.push(t),'?mood='+selected+'&tempo='+pace);
    for(let i=0;i<30;i++)await run.elements.goButton.click();
