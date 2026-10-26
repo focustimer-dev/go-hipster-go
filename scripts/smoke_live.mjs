@@ -100,10 +100,18 @@ export async function checkRelease(browser, baseURL, expectedCommit, sourceCache
     for (const selector of ['#goButton', '#shuffleCrate', '#pinMood', '#pinPace', '#pinRegions', '#tempoSlider', '[data-mood="angry"]', '[data-ai="gemini"]']) {
       assert.ok(await page.locator(selector).isVisible(), `${selector}: control is not directly available`);
     }
+    const anchorPositions = () => page.locator('#goButton, .receipt-heading').evaluateAll(nodes => nodes.map(el => el.getBoundingClientRect().top + window.scrollY));
+    const initialAnchors = await anchorPositions();
+    async function verifyStableShuffleLayout(state) {
+      const after = await anchorPositions();
+      after.forEach((position, i) => assert.ok(Math.abs(position - initialAnchors[i]) <= 1, `${profile.name}: ${state} moved ${i === 0 ? 'GO' : 'receipt'} by ${position - initialAnchors[i]}px`));
+    }
     const before = await page.locator('#prompt').textContent();
     await page.locator('#pinMood').click();
+    await verifyStableShuffleLayout('pin feedback');
     await page.locator('#pinRegions').click();
     await page.locator('#shuffleCrate').click();
+    await verifyStableShuffleLayout('shuffle feedback and Undo');
     const shuffled = await page.locator('#prompt').textContent();
     assert.match(shuffled, /go angry/, 'Pinned mood changed');
     assert.doesNotMatch(shuffled, /Regional exploration:/, 'Pinned Worldwide selection changed');
@@ -112,8 +120,10 @@ export async function checkRelease(browser, baseURL, expectedCommit, sourceCache
     await checkGeometry(page, `${profile.name}: shuffled`, mainTargets);
     await page.locator('#pinPace').click();
     assert.ok(await page.locator('#shuffleCrate').isDisabled(), 'All pinned must disable shuffle');
+    await verifyStableShuffleLayout('all-pinned feedback');
     await page.locator('#pinPace').click();
     await page.locator('#undoShuffle').click();
+    await verifyStableShuffleLayout('Undo feedback');
     assert.equal(await page.locator('#prompt').textContent(), before, 'Undo did not restore the brief');
     await page.locator('#goButton').click();
     await page.waitForFunction(() => document.querySelector('#receiptCopy')?.textContent === 'COPIED TO CLIPBOARD');

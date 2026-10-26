@@ -321,3 +321,15 @@ body.gig-poster:is([data-page=launch],[data-page=setup]) .masthead{flex-wrap:wra
 body.gig-poster .brandrow{flex-basis:auto}
 body.gig-poster .topnav{max-width:100%;margin-left:auto;flex-wrap:wrap}
 body.gig-poster[data-page=launch] .receipt .receipt-copy{display:block;width:fit-content;max-width:100%;white-space:normal;overflow-wrap:anywhere}
+
+/* A single stable message line replaces the hint; Undo never inserts another row. */
+body.gig-poster .shuffle-feedback{display:grid;grid-template-columns:minmax(0,1fr) max(44px,2.2rem);gap:8px;align-items:center;min-height:44px}
+body.gig-poster .shuffle-message,body.gig-poster .shuffle-reserve{display:grid;min-width:0}
+body.gig-poster .shuffle-message>*,body.gig-poster .shuffle-reserve>span{grid-area:1 / 1}
+body.gig-poster .shuffle-reserve{visibility:hidden;pointer-events:none;font:700 .8125rem/1.45 Arial,sans-serif}
+body.gig-poster .shuffle-message #shuffleHelp,body.gig-poster .shuffle-message #shuffleResult{display:block;margin:0;font:.8125rem/1.45 Arial,sans-serif;max-width:none;overflow-wrap:anywhere;align-self:center}
+body.gig-poster .shuffle-message #shuffleResult{font-weight:700}
+body.gig-poster .shuffle-message #shuffleResult:empty{visibility:hidden}
+body.gig-poster .shuffle-message:has(#shuffleResult:not(:empty)) #shuffleHelp{visibility:hidden}
+body.gig-poster .shuffle-feedback #undoShuffle{display:inline-flex;align-items:center;justify-content:center;width:100%;min-height:44px;margin:0;padding:0;border:0;text-decoration:underline;text-underline-offset:3px;font:700 .6875rem/1.4 'Courier New',monospace}
+body.gig-poster .shuffle-feedback #undoShuffle[hidden]{display:inline-flex;visibility:hidden;pointer-events:none}
