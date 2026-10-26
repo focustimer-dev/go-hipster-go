@@ -41,7 +41,7 @@ export function verifyGeometry(snapshot, label) {
     }
   }
   if (problems.length) {
-    const error = new Error(`${label}: ${problems.join('; ')}`);
+    const error = new Error(`${label}: ${problems.join('; ')}${snapshot.overflowing?.length ? "; overflowing elements: " + snapshot.overflowing.join(", ") : ""}`);
     error.name = 'LayoutSmokeError';
     throw error;
   }
@@ -50,6 +50,7 @@ async function checkGeometry(page, label, selectors) {
   const snapshot = await page.evaluate(selectors => ({
     clientWidth: document.documentElement.clientWidth,
     scrollWidth: document.documentElement.scrollWidth,
+    overflowing: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1 ? [...document.querySelectorAll('body *')].filter(el => el.getClientRects().length && el.getBoundingClientRect().right > document.documentElement.clientWidth + 1).slice(0,8).map(el => (el.id ? '#' + el.id : el.tagName.toLowerCase() + '.' + el.className) + ' right=' + Math.round(el.getBoundingClientRect().right)) : [],
     targets: [...document.querySelectorAll(selectors)].filter(el => el.getClientRects().length && getComputedStyle(el).visibility !== 'hidden').map(el => {
       const r = el.getBoundingClientRect();
       return { label: el.id || el.getAttribute('aria-label') || el.textContent.trim(), left: r.left, right: r.right, top: r.top, bottom: r.bottom, width: r.width, height: r.height };
