@@ -4,8 +4,40 @@ A generated, text-forward snapshot of the **canonical** repository skill. This i
 
 **Source:** https://github.com/focustimer-dev/go-hipster-go
 
-**Files included:** `references/regional-review.md`, `references/regions/oceania-additions.md`, `references/regions/central-america-additions.md`, `references/regions/central-africa-additions.md`, `references/regions/southern-africa-additions.md`, `references/regional-atlas.md`, `references/regions/us-west.md`, `references/regions/us-east.md`, `references/regions/canada-west.md`, `references/regions/canada-east.md`, `references/regions/mexico.md`, `references/regions/central-america.md`, `references/regions/caribbean.md`, `references/regions/northern-south-america.md`, `references/regions/southern-south-america.md`, `references/regions/atlantic-europe.md`, `references/regions/mediterranean-europe.md`, `references/regions/northern-europe.md`, `references/regions/eastern-europe.md`, `references/regions/north-africa.md`, `references/regions/west-africa.md`, `references/regions/east-africa.md`, `references/regions/central-southern-africa.md`, `references/regions/middle-east.md`, `references/regions/central-asia.md`, `references/regions/south-asia.md`, `references/regions/east-asia.md`, `references/regions/southeast-asia.md`, `references/regions/northern-asia.md`, `references/regions/oceania.md`, `SKILL.md`, `references/global-scenes.md`, `references/sonic-taxonomy.md`, `references/curation-examples.md`, `references/verification.md`.
+**Files included:** `references/reference-index.md`, `references/regional-review.md`, `references/regions/oceania-additions.md`, `references/regions/central-america-additions.md`, `references/regions/central-africa-additions.md`, `references/regions/southern-africa-additions.md`, `references/regional-atlas.md`, `references/regions/us-west.md`, `references/regions/us-east.md`, `references/regions/canada-west.md`, `references/regions/canada-east.md`, `references/regions/mexico.md`, `references/regions/central-america.md`, `references/regions/caribbean.md`, `references/regions/northern-south-america.md`, `references/regions/southern-south-america.md`, `references/regions/atlantic-europe.md`, `references/regions/mediterranean-europe.md`, `references/regions/northern-europe.md`, `references/regions/eastern-europe.md`, `references/regions/north-africa.md`, `references/regions/west-africa.md`, `references/regions/east-africa.md`, `references/regions/central-southern-africa.md`, `references/regions/middle-east.md`, `references/regions/central-asia.md`, `references/regions/south-asia.md`, `references/regions/east-asia.md`, `references/regions/southeast-asia.md`, `references/regions/northern-asia.md`, `references/regions/oceania.md`, `SKILL.md`, `references/global-scenes.md`, `references/sonic-taxonomy.md`, `references/curation-examples.md`, `references/verification.md`.
 
+
+---
+
+# BEGIN SOURCE: references/reference-index.md
+
+# Reference loading index
+
+Use this directory to reach the existing research, not to replace it with a smaller musical menu. Never map a mood to a fixed genre or artist roster.
+
+## Every new ordinary GO
+
+Before choosing a thesis, read these sections (exact headings):
+
+1. [Sonic taxonomy](sonic-taxonomy.md): **Mood interpretation matrix**, **Peculiarity by audible mechanism**, **Freshness procedure**, and **Recording-level selection gate**. Consult **Era and sonic period**, **Sonic textures and instrumentation** and **Operating guidance** as the brief requires; keep all four discovery axes available.
+2. [Global scenes](global-scenes.md): **Category discovery index — expand the search before choosing artists** (including its route tables) and **Responsible cross-scene reasoning**. Compare three distinct routes; then read the relevant scene detail under **Geographic research map**, **Movement and microgenre touchstones**, **Further scene horizons — research leads, not default playlists**, or **US East and West discovery routes**. For unstructured GO, consider an under-covered route before settling on familiar choices.
+3. [Verification](verification.md): apply the recording and publishing evidence rules to every final selection. For Criminal, also apply **Criminal mood: verify the song's actual story**, using song-level narrative evidence rather than genre, reputation or title association.
+
+## Regional requests
+
+Read the [regional atlas](regional-atlas.md) safeguards and lookup, then the files for each selected region. Its **Supplementary files** table is part of the lookup: include the matching additions, not just the baseline file. Before using expanded Oceania, Central America or Central & Southern Africa, read the [focused regional review](regional-review.md); its boundaries and overlap decisions take precedence. Central & Southern Africa requires both Central Africa and Southern Africa additions.
+
+For worldwide exploration, compare a few contrasting regions when useful; do not preload all 24 files. Regions guide exploration, while explicit user constraints and supported sonic fit decide selections. The 920 imported rows are unverified, overlapping search leads, not 920 verified genres.
+
+## Optional depth and reuse
+
+Consult [curation examples](curation-examples.md) when bridge construction or editorial voice needs calibration; examples are not a default roster. Expand research whenever candidates are weak, repetitive or unsupported; this index imposes no search budget or shortlist cap.
+
+Reuse unchanged reference text only while it remains accessible in the current conversation. Reapply its rules to each new brief. After context loss, missing text or a version change, read the required material again. Never reuse old verification as proof of current service availability or publishing permissions. A request to publish an existing crate reuses that crate and verifies the actual destination without choosing another thesis or rerolling the surprise.
+
+Use section reads when supported. If the host can only fetch whole files, read the file once and navigate by headings; a fragment link alone does not guarantee a smaller fetch. Report inaccessible required material honestly. Setup and installation do not preload the musical references.
+
+# END SOURCE: references/reference-index.md
 
 ---
 
@@ -1924,7 +1956,7 @@ Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation;
 
 **Apple Music handoff:** In ChatGPT, an actually connected Apple Music playlist widget with a user-operated save control is a valid destination even when a direct playlist-writing tool isn't exposed. Resolve real catalog recordings where possible and preserve the intended order. Search and playlist generation do not themselves require an Apple Music subscription; saving to the listener's library does. Label a generated widget **ready to save** until the listener or tool confirms it saved. Distinguish user confirmation from independent read-back, do not assume library/history access, and never invent exact saved items or order. If neither a saveable widget nor an authorized writer exists, return the verified original crate and explain the limitation.
 
-**Load before choosing a thesis:** read the Mood interpretation matrix, Peculiarity by audible mechanism and Freshness procedure in [sonic taxonomy](references/sonic-taxonomy.md), then consult the Category discovery index in [global scenes](references/global-scenes.md). Use these for every ordinary mood and freeform GO, not just Weird. The taxonomy is an expandable research map, not a fixed menu. Compare three distinct routes internally, then choose a coherent thesis. Preserve named examples for context, not automatic selections. Honor a supplied mood interpretation as a starting angle beneath explicit user preferences.
+**Load before choosing a thesis:** follow the [reference index](references/reference-index.md) for every ordinary mood and freeform GO, not just Weird. Compare three distinct routes internally, then choose a coherent thesis. The taxonomy is an expandable research map, not a fixed menu; named examples are context, not automatic selections. Honor a supplied mood interpretation beneath explicit user preferences.
 
 
 For a supplied seed, explore beyond familiar post-punk/dub/funk routes when musically justified. Without a supplied seed or genuine randomness, never claim to have rolled one.
@@ -1934,39 +1966,7 @@ When a PWA prompt supplies a **Fresh-crate discovery lens**, use it as a startin
 
 **Regional discovery and recording quality:** Apply the recording-level selection gate in [sonic taxonomy](references/sonic-taxonomy.md). Selected regions take precedence over rotating lenses; verify scene connections rather than using geography as a sonic adjective. The [regional research routes](references/global-scenes.md) supplies research hypotheses, not established facts about recordings or a fixed artist roster. Skip incompatible hints; do not broaden geography just to use a seed.
 
-**Address regional research precisely:** Read the [focused regional review](references/regional-review.md) before using the expanded Oceania, Central America or Central & Southern Africa routes; its source boundaries and overlap decisions take precedence over imported descriptions. Read the [regional atlas](references/regional-atlas.md) when regions are selected or a regional scene needs deeper exploration. Match the region label/ID to the files below; load only the relevant files. Treat the 920 imported source entries (including overlapping additions) as unverified search leads, not a factual taxonomy or automatic track roster. Verify compound labels and recording-level claims before using them. Existing mood, geography, recording-quality and Criminal evidence rules take precedence.
-
-- [US West](references/regions/us-west.md)
-- [US East](references/regions/us-east.md)
-- [Canada West](references/regions/canada-west.md)
-- [Canada East](references/regions/canada-east.md)
-- [Mexico](references/regions/mexico.md)
-- [Central America](references/regions/central-america.md)
-- [Caribbean](references/regions/caribbean.md)
-- [Northern South America](references/regions/northern-south-america.md)
-- [Southern South America](references/regions/southern-south-america.md)
-- [Atlantic & Western Europe](references/regions/atlantic-europe.md)
-- [Mediterranean & Balkans](references/regions/mediterranean-europe.md)
-- [Northern Europe](references/regions/northern-europe.md)
-- [Eastern Europe](references/regions/eastern-europe.md)
-- [North Africa](references/regions/north-africa.md)
-- [West Africa](references/regions/west-africa.md)
-- [East Africa](references/regions/east-africa.md)
-- [Central & Southern Africa](references/regions/central-southern-africa.md)
-- [Middle East & Caucasus](references/regions/middle-east.md)
-- [Central Asia](references/regions/central-asia.md)
-- [South Asia](references/regions/south-asia.md)
-- [East Asia](references/regions/east-asia.md)
-- [Southeast Asia](references/regions/southeast-asia.md)
-- [Northern Asia](references/regions/northern-asia.md)
-- [Oceania](references/regions/oceania.md)
-
-Supplementary research files (load for the matching parent region; cross-check overlap):
-- [Oceania additions](references/regions/oceania-additions.md)
-- [Central America additions](references/regions/central-america-additions.md)
-- [Central Africa additions](references/regions/central-africa-additions.md)
-- [Southern Africa additions](references/regions/southern-africa-additions.md)
-
+**Address regional research precisely:** Use the [regional atlas](references/regional-atlas.md) lookup for selected regions and deeper regional exploration, including matching supplementary files. The [focused regional review](references/regional-review.md) takes precedence for expanded Oceania, Central America and Central & Southern Africa. Treat all 920 imported source entries (including overlaps) as unverified search leads. Existing mood, geography, recording-quality and Criminal evidence rules take precedence.
 
 **Track-level recent-repeat check:** When earlier playlists are actually visible in the current conversation, supplied by the listener, or available through an authorized playlist read-back, compare normalized **artist + title + recording/version** against the last *up to three* sets. For an ordinary new playlist, exclude repeated recordings by default and prefer different artists, even when the mood repeats. Allow direct listener requests, an explicitly requested callback or a compelling, explained exception; never silently replace an exact user-requested recording. Within one normal set, avoid repeated artist/title pairs or recycled alternate uploads masquerading as variety. Do **not** imply that Gemini, the PWA or another host can read earlier playlists or listening history across sessions unless those records are genuinely accessible. If history is unavailable, still diversify the search route and be candid about the missing cross-session exclusion list when repeat avoidance is discussed.
 

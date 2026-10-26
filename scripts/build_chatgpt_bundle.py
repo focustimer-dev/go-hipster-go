@@ -6,6 +6,7 @@ import argparse
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "adapters/chatgpt/CHATGPT_KNOWLEDGE.md"
 SOURCES = [
+    "references/reference-index.md",
     "references/regional-review.md",
     "references/regions/oceania-additions.md",
     "references/regions/central-america-additions.md",

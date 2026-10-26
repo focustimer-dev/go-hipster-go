@@ -305,3 +305,11 @@ Pass publication reporting when every claimed number is grounded in a provider r
 ## Compact handoff regression
 
 Send only `go criminal`, US East/West, Slow, one mood angle, `Seed:` and YouTube Music. Require 12 by default, verified song-level crime narratives and strong non-English preference, compatible regional routes, metaphor-only seed interpretation and an honest publication result. Do not request missing boilerplate. Repeat with sad/slow Central & Southern Africa; do not force a fast genre route to satisfy the seed. Legacy longer requests and explicit lens instructions remain supported beneath user constraints.
+
+## Reference routing trial
+
+Compare baseline `cd73514fa10809aa695722f5cf781a9be7e081b5` with the routing revision in fresh, separate conversations using identical models, catalog access and the three Fixed prompts above. Add `go angry, relaxed; Central & Southern Africa and Oceania; text only` and `go criminal, slow; North Africa; text only`. For the three fixed prompts, also request text only to avoid test playlists. Do not replace the working installed plugin just to run this trial; load each repository revision explicitly in a separate test context.
+
+Record reference files/sections actually read, repeated reads, returned text size when observable, elapsed time and tool calls. Keep research/catalog calls separate from reference-loading calls. Mark unobservable token counts unknown; instruction size is not measured runtime latency. Repeat each pair at least twice; retain complete outputs privately for blind listener comparison.
+
+Require real recording fidelity, sonic cohesion, discovery breadth, artist diversity, Criminal evidence where relevant and honest publication status. Check regional supplements and review precedence, open-ended under-covered routes, and a second GO with visible history. No candidate cap or reduced verification is permitted. Static packaging tests cannot establish musical equivalence. Treat the revision as a trial until matched runs show lower overhead and no material quality loss.
