@@ -13,6 +13,7 @@ from zipfile import ZipFile, ZIP_DEFLATED
 ROOT = Path(__file__).resolve().parents[1]
 REFERENCES = (
     "references/reference-index.md",
+    "references/funky.md",
     "references/regional-review.md",
     "references/regions/oceania-additions.md",
     "references/regions/central-america-additions.md",
