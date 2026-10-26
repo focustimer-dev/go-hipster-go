@@ -149,3 +149,6 @@ Reserve deep vermilion (#742019) for the Jukebox's successful clipboard stamp an
 
 ## Approved portrait and selection refinement
 Five tightly framed engraved clerk portraits use clerks-v2.webp. Weird is a surreal three-eyed character with looping hair. Selected moods use vermilion #d64b30 with petrol ink; passport stamps retain transparent paper with petrol ink; mood labels retain mustard on petrol and underlining. Selected map regions use vermilion with petrol diagonal hatching and outlines. Pressed states and removable named stamps remain the non-color cues.
+
+## Selected expressions
+The neutral clerk strip switches to clerks-expressions.webp on aria-pressed=true: laughing Happy, snarling Angry, tearful Sad, surreal grinning Weird, and smirking Criminal. The selected sprite is preloaded on the Jukebox to avoid a blank first selection. Both sprites share dimensions and cell positions; controls retain their size, labels, and vermilion selection surface. Existing brief character motion respects reduced motion, while the expression state remains visible. Shuffle and Undo use the same pressed-state source of truth.

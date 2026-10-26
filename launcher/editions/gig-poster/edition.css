@@ -340,3 +340,6 @@ body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[aria-p
 body.gig-poster:is([data-page=launch],[data-page=setup]) .mood[aria-pressed=true] .face{filter:none}
 body.gig-poster:is([data-page=launch],[data-page=setup]) .mood[aria-pressed=true] .word{background:var(--ink);color:var(--paper);padding:2px 4px;text-decoration:underline;text-underline-offset:3px}
 body.gig-poster .crate-map-zone[data-selected=true] path{fill:url(#posterSelectedHalftone);stroke:var(--ink)}
+
+/* Persistent alternate expressions follow the actual selected mood, including shuffle/Undo. */
+body.gig-poster:is([data-page=launch],[data-page=setup]) .mood[aria-pressed=true] .face{background-image:url('/editions/gig-poster/assets/clerks-expressions.webp')}
