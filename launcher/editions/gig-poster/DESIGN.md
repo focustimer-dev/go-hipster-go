@@ -161,3 +161,5 @@ Weird now uses weird-curly.webp: the user-supplied curly-haired, thin-moustached
 
 ## The Funk, sixth mood
 Approved two-state petrol-ink portrait: beaded shoulder-length braids, star-shaped sunglasses, high stand-up jumpsuit collar and front zipper. Neutral half-smile becomes a broad grin on selection. The visible name is THE FUNK; the stable mood key and generated command are `funky` / `go funky`. Six columns on desktop, three by two below 600px.
+
+The Funk selection snaps to the grinning sprite and performs one diminishing 440ms horizontal shoulder shake. Only the portrait moves; the frame and label stay fixed. Reduced motion preserves the expression and selection without spatial animation.

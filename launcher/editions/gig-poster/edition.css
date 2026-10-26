@@ -371,3 +371,9 @@ body.gig-poster:is([data-page=launch],[data-page=setup]) .mood[data-mood=funky][
  body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood:nth-child(3n){border-right:0}
  body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood:nth-child(-n+3){border-bottom:1px solid var(--ink)}
 }
+
+/* The Funk answers selection with one short shoulder shake; sprite frames snap. */
+body.gig-poster:is([data-page=launch],[data-page=setup]) .mood[data-mood=funky] .face{transition:transform 150ms cubic-bezier(.16,1,.3,1)}
+body.gig-poster:is([data-page=launch],[data-page=setup]) .mood[data-mood=funky][aria-pressed=true] .face{animation:clerk-funky 440ms ease-out}
+@keyframes clerk-funky{0%,100%{transform:none}18%{transform:translateX(-3%) rotate(-2deg)}38%{transform:translateX(3%) rotate(2deg)}58%{transform:translateX(-2%) rotate(-1deg)}78%{transform:translateX(1%) rotate(.5deg)}}
+@media(prefers-reduced-motion:reduce){body.gig-poster:is([data-page=launch],[data-page=setup]) .mood[data-mood=funky] .face{animation:none;transition:none;transform:none}}
