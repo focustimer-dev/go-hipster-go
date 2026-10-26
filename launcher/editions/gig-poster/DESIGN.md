@@ -152,3 +152,6 @@ Five tightly framed engraved clerk portraits use clerks-v2.webp. Weird is a surr
 
 ## Selected expressions
 The neutral clerk strip switches to clerks-expressions.webp on aria-pressed=true: laughing Happy, snarling Angry, tearful Sad, surreal grinning Weird, and smirking Criminal. The selected sprite is preloaded on the Jukebox to avoid a blank first selection. Both sprites share dimensions and cell positions; controls retain their size, labels, and vermilion selection surface. Existing brief character motion respects reduced motion, while the expression state remains visible. Shuffle and Undo use the same pressed-state source of truth.
+
+## What is this even?
+An always-visible liner note below the Manual introduction explains the Jukebox prompt, installed AI skill and connected music-service tools. Three plain text columns become a single readable sequence on phones; thin rules and a dashed signoff sit directly on the stock. It adds no disclosure, animation or new interaction.

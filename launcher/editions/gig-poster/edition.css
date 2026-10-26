@@ -343,3 +343,12 @@ body.gig-poster .crate-map-zone[data-selected=true] path{fill:url(#posterSelecte
 
 /* Persistent alternate expressions follow the actual selected mood, including shuffle/Undo. */
 body.gig-poster:is([data-page=launch],[data-page=setup]) .mood[aria-pressed=true] .face{background-image:url('/editions/gig-poster/assets/clerks-expressions.webp')}
+
+/* A liner note, printed directly on the Manual's stock. */
+body.gig-poster .manual-liner{border-color:var(--ink);padding:14px 0 16px;margin:0 0 20px}
+body.gig-poster .manual-liner h2{font:400 clamp(1.5rem,4.5cqw,2.25rem)/1.1 Poster,sans-serif;letter-spacing:0}
+body.gig-poster .manual-liner .liner-thesis{font:700 .9375rem/1.5 Arial,sans-serif;margin:6px 0 14px}
+body.gig-poster .manual-liner .liner-route strong{font:700 .875rem/1.4 'Courier New',monospace}
+body.gig-poster .manual-liner .liner-route strong::after{content:' →';color:var(--ink)}
+body.gig-poster .manual-liner .liner-route li:last-child strong::after{content:''}
+body.gig-poster .manual-liner .liner-signoff{border-top:1px dashed var(--line);padding-top:10px;margin-top:14px}

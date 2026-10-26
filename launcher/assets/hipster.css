@@ -614,3 +614,14 @@ body[data-page=launch] .hero-title .headline em{color:inherit;text-shadow:none}
 @media(prefers-reduced-motion:reduce){body[data-page=launch] .hero-title .headline{animation:none;transform:none;text-shadow:none}}
 
 @media(max-width:360px){body[data-page=launch] .hero-title{grid-template-columns:minmax(0,1fr)}body[data-page=launch] .hero-title .sticker{display:none}}
+
+/* Manual liner note: the handoff explained before setup. */
+.manual-liner{margin:0 0 22px;padding:14px 0;border-block:1px solid currentColor}
+.manual-liner h2{margin:0 0 6px;font-size:1.25rem}
+.manual-liner .liner-thesis{margin:0 0 14px;font-weight:700}
+.manual-liner .liner-route{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;list-style:none;margin:0;padding:0}
+.manual-liner .liner-route li{min-width:0}
+.manual-liner .liner-route strong{display:block;font-size:1rem}
+.manual-liner .liner-route p{margin:5px 0 0;font-size:.9375rem;line-height:1.5}
+.manual-liner .liner-signoff{margin:14px 0 0;font-size:.8125rem;line-height:1.5}
+@media(max-width:600px){.manual-liner .liner-route{grid-template-columns:1fr;gap:12px}}
