@@ -324,3 +324,7 @@ Run text-only with exactly 12 tracks, no exceptions, and equal verification acce
 - `go funky sad, worldwide, text only. Exactly 12 tracks, no exceptions.`
 
 Check required reference routing, selected-region fidelity, credible recording-level groove observations, exact recording identities, artist diversity and sequencing. Reject unsupported audio claims, geographic stereotypes, rote compilation rosters and Happy/fast substitutions. Compare relaxed and fast interpretations without invented BPM. Test package reachability separately from musical quality; automated passes do not establish a successful listening experience.
+
+## Subtle playlist naming (manual)
+
+Use three finished sets with contrasting pace, mood and sonic character. Request one title per set using the normal editorial pass. Check that each title fits its actual set without spelling out mood/tempo/genre, preserves the clerk voice without compulsory jokes, and differs in wording and construction from visible recent titles. Repeat with no visible history: no invented memory or claim of global uniqueness. Reject copied example titles, repetitive paperwork jokes and extra naming research, candidate lists or scoring. Judge originality and fit by listener feedback; static tests do not prove either.
