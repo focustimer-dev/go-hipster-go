@@ -328,3 +328,11 @@ Check required reference routing, selected-region fidelity, credible recording-l
 ## Subtle playlist naming (manual)
 
 Use three finished sets with contrasting pace, mood and sonic character. Request one title per set using the normal editorial pass. Check that each title fits its actual set without spelling out mood/tempo/genre, preserves the clerk voice without compulsory jokes, and differs in wording and construction from visible recent titles. Repeat with no visible history: no invented memory or claim of global uniqueness. Reject copied example titles, repetitive paperwork jokes and extra naming research, candidate lists or scoring. Judge originality and fit by listener feedback; static tests do not prove either.
+
+## Flexible coherence comparison (2026-10-28)
+
+Compare baseline 818e5ab and the candidate on the three Fixed prompts above. Keep catalog/tool access and requested count equal; text only, no provider writes. Run each prompt in a fresh context; repeat before treating a preference as robust. Hide version labels during listener comparison.
+
+Record ordered recording identities, actual reference reads and verification sources, provisional or unsupported claims, artist concentration, scene breadth permitted by the brief, repeated recordings across runs, and research/tool cost. Compare the weakest handoff and overall arc, asking whether a surprise earns its place without flattening variety. Do not equate confident prose, additional genres or passing structural tests with better listening.
+
+Acceptance: retain recording fidelity and explicit constraints; prefer clearer listening flow only if discovery variety survives. No automatic numerical winner. A model/source review is preliminary; a listening comparison and a real Gemini run remain distinct checks. No fixed drum sound, mood-to-instrument mapping, shared-feature quota, obligatory emotional tension or prescribed energy curve. Keep the change in the existing selection pass.
