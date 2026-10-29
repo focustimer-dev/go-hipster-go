@@ -2000,11 +2000,9 @@ Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation;
 
 ### Go Hard — optional Deep Crate Protocol
 
-Explicit `go hard`, `go funky hard`, or PWA `Curation mode: GO HARD` enables editorial depth, not a sound or tempo change. Default **OFF**: ordinary `go` keeps its fast one-pass path. After the normal writer preflight, load and follow [the Deep Crate Protocol](references/go-hard.md) before curation. Compose with mood, pace, regions, track count, service and art; publish only one final playlist. If the reference is inaccessible, disclose that limitation rather than claiming a deep pass.
+Explicit `go hard`, `go funky hard`, or PWA `Curation mode: GO HARD` enables editorial depth, not a sound or tempo change. Default **OFF**: ordinary `go` keeps its fast one-pass path. After the normal writer preflight, load and follow [the Deep Crate Protocol](references/go-hard.md) before curation. Compose with mood, pace, regions, track count, service and art; publish only one final playlist. If unavailable, do not claim a deep pass.
 
-### Optional cover art — after curation
-
-`Cover art: yes` opts into **one square original album sleeve** with the **exact final playlist title**, after the music is curated. Anchor its design to a selected recording's **verified original year and local scene**, never a reissue date; if uncertain, identify an approximate era rather than invent provenance. Express the mix symbolically through scene/period typography, imagery and print texture, without copying existing covers or cultural stereotypes. Generate using an available image tool, or supply a ready-to-use image prompt. Briefly name the anchor recording, year and place (or uncertainty). **Art generation is not a service upload**: never claim a cover was applied without provider confirmation. Skip when not requested.
+**Optional art:** On `Cover art: yes`, follow [the sleeve workflow](references/verification.md#optional-cover-art) after curation.
 
 ## Fresh-crate discovery and repeat control
 
