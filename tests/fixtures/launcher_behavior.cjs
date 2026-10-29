@@ -543,19 +543,19 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
   }
  }
  const artCopies=[],art=harness(async t=>artCopies.push(t),'?mood=funky');
- assert.equal(art.elements.includeCover.checked,false);
+ assert.equal(art.elements.includeCover.attrs['aria-pressed'],'false');
  await art.elements.goButton.click();assert.doesNotMatch(artCopies.at(-1),/Cover art:/);
  const seedBefore=art.elements.prompt.textContent.match(/Seed: ([^\n]+)/)[1];
- art.elements.includeCover.checked=true;await art.elements.includeCover.events.change();
+ await art.elements.includeCover.click();
  assert.equal(art.elements.prompt.textContent.match(/Seed: ([^\n]+)/)[1],seedBefore,'Artwork toggling preserves the current music brief');
  assert.equal(art.elements.openAi.attrs['aria-disabled'],'true','Cover change invalidates copied handoff');
  assert.match(art.elements.prompt.textContent,/verified original release year/);
  assert.match(art.elements.prompt.textContent,/exact playlist title/);
  await art.elements.goButton.click();assert.equal(artCopies.at(-1),art.elements.prompt.textContent);
  assert.match(artCopies.at(-1),/music-service upload/);
- art.elements.includeCover.checked=false;await art.elements.includeCover.events.change();
+ await art.elements.includeCover.click();
  assert.doesNotMatch(art.elements.prompt.textContent,/Cover art:/);
- assert.equal(harness(async()=>{},'?cover=1').elements.includeCover.checked,true,'Shared URL restores the option');
+ assert.equal(harness(async()=>{},'?cover=1').elements.includeCover.attrs['aria-pressed'],'true','Shared URL restores the option');
  for(const ai of ['chatgpt','gemini','claude'])assert.match(harness(async()=>{},'?cover=1&ai='+ai).elements.prompt.textContent,/Cover art:/);
  console.log('PASS: mood selection, reset, current-copy handoff, setup invalidation, blocked clipboard, copy race');
 })().catch(e=>{console.error(e);process.exit(1)});

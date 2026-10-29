@@ -364,7 +364,7 @@ function renderLaunch(){
  e.open.href=ai==="gemini"?geminiIntent:destinations[ai];e.open.textContent="↗ OPEN "+aiNames[ai].toUpperCase();
  const summary=doc.getElementById("receiptSummary");if(summary)summary.textContent=aiNames[ai]+" · "+serviceNames[service]+" · "+moodLabel(mood)+(tempo?" · "+tempoNames[tempo]:"")+" · 12 tracks"+(includeCover?" · cover art":"");
  const regions=doc.getElementById("receiptRegions");if(regions)regions.textContent="CRATES / "+(crateSelected.size?crateRegions.filter(r=>crateSelected.has(r.id)).map(r=>r.label).join(" · "):"Worldwide");
- const cover=doc.getElementById("includeCover");if(cover)cover.checked=includeCover;
+ const cover=doc.getElementById("includeCover");if(cover)cover.setAttribute("aria-pressed",String(includeCover));
  const hint=doc.getElementById("goHint");if(hint)hint.textContent="Copy "+(mood==="go"?"surprise":moodLabel(mood))+" prompt · 12 tracks"+(includeCover?" + cover":"");
  const goButton=doc.getElementById("goButton");if(goButton)goButton.setAttribute("aria-label","GO! Copy "+(mood==="go"?"surprise":moodLabel(mood))+" playlist prompt");
  const manual=doc.getElementById("manualOpenAi");if(manual){manual.href=destinations[ai];manual.textContent="I COPIED IT MANUALLY — OPEN "+aiNames[ai].toUpperCase()}
@@ -466,8 +466,8 @@ const undoShuffle=doc.getElementById("undoShuffle");if(undoShuffle)undoShuffle.a
  shuffle?.focus();status("Shuffle undone. Press GO to copy the restored brief.");
 });
 const coverOption=doc.getElementById("includeCover");
-if(coverOption)coverOption.addEventListener("change",()=>{
- includeCover=coverOption.checked;copiedPrompt=null;renderLaunch();
+if(coverOption)coverOption.addEventListener("click",()=>{
+ includeCover=!includeCover;copiedPrompt=null;renderLaunch();
  status("Cover art "+(includeCover?"included":"removed")+". Press GO to copy the updated request.");
 });
 async function copyGo(){
