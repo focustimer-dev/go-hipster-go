@@ -11,6 +11,7 @@ let copiedPrompt=null;
 let previousShuffle=null;
 let printImpression=0;
 let includeCover=false;
+let goHard=false;
 const shufflePins={mood:false,pace:false,regions:false};
 const tempoNames={slow:"Slow",relaxed:"Relaxed",moderate:"Mid-tempo",brisk:"Brisk",fast:"Fast"};
 const tempoSteps=Object.keys(tempoNames);
@@ -52,7 +53,7 @@ function setupPrompt(ai,service){
 }
 const universalPrompt=setupPrompt("gemini","youtube");
 function goCommand(ai,service,mood){
- const go=mood==="go"?"go":"go "+mood;
+ const go=(mood==="go"?"go":"go "+mood)+(goHard?" hard":"");
  // Text mentions express routing intent; the host may require selecting suggestions.
  const musicMention=serviceNames[service];
  return "@go-hipster-go @"+musicMention+" "+go;
@@ -113,6 +114,7 @@ function nextCrateSparkPhrase(){
 // The skill owns curation policy; GO sends only current creative inputs and service.
 function goPrompt(ai,service,mood){
  const parts=[goCommand(ai,service,mood)];
+ if(goHard)parts.push("Curation mode: GO HARD. Use the skill\u0027s Deep Crate Protocol: expanded verified candidate discovery, supported musical fingerprints, multiple competing sequences, critical worst-handoff review and limited targeted revisions. Keep the requested track count and region, mood and tempo preferences.");
  if(crateSelected.size)parts.push(crateRegionPrompt());
  const brief=moodDiscoveryBrief(mood);if(brief)parts.push(brief.trim());
  if(tempo)parts.push("Tempo preference: "+tempoNames[tempo]+".");
@@ -267,6 +269,7 @@ function updateCrateMap(){
 }
 const params=new URLSearchParams(location.search);
 includeCover=params.get("cover")==="1";
+goHard=params.get("hard")==="1";
 const isLegacyGemini=location.pathname.startsWith("/gemini/");
 let ai=(params.get("ai")||(isLegacyGemini?"gemini":stored("hmg-ai"))||"chatgpt").toLowerCase();
 if(!defaultService[ai])ai="chatgpt";
@@ -362,10 +365,11 @@ function renderLaunch(){
  e.mood.textContent=moodLabel(mood).toUpperCase();
  e.code.textContent=(ai==="chatgpt"?"CG":ai==="gemini"?"GM":"CL")+"-"+mood.slice(0,3).toUpperCase()+"-01";
  e.open.href=ai==="gemini"?geminiIntent:destinations[ai];e.open.textContent="↗ OPEN "+aiNames[ai].toUpperCase();
- const summary=doc.getElementById("receiptSummary");if(summary)summary.textContent=aiNames[ai]+" · "+serviceNames[service]+" · "+moodLabel(mood)+(tempo?" · "+tempoNames[tempo]:"")+" · 12 tracks"+(includeCover?" · cover art":"");
+ const summary=doc.getElementById("receiptSummary");if(summary)summary.textContent=aiNames[ai]+" · "+serviceNames[service]+" · "+moodLabel(mood)+(tempo?" · "+tempoNames[tempo]:"")+" · 12 tracks"+(includeCover?" · cover art":"")+(goHard?" · deep crate":"");
  const regions=doc.getElementById("receiptRegions");if(regions)regions.textContent="CRATES / "+(crateSelected.size?crateRegions.filter(r=>crateSelected.has(r.id)).map(r=>r.label).join(" · "):"Worldwide");
  const cover=doc.getElementById("includeCover");if(cover)cover.setAttribute("aria-pressed",String(includeCover));
- const hint=doc.getElementById("goHint");if(hint)hint.textContent="Copy "+(mood==="go"?"surprise":moodLabel(mood))+" prompt · 12 tracks"+(includeCover?" + cover":"");
+ const hard=doc.getElementById("goHard");if(hard)hard.setAttribute("aria-pressed",String(goHard));
+ const hint=doc.getElementById("goHint");if(hint)hint.textContent="Copy "+(mood==="go"?"surprise":moodLabel(mood))+" prompt · 12 tracks"+(includeCover?" + cover":"")+(goHard?" + hard":"");
  const goButton=doc.getElementById("goButton");if(goButton)goButton.setAttribute("aria-label","GO! Copy "+(mood==="go"?"surprise":moodLabel(mood))+" playlist prompt");
  const manual=doc.getElementById("manualOpenAi");if(manual){manual.href=destinations[ai];manual.textContent="I COPIED IT MANUALLY — OPEN "+aiNames[ai].toUpperCase()}
  updateHandoff();
@@ -374,6 +378,7 @@ function renderLaunch(){
  if(mood==="go")u.searchParams.delete("mood");else u.searchParams.set("mood",mood);
  if(tempo)u.searchParams.set("tempo",tempo);else u.searchParams.delete("tempo");
  if(includeCover)u.searchParams.set("cover","1");else u.searchParams.delete("cover");
+ if(goHard)u.searchParams.set("hard","1");else u.searchParams.delete("hard");
  u.searchParams.delete("mode");
  history.replaceState(null,"",u.pathname+u.search);
 }
@@ -464,6 +469,11 @@ const undoShuffle=doc.getElementById("undoShuffle");if(undoShuffle)undoShuffle.a
  store(crateStorageKey,JSON.stringify([...crateSelected]));render();animateAtlasView(atlasFocus);
  const result=doc.getElementById("shuffleResult");if(result)result.textContent="Previous brief restored.";
  shuffle?.focus();status("Shuffle undone. Press GO to copy the restored brief.");
+});
+const hardOption=doc.getElementById("goHard");
+if(hardOption)hardOption.addEventListener("click",()=>{
+ goHard=!goHard;copiedPrompt=null;renderLaunch();
+ status("Deep Crate "+(goHard?"enabled":"disabled")+". Press GO to copy the updated request.");
 });
 const coverOption=doc.getElementById("includeCover");
 if(coverOption)coverOption.addEventListener("click",()=>{

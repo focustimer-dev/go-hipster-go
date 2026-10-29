@@ -1,5 +1,10 @@
 ## The helpful clerk: PWA flow and voice
 
+## Unreleased — optional Go Hard deep crate mode
+
+- Add a small HARD toggle alongside + Art in the PWA, default off. Only when selected, copy a `go ... hard` command and Deep Crate Protocol request; preserve URL/sharing and copied-state semantics.
+- Add an opt-in skill workflow for expanded verified candidates, supported musical fingerprints, competing sequences, bounded adversarial revision and honest one-playlist publishing. Ordinary GO retains the light-touch path; synchronize ChatGPT/Gemini distributions and add regression cases.
+
 ## Unreleased — reuse existing musical observations for sequencing
 
 - Reuse source-supported track hooks to review neighboring handoffs once, including intentional contrasts. Do not add audio analysis, BPM/key/meter inference, extra research calls, or invented intro/outro claims. Keep portable knowledge bundles and regression scenarios aligned.
