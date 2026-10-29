@@ -16,7 +16,7 @@ class Element{
  async click(){this.focus();const event={preventDefault(){this.prevented=true}};await this.events.click?.(event);return event}
 }
 function harness(write,search='',page='launch',storage=new Map(),runtime={}){
- const ids=['pinMood','pinPace','pinRegions','briefMoodValue','briefPaceValue','briefRegionsValue','serviceDetails','serviceSummary','shuffleHelp','shuffleCrate','undoShuffle','shuffleResult','receiptRegions','welcomeSetup','dismissWelcome','crateGeo','atlasPassport','atlasNamedRegions','atlasLocator','atlasHome','atlasInstruction','atlasStamps','crateAtlasMap','crateGeoStatus','crateGeoClear','aiLabel','copyTailoredSetup','recipeIntro','recipeSteps','recipeResources','recipeCaveat','openSelectedAi','dealerPair','tempoControl','tempoDetails','tempoSummary','tempoHelp','moodHelp','tempoSlider','tempoValue','anyTempo','copyStatus','routeStatus','prompt','moodName','receiptCode','promptReceipt','receiptCopy','openAi','browserAi','manualOpenAi','receiptSummary','goHint','goButton','stripSetupPrompt','setupPromptText','setupPromptDetails','setupTipStatus','openSetupAi','promptDetails','shareButton'];
+ const ids=['includeCover','pinMood','pinPace','pinRegions','briefMoodValue','briefPaceValue','briefRegionsValue','serviceDetails','serviceSummary','shuffleHelp','shuffleCrate','undoShuffle','shuffleResult','receiptRegions','welcomeSetup','dismissWelcome','crateGeo','atlasPassport','atlasNamedRegions','atlasLocator','atlasHome','atlasInstruction','atlasStamps','crateAtlasMap','crateGeoStatus','crateGeoClear','aiLabel','copyTailoredSetup','recipeIntro','recipeSteps','recipeResources','recipeCaveat','openSelectedAi','dealerPair','tempoControl','tempoDetails','tempoSummary','tempoHelp','moodHelp','tempoSlider','tempoValue','anyTempo','copyStatus','routeStatus','prompt','moodName','receiptCode','promptReceipt','receiptCopy','openAi','browserAi','manualOpenAi','receiptSummary','goHint','goButton','stripSetupPrompt','setupPromptText','setupPromptDetails','setupTipStatus','openSetupAi','promptDetails','shareButton'];
  const elements=Object.fromEntries(ids.map(id=>[id,new Element()]));
  const ais=['chatgpt','gemini','claude'].map(ai=>new Element({ai}));
  const services=['spotify','youtube','apple'].map(service=>new Element({service}));
@@ -542,5 +542,20 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
    }
   }
  }
+ const artCopies=[],art=harness(async t=>artCopies.push(t),'?mood=funky');
+ assert.equal(art.elements.includeCover.checked,false);
+ await art.elements.goButton.click();assert.doesNotMatch(artCopies.at(-1),/Cover art:/);
+ const seedBefore=art.elements.prompt.textContent.match(/Seed: ([^\n]+)/)[1];
+ art.elements.includeCover.checked=true;await art.elements.includeCover.events.change();
+ assert.equal(art.elements.prompt.textContent.match(/Seed: ([^\n]+)/)[1],seedBefore,'Artwork toggling preserves the current music brief');
+ assert.equal(art.elements.openAi.attrs['aria-disabled'],'true','Cover change invalidates copied handoff');
+ assert.match(art.elements.prompt.textContent,/verified original release year/);
+ assert.match(art.elements.prompt.textContent,/exact playlist title/);
+ await art.elements.goButton.click();assert.equal(artCopies.at(-1),art.elements.prompt.textContent);
+ assert.match(artCopies.at(-1),/music-service upload/);
+ art.elements.includeCover.checked=false;await art.elements.includeCover.events.change();
+ assert.doesNotMatch(art.elements.prompt.textContent,/Cover art:/);
+ assert.equal(harness(async()=>{},'?cover=1').elements.includeCover.checked,true,'Shared URL restores the option');
+ for(const ai of ['chatgpt','gemini','claude'])assert.match(harness(async()=>{},'?cover=1&ai='+ai).elements.prompt.textContent,/Cover art:/);
  console.log('PASS: mood selection, reset, current-copy handoff, setup invalidation, blocked clipboard, copy race');
 })().catch(e=>{console.error(e);process.exit(1)});
