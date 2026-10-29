@@ -16,7 +16,7 @@ class Element{
  async click(){this.focus();const event={preventDefault(){this.prevented=true}};await this.events.click?.(event);return event}
 }
 function harness(write,search='',page='launch',storage=new Map(),runtime={}){
- const ids=['includeCover','pinMood','pinPace','pinRegions','briefMoodValue','briefPaceValue','briefRegionsValue','serviceDetails','serviceSummary','shuffleHelp','shuffleCrate','undoShuffle','shuffleResult','receiptRegions','welcomeSetup','dismissWelcome','crateGeo','atlasPassport','atlasNamedRegions','atlasLocator','atlasHome','atlasInstruction','atlasStamps','crateAtlasMap','crateGeoStatus','crateGeoClear','aiLabel','copyTailoredSetup','recipeIntro','recipeSteps','recipeResources','recipeCaveat','openSelectedAi','dealerPair','tempoControl','tempoDetails','tempoSummary','tempoHelp','moodHelp','tempoSlider','tempoValue','anyTempo','copyStatus','routeStatus','prompt','moodName','receiptCode','promptReceipt','receiptCopy','openAi','browserAi','manualOpenAi','receiptSummary','goHint','goButton','stripSetupPrompt','setupPromptText','setupPromptDetails','setupTipStatus','openSetupAi','promptDetails','shareButton'];
+ const ids=['includeCover','goHard','pinMood','pinPace','pinRegions','briefMoodValue','briefPaceValue','briefRegionsValue','serviceDetails','serviceSummary','shuffleHelp','shuffleCrate','undoShuffle','shuffleResult','receiptRegions','welcomeSetup','dismissWelcome','crateGeo','atlasPassport','atlasNamedRegions','atlasLocator','atlasHome','atlasInstruction','atlasStamps','crateAtlasMap','crateGeoStatus','crateGeoClear','aiLabel','copyTailoredSetup','recipeIntro','recipeSteps','recipeResources','recipeCaveat','openSelectedAi','dealerPair','tempoControl','tempoDetails','tempoSummary','tempoHelp','moodHelp','tempoSlider','tempoValue','anyTempo','copyStatus','routeStatus','prompt','moodName','receiptCode','promptReceipt','receiptCopy','openAi','browserAi','manualOpenAi','receiptSummary','goHint','goButton','stripSetupPrompt','setupPromptText','setupPromptDetails','setupTipStatus','openSetupAi','promptDetails','shareButton'];
  const elements=Object.fromEntries(ids.map(id=>[id,new Element()]));
  const ais=['chatgpt','gemini','claude'].map(ai=>new Element({ai}));
  const services=['spotify','youtube','apple'].map(service=>new Element({service}));
@@ -557,5 +557,27 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.doesNotMatch(art.elements.prompt.textContent,/Cover art:/);
  assert.equal(harness(async()=>{},'?cover=1').elements.includeCover.attrs['aria-pressed'],'true','Shared URL restores the option');
  for(const ai of ['chatgpt','gemini','claude'])assert.match(harness(async()=>{},'?cover=1&ai='+ai).elements.prompt.textContent,/Cover art:/);
+ const hardCopies=[],hardRun=harness(async s=>hardCopies.push(s),'?ai=chatgpt&service=spotify&mood=funky&tempo=moderate');
+ await hardRun.elements.goButton.click();
+ const normal=hardCopies.at(-1);
+ assert.doesNotMatch(normal,/Curation mode: GO HARD|go funky hard/,'Default GO is not deep mode');
+ await hardRun.elements.goHard.click();
+ assert.equal(hardRun.elements.goHard.attrs['aria-pressed'],'true');
+ assert.match(hardRun.elements.prompt.textContent,/go funky hard/);
+ assert.match(hardRun.elements.prompt.textContent,/expanded verified candidate discovery/);
+ assert.equal(hardRun.elements.receiptCopy.textContent,'REQUEST DRAFT','Hard toggle invalidates previous clipboard stamp');
+ assert.equal(hardRun.elements.openAi.attrs['aria-disabled'],'true','Hard toggle needs a fresh GO copy');
+ await hardRun.elements.includeCover.click();
+ assert.match(hardRun.elements.prompt.textContent,/Cover art:/,'Deep mode combines with cover art');
+ await hardRun.elements.goButton.click();
+ assert.equal(hardRun.elements.prompt.textContent,hardCopies.at(-1),'Hard receipt and copied prompt must match');
+ assert.match(hardCopies.at(-1),/go funky hard/);
+ await hardRun.elements.goHard.click();
+ assert.equal(hardRun.elements.goHard.attrs['aria-pressed'],'false');
+ assert.doesNotMatch(hardRun.elements.prompt.textContent,/Curation mode: GO HARD|go funky hard/);
+ assert.match(hardRun.elements.prompt.textContent,/Cover art:/,'Turning hard off preserves art');
+ const hardShared=harness(async()=>{},'?hard=1&mood=angry');
+ assert.equal(hardShared.elements.goHard.attrs['aria-pressed'],'true','Shared URL restores TRY HARD');
+ assert.match(hardShared.elements.prompt.textContent,/go angry hard/);
  console.log('PASS: mood selection, reset, current-copy handoff, setup invalidation, blocked clipboard, copy race');
 })().catch(e=>{console.error(e);process.exit(1)});
