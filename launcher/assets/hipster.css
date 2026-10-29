@@ -632,11 +632,22 @@ body[data-page=launch] .hero-title .headline em{color:inherit;text-shadow:none}
 .mood[data-mood="funky"] .face{background-image:url('/editions/gig-poster/assets/the-funk.webp');background-size:auto 100%;background-position:15% 0}
 .mood[data-mood="funky"][aria-pressed="true"] .face{background-position:85% 0}
 
-/* Artwork uses the same pressed-button primitive as shuffle pins. */
-.go-options{display:grid;grid-template-columns:minmax(0,1fr);align-items:stretch;gap:12px;margin-bottom:20px}
+/* One print block: request options before the full-width copy action. */
+.go-options{display:grid;grid-template-columns:minmax(0,1fr);align-items:stretch;gap:0;margin-bottom:20px;border:1px solid var(--ink);border-radius:2px}
 body[data-page=launch] .go-options .grind{margin:0}
-.go-extras{display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;gap:12px}
-.go-extras .cover-toggle{min-width:96px}
+.go-extras{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;gap:0}
+.go-options .go-extras .cover-toggle{min-width:0;min-height:76px;width:100%;border:0;border-radius:0;padding:12px;gap:8px;background:transparent;color:var(--ink);justify-content:flex-start;text-align:left}
+.go-options .go-extras .cover-toggle+ .cover-toggle{border-left:1px solid var(--ink)}
+.go-options .option-copy{display:grid;gap:3px;min-width:0}
+.go-options .option-copy small{font:400 .75rem/1.35 Arial,Helvetica,sans-serif;overflow-wrap:anywhere}
+.go-options .option-state{display:grid;place-items:center;flex:none;width:16px;height:16px;margin-left:auto;border:1px solid var(--ink)}
+.go-options .option-state svg{opacity:0}
+.go-options .go-extras .cover-toggle .option-state path{fill:none}
+.go-options .go-extras .cover-toggle[aria-pressed]{background:transparent;color:var(--ink)}
+.go-options .cover-toggle[aria-pressed=true] .option-state{background:var(--ink);color:var(--paper)}
+.go-options .cover-toggle[aria-pressed=true] .option-state svg{opacity:1}
+.go-options .go-extras .cover-toggle:hover{outline:none;background:var(--bone)}
+.go-options .go-extras .cover-toggle:focus-visible{outline:2px solid var(--ink);outline-offset:-5px}
 .cover-toggle{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;padding:7px 8px;border:1px solid var(--ink);background:transparent;color:var(--ink);font:inherit;cursor:pointer}
 .cover-toggle[aria-pressed=true]{background:var(--ink);color:var(--bone)}
 .cover-toggle:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
@@ -647,12 +658,17 @@ body[data-page=launch] .go-options .grind{margin:0}
 .go-extras .extra-mark{flex:none;overflow:visible;stroke-linecap:round;stroke-linejoin:round}
 .go-options .go-extras .cover-toggle .extra-mark path{fill:none}
 .go-options .go-extras .cover-toggle .extra-mark .art-sleeve{fill:var(--paper)}
-.go-options .go-extras .cover-toggle[aria-pressed=true] .extra-mark .art-sleeve{fill:var(--ink)}
 .go-extras .art-record,.go-extras .crate-back,.go-extras .crate-front{transform-box:fill-box;transform-origin:center;transition:transform 240ms cubic-bezier(.16,1,.3,1)}
 .go-extras .cover-toggle[aria-pressed=true] .art-record{transform:translate(2px,-1px) rotate(24deg)}
 .go-extras .cover-toggle[aria-pressed=true] .crate-back{transform:translateY(-3px) rotate(-8deg)}
 .go-extras .cover-toggle[aria-pressed=true] .crate-front{transform:translateY(-1px) rotate(5deg)}
-.go-extras .cover-toggle[aria-pressed=true] span{text-decoration:underline;text-underline-offset:3px}
+.go-extras .cover-toggle[aria-pressed=true] .option-label{text-decoration:underline;text-underline-offset:3px}
 @media(prefers-reduced-motion:reduce){
  .go-extras .art-record,.go-extras .crate-back,.go-extras .crate-front{transition:none;transform:none!important}
+}
+
+/* Keep the joined block readable on narrow screens and with enlarged text. */
+@container (max-width:22rem){
+ .go-options .go-extras{grid-template-columns:minmax(0,1fr)}
+ .go-options .go-extras .cover-toggle+ .cover-toggle{border-left:0;border-top:1px solid var(--ink)}
 }
