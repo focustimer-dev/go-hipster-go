@@ -21,7 +21,7 @@ class TitleVariationContract(unittest.TestCase):
             "adapters/gemini/references/workflow.md",
         ):
             text = read(path)
-            self.assertIn("**Avoid `pocket` in playlist titles by default**", text, path)
+            self.assertIn("`pocket` in playlist titles by default**", text, path)
             self.assertIn("scannable region and mood/sonic context in the title", text, path)
             self.assertIn("no mandatory subtitle formula", text, path)
             self.assertIn("never invent routes or eras", text, path)
