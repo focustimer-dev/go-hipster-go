@@ -676,3 +676,6 @@ body[data-page=launch] .go-options .grind{margin:0}
 
 /* Keep request option names consistent with the poster controls. */
 .go-options .option-label{text-transform:uppercase}
+
+/* Keep option headings level when one description wraps to another line. */
+.go-options .option-copy{align-self:stretch;align-content:start}
