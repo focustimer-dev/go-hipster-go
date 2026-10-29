@@ -57,7 +57,7 @@ class GoHardContract(unittest.TestCase):
         self.assertIn('title="Deep Crate Protocol"', html)
         self.assertIn('<span>TRY HARD</span></button>', html)
         self.assertIn('class="shuffle-pin cover-toggle" id="includeCover"', html)
-        self.assertIn(".go-extras{display:flex;flex-direction:column;", css)
+        self.assertIn(".go-extras{display:flex;flex-direction:row;flex-wrap:wrap;", css)
         # Production routes serve Gig Poster markup, not launcher/index.html.
         live = read("launcher/editions/gig-poster/index.html")
         self.assertIn('class="go-extras" role="group"', live)

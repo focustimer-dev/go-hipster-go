@@ -166,3 +166,6 @@ The Funk selection snaps to the grinning sprite and performs one diminishing 440
 
 ## Optional sleeve and deep-crate keys
 + Art and TRY HARD retain the shuffle-pin pressed-key primitive and 44px minimum targets. Small current-ink sleeve and crate-divider marks identify the options; inverse ink plus an underline confirms selection. The sleeve record eases outward and the dividers lift once across a 240ms state transition. No loops, sound, waiting, added dependencies or changed prompt behavior. Reduced motion keeps the static icon and explicit selected treatment. Hover titles provide optional sleeve/Deep Crate context without adding mobile copy.
+
+## Full-width GO and options below
+GO spans the working width, followed by a horizontal row of + Art and TRY HARD keys with a 12px gap. Each optional key keeps its 44px minimum height and gains a 96px minimum width; the row wraps for enlarged text. GO says Copy your prompt; mood, track count and enabled extras remain explicit in the receipt, and the accessible GO name still includes the mood. DOM and keyboard order follow GO, + Art, TRY HARD, then receipt. Sleeve/crate detail and reduced motion remain intact.

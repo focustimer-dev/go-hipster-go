@@ -633,10 +633,10 @@ body[data-page=launch] .hero-title .headline em{color:inherit;text-shadow:none}
 .mood[data-mood="funky"][aria-pressed="true"] .face{background-position:85% 0}
 
 /* Artwork uses the same pressed-button primitive as shuffle pins. */
-.go-options{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px;margin-bottom:20px}
+.go-options{display:grid;grid-template-columns:minmax(0,1fr);align-items:stretch;gap:12px;margin-bottom:20px}
 body[data-page=launch] .go-options .grind{margin:0}
-.go-extras{display:flex;flex-direction:column;align-items:stretch;gap:7px}
-.go-extras .cover-toggle{min-width:56px}
+.go-extras{display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;gap:12px}
+.go-extras .cover-toggle{min-width:96px}
 .cover-toggle{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;padding:7px 8px;border:1px solid var(--ink);background:transparent;color:var(--ink);font:inherit;cursor:pointer}
 .cover-toggle[aria-pressed=true]{background:var(--ink);color:var(--bone)}
 .cover-toggle:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
