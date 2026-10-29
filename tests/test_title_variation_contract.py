@@ -22,8 +22,8 @@ class TitleVariationContract(unittest.TestCase):
         ):
             text = read(path)
             self.assertIn("avoid **`pocket` in playlist titles by default**", text, path)
-            self.assertIn("Do not lift high-frequency mood/seed vocabulary", text, path)
-            self.assertIn("one quick internal title-only check", text, path)
+            self.assertIn("other seed words belong in musical notes", text, path)
+            self.assertIn("Check visible recent titles once", text, path)
             self.assertIn("no separate research, candidate generation or scoring", text, path)
 
     def test_manual_case_and_benchmark_title_are_updated(self):
