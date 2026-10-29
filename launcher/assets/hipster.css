@@ -641,3 +641,18 @@ body[data-page=launch] .go-options .grind{margin:0}
 .cover-toggle[aria-pressed=true]{background:var(--ink);color:var(--bone)}
 .cover-toggle:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 .cover-toggle:hover{outline:1px solid var(--ink);outline-offset:1px}
+
+/* Tiny sleeve / crate details: the existing pressed-key primitive, with ink feedback. */
+.go-extras .cover-toggle{gap:6px}
+.go-extras .extra-mark{flex:none;overflow:visible;stroke-linecap:round;stroke-linejoin:round}
+.go-options .go-extras .cover-toggle .extra-mark path{fill:none}
+.go-options .go-extras .cover-toggle .extra-mark .art-sleeve{fill:var(--paper)}
+.go-options .go-extras .cover-toggle[aria-pressed=true] .extra-mark .art-sleeve{fill:var(--ink)}
+.go-extras .art-record,.go-extras .crate-back,.go-extras .crate-front{transform-box:fill-box;transform-origin:center;transition:transform 240ms cubic-bezier(.16,1,.3,1)}
+.go-extras .cover-toggle[aria-pressed=true] .art-record{transform:translate(2px,-1px) rotate(24deg)}
+.go-extras .cover-toggle[aria-pressed=true] .crate-back{transform:translateY(-3px) rotate(-8deg)}
+.go-extras .cover-toggle[aria-pressed=true] .crate-front{transform:translateY(-1px) rotate(5deg)}
+.go-extras .cover-toggle[aria-pressed=true] span{text-decoration:underline;text-underline-offset:3px}
+@media(prefers-reduced-motion:reduce){
+ .go-extras .art-record,.go-extras .crate-back,.go-extras .crate-front{transition:none;transform:none!important}
+}

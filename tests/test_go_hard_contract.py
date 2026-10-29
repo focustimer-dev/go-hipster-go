@@ -54,7 +54,8 @@ class GoHardContract(unittest.TestCase):
         css = read("launcher/assets/hipster.css")
         self.assertRegex(html, r'id="goHard" aria-pressed="false"')
         self.assertIn('class="shuffle-pin cover-toggle" id="goHard"', html)
-        self.assertIn('title="Deep Crate Protocol">TRY HARD</button>', html)
+        self.assertIn('title="Deep Crate Protocol"', html)
+        self.assertIn('<span>TRY HARD</span></button>', html)
         self.assertIn('class="shuffle-pin cover-toggle" id="includeCover"', html)
         self.assertIn(".go-extras{display:flex;flex-direction:column;", css)
         # Production routes serve Gig Poster markup, not launcher/index.html.
@@ -62,7 +63,8 @@ class GoHardContract(unittest.TestCase):
         self.assertIn('class="go-extras" role="group"', live)
         self.assertIn('class="shuffle-pin cover-toggle" id="includeCover"', live)
         self.assertIn('class="shuffle-pin cover-toggle" id="goHard"', live)
-        self.assertIn('title="Deep Crate Protocol">TRY HARD</button>', live)
+        self.assertIn('title="Deep Crate Protocol"', live)
+        self.assertIn('<span>TRY HARD</span></button>', live)
 
     def test_user_requested_depth_is_bounded_and_verifiable(self):
         skill = read("SKILL.md")
