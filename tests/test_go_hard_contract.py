@@ -43,11 +43,33 @@ class GoHardContract(unittest.TestCase):
         self.assertIn("let goHard=false;", script)
         self.assertIn('+(goHard?" hard":"")', script)
         self.assertIn('if(goHard)parts.push("Curation mode: GO HARD.', script)
+        self.assertIn("Deep Crate Protocol.", script)
+        self.assertIn("Cover art: yes. Use the skill\\u0027s cover-art workflow.", script)
+        self.assertNotIn("multiple competing sequences, critical worst-handoff", script)
+        self.assertNotIn("Later reissue date", script)
         self.assertIn('goHard=params.get("hard")==="1"', script)
         self.assertIn('if(goHard)u.searchParams.set("hard","1");else u.searchParams.delete("hard");', script)
         self.assertIn("goHard=!goHard;copiedPrompt=null;renderLaunch();", script)
         self.assertIn('hard.setAttribute("aria-pressed",String(goHard))', script)
         self.assertIn('+(goHard?" · deep crate":"")', script)
+
+    def test_cover_art_policy_is_in_skill_distributions(self):
+        for path in ("SKILL.md", "skills/go-hipster-go/SKILL.md",
+                     "adapters/chatgpt/CHATGPT_KNOWLEDGE.md",
+                     "adapters/gemini/GEM_KNOWLEDGE.md",
+                     "adapters/gemini/references/workflow.md"):
+            link = ("https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/verification.md"
+                    if path == "adapters/gemini/references/workflow.md"
+                    else "references/verification.md")
+            self.assertIn("[the sleeve workflow](" + link + ")", read(path), path)
+        for path in ("references/verification.md",
+                     "skills/go-hipster-go/references/verification.md",
+                     "adapters/chatgpt/CHATGPT_KNOWLEDGE.md",
+                     "adapters/gemini/GEM_KNOWLEDGE.md"):
+            policy = read(path)
+            self.assertIn("## Optional cover art", policy, path)
+            self.assertIn("original release year and actual local scene", policy, path)
+            self.assertIn("Do not claim art was uploaded or applied", policy, path)
 
     def test_mobile_ui_reuses_existing_primitive(self):
         html = read("launcher/index.html")

@@ -63,7 +63,9 @@ Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation;
 
 ### Go Hard — optional Deep Crate Protocol
 
-Explicit `go hard`, `go funky hard`, or PWA `Curation mode: GO HARD` enables editorial depth, not a sound or tempo change. Default **OFF**: ordinary `go` keeps its fast one-pass path. After the normal writer preflight, load and follow [the Deep Crate Protocol](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/go-hard.md) before curation. Compose with mood, pace, regions, track count, service and art; publish only one final playlist. If the reference is inaccessible, disclose that limitation rather than claiming a deep pass.
+Explicit `go hard`, `go funky hard`, or PWA `Curation mode: GO HARD` enables editorial depth, not a sound or tempo change. Default **OFF**: ordinary `go` keeps its fast one-pass path. After the normal writer preflight, load and follow [the Deep Crate Protocol](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/go-hard.md) before curation. Compose with mood, pace, regions, track count, service and art; publish only one final playlist. If unavailable, do not claim a deep pass.
+
+**Optional art:** On `Cover art: yes`, follow [the sleeve workflow](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/verification.md) after GO.
 
 ## Fresh-crate discovery and repeat control
 

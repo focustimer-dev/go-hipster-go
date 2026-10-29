@@ -549,10 +549,9 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  await art.elements.includeCover.click();
  assert.equal(art.elements.prompt.textContent.match(/Seed: ([^\n]+)/)[1],seedBefore,'Artwork toggling preserves the current music brief');
  assert.equal(art.elements.openAi.attrs['aria-disabled'],'true','Cover change invalidates copied handoff');
- assert.match(art.elements.prompt.textContent,/verified original release year/);
- assert.match(art.elements.prompt.textContent,/exact playlist title/);
+ assert.match(art.elements.prompt.textContent,/Cover art: yes\. Use the skill's cover-art workflow\./);
+ assert.doesNotMatch(art.elements.prompt.textContent,/verified original release year|exact playlist title|music-service upload/,'Art policy stays in skill');
  await art.elements.goButton.click();assert.equal(artCopies.at(-1),art.elements.prompt.textContent);
- assert.match(artCopies.at(-1),/music-service upload/);
  await art.elements.includeCover.click();
  assert.doesNotMatch(art.elements.prompt.textContent,/Cover art:/);
  assert.equal(harness(async()=>{},'?cover=1').elements.includeCover.attrs['aria-pressed'],'true','Shared URL restores the option');
@@ -564,11 +563,14 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  await hardRun.elements.goHard.click();
  assert.equal(hardRun.elements.goHard.attrs['aria-pressed'],'true');
  assert.match(hardRun.elements.prompt.textContent,/go funky hard/);
- assert.match(hardRun.elements.prompt.textContent,/expanded verified candidate discovery/);
+ assert.match(hardRun.elements.prompt.textContent,/Curation mode: GO HARD\. Use the skill's Deep Crate Protocol\./);
+ assert.doesNotMatch(hardRun.elements.prompt.textContent,/expanded verified candidate discovery|multiple competing sequences|critical worst-handoff/);
+
  assert.equal(hardRun.elements.receiptCopy.textContent,'REQUEST DRAFT','Hard toggle invalidates previous clipboard stamp');
  assert.equal(hardRun.elements.openAi.attrs['aria-disabled'],'true','Hard toggle needs a fresh GO copy');
  await hardRun.elements.includeCover.click();
- assert.match(hardRun.elements.prompt.textContent,/Cover art:/,'Deep mode combines with cover art');
+ assert.match(hardRun.elements.prompt.textContent,/Cover art: yes\. Use the skill's cover-art workflow\./,'Deep mode combines with cover art');
+ assert.doesNotMatch(hardRun.elements.prompt.textContent,/printing techniques|verified original release year|generic regional stereotypes/,'Policy stays in skill, not prompt');
  await hardRun.elements.goButton.click();
  assert.equal(hardRun.elements.prompt.textContent,hardCopies.at(-1),'Hard receipt and copied prompt must match');
  assert.match(hardCopies.at(-1),/go funky hard/);

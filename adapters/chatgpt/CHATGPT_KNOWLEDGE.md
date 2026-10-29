@@ -2000,7 +2000,9 @@ Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation;
 
 ### Go Hard — optional Deep Crate Protocol
 
-Explicit `go hard`, `go funky hard`, or PWA `Curation mode: GO HARD` enables editorial depth, not a sound or tempo change. Default **OFF**: ordinary `go` keeps its fast one-pass path. After the normal writer preflight, load and follow [the Deep Crate Protocol](references/go-hard.md) before curation. Compose with mood, pace, regions, track count, service and art; publish only one final playlist. If the reference is inaccessible, disclose that limitation rather than claiming a deep pass.
+Explicit `go hard`, `go funky hard`, or PWA `Curation mode: GO HARD` enables editorial depth, not a sound or tempo change. Default **OFF**: ordinary `go` keeps its fast one-pass path. After the normal writer preflight, load and follow [the Deep Crate Protocol](references/go-hard.md) before curation. Compose with mood, pace, regions, track count, service and art; publish only one final playlist. If unavailable, do not claim a deep pass.
+
+**Optional art:** On `Cover art: yes`, follow [the sleeve workflow](references/verification.md) after GO.
 
 ## Fresh-crate discovery and repeat control
 
@@ -2686,5 +2688,9 @@ For each Criminal pick, require **song-specific** lyrics or credible song-level 
 ## After a service reports playlist creation
 
 Keep the original ordered selections intact for comparison. If a streaming app offers a returned item list or playlist read-back, line up entries by **position, artist, title, and requested version**; compare repeated tracks positionally rather than collapsing duplicates. State requested count, confirmed added count, exact matches, substitutions, omissions, and order changes **only to the extent supported by provider data**. A remix, live version, cover, or ambiguous title is not an exact match merely because it plays. If a provider returns only a playlist URL or acknowledgement, do **not** claim item-level matches; say the saved sequence still needs a check. Report unknown results as **unknown**, not missing or confirmed. Never silently substitute an alternate version; ask when the alternative materially affects the user's intent.
+
+## Optional cover art
+
+Only on `Cover art: yes` or an explicit sleeve request: **after** finishing the ordered playlist and title, generate **one square original album cover** that includes the **exact final playlist title**. Select a recording in the final crate as visual anchor; verify its **original release year and actual local scene** (not a reissue year). If evidence is incomplete, use an **explicitly approximate era or place** instead of inventing provenance. Reflect the *whole mix* symbolically using period/scene-aware typography, imagery and printing texture without copying an existing sleeve or leaning on cultural stereotypes. Use a host image tool if available; otherwise provide a ready-to-use image prompt. Briefly name the anchor track, year and place with any uncertainty. **Do not claim art was uploaded or applied** to a music service without its confirmation; generating an image does not save a cover. This optional workflow is skipped when not requested.
 
 # END SOURCE: references/verification.md

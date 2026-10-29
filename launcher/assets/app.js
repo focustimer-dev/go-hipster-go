@@ -114,13 +114,13 @@ function nextCrateSparkPhrase(){
 // The skill owns curation policy; GO sends only current creative inputs and service.
 function goPrompt(ai,service,mood){
  const parts=[goCommand(ai,service,mood)];
- if(goHard)parts.push("Curation mode: GO HARD. Use the skill\u0027s Deep Crate Protocol: expanded verified candidate discovery, supported musical fingerprints, multiple competing sequences, critical worst-handoff review and limited targeted revisions. Keep the requested track count and region, mood and tempo preferences.");
+ if(goHard)parts.push("Curation mode: GO HARD. Use the skill\u0027s Deep Crate Protocol.");
  if(crateSelected.size)parts.push(crateRegionPrompt());
  const brief=moodDiscoveryBrief(mood);if(brief)parts.push(brief.trim());
  if(tempo)parts.push("Tempo preference: "+tempoNames[tempo]+".");
  if(crateSparkPhrase)parts.push("Seed: "+crateSparkPhrase+".");
  parts.push("Service: "+serviceNames[service]+".");
- if(includeCover)parts.push("Cover art: After completing the playlist, generate one square album cover with the exact playlist title. Choose one selected song as the visual anchor: use its verified original release year and actual local scene, not a later reissue date. Interpret the whole playlist’s musical feeling symbolically through that place and era’s sleeve typography, imagery and printing techniques; make original artwork, not a copy of an existing cover or generic regional stereotypes. Briefly name the anchor song, year and place. If uncertain, disclose an approximate era rather than inventing provenance. If image generation is unavailable, provide a ready-to-use image prompt. Report cover generation separately from music-service upload; do not claim the cover was applied without confirmation.");
+ if(includeCover)parts.push("Cover art: yes. Use the skill\u0027s cover-art workflow.");
  return parts.join("\n");
 }
 
