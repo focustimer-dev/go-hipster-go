@@ -549,10 +549,9 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  await art.elements.includeCover.click();
  assert.equal(art.elements.prompt.textContent.match(/Seed: ([^\n]+)/)[1],seedBefore,'Artwork toggling preserves the current music brief');
  assert.equal(art.elements.openAi.attrs['aria-disabled'],'true','Cover change invalidates copied handoff');
- assert.match(art.elements.prompt.textContent,/verified original release year/);
- assert.match(art.elements.prompt.textContent,/exact playlist title/);
+ assert.match(art.elements.prompt.textContent,/Cover art: yes\. Use the skill's cover-art workflow\./);
+ assert.doesNotMatch(art.elements.prompt.textContent,/verified original release year|exact playlist title|music-service upload/,'Art policy stays in skill');
  await art.elements.goButton.click();assert.equal(artCopies.at(-1),art.elements.prompt.textContent);
- assert.match(artCopies.at(-1),/music-service upload/);
  await art.elements.includeCover.click();
  assert.doesNotMatch(art.elements.prompt.textContent,/Cover art:/);
  assert.equal(harness(async()=>{},'?cover=1').elements.includeCover.attrs['aria-pressed'],'true','Shared URL restores the option');
