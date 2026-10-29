@@ -51,6 +51,7 @@ class GoHardContract(unittest.TestCase):
         css = read("launcher/assets/hipster.css")
         self.assertRegex(html, r'id="goHard" aria-pressed="false"')
         self.assertIn('class="shuffle-pin cover-toggle" id="goHard"', html)
+        self.assertIn('title="Deep Crate Protocol">TRY HARD</button>', html)
         self.assertIn('class="shuffle-pin cover-toggle" id="includeCover"', html)
         self.assertIn(".go-extras{display:flex;flex-direction:column;", css)
 
