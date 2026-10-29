@@ -377,3 +377,8 @@ body.gig-poster:is([data-page=launch],[data-page=setup]) .mood[data-mood=funky] 
 body.gig-poster:is([data-page=launch],[data-page=setup]) .mood[data-mood=funky][aria-pressed=true] .face{animation:clerk-funky 440ms ease-out}
 @keyframes clerk-funky{0%,100%{transform:none}18%{transform:translateX(-3%) rotate(-2deg)}38%{transform:translateX(3%) rotate(2deg)}58%{transform:translateX(-2%) rotate(-1deg)}78%{transform:translateX(1%) rotate(.5deg)}}
 @media(prefers-reduced-motion:reduce){body.gig-poster:is([data-page=launch],[data-page=setup]) .mood[data-mood=funky] .face{animation:none;transition:none;transform:none}}
+
+@container (max-width:22rem){
+ body.gig-poster[data-page=launch] .go-options .go-button .go-copy{grid-template-columns:minmax(0,1fr);gap:4px}
+ body.gig-poster[data-page=launch] .go-options .go-button .go-copy>span:not(.go-stamp){text-align:left}
+}

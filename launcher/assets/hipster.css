@@ -635,7 +635,7 @@ body[data-page=launch] .hero-title .headline em{color:inherit;text-shadow:none}
 /* One print block: request options before the full-width copy action. */
 .go-options{display:grid;grid-template-columns:minmax(0,1fr);align-items:stretch;gap:0;margin-bottom:20px;border:1px solid var(--ink);border-radius:2px}
 body[data-page=launch] .go-options .grind{margin:0}
-.go-extras{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0}
+.go-extras{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;gap:0}
 .go-options .go-extras .cover-toggle{min-width:0;min-height:76px;width:100%;border:0;border-radius:0;padding:12px;gap:8px;background:transparent;color:var(--ink);justify-content:flex-start;text-align:left}
 .go-options .go-extras .cover-toggle+ .cover-toggle{border-left:1px solid var(--ink)}
 .go-options .option-copy{display:grid;gap:3px;min-width:0}
@@ -665,4 +665,10 @@ body[data-page=launch] .go-options .grind{margin:0}
 .go-extras .cover-toggle[aria-pressed=true] .option-label{text-decoration:underline;text-underline-offset:3px}
 @media(prefers-reduced-motion:reduce){
  .go-extras .art-record,.go-extras .crate-back,.go-extras .crate-front{transition:none;transform:none!important}
+}
+
+/* Keep the joined block readable on narrow screens and with enlarged text. */
+@container (max-width:22rem){
+ .go-options .go-extras{grid-template-columns:minmax(0,1fr)}
+ .go-options .go-extras .cover-toggle+ .cover-toggle{border-left:0;border-top:1px solid var(--ink)}
 }
