@@ -179,3 +179,9 @@ node scripts/smoke_live.mjs --expected-commit FULL_COMMIT_SHA
 The workflow installs the browser dependency only for the check; the PWA adds no runtime dependency. Offline mismatch tests run with the normal Python suite.
 
 The sixth mood, **The Funk**, sends `go funky` with independent tempo and regional choices. Its gig-poster portrait uses beaded braids, star sunglasses and a tall jumpsuit collar, with a grin on selection.
+
+## Optional playlist sleeve
+
+**Include cover art** sits beside GO (below it on phones), off by default. It adds an image request after playlist completion: choose one selected recording’s verified original year and local scene as the design anchor, interpret the whole set symbolically, and include the exact playlist title. Unknown provenance stays approximate; a reissue date is not the original year. The AI supplies a prompt if image generation is unavailable. Generating artwork does not confirm uploading it to the music service.
+
+The option appears in the receipt and shared URL (`cover=1`), changes invalidate the clipboard handoff, and toggling it preserves the current music seed. It is not saved as a lasting preference. The PWA itself generates no images and uploads no covers.
