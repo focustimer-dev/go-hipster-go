@@ -2002,7 +2002,7 @@ Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation;
 
 Explicit `go hard`, `go funky hard`, or PWA `Curation mode: GO HARD` enables editorial depth, not a sound or tempo change. Default **OFF**: ordinary `go` keeps its fast one-pass path. After the normal writer preflight, load and follow [the Deep Crate Protocol](references/go-hard.md) before curation. Compose with mood, pace, regions, track count, service and art; publish only one final playlist. If unavailable, do not claim a deep pass.
 
-**Optional art:** On `Cover art: yes`, follow [the sleeve workflow](references/verification.md#optional-cover-art) after curation.
+**Optional art:** On `Cover art: yes`, follow [the sleeve workflow](references/verification.md) after GO.
 
 ## Fresh-crate discovery and repeat control
 
@@ -2688,7 +2688,6 @@ For each Criminal pick, require **song-specific** lyrics or credible song-level 
 ## After a service reports playlist creation
 
 Keep the original ordered selections intact for comparison. If a streaming app offers a returned item list or playlist read-back, line up entries by **position, artist, title, and requested version**; compare repeated tracks positionally rather than collapsing duplicates. State requested count, confirmed added count, exact matches, substitutions, omissions, and order changes **only to the extent supported by provider data**. A remix, live version, cover, or ambiguous title is not an exact match merely because it plays. If a provider returns only a playlist URL or acknowledgement, do **not** claim item-level matches; say the saved sequence still needs a check. Report unknown results as **unknown**, not missing or confirmed. Never silently substitute an alternate version; ask when the alternative materially affects the user's intent.
-
 
 ## Optional cover art
 
