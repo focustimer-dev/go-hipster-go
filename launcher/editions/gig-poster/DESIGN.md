@@ -175,3 +175,6 @@ The approved order is now + Art and TRY HARD before GO, matching visual and keyb
 
 ## Continuous ink request block
 The entire request assembly now uses the same petrol ink ground and mustard lettering as GO. A single 1px mustard rule separates the options from GO; the option divider uses that same fine rule, including in the narrow stacked layout. Sleeve fill matches the ink ground. Selected indicator squares invert to mustard with an ink check; focus is mustard and hover underlines the label without breaking the continuous ink surface. Layout, descriptions, behavior and motion are unchanged. This supersedes the paper option surface in the joined-block notes.
+
+## Expressive option lettering
++ Art and TRY HARD use the established self-hosted Poster face at a responsive 22–40px scale, with tighter tracking and a restrained static print angle (−1.5° and +0.75°). A 6px label/description gap and 22px sleeve/crate marks balance the larger names. Descriptions, selection indicators and GO retain their roles. The ink surface, 1px mustard rules, native button semantics, narrow-screen stacking and existing behavior remain intact; no font dependency or animation is added.
