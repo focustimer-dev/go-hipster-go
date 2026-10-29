@@ -58,10 +58,18 @@ class GoHardContract(unittest.TestCase):
                      "adapters/chatgpt/CHATGPT_KNOWLEDGE.md",
                      "adapters/gemini/GEM_KNOWLEDGE.md",
                      "adapters/gemini/references/workflow.md"):
+            self.assertIn(
+                "[the sleeve workflow](references/verification.md#optional-cover-art)",
+                read(path), path
+            )
+        for path in ("references/verification.md",
+                     "skills/go-hipster-go/references/verification.md",
+                     "adapters/chatgpt/CHATGPT_KNOWLEDGE.md",
+                     "adapters/gemini/GEM_KNOWLEDGE.md"):
             policy = read(path)
-            self.assertIn("### Optional cover art — after curation", policy, path)
-            self.assertIn("verified original year and local scene", policy, path)
-            self.assertIn("never claim a cover was applied without provider confirmation", policy, path)
+            self.assertIn("## Optional cover art", policy, path)
+            self.assertIn("original release year and actual local scene", policy, path)
+            self.assertIn("Do not claim art was uploaded or applied", policy, path)
 
     def test_mobile_ui_reuses_existing_primitive(self):
         html = read("launcher/index.html")
