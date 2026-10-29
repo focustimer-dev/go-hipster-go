@@ -57,7 +57,7 @@ class GoHardContract(unittest.TestCase):
         self.assertIn('title="Deep Crate Protocol"', html)
         self.assertIn('<span class="option-label">TRY HARD</span>', html)
         self.assertIn('class="shuffle-pin cover-toggle" id="includeCover"', html)
-        self.assertIn(".go-extras{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;gap:0}", css)
+        self.assertIn(".go-extras{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;gap:0;", css)
         self.assertLess(html.index('id="includeCover"'), html.index('id="goButton"'))
         self.assertLess(html.index('id="goHard"'), html.index('id="goButton"'))
         self.assertIn('aria-describedby="hardOptionHelp"', html)
