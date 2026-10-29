@@ -1,0 +1,212 @@
+{
+  "version": 1,
+  "as_of": "2026-10-29",
+  "status": "source-backed manual curation proposals; neither Spotify playlist created, provider track availability unknown, no audio listened",
+  "methodology": "Same PWA-compatible brief; TRY HARD only changes curation-effort modifier, not inputs. Manual editorial illustration, NOT an independently executed two-agent blinded A/B.",
+  "pwa_brief": {
+    "first_line": "@go-hipster-go @Spotify go funky",
+    "regional_exploration": "West Africa, Northern Europe",
+    "mood_angle": "interlocking ensemble parts",
+    "tempo_preference": "Mid-tempo",
+    "seed": "offbeats pulling against the downbeat / a voice half hidden inside the ensemble / a spacious pocket with displaced accents",
+    "service": "Spotify",
+    "note": "PWA-equivalent: every value occurs in the current launcher selectable regions, mood angles, tempo options, and spark banks. This is an intentionally fixed valid draw, not an observed random GO press."
+  },
+  "prompts": {
+    "regular": "@go-hipster-go @Spotify go funky\nRegional exploration: West Africa, Northern Europe.\nMood angle: interlocking ensemble parts.\nTempo preference: Mid-tempo.\nSeed: offbeats pulling against the downbeat / a voice half hidden inside the ensemble / a spacious pocket with displaced accents.\nService: Spotify.",
+    "hard": "@go-hipster-go @Spotify go funky hard\nCuration mode: GO HARD. Use the skill's Deep Crate Protocol: expanded verified candidate discovery, supported musical fingerprints, multiple competing sequences, critical worst-handoff review and limited targeted revisions. Keep the requested track count and region, mood and tempo preferences.\nRegional exploration: West Africa, Northern Europe.\nMood angle: interlocking ensemble parts.\nTempo preference: Mid-tempo.\nSeed: offbeats pulling against the downbeat / a voice half hidden inside the ensemble / a spacious pocket with displaced accents.\nService: Spotify."
+  },
+  "tracks": {
+    "super-eagles": {
+      "artist": "Super Eagles",
+      "title": "Love's a Real Thing",
+      "region": "West Africa",
+      "source_url": "https://luakabop.bandcamp.com/album/world-psychedelic-classics-vol-3-love-s-a-real-thing-the-funky-fuzzy-sounds-of-west-africa",
+      "verified_scope": "artist-title listed at source; no Spotify catalog match, no independent listening"
+    },
+    "orchestre": {
+      "artist": "T.P. Orchestre Poly-Rythmo de Cotonou",
+      "title": "Minsato Le, Mi Dayihome",
+      "region": "West Africa",
+      "source_url": "https://luakabop.bandcamp.com/album/world-psychedelic-classics-vol-3-love-s-a-real-thing-the-funky-fuzzy-sounds-of-west-africa",
+      "verified_scope": "artist-title listed at source; no Spotify catalog match, no independent listening"
+    },
+    "moussa": {
+      "artist": "Moussa Doumbia",
+      "title": "Keleya",
+      "region": "West Africa",
+      "source_url": "https://luakabop.bandcamp.com/album/world-psychedelic-classics-vol-3-love-s-a-real-thing-the-funky-fuzzy-sounds-of-west-africa",
+      "verified_scope": "artist-title listed at source; no Spotify catalog match, no independent listening"
+    },
+    "gasper": {
+      "artist": "Gasper Lawal",
+      "title": "Awon-Ojise-Oluwa",
+      "region": "West Africa",
+      "source_url": "https://luakabop.bandcamp.com/album/world-psychedelic-classics-vol-3-love-s-a-real-thing-the-funky-fuzzy-sounds-of-west-africa",
+      "verified_scope": "artist-title listed at source; no Spotify catalog match, no independent listening"
+    },
+    "onyeabor": {
+      "artist": "William Onyeabor",
+      "title": "Better Change Your Mind",
+      "region": "West Africa",
+      "source_url": "https://luakabop.bandcamp.com/album/world-psychedelic-classics-vol-3-love-s-a-real-thing-the-funky-fuzzy-sounds-of-west-africa",
+      "verified_scope": "artist-title listed at source; no Spotify catalog match, no independent listening"
+    },
+    "kaveri": {
+      "artist": "Kaveri Special",
+      "title": "Taaksepäin",
+      "region": "Northern Europe",
+      "source_url": "https://kaverispecial.bandcamp.com/track/taaksep-in",
+      "verified_scope": "artist-title listed at source; no Spotify catalog match, no independent listening"
+    },
+    "tunji": {
+      "artist": "Tunji Oyelana & The Benders",
+      "title": "Ifa",
+      "region": "West Africa",
+      "source_url": "https://luakabop.bandcamp.com/album/world-psychedelic-classics-vol-3-love-s-a-real-thing-the-funky-fuzzy-sounds-of-west-africa",
+      "verified_scope": "artist-title listed at source; no Spotify catalog match, no independent listening"
+    },
+    "ebo": {
+      "artist": "Ebo Taylor",
+      "title": "What Is Life?",
+      "region": "West Africa",
+      "source_url": "https://ebotaylor.bandcamp.com/album/conflict",
+      "verified_scope": "artist-title listed at source; no Spotify catalog match, no independent listening"
+    },
+    "sven": {
+      "artist": "Sven Wunder",
+      "title": "Shinrinyoku",
+      "region": "Northern Europe",
+      "source_url": "https://svenwunder.bandcamp.com/album/wabi-sabi-7",
+      "verified_scope": "artist-title listed at source; no Spotify catalog match, no independent listening"
+    },
+    "ofo": {
+      "artist": "Ofo & The Black Company",
+      "title": "Allah Wakbarr",
+      "region": "West Africa",
+      "source_url": "https://luakabop.bandcamp.com/album/world-psychedelic-classics-vol-3-love-s-a-real-thing-the-funky-fuzzy-sounds-of-west-africa",
+      "verified_scope": "artist-title listed at source; no Spotify catalog match, no independent listening"
+    },
+    "jimi": {
+      "artist": "Jimi Tenor with Cold Diamond & Mink",
+      "title": "Orbiting Telesto",
+      "region": "Northern Europe",
+      "source_url": "https://jimitenor.bandcamp.com/album/orbiting-telesto?t=2",
+      "verified_scope": "artist-title listed at source; no Spotify catalog match, no independent listening"
+    },
+    "goat": {
+      "artist": "Goat",
+      "title": "Run To Your Mama",
+      "region": "Northern Europe",
+      "source_url": "https://goat.bandcamp.com/track/run-to-your-mama-5",
+      "verified_scope": "artist-title listed at source; no Spotify catalog match, no independent listening"
+    },
+    "monomono": {
+      "artist": "Monomono",
+      "title": "Tire Loma Da Nigbehin",
+      "region": "West Africa",
+      "source_url": "https://www.carbootsoul.com/products/various-nigeria-70-the-definitive-story-of-1970s-funky-lagos-uk-2xcd-2009-vg",
+      "verified_scope": "artist-title listed at source; no Spotify catalog match, no independent listening"
+    },
+    "blassics": {
+      "artist": "The Blassics",
+      "title": "Zanzibar",
+      "region": "Northern Europe",
+      "source_url": "https://oddfunkrecords.bandcamp.com/album/breaks-juicy-takes",
+      "verified_scope": "artist-title listed at source; no Spotify catalog match, no independent listening"
+    },
+    "sorry": {
+      "artist": "Sorry Bamba",
+      "title": "Porra",
+      "region": "West Africa",
+      "source_url": "https://luakabop.bandcamp.com/album/world-psychedelic-classics-vol-3-love-s-a-real-thing-the-funky-fuzzy-sounds-of-west-africa",
+      "verified_scope": "artist-title listed at source; no Spotify catalog match, no independent listening"
+    },
+    "maajo": {
+      "artist": "Maajo",
+      "title": "Soma",
+      "region": "Northern Europe",
+      "source_url": "https://maajo.bandcamp.com/album/kuru-kuru-2",
+      "verified_scope": "artist-title listed at source; no Spotify catalog match, no independent listening"
+    },
+    "sumu": {
+      "artist": "Sumuposauttaja Band",
+      "title": "Altered Landscape (feat. Ismaila Sané)",
+      "region": "Northern Europe",
+      "source_url": "https://sumuposauttaja.bandcamp.com/album/work-and-play",
+      "verified_scope": "artist-title listed at source; no Spotify catalog match, no independent listening"
+    },
+    "detective": {
+      "artist": "Detective Picnic and the Mystery Basket",
+      "title": "Caribbean Space Cowboy",
+      "region": "Northern Europe",
+      "source_url": "https://detectivepicnic.bandcamp.com/album/season-of-the-shrimp-dragon",
+      "verified_scope": "artist-title listed at source; no Spotify catalog match, no independent listening"
+    }
+  },
+  "regular": {
+    "title": "A Small Committee of Basslines",
+    "description": "A westward groove eventually wanders into Scandinavian electronics and discovers that the rhythm section has followed it.",
+    "ordered_keys": [
+      "super-eagles",
+      "orchestre",
+      "moussa",
+      "gasper",
+      "onyeabor",
+      "kaveri",
+      "tunji",
+      "ebo",
+      "sven",
+      "ofo",
+      "jimi",
+      "goat"
+    ]
+  },
+  "try_hard": {
+    "title": "The Pocket Has No Passport",
+    "description": "Guitar figures, elastic percussion and synthetic space trade the lead across West African bands and Nordic outliers; the handoffs matter more than the borders.",
+    "ordered_keys": [
+      "monomono",
+      "orchestre",
+      "kaveri",
+      "blassics",
+      "moussa",
+      "sorry",
+      "maajo",
+      "onyeabor",
+      "jimi",
+      "ebo",
+      "sumu",
+      "detective"
+    ]
+  },
+  "shared_anchor_keys": [
+    "orchestre",
+    "moussa",
+    "onyeabor",
+    "kaveri",
+    "ebo",
+    "jimi"
+  ],
+  "evaluation": {
+    "dimensions": [
+      "transition coherence",
+      "carryover identifiable",
+      "purposeful change",
+      "mood and pace fit",
+      "freshness",
+      "track availability and exact order"
+    ],
+    "listener_scores": null,
+    "blind_listening_performed": false,
+    "spotify_writer_available_in_this_chat": false,
+    "provider_saved_count": 0,
+    "provider_saved_count_is_confirmation": false
+  },
+  "limits": [
+    "Sources confirm track identities, not Spotify availability, measured tempo, intros/outros or heard transitions.",
+    "The tracks have not been listened to by the assistant. All transition ideas are explicitly hypotheses.",
+    "The proposed variant is manual; no 36-50 candidate process or independent fast-vs-deep execution is claimed.",
+    "At least one controlled, blinded listener pass is needed before comparing actual quality."
+  ]
+}

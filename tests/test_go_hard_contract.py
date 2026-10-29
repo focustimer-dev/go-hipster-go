@@ -27,11 +27,14 @@ class GoHardContract(unittest.TestCase):
     def test_deferred_depth_reference_is_bundled(self):
         reference = read("references/go-hard.md")
         self.assertEqual(reference, read("skills/go-hipster-go/references/go-hard.md"))
-        self.assertIn("36–50 distinct plausible recordings", reference)
+        self.assertIn("36–50 plausible recording leads", reference)
         self.assertIn("up to three distinct orders", reference)
         self.assertIn("one targeted bridge-track search", reference)
         self.assertIn("at most two targeted revision rounds", reference)
         self.assertIn("never pretend to have listened", reference)
+        self.assertIn("16–20 survivors", reference)
+        self.assertIn("one defensible carryover", reference)
+        self.assertIn("one purposeful change", reference)
         for path in ("adapters/chatgpt/CHATGPT_KNOWLEDGE.md", "adapters/gemini/GEM_KNOWLEDGE.md"):
             self.assertIn("# BEGIN SOURCE: references/go-hard.md", read(path))
 
@@ -59,7 +62,7 @@ class GoHardContract(unittest.TestCase):
         skill = read("SKILL.md")
         policy = read("references/go-hard.md")
         self.assertIn("the Deep Crate Protocol](references/go-hard.md)", skill)
-        self.assertIn("36–50 distinct plausible recordings", policy)
+        self.assertIn("36–50 plausible recording leads", policy)
         self.assertIn("up to three distinct orders", policy)
         self.assertIn("one targeted bridge-track search", policy)
         self.assertIn("never pretend to have listened", policy)

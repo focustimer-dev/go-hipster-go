@@ -73,7 +73,7 @@ export async function checkRelease(browser, baseURL, expectedCommit, sourceCache
       await page.addStyleTag({ content: `html { font-size: ${profile.textScale * 100}% !important; }` });
     }
   }
-  const mainTargets = '#goButton, #shuffleCrate, #pinMood, #pinPace, #pinRegions, #undoShuffle, [data-mood], [data-ai], [data-service]';
+  const mainTargets = '#goButton, #goHard, #includeCover, #shuffleCrate, #pinMood, #pinPace, #pinRegions, #undoShuffle, [data-mood], [data-ai], [data-service]';
   async function responseBytes(url) {
     const response = await context.request.get(url, { timeout: 15000 });
     assert.equal(response.status(), 200, `${url}: HTTP ${response.status()}`);
@@ -97,7 +97,7 @@ export async function checkRelease(browser, baseURL, expectedCommit, sourceCache
     await applyTextScale();
     await checkGeometry(page, `${profile.name}: Jukebox`, mainTargets);
     await checkAssets();
-    for (const selector of ['#goButton', '#shuffleCrate', '#pinMood', '#pinPace', '#pinRegions', '#tempoSlider', '[data-mood="angry"]', '[data-ai="gemini"]']) {
+    for (const selector of ['#goButton', '#goHard', '#includeCover', '#shuffleCrate', '#pinMood', '#pinPace', '#pinRegions', '#tempoSlider', '[data-mood="angry"]', '[data-ai="gemini"]']) {
       assert.ok(await page.locator(selector).isVisible(), `${selector}: control is not directly available`);
     }
     const anchorPositions = () => page.locator('#goButton, .receipt-heading').evaluateAll(nodes => nodes.map(el => el.getBoundingClientRect().top + window.scrollY));
@@ -130,6 +130,18 @@ export async function checkRelease(browser, baseURL, expectedCommit, sourceCache
     assert.equal(await page.evaluate(() => navigator.clipboard.readText()), await page.locator('#prompt').textContent(), 'Receipt and clipboard differ');
     assert.equal(await page.locator('#promptReceipt').getAttribute('data-copy-state'), 'copied');
     await checkGeometry(page, `${profile.name}: receipt`, mainTargets);
+    await page.locator('#goHard').click();
+    assert.equal(await page.locator('#goHard').getAttribute('aria-pressed'), 'true', 'TRY HARD must be pressed');
+    assert.match(await page.locator('#prompt').textContent(), /Curation mode: GO HARD/);
+    assert.equal(await page.locator('#receiptCopy').textContent(), 'REQUEST DRAFT', 'TRY HARD must invalidate old copy');
+    await page.locator('#goButton').click();
+    await page.waitForFunction(() => document.querySelector('#receiptCopy')?.textContent === 'COPIED TO CLIPBOARD');
+    assert.equal(await page.evaluate(() => navigator.clipboard.readText()), await page.locator('#prompt').textContent(), 'Hard receipt differs from clipboard');
+    await page.locator('#goHard').click();
+    assert.doesNotMatch(await page.locator('#prompt').textContent(), /Curation mode: GO HARD/);
+    assert.equal(await page.locator('#receiptCopy').textContent(), 'REQUEST DRAFT', 'Turning TRY HARD off invalidates old copy');
+    await checkGeometry(page, `${profile.name}: hard toggled`, mainTargets);
+
     await page.locator('#atlasNamedRegions > summary').click();
     await page.getByRole('button', { name: 'AFRICA', exact: true }).click();
     await page.getByRole('button', { name: 'North Africa', exact: true }).click();

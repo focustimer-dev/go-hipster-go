@@ -1,11 +1,6 @@
 name: Live release smoke
+# The Worker deploy is separate from GitHub pushes. Run after a confirmed deploy.
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'launcher/**'
-      - 'scripts/smoke_live.mjs'
-      - '.github/workflows/live-smoke.yml'
   workflow_dispatch:
     inputs:
       expected_commit:
