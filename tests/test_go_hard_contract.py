@@ -21,9 +21,19 @@ class GoHardContract(unittest.TestCase):
         ):
             content = read(path)
             self.assertIn("### Go Hard — optional Deep Crate Protocol", content)
-            self.assertIn("**Default OFF:**", content)
-            self.assertIn("**Publish once, honestly:**", content)
-            self.assertIn("at most two targeted revision rounds", content)
+            self.assertIn("Default **OFF**:", content)
+            self.assertIn("references/go-hard.md", content)
+
+    def test_deferred_depth_reference_is_bundled(self):
+        reference = read("references/go-hard.md")
+        self.assertEqual(reference, read("skills/go-hipster-go/references/go-hard.md"))
+        self.assertIn("36–50 distinct plausible recordings", reference)
+        self.assertIn("up to three distinct orders", reference)
+        self.assertIn("one targeted bridge-track search", reference)
+        self.assertIn("at most two targeted revision rounds", reference)
+        self.assertIn("never pretend to have listened", reference)
+        for path in ("adapters/chatgpt/CHATGPT_KNOWLEDGE.md", "adapters/gemini/GEM_KNOWLEDGE.md"):
+            self.assertIn("# BEGIN SOURCE: references/go-hard.md", read(path))
 
     def test_normal_go_path_is_conditional(self):
         script = read("launcher/assets/app.js")
@@ -46,11 +56,13 @@ class GoHardContract(unittest.TestCase):
 
     def test_user_requested_depth_is_bounded_and_verifiable(self):
         skill = read("SKILL.md")
-        self.assertIn("36–50 distinct plausible recordings", skill)
-        self.assertIn("up to three distinct orders", skill)
-        self.assertIn("one targeted bridge-track search", skill)
-        self.assertIn("never pretend to have listened", skill)
-        self.assertIn("Ordinary `go` and all other requests keep the existing fast", skill)
+        policy = read("references/go-hard.md")
+        self.assertIn("the Deep Crate Protocol](references/go-hard.md)", skill)
+        self.assertIn("36–50 distinct plausible recordings", policy)
+        self.assertIn("up to three distinct orders", policy)
+        self.assertIn("one targeted bridge-track search", policy)
+        self.assertIn("never pretend to have listened", policy)
+        self.assertIn("Ordinary `go` and all other requests keep the existing fast", policy)
 
 
 if __name__ == "__main__":
