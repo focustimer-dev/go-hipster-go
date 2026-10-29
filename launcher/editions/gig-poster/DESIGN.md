@@ -163,3 +163,6 @@ Weird now uses weird-curly.webp: the user-supplied curly-haired, thin-moustached
 Approved two-state petrol-ink portrait: beaded shoulder-length braids, star-shaped sunglasses, high stand-up jumpsuit collar and front zipper. Neutral half-smile becomes a broad grin on selection. The visible name is THE FUNK; the stable mood key and generated command are `funky` / `go funky`. Six columns on desktop, three by two below 600px.
 
 The Funk selection snaps to the grinning sprite and performs one diminishing 440ms horizontal shoulder shake. Only the portrait moves; the frame and label stay fixed. Reduced motion preserves the expression and selection without spatial animation.
+
+## Optional sleeve and deep-crate keys
++ Art and TRY HARD retain the shuffle-pin pressed-key primitive and 44px minimum targets. Small current-ink sleeve and crate-divider marks identify the options; inverse ink plus an underline confirms selection. The sleeve record eases outward and the dividers lift once across a 240ms state transition. No loops, sound, waiting, added dependencies or changed prompt behavior. Reduced motion keeps the static icon and explicit selected treatment. Hover titles provide optional sleeve/Deep Crate context without adding mobile copy.
