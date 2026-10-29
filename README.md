@@ -93,6 +93,7 @@ Modifiers shape the **sound**, not just a genre label. Combine moods, speeds and
 | `go sad` | Melancholy and yearning without compulsory ballads |
 | `go sad fast` | Cathartic music with some forward momentum |
 | `go weird slow` | Patient, hypnotic strangeness |
+| `go hard` / `go funky hard` | Opt in to deeper verified discovery, competing sequences, and critical transition edits; still 12 tracks by default |
 | `go short` / `go long` | 6 / 24 tracks |
 | `go fast 30` | 30 tracks with the requested energy |
 | `go, text only` | Curate without attempting a streaming write |
