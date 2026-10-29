@@ -76,11 +76,11 @@ body.gig-poster:is([data-page=launch],[data-page=setup]) .mood[aria-pressed=true
 body.gig-poster:is([data-page=launch],[data-page=setup]) .mood .word{font:400 clamp(.8125rem,2.8cqw,1.4rem)/1.2 Poster,sans-serif;letter-spacing:0;text-transform:capitalize;white-space:nowrap}
 body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-hint{font:400 .75rem/1.4 Arial,sans-serif;margin:6px 0 10px;min-height:1.4em;color:var(--ink)}
 body.gig-poster:is([data-page=launch],[data-page=setup]) .grind{margin:0;padding:0;background:none;box-shadow:none;border:0}
-body.gig-poster:is([data-page=launch],[data-page=setup]) .go-button{display:flex;align-items:center;gap:4%;width:100%;min-height:96px;border:0;border-radius:2px;padding:10px 3%;background:var(--ink);color:var(--paper);box-shadow:none}
-body.gig-poster:is([data-page=launch],[data-page=setup]) .go-button .star-glyph{width:16%;min-width:50px;max-width:130px;filter:brightness(1.6) saturate(.8)}
-body.gig-poster:is([data-page=launch],[data-page=setup]) .go-copy{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:8%;width:100%}
-body.gig-poster:is([data-page=launch],[data-page=setup]) .go-button .go-copy b{font:400 clamp(3.6rem,15cqw,8.5rem)/1 Poster,sans-serif;color:var(--paper);text-shadow:none;letter-spacing:0}
-body.gig-poster:is([data-page=launch],[data-page=setup]) .go-button .go-copy>span:not(.go-stamp){font:400 clamp(.9rem,3.2cqw,1.8rem)/1.25 Poster,sans-serif;color:var(--paper);max-width:none;letter-spacing:.01em}
+body.gig-poster:is([data-page=launch],[data-page=setup]) .go-button{display:flex;align-items:center;gap:4%;width:100%;min-height:96px;border:0;border-radius:0;padding:10px 3%;background:var(--ink);color:var(--paper);box-shadow:none}
+body.gig-poster:is([data-page=launch],[data-page=setup]) .go-button .star-glyph{width:10%;min-width:44px;max-width:80px;filter:brightness(1.6) saturate(.8)}
+body.gig-poster:is([data-page=launch],[data-page=setup]) .go-copy{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:24px;width:100%;min-width:0}
+body.gig-poster:is([data-page=launch],[data-page=setup]) .go-button .go-copy b{font:400 clamp(3.6rem,12cqw,6rem)/1 Poster,sans-serif;color:var(--paper);text-shadow:none;letter-spacing:0}
+body.gig-poster:is([data-page=launch],[data-page=setup]) .go-button .go-copy>span:not(.go-stamp){font:400 clamp(.9rem,3.2cqw,1.25rem)/1.25 Poster,sans-serif;color:var(--paper);max-width:none;text-align:right;letter-spacing:.01em}
 body.gig-poster:is([data-page=launch],[data-page=setup]) .go-button .go-stamp{font-family:Poster,sans-serif;background:var(--paper);color:var(--ink);border-color:var(--paper);font-size:clamp(1.2rem,4.8cqw,2.6rem)}
 body.gig-poster:is([data-page=launch],[data-page=setup]) .go-button:active,body.gig-poster:is([data-page=launch],[data-page=setup]) .go-button[data-copy-state=copying]{transform:translateY(2px);box-shadow:inset 0 2px 0 #0005}
 body.gig-poster .poster-instructions{font:700 .75rem/1.4 'Courier New',monospace;text-align:center;margin:8px 0 10px}

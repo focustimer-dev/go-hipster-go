@@ -55,16 +55,20 @@ class GoHardContract(unittest.TestCase):
         self.assertRegex(html, r'id="goHard" aria-pressed="false"')
         self.assertIn('class="shuffle-pin cover-toggle" id="goHard"', html)
         self.assertIn('title="Deep Crate Protocol"', html)
-        self.assertIn('<span>TRY HARD</span></button>', html)
+        self.assertIn('<span class="option-label">TRY HARD</span>', html)
         self.assertIn('class="shuffle-pin cover-toggle" id="includeCover"', html)
-        self.assertIn(".go-extras{display:flex;flex-direction:row;flex-wrap:wrap;", css)
+        self.assertIn(".go-extras{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0}", css)
+        self.assertLess(html.index('id="includeCover"'), html.index('id="goButton"'))
+        self.assertLess(html.index('id="goHard"'), html.index('id="goButton"'))
+        self.assertIn('aria-describedby="hardOptionHelp"', html)
+        self.assertIn("Deeper research &amp; sequencing", html)
         # Production routes serve Gig Poster markup, not launcher/index.html.
         live = read("launcher/editions/gig-poster/index.html")
         self.assertIn('class="go-extras" role="group"', live)
         self.assertIn('class="shuffle-pin cover-toggle" id="includeCover"', live)
         self.assertIn('class="shuffle-pin cover-toggle" id="goHard"', live)
         self.assertIn('title="Deep Crate Protocol"', live)
-        self.assertIn('<span>TRY HARD</span></button>', live)
+        self.assertIn('<span class="option-label">TRY HARD</span>', live)
 
     def test_user_requested_depth_is_bounded_and_verifiable(self):
         skill = read("SKILL.md")

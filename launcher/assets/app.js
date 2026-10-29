@@ -473,7 +473,7 @@ const undoShuffle=doc.getElementById("undoShuffle");if(undoShuffle)undoShuffle.a
 const hardOption=doc.getElementById("goHard");
 if(hardOption)hardOption.addEventListener("click",()=>{
  goHard=!goHard;copiedPrompt=null;renderLaunch();
- status("Deep Crate "+(goHard?"enabled":"disabled")+". Press GO to copy the updated request.");
+ status("Deeper research and sequencing "+(goHard?"enabled":"disabled")+". Press GO to copy the updated request.");
 });
 const coverOption=doc.getElementById("includeCover");
 if(coverOption)coverOption.addEventListener("click",()=>{
