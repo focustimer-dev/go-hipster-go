@@ -10,6 +10,7 @@ const geminiIntent="intent://gemini.google.com/app#Intent;scheme=https;package=c
 let copiedPrompt=null;
 let previousShuffle=null;
 let printImpression=0;
+let includeCover=false;
 const shufflePins={mood:false,pace:false,regions:false};
 const tempoNames={slow:"Slow",relaxed:"Relaxed",moderate:"Mid-tempo",brisk:"Brisk",fast:"Fast"};
 const tempoSteps=Object.keys(tempoNames);
@@ -117,6 +118,7 @@ function goPrompt(ai,service,mood){
  if(tempo)parts.push("Tempo preference: "+tempoNames[tempo]+".");
  if(crateSparkPhrase)parts.push("Seed: "+crateSparkPhrase+".");
  parts.push("Service: "+serviceNames[service]+".");
+ if(includeCover)parts.push("Cover art: After completing the playlist, generate one square album cover with the exact playlist title. Choose one selected song as the visual anchor: use its verified original release year and actual local scene, not a later reissue date. Interpret the whole playlist’s musical feeling symbolically through that place and era’s sleeve typography, imagery and printing techniques; make original artwork, not a copy of an existing cover or generic regional stereotypes. Briefly name the anchor song, year and place. If uncertain, disclose an approximate era rather than inventing provenance. If image generation is unavailable, provide a ready-to-use image prompt. Report cover generation separately from music-service upload; do not claim the cover was applied without confirmation.");
  return parts.join("\n");
 }
 
@@ -264,6 +266,7 @@ function updateCrateMap(){
  copiedPrompt=null;selectionChanged();
 }
 const params=new URLSearchParams(location.search);
+includeCover=params.get("cover")==="1";
 const isLegacyGemini=location.pathname.startsWith("/gemini/");
 let ai=(params.get("ai")||(isLegacyGemini?"gemini":stored("hmg-ai"))||"chatgpt").toLowerCase();
 if(!defaultService[ai])ai="chatgpt";
@@ -359,9 +362,10 @@ function renderLaunch(){
  e.mood.textContent=moodLabel(mood).toUpperCase();
  e.code.textContent=(ai==="chatgpt"?"CG":ai==="gemini"?"GM":"CL")+"-"+mood.slice(0,3).toUpperCase()+"-01";
  e.open.href=ai==="gemini"?geminiIntent:destinations[ai];e.open.textContent="↗ OPEN "+aiNames[ai].toUpperCase();
- const summary=doc.getElementById("receiptSummary");if(summary)summary.textContent=aiNames[ai]+" · "+serviceNames[service]+" · "+moodLabel(mood)+(tempo?" · "+tempoNames[tempo]:"")+" · 12 tracks";
+ const summary=doc.getElementById("receiptSummary");if(summary)summary.textContent=aiNames[ai]+" · "+serviceNames[service]+" · "+moodLabel(mood)+(tempo?" · "+tempoNames[tempo]:"")+" · 12 tracks"+(includeCover?" · cover art":"");
  const regions=doc.getElementById("receiptRegions");if(regions)regions.textContent="CRATES / "+(crateSelected.size?crateRegions.filter(r=>crateSelected.has(r.id)).map(r=>r.label).join(" · "):"Worldwide");
- const hint=doc.getElementById("goHint");if(hint)hint.textContent="Copy "+(mood==="go"?"surprise":moodLabel(mood))+" prompt · 12 tracks";
+ const cover=doc.getElementById("includeCover");if(cover)cover.checked=includeCover;
+ const hint=doc.getElementById("goHint");if(hint)hint.textContent="Copy "+(mood==="go"?"surprise":moodLabel(mood))+" prompt · 12 tracks"+(includeCover?" + cover":"");
  const goButton=doc.getElementById("goButton");if(goButton)goButton.setAttribute("aria-label","GO! Copy "+(mood==="go"?"surprise":moodLabel(mood))+" playlist prompt");
  const manual=doc.getElementById("manualOpenAi");if(manual){manual.href=destinations[ai];manual.textContent="I COPIED IT MANUALLY — OPEN "+aiNames[ai].toUpperCase()}
  updateHandoff();
@@ -369,6 +373,7 @@ function renderLaunch(){
  const u=new URL(location.href);u.searchParams.set("ai",ai);u.searchParams.set("service",service);
  if(mood==="go")u.searchParams.delete("mood");else u.searchParams.set("mood",mood);
  if(tempo)u.searchParams.set("tempo",tempo);else u.searchParams.delete("tempo");
+ if(includeCover)u.searchParams.set("cover","1");else u.searchParams.delete("cover");
  u.searchParams.delete("mode");
  history.replaceState(null,"",u.pathname+u.search);
 }
@@ -459,6 +464,11 @@ const undoShuffle=doc.getElementById("undoShuffle");if(undoShuffle)undoShuffle.a
  store(crateStorageKey,JSON.stringify([...crateSelected]));render();animateAtlasView(atlasFocus);
  const result=doc.getElementById("shuffleResult");if(result)result.textContent="Previous brief restored.";
  shuffle?.focus();status("Shuffle undone. Press GO to copy the restored brief.");
+});
+const coverOption=doc.getElementById("includeCover");
+if(coverOption)coverOption.addEventListener("change",()=>{
+ includeCover=coverOption.checked;copiedPrompt=null;renderLaunch();
+ status("Cover art "+(includeCover?"included":"removed")+". Press GO to copy the updated request.");
 });
 async function copyGo(){
  const button=doc.getElementById("goButton");
