@@ -33,7 +33,7 @@ Service: Spotify.
 12. [Goat — Run To Your Mama](https://goat.bandcamp.com/track/run-to-your-mama-5) — Northern Europe
 
 
-## Playlist B — Missed the One on Purpose
+## Playlist B — Offbeat Correspondence — West African & Nordic Funk
 
 1. [Monomono — Tire Loma Da Nigbehin](https://www.carbootsoul.com/products/various-nigeria-70-the-definitive-story-of-1970s-funky-lagos-uk-2xcd-2009-vg) — West Africa
 2. [T.P. Orchestre Poly-Rythmo de Cotonou — Minsato Le, Mi Dayihome](https://luakabop.bandcamp.com/album/world-psychedelic-classics-vol-3-love-s-a-real-thing-the-funky-fuzzy-sounds-of-west-africa) — West Africa
