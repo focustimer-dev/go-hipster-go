@@ -2002,6 +2002,10 @@ Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation;
 
 Explicit `go hard`, `go funky hard`, or PWA `Curation mode: GO HARD` enables editorial depth, not a sound or tempo change. Default **OFF**: ordinary `go` keeps its fast one-pass path. After the normal writer preflight, load and follow [the Deep Crate Protocol](references/go-hard.md) before curation. Compose with mood, pace, regions, track count, service and art; publish only one final playlist. If the reference is inaccessible, disclose that limitation rather than claiming a deep pass.
 
+### Optional cover art — after curation
+
+`Cover art: yes` opts into **one square original album sleeve** with the **exact final playlist title**, after the music is curated. Anchor its design to a selected recording's **verified original year and local scene**, never a reissue date; if uncertain, identify an approximate era rather than invent provenance. Express the mix symbolically through scene/period typography, imagery and print texture, without copying existing covers or cultural stereotypes. Generate using an available image tool, or supply a ready-to-use image prompt. Briefly name the anchor recording, year and place (or uncertainty). **Art generation is not a service upload**: never claim a cover was applied without provider confirmation. Skip when not requested.
+
 ## Fresh-crate discovery and repeat control
 
 **Lean Jukebox contract:** The normal copied request is a compact invocation plus run-specific selections: mood, optional region list, optional mood angle, optional tempo, one optional `Seed:` and destination service. Default to 12 tracks when no count is supplied; honor an explicit count. `go` retains its ordinary curate-and-attempt-publication meaning. The installed skill owns verification, recording quality, geography, mood interpretation, sequencing, personality, provider capability checks and honest publication reporting even when the prompt repeats none of those rules. Do not ask the listener to paste the longer policy back in.
