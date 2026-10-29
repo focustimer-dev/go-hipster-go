@@ -369,7 +369,7 @@ function renderLaunch(){
  const regions=doc.getElementById("receiptRegions");if(regions)regions.textContent="CRATES / "+(crateSelected.size?crateRegions.filter(r=>crateSelected.has(r.id)).map(r=>r.label).join(" · "):"Worldwide");
  const cover=doc.getElementById("includeCover");if(cover)cover.setAttribute("aria-pressed",String(includeCover));
  const hard=doc.getElementById("goHard");if(hard)hard.setAttribute("aria-pressed",String(goHard));
- const hint=doc.getElementById("goHint");if(hint)hint.textContent="Copy "+(mood==="go"?"surprise":moodLabel(mood))+" prompt · 12 tracks"+(includeCover?" + cover":"")+(goHard?" + hard":"");
+ const hint=doc.getElementById("goHint");if(hint)hint.textContent="Copy your prompt";
  const goButton=doc.getElementById("goButton");if(goButton)goButton.setAttribute("aria-label","GO! Copy "+(mood==="go"?"surprise":moodLabel(mood))+" playlist prompt");
  const manual=doc.getElementById("manualOpenAi");if(manual){manual.href=destinations[ai];manual.textContent="I COPIED IT MANUALLY — OPEN "+aiNames[ai].toUpperCase()}
  updateHandoff();
