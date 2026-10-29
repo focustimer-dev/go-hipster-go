@@ -631,3 +631,13 @@ body[data-page=launch] .hero-title .headline em{color:inherit;text-shadow:none}
 
 .mood[data-mood="funky"] .face{background-image:url('/editions/gig-poster/assets/the-funk.webp');background-size:auto 100%;background-position:15% 0}
 .mood[data-mood="funky"][aria-pressed="true"] .face{background-position:85% 0}
+
+/* Optional artwork travels with the same copy/paste handoff. */
+.go-options{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,220px);align-items:center;gap:18px;margin-bottom:20px}
+body[data-page=launch] .go-options .grind{margin:0}
+.cover-option{color:var(--ink);min-width:0}
+.cover-option label{display:flex;align-items:center;gap:10px;min-height:44px;font-weight:700;cursor:pointer;line-height:1.35}
+.cover-option input{width:22px;height:22px;flex-shrink:0;accent-color:var(--ink);cursor:pointer}
+.cover-option input:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+.cover-option p{margin:0 0 0 32px;font-size:.8125rem;line-height:1.5}
+@media(max-width:600px){.go-options{grid-template-columns:minmax(0,1fr);gap:12px}.cover-option p{max-width:48ch}}
