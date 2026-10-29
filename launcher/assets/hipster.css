@@ -673,3 +673,6 @@ body[data-page=launch] .go-options .grind{margin:0}
  .go-options .go-extras{grid-template-columns:minmax(0,1fr)}
  .go-options .go-extras .cover-toggle+ .cover-toggle{border-left:0;border-top:1px solid var(--paper)}
 }
+
+/* Keep request option names consistent with the poster controls. */
+.go-options .option-label{text-transform:uppercase}
