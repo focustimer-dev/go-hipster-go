@@ -21,10 +21,10 @@ class TitleVariationContract(unittest.TestCase):
             "adapters/gemini/references/workflow.md",
         ):
             text = read(path)
-            self.assertIn("avoid **`pocket` in playlist titles by default**", text, path)
+            self.assertIn("**Avoid `pocket` in playlist titles by default**", text, path)
             self.assertIn("other seed words belong in musical notes", text, path)
             self.assertIn("Check visible recent titles once", text, path)
-            self.assertIn("no separate research, candidate generation or scoring", text, path)
+            self.assertIn("No extra research, candidate generation or scoring.", text, path)
 
     def test_manual_case_and_benchmark_title_are_updated(self):
         docs = read("tests/discovery-cases.md")
