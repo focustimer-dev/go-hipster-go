@@ -40,7 +40,7 @@ Service: Spotify.
 3. [Kaveri Special — Taaksepäin](https://kaverispecial.bandcamp.com/track/taaksep-in) — Northern Europe
 4. [The Blassics — Zanzibar](https://oddfunkrecords.bandcamp.com/album/breaks-juicy-takes) — Northern Europe
 5. [Moussa Doumbia — Keleya](https://luakabop.bandcamp.com/album/world-psychedelic-classics-vol-3-love-s-a-real-thing-the-funky-fuzzy-sounds-of-west-africa) — West Africa
-6. [Sorry Bamba — Porry](https://luakabop.bandcamp.com/album/world-psychedelic-classics-vol-3-love-s-a-real-thing-the-funky-fuzzy-sounds-of-west-africa) — West Africa
+6. [Sorry Bamba — Porra](https://luakabop.bandcamp.com/album/world-psychedelic-classics-vol-3-love-s-a-real-thing-the-funky-fuzzy-sounds-of-west-africa) — West Africa
 7. [Maajo — Soma](https://maajo.bandcamp.com/album/kuru-kuru-2) — Northern Europe
 8. [William Onyeabor — Better Change Your Mind](https://luakabop.bandcamp.com/album/world-psychedelic-classics-vol-3-love-s-a-real-thing-the-funky-fuzzy-sounds-of-west-africa) — West Africa
 9. [Jimi Tenor with Cold Diamond & Mink — Orbiting Telesto](https://jimitenor.bandcamp.com/album/orbiting-telesto?t=2) — Northern Europe
