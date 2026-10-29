@@ -428,6 +428,7 @@
       </div>
       <div class="shuffle-feedback"><div class="shuffle-message"><span class="shuffle-reserve" aria-hidden="true"><span>Pin choices to keep them. Shuffle changes the rest.</span><span>All choices pinned. Unpin one to shuffle.</span><span>Shuffled mood, pace, regions.</span><span>Shuffled mood, pace. Kept regions.</span><span>Shuffled mood, regions. Kept pace.</span><span>Shuffled pace, regions. Kept mood.</span><span>Shuffled mood. Kept pace and regions.</span><span>Shuffled pace. Kept mood and regions.</span><span>Shuffled regions. Kept mood and pace.</span></span><p id="shuffleHelp">Pin choices to keep them. Shuffle changes the rest.</p><p id="shuffleResult" role="status" aria-live="polite"></p></div><button type="button" id="undoShuffle" aria-label="Undo shuffle" hidden>UNDO</button></div>
     </section>
+    <div class="go-options">
     <div class="grind">
       <button type="button" class="go-button" id="goButton" aria-label="GO! Copy a surprise playlist prompt">
         <svg class="star-glyph" viewBox="0 0 1024 1024" aria-hidden="true" focusable="false">
@@ -504,6 +505,12 @@
       </button>
     </div>
 
+
+    <div class="cover-option">
+      <label for="includeCover"><input type="checkbox" id="includeCover" aria-describedby="coverHelp"><span>Include cover art</span></label>
+      <p id="coverHelp">A sleeve inspired by one song’s year and place, with your playlist title. Adds image generation in your AI.</p>
+    </div>
+    </div>
 
     <h2 class="counter-heading receipt-heading">YOUR MIXTAPE RECEIPT</h2>
     <section class="receipt" id="promptReceipt" data-copy-state="idle" aria-label="Prompt to send to your AI">
