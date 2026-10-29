@@ -1,5 +1,10 @@
 ## The helpful clerk: PWA flow and voice
 
+## Unreleased — reuse existing musical observations for sequencing
+
+- Reuse source-supported track hooks to review neighboring handoffs once, including intentional contrasts. Do not add audio analysis, BPM/key/meter inference, extra research calls, or invented intro/outro claims. Keep portable knowledge bundles and regression scenarios aligned.
+- Apply the listener's “stairs, not cliffs” rule: prioritize the most disruptive adjacent jump, avoid simply relocating it, and preserve well-supported surprises. Add the reported *Dripping Sun* → *The Coffee Cola Song* handoff as a manual fixed-recordings regression, not a new audio-analysis pass.
+
 ## Unreleased — audible seed generation
 
 - Replace decorative settings and genre-heavy mood imagery with independently rotating rhythm, texture and musical tension pools.
