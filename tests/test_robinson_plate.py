@@ -35,10 +35,28 @@ class RobinsonPlateTests(unittest.TestCase):
         self.assertIn('class="chart-compass"', FRAME)
         self.assertEqual(PAGE.count('class="chart-compass"'), 1)
         self.assertIn(FRAME.strip(), PAGE)
-        self.assertRegex(PAGE, r'</g></svg><svg class="chart-viewport-frame"')
+        self.assertRegex(PAGE, r'</g></svg><div class="chart-viewport-frame"')
         self.assertIn('.chart-viewport-frame{position:absolute', CSS)
         self.assertIn('pointer-events:none;z-index:2;transform:none!important', CSS)
         self.assertIn('id="crateAtlasMap"', PAGE)
+        self.assertIn('class="chart-compass-fixed"', FRAME)
+        self.assertIn('viewBox="-65 -65 130 130"', FRAME)
+        self.assertNotIn('transform="translate(59 228)"', FRAME)
+        self.assertIn('inset:auto auto 12% 3%', CSS)
+        self.assertIn('stroke:none!important;fill:var(--ink)', CSS)
+
+    def test_nautical_routes_and_scaled_engraved_figures(self):
+        self.assertIn('class="chart-nautical-routes"', FURNITURE)
+        self.assertIn('class="chart-nautical-routes"', PAGE)
+        self.assertIn('clip-path="url(#robinsonWorldClip)"', PAGE)
+        self.assertNotIn('class="chart-rhumbs"', FURNITURE)
+        self.assertEqual(FURNITURE.count('<svg x='), 3)
+        import re
+        sizes = [int(n) for n in re.findall(r'<svg x="[^"]+" y="[^"]+" width="(\d+)"', FURNITURE)]
+        self.assertEqual(len(sizes), 3)
+        self.assertTrue(all(size <= 26 for size in sizes))
+        self.assertIn('stroke:#946a36', CSS)
+
 
     def test_css_edition_key_matches(self):
         digest=hashlib.sha256((BASE/"edition.css").read_bytes()).hexdigest()[:12]

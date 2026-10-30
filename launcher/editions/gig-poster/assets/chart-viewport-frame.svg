@@ -1,4 +1,4 @@
-<svg class="chart-viewport-frame" viewBox="0 0 720 372" preserveAspectRatio="none" aria-hidden="true" focusable="false"><g class="chart-compass" transform="translate(59 228)" aria-hidden="true">
+<div class="chart-viewport-frame" aria-hidden="true"><svg class="chart-compass-fixed" viewBox="-65 -65 130 130" preserveAspectRatio="xMidYMid meet" role="presentation" focusable="false"><g class="chart-compass" aria-hidden="true">
 <circle class="chart-rose-field" r="52"/>
 <circle class="chart-rose-ring" r="50"/>
 <circle class="chart-rose-ring" r="47"/>
@@ -14,4 +14,4 @@
 <circle class="chart-rose-hub" r="2.8"/>
 <path class="chart-rose-crown" d="M0 -53L-2 -49L0 -46L2 -49Z"/>
 <g class="chart-rose-letters"><text x="0" y="-56">N</text><text x="55" y="3">E</text><text x="0" y="61">S</text><text x="-55" y="3">W</text></g>
-</g></svg>
+</g></svg></div>

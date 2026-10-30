@@ -119,8 +119,8 @@ def render_robinson(svg):
         raise ValueError("Source ocean rectangle not found")
     svg = svg.replace(old_ocean, ocean, 1)
     # All country paths, the graticule and ships are clipped as a single plate.
-    old_end = '</svg><svg class="chart-viewport-frame"'
+    old_end = '</svg><div class="chart-viewport-frame"'
     if old_end not in svg:
         raise ValueError("Fixed overlay must follow the moving SVG")
-    svg = svg.replace(old_end, '</g></svg><svg class="chart-viewport-frame"', 1)
+    svg = svg.replace(old_end, '</g></svg><div class="chart-viewport-frame"', 1)
     return svg
