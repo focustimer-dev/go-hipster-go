@@ -2,6 +2,7 @@
 from pathlib import Path
 import re
 import hashlib
+from robinson_atlas import render_robinson
 ROOT=Path(__file__).resolve().parents[1]
 s=(ROOT/'launcher/index.html').read_text()
 s=s.replace('<body data-page="launch">','<body data-page="launch" class="gig-poster">')
@@ -42,6 +43,7 @@ s=s.replace('Start your search here. No regional quotas; blank means worldwide. 
 s=s.replace('Choose a mood, then press GO to copy your prompt.', 'Pick a mood, or press GO for a surprise.')
 s=re.sub(r'<p class="footnote">The AI and music apps.*?</p>', '<p class="footnote">Select the skill and music app in your AI. Playlist saving happens there. <a href="/setup/">Setup instructions →</a></p>', s, count=1)
 # Two-spot-color halftone from the guide's screenprint/gig-poster language.
+s=s.replace('<pattern id="atlasHatch"', '<pattern id="posterLandEngraving" width="5" height="5" patternUnits="userSpaceOnUse"><rect width="5" height="5" fill="#dfb045"/><path d="M-1 5L5 -1 M3 7L7 3" stroke="#103135" stroke-opacity=".55" stroke-width=".62"/></pattern>\n              <pattern id="atlasHatch"',1)
 s=s.replace('<pattern id="atlasHatch"', '<pattern id="posterSelectedHalftone" width="7" height="7" patternUnits="userSpaceOnUse"><rect width="7" height="7" fill="#d64b30"/><path d="M-2 2L2-2M0 7L7 0M5 9L9 5" stroke="#103135" stroke-width="1.3"/></pattern>\n              <pattern id="atlasHatch"')
 s=s.replace('href="/setup/"','href="/editions/gig-poster/setup/"')
 # v18 engraved chart and fixed navigation-independent frame.
@@ -49,6 +51,15 @@ art=ROOT/'launcher/editions/gig-poster/assets'
 s=s.replace('            <g class="crate-map-countries">', (art/'chart-map-furniture.svg').read_text()+'\n            <g class="crate-map-countries">',1)
 s=s.replace('          </svg>\n          <span class="crate-map-seal"', '          </svg>'+ (art/'chart-viewport-frame.svg').read_text()+'\n          <span class="crate-map-seal"',1)
 s=s.replace('<body data-page="launch" class="gig-poster">','<body data-page="launch" class="gig-poster">'+(art/'poster-engraving-filter.svg').read_text(),1)
+# Move the one interactive cast of mood portraits above the atlas, not a duplicate.
+mood_start=s.index('    <h2 class="counter-label">WHAT’S THE VIBE?</h2>')
+mood_end=s.index('    <section class="crate-shuffle"', mood_start)
+mood_strip=s[mood_start:mood_end]
+s=s[:mood_start]+s[mood_end:]
+s=s.replace('    <details class="crate-geo" id="crateGeo" open>',mood_strip+'    <details class="crate-geo" id="crateGeo" open>',1)
+# Reproject all interactive country paths, preserving their country/region IDs.
+s=render_robinson(s)
+
 out=ROOT/'launcher/editions/gig-poster/index.html';out.parent.mkdir(parents=True,exist_ok=True);out.write_text(s)
 
 # Manual edition inherits current setup behavior and all recovery/download content.
