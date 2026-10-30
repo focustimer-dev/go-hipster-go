@@ -656,8 +656,21 @@ body.gig-poster .chart-nautical-routes circle{fill:#edc973;stroke:var(--ink);str
 body.gig-poster .chart-viewport-frame{position:absolute;inset:auto auto 12% 3%;width:clamp(48px,16%,78px);height:auto;aspect-ratio:1;pointer-events:none;z-index:3;transform:none!important;will-change:auto}
 body.gig-poster .chart-compass-fixed{display:block;width:100%;height:100%;overflow:visible;pointer-events:none}
 
-/* Selected expressions v2. Deliberately dormant until matched artwork is approved.
-   Preserve the current engraving as the stable neutral base. */
+/* Portrait registration contract.
+   Both states occupy the exact same square and sprite cell. Never use
+   element scaleX/scaleY, distinct canvas aspect ratios or alternate crops
+   to make a selected expression fit: fix the source artwork instead. */
+body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood .face{
+ box-sizing:border-box;display:block;width:100%;height:auto;aspect-ratio:1/1;
+ flex:none;min-width:0;min-height:0;overflow:hidden;
+ background-repeat:no-repeat;background-origin:padding-box;
+ background-clip:padding-box;transform:translateZ(0);
+}
+body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood .face::after{
+ box-sizing:border-box;transform:none;transform-origin:center;
+}
+/* Selected expressions v2 remain opt-in until source artwork is
+   registered to the same face, sunglasses and shoulder coordinates. */
 body.gig-poster[data-expression-art="v2"] .mood-grid .mood .face{position:relative;overflow:visible}
 body.gig-poster[data-expression-art="v2"] .mood-grid .mood .face::after{
  content:"";position:absolute;inset:0;pointer-events:none;
