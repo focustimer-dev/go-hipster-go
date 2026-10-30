@@ -43,7 +43,7 @@ s=s.replace('Start your search here. No regional quotas; blank means worldwide. 
 s=s.replace('Choose a mood, then press GO to copy your prompt.', 'Pick a mood, or press GO for a surprise.')
 s=re.sub(r'<p class="footnote">The AI and music apps.*?</p>', '<p class="footnote">Select the skill and music app in your AI. Playlist saving happens there. <a href="/setup/">Setup instructions →</a></p>', s, count=1)
 # Two-spot-color halftone from the guide's screenprint/gig-poster language.
-s=s.replace('<pattern id="atlasHatch"', '<pattern id="posterLandEngraving" width="5" height="5" patternUnits="userSpaceOnUse"><rect width="5" height="5" fill="#dfb045"/><path d="M-1 5L5 -1 M3 7L7 3" stroke="#103135" stroke-opacity=".55" stroke-width=".62"/></pattern>\\n              <pattern id="atlasHatch"',1)
+s=s.replace('<pattern id="atlasHatch"', '<pattern id="posterLandEngraving" width="5" height="5" patternUnits="userSpaceOnUse"><rect width="5" height="5" fill="#dfb045"/><path d="M-1 5L5 -1 M3 7L7 3" stroke="#103135" stroke-opacity=".55" stroke-width=".62"/></pattern>\n              <pattern id="atlasHatch"',1)
 s=s.replace('<pattern id="atlasHatch"', '<pattern id="posterSelectedHalftone" width="7" height="7" patternUnits="userSpaceOnUse"><rect width="7" height="7" fill="#d64b30"/><path d="M-2 2L2-2M0 7L7 0M5 9L9 5" stroke="#103135" stroke-width="1.3"/></pattern>\n              <pattern id="atlasHatch"')
 s=s.replace('href="/setup/"','href="/editions/gig-poster/setup/"')
 # v18 engraved chart and fixed navigation-independent frame.
