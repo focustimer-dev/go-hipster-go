@@ -74,6 +74,27 @@ of these studies. Before activation, require identity-preserving image edits
 using original current production pixels and a neutral/selected 1:1 alignment
 check for each of the six portraits.
 
+## Cast-wide gesture pass (Oct 30 — concepts, not production sprites)
+
+The selected expression should change the character's *attitude or action*, not
+merely increase their initial facial emotion. The neutral portraits remain the
+exact unchanged source artwork.
+
+| Mood | Distinct selected action | Identity constraints |
+| --- | --- | --- |
+| Happy | Head tilted back, uncontrollable open laugh, lifted cheeks | Keep sunglasses, hair, shirt |
+| Angry | **Stop screaming**; vicious clenched-teeth snarl, tight eyes and raised fist | Exact spiked hair, hoops, leather jacket |
+| Sad | Visible tears, hand wiping a cheek or holding the face, genuine grief | Keep clear original glasses, bob, knit sweater |
+| Weird | Strong crooked knowing grin, asymmetrical brow, one controlled squint | **No tongue, bulging eye, or altered moustache/hair** |
+| Criminal | Slightly lowered bandana revealing a sly grin, defiant pointed gesture | Keep original beanie, shades, scarf and jacket |
+| The Funk | Head back in ecstatic laughter, expressive hand gesture | Keep star lenses, beaded braids, high collar |
+
+These are clear behavior targets, not permission to replace the actors.
+A visual concept pass made these gestures more distinct, but changed source
+details and framing; none of its generated faces should enter production as
+a stand-in for source-registered expression assets. The release must use
+original-pixel-preserving edits and side-by-side identity review.
+
 ## Activation and QA
 
 After artwork review, add images, declare the new image paths in the Cloudflare
