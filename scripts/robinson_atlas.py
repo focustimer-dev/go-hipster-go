@@ -91,40 +91,31 @@ def _world_shape():
 
 
 def _radial_field():
-    """Stationary print engraving ONLY in the rectangle outside Robinson world.
+    """5-degree rays sharing the Robinson camera, drawn BEHIND its opaque ocean.
 
-    SVG mask excludes the full projected ocean and land. Two independently
-    rendered density variants can be switched without altering map hit targets.
+    A static mask would cut out the world's ORIGINAL position and leave blank
+    space when panning. Instead, SVG painter order makes the moving ocean
+    itself the occluder. The radial and map viewBoxes are kept identical by
+    launcher JS, so their common center moves with the projection.
     """
-    world = _world_shape()
-    start = (
-        '<svg class="atlas-radial-field" data-radial-density="5" '
-        'viewBox="0 0 720 372" preserveAspectRatio="none" '
-        'aria-hidden="true" focusable="false">'
-        '<defs><mask id="robinsonMarginMask" maskUnits="userSpaceOnUse" '
-        'maskContentUnits="userSpaceOnUse">'
-        '<rect width="720" height="372" fill="white"/>'
-        '<path d="' + world + '" fill="black"/></mask></defs>'
-    )
-    layers = []
-    for interval in (5, 10):
-        rays = []
-        for degrees in range(0, 360, interval):
-            angle = math.radians(degrees)
-            x = MAP_CENTER_X + 1000 * math.cos(angle)
-            y = MAP_CENTER_Y + 1000 * math.sin(angle)
-            level = ("major" if degrees % 90 == 0 else
-                     "secondary" if degrees % 45 == 0 else
-                     "tertiary" if degrees % 15 == 0 else "fine")
-            rays.append(
-                f'<line class="radial-ray radial-{level}" '
-                f'x1="360" y1="188" x2="{x:.1f}" y2="{y:.1f}"/>'
-            )
-        layers.append(
-            f'<g class="radial-density-{interval}" mask="url(#robinsonMarginMask)">'
-            + "".join(rays) + '</g>'
+    rays = []
+    for degrees in range(0, 360, 5):
+        angle = math.radians(degrees)
+        x = MAP_CENTER_X + 1000 * math.cos(angle)
+        y = MAP_CENTER_Y + 1000 * math.sin(angle)
+        level = ("major" if degrees % 90 == 0 else
+                 "secondary" if degrees % 45 == 0 else
+                 "tertiary" if degrees % 15 == 0 else "fine")
+        rays.append(
+            f'<line class="radial-ray radial-{level}" '
+            f'x1="360" y1="188" x2="{x:.1f}" y2="{y:.1f}"/>'
         )
-    return start + "".join(layers) + '</svg>'
+    return (
+        '<svg class="atlas-radial-field" viewBox="0 0 720 372" '
+        'aria-hidden="true" focusable="false">'
+        + "".join(rays) + '</svg>'
+    )
+
 
 def render_robinson(svg):
     # Called on the built illustrated edition, not on canonical source.
@@ -161,7 +152,7 @@ def render_robinson(svg):
     if old_end not in svg:
         raise ValueError("Fixed overlay must follow the moving SVG")
     svg = svg.replace(old_end, '</g></svg><div class="chart-viewport-frame"', 1)
-    # Rays are a sibling of the moving map, masked outside its entire outline.
+    # Radials are painted under the projected map; its opaque ocean masks them.
     marker = '<svg id="crateAtlasMap"'
     if svg.count(marker) != 1:
         raise ValueError("Expected exactly one map SVG for the radial engraving")
