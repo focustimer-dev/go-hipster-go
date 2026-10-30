@@ -655,3 +655,21 @@ body.gig-poster .chart-nautical-routes circle{fill:#edc973;stroke:var(--ink);str
 /* Compass occupies its own absolutely anchored square, never the camera SVG. */
 body.gig-poster .chart-viewport-frame{position:absolute;inset:auto auto 12% 3%;width:clamp(48px,16%,78px);height:auto;aspect-ratio:1;pointer-events:none;z-index:3;transform:none!important;will-change:auto}
 body.gig-poster .chart-compass-fixed{display:block;width:100%;height:100%;overflow:visible;pointer-events:none}
+
+/* Selected expressions v2. Deliberately dormant until matched artwork is approved.
+   Preserve the current engraving as the stable neutral base. */
+body.gig-poster[data-expression-art="v2"] .mood-grid .mood .face{position:relative;overflow:visible}
+body.gig-poster[data-expression-art="v2"] .mood-grid .mood .face::after{
+ content:"";position:absolute;inset:0;pointer-events:none;
+ background-image:url("/editions/gig-poster/assets/engraved-six-clerks-selected.webp");
+ background-size:300% 200%;background-position:inherit;background-repeat:no-repeat;
+ opacity:0;transition:opacity 170ms ease-out;filter:url(#poster-engraving-ink)
+}
+body.gig-poster[data-expression-art="v2"] .mood-grid .mood[aria-pressed=true] .face::after{opacity:1}
+body.gig-poster[data-expression-art="v2"] .mood-grid .mood[data-mood=weird] .face::after{
+ background-image:url("/editions/gig-poster/assets/weird-v18-selected.webp");
+ background-size:100% 100%;background-position:center
+}
+@media(prefers-reduced-motion:reduce){
+ body.gig-poster[data-expression-art="v2"] .mood-grid .mood .face::after{transition:none}
+}
