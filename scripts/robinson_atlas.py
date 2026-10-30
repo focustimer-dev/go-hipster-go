@@ -88,6 +88,35 @@ def _world_shape():
     )
     return "M" + "L".join(f"{x:.1f} {y:.1f}" for x, y in points) + "Z"
 
+
+
+def _radial_field():
+    """5-degree rays sharing the Robinson camera, drawn BEHIND its opaque ocean.
+
+    A static mask would cut out the world's ORIGINAL position and leave blank
+    space when panning. Instead, SVG painter order makes the moving ocean
+    itself the occluder. The radial and map viewBoxes are kept identical by
+    launcher JS, so their common center moves with the projection.
+    """
+    rays = []
+    for degrees in range(0, 360, 5):
+        angle = math.radians(degrees)
+        x = MAP_CENTER_X + 1000 * math.cos(angle)
+        y = MAP_CENTER_Y + 1000 * math.sin(angle)
+        level = ("major" if degrees % 90 == 0 else
+                 "secondary" if degrees % 45 == 0 else
+                 "tertiary" if degrees % 15 == 0 else "fine")
+        rays.append(
+            f'<line class="radial-ray radial-{level}" '
+            f'x1="360" y1="188" x2="{x:.1f}" y2="{y:.1f}"/>'
+        )
+    return (
+        '<svg class="atlas-radial-field" viewBox="0 0 720 372" '
+        'aria-hidden="true" focusable="false">'
+        + "".join(rays) + '</svg>'
+    )
+
+
 def render_robinson(svg):
     # Called on the built illustrated edition, not on canonical source.
     country_count = len(_COUNTRY.findall(svg))
@@ -123,4 +152,9 @@ def render_robinson(svg):
     if old_end not in svg:
         raise ValueError("Fixed overlay must follow the moving SVG")
     svg = svg.replace(old_end, '</g></svg><div class="chart-viewport-frame"', 1)
+    # Radials are painted under the projected map; its opaque ocean masks them.
+    marker = '<svg id="crateAtlasMap"'
+    if svg.count(marker) != 1:
+        raise ValueError("Expected exactly one map SVG for the radial engraving")
+    svg = svg.replace(marker, _radial_field() + marker, 1)
     return svg
