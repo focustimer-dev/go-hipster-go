@@ -13,20 +13,32 @@ SOURCE = (ROOT / "scripts/robinson_atlas.py").read_text()
 
 
 class RadiantAtlasChecks(unittest.TestCase):
-    def test_radial_masks_all_geography_and_does_not_pan(self):
-        self.assertIn('id="robinsonMarginMask"', HTML)
-        self.assertIn('data-radial-density="5"', HTML)
-        self.assertLess(HTML.index('class="atlas-radial-field"'), HTML.index('id="crateAtlasMap"'))
+    def test_radials_follow_camera_behind_opaque_moving_world(self):
         self.assertEqual(HTML.count('class="atlas-radial-field"'), 1)
-        self.assertIn('fill="black"/></mask>', HTML)
-        self.assertIn('class="radial-density-5"', HTML)
-        self.assertIn('class="radial-density-10"', HTML)
-        self.assertEqual(HTML.count('class="radial-ray '), 108)
+        self.assertLess(HTML.index('class="atlas-radial-field"'), HTML.index('id="crateAtlasMap"'))
+        self.assertEqual(HTML.count('class="radial-ray '), 72)
+        self.assertNotIn('robinsonMarginMask', HTML)
+        self.assertNotIn('radial-density-10', HTML)
+        self.assertIn('class="crate-map-ocean" d="M', HTML)
         self.assertIn('class="robinson-plate-content" clip-path="url(#robinsonWorldClip)"', HTML)
         self.assertIn('position:absolute;top:10px;left:0', CSS)
-        self.assertIn('atlasRadialField.hidden=', APP)
+        self.assertIn('#crateAtlasMap{position:relative;z-index:1}', CSS)
+        self.assertIn('atlasRadialField.setAttribute("viewBox",view)', APP)
         self.assertIn('attributeFilter:["viewBox"]', APP)
+        self.assertNotIn('atlasRadialField.hidden=', APP)
         self.assertIn('def _radial_field():', SOURCE)
+
+    def test_radial_weights_and_angular_spacing(self):
+        import math
+        rays = re.findall(
+            r'<line class="radial-ray radial-(\\w+)" x1="360" y1="188" '
+            r'x2="(-?\\d+\\.\\d+)" y2="(-?\\d+\\.\\d+)"/>', HTML
+        )
+        self.assertEqual(len(rays), 72)
+        self.assertEqual(sum(kind == "major" for kind, _, _ in rays), 4)
+        self.assertEqual(sum(kind == "secondary" for kind, _, _ in rays), 4)
+        self.assertTrue(all(math.isfinite(float(x)) and math.isfinite(float(y))
+                            for _, x, y in rays))
 
     def test_all_country_strokes_share_ink_hue(self):
         self.assertNotIn('#946a36', CSS)
