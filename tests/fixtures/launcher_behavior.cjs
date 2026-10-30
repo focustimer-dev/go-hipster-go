@@ -127,7 +127,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.equal(atlas.elements.atlasPassport.hidden,true,'Zoom alone must not restrict discovery');
  assert.equal(atlas.elements.atlasHome.hidden,false,'Return-to-world control available');
  assert.equal(atlas.crateRegions.filter(b=>!b.hidden).length,4,'Only African regional buttons visible');
- assert.equal(atlas.elements.crateAtlasMap.attrs.viewBox, '304 128 190 231', 'ViewBox moves on focus in environments without animation');
+ assert.equal(atlas.elements.crateAtlasMap.attrs.viewBox, '310 83 210 245', 'ViewBox moves on focus in environments without animation');
  // One finger pans the camera; taps remain region selections.
  const svg=atlas.elements.crateAtlasMap;
  let consumed=false;
@@ -135,7 +135,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.equal(consumed,false,'A stationary one-finger start leaves tapping available');
  svg.events.touchmove({touches:[{clientX:120,clientY:160}],cancelable:true,preventDefault(){consumed=true}});
  assert.equal(consumed,true,'One finger drags the map');
- assert.notEqual(svg.getAttribute('viewBox'),'304 128 190 231','One-finger dragging changes camera position');
+ assert.notEqual(svg.getAttribute('viewBox'),'310 83 210 245','One-finger dragging changes camera position');
  svg.events.touchend({touches:[]});
  await atlas.atlasCountries.find(b=>b.dataset.atlasRegion==='east-africa').click();
  assert.equal(atlas.elements.atlasPassport.hidden,true,'Dragging cannot accidentally stamp a territory');
