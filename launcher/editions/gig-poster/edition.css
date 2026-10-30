@@ -192,7 +192,8 @@ body.gig-poster ::selection{background:var(--ink);color:var(--paper)}
 
 /* Literal instructions, clerk voice; small supporting copy stays small. */
 /* A printed trail, not a second button: explanation sits below the hero. */
-body.gig-poster .poster-go-trail{margin:6px 0 12px;padding:8px 0 0;border-top:1px solid var(--ink);color:var(--ink)}
+/* The rotated LOCALLY SOURCED sticker overhangs the hero; clear the trail rule. */
+body.gig-poster .poster-go-trail{margin:clamp(20px,2.5cqw,26px) 0 12px;padding:8px 0 0;border-top:1px solid var(--ink);color:var(--ink)}
 body.gig-poster .poster-go-trail-steps{display:flex;align-items:center;flex-wrap:wrap;column-gap:7px;row-gap:5px}
 body.gig-poster .poster-go-trail-word{font:700 .75rem/1.2 'Courier New',monospace;letter-spacing:0;white-space:nowrap}
 body.gig-poster .poster-go-trail-arrow{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:square;stroke-linejoin:miter}
