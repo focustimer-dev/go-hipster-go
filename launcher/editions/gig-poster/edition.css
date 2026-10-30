@@ -660,13 +660,10 @@ body.gig-poster .chart-nautical-routes circle{fill:#edc973;stroke:var(--ink);str
 body.gig-poster .chart-viewport-frame{position:absolute;inset:auto auto 12% 3%;width:clamp(48px,16%,78px);height:auto;aspect-ratio:1;pointer-events:none;z-index:3;transform:none!important;will-change:auto}
 body.gig-poster .chart-compass-fixed{display:block;width:100%;height:100%;overflow:visible;pointer-events:none}
 
-/* Radial woodcut is OUTSIDE the printed Robinson world, beneath its ocean. */
+/* 5° rays travel with the Robinson camera; the moving ink ocean
+   covers everything inside the CURRENT silhouette, even while panning. */
 body.gig-poster .crate-map-frame{position:relative;isolation:isolate}
 body.gig-poster .atlas-radial-field{position:absolute;top:10px;left:0;width:100%;height:auto;aspect-ratio:720/372;z-index:0;display:block;pointer-events:none;overflow:hidden}
-body.gig-poster .atlas-radial-field[hidden]{display:none!important}
-body.gig-poster .atlas-radial-field .radial-density-10{display:none}
-body.gig-poster .atlas-radial-field[data-radial-density="10"] .radial-density-5{display:none}
-body.gig-poster .atlas-radial-field[data-radial-density="10"] .radial-density-10{display:block}
 body.gig-poster .radial-ray{stroke:var(--ink);fill:none;vector-effect:non-scaling-stroke}
 body.gig-poster .radial-major{stroke-width:1.55;opacity:.48}
 body.gig-poster .radial-secondary{stroke-width:1.05;opacity:.33}
