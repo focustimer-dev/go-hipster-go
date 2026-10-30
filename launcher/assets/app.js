@@ -127,17 +127,19 @@ function goPrompt(ai,service,mood){
 const crateRegions=[{"id":"us-west","label":"US West","continent":"americas-north"},{"id":"us-east","label":"US East","continent":"americas-north"},{"id":"canada-west","label":"Canada West","continent":"americas-north"},{"id":"canada-east","label":"Canada East","continent":"americas-north"},{"id":"mexico","label":"Mexico","continent":"americas-north"},{"id":"central-america","label":"Central America","continent":"americas-north"},{"id":"caribbean","label":"Caribbean","continent":"americas-north"},{"id":"northern-south-america","label":"Northern South America","continent":"americas-south"},{"id":"southern-south-america","label":"Southern South America","continent":"americas-south"},{"id":"atlantic-europe","label":"Atlantic & Western Europe","continent":"europe"},{"id":"mediterranean-europe","label":"Mediterranean & Balkans","continent":"europe"},{"id":"northern-europe","label":"Northern Europe","continent":"europe"},{"id":"eastern-europe","label":"Eastern Europe","continent":"europe"},{"id":"north-africa","label":"North Africa","continent":"africa"},{"id":"west-africa","label":"West Africa","continent":"africa"},{"id":"east-africa","label":"East Africa","continent":"africa"},{"id":"central-southern-africa","label":"Central & Southern Africa","continent":"africa"},{"id":"middle-east","label":"Middle East & Caucasus","continent":"asia"},{"id":"central-asia","label":"Central Asia","continent":"asia"},{"id":"south-asia","label":"South Asia","continent":"asia"},{"id":"east-asia","label":"East Asia","continent":"asia"},{"id":"southeast-asia","label":"Southeast Asia","continent":"asia"},{"id":"northern-asia","label":"Northern Asia","continent":"asia"},{"id":"oceania","label":"Oceania","continent":"oceania"}];
 const crateContinents=[{"id":"americas-north","label":"N. America"},{"id":"americas-south","label":"S. America"},{"id":"europe","label":"Europe"},{"id":"africa","label":"Africa"},{"id":"asia","label":"Asia"},{"id":"oceania","label":"Oceania"}];
 const atlasViews={"world":[0,0,720,372],"americas-north":[40,18,300,190],"americas-south":[165,132,183,222],"europe":[296,20,204,175],"africa":[310,83,210,245],"asia":[415,20,267,255],"oceania":[545,165,175,190]};
-// Decorative margin rays must never follow pan/zoom or appear in regional views.
+// Robinson rays follow the geography camera but remain underneath its
+// opaque ocean. The ocean masks rays at the CURRENT map edge while panning.
+// Never use a fixed cutout or hide rays during drag/pinch: both leave gaps.
 const atlasRadialField=typeof doc.querySelector==="function"?doc.querySelector(".atlas-radial-field"):null;
 const atlasRadialMap=doc.getElementById("crateAtlasMap");
 if(atlasRadialField&&atlasRadialMap){
- // Design-preview density is optional and does not enter playlist prompts.
- atlasRadialField.dataset.radialDensity=new URLSearchParams(location.search).get("radials")==="10"?"10":"5";
  const syncRadialBackdrop=()=>{
-  const view=(atlasRadialMap.getAttribute("viewBox")||"").trim().split(/\s+/).map(Number);
-  atlasRadialField.hidden=!(view.length===4&&view.every((n,i)=>Math.abs(n-[0,0,720,372][i])<.02));
+  const view=atlasRadialMap.getAttribute("viewBox");
+  if(view)atlasRadialField.setAttribute("viewBox",view);
  };
- new MutationObserver(syncRadialBackdrop).observe(atlasRadialMap,{attributes:true,attributeFilter:["viewBox"]});
+ if(typeof MutationObserver==="function"){
+  new MutationObserver(syncRadialBackdrop).observe(atlasRadialMap,{attributes:true,attributeFilter:["viewBox"]});
+ }
  syncRadialBackdrop();
 }
 const atlasNames={"americas-north":"N. America","americas-south":"S. America","europe":"Europe","africa":"Africa","asia":"Asia","oceania":"Oceania"};
