@@ -196,8 +196,16 @@ body.gig-poster .poster-go-trail{margin:6px 0 12px;padding:8px 0 0;border-top:1p
 body.gig-poster .poster-go-trail-steps{display:flex;align-items:center;flex-wrap:wrap;column-gap:7px;row-gap:5px}
 body.gig-poster .poster-go-trail-word{font:700 .75rem/1.2 'Courier New',monospace;letter-spacing:0;white-space:nowrap}
 body.gig-poster .poster-go-trail-arrow{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:square;stroke-linejoin:miter}
-body.gig-poster .poster-go-trail-mark{display:inline-flex;align-items:center;gap:4px;flex:none;padding:3px 6px;background:var(--ink);color:var(--paper);font:400 1.2rem/1 Poster,sans-serif;white-space:nowrap;cursor:default}
-body.gig-poster .poster-go-trail-star{width:13px;height:13px;fill:var(--selection-vermilion);flex:none}
+/* An off-register record-shop stamp: static and recognizable before motion loads. */
+body.gig-poster .poster-go-trail-mark{display:inline-flex;align-items:center;gap:4px;flex:none;padding:3px 6px;background:var(--ink);color:var(--paper);font:400 1.2rem/1 Poster,sans-serif;white-space:nowrap;cursor:default;transform:rotate(-2deg);transform-origin:center center;animation:poster-go-ink-settle 300ms cubic-bezier(.16,1,.3,1) both}
+@keyframes poster-go-ink-settle{
+ from{transform:translateY(-2px) rotate(-5deg) scale(1.04)}
+ to{transform:rotate(-2deg) scale(1)}
+}
+@media(prefers-reduced-motion:reduce){body.gig-poster .poster-go-trail-mark{animation:none}}
+@media print{body.gig-poster .poster-go-trail-mark{animation:none}}
+body.gig-poster .poster-go-trail-star{width:18px;height:18px;fill:var(--selection-vermilion);flex:none}
+body.gig-poster .poster-go-trail-groove{fill:none;stroke:var(--paper);stroke-width:1.4;opacity:.78}
 body.gig-poster .poster-go-trail-down{width:11px;height:14px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:square;stroke-linejoin:miter}
 @container (max-width:22rem){
  body.gig-poster .poster-go-trail-steps{display:grid;grid-template-columns:max-content 11px max-content 11px minmax(0,1fr);align-items:center;gap:4px}
@@ -205,7 +213,7 @@ body.gig-poster .poster-go-trail-down{width:11px;height:14px;flex:none;fill:none
  body.gig-poster .poster-go-trail-word:last-child{white-space:normal}
  body.gig-poster .poster-go-trail-arrow{width:11px;height:11px}
  body.gig-poster .poster-go-trail-mark{font-size:1.05rem;gap:3px;padding:3px 4px}
- body.gig-poster .poster-go-trail-star{width:11px;height:11px}
+ body.gig-poster .poster-go-trail-star{width:15px;height:15px}
  body.gig-poster .poster-go-trail-down{width:9px;height:11px}
 }
 body.gig-poster #tempoHelp{position:static;width:auto;height:auto;clip-path:none;overflow:visible;font:400 .75rem/1.4 Arial,Helvetica,sans-serif;color:var(--ink);margin:4px 0 0}
