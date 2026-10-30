@@ -28,7 +28,6 @@ s=s[:a]+'''    <div class="hero-title poster-hero">
         <svg class="poster-go-trail-arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11m-4-4 4 4-4 4"/></svg>
         <span class="poster-go-trail-word">PASTE IN YOUR AI</span>
       </div>
-      <p class="poster-go-trail-note">GO copies your music request. The AI takes it from there.</p>
     </div>
 
 '''+s[b:]
