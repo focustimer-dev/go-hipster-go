@@ -55,7 +55,7 @@ class RobinsonPlateTests(unittest.TestCase):
         sizes = [int(n) for n in re.findall(r'<svg x="[^"]+" y="[^"]+" width="(\d+)"', FURNITURE)]
         self.assertEqual(len(sizes), 3)
         self.assertTrue(all(size <= 26 for size in sizes))
-        self.assertIn('stroke:#946a36', CSS)
+        self.assertIn('stroke:var(--ink)', CSS)
 
 
     def test_css_edition_key_matches(self):
