@@ -18,7 +18,7 @@ a=s.index('    <div class="hero-title">');b=s.index('    <section class="service
 s=s[:a]+'''    <div class="hero-title poster-hero">
       <h1 class="headline"><span class="first-sleeve"><span class="poster-line">YOUR TASTE</span><span class="poster-line">IS A</span><span class="poster-line">PROBLEM.</span></span><span class="return-sleeve"><span class="poster-line">BACK</span><span class="poster-line">FOR</span><span class="poster-line">MORE?</span></span></h1>
       <img class="poster-bird" src="/editions/gig-poster/assets/bird-globe.webp" width="1292" height="1196" alt="" aria-hidden="true">
-    </div>
+      </div>
     <div class="poster-go-trail">
       <div class="poster-go-trail-steps">
         <span class="poster-go-trail-word">PICK YOUR SOUND</span>
@@ -31,12 +31,7 @@ s=s[:a]+'''    <div class="hero-title poster-hero">
 
 '''+s[b:]
 # Setup stays visible until explicitly dismissed, without an extra disclosure tap.
-welcome="""    <aside class="welcome-setup poster-setup" id="welcomeSetup" aria-labelledby="firstVisitTitle">
-      <h2 id="firstVisitTitle">FIRST VISIT? SORT OUT THE CONNECTIONS.</h2>
-      <p>One setup check. Then we can discuss your taste.</p>
-      <div class="poster-setup-actions"><a href="/setup/">SET UP YOUR SERVICES →</a><button type="button" id="dismissWelcome">Dismiss</button></div>
-    </aside>
-"""
+welcome=(ROOT/'launcher/editions/gig-poster/assets/welcome-invitation.html').read_text()+'\n'
 s=s.replace('    <section class="service-counter"',welcome+'    <section class="service-counter"',1)
 s=s.replace('<h3 class="panel-head"','<h2 class="panel-head"').replace('THE ROBOT</h3>','THE ROBOT</h2>').replace('THE NEEDLE</h3>','THE NEEDLE</h2>')
 s=s.replace('CHOOSE YOUR SERVICES','PICK YOUR SERVICES').replace('THE ROBOT','PICK YOUR AI').replace('THE NEEDLE','PICK YOUR DESTINATION').replace('SHAPE YOUR MIX','SET THE TEMPO').replace('<h3 class="counter-label">MOOD</h3>','<h2 class="counter-label">WHAT’S THE VIBE?</h2>')
@@ -49,6 +44,11 @@ s=re.sub(r'<p class="footnote">The AI and music apps.*?</p>', '<p class="footnot
 # Two-spot-color halftone from the guide's screenprint/gig-poster language.
 s=s.replace('<pattern id="atlasHatch"', '<pattern id="posterSelectedHalftone" width="7" height="7" patternUnits="userSpaceOnUse"><rect width="7" height="7" fill="#d64b30"/><path d="M-2 2L2-2M0 7L7 0M5 9L9 5" stroke="#103135" stroke-width="1.3"/></pattern>\n              <pattern id="atlasHatch"')
 s=s.replace('href="/setup/"','href="/editions/gig-poster/setup/"')
+# v18 engraved chart and fixed navigation-independent frame.
+art=ROOT/'launcher/editions/gig-poster/assets'
+s=s.replace('            <g class="crate-map-countries">', (art/'chart-map-furniture.svg').read_text()+'\n            <g class="crate-map-countries">',1)
+s=s.replace('          </svg>\n          <span class="crate-map-seal"', '          </svg>'+ (art/'chart-viewport-frame.svg').read_text()+'\n          <span class="crate-map-seal"',1)
+s=s.replace('<body data-page="launch" class="gig-poster">','<body data-page="launch" class="gig-poster">'+(art/'poster-engraving-filter.svg').read_text(),1)
 out=ROOT/'launcher/editions/gig-poster/index.html';out.parent.mkdir(parents=True,exist_ok=True);out.write_text(s)
 
 # Manual edition inherits current setup behavior and all recovery/download content.
