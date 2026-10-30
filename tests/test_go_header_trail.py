@@ -34,6 +34,7 @@ class GigPosterGoTrailTests(unittest.TestCase):
         self.assertIn('@media(prefers-reduced-motion:reduce){body.gig-poster .poster-go-trail-mark{animation:none}}', css)
         self.assertIn('cursor:default', css)
         self.assertIn('.poster-go-trail-word:last-child{white-space:normal}', css)
+        self.assertIn('margin:clamp(20px,2.5cqw,26px) 0 12px', css)
         self.assertIn('grid-template-columns:max-content 11px max-content 11px minmax(0,1fr)', css)
         self.assertNotIn('.poster-explainer{', css)
 
