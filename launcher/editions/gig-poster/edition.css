@@ -191,7 +191,24 @@ body.gig-poster ::selection{background:var(--ink);color:var(--paper)}
 @media(prefers-reduced-motion:reduce){body.gig-poster .mood .face,body.gig-poster .mood[aria-pressed=true] .face{animation:none!important;transition:none;transform:none!important}}
 
 /* Literal instructions, clerk voice; small supporting copy stays small. */
-body.gig-poster .poster-explainer{font:400 .875rem/1.5 Arial,Helvetica,sans-serif;color:var(--ink);max-width:65ch;margin:8px 0 12px}
+/* A printed trail, not a second button: explanation sits below the hero. */
+body.gig-poster .poster-go-trail{margin:6px 0 12px;padding:8px 0 0;border-top:1px solid var(--ink);color:var(--ink)}
+body.gig-poster .poster-go-trail-steps{display:flex;align-items:center;flex-wrap:wrap;column-gap:7px;row-gap:5px}
+body.gig-poster .poster-go-trail-word{font:700 .75rem/1.2 'Courier New',monospace;letter-spacing:0;white-space:nowrap}
+body.gig-poster .poster-go-trail-arrow{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:square;stroke-linejoin:miter}
+body.gig-poster .poster-go-trail-mark{display:inline-flex;align-items:center;gap:4px;flex:none;padding:3px 6px;background:var(--ink);color:var(--paper);font:400 1.2rem/1 Poster,sans-serif;white-space:nowrap;cursor:default}
+body.gig-poster .poster-go-trail-star{width:13px;height:13px;fill:currentColor;flex:none}
+body.gig-poster .poster-go-trail-down{width:11px;height:14px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:square;stroke-linejoin:miter}
+body.gig-poster .poster-go-trail-note{margin:7px 0 0;font:400 .8125rem/1.4 Arial,Helvetica,sans-serif;color:var(--ink)}
+@container (max-width:22rem){
+ body.gig-poster .poster-go-trail-steps{display:grid;grid-template-columns:max-content 11px max-content 11px minmax(0,1fr);align-items:center;gap:4px}
+ body.gig-poster .poster-go-trail-word{font-size:.6875rem}
+ body.gig-poster .poster-go-trail-word:last-child{white-space:normal}
+ body.gig-poster .poster-go-trail-arrow{width:11px;height:11px}
+ body.gig-poster .poster-go-trail-mark{font-size:1.05rem;gap:3px;padding:3px 4px}
+ body.gig-poster .poster-go-trail-star{width:11px;height:11px}
+ body.gig-poster .poster-go-trail-down{width:9px;height:11px}
+}
 body.gig-poster #tempoHelp{position:static;width:auto;height:auto;clip-path:none;overflow:visible;font:400 .75rem/1.4 Arial,Helvetica,sans-serif;color:var(--ink);margin:4px 0 0}
 body.gig-poster .atlas-intro{display:block;font:400 .75rem/1.4 Arial,Helvetica,sans-serif;color:var(--ink);margin:0 0 6px}
 body.gig-poster .footnote,body.gig-poster .footnote a{color:var(--ink)}
