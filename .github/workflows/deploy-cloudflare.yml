@@ -28,17 +28,15 @@ jobs:
       - name: Confirm release credentials
         env:
           CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           test -n "$CF_TOKEN" || { echo "::error::Set CLOUDFLARE_API_TOKEN as a production environment secret"; exit 1; }
-          test -n "$CF_ACCOUNT" || { echo "::error::Set CLOUDFLARE_ACCOUNT_ID as a production environment secret"; exit 1; }
       - name: Set exact release commit
         run: sed -i "s/__GITHUB_SHA__/${GITHUB_SHA}/g" wrangler.toml
       - name: Deploy entire static site
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          accountId: 47b318c510ebbdc3a45ddeafeda4a18f
           command: deploy
       - uses: actions/setup-node@v4
         with:
