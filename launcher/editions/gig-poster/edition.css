@@ -680,3 +680,21 @@ body.gig-poster .go-options .go-extras .cover-toggle+ .cover-toggle{border-left:
 @media(max-width:360px){
  body.gig-poster .go-options .go-extras .cover-toggle{min-height:94px;padding:12px 9px 9px 12px;grid-template-columns:22px minmax(0,1fr);column-gap:8px}
 }
+
+/* Source-aligned selected-expression pilot. Intentionally disabled by default.
+   Only the separate Cloudflare review Worker permits expressionPilot=1. */
+body.gig-poster[data-expression-pilot="true"] .mood-grid .mood[aria-pressed="true"] .face{
+  background-size:100% 100%!important;
+  background-position:center!important;
+  background-repeat:no-repeat!important;
+  filter:none!important;
+}
+body.gig-poster[data-expression-pilot="true"] .mood-grid .mood[data-mood="happy"][aria-pressed="true"] .face{background-image:url("/editions/gig-poster/assets/expression-pilot-happy.png")!important}
+body.gig-poster[data-expression-pilot="true"] .mood-grid .mood[data-mood="angry"][aria-pressed="true"] .face{background-image:url("/editions/gig-poster/assets/expression-pilot-angry.png")!important}
+body.gig-poster[data-expression-pilot="true"] .mood-grid .mood[data-mood="sad"][aria-pressed="true"] .face{background-image:url("/editions/gig-poster/assets/expression-pilot-sad.png")!important}
+body.gig-poster[data-expression-pilot="true"] .mood-grid .mood[data-mood="weird"][aria-pressed="true"] .face{background-image:url("/editions/gig-poster/assets/expression-pilot-weird.png")!important}
+body.gig-poster[data-expression-pilot="true"] .mood-grid .mood[data-mood="criminal"][aria-pressed="true"] .face{background-image:url("/editions/gig-poster/assets/expression-pilot-criminal.png")!important}
+body.gig-poster[data-expression-pilot="true"] .mood-grid .mood[data-mood="funky"][aria-pressed="true"] .face{background-image:url("/editions/gig-poster/assets/expression-pilot-the-funk.png")!important}
+/* Portraits remain unchanged for every unselected state, including shuffle/undo.
+   The existing pressed-state styling owns vermilion card backgrounds. */
+@media(prefers-reduced-motion:reduce){body.gig-poster[data-expression-pilot="true"] .mood[aria-pressed="true"] .face{animation:none!important;transition:none!important}}
