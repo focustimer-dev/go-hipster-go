@@ -383,8 +383,49 @@ body.gig-poster:is([data-page=launch],[data-page=setup]) .mood[data-mood=funky][
  body.gig-poster[data-page=launch] .go-options .go-button .go-copy>span:not(.go-stamp){text-align:left}
 }
 
-/* Option names are little pieces of poster lettering, not utility captions. */
-body.gig-poster .go-options .option-label{display:inline-block;font:400 clamp(1.375rem,4.4cqw,2.5rem)/1.12 Poster,sans-serif;letter-spacing:-.015em;transform:rotate(-1.5deg);transform-origin:left center;overflow-wrap:anywhere}
-body.gig-poster .go-options #goHard .option-label{transform:rotate(.75deg)}
-body.gig-poster .go-options .option-copy{gap:6px}
-body.gig-poster .go-options .go-extras .extra-mark{width:22px;height:22px}
+/* Trial B — miniature record sleeves integrated into the poster's ink strip.
+   Deliberately changes presentation only; the existing aria-pressed state and
+   GO prompt-generation logic continue to own behavior. */
+body.gig-poster .go-options .go-extras{border-bottom:2px solid var(--paper)}
+body.gig-poster .go-options .go-extras .cover-toggle{position:relative;min-height:86px;padding:12px 9px;gap:7px}
+body.gig-poster .go-options .go-extras .cover-toggle[aria-pressed=true]::before{content:"";position:absolute;inset:5px;border:1px solid var(--paper);pointer-events:none}
+body.gig-poster .go-options .option-copy{gap:5px;align-self:center;min-width:0}
+body.gig-poster .go-options .option-label,
+body.gig-poster .go-options #goHard .option-label{display:block;font:400 clamp(1.17rem,4.25cqw,2.3rem)/1.1 Poster,sans-serif;letter-spacing:0;transform:none;transform-origin:center;white-space:nowrap;color:var(--paper)}
+body.gig-poster .go-options .option-copy small{font:400 clamp(.66rem,1.55cqw,.8rem)/1.3 Arial,Helvetica,sans-serif;color:var(--bone);overflow-wrap:normal}
+body.gig-poster .go-options .go-extras .extra-mark{width:clamp(23px,3.7cqw,33px);height:clamp(23px,3.7cqw,33px);stroke:var(--bone);stroke-width:1.65}
+/* Keep artwork in the poster's two-ink family: no vermillion on the sleeve. */
+body.gig-poster .go-options .go-extras #includeCover .art-sleeve{fill:var(--paper)}
+/* A deliberate mechanical pop, readable even at ~30px. Base SVG units, not CSS pixels. */
+body.gig-poster .go-options .go-extras .art-record,
+body.gig-poster .go-options .go-extras .crate-back,
+body.gig-poster .go-options .go-extras .crate-front{
+ transition:transform 260ms cubic-bezier(.16,1,.3,1);
+}
+body.gig-poster .go-options .go-extras #includeCover[aria-pressed=true] .art-record{
+ transform:translate(5px,-3px) rotate(38deg);
+}
+body.gig-poster .go-options .go-extras #goHard[aria-pressed=true] .crate-back{
+ transform:translate(2px,-6px) rotate(-13deg);
+}
+body.gig-poster .go-options .go-extras #goHard[aria-pressed=true] .crate-front{
+ transform:translate(-1px,-3px) rotate(8deg);
+}
+@media(prefers-reduced-motion:reduce){
+ body.gig-poster .go-options .go-extras .art-record,
+ body.gig-poster .go-options .go-extras .crate-back,
+ body.gig-poster .go-options .go-extras .crate-front{
+  transition:none;
+  transform:none!important;
+ }
+}
+body.gig-poster .go-options .go-extras .option-state{position:absolute;right:9px;top:9px;width:13px;height:13px;margin:0;border:1.5px solid var(--bone);border-radius:50%;background:transparent}
+body.gig-poster .go-options .go-extras .option-state svg{display:none}
+body.gig-poster .go-options .go-extras .cover-toggle[aria-pressed=true] .option-state{background:var(--red);border-color:var(--bone)}
+body.gig-poster .go-options .go-extras .cover-toggle:hover .option-label{text-decoration:none}
+body.gig-poster .go-options .go-extras .cover-toggle:focus-visible{outline:3px solid var(--focus-paper);outline-offset:-4px;z-index:1}
+@media(max-width:360px){
+ body.gig-poster .go-options .go-extras .cover-toggle{padding:9px 6px;gap:5px}
+ body.gig-poster .go-options .option-label,body.gig-poster .go-options #goHard .option-label{font-size:1.14rem}
+ body.gig-poster .go-options .option-copy small{font-size:.65rem}
+}
