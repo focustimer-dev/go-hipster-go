@@ -15,6 +15,24 @@ feature until both original-source-based assets below exist and are approved.
 - Do **not** use `clerks-expressions.webp` or `the-funk.webp` as new
   selected sprites: they contain materially different models.
 
+## Original artwork recovered and verified
+
+The local ChatGPT Library prototype `go-hipster-go-weird-engraving-v18.html`
+contains **embedded WebP assets that match the current GitHub production
+files byte-for-byte**, verified by full Git blob SHA-1:
+
+| Current shipped asset | Image dimensions | Byte count | Exact Git blob SHA |
+| --- | --- | --- | --- |
+| `engraved-six-clerks.webp` | 1536×1024 | 1,924,388 | `b982e38a1641848c018632d63c5375de76b8c04d` |
+| `weird-v18.webp` | 1254×1254 | 1,825,856 | `10b2a3104718f0795677140e97d3dd37843a379b` |
+
+The Library also contains earlier `Six Mood Portraits in Copperplate.png`,
+but its lower-left Weird is a DIFFERENT character. The local prototype
+and production Git blob hashes above, not this early sheet or a later
+AI interpretation, are the authoritative selected-expression references.
+**No manual user upload is needed.** Never include private Library share
+links in public repo documentation.
+
 ## Required new art
 
 1. `engraved-six-clerks-selected.webp`: identical dimensions and 3×2
