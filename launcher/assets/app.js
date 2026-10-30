@@ -132,7 +132,7 @@ const atlasRadialField=doc.querySelector(".atlas-radial-field");
 const atlasRadialMap=doc.getElementById("crateAtlasMap");
 if(atlasRadialField&&atlasRadialMap){
  const syncRadialBackdrop=()=>{
-  const view=(atlasRadialMap.getAttribute("viewBox")||"").trim().split(/\\s+/).map(Number);
+  const view=(atlasRadialMap.getAttribute("viewBox")||"").trim().split(/\s+/).map(Number);
   atlasRadialField.hidden=!(view.length===4&&view.every((n,i)=>Math.abs(n-[0,0,720,372][i])<.02));
  };
  new MutationObserver(syncRadialBackdrop).observe(atlasRadialMap,{attributes:true,attributeFilter:["viewBox"]});
