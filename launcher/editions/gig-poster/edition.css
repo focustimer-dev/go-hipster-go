@@ -197,9 +197,8 @@ body.gig-poster .poster-go-trail-steps{display:flex;align-items:center;flex-wrap
 body.gig-poster .poster-go-trail-word{font:700 .75rem/1.2 'Courier New',monospace;letter-spacing:0;white-space:nowrap}
 body.gig-poster .poster-go-trail-arrow{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:square;stroke-linejoin:miter}
 body.gig-poster .poster-go-trail-mark{display:inline-flex;align-items:center;gap:4px;flex:none;padding:3px 6px;background:var(--ink);color:var(--paper);font:400 1.2rem/1 Poster,sans-serif;white-space:nowrap;cursor:default}
-body.gig-poster .poster-go-trail-star{width:13px;height:13px;fill:currentColor;flex:none}
+body.gig-poster .poster-go-trail-star{width:13px;height:13px;fill:var(--selection-vermilion);flex:none}
 body.gig-poster .poster-go-trail-down{width:11px;height:14px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:square;stroke-linejoin:miter}
-body.gig-poster .poster-go-trail-note{margin:7px 0 0;font:400 .8125rem/1.4 Arial,Helvetica,sans-serif;color:var(--ink)}
 @container (max-width:22rem){
  body.gig-poster .poster-go-trail-steps{display:grid;grid-template-columns:max-content 11px max-content 11px minmax(0,1fr);align-items:center;gap:4px}
  body.gig-poster .poster-go-trail-word{font-size:.6875rem}
