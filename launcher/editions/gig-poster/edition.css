@@ -631,3 +631,13 @@ body.gig-poster #shuffleCrate,body.gig-poster .shuffle-pin{align-self:stretch;mi
  body.gig-poster .go-options .option-label,body.gig-poster .go-options #goHard .option-label{font-size:1.14rem}
  body.gig-poster .go-options .go-extras .option-copy{gap:7px}
 }
+
+/* True Robinson print silhouette: paper visible outside the curved world. */
+body.gig-poster .crate-map-frame{background:transparent;border:0;border-top:0;border-bottom:0;isolation:isolate}
+body.gig-poster #crateAtlasMap.crate-robinson{background:transparent}
+body.gig-poster .crate-map-ocean{fill:var(--ink);stroke:var(--bone);stroke-width:1.05;vector-effect:non-scaling-stroke}
+body.gig-poster .robinson-plate-content{pointer-events:visiblePainted}
+body.gig-poster .chart-rhumbs,body.gig-poster .chart-routes,body.gig-poster .crate-zone-boundaries,body.gig-poster .chart-edge{display:none!important}
+/* Fixed, physically independent compass overlay: only geography changes viewBox. */
+body.gig-poster .chart-viewport-frame{position:absolute;inset:10px 0;width:100%;height:calc(100% - 20px);pointer-events:none;z-index:2;transform:none!important;will-change:auto}
+body.gig-poster .chart-compass{pointer-events:none}
