@@ -51,6 +51,29 @@ Expression direction:
 - The Funk: joyous open grin / subtle raised shoulders; star glasses and braids
   remain identical.
 
+## Five-mood expression exploration (not approved artwork)
+
+A local visual study compared source-accurate neutral crops to proposed selected
+expressions for Happy, Angry, Sad, Criminal, and The Funk. These are **concept
+studies**, not sprite-registered production assets. Findings:
+
+- **Happy:** broader grin/raised cheeks reads well; keep glasses, hair and shirt
+  exactly registered to the source.
+- **Angry:** stronger brow/jaw intensity is viable, but neutral already screams;
+  selected state must change emotion, not merely scale the existing face.
+- **Sad:** deeper downturned mouth reads, but concepts replaced her clear glasses
+  with dark lenses; reject any change to approved eyewear or hairstyle.
+- **Criminal:** masked mouth limits expression; preserve beanie, scarf and glasses;
+  focus on brows, cheek tension and a distinct eye-area attitude.
+- **The Funk:** bigger joyful laugh works; preserve star sunglasses, beaded braids
+  and high collar without shifting their silhouette.
+
+The user approved exaggerated, believable anatomy and specifically rejected
+bulging eyes for Weird. No new artwork was integrated into the app on the basis
+of these studies. Before activation, require identity-preserving image edits
+using original current production pixels and a neutral/selected 1:1 alignment
+check for each of the six portraits.
+
 ## Activation and QA
 
 After artwork review, add images, declare the new image paths in the Cloudflare
