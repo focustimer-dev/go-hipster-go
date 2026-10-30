@@ -562,3 +562,20 @@ body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[data-m
  background-image:url("/editions/gig-poster/assets/weird-v18.webp");
  background-size:100% 100%;background-position:center;
 }
+
+/* Robinson plate: a paper-and-ink engraving, not a flat digital choropleth. */
+body.gig-poster .crate-robinson{display:block;width:100%;height:auto;aspect-ratio:720/372;background:transparent}
+body.gig-poster .crate-map-frame{padding:10px 0;overflow:hidden}
+body.gig-poster .crate-map-zone path{fill:url(#posterLandEngraving);stroke:var(--ink);stroke-width:.9;stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke}
+body.gig-poster .crate-map-zone[data-selected=true] path,
+body.gig-poster .crate-map-zone[data-selected=true]:hover path{fill:url(#posterSelectedHalftone);stroke:var(--ink);stroke-width:1.55}
+body.gig-poster .crate-map-zone:not([data-selected=true]):hover path{fill:var(--atlas-paper-light);stroke-width:1.3}
+body.gig-poster .crate-map-grid{display:block;fill:none;stroke:var(--ink);stroke-width:.55;stroke-dasharray:1.5 4;opacity:.25;pointer-events:none}
+body.gig-poster .crate-map-ocean{fill:transparent}
+body.gig-poster .chart-rhumbs{opacity:.13;pointer-events:none}
+body.gig-poster .chart-routes{opacity:.33;pointer-events:none}
+body.gig-poster .chart-viewport-frame{opacity:.6}
+body.gig-poster .counter-label:has(+.mood-grid){margin-top:12px}
+body.gig-poster .mood-grid{margin-bottom:0;border-top:1px solid var(--ink);padding-top:7px}
+body.gig-poster .mood-hint{margin:4px 0 13px}
+body.gig-poster .mood-hint + .crate-geo{margin-top:0}
