@@ -1,0 +1,48 @@
+name: Deploy Go Hipster Go to Cloudflare
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hipster-go-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build edition and run tests
+        run: |
+          python scripts/build_gig_poster.py
+          git diff --exit-code -- launcher/editions/gig-poster
+          python -m unittest discover -s tests
+      - name: Confirm release credentials
+        env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          test -n "$CF_TOKEN" || { echo "::error::Set CLOUDFLARE_API_TOKEN as a production environment secret"; exit 1; }
+      - name: Set exact release commit
+        run: sed -i "s/__GITHUB_SHA__/${GITHUB_SHA}/g" wrangler.toml
+      - name: Deploy entire static site
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: 47b318c510ebbdc3a45ddeafeda4a18f
+          command: deploy
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify live site matches release
+        run: |
+          npm install --no-save --package-lock=false playwright@1.62.1
+          npx playwright install --with-deps chromium
+          node scripts/smoke_live.mjs --expected-commit "$GITHUB_SHA"

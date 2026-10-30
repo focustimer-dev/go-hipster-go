@@ -1,0 +1,12 @@
+name = "hipster-go"
+main = "cloudflare/worker.js"
+compatibility_date = "2026-10-18"
+workers_dev = true
+
+[assets]
+directory = "./launcher"
+binding = "ASSETS"
+run_worker_first = true
+
+[define]
+RELEASE_SHA = "\"__GITHUB_SHA__\""
