@@ -18,7 +18,6 @@ a=s.index('    <div class="hero-title">');b=s.index('    <section class="service
 s=s[:a]+'''    <div class="hero-title poster-hero">
       <h1 class="headline"><span class="first-sleeve"><span class="poster-line">YOUR TASTE</span><span class="poster-line">IS A</span><span class="poster-line">PROBLEM.</span></span><span class="return-sleeve"><span class="poster-line">BACK</span><span class="poster-line">FOR</span><span class="poster-line">MORE?</span></span></h1>
       <img class="poster-bird" src="/editions/gig-poster/assets/bird-globe.webp" width="1292" height="1196" alt="" aria-hidden="true">
-      <span class="sticker">Locally<br>sourced<br>pretension</span>
     </div>
     <div class="poster-go-trail">
       <div class="poster-go-trail-steps">

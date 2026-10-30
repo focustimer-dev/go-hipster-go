@@ -19,7 +19,6 @@ body.gig-poster:is([data-page=launch],[data-page=setup]) .hero-title{display:blo
 body.gig-poster:is([data-page=launch],[data-page=setup]) .hero-title .headline,html[data-returning=true] body.gig-poster:is([data-page=launch],[data-page=setup]) .hero-title .headline{position:relative;z-index:1;width:69%;max-width:none;margin:0;padding:0;border:0;font:400 15.6cqw/.9 Poster,sans-serif;letter-spacing:-.025em;color:var(--ink);text-shadow:none;transform:scaleX(.88);transform-origin:left center;animation:none;overflow-wrap:normal}
 body.gig-poster .poster-line{display:block;white-space:nowrap}
 body.gig-poster .poster-bird{position:absolute;width:44%;height:auto;right:-1%;top:3%;pointer-events:none}
-body.gig-poster:is([data-page=launch],[data-page=setup]) .hero-title .sticker,html[data-returning=true] body.gig-poster:is([data-page=launch],[data-page=setup]) .hero-title .sticker{display:block;position:absolute;right:1%;top:auto;bottom:2%;margin:0;padding:0;border:0;background:none;box-shadow:none;color:var(--ink);font:700 clamp(.625rem,2.2cqw,1.2rem)/1.05 'Courier New',monospace;transform:rotate(-14deg);text-align:center}
 body.gig-poster .service-counter>h2,body.gig-poster .mix-heading,body.gig-poster .tempo-heading label{display:none}
 body.gig-poster:is([data-page=launch],[data-page=setup]) .selector-grid{display:block}
 body.gig-poster:is([data-page=launch],[data-page=setup]) .selector-grid .panel{margin:0;padding:8px 0 10px;border:0;border-top:1px solid var(--ink);background:none;box-shadow:none}
@@ -192,7 +191,7 @@ body.gig-poster ::selection{background:var(--ink);color:var(--paper)}
 
 /* Literal instructions, clerk voice; small supporting copy stays small. */
 /* A printed trail, not a second button: explanation sits below the hero. */
-/* The rotated LOCALLY SOURCED sticker overhangs the hero; clear the trail rule. */
+/* Separate the hero from the printed instruction trail. */
 body.gig-poster .poster-go-trail{margin:clamp(20px,2.5cqw,26px) 0 12px;padding:8px 0 0;border-top:1px solid var(--ink);color:var(--ink)}
 body.gig-poster .poster-go-trail-steps{display:flex;align-items:center;flex-wrap:wrap;column-gap:7px;row-gap:5px}
 body.gig-poster .poster-go-trail-word{font:700 .75rem/1.2 'Courier New',monospace;letter-spacing:0;white-space:nowrap}
@@ -454,3 +453,18 @@ body.gig-poster .go-options .go-extras .cover-toggle:focus-visible{outline:3px s
  body.gig-poster .go-options .option-label,body.gig-poster .go-options #goHard .option-label{font-size:1.14rem}
  body.gig-poster .go-options .option-copy small{font-size:.65rem}
 }
+
+/* The masthead is the imprint: one bold ink plate, with navigation below. */
+body.gig-poster:is([data-page=launch],[data-page=setup]) .masthead{display:grid;grid-template-columns:minmax(0,1fr);gap:0;padding:14px 3% 0;background:var(--ink);color:var(--paper);border-bottom:4px solid var(--selection-vermilion)}
+body.gig-poster .brandrow{width:100%;min-width:0}
+body.gig-poster .brand{display:flex;align-items:center;gap:clamp(8px,1.6cqw,16px);width:fit-content;max-width:100%;min-height:44px;color:var(--paper)}
+body.gig-poster .brand>span:last-child{min-width:0}
+body.gig-poster .brand-name{display:block;font:400 clamp(1.5rem,7.3cqw,4.375rem)/1.12 Poster,sans-serif;letter-spacing:-.02em;white-space:normal;text-wrap:balance}
+body.gig-poster .brand-star{display:block;width:clamp(30px,7.3cqw,70px);height:auto;flex:none}
+body.gig-poster .brand-star svg{display:block}
+body.gig-poster .masthead .brand-mark path[fill^="url"]{fill:var(--selection-vermilion)}
+body.gig-poster .masthead .brand-mark path[stroke]{stroke:var(--selection-vermilion)}
+body.gig-poster .topnav{width:100%;max-width:100%;margin:10px 0 0;padding:2px 0;gap:20px;border-top:1px solid var(--paper)}
+body.gig-poster .topnav a,body.gig-poster .topnav a[aria-current=page]{display:inline-flex;align-items:center;min-height:44px;color:var(--paper);font-size:clamp(.875rem,2.6cqw,1.25rem)}
+body.gig-poster .topnav a+a{border-left:1px solid var(--paper);padding-left:20px}
+body.gig-poster .masthead a:focus-visible{outline:2px solid var(--focus-paper);outline-offset:3px}
