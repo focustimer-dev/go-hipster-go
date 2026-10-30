@@ -52,7 +52,7 @@ class RobinsonPlateTests(unittest.TestCase):
         self.assertNotIn('class="chart-rhumbs"', FURNITURE)
         self.assertEqual(FURNITURE.count('<svg x='), 3)
         import re
-        sizes = [int(n) for n in re.findall(r'<svg x="[^"]+" y="[^"]+" width="(\\d+)"', FURNITURE)]
+        sizes = [int(n) for n in re.findall(r'<svg x="[^"]+" y="[^"]+" width="(\d+)"', FURNITURE)]
         self.assertEqual(len(sizes), 3)
         self.assertTrue(all(size <= 26 for size in sizes))
         self.assertIn('stroke:#946a36', CSS)
