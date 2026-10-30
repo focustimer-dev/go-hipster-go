@@ -22,6 +22,23 @@ class EngravedEditionChecks(unittest.TestCase):
         self.assertIn('id="crateAtlasMap"',index)
         self.assertIn('id="atlasHome"',index)
 
+    def test_expression_registration_and_release_gate(self):
+        css=(BASE/"edition.css").read_text()
+        html=(BASE/"index.html").read_text()
+        self.assertIn("aspect-ratio:1/1",css)
+        self.assertIn('data-expression-art="v2"',css)
+        self.assertIn("background-position:inherit",css)
+        self.assertIn("background-size:300% 200%",css)
+        # Do not turn on alternate expressions when the actual selected
+        # art is absent. It would leave some characters blank or mismatched.
+        selected=("engraved-six-clerks-selected.webp","weird-v18-selected.webp")
+        if 'data-expression-art="v2"' in html:
+            for name in selected:
+                self.assertTrue((BASE/"assets"/name).is_file(),name)
+        for name in selected:
+            if (BASE/"assets"/name).is_file():
+                self.assertGreater((BASE/"assets"/name).stat().st_size,10000)
+
     def test_artwork_and_controls_remain_separate(self):
         css=(BASE/"edition.css").read_text()
         index=(BASE/"index.html").read_text()
