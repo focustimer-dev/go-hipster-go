@@ -24,7 +24,7 @@ s=s[:a]+'''    <div class="hero-title poster-hero">
       <div class="poster-go-trail-steps">
         <span class="poster-go-trail-word">PICK YOUR SOUND</span>
         <svg class="poster-go-trail-arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11m-4-4 4 4-4 4"/></svg>
-        <span class="poster-go-trail-mark"><svg class="poster-go-trail-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5 14.4 8.2 21.8 8.2 15.9 12.7 18.1 20 12 15.8 5.9 20 8.1 12.7 2.2 8.2 9.6 8.2Z"/></svg>GO!<svg class="poster-go-trail-down" viewBox="0 0 12 16" aria-hidden="true"><path d="M6 1v13m-4-4 4 4 4-4"/></svg></span>
+        <span class="poster-go-trail-mark"><svg class="poster-go-trail-star" viewBox="0 0 24 24" aria-hidden="true"><circle class="poster-go-trail-groove" cx="12" cy="12" r="11.15"/><path d="M12 1.5 14.4 8.2 21.8 8.2 15.9 12.7 18.1 20 12 15.8 5.9 20 8.1 12.7 2.2 8.2 9.6 8.2Z"/></svg>GO!<svg class="poster-go-trail-down" viewBox="0 0 12 16" aria-hidden="true"><path d="M6 1v13m-4-4 4 4 4-4"/></svg></span>
         <svg class="poster-go-trail-arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11m-4-4 4 4-4 4"/></svg>
         <span class="poster-go-trail-word">PASTE IN YOUR AI</span>
       </div>
