@@ -95,6 +95,33 @@ details and framing; none of its generated faces should enter production as
 a stand-in for source-registered expression assets. The release must use
 original-pixel-preserving edits and side-by-side identity review.
 
+## Interaction prototype after expression-direction lock
+
+A self-contained browser comparison was produced from the exact approved
+neutral portrait files plus newly developed **concept** selected expressions.
+All six states toggle on tap; there are Select All and Clear All controls.
+Local Chromium checks at 320px and 390px confirm six loaded images, correct
+toggle behavior, and no horizontal overflow.
+
+The preview is intentionally local to the conversation until the selected
+art is source-matched and individually reviewed. It is **not** a shipped
+WebP sprite or an approved replacement for the original neutral artwork.
+
+The selected-pose direction is now settled:
+- Happy: ecstatic laughing gesture
+- Angry: teeth-clenched snarl plus raised fist, a different reaction from scream
+- Sad: visible grief, hand to face; original *clear* eyeglasses must be restored
+- Weird: mischievous grin and asymmetrical brows; no tongue, eye bulging, or face drift
+- Criminal: lowered bandana and swagger gesture, original beanie/glasses preserved
+- The Funk: joyful head-back laughter with expressive hand
+
+**Blockers for turning on production:** remove remaining concept-poster
+artifacts; restore source-exact hair, outfit, facial details, eyewear and crop;
+check selected art under the live PWA Vermilion button state; register the
+two genuine matching selected images/sprite assets and verify their format.
+Do not enable the existing CSS `data-expression-art="v2"` flag or merge
+without these gates.
+
 ## Activation and QA
 
 After artwork review, add images, declare the new image paths in the Cloudflare
