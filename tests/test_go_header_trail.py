@@ -38,6 +38,16 @@ class GigPosterGoTrailTests(unittest.TestCase):
         self.assertIn('grid-template-columns:max-content 11px max-content 11px minmax(0,1fr)', css)
         self.assertNotIn('.poster-explainer{', css)
 
+    def test_masthead_remains_original_ink_on_paper(self):
+        css = (ROOT / "launcher/editions/gig-poster/edition.css").read_text()
+        self.assertIn(".masthead{display:flex;align-items:center;justify-content:space-between", css)
+        self.assertIn(".brand-name{font:400 clamp(1.25rem,4.3cqw,2.8rem)", css)
+        self.assertNotIn("The masthead is the imprint: one bold ink plate", css)
+        self.assertNotIn("border-bottom:4px solid var(--selection-vermilion)", css)
+        page = (ROOT / "launcher/editions/gig-poster/index.html").read_text()
+        self.assertNotIn('class="sticker"', page)
+        self.assertIn('class="poster-go-trail"', page)
+
     def test_generated_css_cache_key_matches_content(self):
         page = (ROOT / "launcher/editions/gig-poster/index.html").read_text()
         css = (ROOT / "launcher/editions/gig-poster/edition.css").read_bytes()
