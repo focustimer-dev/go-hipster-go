@@ -644,10 +644,14 @@ body.gig-poster .chart-compass{pointer-events:none}
 
 /* Final nautical plate: separate latitude seam from the ocean's printed edge. */
 body.gig-poster .crate-map-ocean{stroke:none!important;fill:var(--ink)}
+/* One hue throughout the atlas: blue ink for every border state. */
 body.gig-poster .crate-map-zone path,
-body.gig-poster .crate-map-zone[data-selected=false] path{stroke:#946a36;stroke-width:.88;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+body.gig-poster .crate-map-zone[data-selected=false] path{stroke:var(--ink);stroke-width:.92;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+body.gig-poster .crate-map-zone:not([data-selected=true]):hover path,
+body.gig-poster .crate-map-zone[data-selected=false]:hover path{stroke:var(--ink);stroke-width:1.2}
 body.gig-poster .crate-map-zone[data-selected=true] path,
-body.gig-poster .crate-map-zone[data-selected=true]:hover path{stroke:#f1ce76;stroke-width:1.4}
+body.gig-poster .crate-map-zone[data-selected=true]:hover path{stroke:var(--ink);stroke-width:1.45}
+body.gig-poster .crate-map-zone:focus-visible path{stroke:var(--ink);stroke-width:2.2}
 body.gig-poster .crate-map-grid{stroke:#e8c875;opacity:.11}
 body.gig-poster .chart-nautical-routes{pointer-events:none}
 body.gig-poster .chart-nautical-routes path{fill:none;stroke:#edc973;stroke-width:1;stroke-linecap:round;stroke-dasharray:3 5;opacity:.56;vector-effect:non-scaling-stroke}
@@ -655,3 +659,27 @@ body.gig-poster .chart-nautical-routes circle{fill:#edc973;stroke:var(--ink);str
 /* Compass occupies its own absolutely anchored square, never the camera SVG. */
 body.gig-poster .chart-viewport-frame{position:absolute;inset:auto auto 12% 3%;width:clamp(48px,16%,78px);height:auto;aspect-ratio:1;pointer-events:none;z-index:3;transform:none!important;will-change:auto}
 body.gig-poster .chart-compass-fixed{display:block;width:100%;height:100%;overflow:visible;pointer-events:none}
+
+/* Radial woodcut is OUTSIDE the printed Robinson world, beneath its ocean. */
+body.gig-poster .crate-map-frame{position:relative;isolation:isolate}
+body.gig-poster .atlas-radial-field{position:absolute;top:10px;left:0;width:100%;height:auto;aspect-ratio:720/372;z-index:0;display:block;pointer-events:none;overflow:hidden}
+body.gig-poster .atlas-radial-field[hidden]{display:none!important}
+body.gig-poster .atlas-radial-field .radial-density-10{display:none}
+body.gig-poster .atlas-radial-field[data-radial-density="10"] .radial-density-5{display:none}
+body.gig-poster .atlas-radial-field[data-radial-density="10"] .radial-density-10{display:block}
+body.gig-poster .radial-ray{stroke:var(--ink);fill:none;vector-effect:non-scaling-stroke}
+body.gig-poster .radial-major{stroke-width:1.55;opacity:.48}
+body.gig-poster .radial-secondary{stroke-width:1.05;opacity:.33}
+body.gig-poster .radial-tertiary{stroke-width:.72;opacity:.23}
+body.gig-poster .radial-fine{stroke-width:.4;opacity:.13}
+body.gig-poster #crateAtlasMap{position:relative;z-index:1}
+/* A single shared print block, 1px internal rules, compact but accessible. */
+body.gig-poster .go-options{gap:0}
+body.gig-poster .go-options .go-extras{border-bottom:1px solid var(--paper);gap:0}
+body.gig-poster .go-options .go-extras .cover-toggle{min-height:94px;padding:12px 12px 10px 18px;grid-template-columns:clamp(22px,3.5cqw,30px) minmax(0,1fr);column-gap:10px;align-content:start}
+body.gig-poster .go-options .go-extras .option-copy{gap:6px}
+body.gig-poster .go-options .go-extras .cover-toggle[aria-pressed=true]::before{content:none}
+body.gig-poster .go-options .go-extras .cover-toggle+ .cover-toggle{border-left:1px solid var(--paper)}
+@media(max-width:360px){
+ body.gig-poster .go-options .go-extras .cover-toggle{min-height:94px;padding:12px 9px 9px 12px;grid-template-columns:22px minmax(0,1fr);column-gap:8px}
+}
