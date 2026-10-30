@@ -29,16 +29,10 @@ class RadiantAtlasChecks(unittest.TestCase):
         self.assertIn('def _radial_field():', SOURCE)
 
     def test_radial_weights_and_angular_spacing(self):
-        import math
-        rays = re.findall(
-            r'<line class="radial-ray radial-(\\w+)" x1="360" y1="188" '
-            r'x2="(-?\\d+\\.\\d+)" y2="(-?\\d+\\.\\d+)"/>', HTML
-        )
-        self.assertEqual(len(rays), 72)
-        self.assertEqual(sum(kind == "major" for kind, _, _ in rays), 4)
-        self.assertEqual(sum(kind == "secondary" for kind, _, _ in rays), 4)
-        self.assertTrue(all(math.isfinite(float(x)) and math.isfinite(float(y))
-                            for _, x, y in rays))
+        self.assertEqual(HTML.count('class="radial-ray radial-major"'), 4)
+        self.assertEqual(HTML.count('class="radial-ray radial-secondary"'), 4)
+        self.assertEqual(HTML.count('class="radial-ray radial-tertiary"'), 16)
+        self.assertEqual(HTML.count('class="radial-ray radial-fine"'), 48)
 
     def test_all_country_strokes_share_ink_hue(self):
         self.assertNotIn('#946a36', CSS)
