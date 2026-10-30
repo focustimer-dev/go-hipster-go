@@ -579,3 +579,55 @@ body.gig-poster .counter-label:has(+.mood-grid){margin-top:12px}
 body.gig-poster .mood-grid{margin-bottom:0;border-top:1px solid var(--ink);padding-top:7px}
 body.gig-poster .mood-hint{margin:4px 0 13px}
 body.gig-poster .mood-hint + .crate-geo{margin-top:0}
+
+/* Dark-ocean engraved plate. Deselect/hover always return to the SAME base ink. */
+body.gig-poster .crate-map-frame{background:var(--ink);border-color:var(--ink)}
+body.gig-poster .crate-robinson{background:var(--ink)}
+body.gig-poster .crate-map-ocean{fill:var(--ink)}
+body.gig-poster .crate-map-zone path,
+body.gig-poster .crate-map-zone[data-selected=false] path{fill:url(#posterLandEngraving);stroke:var(--bone);stroke-width:1.05;vector-effect:non-scaling-stroke}
+body.gig-poster .crate-map-zone:not([data-selected=true]):hover path,
+body.gig-poster .crate-map-zone[data-selected=false]:hover path{fill:url(#posterLandEngraving);stroke:var(--paper);stroke-width:1.65}
+body.gig-poster .crate-map-zone[data-selected=true] path,
+body.gig-poster .crate-map-zone[data-selected=true]:hover path{fill:url(#posterSelectedHalftone);stroke:var(--bone);stroke-width:1.9}
+body.gig-poster .crate-map-zone:focus-visible path{stroke:var(--paper);stroke-width:2.4}
+body.gig-poster .crate-map-grid{stroke:var(--paper);opacity:.23;stroke-width:.6}
+body.gig-poster .chart-rhumbs{stroke:var(--paper);opacity:.18}
+body.gig-poster .chart-routes{stroke:var(--bone);opacity:.4}
+body.gig-poster .chart-details{mix-blend-mode:normal;opacity:.95}
+body.gig-poster .chart-edge{stroke:var(--bone);opacity:.58}
+body.gig-poster .chart-viewport-frame{opacity:1}
+/* The compass belongs to the viewport overlay, not to the pannable SVG. */
+body.gig-poster .chart-compass{stroke:var(--bone);stroke-width:.75;opacity:1;fill:none}
+body.gig-poster .chart-rose-field{fill:var(--ink);stroke:var(--bone);stroke-width:1}
+body.gig-poster .chart-rose-ring{stroke:var(--paper);stroke-width:.9;fill:none}
+body.gig-poster .chart-rose-ring-fine{stroke:var(--bone);stroke-width:.38;opacity:.8;fill:none}
+body.gig-poster .chart-rose-ticks{stroke:var(--bone);stroke-width:.7}
+body.gig-poster .chart-rose-pearls{fill:var(--bone);stroke:none}
+body.gig-poster .chart-rose-flourish{stroke:var(--paper);stroke-width:.55;opacity:.85;fill:none}
+body.gig-poster .chart-rose-blade{fill:var(--paper);stroke:var(--ink);stroke-width:.7}
+body.gig-poster .chart-rose-shadow{fill:var(--ink);stroke:none}
+body.gig-poster .chart-rose-north{fill:var(--selection-vermilion);stroke:none}
+body.gig-poster .chart-rose-fine{fill:var(--bone);stroke:var(--ink);stroke-width:.55}
+body.gig-poster .chart-rose-disc{fill:var(--ink);stroke:var(--paper);stroke-width:.8}
+body.gig-poster .chart-rose-hub-ring{fill:none;stroke:var(--bone);stroke-width:.7}
+body.gig-poster .chart-rose-hub{fill:var(--selection-vermilion);stroke:var(--bone);stroke-width:.6}
+body.gig-poster .chart-rose-crown{fill:var(--selection-vermilion);stroke:var(--bone);stroke-width:.5}
+body.gig-poster .chart-rose-letters{text-anchor:middle;fill:var(--bone);stroke:none;font:bold 7px Georgia,serif;letter-spacing:.3px}
+/* One shared internal grid: identical title and helper text baselines. */
+body.gig-poster .go-options .go-extras{grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch}
+body.gig-poster .go-options .go-extras .cover-toggle{display:grid;grid-template-columns:clamp(22px,3.7cqw,33px) minmax(0,1fr);grid-template-rows:auto;column-gap:clamp(7px,1.4cqw,11px);align-content:start;align-items:start;justify-items:start;min-width:0;min-height:118px;padding:19px clamp(7px,1.8cqw,14px) 15px;text-align:left}
+body.gig-poster .go-options .go-extras .extra-mark{grid-column:1;grid-row:1;align-self:start;justify-self:center;margin:2px 0 0;width:100%;height:auto;max-height:33px}
+body.gig-poster .go-options .go-extras .option-copy{display:grid;grid-column:2;grid-row:1;grid-template-rows:1.25em minmax(2.7em,auto);gap:7px;align-self:start;align-content:start;min-width:0;width:100%}
+body.gig-poster .go-options .go-extras .option-label{align-self:start;line-height:1.1}
+body.gig-poster .go-options .go-extras .option-copy small{align-self:start;line-height:1.38}
+body.gig-poster .go-options .go-extras .cover-toggle+ .cover-toggle{border-left:1px solid var(--paper);border-top:0}
+body.gig-poster .shuffle-controls{align-items:stretch;row-gap:6px}
+body.gig-poster .shuffle-pins{align-items:stretch}
+body.gig-poster #shuffleCrate,body.gig-poster .shuffle-pin{align-self:stretch;min-height:var(--control-hit)}
+@media(max-width:360px){
+ body.gig-poster .go-options .go-extras{grid-template-columns:repeat(2,minmax(0,1fr))}
+ body.gig-poster .go-options .go-extras .cover-toggle{padding:15px 7px 12px;column-gap:6px;grid-template-columns:22px minmax(0,1fr)}
+ body.gig-poster .go-options .option-label,body.gig-poster .go-options #goHard .option-label{font-size:1.14rem}
+ body.gig-poster .go-options .go-extras .option-copy{gap:7px}
+}
