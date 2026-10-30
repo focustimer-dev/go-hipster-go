@@ -1,7 +1,14 @@
 
+<g class="chart-nautical-routes" aria-hidden="true">
+  <path d="M281 158Q329 113 391 155 M270 227Q321 196 379 214 M490 259Q547 279 593 257"/>
+  <circle cx="281" cy="158" r="2"/><circle cx="391" cy="155" r="2"/>
+  <circle cx="270" cy="227" r="2"/><circle cx="379" cy="214" r="2"/>
+  <circle cx="490" cy="259" r="2"/><circle cx="593" cy="257" r="2"/>
+</g>
+
 <g class="chart-details" aria-hidden="true" focusable="false">
 <defs><filter id="chart-gold" color-interpolation-filters="sRGB"><feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -.2126 -.7152 -.0722 0 1"/><feComposite in2="SourceAlpha" operator="in" result="ink-alpha"/><feComponentTransfer in="ink-alpha" result="ink-alpha"><feFuncA type="linear" slope="1.3"/></feComponentTransfer><feFlood flood-color="#edc65d"/><feComposite in2="ink-alpha" operator="in"/></filter><image id="chart-engravings" href="/editions/gig-poster/assets/atlas-engraved-details.png" width="2172" height="724"/></defs>
-<svg x="274" y="147" width="36" height="36" viewBox="0 0 724 724" overflow="hidden"><use href="#chart-engravings" filter="url(#chart-gold)"/></svg>
-<svg x="494" y="277" width="42" height="42" viewBox="724 0 724 724" overflow="hidden"><use href="#chart-engravings" filter="url(#chart-gold)"/></svg>
-<svg x="70" y="265" width="40" height="40" viewBox="1448 0 724 724" overflow="hidden"><use href="#chart-engravings" filter="url(#chart-gold)"/></svg>
+<svg x="281.0" y="154.0" width="22" height="22" viewBox="0 0 724 724" overflow="hidden"><use href="#chart-engravings" filter="url(#chart-gold)"/></svg>
+<svg x="502.0" y="285.0" width="26" height="26" viewBox="724 0 724 724" overflow="hidden"><use href="#chart-engravings" filter="url(#chart-gold)"/></svg>
+<svg x="77.5" y="272.5" width="25" height="25" viewBox="1448 0 724 724" overflow="hidden"><use href="#chart-engravings" filter="url(#chart-gold)"/></svg>
 </g>
