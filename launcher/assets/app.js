@@ -131,6 +131,8 @@ const atlasViews={"world":[0,0,720,372],"americas-north":[40,18,300,190],"americ
 const atlasRadialField=typeof doc.querySelector==="function"?doc.querySelector(".atlas-radial-field"):null;
 const atlasRadialMap=doc.getElementById("crateAtlasMap");
 if(atlasRadialField&&atlasRadialMap){
+ // Design-preview density is optional and does not enter playlist prompts.
+ atlasRadialField.dataset.radialDensity=new URLSearchParams(location.search).get("radials")==="10"?"10":"5";
  const syncRadialBackdrop=()=>{
   const view=(atlasRadialMap.getAttribute("viewBox")||"").trim().split(/\s+/).map(Number);
   atlasRadialField.hidden=!(view.length===4&&view.every((n,i)=>Math.abs(n-[0,0,720,372][i])<.02));
