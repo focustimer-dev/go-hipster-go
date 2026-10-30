@@ -76,6 +76,18 @@ def _graticule():
     return '<g class="crate-map-grid" aria-hidden="true"><path d="' + "".join(lines) + '"/></g>'
 
 
+
+
+def _world_shape():
+    """Closed Robinson boundary including flat poles and bowed side meridians."""
+    points = (
+        [project(lon, 90) for lon in range(-180, 181, 5)]
+        + [project(180, lat) for lat in range(85, -91, -5)]
+        + [project(lon, -90) for lon in range(175, -181, -5)]
+        + [project(-180, lat) for lat in range(-85, 90, 5)]
+    )
+    return "M" + "L".join(f"{x:.1f} {y:.1f}" for x, y in points) + "Z"
+
 def render_robinson(svg):
     # Called on the built illustrated edition, not on canonical source.
     country_count = len(_COUNTRY.findall(svg))
@@ -88,4 +100,27 @@ def render_robinson(svg):
         r'<g class="crate-map-grid" aria-hidden="true">.*?</g>',
         _graticule(), svg, count=1, flags=re.S
     )
+    # Only the Robinson-projected countries should draw map boundaries.
+    # Legacy Mercator zone outlines would otherwise produce ghost landmasses.
+    svg, removed = re.subn(
+        r'<path class="crate-zone-boundaries"[^>]*?/>', '', svg
+    )
+    if removed != 1:
+        raise ValueError(f"Expected one legacy Mercator boundary layer, got {removed}")
+    outline = _world_shape()
+    ocean = (
+        '<defs><clipPath id="robinsonWorldClip">'
+        '<path d="' + outline + '"/></clipPath></defs>'
+        '<path class="crate-map-ocean" d="' + outline + '"/>'
+        '<g class="robinson-plate-content" clip-path="url(#robinsonWorldClip)">'
+    )
+    old_ocean = '<rect class="crate-map-ocean" width="720" height="372"/>'
+    if old_ocean not in svg:
+        raise ValueError("Source ocean rectangle not found")
+    svg = svg.replace(old_ocean, ocean, 1)
+    # All country paths, the graticule and ships are clipped as a single plate.
+    old_end = '</svg><svg class="chart-viewport-frame"'
+    if old_end not in svg:
+        raise ValueError("Fixed overlay must follow the moving SVG")
+    svg = svg.replace(old_end, '</g></svg><svg class="chart-viewport-frame"', 1)
     return svg
