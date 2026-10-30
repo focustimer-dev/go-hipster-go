@@ -128,7 +128,7 @@ const crateRegions=[{"id":"us-west","label":"US West","continent":"americas-nort
 const crateContinents=[{"id":"americas-north","label":"N. America"},{"id":"americas-south","label":"S. America"},{"id":"europe","label":"Europe"},{"id":"africa","label":"Africa"},{"id":"asia","label":"Asia"},{"id":"oceania","label":"Oceania"}];
 const atlasViews={"world":[0,0,720,372],"americas-north":[40,18,300,190],"americas-south":[165,132,183,222],"europe":[296,20,204,175],"africa":[310,83,210,245],"asia":[415,20,267,255],"oceania":[545,165,175,190]};
 // Decorative margin rays must never follow pan/zoom or appear in regional views.
-const atlasRadialField=doc.querySelector(".atlas-radial-field");
+const atlasRadialField=typeof doc.querySelector==="function"?doc.querySelector(".atlas-radial-field"):null;
 const atlasRadialMap=doc.getElementById("crateAtlasMap");
 if(atlasRadialField&&atlasRadialMap){
  const syncRadialBackdrop=()=>{
