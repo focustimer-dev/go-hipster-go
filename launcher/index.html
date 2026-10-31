@@ -45,6 +45,21 @@
     </nav>
   </header>
   <main class="main">
+    <aside class="selection-ticket" id="selectionTicket" aria-label="Current jukebox selections" hidden>
+      <details id="selectionTicketDetails">
+        <summary>
+          <span class="ticket-kicker">YOUR CRATE</span>
+          <span class="ticket-short" id="selectionTicketShort">Surprise · Any pace · Worldwide</span>
+          <span class="ticket-expander" aria-hidden="true"></span>
+        </summary>
+        <div class="ticket-detail">
+          <p id="selectionTicketPair">ChatGPT · Spotify</p>
+          <p id="selectionTicketRegions">CRATES / Worldwide</p>
+          <p id="selectionTicketOptions">ART: OFF · TRY HARD: OFF</p>
+          <button type="button" id="selectionTicketEdit">EDIT CHOICES</button>
+        </div>
+      </details>
+    </aside>
     <aside class="welcome-setup" id="welcomeSetup" aria-label="First-time setup help">
       <details id="welcomeDisclosure">
         <summary>New here? <strong>Start with setup</strong></summary>
@@ -519,7 +534,7 @@
     <section class="receipt" id="promptReceipt" data-copy-state="idle" aria-label="Prompt to send to your AI">
       <div class="receipt-sheet">
       <div class="receipt-top"><span>NO. <span id="receiptCode">GO-001</span></span><span>MOOD / <span id="moodName">SURPRISE</span></span></div>
-      <p class="receipt-copy" id="receiptCopy">REQUEST DRAFT</p>
+      <p class="receipt-copy" id="receiptCopy" hidden></p>
       <p class="receipt-summary" id="receiptSummary">ChatGPT · Spotify · Surprise · 12 tracks</p>
       <p class="receipt-regions" id="receiptRegions">CRATES / Worldwide</p>
       <details id="promptDetails">
