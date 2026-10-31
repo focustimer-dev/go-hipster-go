@@ -60,6 +60,13 @@ mood_end=s.index('    <section class="crate-shuffle"', mood_start)
 mood_strip=s[mood_start:mood_end]
 s=s[:mood_start]+s[mood_end:]
 s=s.replace('    <details class="crate-geo" id="crateGeo" open>',mood_strip+'    <details class="crate-geo" id="crateGeo" open>',1)
+# Lead with mood, then tempo, while keeping the atlas node and geometry untouched.
+tempo_start=s.index('    <div class="tempo-control"')
+mood_start=s.index('    <h2 class="counter-label">WHAT’S THE VIBE?</h2>',tempo_start)
+atlas_start=s.index('    <details class="crate-geo"',mood_start)
+tempo_block=s[tempo_start:mood_start]
+s=s[:tempo_start]+s[mood_start:atlas_start]+tempo_block+s[atlas_start:]
+
 # Reproject all interactive country paths, preserving their country/region IDs.
 s=render_robinson(s)
 s=s.replace('</body>',navigation_script(s)+'</body>',1)

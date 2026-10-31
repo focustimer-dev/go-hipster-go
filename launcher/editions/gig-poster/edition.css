@@ -701,3 +701,21 @@ body.gig-poster #crateAtlasMap.crate-robinson:active{cursor:grabbing}
 body.gig-poster #crateAtlasMap .chart-details{opacity:0;visibility:hidden;transition:opacity 160ms ease-out}
 body.gig-poster #crateAtlasMap[data-details=true] .chart-details{opacity:.95;visibility:visible}
 @media(prefers-reduced-motion:reduce){body.gig-poster #crateAtlasMap .chart-details{transition:none}}
+
+/* Jukebox rhythm pass. The illustrated atlas and its viewport geometry remain unchanged. */
+body.gig-poster[data-page=launch] .refinements>.counter-label{margin-top:4px;padding-top:10px}
+body.gig-poster[data-page=launch] .mood-hint{margin-bottom:10px}
+/* Optional keys are subordinate to the full-width GO action. */
+body.gig-poster[data-page=launch] .go-options .go-extras .cover-toggle{min-height:56px;padding-block:6px}
+body.gig-poster[data-page=launch] .go-options .go-extras .option-copy{gap:2px}
+@media(max-width:360px){
+ body.gig-poster[data-page=launch] .go-options .go-extras .cover-toggle{min-height:56px;padding-top:7px;padding-bottom:7px}
+}
+/* Preserve Shuffle feedback's reserved space while quieting its styling. */
+body.gig-poster[data-page=launch] .crate-shuffle{padding-top:6px;padding-bottom:8px}
+body.gig-poster[data-page=launch] #shuffleCrate{font-size:1.05rem;border-style:dashed}
+/* The same ticket belongs to the receipt's normal paper flow, never a printer overlay. */
+body.gig-poster[data-page=launch] .receipt-ticket-dock{overflow-anchor:none}
+/* Promote the real post-copy action, not the inactive placeholder. */
+body.gig-poster[data-page=launch] .handoff #openAi{width:100%;min-height:54px}
+body.gig-poster[data-page=launch] .handoff #openAi[aria-disabled=false]{font:400 clamp(1.25rem,3.6cqw,1.8rem)/1.2 Poster,sans-serif;letter-spacing:.01em}

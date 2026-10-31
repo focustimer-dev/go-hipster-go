@@ -811,11 +811,13 @@ const ticket=doc.getElementById("selectionTicket");
 if(ticket){
  const firstAiChoice=doc.querySelector(".service-counter .panel");
  const dock=doc.getElementById("receiptTicketDock");
+ const receipt=doc.getElementById("promptReceipt");
  const details=ticket.querySelector("details");
  const site=doc.querySelector(".site");
  function updateSelectionTicketVisibility(){
-  if(!firstAiChoice||!dock||!site)return;
-  const receiptReached=dock.getBoundingClientRect().top<=window.innerHeight-20;
+  if(!firstAiChoice||!dock||!receipt||!site)return;
+  // Stable threshold: moving the ticket must not move the trigger itself.
+  const receiptReached=receipt.getBoundingClientRect().top<=window.innerHeight-88;
   if(receiptReached){
    if(ticket.parentElement!==dock){
     dock.appendChild(ticket);
