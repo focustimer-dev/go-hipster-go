@@ -42,7 +42,7 @@ class RadiantAtlasChecks(unittest.TestCase):
         self.assertIn('.crate-map-ocean{stroke:none!important', CSS)
 
     def test_compact_contiguous_go_controls(self):
-        self.assertIn('min-height:94px', CSS)
+        self.assertIn('min-height:64px', CSS)
         self.assertIn('.go-extras{border-bottom:1px solid var(--paper)', CSS)
         self.assertIn('.cover-toggle[aria-pressed=true]::before{content:none}', CSS)
         self.assertIn('.cover-toggle+ .cover-toggle{border-left:1px solid var(--paper)', CSS)

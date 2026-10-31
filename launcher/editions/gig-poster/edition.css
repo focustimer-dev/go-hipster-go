@@ -673,12 +673,15 @@ body.gig-poster #crateAtlasMap{position:relative;z-index:1}
 /* A single shared print block, 1px internal rules, compact but accessible. */
 body.gig-poster .go-options{gap:0}
 body.gig-poster .go-options .go-extras{border-bottom:1px solid var(--paper);gap:0}
-body.gig-poster .go-options .go-extras .cover-toggle{min-height:94px;padding:12px 12px 10px 18px;grid-template-columns:clamp(22px,3.5cqw,30px) minmax(0,1fr);column-gap:10px;align-content:start}
-body.gig-poster .go-options .go-extras .option-copy{gap:6px}
+body.gig-poster .go-options .go-extras .cover-toggle{min-height:64px;padding:8px 12px 8px 14px;grid-template-columns:clamp(22px,3.5cqw,30px) minmax(0,1fr);column-gap:10px;align-content:start}
+body.gig-poster .go-options .go-extras .option-copy{grid-template-rows:auto auto;gap:3px}
 body.gig-poster .go-options .go-extras .cover-toggle[aria-pressed=true]::before{content:none}
 body.gig-poster .go-options .go-extras .cover-toggle+ .cover-toggle{border-left:1px solid var(--paper)}
 @media(max-width:360px){
- body.gig-poster .go-options .go-extras .cover-toggle{min-height:94px;padding:12px 9px 9px 12px;grid-template-columns:22px minmax(0,1fr);column-gap:8px}
+ body.gig-poster .go-options .go-extras .cover-toggle{min-height:64px;padding:8px 9px 8px 12px;grid-template-columns:22px minmax(0,1fr);column-gap:8px;row-gap:3px}
+ body.gig-poster .go-options .go-extras .option-copy{display:contents}
+ body.gig-poster .go-options .go-extras .option-label{grid-column:2;grid-row:1}
+ body.gig-poster .go-options .go-extras .option-copy small{grid-column:1/-1;grid-row:2}
 }
 
 /* Robinson gestures must own touch movement, just as the old Mercator did. */
