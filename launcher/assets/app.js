@@ -538,10 +538,10 @@ if(welcome){
 // It overlays the station's already-reserved feedback row; no extra controls,
 // user-visible latency, new artwork or second source of selection truth.
 function cancelShuffleMachine(){
- doc.querySelector(".crate-shuffle .shuffle-feedback")?.classList.remove("is-dealing");
+ doc.querySelector?.(".crate-shuffle .shuffle-feedback")?.classList.remove?.("is-dealing");
 }
 function showShuffleMachine(){
- if(body.dataset.page!=="launch"||!body.classList.contains("gig-poster"))return;
+ if(body.dataset.page!=="launch"||!body.classList?.contains?.("gig-poster"))return;
  const feedback=doc.querySelector(".crate-shuffle .shuffle-feedback");
  if(!feedback)return;
  if(typeof window!=="undefined"&&window.matchMedia?.("(prefers-reduced-motion: reduce)").matches){
