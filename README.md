@@ -13,15 +13,22 @@ An open-source **Agent Skill for discovering real, unlikely, surprisingly cohere
 
 **[Open the Jukebox](https://hipster-go.samelling.workers.dev/)** · **[First-time setup: Manual](https://hipster-go.samelling.workers.dev/setup/)**
 
-The mobile-friendly PWA prepares prompts for **ChatGPT, Gemini or Claude** and **Spotify, YouTube Music or Apple Music**. Choose your AI and music service, copy the tailored setup check, then paste and send it in your AI. Once ready, choose a mood and optional tempo, press **GO** to copy a 12-track request, and open your AI to paste and send it.
+The mobile-friendly **Jukebox** assembles a short music-curation request for **ChatGPT, Gemini or Claude** with **Spotify, YouTube Music or Apple Music**. It doesn't play tracks or create playlists by itself; **GO copies the request**, and your selected AI and authorized music service do the actual work.
 
-- Tap a selected mood again for plain `go`. Tempo is an independent pace preference, not a measured BPM filter.
-- The Manual provides setup guidance, current download links and a manual-copy fallback. Compatibility notes depend on your selected pair; selecting a service does not connect it.
-- Add the app to your home screen where your browser supports it. It does not install the skill, submit prompts, play music or publish playlists itself. There is no offline service-worker cache.
+**Your first visit:** Choose your AI and music service. The **FIRST TIME HERE?** ticket offers **SET ME UP** (copy a tailored connection check, open your AI, paste/send, then return) or **I'M ALREADY READY**. The full [Manual](https://hipster-go.samelling.workers.dev/setup/) handles installation and recovery; choosing a service here does not connect it.
+
+**Build a crate:**
+
+- **Mood:** Happy, Angry, Sad, Weird, Criminal or **The Funk**. Leave the mood unselected for a surprise; tap the selected mood again to clear it. Criminal requires *real songs about crime*, not just suspicious-sounding music.
+- **Pace and place:** Slow, Relaxed, Mid, Brisk, Fast or **Any**; optionally choose from **25 listening territories** in the interactive atlas or accessible region controls. No region means worldwide. **Antarctica is strictly opt-in**—never included in worldwide or automatic shuffle. The map uses a primary region per country while honoring documented musical overlaps; [Turkey, Spain and other cases](references/regional-atlas.md#map-regions-and-musical-overlap) are explained in the regional atlas.
+- **Make it yours:** Shuffle the crate's selections; pin **Mood**, **Pace** or **Regions** to hold them during shuffle, and **Undo** a shuffle. **+ ART** requests thematic cover art; **TRY HARD** opts into the [Deep Crate Protocol](references/go-hard.md). Both are optional and off by default.
+- **GO, then hand off:** GO copies the current 12-track request. A floating **YOUR CRATE** selection ticket follows you down the page, then docks **collapsed, with its drop shadow**, into the printed receipt; tap it to expand. After a successful copy, the receipt says **COPIED. NOW OPEN [AI]** and gives the next step. A copied prompt is not a saved playlist.
+
+Add the PWA to your home screen where your browser supports it. It does not install the skill, submit prompts, play music or publish playlists itself; there is no offline service-worker cache.
 
 **Claude + Apple Music requires a compatible MCP connector**, with actual track-search and playlist-writing tools; see the [Claude guide](adapters/claude/README.md#apple-music-requires-a-separate-mcp-connector).
 
-Prefer to work directly in chat? Follow the steps below. The skill defaults to Spotify; the PWA's explicit service choice takes precedence in its prompts. [PWA behavior and maintenance](launcher/README.md).
+Prefer working directly in chat? Follow the steps below. The skill defaults to Spotify; an explicit PWA service choice takes precedence. For implementation and maintenance details, see the [PWA guide](launcher/README.md). The [skill](SKILL.md) and [plugin manifest](plugin.json) are authoritative for the current source version; previously installed ZIPs or saved skills do **not** auto-update from GitHub.
 
 ## Start here — load, setup, go
 
@@ -88,18 +95,21 @@ Modifiers shape the **sound**, not just a genre label. Combine moods, speeds and
 | --- | --- |
 | `go` | 12-track sonic surprise; attempt to publish |
 | `go weird` | Stranger, still musically defensible connections |
+| `go funky` | Syncopated, elastic grooves and interlocking ensemble parts |
+| `go criminal` | Verified crime narratives, often from non-English regional scenes |
 | `go fast angry` | Rhythmic propulsion with bite |
 | `go chill` | Warm, easy listening—not necessarily slow |
 | `go sad` | Melancholy and yearning without compulsory ballads |
 | `go sad fast` | Cathartic music with some forward momentum |
 | `go weird slow` | Patient, hypnotic strangeness |
 | `go hard` / `go funky hard` | Opt in to deeper verified discovery, competing sequences, and critical transition edits; still 12 tracks by default |
+| `go antarctica` | Explicitly opt into Antarctica's thematic route; never included by default or random selection |
 | `go short` / `go long` | 6 / 24 tracks |
 | `go fast 30` | 30 tracks with the requested energy |
 | `go, text only` | Curate without attempting a streaming write |
 | `less snark` | Reduce the curator's entirely unearned superiority |
 
-An explicit count overrides the ordinary length default; **50 tracks is a soft quality target, not a platform limit**. If the host returns fewer than requested, it should disclose the difference rather than quietly congratulating itself.
+PWA **+ ART** and **TRY HARD** are opt-ins; their actual music selection and cover-art workflows run in the installed skill, not in the PWA. An explicit count overrides the ordinary length default; **50 tracks is a soft quality target, not a platform limit**. If the host returns fewer than requested, it should disclose the difference rather than quietly congratulating itself.
 
 Or go beyond the shorthand:
 
@@ -124,8 +134,10 @@ Setup does **not** generate a playlist. It won't store your preferences outside 
 ## What you're installing
 
 - **Sonic-first discovery.** **Era + audible texture/production + geographic scene + microgenre**. The [expanded research map](references/global-scenes.md) now explores Lao/Saigon archives, qawwali, Indigenous rock, Memphis rap/sigilkore, Indonesian punk, non-English psychedelia and nonbinary country—without quotas or stereotypes. Being obscure on the same continent is not a musical bridge.
+- **Regions with provenance.** The [regional atlas](references/regional-atlas.md) separates a primary *map listening territory* from authentic cross-border scenes. Spain's Atlantic routes and Turkey's Balkan connections aren't invitations to discard your selected geography. Antarctica is an explicit-only thematic exception, not a spontaneous country shuffle.
 - **Real songs.** Verify artist, recording, version and catalog availability instead of inventing remarkably convenient B-sides.
-- **Actual sequencing.** An intentional listening arc and a concrete musical reason for each track.
+- **Actual sequencing.** An intentional listening arc and a concrete musical reason for each track. Optional **GO HARD** adds wider candidate verification and alternative orderings; ordinary GO remains the faster path.
+- **Optional sleeve art.** A requested cover uses the installed skill's cover-art workflow; the PWA only copies the request.
 - **Honest publishing.** A connected account is not necessarily an exposed playlist-writing tool; the skill distinguishes curation from provider-confirmed saving.
 - **An insufferable curator.** Snark, passive aggression and extravagantly unearned confidence—with evidence-based music research underneath. Even this clerk knows not to mock someone who is genuinely hurting. Say `less snark` if you insist.
 
@@ -158,7 +170,8 @@ If ordinary GitHub loading doesn't persist, use [Plugin Creator](adapters/chatgp
 
 A user successfully asked Gemini to load this GitHub skill and then invoked YouTube Music to generate a playlist. The observation doesn't establish a persistent GitHub-based install across chats.
 
-To attempt repository installation through Gemini, **select Task mode beneath the prompt before sending the installation request**; confirm the agent truly saved a persistent Skill, rather than just reading GitHub. If that fails, open **Gemini desktop or mobile web**, not the native app, for ZIP upload. If the agent cannot load or retain it, **[download the ready-to-upload Gemini Skill ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip)** and use **Gemini web (desktop or mobile browser) → Customize → Skills → Create → Upload**, not the native Gemini app. No terminal or file-building step needed. Maintainers can still generate the ZIP with `python scripts/build_agent_packages.py --zip`. Uploaded skills don't auto-sync from GitHub. See the [Gemini guide](adapters/gemini/README.md) and [Android test cases](adapters/gemini/MOBILE_SMOKE_TEST.md). Gemini CLI is a separate installation path.
+To try persistent installation in Gemini, ask it to create and save the [small Gemini entry skill](adapters/gemini/SKILL.md), then **verify it appears under Customize → Skills and is selectable in a new chat**. Reading this repository once is not installation; there is no special **Task mode** requirement for this setup. If the entry method cannot save a working skill or read its linked references, **[download the complete Gemini Skill ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip)** and upload it through **Gemini web (desktop or mobile browser) → Customize → Skills → Create → Upload** (or Replace). The native app may not offer the uploader. No terminal or manual ZIP construction is necessary. GitHub commits do not refresh existing installed skills. See the [current Gemini guide](adapters/gemini/README.md) and [Android smoke tests](adapters/gemini/MOBILE_SMOKE_TEST.md). Gemini CLI has its own installation path.
+
 **Package names:** Official release downloads use only `go-hipster-go-` filenames (Gemini Skill, Claude Skill, Claude Plugin, ChatGPT Plugin). Former `hipster-music-generator-` ZIP aliases are retired to prevent choosing the wrong file; use the latest release links above.
 
 
@@ -217,7 +230,7 @@ These are **listener-reported tests from October 16–17, 2026**, not guaranteed
 
 **Claude detail:** Neither persisted in Spotify; **zero saved playlists were confirmed** in that test. A later attempt returned a Premium-required error. The listener's actual subscription tier was not independently verified. See [Claude guidance](adapters/claude/README.md).
 
-**Gemini v3.7.0:** Plain `go` again means curation **and an attempt to create a playable YouTube Music playlist**. The Skill preserves the original verified tracklist, reports provider substitutions as approximations and labels failures clearly. The previous curate-only default and Jukebox checkbox have been retired; `go, text only` is an explicit troubleshooting override. Gemini Skill ZIPs must be updated to v3.7.0.
+**Current source behavior:** For Gemini + YouTube Music, plain `go` means curation **and an attempt to create one playable playlist** when an authorized writer exists. The installed skill preserves its originally curated list, reports provider substitutions as **approximate**, and labels failures clearly; a generated playlist card is not proof that the playlist was saved to the library. The previous curate-only Jukebox checkbox is retired. `go, text only` remains an explicit opt-out. **Check your installed Gemini Skill version against the repository's [canonical SKILL.md](SKILL.md)**; uploaded skill ZIPs do not refresh automatically.
 
 **Gemini detail:** A separate twelve-track curation gave an incorrect ChatGPT-style composer instruction. That guidance was corrected but has not been retested. See [Gemini guidance](adapters/gemini/README.md).
 
@@ -237,6 +250,8 @@ The personal plugin has also sometimes displayed a generic icon despite packaged
 See the [full changelog](CHANGELOG.md) for dates and version-specific detail. The major lines of work are:
 
 - **First-run preferences:** conversational `setup`, revisitable provider choices, and honest session-only versus persistent settings.
+- **Jukebox onboarding:** one-time setup ticket, compact clipboard-to-AI handoff, returning-user "NO REFUNDS" stamp, and floating selection receipt with a collapsed paper dock.
+- **Crate controls:** six moods including The Funk and Criminal, tempo/Any, regional atlas, constrained shuffle/pins/Undo, optional + ART and TRY HARD, and deliberate-only Antarctica.
 - **Claude and Meta Muse:** platform-specific onboarding, native Spotify connector guidance and conservative cross-conversation skill persistence claims.
 - **Musical discovery:** wider scene taxonomy, track-level sonic bridges, authentic recordings and feedback-driven adjustments.
 - **Publishing handoff:** one-command intent, capability preflight and faithful recovery of already-curated lists.
@@ -257,6 +272,8 @@ Implemented instructions aren't the same as demonstrated cross-host publishing o
 | [`SKILL.md`](SKILL.md) | Canonical music-curation skill |
 | [`skills/setup/SKILL.md`](skills/setup/SKILL.md) | Service discovery and revisitable listener setup |
 | [`references/global-scenes.md`](references/global-scenes.md) | Scene and geography research |
+| [`references/regional-atlas.md`](references/regional-atlas.md) | 25 territory lookups, cross-region provenance, and research routes |
+| [`references/go-hard.md`](references/go-hard.md) | Optional Deep Crate Protocol |
 | [`references/sonic-taxonomy.md`](references/sonic-taxonomy.md) | Audible production and era map |
 | [`references/verification.md`](references/verification.md) | Recording versus streaming versus saved-playlist evidence |
 | [`schemas/playlist.schema.json`](schemas/playlist.schema.json) | Portable JSON playlist schema |
