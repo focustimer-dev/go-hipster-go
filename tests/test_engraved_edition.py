@@ -42,7 +42,7 @@ class EngravedEditionChecks(unittest.TestCase):
         self.assertIn('parent.insertBefore(layer,engraving.nextSibling)',script)
         self.assertIn('validCrateRegions.has(id)&&!crateSelected.has(id)',script)
         self.assertIn("updateCrateMap();",script)
-        self.assertIn('aria-hidden","true"',script)
+        self.assertIn('"aria-hidden":"true"',script)
         self.assertIn('tabindex",visible?"0":"-1"',script)
         self.assertIn('event.key==="Escape"',script)
         self.assertIn('event.key==="Enter"||event.key===" "',script)
