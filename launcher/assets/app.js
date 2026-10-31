@@ -836,6 +836,46 @@ function installAtlasSecrets(){
   }
   return d;
  };
+ // The Pacific occupies both outside edges of the Robinson plate. Calculate
+ // a short great-circle corridor, split precisely at the antimeridian,
+ // and render two separate subpaths: never draw a false line across Eurasia.
+ // This is illustrative navigation, not a live or historical vessel track.
+ const greatCirclePacific=()=>{
+  const rad=Math.PI/180,deg=180/Math.PI;
+  const unit=([lon,lat])=>{
+   const a=lon*rad,b=lat*rad;
+   return [Math.cos(b)*Math.cos(a),Math.cos(b)*Math.sin(a),Math.sin(b)];
+  };
+  const start=unit([113.62,22.78]),end=unit([-118.20,33.77]);
+  const dot=start.reduce((v,n,i)=>v+n*end[i],0);
+  const angle=Math.acos(Math.max(-1,Math.min(1,dot)));
+  const pointAt=t=>{
+   const w1=Math.sin((1-t)*angle)/Math.sin(angle),w2=Math.sin(t*angle)/Math.sin(angle);
+   const v=start.map((n,i)=>n*w1+end[i]*w2);
+   return [Math.atan2(v[1],v[0])*deg,Math.atan2(v[2],Math.hypot(v[0],v[1]))*deg];
+  };
+  const legs=[[]];let seamLat=null,previous=null;
+  for(let i=0;i<=72;i++){
+   const point=pointAt(i/72);
+   if(previous&&previous[0]>150&&point[0]<-150){
+    const crossed=point[0]+360;
+    const fraction=(180-previous[0])/(crossed-previous[0]);
+    seamLat=previous[1]+fraction*(point[1]-previous[1]);
+    legs[0].push([180,seamLat]);
+    legs.push([[-180,seamLat]]);
+   }
+   legs[legs.length-1].push(point);
+   previous=point;
+  }
+  if(legs.length!==2||!Number.isFinite(seamLat))return null;
+  const fmt=n=>Number(n.toFixed(1));
+  const path=legs.map(leg=>leg.map((coord,i)=>{
+   const [x,y]=projectPort(coord);
+   return (i?"L":"M")+fmt(x)+" "+fmt(y);
+  }).join("")).join(" ");
+  return {path,seamLat,origin:[113.62,22.78],destination:[-118.20,33.77]};
+ };
+ const pacific=greatCirclePacific();
  const routeParts=routePlans.map(route=>chartPath(route.waypoints));
  routePath.setAttribute("d",routeParts.join(" "));
  // Keep the printed dots attached to the same, now correct, route endpoints.
@@ -851,6 +891,21 @@ function installAtlasSecrets(){
   for(const [key,value] of Object.entries(attrs))node.setAttribute(key,String(value));
   return node;
  };
+ if(pacific){
+  // Both halves share one discovery target. Continue at the map edge with
+  // paired ink dots instead of inventing new ships or changing the projection.
+  routeParts.push(pacific.path);
+  const decor=svg("path",{d:pacific.path,class:"atlas-pacific-crossing"});
+  routePath.parentNode.insertBefore(decor,routePath.nextSibling);
+  for(const lon of [179.4,-179.4]){
+   const [x,y]=projectPort([lon,pacific.seamLat]);
+   routePath.parentNode.appendChild(svg("circle",{cx:x.toFixed(1),cy:y.toFixed(1),r:2.6,class:"atlas-pacific-seam"}));
+  }
+  for(const point of [pacific.origin,pacific.destination]){
+   const [x,y]=projectPort(point);
+   routePath.parentNode.appendChild(svg("circle",{cx:x.toFixed(1),cy:y.toFixed(1),r:2.1,class:"atlas-pacific-port"}));
+  }
+ }
  const secrets=[
   {id:"atlantic-crossing",kind:"route",title:"THE ATLANTIC CROSSING",
    eyebrow:"CONTRABAND ROUTE",body:"Georgetown to Dakar, via the Atlantic. Compare interlocking guitars and voices from Northern South America and West Africa; verify every recording's actual origin. This is an illustrative listening passage, not a documented historical trade itinerary.",
@@ -861,6 +916,9 @@ function installAtlasSecrets(){
   {id:"indian-ocean",kind:"route",title:"THE LONG WAY ROUND",
    eyebrow:"CONTRABAND ROUTE",body:"Mombasa to Mumbai, across the Indian Ocean. Put East Africa beside South Asia and hear different responses to the same percussion question. The ports locate the listening passage, not a verified historical music route.",
    regions:["east-africa","south-asia"],path:routeParts[2]},
+  {id:"pacific-handoff",kind:"route",title:"THE PACIFIC HANDOFF",
+   eyebrow:"CONTRABAND ROUTE · DATE LINE",body:"Guangzhou to Long Beach, east across the Pacific. The dashed line vanishes at the right edge of the chart and picks up again on the left. A great-circle sketch, not a published ship itinerary. Listen for two Pacific-facing scenes and verify the tracks.",
+   regions:["east-asia","us-west"],path:pacific?.path},
   {id:"unlicensed-vessel",kind:"ship",title:"THE UNLICENSED VESSEL",
    eyebrow:"PORT AUTHORITY NOTICE",body:"The manifest lists twelve records, three unreliable dates, and a suspiciously confident claim of first pressing. The clerk has requested evidence.",art:0},
   {id:"serpent",kind:"monster",title:"UNVERIFIED SIGHTING",
@@ -875,6 +933,7 @@ function installAtlasSecrets(){
  const layer=svg("g",{class:"atlas-secrets-layer","aria-hidden":"true"});
  const hotspots=[];
  for(const secret of secrets){
+  if(secret.kind==="route"&&!secret.path)continue;
   const g=svg("g",{class:"atlas-secret-hotspot","data-secret":secret.id,
    role:"button",tabindex:"-1","aria-label":"Discover: "+secret.title});
   let target;
