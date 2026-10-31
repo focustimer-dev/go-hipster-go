@@ -24,7 +24,7 @@ class EngravedEditionChecks(unittest.TestCase):
         self.assertIn('id="crateAtlasMap"',index)
         self.assertIn('id="atlasHome"',index)
 
-    def test_atlas_secrets_are_zoom_gated_and_non_destructive(self):
+    def test_atlas_secrets_are_zoom_gated_and_route_picks_replace_regions(self):
         script=(ROOT/"launcher/assets/app.js").read_text()
         css=(BASE/"edition.css").read_text()
         generated=(BASE/"index.html").read_text()
@@ -58,6 +58,19 @@ class EngravedEditionChecks(unittest.TestCase):
         self.assertIn('data-secret",',script.replace('"data-secret":', 'data-secret",', 1))
         self.assertIn('id:"pacific-handoff"',script)
         self.assertIn('regions:["east-asia","us-west"]',script)
+        # The last planned route is Plymouth -> Halifax -> San Juan, with two
+        # Atlantic legs and precisely three existing region IDs.
+        self.assertIn('const westboundLegs=[',script)
+        self.assertIn('[-4.14,50.37]',script)
+        self.assertIn('[-63.57,44.65]',script)
+        self.assertIn('[-66.11,18.46]',script)
+        self.assertIn('westboundLegs.map(chartPath).join(" ")',script)
+        self.assertIn('id:"westbound-manifest"',script)
+        self.assertIn('regions:["atlantic-europe","canada-east","caribbean"]',script)
+        self.assertIn('class:"atlas-westbound-crossing"',script)
+        self.assertIn('class:"atlas-westbound-port"',script)
+        self.assertIn('.atlas-westbound-crossing',css)
+        self.assertIn('.atlas-westbound-port',css)
         self.assertIn('.atlas-pacific-crossing',css)
         self.assertIn('.atlas-pacific-seam',css)
 
@@ -71,7 +84,13 @@ class EngravedEditionChecks(unittest.TestCase):
         self.assertIn('.atlas-secret-route-highlight',css)
         self.assertIn('stroke-width:22;pointer-events:stroke',css)
         self.assertIn('parent.insertBefore(layer,engraving.nextSibling)',script)
-        self.assertIn('validCrateRegions.has(id)&&!crateSelected.has(id)',script)
+        # Picking a route replaces manual and previous-route regions outright.
+        self.assertIn('action.textContent="PICK THESE REGIONS"',script)
+        self.assertIn('crateSelected.clear();',script)
+        self.assertIn('const picked=[...new Set(active.regions)].filter(id=>validCrateRegions.has(id))',script)
+        self.assertIn('for(const id of picked)crateSelected.add(id)',script)
+        self.assertIn('action.textContent=same?"ALREADY PICKED":"REGIONS PICKED"',script)
+        self.assertNotIn('ADD THESE REGIONS',script)
         self.assertIn("updateCrateMap();",script)
         self.assertIn('"aria-hidden":"true"',script)
         self.assertIn('tabindex",visible?"0":"-1"',script)
