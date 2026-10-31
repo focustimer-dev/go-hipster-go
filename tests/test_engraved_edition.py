@@ -34,8 +34,12 @@ class EngravedEditionChecks(unittest.TestCase):
                        'prefers-reduced-motion: reduce', 'aria-hidden","true"'):
             self.assertIn(marker,script)
         self.assertIn("showShuffleMachine();",script)
-        self.assertIn("animation:shuffle-index-card",css)
-        self.assertIn(".shuffle-machine-reel[data-locked=true]",css)
+        self.assertIn("animation:shuffle-index-draw",css)
+        self.assertIn("animation:shuffle-handoff-status",css)
+        self.assertIn("shuffle-machine-reel[data-locked=true]",css)
+        self.assertIn("display:none;animation:none!important",css)
+        self.assertIn("shuffleMachineRegionLabel()",script)
+
         self.assertIn("@media(prefers-reduced-motion:reduce)",css)
         self.assertIn("position:absolute;inset:0 0 auto;height:var(--control-hit)",css)
         # The real music UI and canonical lever/pin artwork remain unchanged.
