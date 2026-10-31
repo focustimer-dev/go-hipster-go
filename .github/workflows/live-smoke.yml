@@ -1,6 +1,9 @@
 name: Live release smoke
 # The Worker deploy is separate from GitHub pushes. Run after a confirmed deploy.
 on:
+  push:
+    branches: [deploy/hipster-go-20261031-merge81]
+    paths: [.github/workflows/live-smoke.yml]
   workflow_dispatch:
     inputs:
       expected_commit:
@@ -25,7 +28,7 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - name: Verify the live release
         env:
-          EXPECTED_COMMIT: ${{ inputs.expected_commit || github.sha }}
+          EXPECTED_COMMIT: 89e82be96b1a5ec2a15bcb1fdaf5ce3f4ebe485f
         run: node scripts/smoke_live.mjs --expected-commit "$EXPECTED_COMMIT"
       - uses: actions/upload-artifact@v4
         if: failure()
