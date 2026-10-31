@@ -700,20 +700,32 @@ body.gig-poster[data-page=launch] .selection-ticket{
 }
 body.gig-poster[data-page=launch] .selection-ticket[hidden]{display:none!important}
 body.gig-poster .selection-ticket summary{
-  display:flex;align-items:center;gap:9px;min-height:44px;
+  display:grid;grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;gap:3px 8px;min-height:66px;
   padding:8px 12px;list-style:none;cursor:pointer;
 }
 body.gig-poster .selection-ticket summary::-webkit-details-marker{display:none}
 body.gig-poster .selection-ticket .ticket-kicker{
-  flex:none;font:700 .68rem/1.2 'Courier New',monospace;
-  letter-spacing:.04em;white-space:nowrap;
+  grid-column:1;grid-row:1;
+  font:700 .66rem/1.2 'Courier New',monospace;
+  letter-spacing:.05em;white-space:nowrap;
+}
+body.gig-poster .selection-ticket .ticket-brief{
+  grid-column:1;grid-row:2;min-width:0;
+  display:flex;flex-direction:column;gap:2px;
 }
 body.gig-poster .selection-ticket .ticket-short{
-  flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
-  font:400 clamp(1rem,3.8vw,1.26rem)/1.2 Poster,sans-serif;
+  display:block;min-width:0;white-space:normal;overflow-wrap:break-word;
+  font:400 clamp(1.05rem,3.8vw,1.26rem)/1.12 Poster,sans-serif;
+}
+body.gig-poster .selection-ticket .ticket-region-short{
+  display:block;min-width:0;overflow-wrap:anywhere;
+  font:700 clamp(.68rem,2.6vw,.78rem)/1.32 'Courier New',monospace;
+  letter-spacing:-.015em;
 }
 body.gig-poster .selection-ticket .ticket-expander{
-  flex:none;font:700 1.2rem/1 'Courier New',monospace;
+  grid-column:2;grid-row:1 / span 2;justify-self:end;
+  font:700 1.2rem/1 'Courier New',monospace;
 }
 body.gig-poster .selection-ticket .ticket-expander::before{content:'+'}
 body.gig-poster .selection-ticket details[open] .ticket-expander::before{content:'−'}
@@ -734,9 +746,10 @@ body.gig-poster .selection-ticket button:focus-visible{
 /* No blank pre-copy stamp: the successful-copy ink and paper-feed animations remain. */
 body.gig-poster[data-page=launch] #receiptCopy[hidden]{display:none!important}
 @media(max-width:390px){
-  body.gig-poster .selection-ticket summary{gap:7px;padding-inline:9px}
-  body.gig-poster .selection-ticket .ticket-kicker{font-size:.6rem}
-  body.gig-poster .selection-ticket .ticket-short{font-size:1rem}
+  body.gig-poster .selection-ticket summary{gap:2px 6px;padding-inline:9px}
+  body.gig-poster .selection-ticket .ticket-kicker{font-size:.63rem}
+  body.gig-poster .selection-ticket .ticket-short{font-size:1.05rem}
+  body.gig-poster .selection-ticket .ticket-region-short{font-size:.69rem}
 }
 @media(prefers-reduced-motion:reduce){
   body.gig-poster .selection-ticket{scroll-behavior:auto}
