@@ -5,6 +5,8 @@ edition is reprojected; existing button, continent, and country selectors remain
 Coordinates in the source use x=2*(longitude+180), y=235.5-116*Mercator(lat).
 """
 import math
+import json
+from pathlib import Path
 import re
 
 # Snyder/Robinson tabulated coefficients at five-degree latitude intervals.
@@ -117,12 +119,30 @@ def _radial_field():
     )
 
 
+def _complete_polar_coasts(svg):
+    """Recover coastlines lost by the source Mercator latitude crop."""
+    data = json.loads((Path(__file__).resolve().parents[1] / 'assets/polar-coastlines.geojson').read_text())
+    for feature in data['features']:
+        name = feature['properties']['name']
+        geometry = feature['geometry']
+        polygons = geometry['coordinates'] if geometry['type'] == 'MultiPolygon' else [geometry['coordinates']]
+        d = ''.join('M' + 'L'.join(f'{x:.1f} {y:.1f}' for x,y in (project(lon,lat) for lon,lat in ring)) + 'Z'
+                    for polygon in polygons for ring in polygon)
+        code = 'GRL' if name == 'Greenland' else 'ATA'
+        pattern = r'(<path d=")[^"]+("(?=[^>]*data-atlas-country="' + code + r'"))'
+        svg, count = re.subn(pattern, lambda m: m.group(1)+d+m.group(2), svg)
+        if count != 1:
+            raise ValueError(f'Expected one {name} coastline, got {count}')
+    return svg
+
+
 def render_robinson(svg):
     # Called on the built illustrated edition, not on canonical source.
     country_count = len(_COUNTRY.findall(svg))
     if country_count < 175:
         raise ValueError(f"Expected all country paths; found {country_count}")
     svg = _COUNTRY.sub(lambda m: m.group(1) + _path(m.group(2)) + m.group(3), svg)
+    svg = _complete_polar_coasts(svg)
     svg = svg.replace('class="crate-mercator"', 'class="crate-robinson"', 1)
     svg = svg.replace("MERCATOR · 75°N TO 57°S", "ROBINSON · WORLD LISTENING ATLAS")
     svg = re.sub(

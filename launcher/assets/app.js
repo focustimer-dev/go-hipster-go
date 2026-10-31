@@ -46,14 +46,15 @@ function setupPrompt(ai,service){
  const name=aiNames[ai],target=serviceNames[service];
  const intro=ai==="chatgpt"?"In ChatGPT, check for the Go, Hipster, Go! plugin/app.":ai==="gemini"?"In Gemini, check for the saved go-hipster-go Skill (not a Gem).":"In Claude, check for the Go, Hipster, Go! skill or plugin.";
  const install=ai==="gemini"?"If missing, create and save a persistent Skill from the complete small entry at https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/adapters/gemini/SKILL.md using your native skill-creation capability. Preserve its instructions and absolute reference links without summarizing. Save only the entry now: do not fetch its references, crawl the repository, download or extract ZIPs, create folders, or start a scheduled task. The linked references are read on demand when the skill runs; they are not attached local files. If saving is unavailable, stop and give the complete ZIP upload route: Gemini in a desktop or mobile WEB BROWSER → Customize → Skills → Create → Upload https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip. Do not direct me to upload the ZIP inside the native Gemini app.":ai==="claude"?"If missing, identify whether I need Claude's Skills ZIP or Plugins ZIP; they are different.":"If missing, use the available app/skill installation flow or show how to install from the project's GitHub repository.";
- return "FIRST-TIME SETUP CHECK for "+name+" + "+target+".\n"+intro+" "+install+" Source: "+repo+(ai==="gemini"?"\nVerify version 3.7.2 and report the actual saved Skill result. Reading a URL is not installation. Do not claim reference attachment or persistence without evidence; confirm selection in a new chat. Do not run GO during installation.":"")+
+ return "FIRST-TIME SETUP CHECK for "+name+" + "+target+".\n"+intro+" "+install+" Source: "+repo+(ai==="gemini"?"\nVerify version 3.8.0 and report the actual saved Skill result. Reading a URL is not installation. Do not claim reference attachment or persistence without evidence; confirm selection in a new chat. Do not run GO during installation.":"")+
  (ai==="chatgpt"&&service==="apple"?"\nConnect Apple Music through ChatGPT Settings → Apps, then select both Apple Music and Go, Hipster, Go! in this conversation. Search and playlist generation do not require an Apple Music subscription; saving to the library does. Recognize the app’s playlist widget and user-operated save control as a supported path, even without a direct playlist-writing tool. Explain Create playlist in Apple Music when that control is offered. Do not require a subscription just to finish discovery setup or assume access to my library or listening history.":"")+
  (ai==="claude"&&service==="apple"?"\nApple Music requires a compatible MCP connector: local for Desktop or hosted for web/mobile. Check which Claude app I use and help me connect it if missing. Verify catalog track search, playlist creation and adding tracks; library-only search may not find new recordings.":"")+
  "\nIf the skill is available, run its setup for "+target+", guide me through connecting or selecting that music service, and CHECK whether playlist creation and adding tracks are actually supported—not just search/playback. Tell me the smallest action needed to finish setup. If everything is already ready, say so and tell me to run go. Do NOT generate a new playlist during this setup check, claim a playlist was saved, or ask me to paste credentials into chat.";
 }
 const universalPrompt=setupPrompt("gemini","youtube");
 function goCommand(ai,service,mood){
- const go=(mood==="go"?"go":"go "+mood)+(goHard?" hard":"");
+ const antarctica=crateSelected.has("antarctica");
+ const go=(antarctica?"go antarctica"+(mood==="go"?"":" "+mood):mood==="go"?"go":"go "+mood)+(goHard?" hard":"");
  // Text mentions express routing intent; the host may require selecting suggestions.
  const musicMention=serviceNames[service];
  return "@go-hipster-go @"+musicMention+" "+go;
@@ -124,11 +125,11 @@ function goPrompt(ai,service,mood){
  return parts.join("\n");
 }
 
-const crateRegions=[{"id":"us-west","label":"US West","continent":"americas-north"},{"id":"us-east","label":"US East","continent":"americas-north"},{"id":"canada-west","label":"Canada West","continent":"americas-north"},{"id":"canada-east","label":"Canada East","continent":"americas-north"},{"id":"mexico","label":"Mexico","continent":"americas-north"},{"id":"central-america","label":"Central America","continent":"americas-north"},{"id":"caribbean","label":"Caribbean","continent":"americas-north"},{"id":"northern-south-america","label":"Northern South America","continent":"americas-south"},{"id":"southern-south-america","label":"Southern South America","continent":"americas-south"},{"id":"atlantic-europe","label":"Atlantic & Western Europe","continent":"europe"},{"id":"mediterranean-europe","label":"Mediterranean & Balkans","continent":"europe"},{"id":"northern-europe","label":"Northern Europe","continent":"europe"},{"id":"eastern-europe","label":"Eastern Europe","continent":"europe"},{"id":"north-africa","label":"North Africa","continent":"africa"},{"id":"west-africa","label":"West Africa","continent":"africa"},{"id":"east-africa","label":"East Africa","continent":"africa"},{"id":"central-southern-africa","label":"Central & Southern Africa","continent":"africa"},{"id":"middle-east","label":"Middle East & Caucasus","continent":"asia"},{"id":"central-asia","label":"Central Asia","continent":"asia"},{"id":"south-asia","label":"South Asia","continent":"asia"},{"id":"east-asia","label":"East Asia","continent":"asia"},{"id":"southeast-asia","label":"Southeast Asia","continent":"asia"},{"id":"northern-asia","label":"Northern Asia","continent":"asia"},{"id":"oceania","label":"Oceania","continent":"oceania"}];
-const crateContinents=[{"id":"americas-north","label":"N. America"},{"id":"americas-south","label":"S. America"},{"id":"europe","label":"Europe"},{"id":"africa","label":"Africa"},{"id":"asia","label":"Asia"},{"id":"oceania","label":"Oceania"}];
-const atlasViews={"world":[0,0,720,372],"americas-north":[40,18,300,190],"americas-south":[165,132,183,222],"europe":[296,20,204,175],"africa":[310,83,210,245],"asia":[415,20,267,255],"oceania":[545,165,175,190]};
+const crateRegions=[{"id":"us-west","label":"US West","continent":"americas-north"},{"id":"us-east","label":"US East","continent":"americas-north"},{"id":"canada-west","label":"Canada West","continent":"americas-north"},{"id":"canada-east","label":"Canada East","continent":"americas-north"},{"id":"mexico","label":"Mexico","continent":"americas-north"},{"id":"central-america","label":"Central America","continent":"americas-north"},{"id":"caribbean","label":"Caribbean","continent":"americas-north"},{"id":"northern-south-america","label":"Northern South America","continent":"americas-south"},{"id":"southern-south-america","label":"Southern South America","continent":"americas-south"},{"id":"atlantic-europe","label":"Atlantic & Western Europe","continent":"europe"},{"id":"mediterranean-europe","label":"Mediterranean & Balkans","continent":"europe"},{"id":"northern-europe","label":"Northern Europe","continent":"europe"},{"id":"eastern-europe","label":"Eastern Europe","continent":"europe"},{"id":"north-africa","label":"North Africa","continent":"africa"},{"id":"west-africa","label":"West Africa","continent":"africa"},{"id":"east-africa","label":"East Africa","continent":"africa"},{"id":"central-southern-africa","label":"Central & Southern Africa","continent":"africa"},{"id":"middle-east","label":"Middle East & Caucasus","continent":"asia"},{"id":"central-asia","label":"Central Asia","continent":"asia"},{"id":"south-asia","label":"South Asia","continent":"asia"},{"id":"east-asia","label":"East Asia","continent":"asia"},{"id":"southeast-asia","label":"Southeast Asia","continent":"asia"},{"id":"northern-asia","label":"Northern Asia","continent":"asia"},{"id":"oceania","label":"Oceania","continent":"oceania"},{"id":"antarctica","label":"Antarctica","continent":"antarctica"}];
+const crateContinents=[{"id":"americas-north","label":"N. America"},{"id":"americas-south","label":"S. America"},{"id":"europe","label":"Europe"},{"id":"africa","label":"Africa"},{"id":"asia","label":"Asia"},{"id":"oceania","label":"Oceania"},{"id":"antarctica","label":"Antarctica"}];
+const atlasViews={"world":[0,0,720,372],"americas-north":[40,18,300,190],"americas-south":[165,132,183,222],"europe":[296,20,204,175],"africa":[310,83,210,245],"asia":[415,20,267,255],"oceania":[545,165,175,190],"antarctica":[180,186,360,186]};
 // Robinson focus boxes use projected geography, not the old Mercator extents.
-const atlasRobinsonViews={world:[0,0,720,372],"americas-north":[57,26,304,158],"americas-south":[192,145,120,172],europe:[298,30,174,100],africa:[312,94,180,208],asia:[403,25,240,198],oceania:[555,179,145,117]};
+const atlasRobinsonViews={world:[0,0,720,372],"americas-north":[48,18,312,174],"americas-south":[192,145,120,172],europe:[298,30,174,100],africa:[312,94,180,208],asia:[403,25,240,198],oceania:[555,179,145,117],antarctica:[180,186,360,186]};
 const atlasLandAnchors=[];
 const atlasRegionShapes=[];
 function warmAtlasArtwork(){
@@ -157,7 +158,7 @@ if(atlasRadialField&&atlasRadialMap){
  }
  syncRadialBackdrop();
 }
-const atlasNames={"americas-north":"N. America","americas-south":"S. America","europe":"Europe","africa":"Africa","asia":"Asia","oceania":"Oceania"};
+const atlasNames={"americas-north":"N. America","americas-south":"S. America","europe":"Europe","africa":"Africa","asia":"Asia","oceania":"Oceania","antarctica":"Antarctica"};
 let atlasFocus=null, atlasZoomFrame=0;
 let atlasUserNavigated=false, atlasTouchGesture=null, atlasSuppressTapUntil=0;
 let lastCrateStamp=null;
@@ -226,7 +227,7 @@ function atlasSelectedView(shapes,selected){
 }
 function frameSelectedAtlas(){
  if(!atlasRegionShapes.length)return; // Manual/setup and test environments may lack painted paths.
- const view=crateSelected.size?atlasSelectedView(atlasRegionShapes,crateSelected):null;
+ const view=crateSelected.size===1&&crateSelected.has("antarctica")?atlasRobinsonViews.antarctica:crateSelected.size?atlasSelectedView(atlasRegionShapes,crateSelected):null;
  atlasUserNavigated=Boolean(view);
  if(!crateSelected.size){atlasFocus=null;renderCrateMap()}else renderAtlasNavigation();
  animateAtlasView(view||null);
@@ -243,7 +244,7 @@ function toggleCrateRegion(id){
  lastCrateStamp=added?id:null;
  updateCrateMap();
 }
-const crateStampNames={"us-west":"US W","us-east":"US E","canada-west":"CAN W","canada-east":"CAN E","mexico":"MEX","central-america":"CENT AM","caribbean":"CARIB","northern-south-america":"N S AM","southern-south-america":"S S AM","atlantic-europe":"W EUR","mediterranean-europe":"MED / BALK","northern-europe":"N EUR","eastern-europe":"E EUR","north-africa":"N AFR","west-africa":"W AFR","east-africa":"E AFR","central-southern-africa":"C / S AFR","middle-east":"MID EAST","central-asia":"C ASIA","south-asia":"S ASIA","east-asia":"E ASIA","southeast-asia":"SE ASIA","northern-asia":"N ASIA","oceania":"OCEANIA"};
+const crateStampNames={"us-west":"US W","us-east":"US E","canada-west":"CAN W","canada-east":"CAN E","mexico":"MEX","central-america":"CENT AM","caribbean":"CARIB","northern-south-america":"N S AM","southern-south-america":"S S AM","atlantic-europe":"W EUR","mediterranean-europe":"MED / BALK","northern-europe":"N EUR","eastern-europe":"E EUR","north-africa":"N AFR","west-africa":"W AFR","east-africa":"E AFR","central-southern-africa":"C / S AFR","middle-east":"MID EAST","central-asia":"C ASIA","south-asia":"S ASIA","east-asia":"E ASIA","southeast-asia":"SE ASIA","northern-asia":"N ASIA","oceania":"OCEANIA","antarctica":"ANTARCTICA"};
 function renderCrateMap(){
  const focused=Boolean(atlasFocus);
  doc.querySelectorAll("[data-crate-region]").forEach(b=>{

@@ -6,7 +6,7 @@ Generated from the filtered Gemini skill and regional reference files.
 
 ---
 name: go-hipster-go
-version: 3.7.2
+version: 3.8.0
 description: Use for Go, Hipster, Go! go, mood, speed and length commands, setup, obscure global music discovery, and verified deep-cut playlists with authorized Gemini YouTube Music publishing.
 ---
 
@@ -77,11 +77,9 @@ The four axes: **era; audible texture/production; actual geographic scene; micro
 
 | Flat or generic | Actually on brand |
 | --- | --- |
-| *International Synth Funk Mix*: "A diverse selection of rare electronic music." | **Customs Seized My Synthesizer**: "Three borders, one bassline, and a synthesizer with diplomatic immunity. Sequenced by someone who considers the shuffle button a personal insult." |
 | "An energetic track with electronic beats and a catchy bassline." | "The drum machine ticks like an overdue invoice while the bassline quietly forges the paperwork. Even the rhythm section understands the assignment." |
-| "This song transitions well into the next one." | "The clipped guitar rhythm makes the next track's motorik pulse feel inevitable. Geography, as usual, will have to cope." |
 
-These are **tone examples, not research evidence**. Never attach invented production details to real songs or copy these lines mechanically. If the listener asks for a short list, reduce the annotation; if they request sober analysis, accuracy and their tone preference take precedence.
+These are tone examples, not evidence about recordings.
 
 ## Go modifiers and playlist length
 
@@ -108,6 +106,10 @@ Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation;
 Explicit `go hard`, `go funky hard`, or PWA `Curation mode: GO HARD` enables editorial depth, not a sound or tempo change. Default **OFF**: ordinary `go` keeps its fast one-pass path. After the normal writer preflight, load and follow [the Deep Crate Protocol](references/go-hard.md) before curation. Compose with mood, pace, regions, track count, service and art; publish only one final playlist. If unavailable, do not claim a deep pass.
 
 **Optional art:** On `Cover art: yes`, follow [the sleeve workflow](references/verification.md) after GO.
+
+## Antarctica: thematic listening territory
+
+For `go antarctica` or an Antarctica region selection, read [Antarctica](references/regions/antarctica.md) before discovery. Alone: only verified penguin-themed songs. Mixed: its thematic share plus geographically valid music from the other regions. Never invent a local scene or fill shortages with unrelated songs. Keep the copied trigger compact. Skip the spontaneous DeBarge roll for every Antarctica request.
 
 ## Fresh-crate discovery and repeat control
 
@@ -149,7 +151,7 @@ When a PWA prompt supplies a **Fresh-crate discovery lens**, use it as a startin
 
 Glossy late-period Motown/Motown-adjacent pop-soul, synth-funk, adult-contemporary crossover, and unlikely crowd-pleasers are **valid ingredients**. An obvious hit may earn its place by providing a funny yet persuasive sonic transition. Usually zero to two per 12-track set unless the listener wants more. Don't force comedy onto solemn or narrow briefs.
 
-**DeBarge Protocol:** Once per eligible *new playlist request*, if a genuine random-number tool exists, roll uniformly from 1 to 100; on **1**, replace the ordinary list with exactly **25 consecutive entries** of **DeBarge — "Rhythm of the Night"**. Treat this as a deliberate exception to variety, length, duplication, **all `go` moods and speeds**, and the ordinary numeric count—including `go short`, `go long`, `go fast 20`, and `go weird slow 30`. Each eligible new playlist receives **one roll total**; never reroll for each modifier, suggested concept, save attempt, or publication retry. A requested number of tracks is a normal target, not itself a rigid exclusion: only an **explicit prohibition of DeBarge**, a **unique-tracks requirement**, or an **explicitly non-overridable count** (e.g. "exactly 12, no exceptions") blocks the spontaneous surprise. An explicit request for "DeBarge Protocol" runs it without a roll, except when it directly conflicts with another explicit exclusion that must first be clarified. Never claim a 1% random result without a genuine random facility in this conversation. Do not run scripts. If reliable randomness is unavailable, omit the spontaneous roll rather than inventing it. A service might reject duplicates; never falsely claim publishing succeeded.
+**DeBarge Protocol:** Once per eligible *new playlist request*, if a genuine random-number tool exists, roll uniformly from 1 to 100; on **1**, replace the ordinary list with exactly **25 consecutive entries** of **DeBarge — "Rhythm of the Night"**. Treat this as a deliberate exception to variety, length, duplication, **all `go` moods and speeds**, and the ordinary numeric count—including `go short`, `go long`, `go fast 20`, and `go weird slow 30`. Each eligible new playlist receives **one roll total**; never reroll for each modifier, suggested concept, save attempt, or publication retry. A requested number of tracks is a normal target, not itself a rigid exclusion: the Antarctica thematic inclusion, an **explicit prohibition of DeBarge**, a **unique-tracks requirement**, or an **explicitly non-overridable count** (e.g. "exactly 12, no exceptions") blocks the spontaneous surprise. An explicit request for "DeBarge Protocol" runs it without a roll, except when it directly conflicts with another explicit exclusion that must first be clarified. Never claim a 1% random result without a genuine random facility in this conversation. Do not run scripts. If reliable randomness is unavailable, omit the spontaneous roll rather than inventing it. A service might reject duplicates; never falsely claim publishing succeeded.
 
 **Non-trigger isolation (especially for Gemini):** If the roll is not a genuine hit, or no reliable random facility is available, treat the special artist/title as **protocol instructions, not a candidate, reference artist, genre hint, wildcard, punchline, or sequencing destination**. Do not insert one copy into an ordinary 12-track playlist to be ironically disruptive, to show genre breadth, or to wink at these instructions. Normal playlists must be selected on their own independently established sonic merits. DeBarge and 1980s pop-soul are **not generally banned**: they can appear when the listener explicitly asks for them or when the specific recording is independently musically justified, never merely because the protocol named it. A genuine hit remains **exactly 25 consecutive identical entries**, not 11 themed tracks plus one DeBarge track.
 
@@ -193,6 +195,10 @@ Reuse unchanged reference text only while it remains accessible in the current c
 
 Use section reads when supported. If the host can only fetch whole files, read the file once and navigate by headings; a fragment link alone does not guarantee a smaller fetch. Report inaccessible required material honestly. Setup and installation do not preload the musical references.
 
+## Antarctica
+
+For `go antarctica` or an Antarctica selection, load [Antarctica](regions/antarctica.md) first. It contributes a verified thematic share when mixed with other regions; it does not invent a local scene.
+
 # END SOURCE: references/reference-index.md
 
 ---
@@ -224,6 +230,32 @@ Interpret relaxed as an unhurried pocket and fast as propulsion; neither require
 Sequence contrasting kinds of groove into a coherent arc. Avoid twelve interchangeable loops; preserve the existing artist-diversity, repeat-control, exact-recording and publishing safeguards. Put one concise, supported groove observation in the usual track note rather than adding a second analytical report. Research more when the fit is weak; do not impose a new search cap or numerical ranking system.
 
 # END SOURCE: references/funky.md
+
+---
+
+# BEGIN SOURCE: references/regions/antarctica.md
+
+# Antarctica — thematic listening territory
+
+Activate this route for **`go antarctica`**, or when Antarctica appears among selected listening regions. Read this before researching tracks. Treat it as the atlas's thematic territory, not a claim that an artist or recording comes from Antarctica.
+
+## The contribution
+
+Use real songs **about penguins**. Verify the subject through credited lyrics, an artist/label description, liner notes, or another reliable recording-level source. A title alone, the word in an artist's name, cold imagery, generic birds, ice, Christmas, or Antarctic scenery is not enough. A specifically documented penguin-themed instrumental can qualify; do not invent a story for an instrumental.
+
+- **Antarctica only, or `go antarctica` with no other regions:** every selected track must qualify. Default to 12, but return fewer verified tracks and explain the shortfall rather than padding with unrelated songs or unrequested duplicates.
+- **Antarctica plus other regions:** blend its verified thematic contribution with real music from the other selected regions. Give each selected territory meaningful representation; use approximately one region's share for Antarctica rather than turning the entire mix into this theme. Its tracks can originate anywhere. Preserve the geographic scene requirements for the other territories. Do not relabel those ordinary regional selections as thematic tracks.
+- Treat mood, tempo, seeds and Try Hard as musical preferences around that verified contribution. Do not weaken the subject requirement to fill a mood or count. When restrictions cannot all be satisfied, say so instead of fabricating a match.
+
+## Keep the atlas surprise compact
+
+The PWA sends **`go antarctica`** and ordinary region names. Do not expand the copied request with an explanation of the subject. Do not pre-announce the trick or describe a secret mechanism before curating. Keep real artist names and song titles intact, even when they reveal the subject. Do not conceal shortages, substitutes, sources, or publishing results.
+
+## Existing publishing and surprise rules
+
+Use the normal service preflight, verified recording matches, count reconciliation and authorized publishing workflow. This route is an explicit thematic inclusion: **skip the spontaneous DeBarge roll whenever Antarctica is selected**, including mixed-region requests. Do not replace or dilute this route with a generic Easter egg. An explicitly conflicting request for the DeBarge Protocol requires clarification rather than a silent override. No invented tracks, catalog IDs, publication claims, Antarctic artist origins, or geographic research leads.
+
+# END SOURCE: references/regions/antarctica.md
 
 ---
 
@@ -654,6 +686,12 @@ The atlas preserves **920 source entries**: 720 baseline rows plus 200 additions
 | `central-america` | [central-america](regions/central-america-additions.md) |
 | `central-southern-africa` | [central-africa](regions/central-africa-additions.md) |
 | `central-southern-africa` | [southern-africa](regions/southern-africa-additions.md) |
+
+## Thematic territory
+
+| ID | Route |
+| --- | --- |
+| `antarctica` | [Antarctica](regions/antarctica.md): thematic contribution; combine with other selected territories normally. |
 
 # END SOURCE: references/regional-atlas.md
 

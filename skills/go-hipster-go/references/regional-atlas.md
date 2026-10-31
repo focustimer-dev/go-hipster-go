@@ -51,3 +51,9 @@ The atlas preserves **920 source entries**: 720 baseline rows plus 200 additions
 | `central-america` | [central-america](regions/central-america-additions.md) |
 | `central-southern-africa` | [central-africa](regions/central-africa-additions.md) |
 | `central-southern-africa` | [southern-africa](regions/southern-africa-additions.md) |
+
+## Thematic territory
+
+| ID | Route |
+| --- | --- |
+| `antarctica` | [Antarctica](regions/antarctica.md): thematic contribution; combine with other selected territories normally. |

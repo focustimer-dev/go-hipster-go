@@ -8,6 +8,7 @@ OUTPUT = ROOT / "adapters/chatgpt/CHATGPT_KNOWLEDGE.md"
 SOURCES = [
     "references/reference-index.md",
     "references/funky.md",
+    "references/regions/antarctica.md",
     "references/go-hard.md",
     "references/regional-review.md",
     "references/regions/oceania-additions.md",

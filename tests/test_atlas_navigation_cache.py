@@ -17,7 +17,7 @@ class AtlasNavigationCacheTests(unittest.TestCase):
         embedded = json.loads(re.search(r'id="atlasNavigationGeometry">(.*?)</script>', page).group(1))
         self.assertEqual(embedded, navigation.navigation_data(page))
         self.assertGreater(len(embedded['anchors']), 300)
-        self.assertEqual(len(set(s[0] for s in embedded['shapes'])), 24)
+        self.assertEqual(len(set(s[0] for s in embedded['shapes'])), 25)
 
     def test_polygon_holes_and_direction_keep_their_fill_semantics(self):
         outer = [(0, 0), (10, 0), (10, 10), (0, 10)]

@@ -15,7 +15,7 @@ class RegionalAtlasTests(unittest.TestCase):
         index = (ROOT / 'references/regional-atlas.md').read_text()
         skill = (ROOT / 'SKILL.md').read_text()
         seen = set()
-        self.assertEqual(len(regions), 24)
+        self.assertEqual(len(regions), 25)
         for region in regions:
             rid = region['id']
             path = f'references/regions/{rid}.md'
@@ -24,6 +24,9 @@ class RegionalAtlasTests(unittest.TestCase):
             self.assertIn('references/regional-atlas.md', skill)
             self.assertIn(f'(regions/{rid}.md)', index)
             self.assertIn(path, REFERENCES)
+            if rid == 'antarctica':
+                self.assertIn('songs **about penguins**', text)
+                continue
             self.assertIn('unverified leads', text)
             self.assertIn('Drive source', text)
             ids = re.findall(r'^\| `([^`]+)` \|', text, re.M)

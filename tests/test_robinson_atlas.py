@@ -40,7 +40,7 @@ class RobinsonEditionTests(unittest.TestCase):
         self.assertTrue(points)
         # The original Mercator plate cropped islands against y=0.
         self.assertGreater(min(y for _, y in points), 20)
-        self.assertLess(max(y for _, y in points), 349)
+        self.assertLessEqual(max(y for _, y in points), 356)
         self.assertGreater(min(x for x, _ in points), 20)
         self.assertLess(max(x for x, _ in points), 700)
 

@@ -10,6 +10,7 @@ SKILL_PATH = Path("skills/go-hipster-go")
 SOURCES = [
     "references/reference-index.md",
     "references/funky.md",
+    "references/regions/antarctica.md",
     "references/go-hard.md",
     "references/discovery-lenses.json",
     "references/regional-review.md",

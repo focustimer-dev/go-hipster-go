@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "go-hipster-go",
-  "version": "3.7.2",
+  "version": "3.8.0",
   "description": "An insufferably smug music curator. Spotify is the default; setup checks your host and supports YouTube Music or other explicit alternatives. Go sad, weird, fast or chill.",
   "repository": "https://github.com/focustimer-dev/go-hipster-go",
   "homepage": "https://github.com/focustimer-dev/go-hipster-go",

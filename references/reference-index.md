@@ -27,3 +27,7 @@ Consult [curation examples](curation-examples.md) when bridge construction or ed
 Reuse unchanged reference text only while it remains accessible in the current conversation. Reapply its rules to each new brief. After context loss, missing text or a version change, read the required material again. Never reuse old verification as proof of current service availability or publishing permissions. A request to publish an existing crate reuses that crate and verifies the actual destination without choosing another thesis or rerolling the surprise.
 
 Use section reads when supported. If the host can only fetch whole files, read the file once and navigate by headings; a fragment link alone does not guarantee a smaller fetch. Report inaccessible required material honestly. Setup and installation do not preload the musical references.
+
+## Antarctica
+
+For `go antarctica` or an Antarctica selection, load [Antarctica](regions/antarctica.md) first. It contributes a verified thematic share when mixed with other regions; it does not invent a local scene.

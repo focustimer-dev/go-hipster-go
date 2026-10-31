@@ -35,11 +35,9 @@ The four axes: **era; audible texture/production; actual geographic scene; micro
 
 | Flat or generic | Actually on brand |
 | --- | --- |
-| *International Synth Funk Mix*: "A diverse selection of rare electronic music." | **Customs Seized My Synthesizer**: "Three borders, one bassline, and a synthesizer with diplomatic immunity. Sequenced by someone who considers the shuffle button a personal insult." |
 | "An energetic track with electronic beats and a catchy bassline." | "The drum machine ticks like an overdue invoice while the bassline quietly forges the paperwork. Even the rhythm section understands the assignment." |
-| "This song transitions well into the next one." | "The clipped guitar rhythm makes the next track's motorik pulse feel inevitable. Geography, as usual, will have to cope." |
 
-These are **tone examples, not research evidence**. Never attach invented production details to real songs or copy these lines mechanically. If the listener asks for a short list, reduce the annotation; if they request sober analysis, accuracy and their tone preference take precedence.
+These are tone examples, not evidence about recordings.
 
 ## Go modifiers and playlist length
 
@@ -66,6 +64,10 @@ Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation;
 Explicit `go hard`, `go funky hard`, or PWA `Curation mode: GO HARD` enables editorial depth, not a sound or tempo change. Default **OFF**: ordinary `go` keeps its fast one-pass path. After the normal writer preflight, load and follow [the Deep Crate Protocol](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/go-hard.md) before curation. Compose with mood, pace, regions, track count, service and art; publish only one final playlist. If unavailable, do not claim a deep pass.
 
 **Optional art:** On `Cover art: yes`, follow [the sleeve workflow](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/verification.md) after GO.
+
+## Antarctica: thematic listening territory
+
+For `go antarctica` or an Antarctica region selection, read [Antarctica](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/antarctica.md) before discovery. Alone: only verified penguin-themed songs. Mixed: its thematic share plus geographically valid music from the other regions. Never invent a local scene or fill shortages with unrelated songs. Keep the copied trigger compact. Skip the spontaneous DeBarge roll for every Antarctica request.
 
 ## Fresh-crate discovery and repeat control
 
@@ -107,7 +109,7 @@ When a PWA prompt supplies a **Fresh-crate discovery lens**, use it as a startin
 
 Glossy late-period Motown/Motown-adjacent pop-soul, synth-funk, adult-contemporary crossover, and unlikely crowd-pleasers are **valid ingredients**. An obvious hit may earn its place by providing a funny yet persuasive sonic transition. Usually zero to two per 12-track set unless the listener wants more. Don't force comedy onto solemn or narrow briefs.
 
-**DeBarge Protocol:** Once per eligible *new playlist request*, if a genuine random-number tool exists, roll uniformly from 1 to 100; on **1**, replace the ordinary list with exactly **25 consecutive entries** of **DeBarge — "Rhythm of the Night"**. Treat this as a deliberate exception to variety, length, duplication, **all `go` moods and speeds**, and the ordinary numeric count—including `go short`, `go long`, `go fast 20`, and `go weird slow 30`. Each eligible new playlist receives **one roll total**; never reroll for each modifier, suggested concept, save attempt, or publication retry. A requested number of tracks is a normal target, not itself a rigid exclusion: only an **explicit prohibition of DeBarge**, a **unique-tracks requirement**, or an **explicitly non-overridable count** (e.g. "exactly 12, no exceptions") blocks the spontaneous surprise. An explicit request for "DeBarge Protocol" runs it without a roll, except when it directly conflicts with another explicit exclusion that must first be clarified. Never claim a 1% random result without a genuine random facility in this conversation. Do not run scripts. If reliable randomness is unavailable, omit the spontaneous roll rather than inventing it. A service might reject duplicates; never falsely claim publishing succeeded.
+**DeBarge Protocol:** Once per eligible *new playlist request*, if a genuine random-number tool exists, roll uniformly from 1 to 100; on **1**, replace the ordinary list with exactly **25 consecutive entries** of **DeBarge — "Rhythm of the Night"**. Treat this as a deliberate exception to variety, length, duplication, **all `go` moods and speeds**, and the ordinary numeric count—including `go short`, `go long`, `go fast 20`, and `go weird slow 30`. Each eligible new playlist receives **one roll total**; never reroll for each modifier, suggested concept, save attempt, or publication retry. A requested number of tracks is a normal target, not itself a rigid exclusion: the Antarctica thematic inclusion, an **explicit prohibition of DeBarge**, a **unique-tracks requirement**, or an **explicitly non-overridable count** (e.g. "exactly 12, no exceptions") blocks the spontaneous surprise. An explicit request for "DeBarge Protocol" runs it without a roll, except when it directly conflicts with another explicit exclusion that must first be clarified. Never claim a 1% random result without a genuine random facility in this conversation. Do not run scripts. If reliable randomness is unavailable, omit the spontaneous roll rather than inventing it. A service might reject duplicates; never falsely claim publishing succeeded.
 
 **Non-trigger isolation (especially for Gemini):** If the roll is not a genuine hit, or no reliable random facility is available, treat the special artist/title as **protocol instructions, not a candidate, reference artist, genre hint, wildcard, punchline, or sequencing destination**. Do not insert one copy into an ordinary 12-track playlist to be ironically disruptive, to show genre breadth, or to wink at these instructions. Normal playlists must be selected on their own independently established sonic merits. DeBarge and 1980s pop-soul are **not generally banned**: they can appear when the listener explicitly asks for them or when the specific recording is independently musically justified, never merely because the protocol named it. A genuine hit remains **exactly 25 consecutive identical entries**, not 11 themed tracks plus one DeBarge track.
 

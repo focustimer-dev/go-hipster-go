@@ -93,6 +93,18 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  await us.crateRegions.find(b=>b.dataset.crateRegion==='east-africa').click();
  assert.doesNotMatch(us.elements.prompt.textContent,/Fresh-crate discovery lens:|Seed:|Mood angle:/,'Map change clears all stale creative cues');
  assert.equal(us.elements.openAi.getAttribute('aria-disabled'),'true','Map change invalidates prior copied handoff');
+ const polarCopies=[],polar=harness(async text=>polarCopies.push(text),'?mood=funky');
+ await polar.crateRegions.find(b=>b.dataset.crateRegion==='antarctica').click();
+ assert.match(polar.elements.prompt.textContent,/go antarctica funky/);
+ assert.match(polar.elements.prompt.textContent,/Regional exploration: Antarctica\./);
+ assert.doesNotMatch(polar.elements.prompt.textContent,/penguin/i,'The copied trigger does not reveal the theme');
+ assert.equal(polar.elements.atlasStamps.children[0].children[0].textContent,'ANTARCTICA');
+ await polar.crateRegions.find(b=>b.dataset.crateRegion==='us-west').click();
+ assert.match(polar.elements.prompt.textContent,/US West/);assert.match(polar.elements.prompt.textContent,/Antarctica/);
+ await polar.elements.goButton.click();assert.match(polarCopies.at(-1),/go antarctica funky/);
+ await polar.crateRegions.find(b=>b.dataset.crateRegion==='antarctica').click();
+ assert.doesNotMatch(polar.elements.prompt.textContent,/go antarctica/,'Removing only Antarctica restores the ordinary command');
+ assert.match(polar.elements.prompt.textContent,/go funky/);assert.match(polar.elements.prompt.textContent,/US West/);
  const neutral=catalog.filter(l=>!l.regions.length);assert.ok(neutral.length>=12);
  assert.ok(catalog.filter(l=>l.regions.includes('us-east')).length>=16);
  assert.ok(catalog.filter(l=>l.regions.includes('us-west')).length>=16);
@@ -100,7 +112,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  const geographicMarkup=fs.readFileSync('launcher/index.html','utf8');
  assert.ok((geographicMarkup.match(/data-atlas-country=/g)||[]).length>=175,'Actual country-shaped hit paths rather than rectangular overlays');
  assert.equal((geographicMarkup.match(/<rect class="crate-map-region"/g)||[]).length,0,'No old rectangular hitboxes');
- assert.equal((geographicMarkup.match(/<button type="button" data-crate-region=/g)||[]).length,24);
+ assert.equal((geographicMarkup.match(/<button type="button" data-crate-region=/g)||[]).length,25);
  assert.equal((geographicMarkup.match(/data-atlas-country="USA"/g)||[]).length,2,'US has distinct East and West path hit targets');
  assert.equal((geographicMarkup.match(/data-atlas-country="CAN"/g)||[]).length,2,'Canada has distinct East and West path hit targets');
  assert.equal((geographicMarkup.match(/data-atlas-region="mexico"/g)||[]).length,1,'Mexico has its own hit area');
@@ -114,7 +126,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.ok(geographicMarkup.indexOf('class="crate-accessibility"')<geographicMarkup.indexOf('data-crate-continent='),'Text continent controls are behind the disclosure');
  assert.doesNotMatch(geographicMarkup,/id="atlasPaintAll"|id="crateGeoCount"|id="atlasStampCount"/,'No redundant map confirmations');
  assert.match(geographicMarkup,/id="atlasPassport"/);
- assert.equal((geographicMarkup.match(/data-crate-continent=/g)||[]).length,6);
+ assert.equal((geographicMarkup.match(/data-crate-continent=/g)||[]).length,7);
  assert.match(geographicMarkup,/id="atlasStamps"/);
  assert.match(geographicMarkup,/id="crateAtlasMap"/);
  const atlasStore=new Map(),atlasCopies=[];

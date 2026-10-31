@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 REFERENCES = (
     "references/reference-index.md",
     "references/funky.md",
+    "references/regions/antarctica.md",
     "references/go-hard.md",
     "references/regional-review.md",
     "references/regions/oceania-additions.md",
@@ -63,7 +64,7 @@ def common_sections(canonical: str):
     parts = section_map(canonical)
     keys = ("Intent and activation", "Voice: the Insufferable Record-Store Clerk",
             "Playlist writing: sell the music, not a spreadsheet",
-            "Go modifiers and playlist length", "Fresh-crate discovery and repeat control",
+            "Go modifiers and playlist length", "Antarctica: thematic listening territory", "Fresh-crate discovery and repeat control",
             "Curate in seven steps", "Deliberate irony and Easter egg", "Scope")
     if any(k not in parts for k in keys):
         raise ValueError("Canonical skill sections changed")
@@ -73,11 +74,19 @@ def common_sections(canonical: str):
     parts[keys[2]] = (parts[keys[2]].replace("including in **Claude**", "including in **Gemini**")
                        .replace("Spotify's playlist description field", "a playlist description field")
                        .replace("Spotify/YouTube result status", "YouTube Music result status"))
-    fresh = re.sub(r"\*\*Apple Music handoff:\*\*.*?(?=\n\n)", "", parts[keys[4]],
+    # Keep the compact Gemini file below its host budget without dropping policy.
+    marker = "**Voice calibration (hypothetical examples; not verified claims about specific recordings):**"
+    prose, samples = parts[keys[2]].split(marker, 1)
+    rows = [line for line in samples.splitlines() if line.startswith("|")]
+    parts[keys[2]] = prose.rstrip() + "\n\n" + marker + "\n\n" + "\n".join(rows[:2]+rows[3:4]) + "\n\nThese are tone examples, not evidence about recordings."
+    parts["Antarctica: thematic listening territory"] = """## Antarctica: thematic listening territory
+
+For `go antarctica` or an Antarctica region selection, read [Antarctica](references/regions/antarctica.md) before discovery. Alone: only verified penguin-themed songs. Mixed: its thematic share plus geographically valid music from the other regions. Never invent a local scene or fill shortages with unrelated songs. Keep the copied trigger compact. Skip the spontaneous DeBarge roll for every Antarctica request."""
+    fresh = re.sub(r"\*\*Apple Music handoff:\*\*.*?(?=\n\n)", "", parts["Fresh-crate discovery and repeat control"],
                    count=1, flags=re.S)
     if "**Gemini + YouTube Music — publication is the default" not in fresh:
         raise ValueError("Gemini policy anchor changed")
-    parts[keys[4]] = fresh.split("**Gemini + YouTube Music — publication is the default")[0].strip()
+    parts["Fresh-crate discovery and repeat control"] = fresh.split("**Gemini + YouTube Music — publication is the default")[0].strip()
     egg, n = re.subn(
         r"Never claim 1% without using a true random facility; when Python is available run .*? once and read the result\.",
         "Never claim a 1% random result without a genuine random facility in this conversation. Do not run scripts.",
@@ -116,7 +125,7 @@ def render_reference(relative: str, content: str) -> str:
 def render(canonical: str) -> str:
     preface = """---
 name: go-hipster-go
-version: 3.7.2
+version: 3.8.0
 description: Use for Go, Hipster, Go! go, mood, speed and length commands, setup, obscure global music discovery, and verified deep-cut playlists with authorized Gemini YouTube Music publishing.
 ---
 
