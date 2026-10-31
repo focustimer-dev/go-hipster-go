@@ -126,6 +126,27 @@ function goPrompt(ai,service,mood){
 }
 
 const crateRegions=[{"id":"us-west","label":"US West","continent":"americas-north"},{"id":"us-east","label":"US East","continent":"americas-north"},{"id":"canada-west","label":"Canada West","continent":"americas-north"},{"id":"canada-east","label":"Canada East","continent":"americas-north"},{"id":"mexico","label":"Mexico","continent":"americas-north"},{"id":"central-america","label":"Central America","continent":"americas-north"},{"id":"caribbean","label":"Caribbean","continent":"americas-north"},{"id":"northern-south-america","label":"Northern South America","continent":"americas-south"},{"id":"southern-south-america","label":"Southern South America","continent":"americas-south"},{"id":"atlantic-europe","label":"Atlantic & Western Europe","continent":"europe"},{"id":"mediterranean-europe","label":"Mediterranean & Balkans","continent":"europe"},{"id":"northern-europe","label":"Northern Europe","continent":"europe"},{"id":"eastern-europe","label":"Eastern Europe","continent":"europe"},{"id":"north-africa","label":"North Africa","continent":"africa"},{"id":"west-africa","label":"West Africa","continent":"africa"},{"id":"east-africa","label":"East Africa","continent":"africa"},{"id":"central-southern-africa","label":"Central & Southern Africa","continent":"africa"},{"id":"middle-east","label":"Middle East & Caucasus","continent":"asia"},{"id":"central-asia","label":"Central Asia","continent":"asia"},{"id":"south-asia","label":"South Asia","continent":"asia"},{"id":"east-asia","label":"East Asia","continent":"asia"},{"id":"southeast-asia","label":"Southeast Asia","continent":"asia"},{"id":"northern-asia","label":"Northern Asia","continent":"asia"},{"id":"oceania","label":"Oceania","continent":"oceania"},{"id":"antarctica","label":"Antarctica","continent":"antarctica"}];
+// Live ticket shorthand: abbreviations remain legible on a narrow phone.
+const ticketAiCodes={chatgpt:"GPT",gemini:"GEM",claude:"CLD"};
+const ticketServiceCodes={spotify:"SPOT",youtube:"YTM",apple:"APPLE"};
+const ticketMoodCodes={go:"SURP",happy:"HAPPY",angry:"ANGRY",sad:"SAD",weird:"WEIRD",criminal:"CRIME",funky:"FUNK"};
+const ticketTempoCodes={slow:"SLOW",relaxed:"RELAX",moderate:"MID",brisk:"BRISK",fast:"FAST"};
+const ticketRegionCodes={
+ "us-west":"US-W","us-east":"US-E","canada-west":"CAN-W","canada-east":"CAN-E",
+ "mexico":"MEX","central-america":"C.AM","caribbean":"CARIB",
+ "northern-south-america":"N.SA","southern-south-america":"S.SA",
+ "atlantic-europe":"W.EUR","mediterranean-europe":"MED.EUR","northern-europe":"N.EUR","eastern-europe":"E.EUR",
+ "north-africa":"N.AFR","west-africa":"W.AFR","east-africa":"E.AFR","central-southern-africa":"C/S.AFR",
+ "middle-east":"M.EAST","central-asia":"C.AS","south-asia":"S.AS","east-asia":"E.AS",
+ "southeast-asia":"SE.AS","northern-asia":"N.AS","oceania":"OCE","antarctica":"ANTARCTICA"
+};
+function shortTicketRegions(){
+ const active=crateRegions.filter(r=>crateSelected.has(r.id));
+ if(!active.length)return "WORLD";
+ // Explicit Antarctica is never disguised behind the +N suffix.
+ active.sort((a,b)=>a.id==="antarctica"?-1:b.id==="antarctica"?1:0);
+ return active.slice(0,2).map(r=>ticketRegionCodes[r.id]||r.label).join(" / ")+(active.length>2?" +"+(active.length-2):"");
+}
 const crateContinents=[{"id":"americas-north","label":"N. America"},{"id":"americas-south","label":"S. America"},{"id":"europe","label":"Europe"},{"id":"africa","label":"Africa"},{"id":"asia","label":"Asia"},{"id":"oceania","label":"Oceania"},{"id":"antarctica","label":"Antarctica"}];
 const atlasViews={"world":[0,0,720,372],"americas-north":[40,18,300,190],"americas-south":[165,132,183,222],"europe":[296,20,204,175],"africa":[310,83,210,245],"asia":[415,20,267,255],"oceania":[545,165,175,190],"antarctica":[180,186,360,186]};
 // Robinson focus boxes use projected geography, not the old Mercator extents.
@@ -423,7 +444,12 @@ function renderLaunch(){
  const summary=doc.getElementById("receiptSummary");if(summary)summary.textContent=aiNames[ai]+" · "+serviceNames[service]+" · "+moodLabel(mood)+(tempo?" · "+tempoNames[tempo]:"")+" · 12 tracks"+(includeCover?" · cover art":"")+(goHard?" · deep crate":"");
  const regions=doc.getElementById("receiptRegions");if(regions)regions.textContent="CRATES / "+(crateSelected.size?crateRegions.filter(r=>crateSelected.has(r.id)).map(r=>r.label).join(" · "):"Worldwide");
  const ticketShort=doc.getElementById("selectionTicketShort");
- if(ticketShort)ticketShort.textContent=moodLabel(mood)+" · "+(tempo?tempoNames[tempo]:"Any pace")+" · "+(crateSelected.size?crateSelected.size+" region"+(crateSelected.size===1?"":"s"):"Worldwide");
+ if(ticketShort)ticketShort.textContent=ticketAiCodes[ai]+" › "+ticketServiceCodes[service]+" · "+ticketMoodCodes[mood]+" · "+(tempo?ticketTempoCodes[tempo]:"ANY");
+ const ticketRegionShort=doc.getElementById("selectionTicketRegionShort");
+ if(ticketRegionShort){
+  ticketRegionShort.textContent=shortTicketRegions()+" · ART:"+(includeCover?"ON":"OFF")+" · HARD:"+(goHard?"ON":"OFF");
+  ticketRegionShort.title=crateSelected.size?crateRegions.filter(r=>crateSelected.has(r.id)).map(r=>r.label).join(", "):"Worldwide";
+ }
  const ticketPair=doc.getElementById("selectionTicketPair");
  if(ticketPair)ticketPair.textContent=aiNames[ai]+" · "+serviceNames[service];
  const ticketRegions=doc.getElementById("selectionTicketRegions");
