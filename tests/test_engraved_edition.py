@@ -122,6 +122,18 @@ class EngravedEditionChecks(unittest.TestCase):
         section=script.split('function installAtlasSecrets(){',1)[1].split('\ninstallAtlasSecrets();',1)[0]
         self.assertNotIn('regions:["antarctica"',section)
 
+    def test_selected_atlas_autofocus_has_breathing_room(self):
+        script=(ROOT/"launcher/assets/app.js").read_text()
+        # Automatic framing backs away from small selected territories.
+        # Continent focus, touch zoom/pan and Antarctica keep their original paths.
+        self.assertIn('function atlasRelaxSelectedView(view){',script)
+        self.assertIn('const width=Math.min(720,w*1.18),height=width*372/720;',script)
+        self.assertIn('return [x+(w-width)/2,y+(h-height)/2,width,height];',script)
+        self.assertIn('const antarcticaOnly=crateSelected.size===1&&crateSelected.has("antarctica")',script)
+        self.assertIn('antarcticaOnly?atlasRobinsonViews.antarctica:crateSelected.size?atlasRelaxSelectedView(atlasSelectedView(atlasRegionShapes,crateSelected)):null',script)
+        self.assertIn('renderCrateMap();animateAtlasView(atlasFocus);',script)
+        self.assertIn('function atlasViewForGesture(base,anchor,screen,rect,zoom){',script)
+
     def test_selection_ticket_and_clean_receipt_idle_state(self):
         base=(ROOT/"launcher/index.html").read_text()
         generated=(BASE/"index.html").read_text()
