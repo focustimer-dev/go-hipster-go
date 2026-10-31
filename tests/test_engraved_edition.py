@@ -65,10 +65,23 @@ class EngravedEditionChecks(unittest.TestCase):
         self.assertIn('[-63.57,44.65]',script)
         self.assertIn('[-71.13,21.47]',script)
         self.assertIn('westboundLegs.map(chartPath).join(" ")',script)
-        self.assertIn('Liverpool to Halifax, Nova Scotia, to Grand Turk',script)
+        self.assertIn('Liverpool to Halifax to Grand Turk',script)
         self.assertNotIn('Plymouth to Halifax to San Juan',script)
         self.assertIn('id:"westbound-manifest"',script)
         self.assertIn('regions:["atlantic-europe","canada-east","caribbean"]',script)
+        # Ten discovery blurbs: keep them concise without changing the
+        # route-specific regions, titles, or non-route interactions.
+        section=script.split(' const secrets=[',1)[1].split(' const layer=svg(',1)[0]
+        blurbs=re.findall(r'\{id:"([^"]+)",kind:"(?:route|ship|monster|marginalia)",title:"[^"]+",\s*eyebrow:"[^"]+",body:"([^"]+)"',section)
+        self.assertEqual(len(blurbs),10)
+        self.assertEqual(len({id for id, _ in blurbs}),10)
+        for id, body in blurbs:
+            with self.subTest(discovery=id):
+                self.assertLessEqual(len(body),130)
+                self.assertEqual(body,body.strip())
+                self.assertFalse(re.search(r' {2,}|\.\.+',body))
+        self.assertIn('The Date Line can\'t stop a good dig.',script)
+
         self.assertIn('class:"atlas-westbound-crossing"',script)
         self.assertIn('class:"atlas-westbound-port"',script)
         self.assertIn('.atlas-westbound-crossing',css)
