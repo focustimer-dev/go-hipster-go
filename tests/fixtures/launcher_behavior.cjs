@@ -361,7 +361,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.match(geminiPrompt,/@YouTube Music/,'Gemini uses its service mention spelling; text alone does not prove activation');
  assert.ok(geminiPrompt.split(/\\s+/).length<85,'Gemini prompt stays concise');
  const geminiSetup=harness(async()=>{},'?ai=gemini&service=youtube','setup').elements.setupPromptText.textContent;
- assert.match(geminiSetup,/3.7.2/,'Setup asks for installed version verification');
+ assert.ok(geminiSetup.includes(JSON.parse(fs.readFileSync('plugin.json','utf8')).version),'Setup verifies the current release version');
  assert.match(geminiSetup,/persistent Skill/,'Setup distinguishes reading a repo from installation');
  assert.match(geminiSetup,/go-hipster-go-gemini-app-skill\.zip/,'Setup installs the Gemini-specific release ZIP');
  assert.match(geminiSetup,/adapters\/gemini\/SKILL\.md/,'Setup saves only the small Gemini entry');
