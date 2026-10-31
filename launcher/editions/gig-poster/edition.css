@@ -757,8 +757,13 @@ body.gig-poster #crateAtlasMap[data-details=true] .atlas-secret-hotspot{
 body.gig-poster #crateAtlasMap .atlas-secret-target{
  fill:transparent;stroke:none;pointer-events:all
 }
+body.gig-poster #crateAtlasMap .atlas-secret-route-highlight{
+ fill:none;stroke:var(--selection-vermilion);stroke-width:1.65;
+ stroke-linecap:round;stroke-dasharray:3 5;opacity:0;
+ pointer-events:none;vector-effect:non-scaling-stroke
+}
 body.gig-poster #crateAtlasMap .atlas-secret-route-touch{
- fill:none;stroke:transparent;stroke-width:18;pointer-events:stroke;
+ fill:none;stroke:transparent;stroke-width:22;pointer-events:stroke;
  stroke-linecap:round;vector-effect:non-scaling-stroke
 }
 body.gig-poster #crateAtlasMap .atlas-secret-ring{
@@ -768,8 +773,11 @@ body.gig-poster #crateAtlasMap .atlas-secret-ring{
 body.gig-poster #crateAtlasMap .atlas-secret-hotspot:is(:hover,:focus-visible) .atlas-secret-ring{
  opacity:1;stroke:var(--selection-vermilion);stroke-width:1.6
 }
-body.gig-poster #crateAtlasMap .atlas-secret-hotspot:is(:hover,:focus-visible) .atlas-secret-route-touch{
- stroke:var(--selection-vermilion);stroke-opacity:.4;stroke-width:6
+body.gig-poster #crateAtlasMap .atlas-secret-hotspot:is(:hover,:focus-visible,[data-active]) .atlas-secret-route-highlight{
+ opacity:1
+}
+body.gig-poster #crateAtlasMap .atlas-secret-hotspot:is(:hover,:focus-visible,[data-active]) .atlas-secret-ring{
+ opacity:1;stroke:var(--selection-vermilion);stroke-width:1.6
 }
 body.gig-poster #crateAtlasMap .atlas-secret-hotspot:focus-visible .atlas-secret-target{
  stroke:var(--bone);stroke-width:2.4
