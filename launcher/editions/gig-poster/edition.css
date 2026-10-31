@@ -740,3 +740,77 @@ body.gig-poster[data-page=launch] .onboarding-steps .resource.copy{background:va
 body.gig-poster[data-page=launch] .handoff-guidance{border-top:1px solid var(--ink);padding:12px 0 10px}
 body.gig-poster[data-page=launch] .handoff-guidance strong{font:400 clamp(1.35rem,4.6cqw,2.25rem)/1.12 Poster,sans-serif}
 body.gig-poster[data-page=launch] .handoff-guidance p{font:400 .875rem/1.5 Arial,sans-serif}
+
+
+/* Atlas secrets — hidden on the overview; printed chart art stays canonical.
+   Optional hit zones follow the Robinson camera and never alter country paths. */
+body.gig-poster #crateAtlasMap .atlas-secrets-layer{display:none}
+body.gig-poster #crateAtlasMap[data-details=true] .atlas-secrets-layer{
+ display:block;pointer-events:none
+}
+body.gig-poster #crateAtlasMap .atlas-secret-hotspot{
+ pointer-events:none;outline:none
+}
+body.gig-poster #crateAtlasMap[data-details=true] .atlas-secret-hotspot{
+ cursor:pointer
+}
+body.gig-poster #crateAtlasMap .atlas-secret-target{
+ fill:transparent;stroke:none;pointer-events:all
+}
+body.gig-poster #crateAtlasMap .atlas-secret-route-touch{
+ fill:none;stroke:transparent;stroke-width:18;pointer-events:stroke;
+ stroke-linecap:round;vector-effect:non-scaling-stroke
+}
+body.gig-poster #crateAtlasMap .atlas-secret-ring{
+ fill:none;stroke:var(--bone);stroke-width:.9;stroke-dasharray:2.4 3.5;
+ opacity:.4;pointer-events:none;vector-effect:non-scaling-stroke
+}
+body.gig-poster #crateAtlasMap .atlas-secret-hotspot:is(:hover,:focus-visible) .atlas-secret-ring{
+ opacity:1;stroke:var(--selection-vermilion);stroke-width:1.6
+}
+body.gig-poster #crateAtlasMap .atlas-secret-hotspot:is(:hover,:focus-visible) .atlas-secret-route-touch{
+ stroke:var(--selection-vermilion);stroke-opacity:.4;stroke-width:6
+}
+body.gig-poster #crateAtlasMap .atlas-secret-hotspot:focus-visible .atlas-secret-target{
+ stroke:var(--bone);stroke-width:2.4
+}
+body.gig-poster .atlas-secret-card{
+ margin:8px 1px 12px;padding:12px 14px 10px;
+ max-width:600px;position:relative;background:var(--paper);
+ color:var(--ink);border:1px solid var(--ink);box-shadow:3px 4px 0 rgba(16,49,53,.18)
+}
+body.gig-poster .atlas-secret-card[hidden]{display:none!important}
+body.gig-poster .atlas-secret-eyebrow{
+ font:700 .68rem/1.35 Arial,sans-serif;letter-spacing:.12em;
+ color:var(--ink);text-transform:uppercase
+}
+body.gig-poster .atlas-secret-card h3{
+ margin:3px 0 5px;font:400 clamp(1.3rem,4.2cqw,1.75rem)/1.15 Poster,sans-serif;
+ color:var(--ink)
+}
+body.gig-poster .atlas-secret-card h3:focus{outline:none}
+body.gig-poster .atlas-secret-body{
+ margin:0;max-width:65ch;font:.875rem/1.5 Arial,Helvetica,sans-serif;
+ color:var(--ink)
+}
+body.gig-poster .atlas-secret-footer{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:11px}
+body.gig-poster .atlas-secret-footer button{
+ min-height:44px;padding:8px 12px;cursor:pointer;
+ font:400 1rem/1.2 Poster,sans-serif;letter-spacing:.02em;
+ border:1px solid var(--ink);border-radius:0
+}
+body.gig-poster .atlas-secret-add{background:var(--ink);color:var(--paper)}
+body.gig-poster .atlas-secret-add[hidden]{display:none}
+body.gig-poster .atlas-secret-add:disabled{opacity:.65;cursor:default}
+body.gig-poster .atlas-secret-close{background:transparent;color:var(--ink)}
+body.gig-poster .atlas-secret-footer button:focus-visible{
+ outline:3px solid var(--selection-vermilion);outline-offset:2px
+}
+@media(max-width:390px){
+ body.gig-poster .atlas-secret-card{margin-inline:0;padding:10px 11px}
+ body.gig-poster .atlas-secret-footer{gap:6px}
+}
+@media(prefers-reduced-motion:reduce){
+ body.gig-poster #crateAtlasMap .atlas-secret-hotspot,
+ body.gig-poster .atlas-secret-card{transition:none;animation:none}
+}
