@@ -876,12 +876,14 @@ function installAtlasSecrets(){
   return {path,seamLat,origin:[113.62,22.78],destination:[-118.20,33.77]};
  };
  const pacific=greatCirclePacific();
- // Plymouth (Atlantic & Western Europe) -> Halifax (Eastern Canada) ->
- // San Juan (Caribbean). Two offshore legs share the Halifax waypoint.
+ // Liverpool (Atlantic & Western Europe) -> Halifax (Eastern Canada) ->
+ // Grand Turk (Turks and Caicos; Caribbean region).
+ // Follow the Irish Sea / St George's Channel to clear Irish land.
+ // Two offshore legs share the Halifax waypoint.
  // A listening itinerary, not a historical vessel or commerce claim.
  const westboundLegs=[
-  [[-4.14,50.37],[-20,51.4],[-40,49.1],[-57,47.2],[-63.57,44.65]],
-  [[-63.57,44.65],[-68,38],[-69.5,32],[-68,25],[-66.11,18.46]]
+  [[-3.05,53.43],[-4.8,53.2],[-5.55,52.3],[-7.8,50.4],[-20,50.7],[-40,49.2],[-57,47.4],[-63.57,44.65]],
+  [[-63.57,44.65],[-67,39.2],[-69.5,33.5],[-72,28.5],[-71.9,24],[-71.13,21.47]]
  ];
  const westboundPath=westboundLegs.map(chartPath).join(" ");
  const routeParts=routePlans.map(route=>chartPath(route.waypoints));
@@ -934,7 +936,7 @@ function installAtlasSecrets(){
    eyebrow:"CONTRABAND ROUTE · DATE LINE",body:"Guangzhou to Long Beach, east across the Pacific. The dashed line vanishes at the right edge of the chart and picks up again on the left. A great-circle sketch, not a published ship itinerary. Listen for two Pacific-facing scenes and verify the tracks.",
    regions:["east-asia","us-west"],path:pacific?.path},
   {id:"westbound-manifest",kind:"route",title:"THE WESTBOUND MANIFEST",
-   eyebrow:"CONTRABAND ROUTE · THREE PORTS",body:"Plymouth to Halifax to San Juan. Two Atlantic legs, three places to dig, and no tidy genre label. Treat it as a listening itinerary, not proof that a record or ship followed this exact passage.",
+   eyebrow:"CONTRABAND ROUTE · THREE PORTS",body:"Liverpool to Halifax, Nova Scotia, to Grand Turk in the Turks and Caicos Islands. Two North Atlantic legs and three places to dig. The islands are a British Overseas Territory in the northern Caribbean region; this is a listening itinerary, not a claim that any ship or recording followed this passage.",
    regions:["atlantic-europe","canada-east","caribbean"],path:westboundPath},
   {id:"unlicensed-vessel",kind:"ship",title:"THE UNLICENSED VESSEL",
    eyebrow:"PORT AUTHORITY NOTICE",body:"The manifest lists twelve records, three unreliable dates, and a suspiciously confident claim of first pressing. The clerk has requested evidence.",art:0},
