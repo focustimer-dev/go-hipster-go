@@ -704,7 +704,8 @@ body.gig-poster[data-page=launch] .selection-ticket[hidden]{display:none!importa
    Since it lives in .receipt-sheet, the printer clips/moves the whole sheet
    together, with the clipboard stamp above the card in normal flow. */
 body.gig-poster[data-page=launch] .receipt-ticket-dock{margin:12px 3px 18px}
-body.gig-poster[data-page=launch] .receipt-ticket-dock:empty{display:none}
+/* Keep the empty dock measurable for scroll handoff; display:none would read top=0. */
+body.gig-poster[data-page=launch] .receipt-ticket-dock:empty{height:0;overflow-anchor:none}
 body.gig-poster[data-page=launch] .receipt-ticket-dock .selection-ticket.is-docked{
   position:relative;top:auto;left:auto;transform:none;
   width:100%;max-height:none;overflow:visible;z-index:auto;
