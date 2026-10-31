@@ -2,6 +2,9 @@ name: Deploy Go Hipster Go to Cloudflare
 
 on:
   workflow_dispatch:
+  push:
+    branches: [deploy/hipster-go-20261031-merge81]
+    paths: [.github/workflows/deploy-cloudflare.yml]
 
 permissions:
   contents: read
