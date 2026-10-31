@@ -32,7 +32,7 @@ def bundle(destination=None):
     text = text.replace(needle, needle + '\n if(window.HipsterLab)return window.HipsterLab.copy(text);')
     needle = 'if(ok)status("Copied to clipboard. Playlist creation and saving happen in your AI, not in the Jukebox.");'
     assert text.count(needle) == 1, 'GO hook changed; review Lab integration.'
-    text = text.replace(needle, 'if(ok&&window.HipsterLab){window.HipsterLab.go(ai,prompt);status("Prompt copied. Android handoff ready.")}else ' + needle)
+    text = text.replace(needle, 'if(ok&&window.HipsterLab){window.HipsterLab.go(ai,prompt);status(labState().oneTap===false?"Request copied. Choose OPEN when ready.":labState().mode==="share"?"Continue in your AI to review and send the shared request.":"Request copied. Paste and send it in your AI.")}else ' + needle)
     # The original stale-prompt guard runs before this added native launch hook.
     needle = 'const share=doc.getElementById("shareButton");'
     text = text.replace(needle, '''for(const id of ["openAi","manualOpenAi"]){const link=doc.getElementById(id);if(link)link.addEventListener("click",event=>{
@@ -55,7 +55,9 @@ def bundle(destination=None):
     needle = 'render();\nif(crateSelected.size)frameSelectedAtlas();'
     assert text.count(needle) == 1, 'Workspace boot hook changed.'
     text = text.replace(needle, workspace_js + '\ninitLabWorkspace();\n' + needle)
-    text = text.replace('function updateHandoff(){', 'function updateHandoff(){renderLabHandoff();')
+    text = text.replace('function updateHandoff(){', 'function updatePwaHandoff(){', 1)
+    text = text.replace('const firstAiChoice=doc.querySelector(".service-counter .panel");', 'const firstAiChoice=doc.querySelector(".poster-go-trail");')
+    text = text.replace('Prompt changed. Press GO to copy the current selection.', 'Selection updated. Press GO when ready.')
     needle = 'function render(){renderLabInspiration();'
     assert text.count(needle) == 1
     text = text.replace(needle, 'function render(){renderLabWorkspace();renderLabInspiration();')

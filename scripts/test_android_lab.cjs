@@ -32,8 +32,12 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   const first=calls.find(c=>c[0]==='go');assert.equal(first[1],'chatgpt');assert.equal(first[2],calls.find(c=>c[0]==='copy')[1]);
   await page.locator('#openAi').click();
   assert.equal((await page.evaluate(()=>labCalls)).filter(c=>c[0]==='open').length,1);
+  assert.equal(await page.locator('#labJukebox .service-counter').count(),0);
+  assert.equal(await page.locator('.poster-go-trail-word').last().textContent(),'CONTINUE IN YOUR AI');
+  await page.locator('.lab-rail [data-lab-action="preferences"]').click();
   await page.locator('[data-ai="gemini"]').first().click();
   await page.locator('[data-service="youtube"]').first().click();
+  await page.locator('[data-lab-action="close-preferences"]').click();
   await page.locator('#goButton').click();
   await page.waitForFunction(()=>labCalls.some(c=>c[0]==='go'&&c[1]==='gemini'));
   calls=await page.evaluate(()=>labCalls);assert(calls.find(c=>c[0]==='go'&&c[1]==='gemini')[2].includes('YouTube Music'));
@@ -48,6 +52,12 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   await page.locator('.lab-rail [data-lab-action="preferences"]').click();await page.locator('#labPreferences').waitFor({state:'visible'});
   await page.locator('[name="labHandoff"][value="share"]').check();await page.locator('[data-lab-action="close-preferences"]').click();await page.locator('#labPreferences').waitFor({state:'hidden'});
   assert((await page.locator('#goHint').textContent()).includes('SHARE TO GEMINI'));
+  assert((await page.locator('#handoffInstruction').textContent()).startsWith('Review and send'));
+  await page.locator('[data-lab-tab="manual"]').click();
+  await page.locator('[data-lab-action="services"]').click();
+  assert(await page.locator('#labPreferences').isVisible());
+  await page.locator('[data-lab-action="close-preferences"]').click();
+  await page.locator('[data-lab-tab="jukebox"]').click();
   await page.locator('[data-lab-action="save"]').click();assert((await page.evaluate(()=>labCalls)).some(c=>c[0]==='save'));
   assert.deepEqual(errors,[]);
   console.log('PASS: mobile workspace, scroll restoration, preferences, save, exact-prompt copy, ChatGPT/Gemini GO, Open, and native Share hooks.');

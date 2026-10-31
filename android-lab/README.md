@@ -218,3 +218,16 @@ Native build/unit/vital lint and DOM/snapshot checks passed before an execution
 interruption. The recovered source is rechecked before packaging. No device
 rendering or gesture verification is claimed. The repository-wide suite retains
 its known seven failures and one bundle-sync error; playlist example validates.
+
+## Lab 0.5 — occasional choices in Preferences
+
+AI and music service choices now live in the existing Preferences dialog.
+Manual → Your services → Change opens that same dialog, retaining the current
+page. Existing local preference keys and selection handlers are unchanged. No
+new toolbar, drawer, animation, model control or service capability is added.
+
+The Jukebox header reads “Pick your sound → GO → Continue in your AI”.
+Share mode asks the listener to review and send the shared request; copy/open
+and browser modes keep the paste instruction they still require. The floating
+selection ticket now anchors to the header trail rather than the moved service
+controls. The shared PWA, atlas and portraits are unchanged.

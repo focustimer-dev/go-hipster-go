@@ -61,3 +61,15 @@ body.lab-modal-open{overflow:hidden}
 @media(max-width:360px){.lab-page{padding-inline:16px}.lab-page h1{font-size:2.7rem}}
 @media(min-width:840px){.lab-rail{grid-template-columns:repeat(3,minmax(0,160px)) 56px;justify-content:center}.lab-page{padding-inline:40px}}
 @media(prefers-reduced-motion:reduce){.lab-workspace{scroll-behavior:auto}}
+
+/* Services are occasional preferences, using the existing selection handlers. */
+#labServicePreferences{margin-bottom:24px}
+#labServicePreferences .service-counter{margin:0;padding:0;border:0;background:none}
+#labServicePreferences .counter-heading{font:400 1.375rem Poster,sans-serif;margin:0 0 14px;padding:0;border:0}
+#labServicePreferences .selector-grid{display:block}
+#labServicePreferences .panel{padding:0;margin:0 0 18px;border:0;background:none;box-shadow:none}
+#labServicePreferences .panel-head{font:700 .875rem/1.4 Arial,sans-serif;margin:0 0 8px;padding:0;border:0;background:none;color:inherit}
+#labServicePreferences .switch{display:flex;flex-wrap:wrap;gap:6px}
+#labServicePreferences .switch button{flex:1 1 90px;min-height:48px;padding:10px 8px;border:1px solid #103135;background:transparent;color:#103135;font:700 .8125rem/1.3 Arial,sans-serif;white-space:normal;box-shadow:none;transform:none;transition:none}
+#labServicePreferences .switch button[aria-pressed=true]{background:#103135;color:#dfb045;text-decoration:underline;text-underline-offset:3px}
+#labServicePreferences .connector-status{margin:0;padding:0;border:0;background:none;color:#103135;font:.8125rem/1.5 Arial,sans-serif}
