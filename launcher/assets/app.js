@@ -723,6 +723,9 @@ function atlasBindGestures(){
  // second tap before dispatching it. Otherwise a double tap first selects
  // land (and moves the map) instead of zooming at the user's finger.
  const doubleTapWindow=290,doubleTapRadius=32;
+ // Near the 120-unit zoom ceiling, a double-tap gently pulls back instead
+ // of silently doing nothing. Everywhere else it still zooms toward the tap.
+ const doubleTapTurnaroundWidth=150,doubleTapPullback=1.6;
  let pendingTap=null,replayingTouchClick=false,lastTouchEnd=0;
  let twoFingerTap=null;
  const clearPendingTap=()=>{
@@ -746,7 +749,8 @@ function atlasBindGestures(){
      Math.hypot(screen.x-pendingTap.x,screen.y-pendingTap.y)<=doubleTapRadius){
    clearPendingTap();
    const view=atlasView(),rect=map.getBoundingClientRect();
-   zoomAt(view,atlasScreenAnchor(map,view,screen.x,screen.y,rect),screen,rect,.5);
+   const scale=view[2]<=doubleTapTurnaroundWidth?doubleTapPullback:.5;
+   zoomAt(view,atlasScreenAnchor(map,view,screen.x,screen.y,rect),screen,rect,scale);
    return;
   }
   // A distant second tap still counts as two independent map selections.
