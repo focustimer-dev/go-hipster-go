@@ -24,9 +24,12 @@ jobs:
         with:
           python-version: '3.12'
       - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools'
+          log-accepted-android-sdk-licenses: false
       - run: sdkmanager 'platforms;android-36' 'build-tools;35.0.0'
       - run: python -m unittest discover -s android-lab/tests -v
-      - run: bash android/gradlew -p android-lab testReleaseUnitTest assembleRelease --no-daemon
+      - run: bash android/gradlew -p android-lab testReleaseUnitTest assembleRelease lintVitalRelease --no-daemon
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
