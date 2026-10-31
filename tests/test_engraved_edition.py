@@ -37,12 +37,27 @@ class EngravedEditionChecks(unittest.TestCase):
         self.assertIn('firstAiChoice=doc.querySelector(".service-counter .panel")',script)
         self.assertIn('firstAiChoice.getBoundingClientRect().bottom<=0',script)
         self.assertNotIn('moodChoices.getBoundingClientRect().bottom<=0',script)
-        self.assertIn('receiptSummary.getBoundingClientRect()',script)
+        self.assertIn('receiptTicketDock',script)
+        self.assertIn('dock.getBoundingClientRect().top<=window.innerHeight-20',script)
+        self.assertIn('dock.appendChild(ticket)',script)
+        self.assertIn('doc.body.insertBefore(ticket,site)',script)
+        self.assertIn('details.open=true',script)
+        self.assertNotIn('receiptSummary.getBoundingClientRect()',script)
         self.assertIn('mark.hidden=state==="idle"',script)
         self.assertIn('COPIED TO CLIPBOARD',script)
         self.assertIn('receipt-feed', (BASE/"edition.css").read_text())
         self.assertIn('selection-ticket[hidden]',css)
         self.assertIn('ticket-region-short',css)
+        self.assertIn('receipt-ticket-dock .selection-ticket.is-docked',css)
+        for page in (base,generated):
+            self.assertEqual(page.count('id="receiptSummary"'),1)
+            self.assertEqual(page.count('id="receiptRegions"'),1)
+            self.assertIn('id="receiptTicketDock"',page)
+            self.assertNotIn('id="selectionTicketPair"',page)
+            self.assertLess(page.index('id="receiptSummary"'),page.index('id="receiptTicketDock"'))
+        edition=(BASE/"edition.css").read_text()
+        self.assertIn('receipt-feed',edition)
+        self.assertIn('receipt-final-stamp',edition)
         for token in ('ticketAiCodes','ticketServiceCodes','ticketMoodCodes',
                       'ticketTempoCodes','ticketRegionCodes','shortTicketRegions',
                       'ART:','HARD:','ticketRegionShort.title'):
