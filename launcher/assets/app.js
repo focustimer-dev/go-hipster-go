@@ -811,7 +811,10 @@ function atlasBindGestures(){
  map.addEventListener("touchmove",event=>{
   const s=atlasTouchGesture;if(!s||event.touches.length!==s.count)return;
   const screen=atlasGesturePoints(event.touches);
-  if(s.count===1&&!s.moved&&Math.hypot(screen.x-s.start.x,screen.y-s.start.y)<6)return;
+  // Ignore tiny two-finger jitter too; a stationary two-finger tap should
+  // not accidentally become a pinch just because the sensors moved 1px.
+  if(!s.moved&&Math.hypot(screen.x-s.start.x,screen.y-s.start.y)<6&&
+     (s.count===1||Math.abs(s.distance-screen.distance)<6))return;
   if(event.cancelable)event.preventDefault();
   s.moved=true;clearPendingTap();twoFingerTap=null;
   queueAtlasNavigation(atlasViewForGesture(s.view,s.anchor,screen,s.rect,s.count===2?s.distance/screen.distance:1));
