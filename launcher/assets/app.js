@@ -788,7 +788,127 @@ function atlasBindGestures(){
  },{passive:false});
 }
 
+// SECRETS IN THE ATLAS: three existing engraved illustrations, three existing
+// painted nautical routes, and two tiny chart marks. No new map geometry,
+// random region picks, tracking, or interactions before close-up zoom.
+const atlasSecretLedger={
+ "atlantic-crossing":{
+  eyebrow:"CONTRABAND ROUTE",title:"The Atlantic Detour",
+  note:"A listening pairing, not a claim of direct musical descent. Put guitar-led West African recordings beside Atlantic European archive finds, and let the actual credits tell the history.",
+  regions:["west-africa","atlantic-europe"]},
+ "ocean-crossing":{
+  eyebrow:"CONTRABAND ROUTE",title:"Across the Low End",
+  note:"Follow call-and-response, percussion and bass through Caribbean and West African crates. Geography is the beginning of the research, never the proof.",
+  regions:["caribbean","west-africa"]},
+ "indian-passage":{
+  eyebrow:"CONTRABAND ROUTE",title:"An Unlikely Passage",
+  note:"Try South Asia against Oceania: rhythmic handoffs, unexpected instrumental colors and music that earns the crossing. This is a curation prompt, not a historic trade claim.",
+  regions:["south-asia","oceania"]},
+ "engraving-one":{
+  eyebrow:"UNVERIFIED SIGHTING",title:"The Meter Dispute",
+  note:"The shape in the water appears to be arguing with the time signature. The clerk has declined to intervene."},
+ "engraving-two":{
+  eyebrow:"SHIP'S LOG",title:"Unmanifested Cargo",
+  note:"One small vessel. An unreasonable quantity of obscure B-sides. No paperwork survives inspection."},
+ "engraving-three":{
+  eyebrow:"CARTOGRAPHER'S MISTAKE",title:"A Creature of Habit",
+  note:"The mapmaker swore this was a sea monster. The record clerk insists it is an unpaid session musician."},
+ "margin-one":{
+  eyebrow:"CLERK'S ANNOTATION",title:"Here Be Subgenres",
+  note:"Every chart has an edge beyond which the filing system becomes an argument."},
+ "margin-two":{
+  eyebrow:"CHART CORRECTION",title:"Soundings Uncertain",
+  note:"Do not confuse unexplored waters with a lack of good music. The clerk makes this mistake weekly."}
+};
+function bindAtlasSecrets(){
+ const map=doc.getElementById("crateAtlasMap");
+ // Non-poster editions, setup mode, and minimal DOM test harnesses opt out.
+ if(body.dataset.page!=="launch"||!body.classList?.contains?.("gig-poster")||
+    !map||typeof doc.querySelector!=="function"||
+    !doc.querySelector("[data-atlas-secret]"))return;
+ const frame=map.closest?.(".crate-map-frame");
+ if(!frame)return;
+ const panel=doc.createElement("aside");
+ panel.className="atlas-secret-panel";panel.hidden=true;
+ panel.setAttribute("role","region");
+ panel.setAttribute("aria-label","Atlas discovery");
+ panel.innerHTML='<div class="atlas-secret-panel-head"><span class="atlas-secret-panel-label"></span><button type="button" class="atlas-secret-panel-close" aria-label="Close atlas discovery">×</button></div><h3 class="atlas-secret-panel-title"></h3><p class="atlas-secret-panel-body"></p><button type="button" class="atlas-secret-panel-action" hidden>USE THESE REGIONS</button>';
+ frame.appendChild(panel);
+ const title=panel.querySelector(".atlas-secret-panel-title");
+ const close=panel.querySelector(".atlas-secret-panel-close");
+ const action=panel.querySelector(".atlas-secret-panel-action");
+ const targets=[...map.querySelectorAll("[data-atlas-secret]")];
+ let activeTarget=null,activeEntry=null;
+ function dismiss(restoreFocus){
+  panel.hidden=true;
+  activeTarget?.setAttribute("data-open","false");
+  const previous=activeTarget;activeTarget=null;activeEntry=null;
+  if(restoreFocus&&previous&&map.getAttribute("data-details")==="true")previous.focus?.();
+ }
+ function reveal(target){
+  if(map.getAttribute("data-details")!=="true"||
+     atlasTouchGesture||Date.now()<atlasSuppressTapUntil)return;
+  const entry=atlasSecretLedger[target.dataset.atlasSecret];if(!entry)return;
+  dismiss(false);activeTarget=target;activeEntry=entry;
+  target.setAttribute("data-open","true");
+  panel.querySelector(".atlas-secret-panel-label").textContent=entry.eyebrow;
+  title.textContent=entry.title;
+  panel.querySelector(".atlas-secret-panel-body").textContent=entry.note;
+  action.hidden=!entry.regions;
+  if(entry.regions){
+   const names=entry.regions.map(id=>crateRegions.find(r=>r.id===id)?.label||id);
+   action.textContent="USE THESE REGIONS";
+   action.setAttribute("aria-label","Replace your selected regions with "+names.join(" and "));
+  }
+  panel.hidden=false;
+  // Keyboard users reach the inline card without a modal or scroll trap.
+  title.setAttribute("tabindex","-1");
+  title.focus?.({preventScroll:true});
+  // The mobile note sits BELOW the map so the artwork stays visible.
+  // An intentional discovery tap should reveal that note, not strand it
+  // just outside the phone's viewport.
+  if(typeof window!=="undefined"&&window.matchMedia?.("(max-width:540px)")?.matches){
+   const reduced=window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+   panel.scrollIntoView?.({behavior:reduced?"auto":"smooth",block:"nearest"});
+  }
+ }
+ close.addEventListener("click",()=>dismiss(true));
+ action.addEventListener("click",()=>{
+  if(!activeEntry?.regions)return;
+  const regions=activeEntry.regions.filter(id=>validCrateRegions.has(id));
+  if(regions.length!==activeEntry.regions.length)return;
+  dismiss(false);
+  crateSelected.clear();regions.forEach(id=>crateSelected.add(id));
+  atlasFocus=null;lastCrateStamp=null;
+  updateCrateMap();
+  status("Selected the chart route's two regions. Press GO to copy your new brief.");
+ });
+ for(const target of targets){
+  target.addEventListener("click",event=>{
+   event.stopPropagation();reveal(target);
+  });
+  target.addEventListener("keydown",event=>{
+   if(event.key==="Enter"||event.key===" "){
+    event.preventDefault();event.stopPropagation();reveal(target);
+   }
+  });
+ }
+ const sync=()=>{
+  const available=map.getAttribute("data-details")==="true";
+  for(const target of targets){
+   target.setAttribute("tabindex",available?"0":"-1");
+   target.setAttribute("aria-hidden",String(!available));
+   if(!available)target.setAttribute("data-open","false");
+  }
+  if(!available&&!panel.hidden)dismiss(false);
+ };
+ if(typeof MutationObserver==="function"){
+  new MutationObserver(sync).observe(map,{attributes:true,attributeFilter:["data-details"]});
+ }
+ sync();
+}
 atlasBindGestures();
+bindAtlasSecrets();
 doc.querySelectorAll("[data-atlas-country]").forEach(path=>{
  path.addEventListener("click",()=>{
   if(atlasTouchGesture||Date.now()<atlasSuppressTapUntil)return;

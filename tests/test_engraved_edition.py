@@ -24,6 +24,29 @@ class EngravedEditionChecks(unittest.TestCase):
         self.assertIn('id="crateAtlasMap"',index)
         self.assertIn('id="atlasHome"',index)
 
+    def test_atlas_secrets_reuse_engraved_details_without_reprojecting_map(self):
+        page=(BASE/"index.html").read_text()
+        script=(ROOT/"launcher/assets/app.js").read_text()
+        css=(BASE/"edition.css").read_text()
+        self.assertEqual(page.count('data-atlas-secret='),8)
+        for name in ("atlantic-crossing","ocean-crossing","indian-passage",
+                     "engraving-one","engraving-two","engraving-three",
+                     "margin-one","margin-two"):
+            self.assertIn('data-atlas-secret="'+name+'"',page)
+            self.assertIn(' "'+name+'":{',script)
+        self.assertIn('id="crateAtlasMap" class="crate-robinson" viewBox="0 0 720 372"',page)
+        self.assertGreaterEqual(page.count("data-atlas-country="),180)
+        self.assertIn('class="chart-nautical-routes"',page)
+        self.assertIn('id="chart-engravings"',page)
+        self.assertIn('data-details=true',css)
+        self.assertIn('atlasTouchGesture||Date.now()<atlasSuppressTapUntil',script)
+        self.assertIn('attributeFilter:["data-details"]',script)
+        self.assertIn('setAttribute("tabindex",available?"0":"-1")',script)
+        self.assertIn('crateSelected.clear();regions.forEach(id=>crateSelected.add(id))',script)
+        self.assertIn('regions:["caribbean","west-africa"]',script)
+        self.assertNotIn('"antarctica"',script[script.index("const atlasSecretLedger="):script.index("function bindAtlasSecrets()")])
+        self.assertIn("prefers-reduced-motion:reduce",css)
+
     def test_selection_ticket_and_clean_receipt_idle_state(self):
         base=(ROOT/"launcher/index.html").read_text()
         generated=(BASE/"index.html").read_text()
