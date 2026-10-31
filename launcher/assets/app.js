@@ -450,12 +450,6 @@ function renderLaunch(){
   ticketRegionShort.textContent=shortTicketRegions()+" · ART:"+(includeCover?"ON":"OFF")+" · HARD:"+(goHard?"ON":"OFF");
   ticketRegionShort.title=crateSelected.size?crateRegions.filter(r=>crateSelected.has(r.id)).map(r=>r.label).join(", "):"Worldwide";
  }
- const ticketPair=doc.getElementById("selectionTicketPair");
- if(ticketPair)ticketPair.textContent=aiNames[ai]+" · "+serviceNames[service];
- const ticketRegions=doc.getElementById("selectionTicketRegions");
- if(ticketRegions&&regions)ticketRegions.textContent=regions.textContent;
- const ticketOptions=doc.getElementById("selectionTicketOptions");
- if(ticketOptions)ticketOptions.textContent="ART: "+(includeCover?"ON":"OFF")+" · TRY HARD: "+(goHard?"ON":"OFF");
  const cover=doc.getElementById("includeCover");if(cover)cover.setAttribute("aria-pressed",String(includeCover));
  const hard=doc.getElementById("goHard");if(hard)hard.setAttribute("aria-pressed",String(goHard));
  const hint=doc.getElementById("goHint");if(hint)hint.textContent="Copy your prompt";
@@ -811,18 +805,33 @@ const share=doc.getElementById("shareButton");if(share)share.addEventListener("c
 });
 render();
 if(crateSelected.size)frameSelectedAtlas();
-// The ticket appears once the first PICK YOUR AI selector leaves view,
-// then yields when the receipt summary below GO enters view.
+// One ticket travels with the reader and docks in the printed receipt.
+// No mirrored summary is painted over the paper feed or clipboard ink.
 const ticket=doc.getElementById("selectionTicket");
 if(ticket){
- const firstAiChoice=doc.querySelector(".service-counter .panel"),receiptSummary=doc.getElementById("receiptSummary");
+ const firstAiChoice=doc.querySelector(".service-counter .panel");
+ const dock=doc.getElementById("receiptTicketDock");
+ const details=ticket.querySelector("details");
+ const site=doc.querySelector(".site");
  function updateSelectionTicketVisibility(){
-  if(!firstAiChoice||!receiptSummary)return;
-  const aiChoiceAbove=firstAiChoice.getBoundingClientRect().bottom<=0;
-  const receiptHere=receiptSummary.getBoundingClientRect().top<=(window.innerHeight-20);
-  const show=aiChoiceAbove&&!receiptHere;
-  ticket.hidden=!show;
-  if(!show)ticket.querySelector("details").open=false;
+  if(!firstAiChoice||!dock||!site)return;
+  const receiptReached=dock.getBoundingClientRect().top<=window.innerHeight-20;
+  if(receiptReached){
+   if(ticket.parentElement!==dock){
+    dock.appendChild(ticket);
+    ticket.classList.add("is-docked");
+    details.open=true;
+   }
+   ticket.hidden=false;
+  }else{
+   if(ticket.parentElement===dock){
+    doc.body.insertBefore(ticket,site);
+    ticket.classList.remove("is-docked");
+    details.open=false;
+   }
+   ticket.hidden=firstAiChoice.getBoundingClientRect().bottom>0;
+   if(ticket.hidden)details.open=false;
+  }
  }
  let ticketFrame=0;
  function queueSelectionTicketVisibility(){
@@ -831,6 +840,8 @@ if(ticket){
  }
  window.addEventListener("scroll",queueSelectionTicketVisibility,{passive:true});
  window.addEventListener("resize",queueSelectionTicketVisibility,{passive:true});
+ // The receipt sheet moves during the printer animation. Recheck its dock.
+ doc.getElementById("promptReceipt")?.addEventListener("animationend",queueSelectionTicketVisibility);
  const edit=doc.getElementById("selectionTicketEdit");
  if(edit)edit.addEventListener("click",()=>doc.querySelector(".service-counter")?.scrollIntoView({behavior:"smooth",block:"start"}));
  updateSelectionTicketVisibility();
