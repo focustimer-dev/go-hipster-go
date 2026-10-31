@@ -523,7 +523,7 @@ if(welcome){
  });
  function leaveSetupTicket(){
   welcome.hidden=true;store("hmg-setup-first-tip-dismissed-v3","yes");
-  doc.querySelector("[data-mood]")?.focus();
+  doc.querySelectorAll("[data-mood]")[0]?.focus();
  }
  for(const id of ["dismissWelcome","finishSetup"]){const control=doc.getElementById(id);if(control)control.addEventListener("click",leaveSetupTicket);}
  const open=doc.getElementById("openSetupAi");
