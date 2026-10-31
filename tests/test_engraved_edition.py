@@ -102,6 +102,29 @@ class EngravedEditionChecks(unittest.TestCase):
         self.assertIn('html[data-returning=true] body.gig-poster[data-page=launch] .poster-hero .return-stamp',edition)
         self.assertIn('opacity:.75;transform:rotate(-3deg)',edition)
 
+    def test_first_visit_ticket_and_copied_go_handoff(self):
+        original=(ROOT/"launcher/index.html").read_text()
+        built=(BASE/"index.html").read_text()
+        script=(ROOT/"launcher/assets/app.js").read_text()
+        builder=(ROOT/"scripts/build_gig_poster.py").read_text()
+        for page in (original,built):
+            with self.subTest(page="poster" if page is built else "base"):
+                self.assertEqual(page.count('id="welcomeSetup"'),1)
+                self.assertLess(page.index('id="routeStatus"'),page.index('id="welcomeSetup"'))
+                self.assertLess(page.index('id="welcomeSetup"'),page.index('id="tempoControl"'))
+                for name in ('beginSetup','dismissWelcome','setupJourney','stripSetupPrompt',
+                             'openSetupAi','finishSetup','handoffGuidance','handoffTitle',
+                             'handoffInstruction'):
+                    self.assertIn('id="'+name+'"',page)
+                self.assertIn('id="setupJourney" hidden',page)
+                self.assertIn('id="handoffGuidance" hidden',page)
+                self.assertIn('data-atlas-zone="antarctica"',page)
+        self.assertIn("s=s.replace('    <h2 class=\\\"counter-heading mix-heading\\\">',welcome",builder)
+        self.assertNotIn("welcome-invitation.html",builder)
+        self.assertIn("copiedSetupPrompt===setupPrompt(ai,service)",script)
+        self.assertIn('guide.hidden=!ready',script)
+        self.assertIn("The playlist isn't saved yet",script)
+
     def test_artwork_and_controls_remain_separate(self):
         css=(BASE/"edition.css").read_text()
         index=(BASE/"index.html").read_text()
