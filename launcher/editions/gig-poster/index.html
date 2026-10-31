@@ -13,7 +13,7 @@
 <link rel="preload" href="/editions/gig-poster/assets/moods-neutral-approved-v1.webp" as="image">
 <link rel="preload" href="/editions/gig-poster/assets/moods-selected-approved-v1.webp" as="image">
 <link rel="preload" href="/editions/gig-poster/assets/anton.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="/editions/gig-poster/edition.css?v=1cc569b2922f">
+<link rel="stylesheet" href="/editions/gig-poster/edition.css?v=a54e8de73aab">
 <link rel="stylesheet" href="/editions/gig-poster/mood-portraits.css?v=c0a7d152ad54">
 </head>
 <body data-page="launch" class="gig-poster"><svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;overflow:hidden"><defs><filter id="poster-engraving-ink" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -.2126 -.7152 -.0722 0 1"/><feComposite in2="SourceAlpha" operator="in" result="ink-alpha"/><feComponentTransfer in="ink-alpha" result="ink-alpha"><feFuncA type="linear" slope="1.3"/></feComponentTransfer><feFlood flood-color="#103135"/><feComposite in2="ink-alpha" operator="in"/></filter></defs></svg>
@@ -122,14 +122,6 @@
 
     <h2 class="counter-heading mix-heading">SET THE TEMPO</h2>
     <div class="refinements" aria-label="Optional music preferences">
-    <div class="tempo-control" id="tempoControl" data-tempo="any">
-      <div class="tempo-heading"><label for="tempoSlider">TEMPO <span id="tempoValue">Any tempo</span></label><button id="anyTempo" type="button" aria-pressed="true">Any</button></div>
-      <div class="fader-bed">
-      <input id="tempoSlider" type="range" min="1" max="5" step="1" value="3" aria-describedby="tempoHelp" aria-valuetext="Any tempo — no pace preference">
-      <div class="fader-stops" aria-hidden="true"><span data-pace="slow">Slow</span><span data-pace="relaxed">Relaxed</span><span data-pace="moderate">Mid</span><span data-pace="brisk">Brisk</span><span data-pace="fast">Fast</span></div>
-      </div>
-      <p id="tempoHelp">Any is on. Move the fader to choose a pace.</p>
-    </div>
     <h2 class="counter-label">WHAT’S THE VIBE?</h2>
     <div class="mood-grid" role="group" aria-label="Mood presets">
       <button class="mood" data-mood="happy" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">HAPPY</span></button>
@@ -140,6 +132,14 @@
       <button class="mood" data-mood="funky" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">THE FUNK</span></button>
 </div>
     <p class="mood-hint" id="moodHelp" role="status">No mood? We’ll use our judgment.</p>
+    <div class="tempo-control" id="tempoControl" data-tempo="any">
+      <div class="tempo-heading"><label for="tempoSlider">TEMPO <span id="tempoValue">Any tempo</span></label><button id="anyTempo" type="button" aria-pressed="true">Any</button></div>
+      <div class="fader-bed">
+      <input id="tempoSlider" type="range" min="1" max="5" step="1" value="3" aria-describedby="tempoHelp" aria-valuetext="Any tempo — no pace preference">
+      <div class="fader-stops" aria-hidden="true"><span data-pace="slow">Slow</span><span data-pace="relaxed">Relaxed</span><span data-pace="moderate">Mid</span><span data-pace="brisk">Brisk</span><span data-pace="fast">Fast</span></div>
+      </div>
+      <p id="tempoHelp">Any is on. Move the fader to choose a pace.</p>
+    </div>
     <details class="crate-geo" id="crateGeo" open>
       <summary class="crate-geo-summary">
         <span class="crate-geo-identity"><strong>THE CRATE ATLAS</strong><small>TAKE YOUR TASTE ABROAD</small></span>
