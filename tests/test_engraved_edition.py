@@ -44,6 +44,23 @@ class EngravedEditionChecks(unittest.TestCase):
         self.assertIn('Georgetown, Guyana / Dakar, Senegal',script)
         self.assertIn('Rio de Janeiro, Brazil / Luanda, Angola',script)
         self.assertIn('Mombasa, Kenya / Mumbai, India',script)
+        # Transpacific route: its great-circle is rendered as two SVG
+        # subpaths at the antimeridian, not a false line across the map.
+        self.assertIn('greatCirclePacific=()=>{',script)
+        self.assertIn('start=unit([113.62,22.78])',script)
+        self.assertIn('end=unit([-118.20,33.77])',script)
+        self.assertIn('legs[0].push([180,seamLat])',script)
+        self.assertIn('legs.push([[-180,seamLat]])',script)
+        self.assertIn('if(legs.length!==2||!Number.isFinite(seamLat))return null',script)
+        self.assertIn('routeParts.push(pacific.path)',script)
+        self.assertIn('class:"atlas-pacific-crossing"',script)
+        self.assertIn('class:"atlas-pacific-seam"',script)
+        self.assertIn('data-secret",',script.replace('"data-secret":', 'data-secret",', 1))
+        self.assertIn('id:"pacific-handoff"',script)
+        self.assertIn('regions:["east-asia","us-west"]',script)
+        self.assertIn('.atlas-pacific-crossing',css)
+        self.assertIn('.atlas-pacific-seam',css)
+
         self.assertIn('360+335*(lon/180)*interpolate(robinX,lat)',script)
         self.assertIn('routePath.setAttribute("d",routeParts.join(" "))',script)
         self.assertIn('node.setAttribute("cx",point[0].toFixed(1))',script)
