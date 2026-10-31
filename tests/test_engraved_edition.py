@@ -144,7 +144,9 @@ class EngravedEditionChecks(unittest.TestCase):
         self.assertIn('if(replayingTouchClick||event.detail===0)return;',script)
         self.assertIn('clearTimeout(pendingTap.timer)',script)
         self.assertIn('atlasViewForGesture(view,anchor,screen,rect,scale)',script)
-        self.assertIn('zoomAt(view,atlasScreenAnchor(map,view,screen.x,screen.y,rect),screen,rect,.5)',script)
+        self.assertIn('const doubleTapTurnaroundWidth=150,doubleTapPullback=1.6;',script)
+        self.assertIn('const scale=view[2]<=doubleTapTurnaroundWidth?doubleTapPullback:.5;',script)
+        self.assertIn('zoomAt(view,atlasScreenAnchor(map,view,screen.x,screen.y,rect),screen,rect,scale)',script)
         self.assertIn('target.dispatchEvent(new MouseEvent("click"',script)
         self.assertIn('map.addEventListener("dblclick",event=>event.preventDefault())',script)
         # Two-finger zoom-out reuses the existing viewport constraints and
