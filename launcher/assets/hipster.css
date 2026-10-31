@@ -711,7 +711,7 @@ body.gig-poster[data-page=launch] .receipt-ticket-dock .selection-ticket.is-dock
   width:100%;max-height:none;overflow:visible;z-index:auto;
   margin:0;background:var(--paper);
   border:1px solid var(--ink);
-  box-shadow:none;
+  box-shadow:3px 3px 0 var(--ink);
 }
 /* The filed ticket is a compact, readable receipt line. Full details stay
    available through the native disclosure, but never open automatically. */

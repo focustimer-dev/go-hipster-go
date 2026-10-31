@@ -51,6 +51,8 @@ class EngravedEditionChecks(unittest.TestCase):
         self.assertIn('selection-ticket[hidden]',css)
         self.assertIn('ticket-region-short',css)
         self.assertIn('receipt-ticket-dock .selection-ticket.is-docked',css)
+        # Docking preserves the ticket's ink-offset shadow rather than flattening it.
+        self.assertIn('box-shadow:3px 3px 0 var(--ink)',css)
         self.assertIn('receipt-ticket-dock .ticket-kicker{display:none}',css)
         self.assertIn('min-height:52px;padding:6px 9px',css)
         self.assertIn('receipt-ticket-dock{margin:6px 1px 8px}',css)
