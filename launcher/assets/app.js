@@ -533,6 +533,54 @@ if(welcome){
   if(copiedSetupPrompt!==setupPrompt(ai,service)){event.preventDefault();const tip=doc.getElementById("setupTipStatus");if(tip)tip.textContent="Copy the current setup check before opening your AI.";doc.getElementById("stripSetupPrompt")?.focus();}
  });
 }
+
+// The Shuffle Machine is a brief, visual *receipt of the actual shuffle*.
+// It overlays the station's already-reserved feedback row; no extra controls,
+// user-visible latency, new artwork or second source of selection truth.
+function cancelShuffleMachine(){
+ doc.querySelector(".crate-shuffle .shuffle-feedback")?.classList.remove("is-dealing");
+}
+function showShuffleMachine(){
+ if(body.dataset.page!=="launch"||!body.classList.contains("gig-poster"))return;
+ const feedback=doc.querySelector(".crate-shuffle .shuffle-feedback");
+ if(!feedback)return;
+ if(typeof window!=="undefined"&&window.matchMedia?.("(prefers-reduced-motion: reduce)").matches){
+  cancelShuffleMachine();return;
+ }
+ let machine=feedback.querySelector(".shuffle-machine-reels");
+ if(!machine){
+  machine=doc.createElement("div");machine.className="shuffle-machine-reels";
+  machine.setAttribute("aria-hidden","true");
+  for(const axis of ["mood","pace","regions"]){
+   const card=doc.createElement("div");card.className="shuffle-machine-reel";
+   card.dataset.axis=axis;
+   const key=doc.createElement("small");key.textContent=axis.toUpperCase();
+   const value=doc.createElement("strong");card.append(key,value);machine.appendChild(card);
+  }
+  feedback.appendChild(machine);
+ }
+ const values={
+  mood:ticketMoodCodes[mood]||moodLabel(mood).toUpperCase(),
+  pace:tempo?ticketTempoCodes[tempo]:"ANY",
+  regions:shortTicketRegions()
+ };
+ for(const card of machine.children){
+  const axis=card.dataset.axis;
+  card.dataset.locked=String(shufflePins[axis]);
+  card.querySelector("strong").textContent=values[axis];
+ }
+ // Repeated shuffle starts a fresh throw; it never gates the next click.
+ feedback.classList.remove("is-dealing");
+ void feedback.offsetWidth;
+ feedback.classList.add("is-dealing");
+ const lever=doc.querySelector("#shuffleCrate .shuffle-lever");
+ if(lever&&typeof lever.animate==="function"){
+  lever.getAnimations?.().forEach(animation=>animation.cancel());
+  lever.animate([{transform:"rotate(0deg)"},{transform:"rotate(21deg)",offset:.23},
+   {transform:"rotate(-6deg)",offset:.7},{transform:"rotate(0deg)"}],
+   {duration:420,easing:"cubic-bezier(.16,1,.3,1)"});
+ }
+}
 function renderShufflePins(){
  for(const axis of Object.keys(shufflePins)){
   const pin=doc.getElementById("pin"+axis[0].toUpperCase()+axis.slice(1));
@@ -544,7 +592,7 @@ function renderShufflePins(){
 }
 for(const axis of Object.keys(shufflePins)){
  const pin=doc.getElementById("pin"+axis[0].toUpperCase()+axis.slice(1));
- if(pin)pin.addEventListener("click",()=>{shufflePins[axis]=!shufflePins[axis];renderShufflePins();const result=doc.getElementById("shuffleResult");if(result)result.textContent=(shufflePins[axis]?"Pinned ":"Unpinned ")+axis+".";});
+ if(pin)pin.addEventListener("click",()=>{cancelShuffleMachine();shufflePins[axis]=!shufflePins[axis];renderShufflePins();const result=doc.getElementById("shuffleResult");if(result)result.textContent=(shufflePins[axis]?"Pinned ":"Unpinned ")+axis+".";});
 }
 function shuffleCrate(){
  if(Object.values(shufflePins).every(Boolean))return;
@@ -563,12 +611,14 @@ function shuffleCrate(){
  store(crateStorageKey,JSON.stringify([...crateSelected]));selectionChanged(true);if(!shufflePins.regions)frameSelectedAtlas();
  const changed=Object.keys(shufflePins).filter(k=>!shufflePins[k]),kept=Object.keys(shufflePins).filter(k=>shufflePins[k]);
  const result=doc.getElementById("shuffleResult");if(result)result.textContent="Shuffled "+changed.join(", ")+"."+(kept.length?" Kept "+kept.join(" and ")+".":"");
- const control=doc.getElementById("shuffleCrate");if(control){control.setAttribute("data-dealt","true");if(typeof control.animate==="function"&&!(typeof window!=="undefined"&&window.matchMedia("(prefers-reduced-motion: reduce)").matches))control.animate([{transform:"translateY(0)"},{transform:"translateY(2px)"},{transform:"translateY(0)"}],{duration:240,easing:"cubic-bezier(.16,1,.3,1)"})}
+ showShuffleMachine();
+ const control=doc.getElementById("shuffleCrate");if(control)control.setAttribute("data-dealt","true");
  status("Crate shuffled. Review the brief, edit any choice, or undo. Press GO when ready.");
 }
 const shuffle=doc.getElementById("shuffleCrate");if(shuffle)shuffle.addEventListener("click",shuffleCrate);
 const undoShuffle=doc.getElementById("undoShuffle");if(undoShuffle)undoShuffle.addEventListener("click",()=>{
  if(!previousShuffle)return;
+ cancelShuffleMachine();
  const old=previousShuffle;previousShuffle=null;mood=old.mood;tempo=old.tempo;atlasFocus=old.focus;atlasUserNavigated=old.navigated;
  crateSelected.clear();old.regions.forEach(id=>crateSelected.add(id));moodAngle=old.moodAngle;crateSparkPhrase=old.crateSparkPhrase;copiedPrompt=null;
  store(crateStorageKey,JSON.stringify([...crateSelected]));render();animateAtlasView(old.view||atlasFocus);
