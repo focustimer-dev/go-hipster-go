@@ -41,7 +41,7 @@ class EngravedEditionChecks(unittest.TestCase):
         self.assertIn("shuffleMachineRegionLabel()",script)
 
         self.assertIn("@media(prefers-reduced-motion:reduce)",css)
-        self.assertIn("position:absolute;inset:0 0 auto;height:var(--control-hit)",css)
+        self.assertIn("position:absolute;inset:0 0 auto;width:min(100%,348px);height:var(--control-hit)",css)
         # The real music UI and canonical lever/pin artwork remain unchanged.
         self.assertIn('class="shuffle-lever"',index)
         for name in ("pinMood","pinPace","pinRegions","shuffleCrate","undoShuffle"):
