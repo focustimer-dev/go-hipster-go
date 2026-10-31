@@ -3,6 +3,7 @@ from pathlib import Path
 import re
 import hashlib
 from robinson_atlas import render_robinson
+from atlas_navigation import navigation_script
 ROOT=Path(__file__).resolve().parents[1]
 s=(ROOT/'launcher/index.html').read_text()
 s=s.replace('<body data-page="launch">','<body data-page="launch" class="gig-poster">')
@@ -60,6 +61,10 @@ s=s[:mood_start]+s[mood_end:]
 s=s.replace('    <details class="crate-geo" id="crateGeo" open>',mood_strip+'    <details class="crate-geo" id="crateGeo" open>',1)
 # Reproject all interactive country paths, preserving their country/region IDs.
 s=render_robinson(s)
+s=s.replace('</body>',navigation_script(s)+'</body>',1)
+s=s.replace('class="setup-crate-record" src=','class="setup-crate-record" loading="lazy" decoding="async" src=',1)
+s=s.replace('/editions/gig-poster/assets/setup-crate-record.png','/editions/gig-poster/assets/setup-crate-record-480.webp',1)
+s=s.replace('setup-crate-record-480.webp" width="1292" height="1196"','setup-crate-record-480.webp" width="480" height="444"',1)
 
 out=ROOT/'launcher/editions/gig-poster/index.html';out.parent.mkdir(parents=True,exist_ok=True);out.write_text(s)
 

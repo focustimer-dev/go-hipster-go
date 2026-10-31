@@ -1,5 +1,5 @@
 /* Approved cast: identical sprite geometry; state follows the existing aria-pressed. */
-body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood .face,
+body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[data-mood] .face,
 body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[aria-pressed=true] .face{
  position:relative;width:100%;height:auto;aspect-ratio:1;overflow:hidden;
  background:none;filter:none;animation:none!important;transform:none!important;transition:none;

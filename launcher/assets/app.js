@@ -131,10 +131,15 @@ const atlasViews={"world":[0,0,720,372],"americas-north":[40,18,300,190],"americ
 const atlasRobinsonViews={world:[0,0,720,372],"americas-north":[57,26,304,158],"americas-south":[192,145,120,172],europe:[298,30,174,100],africa:[312,94,180,208],asia:[403,25,240,198],oceania:[555,179,145,117]};
 const atlasLandAnchors=[];
 const atlasRegionShapes=[];
+function warmAtlasArtwork(){
+ const image=doc.getElementById("chart-engravings");
+ if(image?.dataset?.src&&!image.getAttribute("href"))image.setAttribute("href",image.dataset.src);
+}
 function atlasDetailsForView(map,view){
  const width=Number(view.trim().split(/\s+/)[2]);
  // A small dead band prevents flicker while pinching around the reveal point.
  const threshold=map.getAttribute("data-details")==="true"?2.05:2.3;
+ if(720/width>=1.5)warmAtlasArtwork();
  map.setAttribute("data-details",String(720/width>=threshold));
 }
 // Robinson rays follow the geography camera but remain underneath its
@@ -586,6 +591,17 @@ function atlasNormalize(view){
  return [view[0]+view[2]/2-width/2,view[1]+view[3]/2-height/2,width,height];
 }
 function atlasCollectLand(map){
+ const cached=doc.getElementById("atlasNavigationGeometry");
+ if(cached){
+  try{
+   const data=JSON.parse(cached.textContent);
+   if(data.version===1&&Array.isArray(data.anchors)&&data.anchors.length&&Array.isArray(data.shapes)&&data.shapes.length){
+    atlasLandAnchors.push(...data.anchors);
+    for(const [id,x,y,w,h,area] of data.shapes)atlasRegionShapes.push({id,x,y,w,h,area});
+    return;
+   }
+  }catch(e){} // Other editions retain the geometry-derived fallback below.
+ }
  if(!map.createSVGPoint)return;
  const point=map.createSVGPoint();
  const paths=Array.from(map.querySelectorAll("[data-atlas-country]"))
@@ -654,7 +670,7 @@ function atlasBindGestures(){
  // movement so an ordinary click still reaches the painted country path.
  let pointerGesture=null;
  map.addEventListener("pointerdown",(event={})=>{
-  stopZoom();flushAtlasNavigation();
+  stopZoom();flushAtlasNavigation();warmAtlasArtwork();
   if(event.pointerType==="touch"||event.button!==0)return;
   const view=atlasView(),rect=map.getBoundingClientRect();
   pointerGesture={id:event.pointerId,view,rect,start:{x:event.clientX,y:event.clientY},anchor:atlasScreenAnchor(map,view,event.clientX,event.clientY,rect),moved:false};
