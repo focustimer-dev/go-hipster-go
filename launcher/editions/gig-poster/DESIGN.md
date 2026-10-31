@@ -178,3 +178,8 @@ The entire request assembly now uses the same petrol ink ground and mustard lett
 
 ## Expressive option lettering
 + Art and TRY HARD use the established self-hosted Poster face at a responsive 22–40px scale, with tighter tracking and a restrained static print angle (−1.5° and +0.75°). A 6px label/description gap and 22px sleeve/crate marks balance the larger names. Descriptions, selection indicators and GO retain their roles. The ink surface, 1px mustard rules, native button semantics, narrow-screen stacking and existing behavior remain intact; no font dependency or animation is added.
+
+## Jukebox reading-rhythm refinement (map frozen)
+The Gig Poster Jukebox leads with moods before the tempo fader, then presents the **unchanged** Crate Atlas. Map paths, viewport dimensions, Robinson projection, map art, camera gestures, stamps and region-selection behavior are explicitly out of scope. The map remains open and retains its full existing size.
+
+The + ART and TRY HARD keys target a compact 56px minimum height where content allows while retaining readable descriptions and responsive wrapping. Shuffle remains a secondary tool with the existing reserved feedback line to prevent GO from jumping. The selection ticket still appears after the first AI choice scrolls offscreen, and the same ticket docks inside the printer receipt; the docking threshold follows the stable receipt edge to avoid jumping during reparenting. The enabled post-copy Open AI action receives the stronger display hierarchy without changing clipboard permissions or handoff semantics.
