@@ -85,17 +85,6 @@
       </div>
     </div>
 
-<aside class="welcome-setup poster-setup" id="welcomeSetup" aria-labelledby="firstVisitTitle">
-      <div class="setup-invitation-copy">
-        <h2 id="firstVisitTitle">COME DIG<br>SOMETHING UP.</h2>
-        <p>Deep cuts from everywhere.<br>A playlist shaped by your mood.</p>
-      </div>
-      <img class="setup-crate-record" loading="lazy" decoding="async" src="/editions/gig-poster/assets/setup-crate-record-480.webp" width="480" height="444" alt="" aria-hidden="true">
-      <div class="setup-invitation-entry">
-        <div class="poster-setup-actions"><a href="/editions/gig-poster/setup/"><span class="setup-pull-label"><svg class="setup-entry-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5 14.4 8.2 21.8 8.2 15.9 12.7 18.1 20 12 15.8 5.9 20 8.1 12.7 2.2 8.2 9.6 8.2Z"/></svg>START DIGGING</span><span class="setup-pull-tab"><svg viewBox="0 0 24 16" aria-hidden="true"><path d="M1 8h20m-6-6 6 6-6 6"/></svg></span></a><button type="button" id="dismissWelcome">Dismiss</button></div>
-        <p class="setup-entry-note">Set up your AI and music service first.</p>
-      </div>
-    </aside>
 
     <section class="service-counter" aria-labelledby="servicesHeading">
       <h2 class="counter-heading" id="servicesHeading">PICK YOUR SERVICES</h2>
@@ -119,6 +108,37 @@
     </div>
     </section>
     <div class="connector-status" id="routeStatus" role="status"><span>Choose your platforms. We'll explain what each pairing can actually do.</span></div>
+
+    <aside class="welcome-setup onboarding-ticket" id="welcomeSetup" aria-labelledby="firstVisitTitle">
+      <div class="onboarding-ticket-head">
+        <h2 id="firstVisitTitle">FIRST TIME HERE?</h2>
+        <p>One setup check, then the good stuff. Just once.</p>
+      </div>
+      <div class="onboarding-ticket-actions">
+        <button type="button" id="beginSetup" aria-expanded="false" aria-controls="setupJourney">SET ME UP</button>
+        <button type="button" id="dismissWelcome">I'M ALREADY READY</button>
+      </div>
+      <div class="setup-journey" id="setupJourney" hidden>
+        <p class="onboarding-pair" id="onboardingPair">ChatGPT + Spotify</p>
+        <ol class="onboarding-steps">
+          <li><strong>Copy your setup check.</strong><span>This asks your AI to check the skill and music connection. It will not make a playlist.</span>
+            <button class="resource copy" type="button" id="stripSetupPrompt">COPY SETUP CHECK</button>
+          </li>
+          <li><strong>Open your AI.</strong><span>Paste the check and send it. Your AI will tell you what, if anything, needs connecting.</span>
+            <a class="resource" id="openSetupAi" href="https://chatgpt.com/" target="_blank" rel="noopener" aria-disabled="true">COPY THE CHECK FIRST</a>
+          </li>
+          <li><strong>Come back for the music.</strong><span>When your AI confirms the setup is ready, return and press GO.</span>
+            <button class="resource" type="button" id="finishSetup">BACK TO THE JUKEBOX</button>
+          </li>
+        </ol>
+        <p class="first-setup-status" id="setupTipStatus" role="status" aria-live="polite"></p>
+        <details class="setup-prompt-details" id="setupPromptDetails">
+          <summary>View setup prompt / copy manually</summary>
+          <pre id="setupPromptText" tabindex="0" aria-label="Copyable setup prompt"></pre>
+        </details>
+        <a class="onboarding-help" href="/editions/gig-poster/setup/">NEED HELP? OPEN THE MANUAL</a>
+      </div>
+    </aside>
 
     <h2 class="counter-heading mix-heading">SET THE TEMPO</h2>
     <div class="refinements" aria-label="Optional music preferences">
@@ -590,6 +610,10 @@
       </div>
     </section>
     <div class="handoff" aria-label="Copy and open your AI">
+      <div class="handoff-guidance" id="handoffGuidance" hidden>
+        <strong id="handoffTitle">COPIED. NOW OPEN CHATGPT.</strong>
+        <p id="handoffInstruction">Paste and send in your AI. The playlist is not saved yet.</p>
+      </div>
       <p class="status" id="copyStatus" role="status" aria-live="polite">Pick a mood, or press GO for a surprise.</p>
       <a class="action secondary-action" id="openAi" href="https://chatgpt.com/" rel="noopener" aria-disabled="true">COPY WITH GO FIRST</a>
       <div class="foot-tools">
