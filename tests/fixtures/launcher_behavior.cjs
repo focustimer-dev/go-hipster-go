@@ -372,6 +372,8 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.equal(welcomeHarness.elements.welcomeSetup.hidden,true,'Dismiss survives a reload');
  welcomeHarness=harness(async()=>{},'','launch',new Map([['hmg-setup-first-tip-dismissed-v3','yes']]));
  assert.equal(welcomeHarness.elements.welcomeSetup.hidden,true,'Existing dismissals are respected');
+ welcomeHarness=harness(async()=>{},'?intro=1','launch',new Map([['hmg-setup-first-tip-dismissed-v3','yes']]));
+ assert.equal(welcomeHarness.elements.welcomeSetup.hidden,false,'First-visit URL preview can reveal the ticket without resetting saved dismissal');
  let repeatCopies=[];const repeat=harness(async s=>repeatCopies.push(s));
  await repeat.elements.goButton.click();await repeat.elements.goButton.click();
  assert.equal(repeatCopies.length,2,'Each GO press copies once');
