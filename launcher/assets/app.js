@@ -864,6 +864,13 @@ function bindAtlasSecrets(){
   // Keyboard users reach the inline card without a modal or scroll trap.
   title.setAttribute("tabindex","-1");
   title.focus?.({preventScroll:true});
+  // The mobile note sits BELOW the map so the artwork stays visible.
+  // An intentional discovery tap should reveal that note, not strand it
+  // just outside the phone's viewport.
+  if(typeof window!=="undefined"&&window.matchMedia?.("(max-width:540px)")?.matches){
+   const reduced=window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+   panel.scrollIntoView?.({behavior:reduced?"auto":"smooth",block:"nearest"});
+  }
  }
  close.addEventListener("click",()=>dismiss(true));
  action.addEventListener("click",()=>{
