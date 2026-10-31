@@ -703,15 +703,29 @@ body.gig-poster[data-page=launch] .selection-ticket[hidden]{display:none!importa
 /* The very same ticket becomes part of the paper receipt, not a second overlay.
    Since it lives in .receipt-sheet, the printer clips/moves the whole sheet
    together, with the clipboard stamp above the card in normal flow. */
-body.gig-poster[data-page=launch] .receipt-ticket-dock{margin:12px 3px 18px}
+body.gig-poster[data-page=launch] .receipt-ticket-dock{margin:6px 1px 8px}
 /* Keep the empty dock measurable for scroll handoff; display:none would read top=0. */
 body.gig-poster[data-page=launch] .receipt-ticket-dock:empty{height:0;overflow-anchor:none}
 body.gig-poster[data-page=launch] .receipt-ticket-dock .selection-ticket.is-docked{
   position:relative;top:auto;left:auto;transform:none;
   width:100%;max-height:none;overflow:visible;z-index:auto;
   margin:0;background:var(--paper);
-  border:2px solid var(--ink);
-  box-shadow:3px 3px 0 var(--ink);
+  border:1px solid var(--ink);
+  box-shadow:none;
+}
+/* The filed ticket is a compact, readable receipt line. Full details stay
+   available through the native disclosure, but never open automatically. */
+body.gig-poster[data-page=launch] .receipt-ticket-dock .selection-ticket.is-docked > details > summary{
+  min-height:52px;padding:6px 9px;gap:2px 8px;
+}
+body.gig-poster[data-page=launch] .receipt-ticket-dock .ticket-kicker{display:none}
+body.gig-poster[data-page=launch] .receipt-ticket-dock .ticket-brief{grid-row:1;gap:1px}
+body.gig-poster[data-page=launch] .receipt-ticket-dock .ticket-expander{grid-row:1}
+body.gig-poster[data-page=launch] .receipt-ticket-dock .ticket-short{
+  font-size:clamp(1rem,3.2vw,1.18rem);line-height:1.1;
+}
+body.gig-poster[data-page=launch] .receipt-ticket-dock .ticket-region-short{
+  font-size:clamp(.67rem,2.15vw,.77rem);line-height:1.2;
 }
 body.gig-poster[data-page=launch] .receipt-ticket-dock .ticket-detail{
   padding:10px 12px 13px;
