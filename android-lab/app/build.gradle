@@ -1,0 +1,30 @@
+plugins { id 'com.android.application' }
+android {
+    namespace 'work.samelling.hipstergo.lab'
+    compileSdkVersion 36
+    defaultConfig {
+        applicationId 'work.samelling.hipstergo.lab'
+        minSdkVersion 24
+        targetSdkVersion 36
+        versionCode 3
+        versionName '0.3.0'
+    }
+    buildTypes { release { minifyEnabled false } }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+tasks.register('bundleLab', Exec) {
+    workingDir rootProject.projectDir.parentFile
+    commandLine 'python3', 'scripts/bundle_android_lab.py'
+    inputs.dir '../../launcher'
+    inputs.file '../../scripts/bundle_android_lab.py'
+    inputs.file '../web/inspiration.js'
+    outputs.dir 'src/main/assets/site'
+}
+preBuild.dependsOn bundleLab
+dependencies {
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.json:json:20240303'
+}

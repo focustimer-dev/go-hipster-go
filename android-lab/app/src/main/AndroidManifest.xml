@@ -1,0 +1,22 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+  <uses-permission android:name="android.permission.INTERNET" />
+  <queries>
+    <package android:name="com.openai.chatgpt" />
+    <package android:name="com.google.android.apps.bard" />
+    <intent><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.APP_BROWSER" /></intent>
+    <intent><action android:name="android.intent.action.SEND" /><data android:mimeType="text/plain" /></intent>
+  </queries>
+  <application android:label="Hipster GO Lab" android:icon="@mipmap/ic_launcher"
+      android:theme="@android:style/Theme.Material.Light.NoActionBar"
+      android:allowBackup="false" android:usesCleartextTraffic="false" android:supportsRtl="true">
+    <activity android:name=".LabActivity" android:exported="true" android:launchMode="singleTask" android:configChanges="orientation|screenSize|keyboardHidden">
+      <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
+      <intent-filter>
+        <action android:name="android.intent.action.SEND" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <data android:mimeType="text/plain" />
+      </intent-filter>
+      <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
+    </activity>
+  </application>
+</manifest>
