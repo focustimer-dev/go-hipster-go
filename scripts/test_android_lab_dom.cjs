@@ -5,11 +5,13 @@ const assert=require('assert/strict');
 const root=path.resolve(__dirname,'../android-lab/app/src/main/assets/site');
 (async()=>{
  const dom=new JSDOM(fs.readFileSync(root+'/index.html','utf8'),{url:'https://lab.hipster.invalid/?ai=chatgpt&service=spotify',runScripts:'outside-only',pretendToBeVisual:true});
- const w=dom.window;const calls=[];let inspiration="";
+ const w=dom.window;const calls=[];let inspiration="";let scroll=0;const state={saved:[],mode:"open",oneTap:true,haptics:true,updateAvailable:false};
  try{
+  Object.defineProperty(w,'scrollY',{get:()=>scroll});w.scrollTo=o=>{scroll=o.top};
+  w.HTMLDialogElement.prototype.showModal=function(){this.open=true};w.HTMLDialogElement.prototype.close=function(){this.open=false;this.dispatchEvent(new w.Event('close'))};
   w.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){}});
   w.HTMLElement.prototype.scrollIntoView=function(){};
-  w.HipsterLab={inspiration(){return inspiration},reviewInspiration(){calls.push(["reviewInspiration"])},clearInspiration(){inspiration="";w.HipsterLabRefresh()},copy(t){calls.push(['copy',t]);return true},go(a,t){calls.push(['go',a,t])},open(a,t){calls.push(['open',a,t])},share(t){calls.push(['share',t])}};
+  w.HipsterLab={state(){return JSON.stringify(state)},setPreference(k,v){state[k]=k==='mode'?v:v==='true';w.HipsterLabStateChanged()},saveRequest(a,t){calls.push(['save',a,t])},savedRequest(id){calls.push(['saved',id])},showUpdates(){calls.push(['updates'])},inspiration(){return inspiration},reviewInspiration(){calls.push(["reviewInspiration"])},clearInspiration(){inspiration="";w.HipsterLabRefresh()},copy(t){calls.push(['copy',t]);return true},go(a,t){calls.push(['go',a,t])},open(a,t){calls.push(['open',a,t])},share(t){calls.push(['share',t])}};
   w.eval(fs.readFileSync(root+'/assets/app.js','utf8'));
   const click=selector=>w.document.querySelector(selector).click();
   const flush=()=>new Promise(resolve=>setTimeout(resolve,0));
@@ -37,9 +39,17 @@ const root=path.resolve(__dirname,'../android-lab/app/src/main/assets/site');
   const beforeRace=calls.filter(c=>c[0]==='go').length;
   click('#goButton');inspiration='A different song';w.HipsterLabRefresh();await flush();
   assert.equal(calls.filter(c=>c[0]==='go').length,beforeRace,'Changing the reference during copy must cancel stale handoff');
-  click('#labRemoveInspiration');assert.equal(w.document.querySelector('#labInspiration').hidden,true);
+  w.HipsterLab.clearInspiration();assert.equal(w.document.querySelector('#labInspiration').hidden,true);
   click('#goButton');await flush();
   assert(!calls.filter(c=>c[0]==='go').at(-1)[2].includes('Musical reference only'));
-  console.log('PASS: native handoffs, exact shared inspiration, plain-text rendering, unchanged regions, explicit remove and stale-copy race.');
+  scroll=456;click('[data-lab-tab="crate"]');assert.equal(scroll,0);assert.equal(w.document.querySelector('#labJukebox').hidden,true);scroll=90;click('[data-lab-tab="manual"]');scroll=155;click('[data-lab-tab="jukebox"]');assert.equal(scroll,456);click('[data-lab-tab="crate"]');assert.equal(scroll,90);
+  assert.deepEqual([...w.document.querySelectorAll('[data-crate-region][aria-pressed="true"]')].map(e=>e.dataset.crateRegion),selectedBefore);
+  assert.equal(w.document.querySelectorAll('.lab-rail').length,1);assert.equal(w.document.querySelectorAll('.lab-rail [data-lab-tab]').length,3);
+  state.saved=[{id:'saved-1',name:'A <b>saved</b> brief',ai:'gemini',prompt:sharedPrompt,time:1}];state.updateAvailable=true;w.HipsterLabStateChanged();assert.equal(w.document.querySelector('#labUpdateDot').hidden,false);assert.equal(w.document.querySelector('[data-lab-saved]').parentNode.querySelector('h3').textContent,'A <b>saved</b> brief');assert.equal(w.document.querySelector('[data-lab-saved]').parentNode.querySelector('h3 b'),null);click('[data-lab-saved="saved-1"]');assert(calls.some(c=>c[0]==='saved'&&c[1]==='saved-1'));
+  click('[data-lab-tab="jukebox"]');click('[data-lab-action="save"]');assert.equal(calls.filter(c=>c[0]==='save').at(-1)[2],w.document.querySelector('#prompt').textContent);
+  click('[data-lab-action="preferences"]');assert(w.document.querySelector('#labPreferences').open);let pref=w.document.querySelector('[name="labHandoff"][value="share"]');pref.checked=true;pref.dispatchEvent(new w.Event('change',{bubbles:true}));assert.equal(state.mode,'share');assert(w.document.querySelector('#goHint').textContent.includes('SHARE TO GEMINI'));pref=w.document.querySelector('[data-lab-pref="oneTap"]');pref.checked=false;pref.dispatchEvent(new w.Event('change',{bubbles:true}));assert.equal(w.document.querySelector('#goHint').textContent,'COPY YOUR REQUEST');assert.equal(w.HipsterLabBack(),true);assert.equal(w.document.querySelector('#labPreferences').open,false);
+  click('[data-lab-tab="manual"]');assert.equal(scroll,155);click('[data-lab-action="updates"]');assert(calls.some(c=>c[0]==='updates'));assert.equal(w.HipsterLabBack(),true);assert.equal(w.document.querySelector('#labJukebox').hidden,false);assert.equal(w.HipsterLabBack(),false);
+  w.document.querySelector('#labJukebox .footnote a[href$="setup/"]').click();assert.equal(w.document.querySelector('#labManual').hidden,false);
+  console.log('PASS: top workspace, scroll restoration, preferences, Back, saved actions, native handoffs, exact shared inspiration, plain-text rendering, unchanged regions, explicit remove and stale-copy race.');
  }finally{w.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});

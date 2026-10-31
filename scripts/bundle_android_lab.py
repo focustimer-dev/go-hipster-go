@@ -1,6 +1,7 @@
 """Build an offline Android Lab snapshot without changing launcher sources."""
 from pathlib import Path
 import shutil
+import re
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -12,6 +13,18 @@ def bundle(destination=None):
     # Match the production root routing, while retaining edition asset paths.
     shutil.copyfile(ROOT / 'launcher/editions/gig-poster/index.html', destination / 'index.html')
     shutil.copyfile(ROOT / 'launcher/editions/gig-poster/setup/index.html', destination / 'setup/index.html')
+    page = destination / 'index.html'
+    html = page.read_text()
+    manual = (ROOT / 'launcher/editions/gig-poster/setup/index.html').read_text()
+    workspace = (ROOT / 'android-lab/web/workspace.html').read_text()
+    for marker, cls in [('LINER', 'manual-liner'), ('RESOURCES', 'resource-shelf')]:
+        block = re.search(r'<details class="' + cls + r'">.*?</details>', manual, re.S)
+        assert block, 'Manual section changed; review Lab integration.'
+        workspace = workspace.replace('<!--LAB_MANUAL_' + marker + '-->', block.group())
+    html = html.replace('</head>', '<link rel="stylesheet" href="/assets/lab-workspace.css"></head>')
+    html = html.replace('<div class="site">', workspace + '\n<div class="site">', 1)
+    page.write_text(html)
+    shutil.copyfile(ROOT / 'android-lab/web/workspace.css', destination / 'assets/lab-workspace.css')
     script = destination / 'assets/app.js'
     text = script.read_text()
     needle = 'async function copyText(text){'
@@ -38,6 +51,15 @@ def bundle(destination=None):
     needle = 'function render(){'
     assert text.count(needle) == 1, 'Render hook changed; review Lab inspiration.'
     text = text.replace(needle, needle + 'renderLabInspiration();')
+    workspace_js = (ROOT / 'android-lab/web/workspace.js').read_text()
+    needle = 'render();\nif(crateSelected.size)frameSelectedAtlas();'
+    assert text.count(needle) == 1, 'Workspace boot hook changed.'
+    text = text.replace(needle, workspace_js + '\ninitLabWorkspace();\n' + needle)
+    text = text.replace('function updateHandoff(){', 'function updateHandoff(){renderLabHandoff();')
+    needle = 'function render(){renderLabInspiration();'
+    assert text.count(needle) == 1
+    text = text.replace(needle, 'function render(){renderLabWorkspace();renderLabInspiration();')
+    text = text.replace('firstAiChoice.getBoundingClientRect().bottom>0', 'firstAiChoice.getBoundingClientRect().bottom>56')
     script.write_text(text)
     return destination
 

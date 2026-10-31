@@ -47,6 +47,15 @@ final class SkillUpdates {
         ReleasePolicy.Release r=cached(channel());
         return r!=null&&!r.identity().equals(prefs.getString(key("confirmed",channel()),""));
     }
+    String summary() {
+        ReleasePolicy.Release r=cached(channel());
+        return r==null?"No release checked yet":available()?"Package available · "+r.tag:"Installation recorded · "+r.tag;
+    }
+    String detail() {
+        long time=prefs.getLong(key("checked",channel()),0);
+        return ("stable".equals(channel())?"Stable":"Lab")+" · Last successful check: "+
+            (time==0?"Never":DateFormat.format("MMM d, h:mm a",new Date(time)))+". Confirmations are self-reported.";
+    }
     void onLaunch() {
         changed.run();
         if(prefs.getBoolean("skillAuto",true) && System.currentTimeMillis()-prefs.getLong(key("attempt",channel()),0)>86400000L)check(false);
@@ -126,7 +135,7 @@ final class SkillUpdates {
         HttpsURLConnection c=(HttpsURLConnection)endpoint.openConnection();
         c.setConnectTimeout(10000);c.setReadTimeout(10000);c.setInstanceFollowRedirects(false);
         c.setRequestProperty("Accept","application/vnd.github+json");
-        c.setRequestProperty("User-Agent","Hipster-Go-Lab/0.2.0");
+        c.setRequestProperty("User-Agent","Hipster-Go-Lab/0.4.0");
         c.setRequestProperty("X-GitHub-Api-Version","2022-11-28");
         c.setUseCaches(false);
         try {

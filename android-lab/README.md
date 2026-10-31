@@ -1,7 +1,7 @@
 # Hipster GO Lab
 
 A separate native Android experiment. Package `work.samelling.hipstergo.lab`,
-version `0.3.0`, Android 7+. It installs alongside the production APK and PWA.
+version `0.4.0`, Android 7+. It installs alongside the production APK and PWA.
 
 ## Isolation
 
@@ -33,21 +33,20 @@ limited to requests you explicitly save on the device.
 - **Launcher shortcuts:** long-press the icon for Funky or Weird.
 - **Native share:** opens Android's chooser with the current prompt.
 
-Open **LAB SETTINGS** to change handoff mode and toggles. Skill selection,
+Open **⋯ → Preferences** to change handoff mode and toggles. Skill selection,
 connected music apps, pasting, and sending remain controlled by the receiving AI.
 This experiment does not automate sending prompts or publishing playlists.
 
 ## Deliberate skill updates
 
-Open **LAB SETTINGS → Gemini skill updates**, or tap the Lab title. Native code
+Open **Manual → Gemini skill updates → Review**. Native code
 reads GitHub Releases from this public repository, using the exact Gemini ZIP
 asset. Stable excludes drafts and prereleases. Lab includes published prereleases
 as well as stable releases; no experimental release is currently required or
 invented by this feature. The checker considers the latest 100 release records.
 
 Checks happen at most once per day when the app launches. Turn daily checks off
-in the update panel, or use **Check for updates** whenever wanted. An in-app title
-badge indicates an available package; no Android notification permission or
+in the update panel, or use **Check for updates** whenever wanted. A dot on Manual indicates an available package; no Android notification permission or
 background service is used. Failed checks preserve cached release information
 and the user's installation record. GO works offline and never waits on a check.
 
@@ -65,8 +64,8 @@ paths. No skill instructions are fetched into the prompt or executed by Lab.
 
 ## Saved requests
 
-After GO, choose **LAB SETTINGS → Save current request**. Give the exact request
-a name, then find it under **Saved requests**. Open it in the selected AI, copy,
+Choose **Save request** beside the Jukebox receipt. Give the exact request
+a name, then find it under **Crate → Saved requests → Options**. Open it in the selected AI, copy,
 share, or delete it. Up to ten requests can be stored; a full shelf never silently
 evicts an older one. Saving is explicit, device-local, and not cloud-backed.
 Uninstalling Lab removes the shelf. Saving a request does not save a playlist or
@@ -81,8 +80,7 @@ Lab** for a song link or plain text. Lab shows an editable review dialog. Choose
 unchanged. Sharing never launches an AI or publishes a playlist.
 
 The accepted reference is stored locally and stays active until removed. A
-**FROM YOUR CRATE** card appears above GO with **Review** and **Remove** controls;
-Lab Settings also has **Shared inspiration**. Your region, mood and tempo choices
+**FROM YOUR CRATE** card appears above GO with **Review**; **Remove** lives inside the editor. Crate also has an Inspiration section. Your region, mood and tempo choices
 are preserved. The reference replaces the generated seed in the prompt while
 active, is quoted as data, and is explicitly not an instruction or required track.
 After removing it, the ordinary seed behavior returns. Editing the reference
@@ -134,7 +132,7 @@ browser tests do not substitute for the phone smoke test above.
 
 ## Next candidates
 
-Home-screen widgets, an Android share target for incoming inspiration, exportable
+Home-screen widgets, exportable
 playlist request cards, and native quick settings. Add these individually after
 phone feedback; none are enabled in this first experiment.
 
@@ -176,6 +174,47 @@ The user confirmed the update checker and saved-request shelf working in version
 6. Share a second song while Lab is already open, then restart Lab and check that
    the accepted reference persists. Saved requests and skill-update records remain.
 
-The native share-sheet listing and review dialog still need a device smoke test.
+The user confirmed the native incoming share and review flow working in version 0.3.
 Release build/vital lint, 15 native tests, snapshot isolation, and DOM handoff and
 inspiration tests passed. Existing Chromium sandbox limitations are unchanged.
+
+
+## Version 0.4 workspace
+
+One persistent 56px top rail contains Jukebox, Crate, Manual and Preferences.
+It replaces the old native LAB SETTINGS bar and duplicate website navigation.
+Android system insets remain native; no persistent bottom app controls are added.
+The canonical masthead scrolls with Jukebox and carries a small LAB annotation.
+
+Crate is a full screen for inspiration and the existing ten-request shelf. Save
+request sits beside the receipt and freezes the exact current prompt without
+rerolling. GO names its AI and handoff mode. Preferences use a themed dialog;
+inspiration, saved-request actions and deliberate update confirmations retain
+their native flows and existing storage keys. Manual includes the incumbent
+explainer/download shelf, setup-check copying, service choices and skill updates.
+
+Screen switches preserve the listening brief and separate scroll positions in
+that running page. Scroll is session-only, not promised after recreation/relaunch.
+Install over existing Lab to retain saved requests, accepted inspiration,
+preferences and per-channel update confirmations. No migration or uninstall.
+Bundling changes only the ignored Lab snapshot. Map, portrait and launcher
+sources remain unchanged.
+
+Phone checks for 0.4:
+
+1. Install over Lab and verify existing saved data remains.
+2. Scroll Jukebox, visit Crate, inspect a saved request, then return. Check choices,
+   scroll position and atlas view.
+3. Save beside the receipt, then inspect/copy/share/reopen/delete from Crate.
+4. Add/edit/remove inspiration; verify a changed reference requires fresh GO.
+5. Manual → Change should land service choices below the rail. Copy a setup check;
+   review update/download/confirmation without recording installation on download.
+6. Try handoff modes and one-tap GO off. Android Back closes Preferences, returns
+   secondary screens to Jukebox, then leaves Lab.
+7. Check portrait/landscape, large system text, keyboard and Android gesture/
+   three-button navigation. Native layout and gesture feel need phone validation.
+
+Native build/unit/vital lint and DOM/snapshot checks passed before an execution
+interruption. The recovered source is rechecked before packaging. No device
+rendering or gesture verification is claimed. The repository-wide suite retains
+its known seven failures and one bundle-sync error; playlist example validates.

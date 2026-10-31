@@ -16,7 +16,15 @@ class LabSnapshotTests(unittest.TestCase):
         before=hashes()
         with tempfile.TemporaryDirectory() as temp:
             dest=module.bundle(Path(temp)/'site')
-            self.assertEqual((dest/'index.html').read_bytes(),(ROOT/'launcher/editions/gig-poster/index.html').read_bytes())
+            page=(dest/'index.html').read_text()
+            stripped=page.replace('<link rel="stylesheet" href="/assets/lab-workspace.css">','')
+            start=stripped.index('<nav class="lab-rail"')
+            end=stripped.index('<div class="site">',start)
+            stripped=stripped[:start]+stripped[end:]
+            self.assertEqual(stripped,(ROOT/'launcher/editions/gig-poster/index.html').read_text())
+            for asset in ('moods-neutral-approved-v1.webp','moods-selected-approved-v1.webp','anton.woff','stock.webp'):
+                path=Path('editions/gig-poster/assets')/asset
+                self.assertEqual((dest/path).read_bytes(),(ROOT/'launcher'/path).read_bytes())
             self.assertTrue((dest/'editions/gig-poster/assets/moods-neutral-approved-v1.webp').is_file())
             self.assertTrue((dest/'editions/gig-poster/assets/moods-selected-approved-v1.webp').is_file())
             script=(dest/'assets/app.js').read_text()

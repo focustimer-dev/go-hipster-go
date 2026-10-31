@@ -22,8 +22,8 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   const page=await browser.newPage({viewport:{width:412,height:915},isMobile:true,hasTouch:true});
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.addInitScript(()=>{
-   window.labCalls=[];
-   window.HipsterLab={copy(t){labCalls.push(['copy',t]);return true},go(a,t){labCalls.push(['go',a,t])},open(a,t){labCalls.push(['open',a,t])},share(t){labCalls.push(['share',t])}};
+   window.labCalls=[];window.labState={saved:[],mode:'open',oneTap:true,haptics:true,updateAvailable:false};
+   window.HipsterLab={state(){return JSON.stringify(window.labState)},setPreference(k,v){window.labState[k]=k==='mode'?v:v==='true';window.HipsterLabStateChanged()},saveRequest(a,t){labCalls.push(['save',a,t])},showUpdates(){labCalls.push(['updates'])},copy(t){labCalls.push(['copy',t]);return true},go(a,t){labCalls.push(['go',a,t])},open(a,t){labCalls.push(['open',a,t])},share(t){labCalls.push(['share',t])}};
   });
   await page.goto('http://127.0.0.1:'+server.address().port+'/?ai=chatgpt&service=spotify');
   await page.locator('#goButton').click();
@@ -39,7 +39,17 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   calls=await page.evaluate(()=>labCalls);assert(calls.find(c=>c[0]==='go'&&c[1]==='gemini')[2].includes('YouTube Music'));
   await page.locator('#shareButton').click();
   assert((await page.evaluate(()=>labCalls)).some(c=>c[0]==='share'));
+  await page.evaluate(()=>window.scrollTo({top:700,behavior:'instant'}));
+  const position=await page.evaluate(()=>window.scrollY);
+  await page.locator('[data-lab-tab="crate"]').click();await page.locator('#labCrate').waitFor({state:'visible'});
+  await page.locator('[data-lab-tab="manual"]').click();await page.locator('#labManual').waitFor({state:'visible'});
+  await page.locator('[data-lab-action="updates"]').click();assert((await page.evaluate(()=>labCalls)).some(c=>c[0]==='updates'));
+  await page.locator('[data-lab-tab="jukebox"]').click();assert(Math.abs((await page.evaluate(()=>window.scrollY))-position)<2);
+  await page.locator('.lab-rail [data-lab-action="preferences"]').click();await page.locator('#labPreferences').waitFor({state:'visible'});
+  await page.locator('[name="labHandoff"][value="share"]').check();await page.locator('[data-lab-action="close-preferences"]').click();await page.locator('#labPreferences').waitFor({state:'hidden'});
+  assert((await page.locator('#goHint').textContent()).includes('SHARE TO GEMINI'));
+  await page.locator('[data-lab-action="save"]').click();assert((await page.evaluate(()=>labCalls)).some(c=>c[0]==='save'));
   assert.deepEqual(errors,[]);
-  console.log('PASS: mobile UI, exact-prompt copy, ChatGPT/Gemini GO, Open, and native Share hooks.');
+  console.log('PASS: mobile workspace, scroll restoration, preferences, save, exact-prompt copy, ChatGPT/Gemini GO, Open, and native Share hooks.');
  }finally{if(browser)await browser.close();server.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});

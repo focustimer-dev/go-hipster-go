@@ -16,47 +16,27 @@ public class LabActivity extends Activity {
     private static final String HOST = "lab.hipster.invalid";
     private static final String HOME = "https://" + HOST + "/";
     private WebView web;
-    private TextView title;
     private SkillUpdates updates;
     private SavedRequests shelf;
     private SharedInspiration inspiration;
     private android.content.SharedPreferences prefs;
-    private String lastPrompt = "";
-    private String lastAi = "chatgpt";
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
         prefs = getSharedPreferences("lab", MODE_PRIVATE);
         inspiration = new SharedInspiration(this,prefs,this::refreshInspiration);
         updates = new SkillUpdates(this,prefs,this::browser,this::updateBadge);
-        shelf = new SavedRequests(this,prefs,this::handoff,this::copy,text->share(text,null));
-        getWindow().setStatusBarColor(Color.rgb(37,35,32));
-        getWindow().setNavigationBarColor(Color.rgb(37,35,32));
+        shelf = new SavedRequests(this,prefs,this::handoff,this::copy,text->share(text,null),this::refreshWorkspace);
+        getWindow().setStatusBarColor(Color.rgb(16,49,53));
+        getWindow().setNavigationBarColor(Color.rgb(16,49,53));
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setBackgroundColor(Color.rgb(37,35,32));
+        layout.setBackgroundColor(Color.rgb(16,49,53));
         layout.setOnApplyWindowInsetsListener((v, insets) -> {
             v.setPadding(insets.getSystemWindowInsetLeft(), insets.getSystemWindowInsetTop(),
                 insets.getSystemWindowInsetRight(), insets.getSystemWindowInsetBottom());
             return insets.consumeSystemWindowInsets();
         });
-        LinearLayout bar = new LinearLayout(this);
-        bar.setGravity(Gravity.CENTER_VERTICAL);
-        title = new TextView(this);
-        title.setText("HIPSTER GO  /  LAB");
-        title.setTextColor(Color.rgb(242,229,199));
-        title.setOnClickListener(v->updates.show());
-        title.setTextSize(14);
-        title.setGravity(Gravity.CENTER_VERTICAL);
-        title.setPadding(dp(16),0,0,0);
-        bar.addView(title,new LinearLayout.LayoutParams(0,dp(48),1));
-        Button settings = new Button(this);
-        settings.setText("LAB SETTINGS");
-        settings.setTextSize(11);
-        settings.setContentDescription("Android Lab settings");
-        settings.setOnClickListener(v -> settings());
-        bar.addView(settings,new LinearLayout.LayoutParams(dp(132),dp(48)));
-        layout.addView(bar);
         web = new WebView(this);
         layout.addView(web,new LinearLayout.LayoutParams(-1,0,1));
         setContentView(layout);
@@ -71,6 +51,7 @@ public class LabActivity extends Activity {
         web.addJavascriptInterface(new Bridge(),"HipsterLab");
         web.setWebChromeClient(new WebChromeClient());
         web.setWebViewClient(new WebViewClient() {
+            @Override public void onPageFinished(WebView view, String url) { refreshWorkspace(); }
             @Override public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 Uri u = request.getUrl();
                 if (trusted(u)) return false;
@@ -190,7 +171,7 @@ public class LabActivity extends Activity {
     private void handoff(String ai, String text) {
         String destination = url(ai);
         if (destination == null || !validText(text)) return;
-        copy(text); lastPrompt=text; lastAi=ai; pulse();
+        copy(text); pulse();
         String pkg = "chatgpt".equals(ai) ? "com.openai.chatgpt" : "gemini".equals(ai) ? "com.google.android.apps.bard" : null;
         String mode = prefs.getString("mode","open");
         if ("browser".equals(mode)) { browser(destination); return; }
@@ -205,42 +186,31 @@ public class LabActivity extends Activity {
         toast("AI app unavailable. Opening its website; your prompt is copied.");
         browser(destination);
     }
-    private void updateBadge() {
-        if(title==null)return;
-        title.setText(updates.available()?"LAB · SKILL UPDATE ↗":"HIPSTER GO  /  LAB");
-        title.setContentDescription(updates.available()?"Skill package available. Tap to review.":"Hipster GO Lab. Tap for skill updates.");
+    private void refreshWorkspace() {
+        if(web!=null)web.evaluateJavascript("window.HipsterLabStateChanged&&window.HipsterLabStateChanged()",null);
     }
-    private void settings() {
-        String[] items={"Gemini skill updates"+(updates.available()?" · available":""),
-            "Save current request", "Saved requests",
-            "Handoff: "+prefs.getString("mode","open"),
-            "One-tap GO: "+(prefs.getBoolean("oneTap",true)?"on":"off"),
-            "Haptics: "+(prefs.getBoolean("haptics",true)?"on":"off"),
-            "Share last request", "Shared inspiration"+(inspiration.value().isEmpty()?"":" · active"), "About this experiment"};
-        new AlertDialog.Builder(this).setTitle("Hipster GO Lab · 0.3.0")
-            .setItems(items,(d,n)->{
-                if(n==0)updates.show();
-                else if(n==1)shelf.save(lastAi,lastPrompt);
-                else if(n==2)shelf.show();
-                else if(n==3) {
-                    String[] modes={"open","share","browser"};
-                    int current=Arrays.asList(modes).indexOf(prefs.getString("mode","open"));
-                    new AlertDialog.Builder(this).setTitle("AI handoff")
-                        .setSingleChoiceItems(new String[]{"Open installed app + copy", "Share prompt to AI", "Browser + copy"},current,(dialog,which)->{
-                            prefs.edit().putString("mode",modes[which]).apply();dialog.dismiss();
-                        }).setNegativeButton("Cancel",null).show();
-                } else if(n==4 || n==5) {
-                    String key=n==4?"oneTap":"haptics";
-                    prefs.edit().putBoolean(key,!prefs.getBoolean(key,true)).apply();settings();
-                } else if(n==6) {
-                    if(validText(lastPrompt)) share(lastPrompt,null); else toast("Press GO first to prepare a prompt.");
-                } else if(n==7)inspiration.review();
-                else new AlertDialog.Builder(this).setTitle("A separate crate")
-                    .setMessage("Bundled offline interface. Separate app and preferences. No production writes or live website updates. Native release checks read public GitHub metadata only; downloads and installation stay your choice.\n\nSaved requests stay on this device and are saved only when you choose.\n\nLong-press the launcher icon for Funky and Weird shortcuts.")
-                    .setPositiveButton("Got it",null).show();
-            }).setNegativeButton("Close",null).show();
+    private void updateBadge() { refreshWorkspace(); }
+    private String workspaceState() {
+        try {
+            return new org.json.JSONObject().put("saved",shelf.entries())
+                .put("mode",prefs.getString("mode","open")).put("oneTap",prefs.getBoolean("oneTap",true))
+                .put("haptics",prefs.getBoolean("haptics",true)).put("updateAvailable",updates.available())
+                .put("updateSummary",updates.summary()).put("updateDetail",updates.detail()).toString();
+        }catch(org.json.JSONException e){return "{}";}
     }
     public final class Bridge {
+        @JavascriptInterface public String state(){return workspaceState();}
+        @JavascriptInterface public void showUpdates(){runOnUiThread(()->updates.show());}
+        @JavascriptInterface public void saveRequest(String ai,String text){if(url(ai)!=null&&validText(text))runOnUiThread(()->shelf.save(ai,text));}
+        @JavascriptInterface public void savedRequest(String id){if(id!=null&&id.length()<=64)runOnUiThread(()->shelf.showEntry(id));}
+        @JavascriptInterface public void setPreference(String key,String value){
+            runOnUiThread(()->{
+                if("mode".equals(key)&&Arrays.asList("open","share","browser").contains(value))prefs.edit().putString(key,value).apply();
+                else if(("oneTap".equals(key)||"haptics".equals(key))&&Arrays.asList("true","false").contains(value))prefs.edit().putBoolean(key,Boolean.parseBoolean(value)).apply();
+                else return;
+                refreshWorkspace();
+            });
+        }
         @JavascriptInterface public String inspiration(){return inspiration.value();}
         @JavascriptInterface public void reviewInspiration(){runOnUiThread(()->inspiration.review());}
         @JavascriptInterface public void clearInspiration(){runOnUiThread(()->inspiration.clear());}
@@ -250,7 +220,7 @@ public class LabActivity extends Activity {
         }
         @JavascriptInterface public void go(String ai,String text) {
             if(url(ai)==null || !validText(text)) return;
-            runOnUiThread(()->{lastAi=ai;lastPrompt=text;if(prefs.getBoolean("oneTap",true)) handoff(ai,text); else {copy(text);pulse();toast("Prompt copied. Tap OPEN to launch your AI.");}});
+            runOnUiThread(()->{if(prefs.getBoolean("oneTap",true)) handoff(ai,text); else {copy(text);pulse();toast("Prompt copied. Tap OPEN to launch your AI.");}});
         }
         @JavascriptInterface public void open(String ai,String text) {
             if(url(ai)!=null && validText(text))runOnUiThread(()->handoff(ai,text));
@@ -259,7 +229,11 @@ public class LabActivity extends Activity {
             if(validText(text))runOnUiThread(()->{copy(text);LabActivity.this.share(text,null);});
         }
     }
-    private void back() { if(web.canGoBack())web.goBack();else finish(); }
+    private void back() {
+        web.evaluateJavascript("Boolean(window.HipsterLabBack&&window.HipsterLabBack())",handled->{
+            if(!"true".equals(handled)){if(web.canGoBack())web.goBack();else finish();}
+        });
+    }
     @Override public void onBackPressed() { back(); }
     @Override public void onSaveInstanceState(Bundle state) { web.saveState(state);super.onSaveInstanceState(state); }
     @Override public void onDestroy() { updates.close();web.removeJavascriptInterface("HipsterLab");web.destroy();super.onDestroy(); }
