@@ -34,9 +34,8 @@ s=s[:a]+'''    <div class="hero-title poster-hero">
     </div>
 
 '''+s[b:]
-# Setup stays visible until explicitly dismissed, without an extra disclosure tap.
-welcome=(ROOT/'launcher/editions/gig-poster/assets/welcome-invitation.html').read_text()+'\n'
-s=s.replace('    <section class="service-counter"',welcome+'    <section class="service-counter"',1)
+# The same first-visit ticket follows the selected services in both editions.
+s=s.replace('    <h2 class="counter-heading mix-heading">',welcome+'    <h2 class="counter-heading mix-heading">',1)
 s=s.replace('<h3 class="panel-head"','<h2 class="panel-head"').replace('THE ROBOT</h3>','THE ROBOT</h2>').replace('THE NEEDLE</h3>','THE NEEDLE</h2>')
 s=s.replace('CHOOSE YOUR SERVICES','PICK YOUR SERVICES').replace('THE ROBOT','PICK YOUR AI').replace('THE NEEDLE','PICK YOUR DESTINATION').replace('SHAPE YOUR MIX','SET THE TEMPO').replace('<h3 class="counter-label">MOOD</h3>','<h2 class="counter-label">WHAT’S THE VIBE?</h2>')
 s=s.replace('<details class="crate-geo" id="crateGeo">','<details class="crate-geo" id="crateGeo" open>')
