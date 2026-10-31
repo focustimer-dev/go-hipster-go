@@ -719,15 +719,66 @@ function atlasBindGestures(){
   if(atlasZoomFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasZoomFrame);
   atlasZoomFrame=0;
  };
+ // Treat one finger tap as selection, but reserve a short window for a
+ // second tap before dispatching it. Otherwise a double tap first selects
+ // land (and moves the map) instead of zooming at the user's finger.
+ const doubleTapWindow=290,doubleTapRadius=32;
+ let pendingTap=null,replayingTouchClick=false,lastTouchEnd=0;
+ let twoFingerTap=null;
+ const clearPendingTap=()=>{
+  if(pendingTap)clearTimeout(pendingTap.timer);
+  pendingTap=null;
+ };
+ const zoomAt=(view,anchor,screen,rect,scale)=>{
+  stopZoom();flushAtlasNavigation();
+  animateAtlasView(atlasViewForGesture(view,anchor,screen,rect,scale));
+  atlasUserNavigated=true;renderAtlasNavigation();
+  atlasSuppressTapUntil=Date.now()+500;
+ };
+ map.addEventListener("click",event=>{
+  if(replayingTouchClick||event.detail===0)return; // Keyboard is immediate.
+  if(event.pointerType!=="touch"&&Date.now()-lastTouchEnd>450)return;
+  // Handle real touch clicks before country/secret listeners can select.
+  event.preventDefault();event.stopImmediatePropagation();
+  if(Date.now()<atlasSuppressTapUntil){clearPendingTap();return}
+  const now=Date.now(),screen={x:event.clientX,y:event.clientY};
+  if(pendingTap&&now-pendingTap.time<=doubleTapWindow&&
+     Math.hypot(screen.x-pendingTap.x,screen.y-pendingTap.y)<=doubleTapRadius){
+   clearPendingTap();
+   const view=atlasView(),rect=map.getBoundingClientRect();
+   zoomAt(view,atlasScreenAnchor(map,view,screen.x,screen.y,rect),screen,rect,.5);
+   return;
+  }
+  // A distant second tap still counts as two independent map selections.
+  if(pendingTap){
+   const first=pendingTap;clearPendingTap();replayingTouchClick=true;
+   try{first.target?.dispatchEvent(new MouseEvent("click",{bubbles:true,cancelable:true,clientX:first.x,clientY:first.y}))}
+   finally{replayingTouchClick=false}
+  }
+  const target=event.target;
+  pendingTap={target,x:screen.x,y:screen.y,time:now,timer:setTimeout(()=>{
+   if(!pendingTap||pendingTap.target!==target)return;
+   clearPendingTap();
+   if(Date.now()<atlasSuppressTapUntil)return;
+   replayingTouchClick=true;
+   try{target.dispatchEvent(new MouseEvent("click",{bubbles:true,cancelable:true,clientX:screen.x,clientY:screen.y}))}
+   finally{replayingTouchClick=false}
+  },doubleTapWindow)};
+ },true);
+ // The browser's native double click must not also zoom the document.
+ map.addEventListener("dblclick",event=>event.preventDefault());
  // Freeze the geometry under a new press, rather than moving the target
  // between pointer-down and click while a continent zoom is still running.
  const beginTouch=(event,continuing=false)=>{
   if(event.touches.length<1||event.touches.length>2){atlasTouchGesture=null;flushAtlasNavigation();return;}
   stopZoom();flushAtlasNavigation();
   const view=atlasView(),screen=atlasGesturePoints(event.touches),rect=map.getBoundingClientRect();
-  atlasTouchGesture={view,anchor:atlasScreenAnchor(map,view,screen.x,screen.y,rect),distance:screen.distance,rect,count:event.touches.length,start:screen,moved:continuing};
-  if(event.touches.length===2){if(event.cancelable)event.preventDefault();atlasSuppressTapUntil=Date.now()+700;}
-  else if(!continuing)atlasSuppressTapUntil=0;
+  atlasTouchGesture={view,anchor:atlasScreenAnchor(map,view,screen.x,screen.y,rect),distance:screen.distance,rect,count:event.touches.length,start:screen,moved:continuing,at:Date.now()};
+  if(event.touches.length===2){
+   clearPendingTap();twoFingerTap=null;
+   if(event.cancelable)event.preventDefault();
+   atlasSuppressTapUntil=Date.now()+700;
+  }else if(!continuing)atlasSuppressTapUntil=0;
  };
  // Mouse/pen drags use the same anchor math as touch; capture only after
  // movement so an ordinary click still reaches the painted country path.
@@ -762,19 +813,28 @@ function atlasBindGestures(){
   const screen=atlasGesturePoints(event.touches);
   if(s.count===1&&!s.moved&&Math.hypot(screen.x-s.start.x,screen.y-s.start.y)<6)return;
   if(event.cancelable)event.preventDefault();
-  s.moved=true;
+  s.moved=true;clearPendingTap();twoFingerTap=null;
   queueAtlasNavigation(atlasViewForGesture(s.view,s.anchor,screen,s.rect,s.count===2?s.distance/screen.distance:1));
   atlasUserNavigated=true;atlasSuppressTapUntil=Date.now()+700;
  },{passive:false});
  const endTouch=event=>{
   const s=atlasTouchGesture;if(!s)return;
   flushAtlasNavigation();
+  if(s.count===1&&!s.moved&&event.touches.length===0)lastTouchEnd=Date.now();
+  // A two-finger tap zooms out one level. Some devices release the fingers
+  // separately; keep the candidate until the second finger lifts.
+  if(s.count===2&&!s.moved&&Date.now()-s.at<420)
+   twoFingerTap={view:s.view,anchor:s.anchor,screen:s.start,rect:s.rect,at:Date.now()};
   if(s.moved||s.count===2)atlasSuppressTapUntil=Date.now()+700;
+  if(event.touches.length===0&&twoFingerTap&&Date.now()-twoFingerTap.at<420){
+   const tap=twoFingerTap;twoFingerTap=null;clearPendingTap();
+   zoomAt(tap.view,tap.anchor,tap.screen,tap.rect,2);
+  }
   if(event.touches.length===1)beginTouch(event,true);else atlasTouchGesture=null;
   renderAtlasNavigation();
  };
  map.addEventListener("touchend",endTouch,{passive:true});
- map.addEventListener("touchcancel",()=>{atlasTouchGesture=null;atlasSuppressTapUntil=Date.now()+700;flushAtlasNavigation();renderAtlasNavigation()},{passive:true});
+ map.addEventListener("touchcancel",()=>{atlasTouchGesture=null;twoFingerTap=null;clearPendingTap();atlasSuppressTapUntil=Date.now()+700;flushAtlasNavigation();renderAtlasNavigation()},{passive:true});
  map.addEventListener("wheel",event=>{
   // Ordinary wheel/trackpad scrolling belongs to the page. Deliberate modifiers
   // pan the map (Shift) or zoom it (trackpad pinch / Ctrl / Command).
