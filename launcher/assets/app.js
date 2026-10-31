@@ -517,7 +517,7 @@ if(body.dataset.page!=="launch"){render();return}
 // Keep the existing dismissal key so returning visitors are not asked again.
 const welcome=doc.getElementById("welcomeSetup");
 if(welcome){
- welcome.hidden=Boolean(stored("hmg-setup-first-tip-dismissed-v3"));
+ welcome.hidden=new URLSearchParams(location.search).get("intro")!=="1"&&Boolean(stored("hmg-setup-first-tip-dismissed-v3"));
  const journey=doc.getElementById("setupJourney"),begin=doc.getElementById("beginSetup");
  if(begin&&journey)begin.addEventListener("click",()=>{
   const show=journey.hidden;journey.hidden=!show;begin.setAttribute("aria-expanded",String(show));begin.textContent=show?"HIDE SETUP":"SET ME UP";
