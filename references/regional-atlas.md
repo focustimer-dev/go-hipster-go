@@ -10,6 +10,23 @@ Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep
 
 See the [focused regional review](regional-review.md) for the source-supported shortlist, overlap decisions and material not ready for automatic discovery.
 
+## Map regions and musical overlap
+
+The PWA map assigns one **primary listening region** to each whole-country land shape (except deliberate US, Canada and Russia splits). This is a map-navigation convention, **not** an exclusive cultural border, genre classification, or a claim that every coastal province belongs to the same scene. Keep geographic shapes, borders and camera geometry unchanged when updating these labels.
+
+| Country / cultural crossing | Primary map region | How to interpret selected music regions |
+| --- | --- | --- |
+| Turkey | Middle East & Caucasus | Anatolian and Istanbul routes live here. Turkish Thrace and Romani/Balkan collaborations may also be researched for Mediterranean & Balkans when their **recording-level regional connection** supports it. |
+| Spain | Mediterranean & Balkans | Balearic, Catalan, Valencian and Andalusian scenes support this default. Galicia, Asturias and Basque Atlantic scenes can also qualify for Atlantic & Western Europe with specific locality evidence. Do not treat all Spanish recordings as Mediterranean merely because Spain is painted there. |
+| Portugal | Atlantic & Western Europe | Portuguese fado, Lisbon batida and Alentejo routes are historically catalogued in the Mediterranean source file, but Portugal is Atlantic for map navigation. The imported route IDs stay intact; research their actual origins. |
+| France | Atlantic & Western Europe | Corsican music and other explicitly Mediterranean French scenes can qualify for Mediterranean & Balkans, despite the France-wide map default. |
+| Brazil | Southern South America | Most catalogued Brazilian scenes (Rio, São Paulo, Bahia, Pernambuco) are covered here; Pará/Belém and other northern Brazil routes belong to Northern South America when requested. |
+| Sudan | North Africa | Khartoum, Omdurman, Nubian and Red Sea routes are filed under North Africa; **South Sudan** remains East Africa. |
+| Madagascar | East Africa | The east-African island scenes are researched under East Africa; the previous Central & Southern Africa map label was inconsistent. |
+| Cyprus | Mediterranean & Balkans | Keep its primary Mediterranean mapping; investigate Levantine or Middle Eastern overlaps only where the particular recording supports one. |
+
+**Rule for curation:** A selected musical region may include a specifically verified cross-border or subnational scene despite a different whole-country map default. Do not automatically widen a selected region to *every* recording from an overlapping country, use a shared instrument or language as geographic proof, or count overlapping research leads as extra diversity. Preserve the provenance of the actual recording and the user's explicit region choices. One country still has one clickable primary region; selecting two overlapping regions remains possible using the named controls.
+
 ## Lookup
 
 Match the exact region ID or visible label below. Read only the selected regional files; for worldwide discovery, compare a few contrasting regions rather than loading the entire atlas. Route IDs are stable lookup handles, not genre authority or ranking. These files contain 720 source rows (30 per region), not 720 independently verified genres.
