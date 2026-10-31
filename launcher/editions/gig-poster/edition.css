@@ -756,6 +756,16 @@ body.gig-poster .chart-nautical-routes .atlas-pacific-port{
  fill:#edc973;stroke:var(--ink);stroke-width:.65;opacity:.85
 }
 
+/* The final three-region Atlantic itinerary has two port-to-port legs
+   meeting at Halifax. Keep it subordinate to the canonical engraved map. */
+body.gig-poster .chart-nautical-routes .atlas-westbound-crossing{
+ fill:none;stroke:#edc973;stroke-width:1.1;stroke-dasharray:3 5;
+ stroke-linecap:round;opacity:.65;vector-effect:non-scaling-stroke
+}
+body.gig-poster .chart-nautical-routes .atlas-westbound-port{
+ fill:#edc973;stroke:var(--ink);stroke-width:.65;opacity:.85
+}
+
 /* Atlas secrets — hidden on the overview; printed chart art stays canonical.
    Optional hit zones follow the Robinson camera and never alter country paths. */
 body.gig-poster #crateAtlasMap .atlas-secrets-layer{display:none}
