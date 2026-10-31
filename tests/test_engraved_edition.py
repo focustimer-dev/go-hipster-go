@@ -41,6 +41,23 @@ class EngravedEditionChecks(unittest.TestCase):
         self.assertIn('receipt-feed', (BASE/"edition.css").read_text())
         self.assertIn('selection-ticket[hidden]',css)
 
+    def test_brand_headline_persists_and_return_stamp_is_discreet(self):
+        original=(ROOT/"launcher/index.html").read_text()
+        built=(BASE/"index.html").read_text()
+        builder=(ROOT/"scripts/build_gig_poster.py").read_text()
+        shared=(ROOT/"launcher/assets/hipster.css").read_text()
+        edition=(BASE/"edition.css").read_text()
+        self.assertIn('YOUR TASTE<br> IS A <em>PROBLEM.</em>',original)
+        for page in (original,built):
+            self.assertEqual(page.count('class="return-stamp">NO REFUNDS'),1)
+            self.assertNotIn('BACK FOR',page)
+            self.assertNotIn('class="return-sleeve"',page)
+        self.assertIn('<span class="poster-line">YOUR TASTE</span>',built)
+        self.assertIn('<span class="return-stamp">NO REFUNDS</span>',builder)
+        self.assertIn('html[data-returning=true] body[data-page=launch] .hero-title .return-stamp',shared)
+        self.assertIn('html[data-returning=true] body.gig-poster[data-page=launch] .poster-hero .return-stamp',edition)
+        self.assertIn('opacity:.75;transform:rotate(-3deg)',edition)
+
     def test_artwork_and_controls_remain_separate(self):
         css=(BASE/"edition.css").read_text()
         index=(BASE/"index.html").read_text()
