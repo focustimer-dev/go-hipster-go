@@ -58,13 +58,15 @@ class EngravedEditionChecks(unittest.TestCase):
         self.assertIn('data-secret",',script.replace('"data-secret":', 'data-secret",', 1))
         self.assertIn('id:"pacific-handoff"',script)
         self.assertIn('regions:["east-asia","us-west"]',script)
-        # The last planned route is Plymouth -> Halifax -> San Juan, with two
+        # The last planned route is Liverpool -> Halifax -> Grand Turk, with two
         # Atlantic legs and precisely three existing region IDs.
         self.assertIn('const westboundLegs=[',script)
-        self.assertIn('[-4.14,50.37]',script)
+        self.assertIn('[-3.05,53.43]',script)
         self.assertIn('[-63.57,44.65]',script)
-        self.assertIn('[-66.11,18.46]',script)
+        self.assertIn('[-71.13,21.47]',script)
         self.assertIn('westboundLegs.map(chartPath).join(" ")',script)
+        self.assertIn('Liverpool to Halifax, Nova Scotia, to Grand Turk',script)
+        self.assertNotIn('Plymouth to Halifax to San Juan',script)
         self.assertIn('id:"westbound-manifest"',script)
         self.assertIn('regions:["atlantic-europe","canada-east","caribbean"]',script)
         self.assertIn('class:"atlas-westbound-crossing"',script)
