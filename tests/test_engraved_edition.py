@@ -24,6 +24,138 @@ class EngravedEditionChecks(unittest.TestCase):
         self.assertIn('id="crateAtlasMap"',index)
         self.assertIn('id="atlasHome"',index)
 
+    def test_atlas_secrets_are_zoom_gated_and_route_picks_replace_regions(self):
+        script=(ROOT/"launcher/assets/app.js").read_text()
+        css=(BASE/"edition.css").read_text()
+        generated=(BASE/"index.html").read_text()
+        # Existing engraved furniture and Robinson camera remain the source.
+        self.assertIn('class="chart-nautical-routes"',generated)
+        self.assertIn('class="chart-details"',generated)
+        self.assertIn('class="crate-robinson"',generated)
+        self.assertIn('class="chart-compass-fixed"',generated)
+        self.assertIn("installAtlasSecrets()",script)
+        self.assertIn('map._atlasSecretsSync?.(visible)',script)
+        self.assertIn('map.getAttribute("data-details")!=="true"',script)
+        self.assertIn('atlasTouchGesture||Date.now()<atlasSuppressTapUntil',script)
+        self.assertIn('map.querySelectorAll(".chart-details > svg")',script)
+        self.assertIn('map.querySelector(".chart-nautical-routes path")',script)
+        # Three port-to-port corridors must project to the actual painted
+        # Robinson map, not recycle unrelated ornament coordinates.
+        self.assertIn('Georgetown, Guyana / Dakar, Senegal',script)
+        self.assertIn('Rio de Janeiro, Brazil / Luanda, Angola',script)
+        self.assertIn('Mombasa, Kenya / Mumbai, India',script)
+        # Transpacific route: its great-circle is rendered as two SVG
+        # subpaths at the antimeridian, not a false line across the map.
+        self.assertIn('greatCirclePacific=()=>{',script)
+        self.assertIn('start=unit([113.62,22.78])',script)
+        self.assertIn('end=unit([-118.20,33.77])',script)
+        self.assertIn('legs[0].push([180,seamLat])',script)
+        self.assertIn('legs.push([[-180,seamLat]])',script)
+        self.assertIn('if(legs.length!==2||!Number.isFinite(seamLat))return null',script)
+        self.assertIn('routeParts.push(pacific.path)',script)
+        self.assertIn('class:"atlas-pacific-crossing"',script)
+        self.assertIn('class:"atlas-pacific-seam"',script)
+        self.assertIn('data-secret",',script.replace('"data-secret":', 'data-secret",', 1))
+        self.assertIn('id:"pacific-handoff"',script)
+        self.assertIn('regions:["east-asia","us-west"]',script)
+        # The last planned route is Liverpool -> Halifax -> Grand Turk, with two
+        # Atlantic legs and precisely three existing region IDs.
+        self.assertIn('const westboundLegs=[',script)
+        self.assertIn('[-3.05,53.43]',script)
+        self.assertIn('[-63.57,44.65]',script)
+        self.assertIn('[-71.13,21.47]',script)
+        self.assertIn('westboundLegs.map(chartPath).join(" ")',script)
+        self.assertIn('Liverpool to Halifax to Grand Turk',script)
+        self.assertNotIn('Plymouth to Halifax to San Juan',script)
+        self.assertIn('id:"westbound-manifest"',script)
+        self.assertIn('regions:["atlantic-europe","canada-east","caribbean"]',script)
+        # Ten discovery blurbs: keep them concise without changing the
+        # route-specific regions, titles, or non-route interactions.
+        section=script.split(' const secrets=[',1)[1].split(' const layer=svg(',1)[0]
+        blurbs=re.findall(r'\{id:"([^"]+)",kind:"(?:route|ship|monster|marginalia)",title:"[^"]+",\s*eyebrow:"[^"]+",body:"([^"]+)"',section)
+        self.assertEqual(len(blurbs),10)
+        self.assertEqual(len({id for id, _ in blurbs}),10)
+        for id, body in blurbs:
+            with self.subTest(discovery=id):
+                self.assertLessEqual(len(body),130)
+                self.assertEqual(body,body.strip())
+                self.assertFalse(re.search(r' {2,}|\.\.+',body))
+        self.assertIn('The Date Line can\'t stop a good dig.',script)
+
+        self.assertIn('class:"atlas-westbound-crossing"',script)
+        self.assertIn('class:"atlas-westbound-port"',script)
+        self.assertIn('.atlas-westbound-crossing',css)
+        self.assertIn('.atlas-westbound-port',css)
+        self.assertIn('.atlas-pacific-crossing',css)
+        self.assertIn('.atlas-pacific-seam',css)
+
+        self.assertIn('360+335*(lon/180)*interpolate(robinX,lat)',script)
+        self.assertIn('routePath.setAttribute("d",routeParts.join(" "))',script)
+        self.assertIn('node.setAttribute("cx",point[0].toFixed(1))',script)
+        self.assertIn('class:"atlas-secret-route-highlight"',script)
+        self.assertIn('if(fromKeyboard)heading.focus({preventScroll:true})',script)
+        self.assertIn('for(const hot of hotspots)hot.toggleAttribute("data-active",hot===node)',script)
+        self.assertNotIn('card.scrollIntoView',script)
+        self.assertIn('.atlas-secret-route-highlight',css)
+        self.assertIn('stroke-width:22;pointer-events:stroke',css)
+        self.assertIn('parent.insertBefore(layer,engraving.nextSibling)',script)
+        # Picking a route replaces manual and previous-route regions outright.
+        self.assertIn('action.textContent="PICK THESE REGIONS"',script)
+        self.assertIn('crateSelected.clear();',script)
+        self.assertIn('const picked=[...new Set(active.regions)].filter(id=>validCrateRegions.has(id))',script)
+        self.assertIn('for(const id of picked)crateSelected.add(id)',script)
+        self.assertIn('action.textContent=same?"ALREADY PICKED":"REGIONS PICKED"',script)
+        self.assertNotIn('ADD THESE REGIONS',script)
+        self.assertIn("updateCrateMap();",script)
+        self.assertIn('"aria-hidden":"true"',script)
+        self.assertIn('tabindex",visible?"0":"-1"',script)
+        self.assertIn('event.key==="Escape"',script)
+        self.assertIn('event.key==="Enter"||event.key===" "',script)
+        self.assertIn("THE CARTOGRAPHER'S MISTAKES",script)
+        self.assertIn("CLERK'S ANNOTATION",script)
+        self.assertIn("CONTRABAND ROUTE",script)
+        self.assertIn('atlas-secret-route-touch',css)
+        self.assertIn('#crateAtlasMap[data-details=true] .atlas-secrets-layer',css)
+        self.assertIn('.atlas-secret-card[hidden]{display:none!important}',css)
+        self.assertIn('@media(prefers-reduced-motion:reduce)',css)
+        # Antarctica remains explicit-only, not a suggested contraband route.
+        section=script.split('function installAtlasSecrets(){',1)[1].split('\ninstallAtlasSecrets();',1)[0]
+        self.assertNotIn('regions:["antarctica"',section)
+
+    def test_selected_atlas_autofocus_has_breathing_room(self):
+        script=(ROOT/"launcher/assets/app.js").read_text()
+        # Automatic framing backs away from small selected territories.
+        # Continent focus, touch zoom/pan and Antarctica keep their original paths.
+        self.assertIn('function atlasRelaxSelectedView(view){',script)
+        self.assertIn('const width=Math.min(720,w*1.18),height=width*372/720;',script)
+        self.assertIn('return [x+(w-width)/2,y+(h-height)/2,width,height];',script)
+        self.assertIn('const antarcticaOnly=crateSelected.size===1&&crateSelected.has("antarctica")',script)
+        self.assertIn('antarcticaOnly?atlasRobinsonViews.antarctica:crateSelected.size?atlasRelaxSelectedView(atlasSelectedView(atlasRegionShapes,crateSelected)):null',script)
+        self.assertIn('renderCrateMap();animateAtlasView(atlasFocus);',script)
+        self.assertIn('function atlasViewForGesture(base,anchor,screen,rect,zoom){',script)
+
+    def test_mobile_map_tap_zoom_without_double_selection(self):
+        script=(ROOT/"launcher/assets/app.js").read_text()
+        # Country and route listeners must not fire for the first touch
+        # click until the possible second tap has been resolved.
+        self.assertIn('const doubleTapWindow=290,doubleTapRadius=32;',script)
+        self.assertIn('map.addEventListener("click",event=>{',script)
+        self.assertIn('event.preventDefault();event.stopImmediatePropagation();',script)
+        self.assertIn('if(replayingTouchClick||event.detail===0)return;',script)
+        self.assertIn('clearTimeout(pendingTap.timer)',script)
+        self.assertIn('atlasViewForGesture(view,anchor,screen,rect,scale)',script)
+        self.assertIn('const doubleTapTurnaroundWidth=150,doubleTapPullback=1.6;',script)
+        self.assertIn('const scale=view[2]<=doubleTapTurnaroundWidth?doubleTapPullback:.5;',script)
+        self.assertIn('zoomAt(view,atlasScreenAnchor(map,view,screen.x,screen.y,rect),screen,rect,scale)',script)
+        self.assertIn('target.dispatchEvent(new MouseEvent("click"',script)
+        self.assertIn('map.addEventListener("dblclick",event=>event.preventDefault())',script)
+        # Two-finger zoom-out reuses the existing viewport constraints and
+        # allows fingers to lift in sequence without a phantom click.
+        self.assertIn('twoFingerTap={view:s.view,anchor:s.anchor,screen:s.start,rect:s.rect,at:Date.now()}',script)
+        self.assertIn('zoomAt(tap.view,tap.anchor,tap.screen,tap.rect,2)',script)
+        self.assertIn('Math.abs(s.distance-screen.distance)<6',script)
+        self.assertIn('function atlasViewForGesture(base,anchor,screen,rect,zoom){',script)
+
     def test_selection_ticket_and_clean_receipt_idle_state(self):
         base=(ROOT/"launcher/index.html").read_text()
         generated=(BASE/"index.html").read_text()

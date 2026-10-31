@@ -163,7 +163,9 @@ function atlasDetailsForView(map,view){
  // A small dead band prevents flicker while pinching around the reveal point.
  const threshold=map.getAttribute("data-details")==="true"?2.05:2.3;
  if(720/width>=1.5)warmAtlasArtwork();
- map.setAttribute("data-details",String(720/width>=threshold));
+ const visible=720/width>=threshold;
+ map.setAttribute("data-details",String(visible));
+ map._atlasSecretsSync?.(visible);
 }
 // Robinson rays follow the geography camera but remain underneath its
 // opaque ocean. The ocean masks rays at the CURRENT map edge while panning.
@@ -247,9 +249,19 @@ function atlasSelectedView(shapes,selected){
  if(box[2]<160){const cx=box[0]+box[2]/2,cy=box[1]+box[3]/2;return [cx-80,cy-160*372/720/2,160,160*372/720]}
  return box;
 }
+// A selected region should provide context, not fill the entire viewport.
+// Ease auto-framing out by 18%, centered on the same projected geography.
+// Manual pinch/pan, continent focus and Antarctica's explicit view are unchanged.
+function atlasRelaxSelectedView(view){
+ if(!view)return null;
+ const [x,y,w,h]=atlasNormalize(view);
+ const width=Math.min(720,w*1.18),height=width*372/720;
+ return [x+(w-width)/2,y+(h-height)/2,width,height];
+}
 function frameSelectedAtlas(){
  if(!atlasRegionShapes.length)return; // Manual/setup and test environments may lack painted paths.
- const view=crateSelected.size===1&&crateSelected.has("antarctica")?atlasRobinsonViews.antarctica:crateSelected.size?atlasSelectedView(atlasRegionShapes,crateSelected):null;
+ const antarcticaOnly=crateSelected.size===1&&crateSelected.has("antarctica");
+ const view=antarcticaOnly?atlasRobinsonViews.antarctica:crateSelected.size?atlasRelaxSelectedView(atlasSelectedView(atlasRegionShapes,crateSelected)):null;
  atlasUserNavigated=Boolean(view);
  if(!crateSelected.size){atlasFocus=null;renderCrateMap()}else renderAtlasNavigation();
  animateAtlasView(view||null);
@@ -707,15 +719,70 @@ function atlasBindGestures(){
   if(atlasZoomFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasZoomFrame);
   atlasZoomFrame=0;
  };
+ // Treat one finger tap as selection, but reserve a short window for a
+ // second tap before dispatching it. Otherwise a double tap first selects
+ // land (and moves the map) instead of zooming at the user's finger.
+ const doubleTapWindow=290,doubleTapRadius=32;
+ // Near the 120-unit zoom ceiling, a double-tap gently pulls back instead
+ // of silently doing nothing. Everywhere else it still zooms toward the tap.
+ const doubleTapTurnaroundWidth=150,doubleTapPullback=1.6;
+ let pendingTap=null,replayingTouchClick=false,lastTouchEnd=0;
+ let twoFingerTap=null;
+ const clearPendingTap=()=>{
+  if(pendingTap)clearTimeout(pendingTap.timer);
+  pendingTap=null;
+ };
+ const zoomAt=(view,anchor,screen,rect,scale)=>{
+  stopZoom();flushAtlasNavigation();
+  animateAtlasView(atlasViewForGesture(view,anchor,screen,rect,scale));
+  atlasUserNavigated=true;renderAtlasNavigation();
+  atlasSuppressTapUntil=Date.now()+500;
+ };
+ map.addEventListener("click",event=>{
+  if(replayingTouchClick||event.detail===0)return; // Keyboard is immediate.
+  if(event.pointerType!=="touch"&&Date.now()-lastTouchEnd>450)return;
+  // Handle real touch clicks before country/secret listeners can select.
+  event.preventDefault();event.stopImmediatePropagation();
+  if(Date.now()<atlasSuppressTapUntil){clearPendingTap();return}
+  const now=Date.now(),screen={x:event.clientX,y:event.clientY};
+  if(pendingTap&&now-pendingTap.time<=doubleTapWindow&&
+     Math.hypot(screen.x-pendingTap.x,screen.y-pendingTap.y)<=doubleTapRadius){
+   clearPendingTap();
+   const view=atlasView(),rect=map.getBoundingClientRect();
+   const scale=view[2]<=doubleTapTurnaroundWidth?doubleTapPullback:.5;
+   zoomAt(view,atlasScreenAnchor(map,view,screen.x,screen.y,rect),screen,rect,scale);
+   return;
+  }
+  // A distant second tap still counts as two independent map selections.
+  if(pendingTap){
+   const first=pendingTap;clearPendingTap();replayingTouchClick=true;
+   try{first.target?.dispatchEvent(new MouseEvent("click",{bubbles:true,cancelable:true,clientX:first.x,clientY:first.y}))}
+   finally{replayingTouchClick=false}
+  }
+  const target=event.target;
+  pendingTap={target,x:screen.x,y:screen.y,time:now,timer:setTimeout(()=>{
+   if(!pendingTap||pendingTap.target!==target)return;
+   clearPendingTap();
+   if(Date.now()<atlasSuppressTapUntil)return;
+   replayingTouchClick=true;
+   try{target.dispatchEvent(new MouseEvent("click",{bubbles:true,cancelable:true,clientX:screen.x,clientY:screen.y}))}
+   finally{replayingTouchClick=false}
+  },doubleTapWindow)};
+ },true);
+ // The browser's native double click must not also zoom the document.
+ map.addEventListener("dblclick",event=>event.preventDefault());
  // Freeze the geometry under a new press, rather than moving the target
  // between pointer-down and click while a continent zoom is still running.
  const beginTouch=(event,continuing=false)=>{
   if(event.touches.length<1||event.touches.length>2){atlasTouchGesture=null;flushAtlasNavigation();return;}
   stopZoom();flushAtlasNavigation();
   const view=atlasView(),screen=atlasGesturePoints(event.touches),rect=map.getBoundingClientRect();
-  atlasTouchGesture={view,anchor:atlasScreenAnchor(map,view,screen.x,screen.y,rect),distance:screen.distance,rect,count:event.touches.length,start:screen,moved:continuing};
-  if(event.touches.length===2){if(event.cancelable)event.preventDefault();atlasSuppressTapUntil=Date.now()+700;}
-  else if(!continuing)atlasSuppressTapUntil=0;
+  atlasTouchGesture={view,anchor:atlasScreenAnchor(map,view,screen.x,screen.y,rect),distance:screen.distance,rect,count:event.touches.length,start:screen,moved:continuing,at:Date.now()};
+  if(event.touches.length===2){
+   clearPendingTap();twoFingerTap=null;
+   if(event.cancelable)event.preventDefault();
+   atlasSuppressTapUntil=Date.now()+700;
+  }else if(!continuing)atlasSuppressTapUntil=0;
  };
  // Mouse/pen drags use the same anchor math as touch; capture only after
  // movement so an ordinary click still reaches the painted country path.
@@ -748,21 +815,33 @@ function atlasBindGestures(){
  map.addEventListener("touchmove",event=>{
   const s=atlasTouchGesture;if(!s||event.touches.length!==s.count)return;
   const screen=atlasGesturePoints(event.touches);
-  if(s.count===1&&!s.moved&&Math.hypot(screen.x-s.start.x,screen.y-s.start.y)<6)return;
+  // Ignore tiny two-finger jitter too; a stationary two-finger tap should
+  // not accidentally become a pinch just because the sensors moved 1px.
+  if(!s.moved&&Math.hypot(screen.x-s.start.x,screen.y-s.start.y)<6&&
+     (s.count===1||Math.abs(s.distance-screen.distance)<6))return;
   if(event.cancelable)event.preventDefault();
-  s.moved=true;
+  s.moved=true;clearPendingTap();twoFingerTap=null;
   queueAtlasNavigation(atlasViewForGesture(s.view,s.anchor,screen,s.rect,s.count===2?s.distance/screen.distance:1));
   atlasUserNavigated=true;atlasSuppressTapUntil=Date.now()+700;
  },{passive:false});
  const endTouch=event=>{
   const s=atlasTouchGesture;if(!s)return;
   flushAtlasNavigation();
+  if(s.count===1&&!s.moved&&event.touches.length===0)lastTouchEnd=Date.now();
+  // A two-finger tap zooms out one level. Some devices release the fingers
+  // separately; keep the candidate until the second finger lifts.
+  if(s.count===2&&!s.moved&&Date.now()-s.at<420)
+   twoFingerTap={view:s.view,anchor:s.anchor,screen:s.start,rect:s.rect,at:Date.now()};
   if(s.moved||s.count===2)atlasSuppressTapUntil=Date.now()+700;
+  if(event.touches.length===0&&twoFingerTap&&Date.now()-twoFingerTap.at<420){
+   const tap=twoFingerTap;twoFingerTap=null;clearPendingTap();
+   zoomAt(tap.view,tap.anchor,tap.screen,tap.rect,2);
+  }
   if(event.touches.length===1)beginTouch(event,true);else atlasTouchGesture=null;
   renderAtlasNavigation();
  };
  map.addEventListener("touchend",endTouch,{passive:true});
- map.addEventListener("touchcancel",()=>{atlasTouchGesture=null;atlasSuppressTapUntil=Date.now()+700;flushAtlasNavigation();renderAtlasNavigation()},{passive:true});
+ map.addEventListener("touchcancel",()=>{atlasTouchGesture=null;twoFingerTap=null;clearPendingTap();atlasSuppressTapUntil=Date.now()+700;flushAtlasNavigation();renderAtlasNavigation()},{passive:true});
  map.addEventListener("wheel",event=>{
   // Ordinary wheel/trackpad scrolling belongs to the page. Deliberate modifiers
   // pan the map (Shift) or zoom it (trackpad pinch / Ctrl / Command).
@@ -787,6 +866,270 @@ function atlasBindGestures(){
   atlasSuppressTapUntil=Date.now()+500;
  },{passive:false});
 }
+
+
+/* ATLAS SECRETS — the original printed ships, creatures, routes and chart
+   endpoints are the anchors. The geometry, zoom, and country hit paths never
+   change; this optional layer only becomes interactive after close inspection. */
+function installAtlasSecrets(){
+ const map=doc.getElementById("crateAtlasMap");
+ if(!map?.classList?.contains?.("crate-robinson")||typeof doc.createElementNS!=="function")return;
+ const engraving=map.querySelector(".chart-details");
+ const art=[...map.querySelectorAll(".chart-details > svg")];
+ const routePath=map.querySelector(".chart-nautical-routes path");
+ const endpoints=[...map.querySelectorAll(".chart-nautical-routes circle")];
+ if(!engraving||art.length<3||!routePath||endpoints.length<6)return;
+ // Verified origin/destination port coordinates, transformed with the *same*
+ // tabulated Robinson projection as scripts/robinson_atlas.py. Intermediate
+ // points are offshore waypoints, not assertions about historical shipping.
+ // They steer the Atlantic route around the existing illustrated vessel.
+ const routePlans=[
+  {ports:"Georgetown, Guyana / Dakar, Senegal",
+   waypoints:[[-58.155,6.8],[-47,21],[-35,23],[-17.45,14.69]]},
+  {ports:"Rio de Janeiro, Brazil / Luanda, Angola",
+   waypoints:[[-43.2,-22.9],[-28,-20],[-7,-15],[13.23,-8.82]]},
+  {ports:"Mombasa, Kenya / Mumbai, India",
+   waypoints:[[39.67,-4.04],[53,1],[63,11],[72.88,19.08]]}
+ ];
+ const robinX=[1,.9986,.9954,.99,.9822,.973,.96,.9427,.9216,.8962,.8679,.835,.7986,.7597,.7186,.6732,.6213,.5722,.5322];
+ const robinY=[0,.062,.124,.186,.248,.31,.372,.434,.4958,.5571,.6176,.6769,.7346,.7903,.8435,.8936,.9394,.9761,1];
+ const interpolate=(table,lat)=>{
+  const a=Math.min(90,Math.abs(lat)),i=Math.min(Math.floor(a/5),17),t=(a-i*5)/5;
+  return table[i]+(table[i+1]-table[i])*t;
+ };
+ const projectPort=([lon,lat])=>[
+  360+335*(lon/180)*interpolate(robinX,lat),
+  188-Math.sign(lat)*168*interpolate(robinY,lat)
+ ];
+ // Smooth Catmull-Rom-to-cubic line through projected marine waypoints.
+ const chartPath=points=>{
+  const p=points.map(projectPort),f=n=>Number(n.toFixed(1));
+  let d="M"+f(p[0][0])+" "+f(p[0][1]);
+  for(let i=0;i<p.length-1;i++){
+   const prev=p[Math.max(0,i-1)],a=p[i],b=p[i+1],next=p[Math.min(p.length-1,i+2)];
+   const c1=[a[0]+(b[0]-prev[0])/6,a[1]+(b[1]-prev[1])/6];
+   const c2=[b[0]-(next[0]-a[0])/6,b[1]-(next[1]-a[1])/6];
+   d+="C"+f(c1[0])+" "+f(c1[1])+" "+f(c2[0])+" "+f(c2[1])+" "+f(b[0])+" "+f(b[1]);
+  }
+  return d;
+ };
+ // The Pacific occupies both outside edges of the Robinson plate. Calculate
+ // a short great-circle corridor, split precisely at the antimeridian,
+ // and render two separate subpaths: never draw a false line across Eurasia.
+ // This is illustrative navigation, not a live or historical vessel track.
+ const greatCirclePacific=()=>{
+  const rad=Math.PI/180,deg=180/Math.PI;
+  const unit=([lon,lat])=>{
+   const a=lon*rad,b=lat*rad;
+   return [Math.cos(b)*Math.cos(a),Math.cos(b)*Math.sin(a),Math.sin(b)];
+  };
+  const start=unit([113.62,22.78]),end=unit([-118.20,33.77]);
+  const dot=start.reduce((v,n,i)=>v+n*end[i],0);
+  const angle=Math.acos(Math.max(-1,Math.min(1,dot)));
+  const pointAt=t=>{
+   const w1=Math.sin((1-t)*angle)/Math.sin(angle),w2=Math.sin(t*angle)/Math.sin(angle);
+   const v=start.map((n,i)=>n*w1+end[i]*w2);
+   return [Math.atan2(v[1],v[0])*deg,Math.atan2(v[2],Math.hypot(v[0],v[1]))*deg];
+  };
+  const legs=[[]];let seamLat=null,previous=null;
+  for(let i=0;i<=72;i++){
+   const point=pointAt(i/72);
+   if(previous&&previous[0]>150&&point[0]<-150){
+    const crossed=point[0]+360;
+    const fraction=(180-previous[0])/(crossed-previous[0]);
+    seamLat=previous[1]+fraction*(point[1]-previous[1]);
+    legs[0].push([180,seamLat]);
+    legs.push([[-180,seamLat]]);
+   }
+   legs[legs.length-1].push(point);
+   previous=point;
+  }
+  if(legs.length!==2||!Number.isFinite(seamLat))return null;
+  const fmt=n=>Number(n.toFixed(1));
+  const path=legs.map(leg=>leg.map((coord,i)=>{
+   const [x,y]=projectPort(coord);
+   return (i?"L":"M")+fmt(x)+" "+fmt(y);
+  }).join("")).join(" ");
+  return {path,seamLat,origin:[113.62,22.78],destination:[-118.20,33.77]};
+ };
+ const pacific=greatCirclePacific();
+ // Liverpool (Atlantic & Western Europe) -> Halifax (Eastern Canada) ->
+ // Grand Turk (Turks and Caicos; Caribbean region).
+ // Follow the Irish Sea / St George's Channel to clear Irish land.
+ // Two offshore legs share the Halifax waypoint.
+ // A listening itinerary, not a historical vessel or commerce claim.
+ const westboundLegs=[
+  [[-3.05,53.43],[-4.8,53.2],[-5.55,52.3],[-7.8,50.4],[-20,50.7],[-40,49.2],[-57,47.4],[-63.57,44.65]],
+  [[-63.57,44.65],[-67,39.2],[-69.5,33.5],[-72,28.5],[-71.9,24],[-71.13,21.47]]
+ ];
+ const westboundPath=westboundLegs.map(chartPath).join(" ");
+ const routeParts=routePlans.map(route=>chartPath(route.waypoints));
+ routePath.setAttribute("d",routeParts.join(" "));
+ // Keep the printed dots attached to the same, now correct, route endpoints.
+ routePlans.forEach((route,i)=>{
+  const start=projectPort(route.waypoints[0]),end=projectPort(route.waypoints[route.waypoints.length-1]);
+  for(const [node,point] of [[endpoints[2*i],start],[endpoints[2*i+1],end]]){
+   node.setAttribute("cx",point[0].toFixed(1));node.setAttribute("cy",point[1].toFixed(1));
+  }
+ });
+ const parent=engraving.parentNode,ns="http://www.w3.org/2000/svg";
+ const svg=(tag,attrs={})=>{
+  const node=doc.createElementNS(ns,tag);
+  for(const [key,value] of Object.entries(attrs))node.setAttribute(key,String(value));
+  return node;
+ };
+ if(pacific){
+  // Both halves share one discovery target. Continue at the map edge with
+  // paired ink dots instead of inventing new ships or changing the projection.
+  routeParts.push(pacific.path);
+  const decor=svg("path",{d:pacific.path,class:"atlas-pacific-crossing"});
+  routePath.parentNode.insertBefore(decor,routePath.nextSibling);
+  for(const lon of [179.4,-179.4]){
+   const [x,y]=projectPort([lon,pacific.seamLat]);
+   routePath.parentNode.appendChild(svg("circle",{cx:x.toFixed(1),cy:y.toFixed(1),r:2.6,class:"atlas-pacific-seam"}));
+  }
+  for(const point of [pacific.origin,pacific.destination]){
+   const [x,y]=projectPort(point);
+   routePath.parentNode.appendChild(svg("circle",{cx:x.toFixed(1),cy:y.toFixed(1),r:2.1,class:"atlas-pacific-port"}));
+  }
+ }
+ const westboundChart=svg("path",{d:westboundPath,class:"atlas-westbound-crossing"});
+  routePath.parentNode.appendChild(westboundChart);
+  for(const point of [westboundLegs[0][0],westboundLegs[0][4],westboundLegs[1][4]]){
+   const [x,y]=projectPort(point);
+   routePath.parentNode.appendChild(svg("circle",{cx:x.toFixed(1),cy:y.toFixed(1),r:2.2,class:"atlas-westbound-port"}));
+  }
+ const secrets=[
+  {id:"atlantic-crossing",kind:"route",title:"THE ATLANTIC CROSSING",
+   eyebrow:"CONTRABAND ROUTE",body:"Georgetown to Dakar. Two Atlantic coasts, interlocking guitars and voices. Follow the sound; check the sleeves.",
+   regions:["northern-south-america","west-africa"],path:routeParts[0]},
+  {id:"southern-passage",kind:"route",title:"A SOUTHERN DETOUR",
+   eyebrow:"CONTRABAND ROUTE",body:"Rio to Luanda. Compare the pulse on each shore. A listening match, not a documented crossing.",
+   regions:["southern-south-america","central-southern-africa"],path:routeParts[1]},
+  {id:"indian-ocean",kind:"route",title:"THE LONG WAY ROUND",
+   eyebrow:"CONTRABAND ROUTE",body:"Mombasa to Mumbai. A percussion conversation across the Indian Ocean. Let the records make the connection.",
+   regions:["east-africa","south-asia"],path:routeParts[2]},
+  {id:"pacific-handoff",kind:"route",title:"THE PACIFIC HANDOFF",
+   eyebrow:"CONTRABAND ROUTE · DATE LINE",body:"Guangzhou to Long Beach. Off the right edge, on the left. The Date Line can't stop a good dig.",
+   regions:["east-asia","us-west"],path:pacific?.path},
+  {id:"westbound-manifest",kind:"route",title:"THE WESTBOUND MANIFEST",
+   eyebrow:"CONTRABAND ROUTE · THREE PORTS",body:"Liverpool to Halifax to Grand Turk. Three ports, two Atlantic legs. A listening itinerary, not a ship's log.",
+   regions:["atlantic-europe","canada-east","caribbean"],path:westboundPath},
+  {id:"unlicensed-vessel",kind:"ship",title:"THE UNLICENSED VESSEL",
+   eyebrow:"PORT AUTHORITY NOTICE",body:"Twelve records. Three doubtful dates. One alleged first pressing. The clerk wants receipts.",art:0},
+  {id:"serpent",kind:"monster",title:"UNVERIFIED SIGHTING",
+   eyebrow:"THE CARTOGRAPHER'S MISTAKES",body:"The locals call it prog rock. The creature objects.",art:1},
+  {id:"deep-water",kind:"monster",title:"HERE BE REISSUES",
+   eyebrow:"THE CARTOGRAPHER'S MISTAKES",body:"Rare pressing, average record. The chartmaker learned the hard way.",art:2},
+  {id:"margin-one",kind:"marginalia",title:"A CORRECTION IN THE MARGIN",
+   eyebrow:"CLERK'S ANNOTATION",body:"A listening suggestion, not a claim about anybody's birthplace. Check the sleeve.",end:1},
+  {id:"margin-two",kind:"marginalia",title:"UNAUTHORIZED FOOTNOTE",
+   eyebrow:"CLERK'S ANNOTATION",body:"Every map leaves something out. Check the territory before you stamp it.",end:5}
+ ];
+ const layer=svg("g",{class:"atlas-secrets-layer","aria-hidden":"true"});
+ const hotspots=[];
+ for(const secret of secrets){
+  if(secret.kind==="route"&&!secret.path)continue;
+  const g=svg("g",{class:"atlas-secret-hotspot","data-secret":secret.id,
+   role:"button",tabindex:"-1","aria-label":"Discover: "+secret.title});
+  let target;
+  if(secret.path){
+   const ink=svg("path",{d:secret.path,class:"atlas-secret-route-highlight"});
+   g.appendChild(ink);
+   target=svg("path",{d:secret.path,class:"atlas-secret-route-touch"});
+  }else{
+   let x,y;
+   if(Number.isInteger(secret.art)){
+    const a=art[secret.art];
+    x=Number(a.getAttribute("x"))+Number(a.getAttribute("width"))/2;
+    y=Number(a.getAttribute("y"))+Number(a.getAttribute("height"))/2;
+   }else{
+    const a=endpoints[secret.end];x=Number(a.getAttribute("cx"));y=Number(a.getAttribute("cy"));
+   }
+   target=svg("circle",{cx:x,cy:y,r:13,class:"atlas-secret-target"});
+   const hint=svg("circle",{cx:x,cy:y,r:13,class:"atlas-secret-ring"});
+   g.appendChild(hint);
+  }
+  g.appendChild(target);
+  const activate=event=>{
+   if(map.getAttribute("data-details")!=="true"||atlasTouchGesture||Date.now()<atlasSuppressTapUntil)return;
+   event.stopPropagation();event.preventDefault();
+   openAtlasSecret(secret,g,event.type==="keydown"||event.detail===0);
+  };
+  g.addEventListener("click",activate);
+  g.addEventListener("keydown",event=>{
+   if(event.key==="Enter"||event.key===" "){activate(event)}
+  });
+  layer.appendChild(g);hotspots.push(g);
+ }
+ parent.insertBefore(layer,engraving.nextSibling);
+ const frame=map.closest(".crate-map-frame");
+ if(!frame?.parentNode)return;
+ const card=doc.createElement("section");card.id="atlasSecretCard";
+ card.className="atlas-secret-card";card.hidden=true;
+ card.setAttribute("aria-label","Atlas discovery");
+ const heading=doc.createElement("h3");heading.id="atlasSecretTitle";heading.tabIndex=-1;
+ const eyebrow=doc.createElement("span");eyebrow.className="atlas-secret-eyebrow";
+ const content=doc.createElement("p");content.className="atlas-secret-body";
+ const footer=doc.createElement("div");footer.className="atlas-secret-footer";
+ const action=doc.createElement("button");action.type="button";action.className="atlas-secret-add";
+ action.textContent="PICK THESE REGIONS";
+ const close=doc.createElement("button");close.type="button";close.className="atlas-secret-close";
+ close.textContent="CLOSE";
+ footer.append(action,close);card.append(eyebrow,heading,content,footer);
+ frame.parentNode.insertBefore(card,frame.nextSibling);
+ let active=null,trigger=null;
+ function closeCard(returnFocus=false){
+  const previous=trigger;
+  card.hidden=true;active=null;trigger=null;
+  for(const hot of hotspots)hot.removeAttribute("data-active");
+  if(returnFocus&&previous?.getAttribute("tabindex")==="0")previous.focus();
+ }
+ function openAtlasSecret(secret,node,fromKeyboard=false){
+  active=secret;trigger=node;
+  const firstOpen=card.hidden;
+  card.dataset.kind=secret.kind;card.hidden=false;
+  for(const hot of hotspots)hot.toggleAttribute("data-active",hot===node);
+  eyebrow.textContent=secret.eyebrow;heading.textContent=secret.title;
+  content.textContent=secret.body;
+  action.hidden=!secret.regions;
+  action.disabled=false;action.textContent="PICK THESE REGIONS";
+  // Keep the camera and page steady when changing an already-open discovery.
+  // In particular, do not steal touch focus or scroll away from another route.
+  if(fromKeyboard)heading.focus({preventScroll:true});
+  else if(firstOpen)card.setAttribute("aria-live","polite");
+ }
+ close.addEventListener("click",()=>closeCard(true));
+ card.addEventListener("keydown",event=>{
+  if(event.key==="Escape"){event.preventDefault();closeCard(true)}
+ });
+ action.addEventListener("click",()=>{
+  if(!active?.regions)return;
+  // Choosing a route is a replacement, never an additive stamp. The selected
+  // regions are exactly the route regions; no stale manual picks remain.
+  const picked=[...new Set(active.regions)].filter(id=>validCrateRegions.has(id));
+  if(!picked.length)return;
+  const same=crateSelected.size===picked.length&&picked.every(id=>crateSelected.has(id));
+  if(!same){
+   crateSelected.clear();
+   for(const id of picked)crateSelected.add(id);
+   lastCrateStamp=null;
+   updateCrateMap();
+  }
+  action.textContent=same?"ALREADY PICKED":"REGIONS PICKED";
+  action.disabled=true;
+ });
+ // The original atlas already computes data-details as its camera zooms.
+ // Keep the optional art targets out of the pointer/keyboard path until then.
+ map._atlasSecretsSync=visible=>{
+  layer.setAttribute("aria-hidden",String(!visible));
+  for(const target of hotspots)target.setAttribute("tabindex",visible?"0":"-1");
+  if(!visible&&!card.hidden)closeCard();
+ };
+ map._atlasSecretsSync(map.getAttribute("data-details")==="true");
+}
+installAtlasSecrets();
+
 
 atlasBindGestures();
 doc.querySelectorAll("[data-atlas-country]").forEach(path=>{
