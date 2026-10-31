@@ -49,6 +49,8 @@ class EngravedEditionChecks(unittest.TestCase):
         self.assertIn('selection-ticket[hidden]',css)
         self.assertIn('ticket-region-short',css)
         self.assertIn('receipt-ticket-dock .selection-ticket.is-docked',css)
+        self.assertNotIn('.receipt-ticket-dock:empty{display:none}',css)
+        self.assertIn('.receipt-ticket-dock:empty{height:0',css)
         for page in (base,generated):
             self.assertEqual(page.count('id="receiptSummary"'),1)
             self.assertEqual(page.count('id="receiptRegions"'),1)
