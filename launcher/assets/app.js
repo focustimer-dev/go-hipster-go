@@ -843,7 +843,9 @@ if(ticket){
    if(ticket.parentElement!==dock){
     dock.appendChild(ticket);
     ticket.classList.add("is-docked");
-    details.open=true;
+    // File the summary closed by default; let the visitor expand it deliberately.
+    // The compact receipt must not crowd the post-GO handoff below.
+    details.open=false;
    }
    ticket.hidden=false;
   }else{
