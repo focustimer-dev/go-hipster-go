@@ -94,7 +94,7 @@ class PortableAgentTests(unittest.TestCase):
             self.assertNotIn("scripts/", text)
             self.assertNotIn("python ", text.lower())
             self.assertIn("Gemini default", text)
-            self.assertIn("version: 3.8.0", text.split("---", 2)[1])
+            self.assertIn("version: " + json.loads((ROOT / "plugin.json").read_text())["version"], text.split("---", 2)[1])
             self.assertIn("## Creative cue and count safeguards", text)
             self.assertIn("optional subplot", text)
             self.assertIn("Pre-publish deduplication", text)

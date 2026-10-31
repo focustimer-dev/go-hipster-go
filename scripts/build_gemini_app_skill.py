@@ -81,7 +81,7 @@ def common_sections(canonical: str):
     parts[keys[2]] = prose.rstrip() + "\n\n" + marker + "\n\n" + "\n".join(rows[:2]+rows[3:4]) + "\n\nThese are tone examples, not evidence about recordings."
     parts["Antarctica: thematic listening territory"] = """## Antarctica: thematic listening territory
 
-For `go antarctica` or an Antarctica region selection, read [Antarctica](references/regions/antarctica.md) before discovery. Alone: only verified penguin-themed songs. Mixed: its thematic share plus geographically valid music from the other regions. Never invent a local scene or fill shortages with unrelated songs. Keep the copied trigger compact. Skip the spontaneous DeBarge roll for every Antarctica request."""
+Antarctica requires deliberate naming or named PWA selection. Exclude it from plain go, moods, worldwide/all regions, surprise/random, inferred regions and automatic pools. Past use is not consent. Read [Antarctica](references/regions/antarctica.md) before discovery. Alone: verified penguin-themed songs only. Mixed: its thematic share plus valid music from other selected regions. No invented scene or unrelated filler. Keep the trigger compact. Skip spontaneous DeBarge for Antarctica requests."""
     fresh = re.sub(r"\*\*Apple Music handoff:\*\*.*?(?=\n\n)", "", parts["Fresh-crate discovery and repeat control"],
                    count=1, flags=re.S)
     if "**Gemini + YouTube Music — publication is the default" not in fresh:
@@ -125,7 +125,7 @@ def render_reference(relative: str, content: str) -> str:
 def render(canonical: str) -> str:
     preface = """---
 name: go-hipster-go
-version: 3.8.0
+version: 3.8.1
 description: Use for Go, Hipster, Go! go, mood, speed and length commands, setup, obscure global music discovery, and verified deep-cut playlists with authorized Gemini YouTube Music publishing.
 ---
 

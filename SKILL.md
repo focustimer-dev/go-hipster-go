@@ -4,7 +4,7 @@ description: "Real global deep cuts; setup services, then go or go antarctica. S
 license: MIT
 compatibility: Requires file-reading capability. Optional web/catalog lookup for track verification and Python 3.10+ to run included validation/randomness scripts. Streaming accounts and OAuth are NOT bundled.
 metadata:
-  version: "3.8.0"
+  version: "3.8.1"
 ---
 
 # Go, Hipster, Go! — Agent Skill v3
@@ -110,6 +110,8 @@ Explicit `go hard`, `go funky hard`, or PWA `Curation mode: GO HARD` enables edi
 **Optional art:** On `Cover art: yes`, follow [the sleeve workflow](references/verification.md) after GO.
 
 ## Antarctica: thematic listening territory
+
+**Explicit opt-in only:** Include Antarctica only when the user deliberately names Antarctica in the current request or explicitly selects its named PWA region. Never infer it from plain `go`, moods, pace, seeds, worldwide/global/all-region requests, surprise/random instructions, or automatic regional shuffle. Exclude Antarctica and its thematic contribution from every automatic region pool. A prior Antarctica playlist or an incidental mention is not consent for a new unspecified request. Other explicit region selections never imply Antarctica. A deliberately selected and pinned Antarctica region may remain selected during PWA shuffle.
 
 When the command includes **`go antarctica`**, or Antarctica is listed in regional exploration, read [the Antarctica route](references/regions/antarctica.md) before selecting songs. Antarctica contributes verified songs about penguins, rather than an invented local music scene. Alone, every track must qualify; mixed with other selected regions, blend its thematic contribution with geographically valid tracks from those regions. Keep the copied PWA prompt compact: the trigger and region names are sufficient, without spelling out the subject. Preserve real song titles and truthful count/publishing status. This is a strict thematic inclusion: skip the spontaneous DeBarge roll for Antarctica requests, including mixed-region ones. All unrelated GO commands retain their existing behavior.
 

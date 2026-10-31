@@ -6,7 +6,7 @@ Generated from the filtered Gemini skill and regional reference files.
 
 ---
 name: go-hipster-go
-version: 3.8.0
+version: 3.8.1
 description: Use for Go, Hipster, Go! go, mood, speed and length commands, setup, obscure global music discovery, and verified deep-cut playlists with authorized Gemini YouTube Music publishing.
 ---
 
@@ -109,7 +109,7 @@ Explicit `go hard`, `go funky hard`, or PWA `Curation mode: GO HARD` enables edi
 
 ## Antarctica: thematic listening territory
 
-For `go antarctica` or an Antarctica region selection, read [Antarctica](references/regions/antarctica.md) before discovery. Alone: only verified penguin-themed songs. Mixed: its thematic share plus geographically valid music from the other regions. Never invent a local scene or fill shortages with unrelated songs. Keep the copied trigger compact. Skip the spontaneous DeBarge roll for every Antarctica request.
+Antarctica requires deliberate naming or named PWA selection. Exclude it from plain go, moods, worldwide/all regions, surprise/random, inferred regions and automatic pools. Past use is not consent. Read [Antarctica](references/regions/antarctica.md) before discovery. Alone: verified penguin-themed songs only. Mixed: its thematic share plus valid music from other selected regions. No invented scene or unrelated filler. Keep the trigger compact. Skip spontaneous DeBarge for Antarctica requests.
 
 ## Fresh-crate discovery and repeat control
 
@@ -236,6 +236,8 @@ Sequence contrasting kinds of groove into a coherent arc. Avoid twelve interchan
 # BEGIN SOURCE: references/regions/antarctica.md
 
 # Antarctica — thematic listening territory
+
+**Explicit opt-in only:** Include Antarctica only when the user deliberately names Antarctica in the current request or explicitly selects its named PWA region. Never infer it from plain `go`, moods, pace, seeds, worldwide/global/all-region requests, surprise/random instructions, or automatic regional shuffle. Exclude Antarctica and its thematic contribution from every automatic region pool. A prior Antarctica playlist or an incidental mention is not consent for a new unspecified request. Other explicit region selections never imply Antarctica. A deliberately selected and pinned Antarctica region may remain selected during PWA shuffle.
 
 Activate this route for **`go antarctica`**, or when Antarctica appears among selected listening regions. Read this before researching tracks. Treat it as the atlas's thematic territory, not a claim that an artist or recording comes from Antarctica.
 
@@ -691,7 +693,7 @@ The atlas preserves **920 source entries**: 720 baseline rows plus 200 additions
 
 | ID | Route |
 | --- | --- |
-| `antarctica` | [Antarctica](regions/antarctica.md): thematic contribution; combine with other selected territories normally. |
+| `antarctica` (explicit opt-in only; never randomly chosen) | [Antarctica](regions/antarctica.md): thematic contribution; combine with other selected territories normally. |
 
 # END SOURCE: references/regional-atlas.md
 

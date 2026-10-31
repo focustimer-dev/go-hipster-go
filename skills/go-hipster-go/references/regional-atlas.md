@@ -56,4 +56,4 @@ The atlas preserves **920 source entries**: 720 baseline rows plus 200 additions
 
 | ID | Route |
 | --- | --- |
-| `antarctica` | [Antarctica](regions/antarctica.md): thematic contribution; combine with other selected territories normally. |
+| `antarctica` (explicit opt-in only; never randomly chosen) | [Antarctica](regions/antarctica.md): thematic contribution; combine with other selected territories normally. |

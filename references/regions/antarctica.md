@@ -1,5 +1,7 @@
 # Antarctica — thematic listening territory
 
+**Explicit opt-in only:** Include Antarctica only when the user deliberately names Antarctica in the current request or explicitly selects its named PWA region. Never infer it from plain `go`, moods, pace, seeds, worldwide/global/all-region requests, surprise/random instructions, or automatic regional shuffle. Exclude Antarctica and its thematic contribution from every automatic region pool. A prior Antarctica playlist or an incidental mention is not consent for a new unspecified request. Other explicit region selections never imply Antarctica. A deliberately selected and pinned Antarctica region may remain selected during PWA shuffle.
+
 Activate this route for **`go antarctica`**, or when Antarctica appears among selected listening regions. Read this before researching tracks. Treat it as the atlas's thematic territory, not a claim that an artist or recording comes from Antarctica.
 
 ## The contribution

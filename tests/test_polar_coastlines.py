@@ -8,6 +8,17 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class PolarCoastlineTests(unittest.TestCase):
+    def test_antarctica_is_explicit_opt_in_across_skill_routes(self):
+        for path in ('SKILL.md', 'references/regions/antarctica.md'):
+            text = (ROOT / path).read_text()
+            for guard in ('Explicit opt-in only', 'plain `go`', 'worldwide/global/all-region',
+                          'automatic regional shuffle', 'prior Antarctica playlist',
+                          'explicit region selections never imply Antarctica'):
+                self.assertIn(guard, text, path)
+        compact = (ROOT / 'scripts/build_gemini_app_skill.py').read_text()
+        self.assertIn('Exclude it from plain go', compact)
+        self.assertIn('Past use is not consent', compact)
+
     def test_complete_greenland_and_antarctica_are_inside_robinson_plate(self):
         page = (ROOT / 'launcher/editions/gig-poster/index.html').read_text()
         paths = {}

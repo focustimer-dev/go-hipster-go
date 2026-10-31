@@ -67,7 +67,7 @@ Explicit `go hard`, `go funky hard`, or PWA `Curation mode: GO HARD` enables edi
 
 ## Antarctica: thematic listening territory
 
-For `go antarctica` or an Antarctica region selection, read [Antarctica](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/antarctica.md) before discovery. Alone: only verified penguin-themed songs. Mixed: its thematic share plus geographically valid music from the other regions. Never invent a local scene or fill shortages with unrelated songs. Keep the copied trigger compact. Skip the spontaneous DeBarge roll for every Antarctica request.
+Antarctica requires deliberate naming or named PWA selection. Exclude it from plain go, moods, worldwide/all regions, surprise/random, inferred regions and automatic pools. Past use is not consent. Read [Antarctica](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/antarctica.md) before discovery. Alone: verified penguin-themed songs only. Mixed: its thematic share plus valid music from other selected regions. No invented scene or unrelated filler. Keep the trigger compact. Skip spontaneous DeBarge for Antarctica requests.
 
 ## Fresh-crate discovery and repeat control
 

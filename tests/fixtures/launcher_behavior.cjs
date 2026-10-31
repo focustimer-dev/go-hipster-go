@@ -105,6 +105,18 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  await polar.crateRegions.find(b=>b.dataset.crateRegion==='antarctica').click();
  assert.doesNotMatch(polar.elements.prompt.textContent,/go antarctica/,'Removing only Antarctica restores the ordinary command');
  assert.match(polar.elements.prompt.textContent,/go funky/);assert.match(polar.elements.prompt.textContent,/US West/);
+ const optin=harness(async()=>{});
+ for(let i=0;i<160;i++){
+  await optin.elements.shuffleCrate.click();
+  assert.doesNotMatch(optin.elements.prompt.textContent,/antarctica|penguin/i,'Automatic shuffle excludes Antarctica from both regional slots');
+ }
+ await optin.crateRegions.find(b=>b.dataset.crateRegion==='antarctica').click();
+ await optin.elements.pinRegions.click();
+ await optin.elements.shuffleCrate.click();
+ assert.match(optin.elements.prompt.textContent,/go antarctica/,'Explicit pinned Antarctica survives shuffle');
+ await optin.elements.pinRegions.click();
+ await optin.elements.shuffleCrate.click();
+ assert.doesNotMatch(optin.elements.prompt.textContent,/antarctica/i,'Unpinned shuffle returns to ordinary regional pool');
  const neutral=catalog.filter(l=>!l.regions.length);assert.ok(neutral.length>=12);
  assert.ok(catalog.filter(l=>l.regions.includes('us-east')).length>=16);
  assert.ok(catalog.filter(l=>l.regions.includes('us-west')).length>=16);
