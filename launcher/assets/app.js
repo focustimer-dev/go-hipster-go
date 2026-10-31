@@ -540,6 +540,14 @@ if(welcome){
 function cancelShuffleMachine(){
  doc.querySelector?.(".crate-shuffle .shuffle-feedback")?.classList.remove?.("is-dealing");
 }
+function shuffleMachineRegionLabel(){
+ const choices=crateRegions.filter(r=>crateSelected.has(r.id));
+ if(!choices.length)return "WORLD";
+ // Antarctica is never disguised by the compact summary's +N shorthand.
+ choices.sort((a,b)=>a.id==="antarctica"?-1:b.id==="antarctica"?1:0);
+ const region=ticketRegionCodes[choices[0].id]||choices[0].label;
+ return region+(choices.length>1?" +"+(choices.length-1):"");
+}
 function showShuffleMachine(){
  if(body.dataset.page!=="launch"||!body.classList?.contains?.("gig-poster"))return;
  const feedback=doc.querySelector(".crate-shuffle .shuffle-feedback");
@@ -562,7 +570,7 @@ function showShuffleMachine(){
  const values={
   mood:ticketMoodCodes[mood]||moodLabel(mood).toUpperCase(),
   pace:tempo?ticketTempoCodes[tempo]:"ANY",
-  regions:shortTicketRegions()
+  regions:shuffleMachineRegionLabel()
  };
  for(const card of machine.children){
   const axis=card.dataset.axis;
