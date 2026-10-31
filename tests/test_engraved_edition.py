@@ -119,7 +119,7 @@ class EngravedEditionChecks(unittest.TestCase):
                 self.assertIn('id="setupJourney" hidden',page)
                 self.assertIn('id="handoffGuidance" hidden',page)
                 self.assertIn('data-atlas-zone="antarctica"',page)
-        self.assertIn("s=s.replace('    <h2 class=\\\"counter-heading mix-heading\\\">',welcome",builder)
+        self.assertIn("welcome+'    <h2 class=",builder)
         self.assertNotIn("welcome-invitation.html",builder)
         self.assertIn("copiedSetupPrompt===setupPrompt(ai,service)",script)
         self.assertIn('guide.hidden=!ready',script)
