@@ -699,6 +699,34 @@ body.gig-poster[data-page=launch] .selection-ticket{
   box-shadow:4px 5px 0 var(--ink);
 }
 body.gig-poster[data-page=launch] .selection-ticket[hidden]{display:none!important}
+
+/* The very same ticket becomes part of the paper receipt, not a second overlay.
+   Since it lives in .receipt-sheet, the printer clips/moves the whole sheet
+   together, with the clipboard stamp above the card in normal flow. */
+body.gig-poster[data-page=launch] .receipt-ticket-dock{margin:12px 3px 18px}
+body.gig-poster[data-page=launch] .receipt-ticket-dock:empty{display:none}
+body.gig-poster[data-page=launch] .receipt-ticket-dock .selection-ticket.is-docked{
+  position:relative;top:auto;left:auto;transform:none;
+  width:100%;max-height:none;overflow:visible;z-index:auto;
+  margin:0;background:var(--paper);
+  border:2px solid var(--ink);
+  box-shadow:3px 3px 0 var(--ink);
+}
+body.gig-poster[data-page=launch] .receipt-ticket-dock .ticket-detail{
+  padding:10px 12px 13px;
+}
+body.gig-poster[data-page=launch] .receipt-ticket-dock .receipt-summary{
+  font-weight:700;font-size:clamp(.9rem,3.2vw,1.06rem);
+  line-height:1.4;margin:2px 0 7px;
+}
+body.gig-poster[data-page=launch] .receipt-ticket-dock .receipt-regions{
+  font-size:clamp(.85rem,3vw,.98rem);
+  line-height:1.45;margin:0 0 9px;max-width:none;
+}
+body.gig-poster[data-page=launch] .receipt-ticket-dock #selectionTicketEdit{
+  margin:6px 0 0;min-height:40px;
+}
+
 body.gig-poster .selection-ticket summary{
   display:grid;grid-template-columns:minmax(0,1fr) auto;
   align-items:center;gap:3px 8px;min-height:66px;
