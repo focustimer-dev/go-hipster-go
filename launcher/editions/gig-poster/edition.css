@@ -21,6 +21,16 @@ body.gig-poster:is([data-page=launch],[data-page=setup]) .hero-title{display:blo
 body.gig-poster:is([data-page=launch],[data-page=setup]) .hero-title .headline,html[data-returning=true] body.gig-poster:is([data-page=launch],[data-page=setup]) .hero-title .headline{position:relative;z-index:1;width:69%;max-width:none;margin:0;padding:0;border:0;font:400 15.6cqw/.9 Poster,sans-serif;letter-spacing:-.025em;color:var(--ink);text-shadow:none;transform:scaleX(.88);transform-origin:left center;animation:none;overflow-wrap:normal}
 body.gig-poster .poster-line{display:block;white-space:nowrap}
 body.gig-poster .poster-bird{position:absolute;width:44%;height:auto;right:-1%;top:3%;pointer-events:none}
+/* A quiet edition mark, revealed only on return; preserve the full hero every visit. */
+html[data-returning=true] body.gig-poster[data-page=launch] .poster-hero .return-stamp{
+  display:table;position:relative;z-index:1;
+  margin:6px 0 3px clamp(7px,7cqw,42px);
+  padding:4px 8px;border:1px solid var(--ink);
+  background:transparent;color:var(--ink);
+  font:700 clamp(.62rem,1.6cqw,.77rem)/1.2 'Courier New',monospace;
+  letter-spacing:.12em;opacity:.75;transform:rotate(-3deg);
+}
+body.gig-poster[data-page=launch] .poster-hero .return-stamp{pointer-events:none}
 body.gig-poster .service-counter>h2,body.gig-poster .mix-heading,body.gig-poster .tempo-heading label{display:none}
 body.gig-poster:is([data-page=launch],[data-page=setup]) .selector-grid{display:block}
 body.gig-poster:is([data-page=launch],[data-page=setup]) .selector-grid .panel{margin:0;padding:8px 0 10px;border:0;border-top:1px solid var(--ink);background:none;box-shadow:none}
