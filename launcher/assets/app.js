@@ -127,6 +127,15 @@ function goPrompt(ai,service,mood){
 const crateRegions=[{"id":"us-west","label":"US West","continent":"americas-north"},{"id":"us-east","label":"US East","continent":"americas-north"},{"id":"canada-west","label":"Canada West","continent":"americas-north"},{"id":"canada-east","label":"Canada East","continent":"americas-north"},{"id":"mexico","label":"Mexico","continent":"americas-north"},{"id":"central-america","label":"Central America","continent":"americas-north"},{"id":"caribbean","label":"Caribbean","continent":"americas-north"},{"id":"northern-south-america","label":"Northern South America","continent":"americas-south"},{"id":"southern-south-america","label":"Southern South America","continent":"americas-south"},{"id":"atlantic-europe","label":"Atlantic & Western Europe","continent":"europe"},{"id":"mediterranean-europe","label":"Mediterranean & Balkans","continent":"europe"},{"id":"northern-europe","label":"Northern Europe","continent":"europe"},{"id":"eastern-europe","label":"Eastern Europe","continent":"europe"},{"id":"north-africa","label":"North Africa","continent":"africa"},{"id":"west-africa","label":"West Africa","continent":"africa"},{"id":"east-africa","label":"East Africa","continent":"africa"},{"id":"central-southern-africa","label":"Central & Southern Africa","continent":"africa"},{"id":"middle-east","label":"Middle East & Caucasus","continent":"asia"},{"id":"central-asia","label":"Central Asia","continent":"asia"},{"id":"south-asia","label":"South Asia","continent":"asia"},{"id":"east-asia","label":"East Asia","continent":"asia"},{"id":"southeast-asia","label":"Southeast Asia","continent":"asia"},{"id":"northern-asia","label":"Northern Asia","continent":"asia"},{"id":"oceania","label":"Oceania","continent":"oceania"}];
 const crateContinents=[{"id":"americas-north","label":"N. America"},{"id":"americas-south","label":"S. America"},{"id":"europe","label":"Europe"},{"id":"africa","label":"Africa"},{"id":"asia","label":"Asia"},{"id":"oceania","label":"Oceania"}];
 const atlasViews={"world":[0,0,720,372],"americas-north":[40,18,300,190],"americas-south":[165,132,183,222],"europe":[296,20,204,175],"africa":[310,83,210,245],"asia":[415,20,267,255],"oceania":[545,165,175,190]};
+// Robinson focus boxes use projected geography, not the old Mercator extents.
+const atlasRobinsonViews={world:[0,0,720,372],"americas-north":[57,26,304,158],"americas-south":[192,145,120,172],europe:[298,30,174,100],africa:[312,94,180,208],asia:[403,25,240,198],oceania:[555,179,145,117]};
+const atlasLandAnchors=[];
+function atlasDetailsForView(map,view){
+ const width=Number(view.trim().split(/\s+/)[2]);
+ // A small dead band prevents flicker while pinching around the reveal point.
+ const threshold=map.getAttribute("data-details")==="true"?2.05:2.3;
+ map.setAttribute("data-details",String(720/width>=threshold));
+}
 // Robinson rays follow the geography camera but remain underneath its
 // opaque ocean. The ocean masks rays at the CURRENT map edge while panning.
 // Never use a fixed cutout or hide rays during drag/pinch: both leave gaps.
@@ -135,7 +144,7 @@ const atlasRadialMap=doc.getElementById("crateAtlasMap");
 if(atlasRadialField&&atlasRadialMap){
  const syncRadialBackdrop=()=>{
   const view=atlasRadialMap.getAttribute("viewBox");
-  if(view)atlasRadialField.setAttribute("viewBox",view);
+  if(view){atlasRadialField.setAttribute("viewBox",view);atlasDetailsForView(atlasRadialMap,view)}
  };
  if(typeof MutationObserver==="function"){
   new MutationObserver(syncRadialBackdrop).observe(atlasRadialMap,{attributes:true,attributeFilter:["viewBox"]});
@@ -178,7 +187,8 @@ function atlasBoxText(a){return a.map(v=>Math.round(v*10)/10).join(" ")}
 function animateAtlasView(view){
  flushAtlasNavigation();
  const map=doc.getElementById("crateAtlasMap");if(!map)return;
- const goal=atlasViews[view||"world"]||atlasViews.world,raw=map.getAttribute("viewBox")||"0 0 720 372";
+ const views=map.classList?.contains?.("crate-robinson")?atlasRobinsonViews:atlasViews;
+ const goal=atlasConstrain(views[view||"world"]||views.world),raw=map.getAttribute("viewBox")||"0 0 720 372";
  const from=raw.split(/\s+/).map(Number);
  if(atlasZoomFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasZoomFrame);
  const reduced=typeof window!=="undefined"&&window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -519,8 +529,8 @@ doc.querySelectorAll("[data-crate-region]").forEach(b=>{
  b.addEventListener("click",()=>toggleCrateRegion(b.dataset.crateRegion));
 });
 
-/* Direct map manipulation: two fingertips move/pinch the atlas; a single finger
-   still scrolls the Jukebox. Desktop trackpads can scroll/pinch inside the map. */
+/* Direct manipulation: one finger or mouse drags; two fingers pinch.
+   Normal desktop scrolling remains with the page unless modified. */
 function atlasView(){const map=doc.getElementById("crateAtlasMap");return (map?.getAttribute("viewBox")||"0 0 720 372").trim().split(/\s+/).map(Number)}
 function flushAtlasNavigation(){
  if(atlasNavigationFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasNavigationFrame);
@@ -545,12 +555,45 @@ function atlasScreenAnchor(map,view,x,y,rect){
  const marginX=(rect.width-view[2]*scale)/2,marginY=(rect.height-view[3]*scale)/2;
  return [view[0]+(x-rect.left-marginX)/scale,view[1]+(y-rect.top-marginY)/scale];
 }
+// One camera aspect ratio avoids invisible letterboxed pan/zoom margins.
+function atlasNormalize(view){
+ const ratio=720/372,width=Math.max(120,Math.min(720,Math.max(view[2],view[3]*ratio)));
+ const height=width/ratio;
+ return [view[0]+view[2]/2-width/2,view[1]+view[3]/2-height/2,width,height];
+}
+function atlasCollectLand(map){
+ if(!map.createSVGPoint)return;
+ const point=map.createSVGPoint();
+ const paths=Array.from(map.querySelectorAll("[data-atlas-country]"))
+  .filter(p=>typeof p.isPointInFill==="function").map(p=>({path:p,box:p.getBBox()}));
+ // Sample the actual projected land once. Bounding boxes alone include oceans
+ // between islands and cannot protect against an empty-ocean camera.
+ for(let y=26;y<350;y+=12)for(let x=26;x<696;x+=12){
+  point.x=x;point.y=y;
+  if(paths.some(({path,box:b})=>x>=b.x&&x<=b.x+b.width&&y>=b.y&&y<=b.y+b.height&&path.isPointInFill(point)))atlasLandAnchors.push([x,y]);
+ }
+}
 function atlasConstrain(view){
- const [x,y,w,h]=view;
- return [Math.min(720-w+12,Math.max(-12,x)),Math.min(372-h+12,Math.max(-12,y)),w,h];
+ let [x,y,w,h]=atlasNormalize(view);
+ const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+ x=clamp(x,0,720-w);y=clamp(y,0,372-h);
+ // Keep sampled land inside the central 70% of the viewport. The camera can
+ // cross oceans, but cannot settle with its only coastline off-screen.
+ if(atlasLandAnchors.length&&w<600){
+  const mx=w*.15,my=h*.15;
+  let best=null,distance=Infinity;
+  for(const [lx,ly] of atlasLandAnchors){
+   const nx=clamp(clamp(x,lx-w+mx,lx-mx),0,720-w);
+   const ny=clamp(clamp(y,ly-h+my,ly-my),0,372-h);
+   const d=(nx-x)**2+(ny-y)**2;
+   if(d<distance){best=[nx,ny];distance=d}
+  }
+  if(best)[x,y]=best;
+ }
+ return [x,y,w,h];
 }
 function atlasViewForGesture(base,anchor,screen,rect,zoom){
- const ratio=Math.max(Math.max(48/base[2],40/base[3]),Math.min(Math.min(720/base[2],372/base[3]),zoom));
+ const ratio=Math.max(Math.max(120/base[2],(120*372/720)/base[3]),Math.min(Math.min(720/base[2],372/base[3]),zoom));
  const width=base[2]*ratio,height=base[3]*ratio;
  const scale=Math.min(rect.width/width,rect.height/height);
  const padX=(rect.width-width*scale)/2,padY=(rect.height-height*scale)/2;
@@ -558,13 +601,14 @@ function atlasViewForGesture(base,anchor,screen,rect,zoom){
 }
 function atlasBindGestures(){
  const map=doc.getElementById("crateAtlasMap");if(!map)return;
+ atlasCollectLand(map);
+ atlasDetailsForView(map,map.getAttribute("viewBox")||"0 0 720 372");
  const stopZoom=()=>{
   if(atlasZoomFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasZoomFrame);
   atlasZoomFrame=0;
  };
  // Freeze the geometry under a new press, rather than moving the target
  // between pointer-down and click while a continent zoom is still running.
- map.addEventListener("pointerdown",()=>{stopZoom();flushAtlasNavigation()});
  const beginTouch=(event,continuing=false)=>{
   if(event.touches.length<1||event.touches.length>2){atlasTouchGesture=null;flushAtlasNavigation();return;}
   stopZoom();flushAtlasNavigation();
@@ -573,6 +617,33 @@ function atlasBindGestures(){
   if(event.touches.length===2){if(event.cancelable)event.preventDefault();atlasSuppressTapUntil=Date.now()+700;}
   else if(!continuing)atlasSuppressTapUntil=0;
  };
+ // Mouse/pen drags use the same anchor math as touch; capture only after
+ // movement so an ordinary click still reaches the painted country path.
+ let pointerGesture=null;
+ map.addEventListener("pointerdown",(event={})=>{
+  stopZoom();flushAtlasNavigation();
+  if(event.pointerType==="touch"||event.button!==0)return;
+  const view=atlasView(),rect=map.getBoundingClientRect();
+  pointerGesture={id:event.pointerId,view,rect,start:{x:event.clientX,y:event.clientY},anchor:atlasScreenAnchor(map,view,event.clientX,event.clientY,rect),moved:false};
+ });
+ map.addEventListener("pointermove",event=>{
+  const s=pointerGesture;if(!s||s.id!==event.pointerId)return;
+  const screen={x:event.clientX,y:event.clientY};
+  if(!s.moved&&Math.hypot(screen.x-s.start.x,screen.y-s.start.y)<6)return;
+  if(!s.moved)map.setPointerCapture(event.pointerId);
+  s.moved=true;if(event.cancelable)event.preventDefault();
+  queueAtlasNavigation(atlasViewForGesture(s.view,s.anchor,screen,s.rect,1));
+  atlasUserNavigated=true;atlasSuppressTapUntil=Date.now()+700;
+ });
+ const endPointer=event=>{
+  if(!pointerGesture||pointerGesture.id!==event.pointerId)return;
+  if(pointerGesture.moved)atlasSuppressTapUntil=Date.now()+700;
+  pointerGesture=null;flushAtlasNavigation();renderAtlasNavigation();
+  if(map.hasPointerCapture?.(event.pointerId))map.releasePointerCapture(event.pointerId);
+ };
+ map.addEventListener("pointerup",endPointer);
+ map.addEventListener("pointercancel",endPointer);
+ map.addEventListener("lostpointercapture",endPointer);
  map.addEventListener("touchstart",event=>beginTouch(event),{passive:false});
  map.addEventListener("touchmove",event=>{
   const s=atlasTouchGesture;if(!s||event.touches.length!==s.count)return;

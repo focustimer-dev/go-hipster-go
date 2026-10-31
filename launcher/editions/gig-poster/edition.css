@@ -680,3 +680,11 @@ body.gig-poster .go-options .go-extras .cover-toggle+ .cover-toggle{border-left:
 @media(max-width:360px){
  body.gig-poster .go-options .go-extras .cover-toggle{min-height:94px;padding:12px 9px 9px 12px;grid-template-columns:22px minmax(0,1fr);column-gap:8px}
 }
+
+/* Robinson gestures must own touch movement, just as the old Mercator did. */
+body.gig-poster #crateAtlasMap.crate-robinson{touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+body.gig-poster #crateAtlasMap.crate-robinson:active{cursor:grabbing}
+/* Engraved discoveries appear only when large enough to recognize. */
+body.gig-poster #crateAtlasMap .chart-details{opacity:0;visibility:hidden;transition:opacity 160ms ease-out}
+body.gig-poster #crateAtlasMap[data-details=true] .chart-details{opacity:.95;visibility:visible}
+@media(prefers-reduced-motion:reduce){body.gig-poster #crateAtlasMap .chart-details{transition:none}}
