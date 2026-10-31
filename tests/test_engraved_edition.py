@@ -30,6 +30,8 @@ class EngravedEditionChecks(unittest.TestCase):
         for page in (base,generated):
             self.assertIn('id="selectionTicket"',page)
             self.assertIn('id="selectionTicketShort"',page)
+            self.assertIn('id="selectionTicketRegionShort"',page)
+            self.assertIn('class="ticket-brief"',page)
             self.assertIn('id="receiptCopy" hidden',page)
             self.assertNotIn("REQUEST DRAFT",page)
         self.assertIn('firstAiChoice=doc.querySelector(".service-counter .panel")',script)
@@ -40,6 +42,15 @@ class EngravedEditionChecks(unittest.TestCase):
         self.assertIn('COPIED TO CLIPBOARD',script)
         self.assertIn('receipt-feed', (BASE/"edition.css").read_text())
         self.assertIn('selection-ticket[hidden]',css)
+        self.assertIn('ticket-region-short',css)
+        for token in ('ticketAiCodes','ticketServiceCodes','ticketMoodCodes',
+                      'ticketTempoCodes','ticketRegionCodes','shortTicketRegions',
+                      'ART:','HARD:','ticketRegionShort.title'):
+            with self.subTest(token=token):
+                self.assertIn(token,script)
+        self.assertIn('"antarctica":"ANTARCTICA"',script)
+        self.assertIn('active.slice(0,2)',script)
+
 
     def test_brand_headline_persists_and_return_stamp_is_discreet(self):
         original=(ROOT/"launcher/index.html").read_text()
