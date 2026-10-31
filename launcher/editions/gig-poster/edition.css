@@ -252,7 +252,7 @@ body.gig-poster[data-page=setup] .resource-shelf-body p{font:400 1rem/1.55 Arial
 body.gig-poster .crate-geo-body{padding-top:2px}
 body.gig-poster .crate-atlas-heading{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:var(--control-hit);margin:6px 0 0;border-top:1px solid var(--ink)}
 body.gig-poster .crate-atlas-locator{display:block;min-width:0;font:400 clamp(1.05rem,2.7cqw,1.4rem)/1.25 Poster,sans-serif;letter-spacing:0;text-transform:uppercase;color:var(--ink)}
-body.gig-poster #atlasHome{border:0;border-left:1px solid var(--ink);margin:0;padding:8px 0 8px 12px;font:700 .75rem/1.3 'Courier New',monospace;min-height:var(--control-hit)}
+body.gig-poster #atlasHome{border:0;margin:0;padding:8px 0 8px 12px;font:800 .75rem/1.3 Arial,sans-serif;min-height:var(--control-hit)}
 body.gig-poster #atlasHome:hover{text-decoration:underline;text-underline-offset:4px;background:transparent}
 body.gig-poster .crate-map-frame{border-top:1px solid var(--line);border-bottom:1px solid var(--ink);padding:8px 0;margin:0;isolation:isolate}
 body.gig-poster .crate-map-zone{outline:none}
