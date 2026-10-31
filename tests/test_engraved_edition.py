@@ -24,6 +24,25 @@ class EngravedEditionChecks(unittest.TestCase):
         self.assertIn('id="crateAtlasMap"',index)
         self.assertIn('id="atlasHome"',index)
 
+    def test_shuffle_machine_keeps_original_controls_and_reduced_motion(self):
+        """The decorative deal adds no new control or asynchronous shuffle delay."""
+        script=(ROOT/"launcher/assets/app.js").read_text()
+        css=(BASE/"edition.css").read_text()
+        index=(BASE/"index.html").read_text()
+        for marker in ("showShuffleMachine()", "cancelShuffleMachine()",
+                       "shortTicketRegions()", "shufflePins[axis]",
+                       'prefers-reduced-motion: reduce', 'aria-hidden","true"'):
+            self.assertIn(marker,script)
+        self.assertIn("showShuffleMachine();",script)
+        self.assertIn("animation:shuffle-index-card",css)
+        self.assertIn(".shuffle-machine-reel[data-locked=true]",css)
+        self.assertIn("@media(prefers-reduced-motion:reduce)",css)
+        self.assertIn("position:absolute;inset:0 0 auto;height:var(--control-hit)",css)
+        # The real music UI and canonical lever/pin artwork remain unchanged.
+        self.assertIn('class="shuffle-lever"',index)
+        for name in ("pinMood","pinPace","pinRegions","shuffleCrate","undoShuffle"):
+            self.assertEqual(index.count('id="'+name+'"'),1)
+
     def test_selection_ticket_and_clean_receipt_idle_state(self):
         base=(ROOT/"launcher/index.html").read_text()
         generated=(BASE/"index.html").read_text()
