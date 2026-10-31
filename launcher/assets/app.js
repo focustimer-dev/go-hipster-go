@@ -488,8 +488,10 @@ async function copyFirstSetup(){
  copiedPrompt=null;if(body.dataset.page==="launch")updateHandoff();
  const requestedSetup=setupPrompt(ai,service);
  const ok=await copyText(requestedSetup);
- copiedSetupPrompt=ok&&requestedSetup===setupPrompt(ai,service)?requestedSetup:null;
+ const currentSelection=requestedSetup===setupPrompt(ai,service);
+ copiedSetupPrompt=ok&&currentSelection?requestedSetup:null;
  renderSelections();
+ if(!currentSelection){const tip=doc.getElementById("setupTipStatus");if(tip)tip.textContent="Your services changed during copying. Copy the new setup check.";status("Setup changed. Copy the current check again.");return;}
  const details=doc.getElementById("setupPromptDetails");if(!ok&&details)details.open=true;
  const msg=ok?"Setup check copied for "+aiNames[ai]+" + "+serviceNames[service]+". Open that AI, paste and send.":"Clipboard unavailable. Copy the setup prompt shown below, then open your AI.";
  const tip=doc.getElementById("setupTipStatus"),setupTip=doc.getElementById("setupTryStatus");
