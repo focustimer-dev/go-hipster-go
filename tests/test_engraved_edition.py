@@ -1,6 +1,8 @@
 """Smoke checks for the v18 engraved Gig Poster edition."""
 from pathlib import Path
 import unittest
+import json
+import re
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = ROOT / "launcher/editions/gig-poster"
@@ -76,6 +78,58 @@ class EngravedEditionChecks(unittest.TestCase):
         self.assertIn('active.slice(0,2)',script)
 
 
+
+    def test_country_music_regions_match_map_and_projection(self):
+        """Country primary listening regions agree with musical routes, not assumed cultural borders."""
+        base=(ROOT/"launcher/index.html").read_text()
+        generated=(BASE/"index.html").read_text()
+        expect={"TUR":("middle-east","asia"),
+                "BRA":("southern-south-america","americas-south"),
+                "SDN":("north-africa","africa"),
+                "MDG":("east-africa","africa"),
+                "ESP":("mediterranean-europe","europe"),
+                "PRT":("atlantic-europe","europe"),
+                "FRA":("atlantic-europe","europe"),
+                "CYP":("mediterranean-europe","europe"),
+                "SSD":("east-africa","africa")}
+        for page in (base,generated):
+            self.assertGreaterEqual(page.count('data-atlas-country='),180)
+            for country,(region,continent) in expect.items():
+                with self.subTest(page="poster" if page==generated else "source",country=country):
+                    tag=re.search(
+                        r'<path d="([^"]+)" data-atlas-country="'+country+
+                        r'" data-atlas-region="([^"]+)" data-atlas-continent="([^"]+)"',page)
+                    self.assertIsNotNone(tag,country)
+                    self.assertEqual((tag.group(2),tag.group(3)),(region,continent))
+                    nearest_group=page.rfind('<g class="crate-map-zone" data-atlas-zone=',0,tag.start())
+                    self.assertGreaterEqual(nearest_group,0)
+                    self.assertIn('data-atlas-zone="'+region+'"',page[nearest_group:tag.start()])
+        nav_match=re.search(
+            r'<script type="application/json" id="atlasNavigationGeometry">([^<]+)</script>',
+            generated)
+        self.assertIsNotNone(nav_match)
+        nav=json.loads(nav_match.group(1))
+        self.assertEqual(nav["version"],1)
+        self.assertGreaterEqual(len(nav["anchors"]),300)
+        self.assertGreaterEqual(len(nav["shapes"]),200)
+        # Every moved whole-country shape has a matching projected bounding box
+        # under its new region, so the autofocus cannot use a stale cached region.
+        for country in ("TUR","BRA","SDN","MDG"):
+            tag=re.search(
+                r'<path d="([^"]+)" data-atlas-country="'+country+
+                r'" data-atlas-region="([^"]+)"',generated)
+            self.assertIsNotNone(tag)
+            coords=re.findall(r'[ML](-?[\d.]+)\s+(-?[\d.]+)',tag.group(1).split("M",2)[1])
+            # Reconstruct the first ring (a single-part country or mainland).
+            first="M"+tag.group(1).split("M",2)[1]
+            points=[(float(x),float(y)) for x,y in
+                    re.findall(r'[ML](-?[\d.]+)\s+(-?[\d.]+)',first)]
+            self.assertGreaterEqual(len(points),3)
+            min_x,min_y=min(x for x,y in points),min(y for x,y in points)
+            self.assertTrue(
+                any(row[0]==tag.group(2) and abs(row[1]-min_x)<.01
+                    and abs(row[2]-min_y)<.01 for row in nav["shapes"]),
+                f"{country}: cached autofocus outline must use {tag.group(2)}")
 
     def test_jukebox_layout_keeps_atlas_unchanged(self):
         edition=(BASE/"index.html").read_text()

@@ -10,6 +10,8 @@ For discovery, compare several compatible routes and dig beyond named touchstone
 
 Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
 
+**Listening-area overlap:** Spain is painted primarily in Mediterranean & Balkans because of its Balearic, Catalan, Valencian and Andalusian scenes. For an explicit Atlantic & Western Europe request, Galicia/Asturias (source handle `mediterranean-europe:07`) and the Basque Country (`mediterranean-europe:08`) are legitimate *locality-specific* search leads, not permission to choose any Spanish recording. Portugal is Atlantic on the map even though fado, Alentejo and Lisbon batida were imported as `mediterranean-europe:09`–`:11`; check those origins rather than the historical source-file grouping. Mainland France is primarily Atlantic; Corsica (`mediterranean-europe:13`) is a geographically specific Mediterranean exception. Confirm the actual recording's scene before counting a cross-reference.
+
 ## Source and status
 
 Imported from listener-supplied regional survey, [Drive source](https://drive.google.com/file/d/1ALDTRwzB3vRRqpEwYl38SIyqKC-cqkHZ/view), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
