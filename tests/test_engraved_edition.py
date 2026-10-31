@@ -35,7 +35,7 @@ class EngravedEditionChecks(unittest.TestCase):
             self.assertIn('id="receiptCopy" hidden',page)
             self.assertNotIn("REQUEST DRAFT",page)
         self.assertIn('firstAiChoice=doc.querySelector(".service-counter .panel")',script)
-        self.assertIn('firstAiChoice.getBoundingClientRect().bottom<=0',script)
+        self.assertIn('firstAiChoice.getBoundingClientRect().bottom>0',script)
         self.assertNotIn('moodChoices.getBoundingClientRect().bottom<=0',script)
         self.assertIn('receiptTicketDock',script)
         self.assertIn('dock.getBoundingClientRect().top<=window.innerHeight-20',script)
