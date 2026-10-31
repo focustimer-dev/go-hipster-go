@@ -785,16 +785,16 @@ const share=doc.getElementById("shareButton");if(share)share.addEventListener("c
 });
 render();
 if(crateSelected.size)frameSelectedAtlas();
-// The ticket appears after the mood selector leaves view, and yields as the
-// receipt summary below GO enters view. The existing GO remains unobstructed.
+// The ticket appears once the first PICK YOUR AI selector leaves view,
+// then yields when the receipt summary below GO enters view.
 const ticket=doc.getElementById("selectionTicket");
 if(ticket){
- const moodChoices=doc.querySelector(".mood-grid"),receiptSummary=doc.getElementById("receiptSummary");
+ const firstAiChoice=doc.querySelector(".service-counter .panel"),receiptSummary=doc.getElementById("receiptSummary");
  function updateSelectionTicketVisibility(){
-  if(!moodChoices||!receiptSummary)return;
-  const moodAbove=moodChoices.getBoundingClientRect().bottom<=0;
+  if(!firstAiChoice||!receiptSummary)return;
+  const aiChoiceAbove=firstAiChoice.getBoundingClientRect().bottom<=0;
   const receiptHere=receiptSummary.getBoundingClientRect().top<=(window.innerHeight-20);
-  const show=moodAbove&&!receiptHere;
+  const show=aiChoiceAbove&&!receiptHere;
   ticket.hidden=!show;
   if(!show)ticket.querySelector("details").open=false;
  }
