@@ -30,9 +30,8 @@
       <span class="ticket-expander" aria-hidden="true"></span>
     </summary>
     <div class="ticket-detail">
-      <p id="selectionTicketPair">ChatGPT · Spotify</p>
-      <p id="selectionTicketRegions">CRATES / Worldwide</p>
-      <p id="selectionTicketOptions">ART: OFF · TRY HARD: OFF</p>
+      <p class="receipt-summary" id="receiptSummary">ChatGPT · Spotify · Surprise · 12 tracks</p>
+      <p class="receipt-regions" id="receiptRegions">CRATES / Worldwide</p>
       <button type="button" id="selectionTicketEdit">EDIT CHOICES</button>
     </div>
   </details>
@@ -580,8 +579,7 @@
       <div class="receipt-sheet">
       <div class="receipt-top"><span>NO. <span id="receiptCode">GO-001</span></span><span>MOOD / <span id="moodName">SURPRISE</span></span></div>
       <p class="receipt-copy" id="receiptCopy" hidden></p>
-      <p class="receipt-summary" id="receiptSummary">ChatGPT · Spotify · Surprise · 12 tracks</p>
-      <p class="receipt-regions" id="receiptRegions">CRATES / Worldwide</p>
+      <div id="receiptTicketDock" class="receipt-ticket-dock" aria-label="Filed playlist selections"></div>
       <details id="promptDetails">
         <summary>View full prompt / copy manually</summary>
         <div class="receipt-fold">
