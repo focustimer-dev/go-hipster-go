@@ -788,6 +788,135 @@ function atlasBindGestures(){
  },{passive:false});
 }
 
+
+/* ATLAS SECRETS — the original printed ships, creatures, routes and chart
+   endpoints are the anchors. The geometry, zoom, and country hit paths never
+   change; this optional layer only becomes interactive after close inspection. */
+function installAtlasSecrets(){
+ const map=doc.getElementById("crateAtlasMap");
+ if(!map?.classList?.contains?.("crate-robinson")||typeof doc.createElementNS!=="function")return;
+ const engraving=map.querySelector(".chart-details");
+ const art=[...map.querySelectorAll(".chart-details > svg")];
+ const routePath=map.querySelector(".chart-nautical-routes path");
+ const routeParts=routePath?.getAttribute("d")?.match(/M[^M]+/g)||[];
+ const endpoints=[...map.querySelectorAll(".chart-nautical-routes circle")];
+ if(!engraving||art.length<3||routeParts.length<3||endpoints.length<6)return;
+ const parent=engraving.parentNode,ns="http://www.w3.org/2000/svg";
+ const svg=(tag,attrs={})=>{
+  const node=doc.createElementNS(ns,tag);
+  for(const [key,value] of Object.entries(attrs))node.setAttribute(key,String(value));
+  return node;
+ };
+ const secrets=[
+  {id:"atlantic-crossing",kind:"route",title:"THE ATLANTIC CROSSING",
+   eyebrow:"CONTRABAND ROUTE",body:"Two coasts, no tidy genre label. Ask the crate to compare interlocking guitars and voices across Northern South America and West Africa—then verify each recording's origin.",
+   regions:["northern-south-america","west-africa"],path:routeParts[0]},
+  {id:"southern-passage",kind:"route",title:"A SOUTHERN DETOUR",
+   eyebrow:"CONTRABAND ROUTE",body:"A deliberately unlikely pairing: Southern South America and Central & Southern Africa. Follow the rhythmic questions, not an invented historical connection.",
+   regions:["southern-south-america","central-southern-africa"],path:routeParts[1]},
+  {id:"indian-ocean",kind:"route",title:"THE LONG WAY ROUND",
+   eyebrow:"CONTRABAND ROUTE",body:"Put East Africa beside South Asia and listen for different answers to the same percussion question. The actual tracks still have to earn their provenance.",
+   regions:["east-africa","south-asia"],path:routeParts[2]},
+  {id:"unlicensed-vessel",kind:"ship",title:"THE UNLICENSED VESSEL",
+   eyebrow:"PORT AUTHORITY NOTICE",body:"The manifest lists twelve records, three unreliable dates, and a suspiciously confident claim of first pressing. The clerk has requested evidence.",art:0},
+  {id:"serpent",kind:"monster",title:"UNVERIFIED SIGHTING",
+   eyebrow:"THE CARTOGRAPHER'S MISTAKES",body:"The locals insist it is progressive rock. The creature would prefer not to be categorized.",art:1},
+  {id:"deep-water",kind:"monster",title:"HERE BE REISSUES",
+   eyebrow:"THE CARTOGRAPHER'S MISTAKES",body:"An old warning from the chartmaker: a rare pressing is not automatically a good record.",art:2},
+  {id:"margin-one",kind:"marginalia",title:"A CORRECTION IN THE MARGIN",
+   eyebrow:"CLERK'S ANNOTATION",body:"This dotted line is a listening suggestion, not a claim about where any artist was born.",end:1},
+  {id:"margin-two",kind:"marginalia",title:"UNAUTHORIZED FOOTNOTE",
+   eyebrow:"CLERK'S ANNOTATION",body:"Every map leaves something out. Start by checking what this one calls a territory.",end:5}
+ ];
+ const layer=svg("g",{class:"atlas-secrets-layer","aria-hidden":"true"});
+ const hotspots=[];
+ for(const secret of secrets){
+  const g=svg("g",{class:"atlas-secret-hotspot","data-secret":secret.id,
+   role:"button",tabindex:"-1","aria-label":"Discover: "+secret.title});
+  let target;
+  if(secret.path){
+   target=svg("path",{d:secret.path,class:"atlas-secret-route-touch"});
+  }else{
+   let x,y;
+   if(Number.isInteger(secret.art)){
+    const a=art[secret.art];
+    x=Number(a.getAttribute("x"))+Number(a.getAttribute("width"))/2;
+    y=Number(a.getAttribute("y"))+Number(a.getAttribute("height"))/2;
+   }else{
+    const a=endpoints[secret.end];x=Number(a.getAttribute("cx"));y=Number(a.getAttribute("cy"));
+   }
+   target=svg("circle",{cx:x,cy:y,r:21,class:"atlas-secret-target"});
+   const hint=svg("circle",{cx:x,cy:y,r:13,class:"atlas-secret-ring"});
+   g.appendChild(hint);
+  }
+  g.appendChild(target);
+  const activate=event=>{
+   if(map.getAttribute("data-details")!=="true"||atlasTouchGesture||Date.now()<atlasSuppressTapUntil)return;
+   event.stopPropagation();event.preventDefault();
+   openAtlasSecret(secret,g);
+  };
+  g.addEventListener("click",activate);
+  g.addEventListener("keydown",event=>{
+   if(event.key==="Enter"||event.key===" "){activate(event)}
+  });
+  layer.appendChild(g);hotspots.push(g);
+ }
+ parent.insertBefore(layer,engraving.nextSibling);
+ const frame=map.closest(".crate-map-frame");
+ if(!frame?.parentNode)return;
+ const card=doc.createElement("section");card.id="atlasSecretCard";
+ card.className="atlas-secret-card";card.hidden=true;
+ card.setAttribute("aria-label","Atlas discovery");
+ const heading=doc.createElement("h3");heading.id="atlasSecretTitle";heading.tabIndex=-1;
+ const eyebrow=doc.createElement("span");eyebrow.className="atlas-secret-eyebrow";
+ const content=doc.createElement("p");content.className="atlas-secret-body";
+ const footer=doc.createElement("div");footer.className="atlas-secret-footer";
+ const action=doc.createElement("button");action.type="button";action.className="atlas-secret-add";
+ action.textContent="ADD THESE REGIONS";
+ const close=doc.createElement("button");close.type="button";close.className="atlas-secret-close";
+ close.textContent="CLOSE";
+ footer.append(action,close);card.append(eyebrow,heading,content,footer);
+ frame.parentNode.insertBefore(card,frame.nextSibling);
+ let active=null,trigger=null;
+ function closeCard(returnFocus=false){
+  const previous=trigger;
+  card.hidden=true;active=null;trigger=null;
+  if(returnFocus&&previous?.getAttribute("tabindex")==="0")previous.focus();
+ }
+ function openAtlasSecret(secret,node){
+  active=secret;trigger=node;
+  card.dataset.kind=secret.kind;card.hidden=false;
+  eyebrow.textContent=secret.eyebrow;heading.textContent=secret.title;
+  content.textContent=secret.body;
+  action.hidden=!secret.regions;
+  action.disabled=false;action.textContent="ADD THESE REGIONS";
+  if(typeof card.scrollIntoView==="function")card.scrollIntoView({block:"nearest",behavior:"instant"});
+  heading.focus({preventScroll:true});
+ }
+ close.addEventListener("click",()=>closeCard(true));
+ card.addEventListener("keydown",event=>{
+  if(event.key==="Escape"){event.preventDefault();closeCard(true)}
+ });
+ action.addEventListener("click",()=>{
+  if(!active?.regions)return;
+  let added=0;
+  for(const id of active.regions)if(validCrateRegions.has(id)&&!crateSelected.has(id)){crateSelected.add(id);added++}
+  if(added){lastCrateStamp=null;updateCrateMap();}
+  action.textContent=added?"ADDED TO YOUR CRATE":"ALREADY IN YOUR CRATE";
+  action.disabled=true;
+ });
+ // The original atlas already computes data-details as its camera zooms.
+ // Keep the optional art targets out of the pointer/keyboard path until then.
+ map._atlasSecretsSync=visible=>{
+  layer.setAttribute("aria-hidden",String(!visible));
+  for(const target of hotspots)target.setAttribute("tabindex",visible?"0":"-1");
+  if(!visible&&!card.hidden)closeCard();
+ };
+ map._atlasSecretsSync(map.getAttribute("data-details")==="true");
+}
+installAtlasSecrets();
+
+
 atlasBindGestures();
 doc.querySelectorAll("[data-atlas-country]").forEach(path=>{
  path.addEventListener("click",()=>{
