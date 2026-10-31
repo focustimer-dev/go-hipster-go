@@ -6,8 +6,8 @@ android {
         applicationId 'work.samelling.hipstergo.lab'
         minSdkVersion 24
         targetSdkVersion 36
-        versionCode 2
-        versionName '0.2.0'
+        versionCode 3
+        versionName '0.3.0'
     }
     buildTypes { release { minifyEnabled false } }
     compileOptions {
@@ -20,6 +20,7 @@ tasks.register('bundleLab', Exec) {
     commandLine 'python3', 'scripts/bundle_android_lab.py'
     inputs.dir '../../launcher'
     inputs.file '../../scripts/bundle_android_lab.py'
+    inputs.file '../web/inspiration.js'
     outputs.dir 'src/main/assets/site'
 }
 preBuild.dependsOn bundleLab

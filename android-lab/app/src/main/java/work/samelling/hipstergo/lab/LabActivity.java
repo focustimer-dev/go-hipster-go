@@ -19,6 +19,7 @@ public class LabActivity extends Activity {
     private TextView title;
     private SkillUpdates updates;
     private SavedRequests shelf;
+    private SharedInspiration inspiration;
     private android.content.SharedPreferences prefs;
     private String lastPrompt = "";
     private String lastAi = "chatgpt";
@@ -26,6 +27,7 @@ public class LabActivity extends Activity {
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
         prefs = getSharedPreferences("lab", MODE_PRIVATE);
+        inspiration = new SharedInspiration(this,prefs,this::refreshInspiration);
         updates = new SkillUpdates(this,prefs,this::browser,this::updateBadge);
         shelf = new SavedRequests(this,prefs,this::handoff,this::copy,text->share(text,null));
         getWindow().setStatusBarColor(Color.rgb(37,35,32));
@@ -100,6 +102,39 @@ public class LabActivity extends Activity {
         if (state == null || web.restoreState(state) == null) web.loadUrl(start);
         if (Build.VERSION.SDK_INT >= 33) getOnBackInvokedDispatcher().registerOnBackInvokedCallback(0, this::back);
         updates.onLaunch();
+        if(state==null)receiveSharedText(getIntent());
+    }
+
+    @Override protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);setIntent(intent);
+        if(Intent.ACTION_SEND.equals(intent.getAction()))receiveSharedText(intent);
+        else {
+            Uri u=intent.getData();
+            if(u!=null&&"hipsterlab".equals(u.getScheme())) {
+                String mood=u.getQueryParameter("mood");
+                if("funky".equals(mood)||"weird".equals(mood))web.loadUrl(HOME+"?mood="+mood);
+            }
+        }
+    }
+    private void receiveSharedText(Intent intent) {
+        if(intent==null||!Intent.ACTION_SEND.equals(intent.getAction()))return;
+        if(!"text/plain".equals(intent.getType())){toast("Share a song link or plain text to Lab.");return;}
+        try {
+            CharSequence raw=intent.getCharSequenceExtra(Intent.EXTRA_TEXT);
+            String text=raw==null?null:raw.toString();
+            if(text==null&&intent.getClipData()!=null&&intent.getClipData().getItemCount()>0) {
+                ClipData.Item item=intent.getClipData().getItemAt(0);
+                if(item.getText()!=null)text=item.getText().toString();
+                else if(item.getUri()!=null&&("https".equals(item.getUri().getScheme())||"http".equals(item.getUri().getScheme())))text=item.getUri().toString();
+            }
+            String value=InspirationText.normalize(intent.getStringExtra(Intent.EXTRA_SUBJECT),text);
+            if(value.isEmpty()){toast("No text found. Share a link, song title or musical idea.");return;}
+            inspiration.receive(value);
+        }catch(IllegalArgumentException e){toast("Share a link or text under 2,000 characters.");}
+        catch(Exception e){toast("Couldn't read that share. Try sharing its link as plain text.");}
+    }
+    private void refreshInspiration() {
+        if(web!=null)web.evaluateJavascript("window.HipsterLabRefresh&&window.HipsterLabRefresh()",null);
     }
 
     private boolean trusted(Uri u) { return "https".equals(u.getScheme()) && HOST.equals(u.getHost()) && u.getPort() == -1; }
@@ -181,8 +216,8 @@ public class LabActivity extends Activity {
             "Handoff: "+prefs.getString("mode","open"),
             "One-tap GO: "+(prefs.getBoolean("oneTap",true)?"on":"off"),
             "Haptics: "+(prefs.getBoolean("haptics",true)?"on":"off"),
-            "Share last request", "About this experiment"};
-        new AlertDialog.Builder(this).setTitle("Hipster GO Lab · 0.2.0")
+            "Share last request", "Shared inspiration"+(inspiration.value().isEmpty()?"":" · active"), "About this experiment"};
+        new AlertDialog.Builder(this).setTitle("Hipster GO Lab · 0.3.0")
             .setItems(items,(d,n)->{
                 if(n==0)updates.show();
                 else if(n==1)shelf.save(lastAi,lastPrompt);
@@ -199,12 +234,16 @@ public class LabActivity extends Activity {
                     prefs.edit().putBoolean(key,!prefs.getBoolean(key,true)).apply();settings();
                 } else if(n==6) {
                     if(validText(lastPrompt)) share(lastPrompt,null); else toast("Press GO first to prepare a prompt.");
-                } else new AlertDialog.Builder(this).setTitle("A separate crate")
+                } else if(n==7)inspiration.review();
+                else new AlertDialog.Builder(this).setTitle("A separate crate")
                     .setMessage("Bundled offline interface. Separate app and preferences. No production writes or live website updates. Native release checks read public GitHub metadata only; downloads and installation stay your choice.\n\nSaved requests stay on this device and are saved only when you choose.\n\nLong-press the launcher icon for Funky and Weird shortcuts.")
                     .setPositiveButton("Got it",null).show();
             }).setNegativeButton("Close",null).show();
     }
     public final class Bridge {
+        @JavascriptInterface public String inspiration(){return inspiration.value();}
+        @JavascriptInterface public void reviewInspiration(){runOnUiThread(()->inspiration.review());}
+        @JavascriptInterface public void clearInspiration(){runOnUiThread(()->inspiration.clear());}
         @JavascriptInterface public boolean copy(String text) {
             if(!validText(text)) return false;
             runOnUiThread(()->LabActivity.this.copy(text));return true;

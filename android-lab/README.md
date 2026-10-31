@@ -1,7 +1,7 @@
 # Hipster GO Lab
 
 A separate native Android experiment. Package `work.samelling.hipstergo.lab`,
-version `0.2.0`, Android 7+. It installs alongside the production APK and PWA.
+version `0.3.0`, Android 7+. It installs alongside the production APK and PWA.
 
 ## Isolation
 
@@ -73,6 +73,29 @@ Uninstalling Lab removes the shelf. Saving a request does not save a playlist or
 make AI output deterministic. Install APK updates over the existing Lab to retain
 its preferences and saved requests.
 
+## Share inspiration into Lab
+
+In Spotify, YouTube Music, a browser, or another app, choose **Share → Hipster GO
+Lab** for a song link or plain text. Lab shows an editable review dialog. Choose
+**Use inspiration** to apply it, or **Cancel** to leave the current reference
+unchanged. Sharing never launches an AI or publishes a playlist.
+
+The accepted reference is stored locally and stays active until removed. A
+**FROM YOUR CRATE** card appears above GO with **Review** and **Remove** controls;
+Lab Settings also has **Shared inspiration**. Your region, mood and tempo choices
+are preserved. The reference replaces the generated seed in the prompt while
+active, is quoted as data, and is explicitly not an instruction or required track.
+After removing it, the ordinary seed behavior returns. Editing the reference
+invalidates any older copied prompt, including a copy already in progress.
+
+Lab accepts `ACTION_SEND` with `text/plain`, reads text/subject and a safe textual
+ClipData fallback, and rejects oversized shares instead of silently truncating.
+The limit is 2,000 characters; images, audio files and file/content URIs are not
+imported. Lab does not open shared links, scrape their content, or claim a recording
+match. The chosen AI performs any supported lookup after you press GO. The local
+reference is included when an exact request is deliberately saved to the shelf.
+Warm shares reuse the existing Lab activity and preserve its listening choices.
+
 ## Build and verify
 
 JDK 17, Android SDK 36 and build tools 35.0.0, Python 3, and the checked-in wrapper
@@ -139,5 +162,20 @@ require the device smoke test.
 - Save a named GO request, restart Lab, then copy/share it and compare exact text.
 - Cancel a save or delete, and verify no unexpected shelf change.
 
-The update panel and saved shelf still need device smoke testing. Existing native
-handoffs and Share were verified by the user on version 0.1.
+The user confirmed the update checker and saved-request shelf working in version
+0.2. Existing native handoffs and outbound Share were verified in version 0.1.
+
+## Version 0.3 phone checks
+
+1. In Spotify or YouTube Music, share a song link to Hipster GO Lab.
+2. Cancel once and confirm nothing changes; share again, edit, and choose Use.
+3. Check the FROM YOUR CRATE card, then choose your region/mood/tempo and GO.
+4. Inspect the received prompt in the AI: the exact reviewed reference appears,
+   the selected regions remain, and the generated seed is omitted while active.
+5. Return to Lab, use Review/Remove, and verify an old OPEN link requires fresh GO.
+6. Share a second song while Lab is already open, then restart Lab and check that
+   the accepted reference persists. Saved requests and skill-update records remain.
+
+The native share-sheet listing and review dialog still need a device smoke test.
+Release build/vital lint, 15 native tests, snapshot isolation, and DOM handoff and
+inspiration tests passed. Existing Chromium sandbox limitations are unchanged.

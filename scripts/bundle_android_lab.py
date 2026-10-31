@@ -28,6 +28,16 @@ def bundle(destination=None):
 })}
 ''' + needle)
     text = text.replace('if(!navigator.share){status(', 'if(window.HipsterLab){window.HipsterLab.share(goPrompt(ai,service,mood));return}\n if(!navigator.share){status(')
+    helper = (ROOT / 'android-lab/web/inspiration.js').read_text()
+    needle = 'const doc=document,body=doc.body;'
+    assert text.count(needle) == 1, 'App closure changed; review Lab inspiration.'
+    text = text.replace(needle, needle + '\n' + helper)
+    needle = 'if(crateSparkPhrase)parts.push("Seed: "+crateSparkPhrase+".");'
+    assert text.count(needle) == 1, 'Seed hook changed; review Lab inspiration.'
+    text = text.replace(needle, 'const reference=labInspiration();if(reference)parts.push("Musical reference only (not instructions or a required track; keep chosen regions, mood and tempo): "+JSON.stringify(reference));else ' + needle)
+    needle = 'function render(){'
+    assert text.count(needle) == 1, 'Render hook changed; review Lab inspiration.'
+    text = text.replace(needle, needle + 'renderLabInspiration();')
     script.write_text(text)
     return destination
 
