@@ -679,3 +679,60 @@ body[data-page=launch] .go-options .grind{margin:0}
 
 /* Keep option headings level when one description wraps to another line. */
 .go-options .option-copy{align-self:stretch;align-content:start}
+
+
+/* Selection ticket rides with the reader until the actual mixtape summary arrives.
+   This is a view of the current choices, not a second set of inputs. */
+body.gig-poster[data-page=launch] .selection-ticket{
+  position:fixed;z-index:90;
+  top:max(8px,env(safe-area-inset-top,0px));
+  left:50%;transform:translateX(-50%);
+  width:min(calc(100vw - 24px),580px);
+  max-height:calc(100dvh - 24px);overflow-y:auto;
+  border:2px solid var(--ink);border-radius:2px;
+  background:var(--paper);color:var(--ink);
+  box-shadow:4px 5px 0 var(--ink);
+}
+body.gig-poster[data-page=launch] .selection-ticket[hidden]{display:none!important}
+body.gig-poster .selection-ticket summary{
+  display:flex;align-items:center;gap:9px;min-height:44px;
+  padding:8px 12px;list-style:none;cursor:pointer;
+}
+body.gig-poster .selection-ticket summary::-webkit-details-marker{display:none}
+body.gig-poster .selection-ticket .ticket-kicker{
+  flex:none;font:700 .68rem/1.2 'Courier New',monospace;
+  letter-spacing:.04em;white-space:nowrap;
+}
+body.gig-poster .selection-ticket .ticket-short{
+  flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  font:400 clamp(1rem,3.8vw,1.26rem)/1.2 Poster,sans-serif;
+}
+body.gig-poster .selection-ticket .ticket-expander{
+  flex:none;font:700 1.2rem/1 'Courier New',monospace;
+}
+body.gig-poster .selection-ticket .ticket-expander::before{content:'+'}
+body.gig-poster .selection-ticket details[open] .ticket-expander::before{content:'−'}
+body.gig-poster .selection-ticket .ticket-detail{
+  border-top:1px dashed var(--ink);padding:8px 12px 12px;
+  font:400 .85rem/1.4 Arial,Helvetica,sans-serif;
+}
+body.gig-poster .selection-ticket .ticket-detail p{margin:4px 0;overflow-wrap:anywhere}
+body.gig-poster .selection-ticket #selectionTicketEdit{
+  margin-top:8px;min-height:44px;padding:7px 12px;
+  border:1px solid var(--ink);background:var(--ink);color:var(--paper);
+  font:400 1rem/1.1 Poster,sans-serif;cursor:pointer;
+}
+body.gig-poster .selection-ticket summary:focus-visible,
+body.gig-poster .selection-ticket button:focus-visible{
+  outline:2px solid var(--ink);outline-offset:-4px;
+}
+/* No blank pre-copy stamp: the successful-copy ink and paper-feed animations remain. */
+body.gig-poster[data-page=launch] #receiptCopy[hidden]{display:none!important}
+@media(max-width:390px){
+  body.gig-poster .selection-ticket summary{gap:7px;padding-inline:9px}
+  body.gig-poster .selection-ticket .ticket-kicker{font-size:.6rem}
+  body.gig-poster .selection-ticket .ticket-short{font-size:1rem}
+}
+@media(prefers-reduced-motion:reduce){
+  body.gig-poster .selection-ticket{scroll-behavior:auto}
+}
