@@ -38,7 +38,8 @@ class EngravedEditionChecks(unittest.TestCase):
         self.assertIn('firstAiChoice.getBoundingClientRect().bottom>0',script)
         self.assertNotIn('moodChoices.getBoundingClientRect().bottom<=0',script)
         self.assertIn('receiptTicketDock',script)
-        self.assertIn('dock.getBoundingClientRect().top<=window.innerHeight-20',script)
+        self.assertIn('receipt.getBoundingClientRect().top<=window.innerHeight-88',script)
+        self.assertNotIn('dock.getBoundingClientRect().top<=window.innerHeight-20',script)
         self.assertIn('dock.appendChild(ticket)',script)
         self.assertIn('doc.body.insertBefore(ticket,site)',script)
         self.assertIn('details.open=true',script)
@@ -68,6 +69,21 @@ class EngravedEditionChecks(unittest.TestCase):
         self.assertIn('"antarctica":"ANTARCTICA"',script)
         self.assertIn('active.slice(0,2)',script)
 
+
+
+    def test_jukebox_layout_keeps_atlas_unchanged(self):
+        edition=(BASE/"index.html").read_text()
+        builder=(ROOT/"scripts/build_gig_poster.py").read_text()
+        css=(BASE/"edition.css").read_text()
+        mood=edition.index('class="mood-grid"')
+        tempo=edition.index('id="tempoControl"')
+        atlas=edition.index('id="crateGeo"')
+        self.assertLess(mood,tempo)
+        self.assertLess(tempo,atlas)
+        self.assertIn('tempo_block=s[tempo_start:mood_start]',builder)
+        self.assertIn('min-height:56px;padding-block:6px',css)
+        self.assertIn('.handoff #openAi[aria-disabled=false]',css)
+        self.assertIn('The illustrated atlas and its viewport geometry remain unchanged.',css)
 
     def test_brand_headline_persists_and_return_stamp_is_discreet(self):
         original=(ROOT/"launcher/index.html").read_text()
