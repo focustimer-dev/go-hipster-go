@@ -812,10 +812,19 @@ body.gig-poster[data-page=launch] .atlas-secret-panel-close:focus-visible,
 body.gig-poster[data-page=launch] .atlas-secret-panel-action:focus-visible{
  outline:2px solid var(--selection-vermilion);outline-offset:2px
 }
-@media(max-width:420px){
+/* At phone sizes a popup would obscure most of the map. File the annotation
+   under the chart instead; it can expand the section only after an actual tap. */
+@media(max-width:540px){
  body.gig-poster[data-page=launch] .atlas-secret-panel{
-  bottom:8px;left:2%;width:96%;padding:9px 11px
+  position:relative;bottom:auto;left:auto;width:100%;max-height:none;
+  box-shadow:none;border:1px solid var(--ink);border-top:2px solid var(--ink)
  }
+ body.gig-poster[data-page=launch] .crate-map-frame:has(.atlas-secret-panel:not([hidden])){
+  overflow:visible
+ }
+}
+@media(max-width:420px){
+ body.gig-poster[data-page=launch] .atlas-secret-panel{padding:10px 11px}
 }
 @media(prefers-reduced-motion:reduce){
  body.gig-poster[data-page=launch] .atlas-secret-target{transition:none}
