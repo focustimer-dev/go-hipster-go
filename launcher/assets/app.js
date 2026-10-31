@@ -163,7 +163,9 @@ function atlasDetailsForView(map,view){
  // A small dead band prevents flicker while pinching around the reveal point.
  const threshold=map.getAttribute("data-details")==="true"?2.05:2.3;
  if(720/width>=1.5)warmAtlasArtwork();
- map.setAttribute("data-details",String(720/width>=threshold));
+ const visible=720/width>=threshold;
+ map.setAttribute("data-details",String(visible));
+ map._atlasSecretsSync?.(visible);
 }
 // Robinson rays follow the geography camera but remain underneath its
 // opaque ocean. The ocean masks rays at the CURRENT map edge while panning.
