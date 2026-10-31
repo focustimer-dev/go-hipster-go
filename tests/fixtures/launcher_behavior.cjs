@@ -497,7 +497,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.doesNotMatch(dealing.elements.prompt.textContent,/go sad|Tempo preference: Slow/,'Shuffle changes the selected mood and pace');
  assert.ok([1,2].includes(dealing.elements.atlasStamps.children.length));
  assert.equal(dealing.elements.undoShuffle.hidden,false);
- assert.equal(dealing.elements.receiptCopy.textContent,'REQUEST DRAFT');
+ assert.equal(dealing.elements.receiptCopy.textContent,'');
  assert.match(dealing.elements.receiptRegions.textContent,/CRATES \/ /);
  await dealing.elements.undoShuffle.click();
  assert.equal(dealing.elements.prompt.textContent,originalBrief,'Undo restores the complete previous brief');
@@ -515,23 +515,25 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  await dealing.elements.goButton.click();
  assert.equal(dealing.elements.promptReceipt.attrs['data-impression'],'0','Repeated successful copies feed another receipt');
  await dealing.elements.undoShuffle.click();
- assert.equal(dealing.elements.receiptCopy.textContent,'REQUEST DRAFT','Undo after copying cannot claim the restored brief is on the clipboard');
+ assert.equal(dealing.elements.receiptCopy.textContent,'','Undo after copying cannot claim the restored brief is on the clipboard');
  const stamped=harness(async()=>{});
- assert.equal(stamped.elements.receiptCopy.textContent,'REQUEST DRAFT');
+ assert.equal(stamped.elements.receiptCopy.textContent,'');
+ assert.equal(stamped.elements.receiptCopy.hidden,true,'An uncopied receipt must not display an idle stamp');
  await stamped.elements.goButton.click();
  assert.equal(stamped.elements.receiptCopy.textContent,'COPIED TO CLIPBOARD','Only successful current copies earn a receipt stamp');
+ assert.equal(stamped.elements.receiptCopy.hidden,false,'Successful copy reveals the ink stamp');
  await stamped.moods[0].click();
  assert.equal(stamped.elements.promptReceipt.attrs['data-copy-state'],'idle','Changed preferences invalidate the stamped request');
- assert.equal(stamped.elements.receiptCopy.textContent,'REQUEST DRAFT');
+ assert.equal(stamped.elements.receiptCopy.textContent,'');
  assert.match(stamped.elements.moodHelp.textContent,/Happy selected.*Optimism/);
  const unstamped=harness(async()=>{throw Error('blocked')});
  await unstamped.elements.goButton.click();
- assert.equal(unstamped.elements.receiptCopy.textContent,'REQUEST DRAFT','Clipboard failures cannot earn a stamp');
+ assert.equal(unstamped.elements.receiptCopy.textContent,'','Clipboard failures cannot earn a stamp');
  let release;const racingStamp=harness(()=>new Promise(resolve=>{release=resolve}));
  const copyingStamp=racingStamp.elements.goButton.click();
  assert.equal(racingStamp.elements.receiptCopy.textContent,'COPYING…');
  await racingStamp.moods[1].click();release();await copyingStamp;
- assert.equal(racingStamp.elements.receiptCopy.textContent,'REQUEST DRAFT','An outdated in-flight copy cannot stamp the new request');
+ assert.equal(racingStamp.elements.receiptCopy.textContent,'','An outdated in-flight copy cannot stamp the new request');
  const sparkBank=JSON.parse(fs.readFileSync('references/mood-spark-bank.json','utf8'));
  for(const selected of ['happy','angry','sad','weird','criminal','funky']){
   const sparkStore=new Map(),outputs=[];
@@ -590,7 +592,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.match(hardRun.elements.prompt.textContent,/Curation mode: GO HARD\. Use the skill's Deep Crate Protocol\./);
  assert.doesNotMatch(hardRun.elements.prompt.textContent,/expanded verified candidate discovery|multiple competing sequences|critical worst-handoff/);
 
- assert.equal(hardRun.elements.receiptCopy.textContent,'REQUEST DRAFT','Hard toggle invalidates previous clipboard stamp');
+ assert.equal(hardRun.elements.receiptCopy.textContent,'','Hard toggle invalidates previous clipboard stamp');
  assert.equal(hardRun.elements.openAi.attrs['aria-disabled'],'true','Hard toggle needs a fresh GO copy');
  await hardRun.elements.includeCover.click();
  assert.match(hardRun.elements.prompt.textContent,/Cover art: yes\. Use the skill's cover-art workflow\./,'Deep mode combines with cover art');
