@@ -876,6 +876,14 @@ function installAtlasSecrets(){
   return {path,seamLat,origin:[113.62,22.78],destination:[-118.20,33.77]};
  };
  const pacific=greatCirclePacific();
+ // Plymouth (Atlantic & Western Europe) -> Halifax (Eastern Canada) ->
+ // San Juan (Caribbean). Two offshore legs share the Halifax waypoint.
+ // A listening itinerary, not a historical vessel or commerce claim.
+ const westboundLegs=[
+  [[-4.14,50.37],[-20,51.4],[-40,49.1],[-57,47.2],[-63.57,44.65]],
+  [[-63.57,44.65],[-68,38],[-69.5,32],[-68,25],[-66.11,18.46]]
+ ];
+ const westboundPath=westboundLegs.map(chartPath).join(" ");
  const routeParts=routePlans.map(route=>chartPath(route.waypoints));
  routePath.setAttribute("d",routeParts.join(" "));
  // Keep the printed dots attached to the same, now correct, route endpoints.
@@ -906,6 +914,12 @@ function installAtlasSecrets(){
    routePath.parentNode.appendChild(svg("circle",{cx:x.toFixed(1),cy:y.toFixed(1),r:2.1,class:"atlas-pacific-port"}));
   }
  }
+ const westboundChart=svg("path",{d:westboundPath,class:"atlas-westbound-crossing"});
+  routePath.parentNode.appendChild(westboundChart);
+  for(const point of [westboundLegs[0][0],westboundLegs[0][4],westboundLegs[1][4]]){
+   const [x,y]=projectPort(point);
+   routePath.parentNode.appendChild(svg("circle",{cx:x.toFixed(1),cy:y.toFixed(1),r:2.2,class:"atlas-westbound-port"}));
+  }
  const secrets=[
   {id:"atlantic-crossing",kind:"route",title:"THE ATLANTIC CROSSING",
    eyebrow:"CONTRABAND ROUTE",body:"Georgetown to Dakar, via the Atlantic. Compare interlocking guitars and voices from Northern South America and West Africa; verify every recording's actual origin. This is an illustrative listening passage, not a documented historical trade itinerary.",
@@ -919,6 +933,9 @@ function installAtlasSecrets(){
   {id:"pacific-handoff",kind:"route",title:"THE PACIFIC HANDOFF",
    eyebrow:"CONTRABAND ROUTE · DATE LINE",body:"Guangzhou to Long Beach, east across the Pacific. The dashed line vanishes at the right edge of the chart and picks up again on the left. A great-circle sketch, not a published ship itinerary. Listen for two Pacific-facing scenes and verify the tracks.",
    regions:["east-asia","us-west"],path:pacific?.path},
+  {id:"westbound-manifest",kind:"route",title:"THE WESTBOUND MANIFEST",
+   eyebrow:"CONTRABAND ROUTE · THREE PORTS",body:"Plymouth to Halifax to San Juan. Two Atlantic legs, three places to dig, and no tidy genre label. Treat it as a listening itinerary, not proof that a record or ship followed this exact passage.",
+   regions:["atlantic-europe","canada-east","caribbean"],path:westboundPath},
   {id:"unlicensed-vessel",kind:"ship",title:"THE UNLICENSED VESSEL",
    eyebrow:"PORT AUTHORITY NOTICE",body:"The manifest lists twelve records, three unreliable dates, and a suspiciously confident claim of first pressing. The clerk has requested evidence.",art:0},
   {id:"serpent",kind:"monster",title:"UNVERIFIED SIGHTING",
@@ -977,7 +994,7 @@ function installAtlasSecrets(){
  const content=doc.createElement("p");content.className="atlas-secret-body";
  const footer=doc.createElement("div");footer.className="atlas-secret-footer";
  const action=doc.createElement("button");action.type="button";action.className="atlas-secret-add";
- action.textContent="ADD THESE REGIONS";
+ action.textContent="PICK THESE REGIONS";
  const close=doc.createElement("button");close.type="button";close.className="atlas-secret-close";
  close.textContent="CLOSE";
  footer.append(action,close);card.append(eyebrow,heading,content,footer);
@@ -997,7 +1014,7 @@ function installAtlasSecrets(){
   eyebrow.textContent=secret.eyebrow;heading.textContent=secret.title;
   content.textContent=secret.body;
   action.hidden=!secret.regions;
-  action.disabled=false;action.textContent="ADD THESE REGIONS";
+  action.disabled=false;action.textContent="PICK THESE REGIONS";
   // Keep the camera and page steady when changing an already-open discovery.
   // In particular, do not steal touch focus or scroll away from another route.
   if(fromKeyboard)heading.focus({preventScroll:true});
@@ -1009,10 +1026,18 @@ function installAtlasSecrets(){
  });
  action.addEventListener("click",()=>{
   if(!active?.regions)return;
-  let added=0;
-  for(const id of active.regions)if(validCrateRegions.has(id)&&!crateSelected.has(id)){crateSelected.add(id);added++}
-  if(added){lastCrateStamp=null;updateCrateMap();}
-  action.textContent=added?"ADDED TO YOUR CRATE":"ALREADY IN YOUR CRATE";
+  // Choosing a route is a replacement, never an additive stamp. The selected
+  // regions are exactly the route regions; no stale manual picks remain.
+  const picked=[...new Set(active.regions)].filter(id=>validCrateRegions.has(id));
+  if(!picked.length)return;
+  const same=crateSelected.size===picked.length&&picked.every(id=>crateSelected.has(id));
+  if(!same){
+   crateSelected.clear();
+   for(const id of picked)crateSelected.add(id);
+   lastCrateStamp=null;
+   updateCrateMap();
+  }
+  action.textContent=same?"ALREADY PICKED":"REGIONS PICKED";
   action.disabled=true;
  });
  // The original atlas already computes data-details as its camera zooms.
