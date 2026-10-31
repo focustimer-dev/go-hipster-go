@@ -24,6 +24,39 @@ class EngravedEditionChecks(unittest.TestCase):
         self.assertIn('id="crateAtlasMap"',index)
         self.assertIn('id="atlasHome"',index)
 
+    def test_atlas_secrets_are_zoom_gated_and_non_destructive(self):
+        script=(ROOT/"launcher/assets/app.js").read_text()
+        css=(BASE/"edition.css").read_text()
+        generated=(BASE/"index.html").read_text()
+        # Existing engraved furniture and Robinson camera remain the source.
+        self.assertIn('class="chart-nautical-routes"',generated)
+        self.assertIn('class="chart-details"',generated)
+        self.assertIn('class="crate-robinson"',generated)
+        self.assertIn('class="chart-compass-fixed"',generated)
+        self.assertIn("installAtlasSecrets()",script)
+        self.assertIn('map._atlasSecretsSync?.(visible)',script)
+        self.assertIn('map.getAttribute("data-details")!=="true"',script)
+        self.assertIn('atlasTouchGesture||Date.now()<atlasSuppressTapUntil',script)
+        self.assertIn('map.querySelectorAll(".chart-details > svg")',script)
+        self.assertIn('map.querySelector(".chart-nautical-routes path")',script)
+        self.assertIn('parent.insertBefore(layer,engraving.nextSibling)',script)
+        self.assertIn('validCrateRegions.has(id)&&!crateSelected.has(id)',script)
+        self.assertIn("updateCrateMap();",script)
+        self.assertIn('aria-hidden","true"',script)
+        self.assertIn('tabindex",visible?"0":"-1"',script)
+        self.assertIn('event.key==="Escape"',script)
+        self.assertIn('event.key==="Enter"||event.key===" "',script)
+        self.assertIn("THE CARTOGRAPHER'S MISTAKES",script)
+        self.assertIn("CLERK'S ANNOTATION",script)
+        self.assertIn("CONTRABAND ROUTE",script)
+        self.assertIn('atlas-secret-route-touch',css)
+        self.assertIn('#crateAtlasMap[data-details=true] .atlas-secrets-layer',css)
+        self.assertIn('.atlas-secret-card[hidden]{display:none!important}',css)
+        self.assertIn('@media(prefers-reduced-motion:reduce)',css)
+        # Antarctica remains explicit-only, not a suggested contraband route.
+        section=script.split('function installAtlasSecrets(){',1)[1].split('\ninstallAtlasSecrets();',1)[0]
+        self.assertNotIn('regions:["antarctica"',section)
+
     def test_selection_ticket_and_clean_receipt_idle_state(self):
         base=(ROOT/"launcher/index.html").read_text()
         generated=(BASE/"index.html").read_text()
