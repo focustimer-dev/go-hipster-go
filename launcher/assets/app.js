@@ -249,9 +249,19 @@ function atlasSelectedView(shapes,selected){
  if(box[2]<160){const cx=box[0]+box[2]/2,cy=box[1]+box[3]/2;return [cx-80,cy-160*372/720/2,160,160*372/720]}
  return box;
 }
+// A selected region should provide context, not fill the entire viewport.
+// Ease auto-framing out by 18%, centered on the same projected geography.
+// Manual pinch/pan, continent focus and Antarctica's explicit view are unchanged.
+function atlasRelaxSelectedView(view){
+ if(!view)return null;
+ const [x,y,w,h]=atlasNormalize(view);
+ const width=Math.min(720,w*1.18),height=width*372/720;
+ return [x+(w-width)/2,y+(h-height)/2,width,height];
+}
 function frameSelectedAtlas(){
  if(!atlasRegionShapes.length)return; // Manual/setup and test environments may lack painted paths.
- const view=crateSelected.size===1&&crateSelected.has("antarctica")?atlasRobinsonViews.antarctica:crateSelected.size?atlasSelectedView(atlasRegionShapes,crateSelected):null;
+ const antarcticaOnly=crateSelected.size===1&&crateSelected.has("antarctica");
+ const view=antarcticaOnly?atlasRobinsonViews.antarctica:crateSelected.size?atlasRelaxSelectedView(atlasSelectedView(atlasRegionShapes,crateSelected)):null;
  atlasUserNavigated=Boolean(view);
  if(!crateSelected.size){atlasFocus=null;renderCrateMap()}else renderAtlasNavigation();
  animateAtlasView(view||null);
