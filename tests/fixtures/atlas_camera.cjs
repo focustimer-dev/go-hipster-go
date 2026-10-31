@@ -21,3 +21,12 @@ for(let px=-1000;px<=1000;px+=100)for(let py=-1000;py<=1000;py+=100){
  assert.ok(land.some(([lx,ly])=>lx>=x+w*.15-.001&&lx<=x+w*.85+.001&&ly>=y+h*.15-.001&&ly<=y+h*.85+.001),'Extreme pans retain land in the central viewport');
 }
 console.log('Robinson camera: aspect, focal anchor, zoom limits and 441 extreme pans passed.');
+vm.runInContext(source.slice(source.indexOf('function atlasSelectedView('),source.indexOf('function frameSelectedAtlas('))+';globalThis.fitSelection=atlasSelectedView;',c);
+const shapes=[{id:'west',x:100,y:100,w:80,h:80,area:6400},{id:'west',x:680,y:100,w:1,h:1,area:1},{id:'east',x:500,y:180,w:60,h:30,area:1800}];
+const single=c.fitSelection(shapes,['west']);
+assert.ok(single[2]<220&&single[0]<100,'Tiny remote fragments do not pull a mainland selection across the world');
+const paired=c.fitSelection(shapes,['west','east']);
+assert.ok(paired[0]<=100&&paired[0]+paired[2]>=560,'Combined selections fit both highlighted areas');
+assert.equal(c.fitSelection(shapes,[]),null,'No regions returns an empty fit for the world reset');
+assert.ok(single[2]>=160,'Automatic region focus avoids excessive zoom');
+console.log('Selection framing: aggregate regions, remote fragments and zoom floor passed.');

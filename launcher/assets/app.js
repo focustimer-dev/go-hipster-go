@@ -130,6 +130,7 @@ const atlasViews={"world":[0,0,720,372],"americas-north":[40,18,300,190],"americ
 // Robinson focus boxes use projected geography, not the old Mercator extents.
 const atlasRobinsonViews={world:[0,0,720,372],"americas-north":[57,26,304,158],"americas-south":[192,145,120,172],europe:[298,30,174,100],africa:[312,94,180,208],asia:[403,25,240,198],oceania:[555,179,145,117]};
 const atlasLandAnchors=[];
+const atlasRegionShapes=[];
 function atlasDetailsForView(map,view){
  const width=Number(view.trim().split(/\s+/)[2]);
  // A small dead band prevents flicker while pinching around the reveal point.
@@ -188,7 +189,7 @@ function animateAtlasView(view){
  flushAtlasNavigation();
  const map=doc.getElementById("crateAtlasMap");if(!map)return;
  const views=map.classList?.contains?.("crate-robinson")?atlasRobinsonViews:atlasViews;
- const goal=atlasConstrain(views[view||"world"]||views.world),raw=map.getAttribute("viewBox")||"0 0 720 372";
+ const goal=atlasConstrain(Array.isArray(view)?view:(views[view||"world"]||views.world)),raw=map.getAttribute("viewBox")||"0 0 720 372";
  const from=raw.split(/\s+/).map(Number);
  if(atlasZoomFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasZoomFrame);
  const reduced=typeof window!=="undefined"&&window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -201,6 +202,29 @@ function animateAtlasView(view){
   if(t<1)atlasZoomFrame=requestAnimationFrame(frame);else atlasZoomFrame=0;
  };
  atlasZoomFrame=requestAnimationFrame(frame);
+}
+// Fit the selected painted geography; tiny offshore fragments must not
+// pull a mainland selection to the opposite edge of the Robinson plate.
+function atlasSelectedView(shapes,selected){
+ const visible=[];
+ for(const id of selected){
+  const parts=shapes.filter(p=>p.id===id),largest=Math.max(0,...parts.map(p=>p.area));
+  visible.push(...parts.filter(p=>p.area>=Math.max(.05,largest*.005)));
+ }
+ if(!visible.length)return null;
+ const left=Math.min(...visible.map(p=>p.x)),top=Math.min(...visible.map(p=>p.y));
+ const right=Math.max(...visible.map(p=>p.x+p.w)),bottom=Math.max(...visible.map(p=>p.y+p.h));
+ const pad=Math.max(10,(right-left)*.12,(bottom-top)*.12);
+ const box=atlasNormalize([left-pad,top-pad,right-left+2*pad,bottom-top+2*pad]);
+ if(box[2]<160){const cx=box[0]+box[2]/2,cy=box[1]+box[3]/2;return [cx-80,cy-160*372/720/2,160,160*372/720]}
+ return box;
+}
+function frameSelectedAtlas(){
+ if(!atlasRegionShapes.length)return; // Manual/setup and test environments may lack painted paths.
+ const view=crateSelected.size?atlasSelectedView(atlasRegionShapes,crateSelected):null;
+ atlasUserNavigated=Boolean(view);
+ if(!crateSelected.size){atlasFocus=null;renderCrateMap()}else renderAtlasNavigation();
+ animateAtlasView(view||null);
 }
 function focusCrateContinent(id){
  atlasFocus=id===atlasFocus?null:id;
@@ -290,7 +314,7 @@ function renderCrateStamps(){
 }
 function updateCrateMap(){
  store(crateStorageKey,JSON.stringify([...crateSelected]));
- copiedPrompt=null;selectionChanged();
+ copiedPrompt=null;selectionChanged();frameSelectedAtlas();
 }
 const params=new URLSearchParams(location.search);
 includeCover=params.get("cover")==="1";
@@ -469,7 +493,7 @@ for(const axis of Object.keys(shufflePins)){
 }
 function shuffleCrate(){
  if(Object.values(shufflePins).every(Boolean))return;
- const snapshot={mood,tempo,regions:[...crateSelected],focus:atlasFocus,navigated:atlasUserNavigated,moodAngle,crateSparkPhrase};
+ const snapshot={mood,tempo,regions:[...crateSelected],focus:atlasFocus,navigated:atlasUserNavigated,view:atlasPendingView||atlasView(),moodAngle,crateSparkPhrase};
  if(!shufflePins.mood)mood=nextDiscoveryCue([...moods].filter(m=>m!=="go"&&m!==mood),"ghg-shuffle-mood-v1-"+mood);
  if(!shufflePins.pace)tempo=nextDiscoveryCue(tempoSteps.filter(t=>t!==tempo),"ghg-shuffle-pace-v1-"+(tempo||"any"));
  if(!shufflePins.regions){
@@ -480,7 +504,7 @@ function shuffleCrate(){
   atlasFocus=null;atlasUserNavigated=false;
  }
  lastCrateStamp=null;copiedPrompt=null;previousShuffle=snapshot;
- store(crateStorageKey,JSON.stringify([...crateSelected]));selectionChanged(true);if(!shufflePins.regions)animateAtlasView(null);
+ store(crateStorageKey,JSON.stringify([...crateSelected]));selectionChanged(true);if(!shufflePins.regions)frameSelectedAtlas();
  const changed=Object.keys(shufflePins).filter(k=>!shufflePins[k]),kept=Object.keys(shufflePins).filter(k=>shufflePins[k]);
  const result=doc.getElementById("shuffleResult");if(result)result.textContent="Shuffled "+changed.join(", ")+"."+(kept.length?" Kept "+kept.join(" and ")+".":"");
  const control=doc.getElementById("shuffleCrate");if(control){control.setAttribute("data-dealt","true");if(typeof control.animate==="function"&&!(typeof window!=="undefined"&&window.matchMedia("(prefers-reduced-motion: reduce)").matches))control.animate([{transform:"translateY(0)"},{transform:"translateY(2px)"},{transform:"translateY(0)"}],{duration:240,easing:"cubic-bezier(.16,1,.3,1)"})}
@@ -491,7 +515,7 @@ const undoShuffle=doc.getElementById("undoShuffle");if(undoShuffle)undoShuffle.a
  if(!previousShuffle)return;
  const old=previousShuffle;previousShuffle=null;mood=old.mood;tempo=old.tempo;atlasFocus=old.focus;atlasUserNavigated=old.navigated;
  crateSelected.clear();old.regions.forEach(id=>crateSelected.add(id));moodAngle=old.moodAngle;crateSparkPhrase=old.crateSparkPhrase;copiedPrompt=null;
- store(crateStorageKey,JSON.stringify([...crateSelected]));render();animateAtlasView(atlasFocus);
+ store(crateStorageKey,JSON.stringify([...crateSelected]));render();animateAtlasView(old.view||atlasFocus);
  const result=doc.getElementById("shuffleResult");if(result)result.textContent="Previous brief restored.";
  shuffle?.focus();status("Shuffle undone. Press GO to copy the restored brief.");
 });
@@ -566,6 +590,15 @@ function atlasCollectLand(map){
  const point=map.createSVGPoint();
  const paths=Array.from(map.querySelectorAll("[data-atlas-country]"))
   .filter(p=>typeof p.isPointInFill==="function").map(p=>({path:p,box:p.getBBox()}));
+ for(const {path} of paths){
+  for(const part of (path.getAttribute("d")||"").match(/M[^M]+/g)||[]){
+   const points=Array.from(part.matchAll(/[ML](-?[\d.]+)\s+(-?[\d.]+)/g),m=>[Number(m[1]),Number(m[2])]);
+   if(points.length<3)continue;
+   let area=0;for(let i=0;i<points.length;i++){const a=points[i],b=points[(i+1)%points.length];area+=a[0]*b[1]-b[0]*a[1]}
+   const xs=points.map(p=>p[0]),ys=points.map(p=>p[1]),x=Math.min(...xs),y=Math.min(...ys);
+   atlasRegionShapes.push({id:path.dataset.atlasRegion,x,y,w:Math.max(...xs)-x,h:Math.max(...ys)-y,area:Math.abs(area)/2});
+  }
+ }
  // Sample the actual projected land once. Bounding boxes alone include oceans
  // between islands and cannot protect against an empty-ocean camera.
  for(let y=26;y<350;y+=12)for(let x=26;x<696;x+=12){
@@ -725,4 +758,5 @@ const share=doc.getElementById("shareButton");if(share)share.addEventListener("c
  try{await navigator.share({text:goPrompt(ai,service,mood)})}catch(e){if(e.name!=="AbortError")status("Share failed. Copy the prompt instead.")}
 });
 render();
+if(crateSelected.size)frameSelectedAtlas();
 })();
