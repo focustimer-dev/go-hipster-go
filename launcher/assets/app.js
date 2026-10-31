@@ -340,7 +340,7 @@ function updateHandoff(){
  if(button)button.setAttribute("data-copy-state",state);
  const receipt=doc.getElementById("promptReceipt"),mark=doc.getElementById("receiptCopy");
  if(receipt)receipt.setAttribute("data-copy-state",state);
- if(mark)mark.textContent=state==="copied"?"COPIED TO CLIPBOARD":state==="copying"?"COPYING…":"REQUEST DRAFT";
+ if(mark){mark.hidden=state==="idle";mark.textContent=state==="copied"?"COPIED TO CLIPBOARD":state==="copying"?"COPYING…":"";}
  for(const id of ["openAi","browserAi"]){const a=doc.getElementById(id);if(a)a.setAttribute("aria-disabled",String(!ready))}
  const a=doc.getElementById("openAi");if(a)a.textContent=ready?"NEXT: OPEN "+aiNames[ai].toUpperCase():"COPY WITH GO FIRST";
 }
@@ -422,6 +422,14 @@ function renderLaunch(){
  e.open.href=ai==="gemini"?geminiIntent:destinations[ai];e.open.textContent="↗ OPEN "+aiNames[ai].toUpperCase();
  const summary=doc.getElementById("receiptSummary");if(summary)summary.textContent=aiNames[ai]+" · "+serviceNames[service]+" · "+moodLabel(mood)+(tempo?" · "+tempoNames[tempo]:"")+" · 12 tracks"+(includeCover?" · cover art":"")+(goHard?" · deep crate":"");
  const regions=doc.getElementById("receiptRegions");if(regions)regions.textContent="CRATES / "+(crateSelected.size?crateRegions.filter(r=>crateSelected.has(r.id)).map(r=>r.label).join(" · "):"Worldwide");
+ const ticketShort=doc.getElementById("selectionTicketShort");
+ if(ticketShort)ticketShort.textContent=moodLabel(mood)+" · "+(tempo?tempoNames[tempo]:"Any pace")+" · "+(crateSelected.size?crateSelected.size+" region"+(crateSelected.size===1?"":"s"):"Worldwide");
+ const ticketPair=doc.getElementById("selectionTicketPair");
+ if(ticketPair)ticketPair.textContent=aiNames[ai]+" · "+serviceNames[service];
+ const ticketRegions=doc.getElementById("selectionTicketRegions");
+ if(ticketRegions&&regions)ticketRegions.textContent=regions.textContent;
+ const ticketOptions=doc.getElementById("selectionTicketOptions");
+ if(ticketOptions)ticketOptions.textContent="ART: "+(includeCover?"ON":"OFF")+" · TRY HARD: "+(goHard?"ON":"OFF");
  const cover=doc.getElementById("includeCover");if(cover)cover.setAttribute("aria-pressed",String(includeCover));
  const hard=doc.getElementById("goHard");if(hard)hard.setAttribute("aria-pressed",String(goHard));
  const hint=doc.getElementById("goHint");if(hint)hint.textContent="Copy your prompt";
@@ -777,4 +785,28 @@ const share=doc.getElementById("shareButton");if(share)share.addEventListener("c
 });
 render();
 if(crateSelected.size)frameSelectedAtlas();
+// The ticket appears after the mood selector leaves view, and yields as the
+// receipt summary below GO enters view. The existing GO remains unobstructed.
+const ticket=doc.getElementById("selectionTicket");
+if(ticket){
+ const moodChoices=doc.querySelector(".mood-grid"),receiptSummary=doc.getElementById("receiptSummary");
+ function updateSelectionTicketVisibility(){
+  if(!moodChoices||!receiptSummary)return;
+  const moodAbove=moodChoices.getBoundingClientRect().bottom<=0;
+  const receiptHere=receiptSummary.getBoundingClientRect().top<=(window.innerHeight-20);
+  const show=moodAbove&&!receiptHere;
+  ticket.hidden=!show;
+  if(!show)ticket.querySelector("details").open=false;
+ }
+ let ticketFrame=0;
+ function queueSelectionTicketVisibility(){
+  if(ticketFrame)return;
+  ticketFrame=requestAnimationFrame(()=>{ticketFrame=0;updateSelectionTicketVisibility()});
+ }
+ window.addEventListener("scroll",queueSelectionTicketVisibility,{passive:true});
+ window.addEventListener("resize",queueSelectionTicketVisibility,{passive:true});
+ const edit=doc.getElementById("selectionTicketEdit");
+ if(edit)edit.addEventListener("click",()=>doc.querySelector(".service-counter")?.scrollIntoView({behavior:"smooth",block:"start"}));
+ updateSelectionTicketVisibility();
+}
 })();
