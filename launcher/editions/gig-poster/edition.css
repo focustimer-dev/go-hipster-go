@@ -774,6 +774,11 @@ body.gig-poster[data-page=launch] .shuffle-feedback.is-dealing .shuffle-machine-
 }
 body.gig-poster[data-page=launch] .shuffle-feedback.is-dealing .shuffle-machine-reel:nth-child(2){animation-delay:40ms}
 body.gig-poster[data-page=launch] .shuffle-feedback.is-dealing .shuffle-machine-reel:nth-child(3){animation-delay:80ms}
+/* A pinned card stays physically latched while the other two are dealt. */
+body.gig-poster[data-page=launch] .shuffle-feedback.is-dealing .shuffle-machine-reel[data-locked=true]{
+ animation:shuffle-index-locked 610ms linear both;transform:none
+}
+@keyframes shuffle-index-locked{0%,83%{opacity:1}100%{opacity:0}}
 @keyframes shuffle-index-card{
  0%{opacity:0;transform:translateY(-105%) rotateX(-65deg)}
  25%{opacity:1}
