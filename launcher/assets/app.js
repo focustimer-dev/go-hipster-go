@@ -8,6 +8,7 @@ const serviceNames={spotify:"Spotify",youtube:"YouTube Music",apple:"Apple Music
 const destinations={chatgpt:"https://chatgpt.com/",gemini:"https://gemini.google.com/app",claude:"https://claude.ai/"};
 const geminiIntent="intent://gemini.google.com/app#Intent;scheme=https;package=com.google.android.apps.bard;S.browser_fallback_url=https%3A%2F%2Fgemini.google.com%2Fapp;end";
 let copiedPrompt=null;
+let copiedSetupPrompt=null;
 let previousShuffle=null;
 let printImpression=0;
 let includeCover=false;
@@ -364,6 +365,10 @@ function updateHandoff(){
  if(mark){mark.hidden=state==="idle";mark.textContent=state==="copied"?"COPIED TO CLIPBOARD":state==="copying"?"COPYING…":"";}
  for(const id of ["openAi","browserAi"]){const a=doc.getElementById(id);if(a)a.setAttribute("aria-disabled",String(!ready))}
  const a=doc.getElementById("openAi");if(a)a.textContent=ready?"NEXT: OPEN "+aiNames[ai].toUpperCase():"COPY WITH GO FIRST";
+ const guide=doc.getElementById("handoffGuidance"),heading=doc.getElementById("handoffTitle"),instructions=doc.getElementById("handoffInstruction");
+ if(guide)guide.hidden=!ready;
+ if(heading)heading.textContent="COPIED. NOW OPEN "+aiNames[ai].toUpperCase()+".";
+ if(instructions)instructions.textContent=ai==="chatgpt"?"Paste and send. Select Go, Hipster, Go! and "+serviceNames[service]+" in your chat if needed. The playlist isn't saved yet.":ai==="gemini"?"Paste and send. Select the saved Go, Hipster, Go! skill and "+serviceNames[service]+" if needed. Check whether the playlist was created.":"Paste and send. Enable Go, Hipster, Go! and "+serviceNames[service]+" if needed. Check the playlist result in your AI.";
 }
 function selectionChanged(preserveShuffle=false){
  if(!preserveShuffle){previousShuffle=null;const result=doc.getElementById("shuffleResult");if(result)result.textContent="";}
@@ -380,8 +385,10 @@ function renderSelections(){
  const info=routeInfo(ai,service),r=doc.getElementById("routeStatus");
  if(r){const span=r.querySelector("span");if(span)span.textContent=info.message;r.classList.toggle("warn",info.tone==="warn")}
  const setupText=doc.getElementById("setupPromptText");if(setupText)setupText.textContent=setupPrompt(ai,service);
- const setupCopy=doc.getElementById("stripSetupPrompt");if(setupCopy)setupCopy.textContent="COPY SETUP · "+aiNames[ai]+" + "+serviceNames[service];
- const setupOpen=doc.getElementById("openSetupAi");if(setupOpen){setupOpen.href=destinations[ai];setupOpen.textContent="OPEN "+aiNames[ai].toUpperCase()}
+ const setupReady=copiedSetupPrompt===setupPrompt(ai,service);
+ const pairDescription=doc.getElementById("onboardingPair");if(pairDescription)pairDescription.textContent=aiNames[ai]+" + "+serviceNames[service];
+ const setupCopy=doc.getElementById("stripSetupPrompt");if(setupCopy)setupCopy.textContent=setupReady?"COPY SETUP CHECK AGAIN":"COPY SETUP CHECK";
+ const setupOpen=doc.getElementById("openSetupAi");if(setupOpen){setupOpen.href=destinations[ai];setupOpen.textContent=setupReady?"OPEN "+aiNames[ai].toUpperCase():"COPY THE CHECK FIRST";setupOpen.setAttribute("aria-disabled",String(!setupReady))}
  store("hmg-ai",ai);store("hmg-service",service);
 }
 function setupLinks(parent,items){
@@ -467,10 +474,10 @@ function renderLaunch(){
 }
 function render(){if(body.dataset.page==="launch")renderLaunch();else renderSetup()}
 doc.querySelectorAll("[data-ai]").forEach(b=>b.addEventListener("click",()=>{
- ai=b.dataset.ai;copiedPrompt=null;selectionChanged();
+ ai=b.dataset.ai;copiedPrompt=null;copiedSetupPrompt=null;selectionChanged();
 }));
 doc.querySelectorAll("[data-service]").forEach(b=>b.addEventListener("click",()=>{
- service=b.dataset.service;copiedPrompt=null;selectionChanged();
+ service=b.dataset.service;copiedPrompt=null;copiedSetupPrompt=null;selectionChanged();
 }));
 doc.querySelectorAll("[data-setup]").forEach(b=>b.addEventListener("click",async()=>{
  copiedPrompt=null;if(body.dataset.page==="setup")renderSetup();
@@ -479,7 +486,10 @@ doc.querySelectorAll("[data-setup]").forEach(b=>b.addEventListener("click",async
 }));
 async function copyFirstSetup(){
  copiedPrompt=null;if(body.dataset.page==="launch")updateHandoff();
- const ok=await copyText(setupPrompt(ai,service));
+ const requestedSetup=setupPrompt(ai,service);
+ const ok=await copyText(requestedSetup);
+ copiedSetupPrompt=ok&&requestedSetup===setupPrompt(ai,service)?requestedSetup:null;
+ renderSelections();
  const details=doc.getElementById("setupPromptDetails");if(!ok&&details)details.open=true;
  const msg=ok?"Setup check copied for "+aiNames[ai]+" + "+serviceNames[service]+". Open that AI, paste and send.":"Clipboard unavailable. Copy the setup prompt shown below, then open your AI.";
  const tip=doc.getElementById("setupTipStatus"),setupTip=doc.getElementById("setupTryStatus");
@@ -506,10 +516,19 @@ if(body.dataset.page!=="launch"){render();return}
 const welcome=doc.getElementById("welcomeSetup");
 if(welcome){
  welcome.hidden=Boolean(stored("hmg-setup-first-tip-dismissed-v3"));
- const close=doc.getElementById("dismissWelcome");
- if(close)close.addEventListener("click",()=>{
+ const journey=doc.getElementById("setupJourney"),begin=doc.getElementById("beginSetup");
+ if(begin&&journey)begin.addEventListener("click",()=>{
+  const show=journey.hidden;journey.hidden=!show;begin.setAttribute("aria-expanded",String(show));begin.textContent=show?"HIDE SETUP":"SET ME UP";
+  if(show)doc.getElementById("stripSetupPrompt")?.focus();
+ });
+ function leaveSetupTicket(){
   welcome.hidden=true;store("hmg-setup-first-tip-dismissed-v3","yes");
-  const next=doc.getElementById("aiLabel");if(next)next.focus();
+  doc.querySelector("[data-mood]")?.focus();
+ }
+ for(const id of ["dismissWelcome","finishSetup"]){const control=doc.getElementById(id);if(control)control.addEventListener("click",leaveSetupTicket);}
+ const open=doc.getElementById("openSetupAi");
+ if(open)open.addEventListener("click",event=>{
+  if(copiedSetupPrompt!==setupPrompt(ai,service)){event.preventDefault();const tip=doc.getElementById("setupTipStatus");if(tip)tip.textContent="Copy the current setup check before opening your AI.";doc.getElementById("stripSetupPrompt")?.focus();}
  });
 }
 function renderShufflePins(){
@@ -578,7 +597,7 @@ async function copyGo(){
  copiedPrompt=ok?prompt:null;updateHandoff();
  if(prompt!==goPrompt(ai,service,mood)){status("Selection changed while copying. Press GO again for the current prompt.");return}
  if(ok){store("ghg-jukebox-used-v1","yes");doc.getElementById("promptReceipt")?.setAttribute("data-impression",String(++printImpression%2));}
- if(ok)status(ai==="gemini"&&service==="youtube"?"GO copied. Open Gemini and select Go, Hipster, Go!. It should curate the crate and attempt one YouTube Music playlist; check the actual result.":"Copied. Open "+aiNames[ai]+", paste and send. Select your skill and music app if needed. The clerk has finished the paperwork.");
+ if(ok)status("Copied to clipboard. Playlist creation and saving happen in your AI, not in the Jukebox.");
  else{const details=doc.getElementById("promptDetails");if(details)details.open=true;status("Clipboard blocked. Copy the full prompt in the receipt below, then use its manual Open link.")}
 }
 doc.querySelectorAll("[data-mood]").forEach(b=>b.addEventListener("click",()=>{
