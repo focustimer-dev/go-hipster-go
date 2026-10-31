@@ -8,7 +8,8 @@ s=(ROOT/'launcher/index.html').read_text()
 s=s.replace('<body data-page="launch">','<body data-page="launch" class="gig-poster">')
 edition_css=ROOT/'launcher/editions/gig-poster/edition.css'
 version=hashlib.sha256(edition_css.read_bytes()).hexdigest()[:12] if edition_css.exists() else 'initial'
-s=s.replace('</head>',f'<link rel="preload" href="/editions/gig-poster/assets/weird-curly.webp" as="image">\n<link rel="preload" href="/editions/gig-poster/assets/clerks-expressions.webp" as="image">\n<link rel="preload" href="/editions/gig-poster/assets/anton.woff" as="font" type="font/woff" crossorigin>\n<link rel="stylesheet" href="/editions/gig-poster/edition.css?v={version}">\n</head>')
+mood_version=hashlib.sha256((edition_css.parent/'mood-portraits.css').read_bytes()).hexdigest()[:12]
+s=s.replace('</head>',f'<link rel="preload" href="/editions/gig-poster/assets/moods-neutral-approved-v1.webp" as="image">\n<link rel="preload" href="/editions/gig-poster/assets/moods-selected-approved-v1.webp" as="image">\n<link rel="preload" href="/editions/gig-poster/assets/anton.woff" as="font" type="font/woff" crossorigin>\n<link rel="stylesheet" href="/editions/gig-poster/edition.css?v={version}">\n<link rel="stylesheet" href="/editions/gig-poster/mood-portraits.css?v={mood_version}">\n</head>')
 s=s.replace('<title>Go, Hipster, Go! — Press GO, Question Everything</title>','<title>Go, Hipster, Go! — Gig Poster edition</title>')
 s=s.replace('href="/" aria-label="Go, Hipster, Go! home"','href="/editions/gig-poster/" aria-label="Go, Hipster, Go! home"')
 s=s.replace('<a href="/" aria-current="page">','<a href="/editions/gig-poster/" aria-current="page">')
@@ -50,7 +51,7 @@ s=s.replace('href="/setup/"','href="/editions/gig-poster/setup/"')
 art=ROOT/'launcher/editions/gig-poster/assets'
 s=s.replace('            <g class="crate-map-countries">', (art/'chart-map-furniture.svg').read_text()+'\n            <g class="crate-map-countries">',1)
 s=s.replace('          </svg>\n          <span class="crate-map-seal"', '          </svg>'+ (art/'chart-viewport-frame.svg').read_text()+'\n          <span class="crate-map-seal"',1)
-s=s.replace('<body data-page="launch" class="gig-poster">','<body data-page="launch" class="gig-poster">'+(art/'poster-engraving-filter.svg').read_text(),1)
+s=s.replace('<body data-page="launch" class="gig-poster">','<body data-page="launch" class="gig-poster">'+(art/'poster-engraving-filter.svg').read_text()+(art/'mood-portrait-filters.svg').read_text(),1)
 # Move the one interactive cast of mood portraits above the atlas, not a duplicate.
 mood_start=s.index('    <h2 class="counter-label">WHAT’S THE VIBE?</h2>')
 mood_end=s.index('    <section class="crate-shuffle"', mood_start)

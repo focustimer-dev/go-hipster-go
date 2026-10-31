@@ -25,3 +25,14 @@
 - Render sprite previews **from the actual asset bytes** before publishing. A reference board alone does not satisfy a build.
 - Add filenames + checksums of final production PNG/WebP sprites here after they are extracted/assembled, and gate releases against accidental replacement.
 - Future changes require explicit user approval per character.
+
+## Approved production sprites (selection demo approved 2026-10-30)
+
+Both sheets are 1536 × 1024 WebP, with a 3 × 2 layout in the order above. The exact bytes from the approved interactive demo are preserved. Neutral and selected sheets use the same tile rectangles; CSS does not scale or morph the portraits. Comparison-sheet margin artifacts are clipped identically in both states.
+
+| File | SHA-256 |
+| --- | --- |
+| `assets/moods-neutral-approved-v1.webp` | `fc61de6740b8ad4f909c561bb3b34b2d6e5d9347b84cc9fcb2387f425dd5c794` |
+| `assets/moods-selected-approved-v1.webp` | `f45fa9c3d5915723f393e71a7ee8cb26d11c3931ec533fd8b98f6ace74625a72` |
+
+`mood-portraits.css` follows the application's existing `aria-pressed` state, including shuffle and Undo. Inline filters in `assets/mood-portrait-filters.svg` reproduce the approved golden-paper / midnight-teal neutral treatment and vermilion / midnight-teal selected treatment with restrained, source-luminance ivory highlights. The inset border and underlined label supplement color. Reduced motion disables the 160ms expression fade.

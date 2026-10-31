@@ -10,12 +10,17 @@
   <script>try{if(new URLSearchParams(location.search).get("intro")!=="1"&&localStorage.getItem("ghg-jukebox-used-v1"))document.documentElement.dataset.returning="true"}catch(e){}</script>
   <link rel="stylesheet" href="/assets/hipster.css">
   <title>Go, Hipster, Go! — Gig Poster edition</title>
-<link rel="preload" href="/editions/gig-poster/assets/weird-curly.webp" as="image">
-<link rel="preload" href="/editions/gig-poster/assets/clerks-expressions.webp" as="image">
+<link rel="preload" href="/editions/gig-poster/assets/moods-neutral-approved-v1.webp" as="image">
+<link rel="preload" href="/editions/gig-poster/assets/moods-selected-approved-v1.webp" as="image">
 <link rel="preload" href="/editions/gig-poster/assets/anton.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="/editions/gig-poster/edition.css?v=45e9dcbf3859">
+<link rel="stylesheet" href="/editions/gig-poster/mood-portraits.css?v=1ba61b111013">
 </head>
 <body data-page="launch" class="gig-poster"><svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;overflow:hidden"><defs><filter id="poster-engraving-ink" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -.2126 -.7152 -.0722 0 1"/><feComposite in2="SourceAlpha" operator="in" result="ink-alpha"/><feComponentTransfer in="ink-alpha" result="ink-alpha"><feFuncA type="linear" slope="1.3"/></feComponentTransfer><feFlood flood-color="#103135"/><feComposite in2="ink-alpha" operator="in"/></filter></defs></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<filter id="ghg-mood-paper" color-interpolation-filters="sRGB"><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" slope=".812" intercept=".063"/><feFuncG type="linear" slope=".498" intercept=".192"/><feFuncB type="linear" slope=".063" intercept=".208"/></feComponentTransfer></filter>
+<filter id="ghg-mood-selected" color-interpolation-filters="sRGB"><feColorMatrix type="saturate" values="0" result="gray"/><feComponentTransfer in="gray" result="base"><feFuncR type="linear" slope=".596" intercept=".063"/><feFuncG type="linear" slope=".004" intercept=".192"/><feFuncB type="linear" slope="-.071" intercept=".208"/></feComponentTransfer><feColorMatrix in="gray" type="matrix" values="0 0 0 0 .949 0 0 0 0 .898 0 0 0 0 .780 1 0 0 0 0"/><feComponentTransfer><feFuncA type="table" tableValues="0 0 0 0 0 .02 .08 .16 .24 .12 0"/></feComponentTransfer><feComposite in2="base" operator="over"/></filter>
+</defs></svg>
 
 <div class="site">
   <header class="masthead">
