@@ -1,0 +1,38 @@
+[
+  {
+    "tag_name": "gemini-skill-v3.8.1",
+    "html_url": "https://github.com/focustimer-dev/go-hipster-go/releases/tag/gemini-skill-v3.8.1",
+    "draft": false,
+    "prerelease": false,
+    "body": "Ready-to-upload Gemini, Claude and ChatGPT plugin/skill ZIPs; each requires the music-service authorization separately.",
+    "assets": [
+      {
+        "name": "go-hipster-go-gemini-app-skill.zip",
+        "id": 694452011,
+        "state": "uploaded",
+        "size": 172772,
+        "updated_at": "2026-10-31T05:20:28Z",
+        "digest": "sha256:45a0eb2f07f8deaef721e2b72204fa763066735e8ebdd8ebf225c36dc77f48cf",
+        "browser_download_url": "https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.8.1/go-hipster-go-gemini-app-skill.zip"
+      }
+    ]
+  },
+  {
+    "tag_name": "gemini-skill-v3.8.0",
+    "html_url": "https://github.com/focustimer-dev/go-hipster-go/releases/tag/gemini-skill-v3.8.0",
+    "draft": false,
+    "prerelease": false,
+    "body": "Ready-to-upload Gemini, Claude and ChatGPT plugin/skill ZIPs; each requires the music-service authorization separately.",
+    "assets": [
+      {
+        "name": "go-hipster-go-gemini-app-skill.zip",
+        "id": 694082712,
+        "state": "uploaded",
+        "size": 170588,
+        "updated_at": "2026-10-31T02:08:21Z",
+        "digest": "sha256:f61e972c55649b927e3d99e1979da008baf6e3ff4ce276b98ab9ef0380920d0e",
+        "browser_download_url": "https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.8.0/go-hipster-go-gemini-app-skill.zip"
+      }
+    ]
+  }
+]

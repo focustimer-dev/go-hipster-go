@@ -1,7 +1,7 @@
 # Hipster GO Lab
 
 A separate native Android experiment. Package `work.samelling.hipstergo.lab`,
-version `0.1.0`, Android 7+. It installs alongside the production APK and PWA.
+version `0.2.0`, Android 7+. It installs alongside the production APK and PWA.
 
 ## Isolation
 
@@ -14,16 +14,19 @@ or portrait changes are applied to the canonical launcher sources.
 The native bridge is available only to packaged pages on a synthetic local HTTPS
 origin. External navigation opens outside the WebView, external resource requests
 are blocked, frames and network connections are blocked, and file/content access
-is disabled. No INTERNET permission is requested. No AI login happens in the Lab.
-Prompts are copied locally; no prompt history is written to disk by native code.
+is disabled. Native code now requests INTERNET permission only to check public
+GitHub release metadata. The WebView still cannot load external resources or
+make network connections. No AI login happens in Lab. Native prompt storage is
+limited to requests you explicitly save on the device.
 
-## First experiment
+## Native handoffs
 
 - **GO:** copies the current request and opens the selected AI using native code.
 - **Open mode (default):** launches installed ChatGPT or Gemini, then paste/send.
   If the selected package is unavailable, opens the AI website instead.
 - **Share mode:** tries sending the prompt to the selected AI's share receiver;
-  falls back to Android's share chooser. Receiving-app support is unverified.
+  falls back to Android's share chooser. The initial native handoffs and Share
+  mode were confirmed working by the user on their Pixel.
 - **Browser mode:** copies and opens the AI website in the browser.
 - **One-tap GO:** turn off to retain the separate GO then OPEN flow.
 - **Haptics:** optional system-respecting confirmation feedback.
@@ -34,13 +37,49 @@ Open **LAB SETTINGS** to change handoff mode and toggles. Skill selection,
 connected music apps, pasting, and sending remain controlled by the receiving AI.
 This experiment does not automate sending prompts or publishing playlists.
 
+## Deliberate skill updates
+
+Open **LAB SETTINGS → Gemini skill updates**, or tap the Lab title. Native code
+reads GitHub Releases from this public repository, using the exact Gemini ZIP
+asset. Stable excludes drafts and prereleases. Lab includes published prereleases
+as well as stable releases; no experimental release is currently required or
+invented by this feature. The checker considers the latest 100 release records.
+
+Checks happen at most once per day when the app launches. Turn daily checks off
+in the update panel, or use **Check for updates** whenever wanted. An in-app title
+badge indicates an available package; no Android notification permission or
+background service is used. Failed checks preserve cached release information
+and the user's installation record. GO works offline and never waits on a check.
+
+The panel provides **View changes**, a download/instructions panel, **Gemini web**,
+and **I installed this package**. Nothing is downloaded or installed automatically.
+Confirmation is self-reported: Lab cannot read Gemini's installed skill. The first
+record is unknown until the user confirms an installation. Downloading never
+records installation. Confirmation is tracked separately for Stable and Lab.
+
+Asset identity and update timestamp/digest are included in the confirmation,
+because the current publishing workflow can replace a ZIP under the same version.
+A replacement package can therefore become available without a version bump.
+All metadata links must point to this repository's exact GitHub release/asset
+paths. No skill instructions are fetched into the prompt or executed by Lab.
+
+## Saved requests
+
+After GO, choose **LAB SETTINGS → Save current request**. Give the exact request
+a name, then find it under **Saved requests**. Open it in the selected AI, copy,
+share, or delete it. Up to ten requests can be stored; a full shelf never silently
+evicts an older one. Saving is explicit, device-local, and not cloud-backed.
+Uninstalling Lab removes the shelf. Saving a request does not save a playlist or
+make AI output deterministic. Install APK updates over the existing Lab to retain
+its preferences and saved requests.
+
 ## Build and verify
 
 JDK 17, Android SDK 36 and build tools 35.0.0, Python 3, and the checked-in wrapper
 from `android/` are required. From the repository root:
 
 ```sh
-bash android/gradlew -p android-lab assembleRelease --no-daemon
+bash android/gradlew -p android-lab testReleaseUnitTest assembleRelease --no-daemon
 python -m unittest discover -s android-lab/tests -v
 ```
 
@@ -76,12 +115,29 @@ Home-screen widgets, an Android share target for incoming inspiration, exportabl
 playlist request cards, and native quick settings. Add these individually after
 phone feedback; none are enabled in this first experiment.
 
-## Initial validation
+## Validation
 
-Release assembly and release vital lint passed. Snapshot isolation and DOM
+Release assembly, release vital lint, and native unit tests passed. Native tests
+cover numeric version ordering, stable/prerelease filters, exact Gemini assets,
+trusted URLs, same-version ZIP replacement, and published release JSON.
+Snapshot isolation and DOM
 handoff tests passed, including stale-prompt rejection. Local Chromium rendering
 was blocked by the execution sandbox denying its socket operation. The browser
 smoke test is included in the separate Lab CI workflow. Repository-wide Python
 checks retain the same seven failures and one bundle-sync error seen on unchanged
 main. Phone launching, clipboard behavior, gesture rendering and sharing still
 require the device smoke test.
+
+## Version 0.2 phone checks
+
+- Open skill updates, check Stable, and review the release page and instructions.
+- Confirm an already-installed package only if it matches the one shown; verify
+  that confirmation changes the in-app badge. Download alone must not change it.
+- Switch to Lab and back; installation records remain separate.
+- Disable daily checks and confirm manual checks still work.
+- Retry offline; cached information stays labelled with its last checked date.
+- Save a named GO request, restart Lab, then copy/share it and compare exact text.
+- Cancel a save or delete, and verify no unexpected shelf change.
+
+The update panel and saved shelf still need device smoke testing. Existing native
+handoffs and Share were verified by the user on version 0.1.

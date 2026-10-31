@@ -2,7 +2,6 @@ package work.samelling.hipstergo.lab;
 
 import android.app.*;
 import android.content.*;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.*;
@@ -12,11 +11,14 @@ import android.widget.*;
 import java.io.*;
 import java.util.*;
 
-/** Offline, separately installed sandbox. Only bundled pages can call the native bridge. */
+/** Separately installed sandbox with an offline interface and native release checks. Only bundled pages can call the native bridge. */
 public class LabActivity extends Activity {
     private static final String HOST = "lab.hipster.invalid";
     private static final String HOME = "https://" + HOST + "/";
     private WebView web;
+    private TextView title;
+    private SkillUpdates updates;
+    private SavedRequests shelf;
     private android.content.SharedPreferences prefs;
     private String lastPrompt = "";
     private String lastAi = "chatgpt";
@@ -24,6 +26,8 @@ public class LabActivity extends Activity {
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
         prefs = getSharedPreferences("lab", MODE_PRIVATE);
+        updates = new SkillUpdates(this,prefs,this::browser,this::updateBadge);
+        shelf = new SavedRequests(this,prefs,this::handoff,this::copy,text->share(text,null));
         getWindow().setStatusBarColor(Color.rgb(37,35,32));
         getWindow().setNavigationBarColor(Color.rgb(37,35,32));
         LinearLayout layout = new LinearLayout(this);
@@ -36,9 +40,10 @@ public class LabActivity extends Activity {
         });
         LinearLayout bar = new LinearLayout(this);
         bar.setGravity(Gravity.CENTER_VERTICAL);
-        TextView title = new TextView(this);
+        title = new TextView(this);
         title.setText("HIPSTER GO  /  LAB");
         title.setTextColor(Color.rgb(242,229,199));
+        title.setOnClickListener(v->updates.show());
         title.setTextSize(14);
         title.setGravity(Gravity.CENTER_VERTICAL);
         title.setPadding(dp(16),0,0,0);
@@ -94,6 +99,7 @@ public class LabActivity extends Activity {
         }
         if (state == null || web.restoreState(state) == null) web.loadUrl(start);
         if (Build.VERSION.SDK_INT >= 33) getOnBackInvokedDispatcher().registerOnBackInvokedCallback(0, this::back);
+        updates.onLaunch();
     }
 
     private boolean trusted(Uri u) { return "https".equals(u.getScheme()) && HOST.equals(u.getHost()) && u.getPort() == -1; }
@@ -124,7 +130,6 @@ public class LabActivity extends Activity {
     }
     private void copy(String text) {
         ((ClipboardManager)getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("Go, Hipster, Go! prompt",text));
-        lastPrompt = text;
     }
     private void pulse() {
         if (prefs.getBoolean("haptics",true)) web.performHapticFeedback(Build.VERSION.SDK_INT >= 30 ? HapticFeedbackConstants.CONFIRM : HapticFeedbackConstants.KEYBOARD_TAP);
@@ -150,7 +155,7 @@ public class LabActivity extends Activity {
     private void handoff(String ai, String text) {
         String destination = url(ai);
         if (destination == null || !validText(text)) return;
-        copy(text); lastAi=ai; pulse();
+        copy(text); lastPrompt=text; lastAi=ai; pulse();
         String pkg = "chatgpt".equals(ai) ? "com.openai.chatgpt" : "gemini".equals(ai) ? "com.google.android.apps.bard" : null;
         String mode = prefs.getString("mode","open");
         if ("browser".equals(mode)) { browser(destination); return; }
@@ -165,27 +170,37 @@ public class LabActivity extends Activity {
         toast("AI app unavailable. Opening its website; your prompt is copied.");
         browser(destination);
     }
+    private void updateBadge() {
+        if(title==null)return;
+        title.setText(updates.available()?"LAB · SKILL UPDATE ↗":"HIPSTER GO  /  LAB");
+        title.setContentDescription(updates.available()?"Skill package available. Tap to review.":"Hipster GO Lab. Tap for skill updates.");
+    }
     private void settings() {
-        String[] items={"Handoff: "+prefs.getString("mode","open"),
+        String[] items={"Gemini skill updates"+(updates.available()?" · available":""),
+            "Save current request", "Saved requests",
+            "Handoff: "+prefs.getString("mode","open"),
             "One-tap GO: "+(prefs.getBoolean("oneTap",true)?"on":"off"),
             "Haptics: "+(prefs.getBoolean("haptics",true)?"on":"off"),
-            "Share last copied prompt", "About this experiment"};
-        new AlertDialog.Builder(this).setTitle("Hipster GO Lab · 0.1.0")
+            "Share last request", "About this experiment"};
+        new AlertDialog.Builder(this).setTitle("Hipster GO Lab · 0.2.0")
             .setItems(items,(d,n)->{
-                if(n==0) {
+                if(n==0)updates.show();
+                else if(n==1)shelf.save(lastAi,lastPrompt);
+                else if(n==2)shelf.show();
+                else if(n==3) {
                     String[] modes={"open","share","browser"};
                     int current=Arrays.asList(modes).indexOf(prefs.getString("mode","open"));
                     new AlertDialog.Builder(this).setTitle("AI handoff")
-                        .setSingleChoiceItems(new String[]{"Open installed app + copy", "Share prompt to AI (experimental)","Browser + copy"},current,(dialog,which)->{
+                        .setSingleChoiceItems(new String[]{"Open installed app + copy", "Share prompt to AI", "Browser + copy"},current,(dialog,which)->{
                             prefs.edit().putString("mode",modes[which]).apply();dialog.dismiss();
                         }).setNegativeButton("Cancel",null).show();
-                } else if(n==1 || n==2) {
-                    String key=n==1?"oneTap":"haptics";
+                } else if(n==4 || n==5) {
+                    String key=n==4?"oneTap":"haptics";
                     prefs.edit().putBoolean(key,!prefs.getBoolean(key,true)).apply();settings();
-                } else if(n==3) {
+                } else if(n==6) {
                     if(validText(lastPrompt)) share(lastPrompt,null); else toast("Press GO first to prepare a prompt.");
                 } else new AlertDialog.Builder(this).setTitle("A separate crate")
-                    .setMessage("Bundled offline interface. Separate app and preferences. No production writes or live website updates.\n\nOpen mode copies your prompt and launches the AI. Share mode depends on what the receiving AI supports; it may still need paste/send and skill selection.\n\nLong-press the launcher icon for Funky and Weird shortcuts.")
+                    .setMessage("Bundled offline interface. Separate app and preferences. No production writes or live website updates. Native release checks read public GitHub metadata only; downloads and installation stay your choice.\n\nSaved requests stay on this device and are saved only when you choose.\n\nLong-press the launcher icon for Funky and Weird shortcuts.")
                     .setPositiveButton("Got it",null).show();
             }).setNegativeButton("Close",null).show();
     }
@@ -196,7 +211,7 @@ public class LabActivity extends Activity {
         }
         @JavascriptInterface public void go(String ai,String text) {
             if(url(ai)==null || !validText(text)) return;
-            runOnUiThread(()->{if(prefs.getBoolean("oneTap",true)) handoff(ai,text); else {copy(text);pulse();toast("Prompt copied. Tap OPEN to launch your AI.");}});
+            runOnUiThread(()->{lastAi=ai;lastPrompt=text;if(prefs.getBoolean("oneTap",true)) handoff(ai,text); else {copy(text);pulse();toast("Prompt copied. Tap OPEN to launch your AI.");}});
         }
         @JavascriptInterface public void open(String ai,String text) {
             if(url(ai)!=null && validText(text))runOnUiThread(()->handoff(ai,text));
@@ -208,5 +223,5 @@ public class LabActivity extends Activity {
     private void back() { if(web.canGoBack())web.goBack();else finish(); }
     @Override public void onBackPressed() { back(); }
     @Override public void onSaveInstanceState(Bundle state) { web.saveState(state);super.onSaveInstanceState(state); }
-    @Override public void onDestroy() { web.removeJavascriptInterface("HipsterLab");web.destroy();super.onDestroy(); }
+    @Override public void onDestroy() { updates.close();web.removeJavascriptInterface("HipsterLab");web.destroy();super.onDestroy(); }
 }
