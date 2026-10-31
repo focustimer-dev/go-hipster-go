@@ -800,9 +800,51 @@ function installAtlasSecrets(){
  const engraving=map.querySelector(".chart-details");
  const art=[...map.querySelectorAll(".chart-details > svg")];
  const routePath=map.querySelector(".chart-nautical-routes path");
- const routeParts=routePath?.getAttribute("d")?.match(/M[^M]+/g)||[];
  const endpoints=[...map.querySelectorAll(".chart-nautical-routes circle")];
- if(!engraving||art.length<3||routeParts.length<3||endpoints.length<6)return;
+ if(!engraving||art.length<3||!routePath||endpoints.length<6)return;
+ // Verified origin/destination port coordinates, transformed with the *same*
+ // tabulated Robinson projection as scripts/robinson_atlas.py. Intermediate
+ // points are offshore waypoints, not assertions about historical shipping.
+ // They steer the Atlantic route around the existing illustrated vessel.
+ const routePlans=[
+  {ports:"Georgetown, Guyana / Dakar, Senegal",
+   waypoints:[[-58.155,6.8],[-47,21],[-35,23],[-17.45,14.69]]},
+  {ports:"Rio de Janeiro, Brazil / Luanda, Angola",
+   waypoints:[[-43.2,-22.9],[-28,-20],[-7,-15],[13.23,-8.82]]},
+  {ports:"Mombasa, Kenya / Mumbai, India",
+   waypoints:[[39.67,-4.04],[53,1],[63,11],[72.88,19.08]]}
+ ];
+ const robinX=[1,.9986,.9954,.99,.9822,.973,.96,.9427,.9216,.8962,.8679,.835,.7986,.7597,.7186,.6732,.6213,.5722,.5322];
+ const robinY=[0,.062,.124,.186,.248,.31,.372,.434,.4958,.5571,.6176,.6769,.7346,.7903,.8435,.8936,.9394,.9761,1];
+ const interpolate=(table,lat)=>{
+  const a=Math.min(90,Math.abs(lat)),i=Math.min(Math.floor(a/5),17),t=(a-i*5)/5;
+  return table[i]+(table[i+1]-table[i])*t;
+ };
+ const projectPort=([lon,lat])=>[
+  360+335*(lon/180)*interpolate(robinX,lat),
+  188-Math.sign(lat)*168*interpolate(robinY,lat)
+ ];
+ // Smooth Catmull-Rom-to-cubic line through projected marine waypoints.
+ const chartPath=points=>{
+  const p=points.map(projectPort),f=n=>Number(n.toFixed(1));
+  let d="M"+f(p[0][0])+" "+f(p[0][1]);
+  for(let i=0;i<p.length-1;i++){
+   const prev=p[Math.max(0,i-1)],a=p[i],b=p[i+1],next=p[Math.min(p.length-1,i+2)];
+   const c1=[a[0]+(b[0]-prev[0])/6,a[1]+(b[1]-prev[1])/6];
+   const c2=[b[0]-(next[0]-a[0])/6,b[1]-(next[1]-a[1])/6];
+   d+="C"+f(c1[0])+" "+f(c1[1])+" "+f(c2[0])+" "+f(c2[1])+" "+f(b[0])+" "+f(b[1]);
+  }
+  return d;
+ };
+ const routeParts=routePlans.map(route=>chartPath(route.waypoints));
+ routePath.setAttribute("d",routeParts.join(" "));
+ // Keep the printed dots attached to the same, now correct, route endpoints.
+ routePlans.forEach((route,i)=>{
+  const start=projectPort(route.waypoints[0]),end=projectPort(route.waypoints[route.waypoints.length-1]);
+  for(const [node,point] of [[endpoints[2*i],start],[endpoints[2*i+1],end]]){
+   node.setAttribute("cx",point[0].toFixed(1));node.setAttribute("cy",point[1].toFixed(1));
+  }
+ });
  const parent=engraving.parentNode,ns="http://www.w3.org/2000/svg";
  const svg=(tag,attrs={})=>{
   const node=doc.createElementNS(ns,tag);
@@ -811,13 +853,13 @@ function installAtlasSecrets(){
  };
  const secrets=[
   {id:"atlantic-crossing",kind:"route",title:"THE ATLANTIC CROSSING",
-   eyebrow:"CONTRABAND ROUTE",body:"Two coasts, no tidy genre label. Ask the crate to compare interlocking guitars and voices across Northern South America and West Africa—then verify each recording's origin.",
+   eyebrow:"CONTRABAND ROUTE",body:"Georgetown to Dakar, via the Atlantic. Compare interlocking guitars and voices from Northern South America and West Africa; verify every recording's actual origin. This is an illustrative listening passage, not a documented historical trade itinerary.",
    regions:["northern-south-america","west-africa"],path:routeParts[0]},
   {id:"southern-passage",kind:"route",title:"A SOUTHERN DETOUR",
-   eyebrow:"CONTRABAND ROUTE",body:"A deliberately unlikely pairing: Southern South America and Central & Southern Africa. Follow the rhythmic questions, not an invented historical connection.",
+   eyebrow:"CONTRABAND ROUTE",body:"Rio de Janeiro to Luanda, across the South Atlantic. Contrast the rhythmic questions from Southern South America and Central & Southern Africa; research each recording rather than assuming a specific historical exchange.",
    regions:["southern-south-america","central-southern-africa"],path:routeParts[1]},
   {id:"indian-ocean",kind:"route",title:"THE LONG WAY ROUND",
-   eyebrow:"CONTRABAND ROUTE",body:"Put East Africa beside South Asia and listen for different answers to the same percussion question. The actual tracks still have to earn their provenance.",
+   eyebrow:"CONTRABAND ROUTE",body:"Mombasa to Mumbai, across the Indian Ocean. Put East Africa beside South Asia and hear different responses to the same percussion question. The ports locate the listening passage, not a verified historical music route.",
    regions:["east-africa","south-asia"],path:routeParts[2]},
   {id:"unlicensed-vessel",kind:"ship",title:"THE UNLICENSED VESSEL",
    eyebrow:"PORT AUTHORITY NOTICE",body:"The manifest lists twelve records, three unreliable dates, and a suspiciously confident claim of first pressing. The clerk has requested evidence.",art:0},
@@ -847,7 +889,7 @@ function installAtlasSecrets(){
    }else{
     const a=endpoints[secret.end];x=Number(a.getAttribute("cx"));y=Number(a.getAttribute("cy"));
    }
-   target=svg("circle",{cx:x,cy:y,r:21,class:"atlas-secret-target"});
+   target=svg("circle",{cx:x,cy:y,r:13,class:"atlas-secret-target"});
    const hint=svg("circle",{cx:x,cy:y,r:13,class:"atlas-secret-ring"});
    g.appendChild(hint);
   }
@@ -855,7 +897,7 @@ function installAtlasSecrets(){
   const activate=event=>{
    if(map.getAttribute("data-details")!=="true"||atlasTouchGesture||Date.now()<atlasSuppressTapUntil)return;
    event.stopPropagation();event.preventDefault();
-   openAtlasSecret(secret,g);
+   openAtlasSecret(secret,g,event.type==="keydown"||event.detail===0);
   };
   g.addEventListener("click",activate);
   g.addEventListener("keydown",event=>{
@@ -883,17 +925,22 @@ function installAtlasSecrets(){
  function closeCard(returnFocus=false){
   const previous=trigger;
   card.hidden=true;active=null;trigger=null;
+  for(const hot of hotspots)hot.removeAttribute("data-active");
   if(returnFocus&&previous?.getAttribute("tabindex")==="0")previous.focus();
  }
- function openAtlasSecret(secret,node){
+ function openAtlasSecret(secret,node,fromKeyboard=false){
   active=secret;trigger=node;
+  const firstOpen=card.hidden;
   card.dataset.kind=secret.kind;card.hidden=false;
+  for(const hot of hotspots)hot.toggleAttribute("data-active",hot===node);
   eyebrow.textContent=secret.eyebrow;heading.textContent=secret.title;
   content.textContent=secret.body;
   action.hidden=!secret.regions;
   action.disabled=false;action.textContent="ADD THESE REGIONS";
-  if(typeof card.scrollIntoView==="function")card.scrollIntoView({block:"nearest",behavior:"instant"});
-  heading.focus({preventScroll:true});
+  // Keep the camera and page steady when changing an already-open discovery.
+  // In particular, do not steal touch focus or scroll away from another route.
+  if(fromKeyboard)heading.focus({preventScroll:true});
+  else if(firstOpen)card.setAttribute("aria-live","polite");
  }
  close.addEventListener("click",()=>closeCard(true));
  card.addEventListener("keydown",event=>{
