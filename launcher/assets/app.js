@@ -924,30 +924,30 @@ function installAtlasSecrets(){
   }
  const secrets=[
   {id:"atlantic-crossing",kind:"route",title:"THE ATLANTIC CROSSING",
-   eyebrow:"CONTRABAND ROUTE",body:"Georgetown to Dakar, via the Atlantic. Compare interlocking guitars and voices from Northern South America and West Africa; verify every recording's actual origin. This is an illustrative listening passage, not a documented historical trade itinerary.",
+   eyebrow:"CONTRABAND ROUTE",body:"Georgetown to Dakar. Two Atlantic coasts, interlocking guitars and voices. Follow the sound; check the sleeves.",
    regions:["northern-south-america","west-africa"],path:routeParts[0]},
   {id:"southern-passage",kind:"route",title:"A SOUTHERN DETOUR",
-   eyebrow:"CONTRABAND ROUTE",body:"Rio de Janeiro to Luanda, across the South Atlantic. Contrast the rhythmic questions from Southern South America and Central & Southern Africa; research each recording rather than assuming a specific historical exchange.",
+   eyebrow:"CONTRABAND ROUTE",body:"Rio to Luanda. Compare the pulse on each shore. A listening match, not a documented crossing.",
    regions:["southern-south-america","central-southern-africa"],path:routeParts[1]},
   {id:"indian-ocean",kind:"route",title:"THE LONG WAY ROUND",
-   eyebrow:"CONTRABAND ROUTE",body:"Mombasa to Mumbai, across the Indian Ocean. Put East Africa beside South Asia and hear different responses to the same percussion question. The ports locate the listening passage, not a verified historical music route.",
+   eyebrow:"CONTRABAND ROUTE",body:"Mombasa to Mumbai. A percussion conversation across the Indian Ocean. Let the records make the connection.",
    regions:["east-africa","south-asia"],path:routeParts[2]},
   {id:"pacific-handoff",kind:"route",title:"THE PACIFIC HANDOFF",
-   eyebrow:"CONTRABAND ROUTE · DATE LINE",body:"Guangzhou to Long Beach, east across the Pacific. The dashed line vanishes at the right edge of the chart and picks up again on the left. A great-circle sketch, not a published ship itinerary. Listen for two Pacific-facing scenes and verify the tracks.",
+   eyebrow:"CONTRABAND ROUTE · DATE LINE",body:"Guangzhou to Long Beach. Off the right edge, on the left. The Date Line can't stop a good dig.",
    regions:["east-asia","us-west"],path:pacific?.path},
   {id:"westbound-manifest",kind:"route",title:"THE WESTBOUND MANIFEST",
-   eyebrow:"CONTRABAND ROUTE · THREE PORTS",body:"Liverpool to Halifax, Nova Scotia, to Grand Turk in the Turks and Caicos Islands. Two North Atlantic legs and three places to dig. The islands are a British Overseas Territory in the northern Caribbean region; this is a listening itinerary, not a claim that any ship or recording followed this passage.",
+   eyebrow:"CONTRABAND ROUTE · THREE PORTS",body:"Liverpool to Halifax to Grand Turk. Three ports, two Atlantic legs. A listening itinerary, not a ship's log.",
    regions:["atlantic-europe","canada-east","caribbean"],path:westboundPath},
   {id:"unlicensed-vessel",kind:"ship",title:"THE UNLICENSED VESSEL",
-   eyebrow:"PORT AUTHORITY NOTICE",body:"The manifest lists twelve records, three unreliable dates, and a suspiciously confident claim of first pressing. The clerk has requested evidence.",art:0},
+   eyebrow:"PORT AUTHORITY NOTICE",body:"Twelve records. Three doubtful dates. One alleged first pressing. The clerk wants receipts.",art:0},
   {id:"serpent",kind:"monster",title:"UNVERIFIED SIGHTING",
-   eyebrow:"THE CARTOGRAPHER'S MISTAKES",body:"The locals insist it is progressive rock. The creature would prefer not to be categorized.",art:1},
+   eyebrow:"THE CARTOGRAPHER'S MISTAKES",body:"The locals call it prog rock. The creature objects.",art:1},
   {id:"deep-water",kind:"monster",title:"HERE BE REISSUES",
-   eyebrow:"THE CARTOGRAPHER'S MISTAKES",body:"An old warning from the chartmaker: a rare pressing is not automatically a good record.",art:2},
+   eyebrow:"THE CARTOGRAPHER'S MISTAKES",body:"Rare pressing, average record. The chartmaker learned the hard way.",art:2},
   {id:"margin-one",kind:"marginalia",title:"A CORRECTION IN THE MARGIN",
-   eyebrow:"CLERK'S ANNOTATION",body:"This dotted line is a listening suggestion, not a claim about where any artist was born.",end:1},
+   eyebrow:"CLERK'S ANNOTATION",body:"A listening suggestion, not a claim about anybody's birthplace. Check the sleeve.",end:1},
   {id:"margin-two",kind:"marginalia",title:"UNAUTHORIZED FOOTNOTE",
-   eyebrow:"CLERK'S ANNOTATION",body:"Every map leaves something out. Start by checking what this one calls a territory.",end:5}
+   eyebrow:"CLERK'S ANNOTATION",body:"Every map leaves something out. Check the territory before you stamp it.",end:5}
  ];
  const layer=svg("g",{class:"atlas-secrets-layer","aria-hidden":"true"});
  const hotspots=[];
