@@ -22,6 +22,22 @@ class EngravedEditionChecks(unittest.TestCase):
         self.assertIn('id="crateAtlasMap"',index)
         self.assertIn('id="atlasHome"',index)
 
+    def test_selection_ticket_and_clean_receipt_idle_state(self):
+        base=(ROOT/"launcher/index.html").read_text()
+        generated=(BASE/"index.html").read_text()
+        script=(ROOT/"launcher/assets/app.js").read_text()
+        css=(ROOT/"launcher/assets/hipster.css").read_text()
+        for page in (base,generated):
+            self.assertIn('id="selectionTicket"',page)
+            self.assertIn('id="selectionTicketShort"',page)
+            self.assertIn('id="receiptCopy" hidden',page)
+            self.assertNotIn("REQUEST DRAFT",page)
+        self.assertIn('receiptSummary.getBoundingClientRect()',script)
+        self.assertIn('mark.hidden=state==="idle"',script)
+        self.assertIn('COPIED TO CLIPBOARD',script)
+        self.assertIn('receipt-feed', (BASE/"edition.css").read_text())
+        self.assertIn('selection-ticket[hidden]',css)
+
     def test_artwork_and_controls_remain_separate(self):
         css=(BASE/"edition.css").read_text()
         index=(BASE/"index.html").read_text()
