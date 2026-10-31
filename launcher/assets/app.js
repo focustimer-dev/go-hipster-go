@@ -879,6 +879,8 @@ function installAtlasSecrets(){
    role:"button",tabindex:"-1","aria-label":"Discover: "+secret.title});
   let target;
   if(secret.path){
+   const ink=svg("path",{d:secret.path,class:"atlas-secret-route-highlight"});
+   g.appendChild(ink);
    target=svg("path",{d:secret.path,class:"atlas-secret-route-touch"});
   }else{
    let x,y;
