@@ -134,6 +134,26 @@ class EngravedEditionChecks(unittest.TestCase):
         self.assertIn('renderCrateMap();animateAtlasView(atlasFocus);',script)
         self.assertIn('function atlasViewForGesture(base,anchor,screen,rect,zoom){',script)
 
+    def test_mobile_map_tap_zoom_without_double_selection(self):
+        script=(ROOT/"launcher/assets/app.js").read_text()
+        # Country and route listeners must not fire for the first touch
+        # click until the possible second tap has been resolved.
+        self.assertIn('const doubleTapWindow=290,doubleTapRadius=32;',script)
+        self.assertIn('map.addEventListener("click",event=>{',script)
+        self.assertIn('event.preventDefault();event.stopImmediatePropagation();',script)
+        self.assertIn('if(replayingTouchClick||event.detail===0)return;',script)
+        self.assertIn('clearTimeout(pendingTap.timer)',script)
+        self.assertIn('atlasViewForGesture(view,anchor,screen,rect,scale)',script)
+        self.assertIn('zoomAt(view,atlasScreenAnchor(map,view,screen.x,screen.y,rect),screen,rect,.5)',script)
+        self.assertIn('target.dispatchEvent(new MouseEvent("click"',script)
+        self.assertIn('map.addEventListener("dblclick",event=>event.preventDefault())',script)
+        # Two-finger zoom-out reuses the existing viewport constraints and
+        # allows fingers to lift in sequence without a phantom click.
+        self.assertIn('twoFingerTap={view:s.view,anchor:s.anchor,screen:s.start,rect:s.rect,at:Date.now()}',script)
+        self.assertIn('zoomAt(tap.view,tap.anchor,tap.screen,tap.rect,2)',script)
+        self.assertIn('Math.abs(s.distance-screen.distance)<6',script)
+        self.assertIn('function atlasViewForGesture(base,anchor,screen,rect,zoom){',script)
+
     def test_selection_ticket_and_clean_receipt_idle_state(self):
         base=(ROOT/"launcher/index.html").read_text()
         generated=(BASE/"index.html").read_text()
