@@ -819,9 +819,6 @@ body.gig-poster[data-page=launch] .atlas-secret-panel-action:focus-visible{
   position:relative;bottom:auto;left:auto;width:100%;max-height:none;
   box-shadow:none;border:1px solid var(--ink);border-top:2px solid var(--ink)
  }
- body.gig-poster[data-page=launch] .crate-map-frame:has(.atlas-secret-panel:not([hidden])){
-  overflow:visible
- }
 }
 @media(max-width:420px){
  body.gig-poster[data-page=launch] .atlas-secret-panel{padding:10px 11px}
