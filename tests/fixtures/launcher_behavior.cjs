@@ -16,8 +16,10 @@ class Element{
  async click(){this.focus();const event={preventDefault(){this.prevented=true}};await this.events.click?.(event);return event}
 }
 function harness(write,search='',page='launch',storage=new Map(),runtime={}){
- const ids=['includeCover','goHard','pinMood','pinPace','pinRegions','briefMoodValue','briefPaceValue','briefRegionsValue','serviceDetails','serviceSummary','shuffleHelp','shuffleCrate','undoShuffle','shuffleResult','receiptRegions','welcomeSetup','dismissWelcome','crateGeo','atlasPassport','atlasNamedRegions','atlasLocator','atlasHome','atlasInstruction','atlasStamps','crateAtlasMap','crateGeoStatus','crateGeoClear','aiLabel','copyTailoredSetup','recipeIntro','recipeSteps','recipeResources','recipeCaveat','openSelectedAi','dealerPair','tempoControl','tempoDetails','tempoSummary','tempoHelp','moodHelp','tempoSlider','tempoValue','anyTempo','copyStatus','routeStatus','prompt','moodName','receiptCode','promptReceipt','receiptCopy','openAi','browserAi','manualOpenAi','receiptSummary','goHint','goButton','stripSetupPrompt','setupPromptText','setupPromptDetails','setupTipStatus','openSetupAi','promptDetails','shareButton'];
+ const ids=['includeCover','goHard','pinMood','pinPace','pinRegions','briefMoodValue','briefPaceValue','briefRegionsValue','serviceDetails','serviceSummary','shuffleHelp','shuffleCrate','undoShuffle','shuffleResult','receiptRegions','welcomeSetup','beginSetup','dismissWelcome','finishSetup','setupJourney','onboardingPair','handoffGuidance','handoffTitle','handoffInstruction','crateGeo','atlasPassport','atlasNamedRegions','atlasLocator','atlasHome','atlasInstruction','atlasStamps','crateAtlasMap','crateGeoStatus','crateGeoClear','aiLabel','copyTailoredSetup','recipeIntro','recipeSteps','recipeResources','recipeCaveat','openSelectedAi','dealerPair','tempoControl','tempoDetails','tempoSummary','tempoHelp','moodHelp','tempoSlider','tempoValue','anyTempo','copyStatus','routeStatus','prompt','moodName','receiptCode','promptReceipt','receiptCopy','openAi','browserAi','manualOpenAi','receiptSummary','goHint','goButton','stripSetupPrompt','setupPromptText','setupPromptDetails','setupTipStatus','openSetupAi','promptDetails','shareButton'];
  const elements=Object.fromEntries(ids.map(id=>[id,new Element()]));
+ elements.setupJourney.hidden=true;
+ elements.handoffGuidance.hidden=true;
  const ais=['chatgpt','gemini','claude'].map(ai=>new Element({ai}));
  const services=['spotify','youtube','apple'].map(service=>new Element({service}));
  const moods=['happy','angry','sad','weird','criminal','funky'].map(mood=>new Element({mood}));
@@ -348,12 +350,24 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.equal((jukeboxHtml.match(/id="stripSetupPrompt"/g)||[]).length,1,'One copy setup action exists');
  assert.doesNotMatch(jukeboxHtml,/<section class="setup-check"/,'Always-visible green setup panel is removed');
  const welcomeMarkup=jukeboxHtml.slice(jukeboxHtml.indexOf('id="welcomeSetup"'),jukeboxHtml.indexOf('</aside>',jukeboxHtml.indexOf('id="welcomeSetup"')));
- for(const id of ['stripSetupPrompt','openSetupAi','setupPromptDetails','setupPromptText','setupTipStatus']) assert.ok(welcomeMarkup.includes('id="'+id+'"'),id+' stays inside expandable welcome disclosure');
+ for(const id of ['beginSetup','dismissWelcome','finishSetup','stripSetupPrompt','openSetupAi','setupPromptDetails','setupPromptText','setupTipStatus']) assert.ok(welcomeMarkup.includes('id="'+id+'"'),id+' stays in the guided admission ticket');
+ assert.ok(jukeboxHtml.indexOf('id="routeStatus"')<jukeboxHtml.indexOf('id="welcomeSetup"'));
+ assert.ok(jukeboxHtml.indexOf('id="welcomeSetup"')<jukeboxHtml.indexOf('id="tempoControl"'),'Ticket follows service selection, not the hero');
  const storage=new Map();let welcomeHarness=harness(async()=>{},'','launch',storage);
- assert.equal(welcomeHarness.elements.welcomeSetup.hidden,false,'New visitors can open the setup note');
+ assert.equal(welcomeHarness.elements.welcomeSetup.hidden,false,'New visitors see the admission ticket');
+ assert.equal(welcomeHarness.elements.setupJourney.hidden,true,'Detailed setup is optional');
+ assert.equal(welcomeHarness.elements.openSetupAi.attrs['aria-disabled'],'true','AI handoff requires a copied check');
+ assert.equal((await welcomeHarness.elements.openSetupAi.click()).prevented,true,'Copy gate blocks an uncopied setup check');
+ await welcomeHarness.elements.beginSetup.click();
+ assert.equal(welcomeHarness.elements.setupJourney.hidden,false,'Set me up reveals guided handoff');
+ assert.equal(welcomeHarness.elements.beginSetup.attrs['aria-expanded'],'true');
+ await welcomeHarness.elements.stripSetupPrompt.click();
+ assert.equal(welcomeHarness.elements.openSetupAi.attrs['aria-disabled'],'false','A copied setup check unlocks opening the AI');
+ await welcomeHarness.services[1].click();
+ assert.equal(welcomeHarness.elements.openSetupAi.attrs['aria-disabled'],'true','Changing service invalidates a copied setup check');
  await welcomeHarness.elements.dismissWelcome.click();
- assert.equal(welcomeHarness.elements.welcomeSetup.hidden,true,'Dismiss hides the note immediately');
- assert.equal(welcomeHarness.elements.aiLabel.focused,true,'Dismiss moves keyboard focus to service choices');
+ assert.equal(welcomeHarness.elements.welcomeSetup.hidden,true,'Already ready dismisses the ticket');
+ assert.equal(welcomeHarness.moods[0].focused,true,'Dismiss moves focus into music choices');
  welcomeHarness=harness(async()=>{},'','launch',storage);
  assert.equal(welcomeHarness.elements.welcomeSetup.hidden,true,'Dismiss survives a reload');
  welcomeHarness=harness(async()=>{},'','launch',new Map([['hmg-setup-first-tip-dismissed-v3','yes']]));
@@ -405,7 +419,10 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  let copies=[];let h=harness(async text=>copies.push(text)),e=h.elements;
  await h.moods[2].click();assert.equal(copies.length,0,'Selecting a mood must not copy');
  await e.goButton.click();assert.match(copies.at(-1),/go sad/,'GO must preserve selected mood');assert.equal(e.openAi.attrs['aria-disabled'],'false');assert.equal(e.goButton.attrs['data-copy-state'],'copied');assert.equal(e.openAi.textContent,'NEXT: OPEN CHATGPT');
- await h.services[2].click();assert.equal(copies.length,1,'Changing service must not silently copy');assert.equal(e.goButton.attrs['data-copy-state'],'idle');assert.equal(e.openAi.attrs['aria-disabled'],'true');assert.equal((await e.openAi.click()).prevented,true,'Stale handoff must be blocked');
+ assert.equal(e.handoffGuidance.hidden,false,'A real GO copy reveals the next step');
+ assert.equal(e.handoffTitle.textContent,'COPIED. NOW OPEN CHATGPT.');
+ assert.match(e.handoffInstruction.textContent,/Spotify.*playlist isn't saved yet/);
+ await h.services[2].click();assert.equal(copies.length,1,'Changing service must not silently copy');assert.equal(e.goButton.attrs['data-copy-state'],'idle');assert.equal(e.openAi.attrs['aria-disabled'],'true');assert.equal(e.handoffGuidance.hidden,true,'Stale copy hides the next-step callout');assert.equal((await e.openAi.click()).prevented,true,'Stale handoff must be blocked');
  await e.goButton.click();assert.match(copies.at(-1),/Apple Music/);assert.match(copies.at(-1),/go sad/);
  await h.ais[1].click();assert.match(e.receiptSummary.textContent,/Gemini · Apple Music/,'Changing AI preserves the music service');assert.equal(e.openAi.attrs['aria-disabled'],'true');await e.goButton.click();assert.match(copies.at(-1),/Apple Music/);
  await h.moods[2].click();await e.goButton.click();assert.doesNotMatch(copies.at(-1),/go sad/,'Second mood tap clears mood');

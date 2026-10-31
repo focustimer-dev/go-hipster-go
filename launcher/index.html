@@ -60,28 +60,6 @@
     </nav>
   </header>
   <main class="main">
-    <aside class="welcome-setup" id="welcomeSetup" aria-label="First-time setup help">
-      <details id="welcomeDisclosure">
-        <summary>New here? <strong>Start with setup</strong></summary>
-        <div class="welcome-copy">
-          <p>Choose your AI and music service, then copy the setup check below. It helps check your skill and connection before your first playlist.</p>
-          <div class="welcome-actions">
-            <a class="welcome-link" href="#aiLabel">CHOOSE YOUR SERVICES ↓</a>
-            <a class="welcome-text-link" href="/setup/">Open the Manual →</a>
-          </div>
-          <div class="welcome-setup-actions">
-            <button class="resource copy" type="button" id="stripSetupPrompt">COPY SETUP CHECK</button>
-            <a class="resource subtle" id="openSetupAi" href="https://chatgpt.com/" target="_blank" rel="noopener">OPEN CHATGPT</a>
-          </div>
-          <p class="first-setup-status" id="setupTipStatus" role="status" aria-live="polite"></p>
-          <details class="setup-prompt-details" id="setupPromptDetails">
-            <summary>View setup prompt / copy manually</summary>
-            <pre id="setupPromptText" tabindex="0" aria-label="Copyable setup prompt"></pre>
-          </details>
-        </div>
-      </details>
-      <button type="button" id="dismissWelcome" class="welcome-dismiss" aria-label="Dismiss setup tip" title="Hide this tip; setup help stays in the Manual">×</button>
-    </aside>
     <div class="hero-title">
       <h1 class="headline">YOUR TASTE<br> IS A <em>PROBLEM.</em></h1>
       <span class="return-stamp">NO REFUNDS</span>
@@ -110,6 +88,37 @@
     </div>
     </section>
     <div class="connector-status" id="routeStatus" role="status"><span>Choose your platforms. We'll explain what each pairing can actually do.</span></div>
+
+    <aside class="welcome-setup onboarding-ticket" id="welcomeSetup" aria-labelledby="firstVisitTitle">
+      <div class="onboarding-ticket-head">
+        <h2 id="firstVisitTitle">FIRST TIME HERE?</h2>
+        <p>One setup check, then the good stuff. Just once.</p>
+      </div>
+      <div class="onboarding-ticket-actions">
+        <button type="button" id="beginSetup" aria-expanded="false" aria-controls="setupJourney">SET ME UP</button>
+        <button type="button" id="dismissWelcome">I'M ALREADY READY</button>
+      </div>
+      <div class="setup-journey" id="setupJourney" hidden>
+        <p class="onboarding-pair" id="onboardingPair">ChatGPT + Spotify</p>
+        <ol class="onboarding-steps">
+          <li><strong>Copy your setup check.</strong><span>This asks your AI to check the skill and music connection. It will not make a playlist.</span>
+            <button class="resource copy" type="button" id="stripSetupPrompt">COPY SETUP CHECK</button>
+          </li>
+          <li><strong>Open your AI.</strong><span>Paste the check and send it. Your AI will tell you what, if anything, needs connecting.</span>
+            <a class="resource" id="openSetupAi" href="https://chatgpt.com/" target="_blank" rel="noopener" aria-disabled="true">COPY THE CHECK FIRST</a>
+          </li>
+          <li><strong>Come back for the music.</strong><span>When your AI confirms the setup is ready, return and press GO.</span>
+            <button class="resource" type="button" id="finishSetup">BACK TO THE JUKEBOX</button>
+          </li>
+        </ol>
+        <p class="first-setup-status" id="setupTipStatus" role="status" aria-live="polite"></p>
+        <details class="setup-prompt-details" id="setupPromptDetails">
+          <summary>View setup prompt / copy manually</summary>
+          <pre id="setupPromptText" tabindex="0" aria-label="Copyable setup prompt"></pre>
+        </details>
+        <a class="onboarding-help" href="/setup/">NEED HELP? OPEN THE MANUAL</a>
+      </div>
+    </aside>
 
     <h2 class="counter-heading mix-heading">SHAPE YOUR MIX</h2>
     <div class="refinements" aria-label="Optional music preferences">
@@ -547,6 +556,10 @@
       </div>
     </section>
     <div class="handoff" aria-label="Copy and open your AI">
+      <div class="handoff-guidance" id="handoffGuidance" hidden>
+        <strong id="handoffTitle">COPIED. NOW OPEN CHATGPT.</strong>
+        <p id="handoffInstruction">Paste and send in your AI. The playlist is not saved yet.</p>
+      </div>
       <p class="status" id="copyStatus" role="status" aria-live="polite">Choose a mood, then press GO to copy your prompt.</p>
       <a class="action secondary-action" id="openAi" href="https://chatgpt.com/" rel="noopener" aria-disabled="true">COPY WITH GO FIRST</a>
       <div class="foot-tools">

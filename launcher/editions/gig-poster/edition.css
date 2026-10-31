@@ -719,3 +719,24 @@ body.gig-poster[data-page=launch] .receipt-ticket-dock{overflow-anchor:none}
 /* Promote the real post-copy action, not the inactive placeholder. */
 body.gig-poster[data-page=launch] .handoff #openAi{width:100%;min-height:54px}
 body.gig-poster[data-page=launch] .handoff #openAi[aria-disabled=false]{font:400 clamp(1.25rem,3.6cqw,1.8rem)/1.2 Poster,sans-serif;letter-spacing:.01em}
+
+
+/* Poster-edition ticket keeps its two-ink print language, without touching atlas geometry. */
+html[data-returning=true] body.gig-poster[data-page=launch] .onboarding-ticket:not([hidden]),
+body.gig-poster[data-page=launch] .onboarding-ticket{display:block;position:relative;margin:12px 0 18px;padding:15px 16px;background:var(--paper);border:1px solid var(--ink);box-shadow:none;color:var(--ink)}
+body.gig-poster[data-page=launch] .onboarding-ticket[hidden]{display:none!important}
+body.gig-poster[data-page=launch] .onboarding-ticket .onboarding-ticket-head h2{font:400 clamp(1.5rem,5cqw,2.5rem)/1.05 Poster,sans-serif;letter-spacing:0}
+body.gig-poster[data-page=launch] .onboarding-ticket .onboarding-ticket-head p{font:400 .875rem/1.45 Arial,Helvetica,sans-serif;margin:4px 0 13px}
+body.gig-poster[data-page=launch] .onboarding-ticket-actions button{font:400 clamp(1.02rem,3cqw,1.45rem)/1.15 Poster,sans-serif;border:1px solid var(--ink);background:var(--ink);color:var(--paper);box-shadow:none}
+body.gig-poster[data-page=launch] .onboarding-ticket-actions #dismissWelcome{font:400 clamp(1rem,3cqw,1.4rem)/1.15 Poster,sans-serif;background:transparent;color:var(--ink)}
+body.gig-poster[data-page=launch] .onboarding-ticket-actions #beginSetup[aria-expanded=true]{background:var(--ink);color:var(--paper);text-decoration:underline;text-underline-offset:3px}
+body.gig-poster[data-page=launch] .onboarding-ticket .setup-journey{border-top:1px dashed var(--ink)}
+body.gig-poster[data-page=launch] .onboarding-ticket .onboarding-pair{font:700 .84rem/1.4 'Courier New',monospace}
+body.gig-poster[data-page=launch] .onboarding-steps li::before{background:var(--ink);color:var(--paper)}
+body.gig-poster[data-page=launch] .onboarding-steps li strong{font:700 .91rem/1.4 Arial,sans-serif}
+body.gig-poster[data-page=launch] .onboarding-steps li span{font:400 .875rem/1.45 Arial,sans-serif}
+body.gig-poster[data-page=launch] .onboarding-steps .resource{background:var(--paper);color:var(--ink);border:1px solid var(--ink);min-height:44px}
+body.gig-poster[data-page=launch] .onboarding-steps .resource.copy{background:var(--ink);color:var(--paper)}
+body.gig-poster[data-page=launch] .handoff-guidance{border-top:1px solid var(--ink);padding:12px 0 10px}
+body.gig-poster[data-page=launch] .handoff-guidance strong{font:400 clamp(1.35rem,4.6cqw,2.25rem)/1.12 Poster,sans-serif}
+body.gig-poster[data-page=launch] .handoff-guidance p{font:400 .875rem/1.5 Arial,sans-serif}
