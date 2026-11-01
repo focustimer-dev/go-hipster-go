@@ -846,3 +846,5 @@ body.gig-poster .atlas-secret-footer button:focus-visible{
  body.gig-poster #crateAtlasMap .atlas-secret-hotspot,
  body.gig-poster .atlas-secret-card{transition:none;animation:none}
 }
+
+body.gig-poster .decheese-note{color:#982b1d;font-size:.875rem;line-height:1.5;margin:16px 0 8px}
