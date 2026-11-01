@@ -825,3 +825,6 @@ body[data-page=launch] .onboarding-ticket[hidden]{display:none!important}
 .handoff-guidance strong{display:block;font:700 clamp(1.2rem,4.8vw,1.6rem)/1.15 Impact,"Arial Black",sans-serif;letter-spacing:0;color:var(--ink)}
 .handoff-guidance p{font-size:.875rem;line-height:1.45;margin:7px 0 0;max-width:55ch}
 @media(max-width:355px){.onboarding-ticket-actions{flex-direction:column}.onboarding-ticket-actions button{flex:0 0 auto;width:100%}}
+
+.decheese-note{color:#982b1d;font-size:.875rem;line-height:1.5;margin:16px 0 8px;overflow-wrap:break-word}
+.decheese-note strong{display:block;font-weight:800}

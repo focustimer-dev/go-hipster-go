@@ -14,7 +14,7 @@ s=s.replace('</head>',f'<link rel="preload" href="/editions/gig-poster/assets/mo
 s=s.replace('<title>Go, Hipster, Go! — Press GO, Question Everything</title>','<title>Go, Hipster, Go! — Gig Poster edition</title>')
 s=s.replace('href="/" aria-label="Go, Hipster, Go! home"','href="/editions/gig-poster/" aria-label="Go, Hipster, Go! home"')
 s=s.replace('<a href="/" aria-current="page">','<a href="/editions/gig-poster/" aria-current="page">')
-welcome=re.search(r'    <aside class="welcome-setup".*?</aside>\n',s,re.S).group()
+welcome=re.search(r'    <aside class="welcome-setup(?: [^"]*)?".*?</aside>\n',s,re.S).group()
 s=s.replace(welcome,'')
 
 a=s.index('    <div class="hero-title">');b=s.index('    <section class="service-counter"',a)
