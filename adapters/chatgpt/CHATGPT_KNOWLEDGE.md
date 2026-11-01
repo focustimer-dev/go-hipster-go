@@ -4,7 +4,7 @@ A generated, text-forward snapshot of the **canonical** repository skill. This i
 
 **Source:** https://github.com/focustimer-dev/go-hipster-go
 
-**Files included:** `references/reference-index.md`, `references/de-cheese.md`, `references/funky.md`, `references/regions/antarctica.md`, `references/go-hard.md`, `references/regional-review.md`, `references/regions/oceania-additions.md`, `references/regions/central-america-additions.md`, `references/regions/central-africa-additions.md`, `references/regions/southern-africa-additions.md`, `references/regional-atlas.md`, `references/regions/us-west.md`, `references/regions/us-east.md`, `references/regions/canada-west.md`, `references/regions/canada-east.md`, `references/regions/mexico.md`, `references/regions/central-america.md`, `references/regions/caribbean.md`, `references/regions/northern-south-america.md`, `references/regions/southern-south-america.md`, `references/regions/atlantic-europe.md`, `references/regions/mediterranean-europe.md`, `references/regions/northern-europe.md`, `references/regions/eastern-europe.md`, `references/regions/north-africa.md`, `references/regions/west-africa.md`, `references/regions/east-africa.md`, `references/regions/central-southern-africa.md`, `references/regions/middle-east.md`, `references/regions/central-asia.md`, `references/regions/south-asia.md`, `references/regions/east-asia.md`, `references/regions/southeast-asia.md`, `references/regions/northern-asia.md`, `references/regions/oceania.md`, `SKILL.md`, `references/global-scenes.md`, `references/sonic-taxonomy.md`, `references/curation-examples.md`, `references/verification.md`.
+**Files included:** `references/reference-index.md`, `references/de-cheese.md`, `references/discovery-routes.md`, `references/funky.md`, `references/regions/antarctica.md`, `references/go-hard.md`, `references/regional-review.md`, `references/regions/oceania-additions.md`, `references/regions/central-america-additions.md`, `references/regions/central-africa-additions.md`, `references/regions/southern-africa-additions.md`, `references/regional-atlas.md`, `references/regions/us-west.md`, `references/regions/us-east.md`, `references/regions/canada-west.md`, `references/regions/canada-east.md`, `references/regions/mexico.md`, `references/regions/central-america.md`, `references/regions/caribbean.md`, `references/regions/northern-south-america.md`, `references/regions/southern-south-america.md`, `references/regions/atlantic-europe.md`, `references/regions/mediterranean-europe.md`, `references/regions/northern-europe.md`, `references/regions/eastern-europe.md`, `references/regions/north-africa.md`, `references/regions/west-africa.md`, `references/regions/east-africa.md`, `references/regions/central-southern-africa.md`, `references/regions/middle-east.md`, `references/regions/central-asia.md`, `references/regions/south-asia.md`, `references/regions/east-asia.md`, `references/regions/southeast-asia.md`, `references/regions/northern-asia.md`, `references/regions/oceania.md`, `SKILL.md`, `references/global-scenes.md`, `references/sonic-taxonomy.md`, `references/curation-examples.md`, `references/verification.md`.
 
 
 ---
@@ -22,6 +22,10 @@ Before choosing a thesis, read these sections (exact headings):
 1. [Sonic taxonomy](sonic-taxonomy.md): **Mood interpretation matrix**, **Peculiarity by audible mechanism**, **Freshness procedure**, and **Recording-level selection gate**. Consult **Era and sonic period**, **Sonic textures and instrumentation** and **Operating guidance** as the brief requires; keep all four discovery axes available.
 2. [Global scenes](global-scenes.md): **Category discovery index — expand the search before choosing artists** (including its route tables) and **Responsible cross-scene reasoning**. Compare three distinct routes; then read the relevant scene detail under **Geographic research map**, **Movement and microgenre touchstones**, **Further scene horizons — research leads, not default playlists**, or **US East and West discovery routes**. For unstructured GO, consider an under-covered route before settling on familiar choices.
 3. [Verification](verification.md): apply the recording and publishing evidence rules to every final selection. For Criminal, also apply **Criminal mood: verify the song's actual story**, using song-level narrative evidence rather than genre, reputation or title association.
+
+## Optional discovery routes
+
+For `Discovery route: v1/Rxx`, read [Discovery routes](discovery-routes.md) before forming the candidate pool. Preserve the brief; this is a search starting point, not song evidence.
 
 ## Existing-playlist audit
 
@@ -105,6 +109,126 @@ Use only actually exposed, authorized service tools. If editing is unavailable, 
 Finish with a concise before/after: changed positions or notes, retained count, local versus service status, confirmed results and unresolved items. No extra discovery run, unnecessary reroll or invented publication success.
 
 # END SOURCE: references/de-cheese.md
+
+---
+
+# BEGIN SOURCE: references/discovery-routes.md
+
+# Discovery routes v1
+
+Optional candidate-search starting points. Stable IDs are never reassigned. This is not a song roster, genre quota or evidence about any recording.
+
+## Contract
+
+On `Discovery route: v1/Rxx`, load this file before choosing the candidate pool. Interpret the selected route within the explicit regions, mood, perceived pace, exclusions and count. A route changes where discovery starts, not just the eventual title or liner notes. Preserve user constraints; reject incompatible leads early. Explore other routes as needed for quality and coverage, rather than forcing every final song to exemplify this route.
+
+Use the existing research budget: ordinary GO stays single-pass; GO HARD uses its existing candidate funnel. No extra mandatory searches or candidate quotas. A selected route never triggers GO HARD, Antarctica, a reroll or publication by itself. Explicit Antarctica still uses its special thematic rules.
+
+The APK draws IDs locally and remembers recent draws. Do not search user chats, listening history or private accounts for deduplication. A fresh chat cannot know previous selections without supplied context. Do not promise new tracks merely because the route changed.
+
+If the route is incompatible or credible leads cannot be found, drop the route and honor the original brief; briefly disclose the limitation. For an unknown ID/version or inaccessible reference, use ordinary curation and say the route was not applied. Never invent its meaning. Supplied musical references and explicit listener requirements take priority over this optional route.
+
+Apply de-cheese evidence standards: a search hypothesis is not an audible feature. No invented handclaps, historical connections, exact BPM, audio access or searches. Explain route use only from work actually performed; do not manufacture a research diary.
+
+## Routes
+
+### R01 — Contemporary independents
+
+Family: era. Start with post-2010 independent recordings before older catalog staples.
+
+### R02 — Earlier overlooked releases
+
+Family: era. Start with pre-1980 album tracks and overlooked singles rather than familiar revival selections.
+
+### R03 — Between revival waves
+
+Family: era. Start with 1980–2009 recordings outside the most familiar revival compilations.
+
+### R04 — Spacious production
+
+Family: production. Search first for recording-specific evidence of space, restraint and separated instrumental roles.
+
+### R05 — Small-room immediacy
+
+Family: production. Explore small-ensemble or modest-studio recordings; verify the actual production rather than assuming lo-fi.
+
+### R06 — Studio experiments
+
+Family: production. Explore documented studio experiments, unusual arrangements or electronic/acoustic interplay.
+
+### R07 — Instrumental conversations
+
+Family: ensemble. Start with ensembles whose instrumental parts answer one another; vocals remain allowed.
+
+### R08 — Voices within the ensemble
+
+Family: ensemble. Explore recordings where voices participate rhythmically or texturally alongside instruments.
+
+### R09 — Unexpected lead role
+
+Family: ensemble. Explore recordings with a supported lead role outside the usual guitar/bass/drum spotlight.
+
+### R10 — Album corners
+
+Family: catalog. Search album tracks beyond the best-known song by a candidate artist; verify the exact version.
+
+### R11 — Independent label branches
+
+Family: catalog. Start from credible independent-label catalogs connected to the selected regions; avoid treating a label location as recording-scene proof.
+
+### R12 — Collaborator branches
+
+Family: catalog. Follow a verified player, arranger or producer credit to another plausible recording, checking its regional fit separately.
+
+### R13 — Secondary scene branches
+
+Family: scene. Explore documented scenes outside the most frequently cited hubs in the selected regions; do not invent a local movement.
+
+### R14 — Modern regional reinterpretations
+
+Family: scene. Explore documented contemporary reinterpretations of regional musical practices, without assuming authenticity or instrumentation.
+
+### R15 — Independent scene crossings
+
+Family: scene. Explore independently documented crossings between local scenes and neighboring styles within the selected geography.
+
+### R16 — Repetition with variation
+
+Family: arrangement. Start from recordings with supported repeating figures that evolve through arrangement or phrasing.
+
+### R17 — Contrast within restraint
+
+Family: arrangement. Explore recordings with a credible contrast of roles, registers or textures that still fits the requested perceived pace.
+
+### R18 — Melody as rhythm
+
+Family: arrangement. Explore supported interplay between melodic phrasing and rhythmic accompaniment rather than requiring literal percussion.
+
+### R19 — Artist beyond the first association
+
+Family: discovery. Use a plausible familiar artist only as a research lead, then explore a verified related recording by a different artist.
+
+### R20 — Different regional starting point
+
+Family: discovery. When multiple regions are selected, begin candidate discovery in a different region than the most obvious scene association; preserve all selected regions in the final brief.
+
+### R21 — Independent editorial leads
+
+Family: discovery. Explore credible region-specific editorial or archival sources beyond generic best-of lists; verify recordings independently.
+
+### R22 — Live ensemble evidence
+
+Family: production. Explore documented live-in-studio or live recordings when good exact versions are available; live is an exploration route, not a required format.
+
+### R23 — Short-lived projects
+
+Family: catalog. Explore documented side projects or short-lived ensembles with real available recordings; avoid invented rarity claims.
+
+### R24 — Changing density
+
+Family: arrangement. Explore recordings where supported ensemble density changes while the underlying musical intent remains coherent.
+
+# END SOURCE: references/discovery-routes.md
 
 ---
 
@@ -2017,7 +2141,7 @@ description: "Real global deep cuts; setup services, then go or go antarctica; d
 license: MIT
 compatibility: Requires file-reading capability. Optional web/catalog lookup for track verification and Python 3.10+ to run included validation/randomness scripts. Streaming accounts and OAuth are NOT bundled.
 metadata:
-  version: "3.9.1"
+  version: "3.10.0"
 ---
 
 # Go, Hipster, Go! — Agent Skill v3
@@ -2031,6 +2155,10 @@ metadata:
 Curate **real recordings**, not synthetic music. Prioritize sonic coherence and discovery over popularity or arbitrary obscurity. Invoke for deep-cut recommendations, global scene mashups, surprisingly good mainstream contrasts, "more like this but less obvious," and requests to make a playlist. When the user explicitly invokes this skill and says **"go"**, curate **and attempt to publish** a playlist through an available, authorized connected music service by default, **including Gemini + YouTube Music**. A publishing failure does not erase the original curated list. `go live` is an optional synonym, not a necessary mode. Explicit `go, text only` or a clear no-publish request skips writing. Build the surprise theme using the four axes below. Do not activate on an unrelated use of "go"; **"go, text only"** or an explicit no-publish request opts out.
 
 The four axes: **era; audible texture/production; actual geographic scene; microgenre/movement**. They are prompts, not mandatory fields. Also respect mood, intended setting, vocals, energy, exclusions, length, listening service, and adventurousness.
+
+## Discovery-route dispatch
+
+For `Discovery route: v1/Rxx`, read [Discovery routes](references/discovery-routes.md) before building the candidate pool. Apply the route as an optional search starting point within the original brief, never as evidence about a song. Unknown, unavailable or incompatible routes fall back honestly to ordinary curation. No route implies GO HARD or permission to include Antarctica.
 
 ## De-cheese: audit an existing playlist
 

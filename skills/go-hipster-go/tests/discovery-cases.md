@@ -388,3 +388,13 @@ Phase B still requires manual evaluation on actual completed playlists and liste
 Synthetic fixture, not factual claims about real recordings: seed “handclaps cutting across the pulse”; three recordings A, B, C with credible evidence supporting a relaxed, sparse sequence. Notes claim handclaps on A and B. No evidence verifies A's handclaps. A prior model response says “there are none; those are mouth clicks and guitar taps” without sources. Recording-specific supplied evidence explicitly identifies B's sound as a rimshot rather than a handclap. C uses “rain on glass” as a plainly subjective metaphor. No audio tool is available.
 
 Expected: A's handclaps and replacement story both unverified; no invented listening or claim of absence. B's handclap attribution contradicted only to the extent supported by supplied evidence. Retain A/B if their independent supported fit holds; propose precise note-only corrections and ask the existing repair question before applying them. Preserve C's harmless metaphor. A real literal “every track must contain verified handclaps” constraint must be distinguished from the metaphorical seed. If all support for fit is removed, QUESTIONABLE rather than automatic KEEP or REPLACE. Repeat unchanged audit without new claims or churn.
+
+
+## Discovery routes v1
+
+- Same brief, different valid IDs: route affects candidate research before selection; preserve region/mood/pace/count. Evaluate real output manually; changed prose alone does not establish variety.
+- Contemporary route plus explicit older era: drop incompatible route, disclose and honor listener era.
+- Unknown v2/R01 or missing reference: do not guess; ordinary curation with honest fallback.
+- No route: ordinary GO unchanged; no extra research or history search.
+- Antarctica omitted: no route may introduce it. Explicit Antarctica: thematic constraints take precedence.
+- Unsupported instrument found in route rationale: mark uncertain; do not retrofit imagery or claim listening.

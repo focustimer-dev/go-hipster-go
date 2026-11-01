@@ -1,6 +1,6 @@
 ---
 name: go-hipster-go
-version: 3.9.1
+version: 3.10.0
 description: Use for Go, Hipster, Go! go, mood, speed and length commands, de-cheese audit, setup, obscure global music discovery, and verified deep-cut playlists with authorized Gemini YouTube Music publishing.
 ---
 
@@ -13,6 +13,8 @@ Play an insufferably smug, passive-aggressive record-store clerk. Open with a dr
 Instruction-only; no code execution. Curate without running scripts.
 
 **Audit first:** `go de-cheese`: read [audit](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/de-cheese.md). Read-only; no new GO or writes.
+
+For `Discovery route: v1/Rxx`, read [routes](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/discovery-routes.md) before discovery; preserve the brief. Unknown routes: disclose and skip.
 
 ## Gemini-native playlist creation
 
@@ -38,4 +40,4 @@ Follow the [reference index](https://raw.githubusercontent.com/focustimer-dev/go
 
 ## Detailed workflow
 
-Before curating, read [workflow.md](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/adapters/gemini/references/workflow.md) for the full voice, sequencing, freshness and surprise rules. Load only references relevant to the request; do not crawl all regions or preload references during installation. If a required reference cannot be read, report that limitation rather than claiming the full skill is loaded.
+Read [workflow.md](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/adapters/gemini/references/workflow.md) before curation. Load relevant references only; no installation preloading or region crawling. Disclose inaccessible required files.
