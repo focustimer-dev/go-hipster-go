@@ -1,0 +1,1 @@
+User-authorized Android Lab 0.9.1 release. Sign only the original-key APK from successful isolated CI run 41349192402 at source 0aa8aa0aaf8040434dec0da4bf7a4d2f9c67462f. The signing workflow checks exact source, success and package identity before signing.
