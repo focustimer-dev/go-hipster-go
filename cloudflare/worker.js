@@ -13,8 +13,9 @@ export default {
     }
     if (path === "/gemini/manifest.webmanifest") url.pathname = "/gemini-manifest.webmanifest";
     else if (path === "/" || path === "/index.html") url.pathname = "/editions/gig-poster/index.html";
-    // Let ASSETS resolve /setup/ to setup/index.html; rewriting to /setup/index.html
-    // is redirected back to /setup/ by auto-trailing-slash and creates a loop.
+    else if (path === "/setup/") url.pathname = "/editions/gig-poster/setup/";
+    // Use a canonical directory URL; /setup/index.html is redirected back to /setup/.
+    // The poster edition setup page includes the release CSS expected by live smoke.
     const response = await env.ASSETS.fetch(new Request(url, request));
     const headers = new Headers(response.headers);
     headers.set("x-content-type-options", "nosniff");
