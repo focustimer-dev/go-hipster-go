@@ -231,3 +231,24 @@ Share mode asks the listener to review and send the shared request; copy/open
 and browser modes keep the paste instruction they still require. The floating
 selection ticket now anchors to the header trail rather than the moved service
 controls. The shared PWA, atlas and portraits are unchanged.
+
+## Lab 0.6 — transparent engraved cast
+
+The shared PWA and bundled Lab use lossless alpha ink sprites derived from the
+locked original portraits. Paper highlights reveal the app surface. No faces,
+expressions, cell positions or sprite dimensions are regenerated or rescaled.
+The original approved RGB sheets remain intact as source evidence.
+
+Both layers bypass the old RGB filters. Selection crossfades neutral to zero
+and selected to one; reduced motion switches immediately. The last key keeps
+the same border width in both states, fixing a one-pixel landscape height shift.
+
+Offline authoring: install Pillow, numpy and scipy, then run
+`python scripts/build_mood_ink.py --check` to verify every decoded alpha pixel
+and visible ink pixel against the source-based recipe. The provenance manifest
+records original and output hashes, crop bounds and extraction parameters.
+
+Browser QA: `node scripts/test_mood_ink.cjs` checks all six moods in the shared
+PWA and bundled Lab at 360, 412, 915 and 1280 pixel widths, including exclusive
+state layers, fixed geometry, reduced motion and touch targets. Real Android
+WebView rendering remains an on-device check. Install over Lab; do not uninstall.

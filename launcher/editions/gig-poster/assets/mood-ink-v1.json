@@ -1,0 +1,115 @@
+{
+  "source_commit": "40b20e5e95a1d9318114ca8c9a1ae75a19ccb734",
+  "paper_level": 244,
+  "ink_level": 25,
+  "noise_floor": 0.025,
+  "ink_rgb": [
+    16,
+    49,
+    53
+  ],
+  "cells": [
+    "happy",
+    "angry",
+    "sad",
+    "weird",
+    "criminal",
+    "funky"
+  ],
+  "source_hashes": {
+    "neutral": "fc61de6740b8ad4f909c561bb3b34b2d6e5d9347b84cc9fcb2387f425dd5c794",
+    "selected": "f45fa9c3d5915723f393e71a7ee8cb26d11c3931ec533fd8b98f6ace74625a72"
+  },
+  "roi": {
+    "neutral": [
+      [
+        19,
+        49,
+        496,
+        466
+      ],
+      [
+        18,
+        56,
+        496,
+        458
+      ],
+      [
+        18,
+        47,
+        496,
+        454
+      ],
+      [
+        19,
+        56,
+        496,
+        447
+      ],
+      [
+        18,
+        47,
+        496,
+        416
+      ],
+      [
+        18,
+        55,
+        496,
+        416
+      ]
+    ],
+    "selected": [
+      [
+        28,
+        24,
+        496,
+        459
+      ],
+      [
+        18,
+        56,
+        496,
+        458
+      ],
+      [
+        18,
+        54,
+        496,
+        449
+      ],
+      [
+        19,
+        56,
+        496,
+        447
+      ],
+      [
+        25,
+        53,
+        496,
+        416
+      ],
+      [
+        18,
+        55,
+        496,
+        416
+      ]
+    ]
+  },
+  "output_hashes": {
+    "neutral": "e7dc44f9214c3251112f27bdd99180ce39d016acd32966cd523a2d41f7a959fd",
+    "selected": "0a25845a803c64d15be7fdd406d203521f3a4652ce3915073ff2c4b308953785"
+  },
+  "frame_rules": {
+    "min_alpha": 3,
+    "max_alpha": 100,
+    "min_length": 160,
+    "perimeter_top": 65,
+    "perimeter_bottom": 435,
+    "perimeter_left": 35,
+    "perimeter_right": 480,
+    "dilation_pixels": 1
+  }
+}
