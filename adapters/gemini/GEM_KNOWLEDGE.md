@@ -6,7 +6,7 @@ Generated from the filtered Gemini skill and regional reference files.
 
 ---
 name: go-hipster-go
-version: 3.9.0
+version: 3.9.1
 description: Use for Go, Hipster, Go! go, mood, speed and length commands, de-cheese audit, setup, obscure global music discovery, and verified deep-cut playlists with authorized Gemini YouTube Music publishing.
 ---
 
@@ -231,6 +231,16 @@ For each recording, assess two separate questions:
 Use targeted lookup for disputed claims and replacement identities, rather than researching every incidental sentence. Cite sources for factual findings. Distinguish verified evidence, reasoned musical inference and unresolved uncertainty; if audio was unavailable say so. Missing evidence is uncertainty, not proof of mismatch. Correct an unsupported story without discarding a musically defensible song. A verified violation of an explicit regional or lyrical constraint can still warrant replacement.
 
 Assign each entry once: **KEEP—supported**, **QUESTIONABLE—uncertain**, or **REPLACE—recommended**. Keep includes defensible musical choices whose notes need correction; identify that separately. Questionable entries remain unchanged pending evidence or listener choice. Replace requires a specific mismatch with the brief or sequence, not mere dislike of the explanation. Repeated audits of unchanged evidence should be stable, not manufacture churn.
+
+## Seed-to-evidence check
+
+A seed is a discovery suggestion, never evidence about a recording. Check concrete details apparently borrowed from it: named instruments, playing techniques, rhythmic interactions, lyrics, recording history and exact intro/outro behavior. Preserve expressive metaphors when clearly presented as interpretation; do not turn imagery into a literal claim that every track shares the seed's feature.
+
+For each consequential disputed claim, quote the short original claim and mark it **supported**, **contradicted**, or **unverified**, with the evidence and its scope. These are claim findings, separate from the track's KEEP / QUESTIONABLE / REPLACE judgment. A catalog match proves identity, not instrumentation. Album-level credits do not automatically establish a sound on this recording. A prior model answer, confident confession or paraphrase of the seed is not independent evidence. No source found means unverified, not absent. Contradicted requires affirmative recording-specific evidence; never claim listening without actual audio access.
+
+Remove the disputed detail mentally and reassess the song against the original mood, pace, constraints and neighbors. If supported qualities still justify it, keep the song and propose the smallest note correction. If fit depended entirely on the disputed detail, mark it QUESTIONABLE pending evidence; recommend replacement only for a supported mismatch. An explicit literal requirement from the listener remains a constraint, while a metaphorical seed is not a mandatory instrument checklist.
+
+Audit the proposed correction by the same standard. Do not replace invented handclaps with unsupported mouth clicks, guitar-body taps or brushwork, or say “no handclaps” merely because none were verified. When evidence is thin, propose deleting or qualifying the original claim instead of supplying a more elaborate story. Do not declare whole sections “100% real” or adopt a self-accusatory confession without checking the individual claims. Show only meaningful disputed claims, not a full ledger for every adjective; retain the existing approval step before applying note or track edits.
 
 ## Findings and proposed fix
 
