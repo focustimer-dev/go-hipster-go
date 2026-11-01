@@ -6,7 +6,7 @@ colors:
   mustard-stock: "#dfb045"
   warm-highlight: "#edc65d"
   star-red: "#a83223"
-  mood-vermilion-wash: "rgb(214 75 48 / 22%)"
+  mood-vermilion-wash: "#efd0d0"
   funk-pink: "#E03FD8"
   funk-paper: "#f4efdf"
   receipt-ink: "#742019"
@@ -191,3 +191,8 @@ The + ART and TRY HARD keys target a compact 56px minimum height where content a
 ## Mood selection refinement
 
 Selecting a third mood retains the first selected mood and replaces the most recently selected one. Tapping a selected mood still removes it. Selected mood backgrounds use 22% opacity vermilion over the existing stock, with petrol text, underline and inset selection outline. The Funk uses #E03FD8 at the same opacity, with static vermilion laser linework behind its unchanged portrait. Selection does not fade the portrait itself. Reduced motion removes the laser fade.
+
+
+## Selection color and laser occlusion correction
+
+The user’s phone capture showed that translucent vermilion mixed with mustard stock reads orange. Mood selection now uses an opaque pale red #efd0d0, keeping a stable red hue while leaving the portrait fully opaque. The Funk retains its approved pink tint. Laser rays live inside the face square with an exclusion mask traced from the exact locked selected Funk sprite alpha; small gaps are closed and enclosed engraving highlights filled, so rays cannot cross the face, braids, fist or clothing. Original neutral and selected portrait bytes remain unchanged.
