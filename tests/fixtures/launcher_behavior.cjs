@@ -22,7 +22,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  elements.handoffGuidance.hidden=true;
  const ais=['chatgpt','gemini','claude'].map(ai=>new Element({ai}));
  const services=['spotify','youtube','apple'].map(service=>new Element({service}));
- const moods=['happy','angry','sad','weird','criminal','funky'].map(mood=>new Element({mood}));
+ const moods=['happy','angry','sad','weird','criminal','funky','desire','triumphant'].map(mood=>new Element({mood}));
  const launchMarkup=fs.readFileSync('launcher/index.html','utf8');
  const crateRegions=[...launchMarkup.matchAll(/data-crate-region="([^"]+)" data-continent="([^"]+)"/g)].map(m=>new Element({crateRegion:m[1],continent:m[2]}));
  const crateContinents=[...launchMarkup.matchAll(/data-crate-continent="([^"]+)"/g)].map(m=>new Element({crateContinent:m[1]}));
@@ -626,5 +626,18 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  const hardShared=harness(async()=>{},'?hard=1&mood=angry');
  assert.equal(hardShared.elements.goHard.attrs['aria-pressed'],'true','Shared URL restores TRY HARD');
  assert.match(hardShared.elements.prompt.textContent,/go angry hard/);
+ const pairCopies=[],pair=harness(async s=>pairCopies.push(s),'?mood=desire%20triumphant');
+ assert.equal(pair.elements.moodName.textContent,'DESIRE + TRIUMPH');
+ assert.equal(pair.moods.filter(m=>m.attrs['aria-pressed']==='true').length,2);
+ await pair.elements.goButton.click();
+ assert.match(pairCopies.at(-1),/go desire triumphant/);
+ assert.match(pairCopies.at(-1),/Combine both moods throughout one coherent playlist/);
+ assert.doesNotMatch(pairCopies.at(-1),/undefined/);
+ await pair.moods[0].click();assert.equal(pair.elements.moodName.textContent,'DESIRE + TRIUMPH');
+ await pair.moods[6].click();assert.equal(pair.elements.moodName.textContent,'TRIUMPH');
+ await pair.moods[0].click();assert.equal(pair.elements.moodName.textContent,'TRIUMPH + HAPPY');
+ await pair.elements.shuffleCrate.click();await pair.elements.undoShuffle.click();
+ assert.equal(pair.elements.moodName.textContent,'TRIUMPH + HAPPY');
+ assert.equal(harness(async()=>{},'?mood=bogus%20desire%20desire%20sad%20happy').elements.moodName.textContent,'DESIRE + SAD');
  console.log('PASS: mood selection, reset, current-copy handoff, setup invalidation, blocked clipboard, copy race');
 })().catch(e=>{console.error(e);process.exit(1)});
