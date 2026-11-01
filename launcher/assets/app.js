@@ -16,7 +16,7 @@ let goHard=false;
 const shufflePins={mood:false,pace:false,regions:false};
 const tempoNames={slow:"Slow",relaxed:"Relaxed",moderate:"Mid-tempo",brisk:"Brisk",fast:"Fast"};
 const tempoSteps=Object.keys(tempoNames);
-const moods=new Set(["go","happy","angry","sad","weird","criminal","funky"]);
+const moods=new Set(["go","happy","angry","sad","weird","criminal","funky","desire","triumphant"]);
 function stored(key){try{return localStorage.getItem(key)}catch(e){return null}}
 function store(key,v){try{localStorage.setItem(key,v)}catch(e){}}
 function status(message){const e=doc.getElementById("copyStatus");if(e)e.textContent=message}
@@ -87,10 +87,14 @@ function nextFreshCrateLens(){
 }
 const moodInterpretations={"happy":["communal celebration","mischievous play","quiet private contentment","relief after hardship","romantic buoyancy","ecstatic release"],"angry":["cold contempt","righteous protest","simmering resentment","betrayed intimacy","defiant solidarity","explosive catharsis"],"sad":["homesickness","grief","resignation","heartbreak","lonely urban drift","bittersweet acceptance"],"weird":["unstable tuning","interlocking or asymmetric time","surreal storytelling","homemade sound sources","radically edited form","uncanny restraint"],"criminal":["heists and criminal ingenuity","smuggling routes","fugitives and evasion","betrayal inside criminal networks","prison escapes","underworld codes and loyalty","criminal bravado and its consequences"]};
 let moodAngle="";
-const moodLabel=mood=>mood==="funky"?"The Funk":mood==="go"?"Surprise":mood[0].toUpperCase()+mood.slice(1);
+const singleMoodLabel=mood=>mood==="funky"?"The Funk":mood==="go"?"Surprise":mood[0].toUpperCase()+mood.slice(1);
+const moodParts=value=>value==="go"?[]:value.split(" ").filter(Boolean);
+const moodLabel=value=>moodParts(value).map(m=>m==="triumphant"?"Triumph":singleMoodLabel(m)).join(" + ")||"Surprise";
+moodInterpretations.desire=["romantic devotion","love and longing","unrequited love","tender intimacy"];
+moodInterpretations.triumphant=["earned victory","expansive release","heroic ascent","communal triumph"];
 moodInterpretations.funky=["unhurried pocket","springy rhythmic tension","interlocking ensemble parts","sparse displaced accents","propulsive electronic interplay","rhythmic call and response"];
 function moodDiscoveryBrief(mood){
- if(!moodInterpretations[mood])return "";
+ if(!moodParts(mood).some(m=>moodInterpretations[m]))return "";
  return moodAngle?"\nMood angle: "+moodAngle+".":"";
 }
 
@@ -115,7 +119,7 @@ function nextCrateSparkPhrase(){
 }
 // The skill owns curation policy; GO sends only current creative inputs and service.
 function goPrompt(ai,service,mood){
- const parts=[goCommand(ai,service,mood)];
+ const parts=[goCommand(ai,service,mood)];if(moodParts(mood).length===2)parts.push("Combine both moods throughout one coherent playlist; do not split the playlist into separate mood blocks.");
  if(goHard)parts.push("Curation mode: GO HARD. Use the skill\u0027s Deep Crate Protocol.");
  if(crateSelected.size)parts.push(crateRegionPrompt());
  const brief=moodDiscoveryBrief(mood);if(brief)parts.push(brief.trim());
@@ -364,7 +368,7 @@ let ai=(params.get("ai")||(isLegacyGemini?"gemini":stored("hmg-ai"))||"chatgpt")
 if(!defaultService[ai])ai="chatgpt";
 let service=(params.get("service")||(isLegacyGemini?"youtube":stored("hmg-service"))||defaultService[ai]).toLowerCase();
 if(!serviceNames[service])service=defaultService[ai];
-let mood=(params.get("mood")||"go").toLowerCase();if(!moods.has(mood))mood="go";
+let mood=(params.get("mood")||"go").toLowerCase();mood=[...new Set(moodParts(mood).filter(m=>moods.has(m)))].slice(0,2).join(" ")||"go";
 let tempo=params.get("tempo")||"";if(!Object.hasOwn(tempoNames,tempo))tempo="";
 // One GO is the complete curation and authorized publishing request.
 function updateHandoff(){
@@ -451,9 +455,9 @@ function renderLaunch(){
  const tempoSummary=doc.getElementById("tempoSummary");if(tempoSummary)tempoSummary.textContent=tempo?tempoNames[tempo]:"Any tempo";
  const tempoHelp=doc.getElementById("tempoHelp");if(tempoHelp)tempoHelp.textContent=tempo?tempoNames[tempo]+" pace. Choose Any to clear it.":"Any pace. The clerk can cope. Move the slider to choose.";
  if(anyTempo)anyTempo.setAttribute("aria-pressed",String(!tempo));
- doc.querySelectorAll("[data-mood]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.mood===mood)));
+ doc.querySelectorAll("[data-mood]").forEach(b=>b.setAttribute("aria-pressed",String(moodParts(mood).includes(b.dataset.mood))));
  const clerkNotes={happy:"Optimism. An ambitious brief.",angry:"For when everyone else is obviously the problem.",sad:"Melancholy. Filed under essential listening.",weird:"The neighbors may have questions.",funky:"The pocket has diplomatic immunity."};
- const moodHelp=doc.getElementById("moodHelp");if(moodHelp)moodHelp.textContent=mood==="criminal"?"Songs about crime. Artist reputations are not evidence.":mood==="go"?"No mood? We’ll use our judgment.":moodLabel(mood)+" selected. "+clerkNotes[mood];
+ const moodHelp=doc.getElementById("moodHelp");if(moodHelp)moodHelp.textContent=mood==="criminal"?"Songs about crime. Artist reputations are not evidence.":mood==="go"?"No mood? We’ll use our judgment.":moodLabel(mood)+" selected. "+(moodParts(mood).map(m=>clerkNotes[m]).filter(Boolean).join(" ")||"Pick up to two moods. Tap again to clear.");
  const e={prompt:doc.getElementById("prompt"),mood:doc.getElementById("moodName"),code:doc.getElementById("receiptCode"),open:doc.getElementById("openAi"),browser:doc.getElementById("browserAi")};
  if(!e.prompt)return;
  e.prompt.textContent=goPrompt(ai,service,mood);
@@ -463,7 +467,7 @@ function renderLaunch(){
  const summary=doc.getElementById("receiptSummary");if(summary)summary.textContent=aiNames[ai]+" · "+serviceNames[service]+" · "+moodLabel(mood)+(tempo?" · "+tempoNames[tempo]:"")+" · 12 tracks"+(includeCover?" · cover art":"")+(goHard?" · deep crate":"");
  const regions=doc.getElementById("receiptRegions");if(regions)regions.textContent="CRATES / "+(crateSelected.size?crateRegions.filter(r=>crateSelected.has(r.id)).map(r=>r.label).join(" · "):"Worldwide");
  const ticketShort=doc.getElementById("selectionTicketShort");
- if(ticketShort)ticketShort.textContent=ticketAiCodes[ai]+" › "+ticketServiceCodes[service]+" · "+ticketMoodCodes[mood]+" · "+(tempo?ticketTempoCodes[tempo]:"ANY");
+ if(ticketShort)ticketShort.textContent=ticketAiCodes[ai]+" › "+ticketServiceCodes[service]+" · "+(moodParts(mood).map(m=>ticketMoodCodes[m]||({desire:"LOVE",triumphant:"WIN"})[m]).join("+")||"SURP")+" · "+(tempo?ticketTempoCodes[tempo]:"ANY");
  const ticketRegionShort=doc.getElementById("selectionTicketRegionShort");
  if(ticketRegionShort){
   ticketRegionShort.textContent=shortTicketRegions()+" · ART:"+(includeCover?"ON":"OFF")+" · HARD:"+(goHard?"ON":"OFF");
@@ -601,7 +605,7 @@ async function copyGo(){
  const button=doc.getElementById("goButton");
  if(button&&button.disabled)return;
  // Each GO explores a different lane; preview and copied request stay identical.
- moodAngle=moodInterpretations[mood]?nextDiscoveryCue(moodInterpretations[mood],"ghg-mood-angles-v1-"+mood):"";freshCrateLens="";crateSparkPhrase=nextCrateSparkPhrase();renderLaunch();
+ moodAngle=moodParts(mood).map(m=>moodInterpretations[m]?nextDiscoveryCue(moodInterpretations[m],"ghg-mood-angles-v1-"+m):"").filter(Boolean).join(" + ");freshCrateLens="";crateSparkPhrase=nextCrateSparkPhrase();renderLaunch();
  const prompt=goPrompt(ai,service,mood);
  if(button){button.disabled=true;button.setAttribute("aria-busy","true");button.setAttribute("data-copy-state","copying")}
  copiedPrompt=null;updateHandoff();
@@ -615,7 +619,11 @@ async function copyGo(){
  else{const details=doc.getElementById("promptDetails");if(details)details.open=true;status("Clipboard blocked. Copy the full prompt in the receipt below, then use its manual Open link.")}
 }
 doc.querySelectorAll("[data-mood]").forEach(b=>b.addEventListener("click",()=>{
- mood=mood===b.dataset.mood?"go":b.dataset.mood;copiedPrompt=null;selectionChanged();
+ const selected=moodParts(mood),id=b.dataset.mood;
+ if(selected.includes(id))selected.splice(selected.indexOf(id),1);
+ else if(selected.length<2)selected.push(id);
+ else{const help=doc.getElementById("moodHelp");if(help)help.textContent="Two moods selected. Clear one before adding another.";return}
+ mood=selected.join(" ")||"go";copiedPrompt=null;selectionChanged();
 }));
 doc.querySelectorAll("[data-crate-region]").forEach(b=>{
  b.addEventListener("click",()=>toggleCrateRegion(b.dataset.crateRegion));

@@ -4,7 +4,7 @@
 
 Backend prototype: Desire romantic-content gate, Triumphant musical-effect criteria and explicit combined-mood handling. Plain commands work independently of front-end buttons. Existing six portraits and live controls are not replaced.
 
-Portraits: neutral torch-singer Desire and fantasy paladin/ranger Triumphant are proposals pending listener approval. Derive selected expressions only after identities are locked. Use canonical cast as style reference, exact portrait registration, complete hair crowns/headroom, single petrol ink with alpha negative space, no opaque paper highlights or background halos. Inspect at actual mobile size on mustard stock before approving production assets. Never regenerate existing characters as substitutes.
+Portraits approved: smiling male Desire with heart-eye kiss selected state; laurel-crowned Triumph with victorious selected expression. Use canonical cast as style reference, exact portrait registration, complete hair crowns/headroom, single petrol ink with alpha negative space, no opaque paper highlights or background halos. Inspect at actual mobile size on mustard stock before approving production assets. Never regenerate existing characters as substitutes.
 
 ## Parked, must revisit
 
@@ -12,8 +12,11 @@ Portraits: neutral torch-singer Desire and fantasy paladin/ranger Triumphant are
 
 ## Next front-end phase
 
-Approve both neutral portraits, then derive selected states of the same identities with matched scale and geometry. Add Desire/Triumphant to Lab and support up to two moods without row-dependent combinations. Carry choices through prompts, receipts, saved requests, shuffle/undo, accessibility and discovery-route compatibility. Preserve PWA/main and Lab isolation until reviewed.
+Approved pairs are integrated locally into PWA and Lab with up to two moods without row-dependent combinations. Carry choices through prompts, receipts, saved requests, shuffle/undo, accessibility and discovery-route compatibility. Preserve PWA/main and Lab isolation until reviewed.
 
 ## Evaluation
 
 Test single moods, supported intersections and conflicting content constraints. Check recording-level evidence and sources rather than genre shortcuts. Synthetic contract cases are not proof of actual musical quality. Run real listening trials before declaring the mood behavior validated.
+
+## Approved cast integration
+Desire: approved male engraving with heart eyes and gentle kiss on selection. Triumph: laurel-crowned male, composed neutral and victorious selected. Desire is top right; Triumph bottom right. Original six plates remain unchanged. Frontend supports up to two moods, coherent intersection in prompts, shared URL restoration, receipts, shuffle pin/undo and native saved prompt handoff. Era slider remains parked and required. Production release and APK rebuild remain separate release steps.
