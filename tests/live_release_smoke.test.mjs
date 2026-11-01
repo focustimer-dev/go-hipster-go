@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { verifyAsset, verifyCommit, criticalAssets } from '../scripts/smoke_live.mjs';
+import { verifyAsset, verifyCommit, verifyMoodSpriteCSS, criticalAssets } from '../scripts/smoke_live.mjs';
 
 test('a version label cannot conceal stale asset bytes', () => {
   const label = '/assets/app.js?v=current';
@@ -44,4 +44,12 @@ test('Worker serves the setup directory without an HTML canonicalization loop', 
   const redirect = await worker.fetch(new Request('https://example.org/setup?ai=gemini'), env);
   assert.equal(redirect.status, 308);
   assert.equal(redirect.headers.get('location'), 'https://example.org/setup/');
+});
+
+test('clean portrait CSS URL recognition rejects stale sprites, not correct URLs', () => {
+  const neutral = 'url("https://hipster-go.samelling.workers.dev/editions/gig-poster/assets/moods-neutral-ink-v2.webp")';
+  const selected = 'url("https://hipster-go.samelling.workers.dev/editions/gig-poster/assets/moods-selected-ink-v2.webp")';
+  assert.doesNotThrow(() => verifyMoodSpriteCSS(neutral, selected));
+  assert.throws(() => verifyMoodSpriteCSS('none', selected), /Clean neutral mood art is not active/);
+  assert.throws(() => verifyMoodSpriteCSS(neutral, 'none'), /Clean selected mood art is not active/);
 });
