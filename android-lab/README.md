@@ -1,7 +1,7 @@
 # Hipster GO Lab
 
 A separate native Android experiment. Package `work.samelling.hipstergo.lab`,
-version `0.4.0`, Android 7+. It installs alongside the production APK and PWA.
+version `0.9.0`, Android 7+. It installs alongside the production APK and PWA.
 
 ## Isolation
 
@@ -270,3 +270,7 @@ Version 1 sprites and source sheets remain available for regression comparison.
 Each explicit GO draws one stable v1 route ID from a shuffled 24-route deck. Lab stores only remaining IDs and the last 30 draws locally. It uses the whole deck before reuse, avoids the preceding family when possible, and avoids the last eight IDs after reshuffling when possible. Preview/Open/Copy again do not draw. A supplied musical reference skips random routing. The old three-part seed is omitted in Lab; the skill owns route interpretation and must be updated to 3.10.0. Unknown routes fall back honestly. Clear Android app data to reset the deck. This varies requests, not a guarantee of different recordings.
 
 Run `node scripts/test_lab_discovery_routes.cjs` for deck persistence and exhaustion checks.
+
+## Lab 0.9 — refreshed production launcher
+
+Build a new isolated Lab APK from the production PWA at the November 1 clean-art verified release, preserving native handoffs, preferences, saved requests, inspiration and experimental discovery routes. All eight mood controls appear, with transparent approved portraits for the original six and unchanged Desire/Triumph portraits. The APK bundles this snapshot locally and does not automatically receive future Cloudflare PWA updates. A new APK must be signed with the existing private keystore and installed over the previous Lab (same application ID and signer) to retain data. The Lab remains a separate experiment, not a production Android release.
