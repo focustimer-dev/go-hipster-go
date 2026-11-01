@@ -27,3 +27,21 @@ test('phone geometry rejects overflow, undersized targets and overlap', () => {
   assert.throws(() => verifyGeometry({ clientWidth: 390, scrollWidth: 390, targets: [target('Shuffle', 0, 0), target('Pin', 30, 0)] }, 'phone'), /overlaps/);
   assert.throws(() => verifyGeometry({ clientWidth: 390, scrollWidth: 390, targets: [target('Pin', 370, 0)] }, 'phone'), /outside the page/);
 });
+
+test('Worker serves the setup directory without an HTML canonicalization loop', async () => {
+  const { default: worker } = await import('../cloudflare/worker.js');
+  globalThis.RELEASE_SHA = 'test-release';
+  let assetURL;
+  const env = { ASSETS: { fetch: async request => {
+    assetURL = new URL(request.url);
+    return new Response('setup page', { status: 200, headers: { 'content-type': 'text/html' } });
+  }} };
+  const response = await worker.fetch(new Request('https://example.org/setup/?ai=gemini'), env);
+  assert.equal(response.status, 200);
+  assert.equal(assetURL.pathname, '/setup/', 'ASSETS must receive canonical directory path, not /setup/index.html');
+  assert.equal(assetURL.search, '?ai=gemini');
+  assert.equal(response.headers.get('x-ghg-release'), 'test-release');
+  const redirect = await worker.fetch(new Request('https://example.org/setup?ai=gemini'), env);
+  assert.equal(redirect.status, 308);
+  assert.equal(redirect.headers.get('location'), 'https://example.org/setup/');
+});
