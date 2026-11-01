@@ -48,8 +48,23 @@ class MoodInkTests(unittest.TestCase):
             self.assertFalse(excluded(x,y),'Background must still show laser linework')
         css=(ART.parent/'mood-portraits.css').read_text()
         self.assertIn('mask-mode:luminance',css)
-        self.assertIn('background:#efd0d0',css,'Red cannot mix with the yellow paper')
+        self.assertIn('background:#d64b30',css,'Use the approved solid vermilion stock')
         self.assertNotIn('background:rgb(214 75 48 / 22%)',css)
+
+    def test_desire_heart_color_mask_preserves_source_and_placement(self):
+        svg=(ART/'desire-heart-ink-mask.svg').read_text()
+        self.assertIn(hashlib.sha256((ART/'desire-selected-v1.png').read_bytes()).hexdigest(),svg)
+        spans=[tuple(map(int,m)) for m in re.findall(r'M(\d+) (\d+)h(\d+)v1H\d+z',svg)]
+        self.assertTrue(spans)
+        self.assertTrue(all(400<=x<800 and 515<=y<=650 and width>0 for x,y,width in spans),'Only heart ink can be recolored')
+        self.assertTrue(any(x<=470<x+width and y==570 for x,y,width in spans))
+        self.assertTrue(any(x<=680<x+width and y==570 for x,y,width in spans))
+        css=(ART.parent/'mood-portraits.css').read_text()
+        self.assertIn('background:var(--funk-selected-paper)',css)
+        page=(ROOT/'launcher/editions/gig-poster/index.html').read_text()
+        self.assertIn('id="selectedMoodPetrol"',page)
+        self.assertIn('class="desire-hearts" aria-hidden="true"',page)
+        self.assertNotIn('portrait-underprint',page)
 
     def test_current_pages_preload_ink_sprites(self):
         page=(ROOT/'launcher/editions/gig-poster/index.html').read_text()

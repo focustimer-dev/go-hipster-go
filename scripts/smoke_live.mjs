@@ -15,6 +15,8 @@ export const artworkAssets = new Map([
   ['/editions/gig-poster/mood-portraits.css', 'launcher/editions/gig-poster/mood-portraits.css'],
   ['/editions/gig-poster/assets/moods-neutral-ink-v2.webp', 'launcher/editions/gig-poster/assets/moods-neutral-ink-v2.webp'],
   ['/editions/gig-poster/assets/moods-selected-ink-v2.webp', 'launcher/editions/gig-poster/assets/moods-selected-ink-v2.webp'],
+  ['/editions/gig-poster/assets/desire-heart-ink-mask.svg', 'launcher/editions/gig-poster/assets/desire-heart-ink-mask.svg'],
+  ['/editions/gig-poster/assets/funk-laser-exclusion.svg', 'launcher/editions/gig-poster/assets/funk-laser-exclusion.svg'],
 ]);
 export function verifyAsset(actual, expected, label) {
   const digest = bytes => createHash('sha256').update(bytes).digest('hex');
@@ -173,6 +175,24 @@ export async function checkRelease(browser, baseURL, expectedCommit, sourceCache
     assert.ok(await page.getByRole('button', { name: 'Remove North Africa from listening regions', exact: true }).isVisible(), 'Atlas did not create its stamp');
     await checkGeometry(page, `${profile.name}: expanded atlas`, `${mainTargets}, .crate-continents button, .crate-regions button, #crateGeoClear`);
     assert.equal(await page.locator('#promptReceipt').getAttribute('data-copy-state'), 'idle', 'Manual region changes must invalidate the copied receipt');
+    // Check the approved selected treatment in the actually served page.
+    await page.locator('[data-mood="angry"]').click();
+    await page.locator('[data-mood="desire"]').click();
+    await page.locator('[data-mood="funky"]').click();
+    await page.waitForFunction(() => getComputedStyle(document.querySelector('.desire-hearts')).opacity === '1');
+    const selectedColors = await page.evaluate(() => ({
+      hearts: getComputedStyle(document.querySelector('.desire-hearts')).backgroundColor,
+      funk: getComputedStyle(document.querySelector('[data-mood="funky"]')).backgroundColor,
+      desire: getComputedStyle(document.querySelector('[data-mood="desire"]')).backgroundColor,
+      ink: getComputedStyle(document.querySelector('[data-mood="desire"] .face')).filter,
+    }));
+    assert.equal(selectedColors.hearts, selectedColors.funk, 'Desire hearts must match Funk background');
+    assert.equal(selectedColors.desire, 'rgb(214, 75, 48)', 'Selected stock must remain true vermilion');
+    assert.match(selectedColors.ink, /selectedMoodPetrol/, 'Approved deeper petrol is not active');
+    await verifyStableShuffleLayout('mood selection');
+    await page.locator('[data-mood="desire"]').click();
+    await page.waitForFunction(() => getComputedStyle(document.querySelector('.desire-hearts')).opacity === '0');
+
     const manual = await page.goto(`${origin}/setup/?ai=gemini&service=youtube`, { waitUntil: 'networkidle' });
     assert.equal(manual.status(), 200, 'Manual did not load');
     await applyTextScale();
