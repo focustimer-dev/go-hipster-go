@@ -1,0 +1,6 @@
+<resources>
+<style name="LabTheme" parent="android:style/Theme.Material.Light.NoActionBar">
+<item name="android:colorAccent">#103135</item><item name="android:colorBackground">#dfb045</item><item name="android:windowBackground">#dfb045</item><item name="android:textColorPrimary">#103135</item><item name="android:textColorSecondary">#103135</item><item name="android:windowLightStatusBar">false</item><item name="android:windowLightNavigationBar">false</item><item name="android:statusBarColor">#103135</item><item name="android:navigationBarColor">#103135</item><item name="android:alertDialogTheme">@style/LabDialog</item>
+</style>
+<style name="LabDialog" parent="android:style/Theme.Material.Light.Dialog.Alert"><item name="android:colorAccent">#103135</item><item name="android:colorBackground">#dfb045</item><item name="android:textColorPrimary">#103135</item><item name="android:textColorSecondary">#103135</item></style>
+</resources>

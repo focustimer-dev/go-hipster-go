@@ -7,10 +7,11 @@ body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[aria-p
 body.gig-poster .mood-grid .mood .face::before,
 body.gig-poster .mood-grid .mood .face::after{
  content:"";position:absolute;inset:0;background-repeat:no-repeat;background-size:300% 200%;
- background-position:var(--mood-position);pointer-events:none;
+ background-position:var(--mood-position);pointer-events:none;filter:none;transition:opacity 160ms ease-out;
 }
-body.gig-poster .mood-grid .mood .face::before{background-image:url('/editions/gig-poster/assets/moods-neutral-approved-v1.webp');filter:url(#ghg-mood-paper)}
-body.gig-poster .mood-grid .mood .face::after{background-image:url('/editions/gig-poster/assets/moods-selected-approved-v1.webp');filter:url(#ghg-mood-selected);opacity:0;transition:opacity 160ms ease-out}
+body.gig-poster .mood-grid .mood .face::before{background-image:url('/editions/gig-poster/assets/moods-neutral-ink-v2.webp');opacity:1}
+body.gig-poster .mood-grid .mood .face::after{background-image:url('/editions/gig-poster/assets/moods-selected-ink-v2.webp');opacity:0}
+body.gig-poster .mood-grid .mood[aria-pressed=true] .face::before{opacity:0}
 body.gig-poster .mood-grid .mood[aria-pressed=true] .face::after{opacity:1}
 body.gig-poster .mood[data-mood=happy]{--mood-position:0% 0%}
 body.gig-poster .mood[data-mood=angry]{--mood-position:50% 0%}
@@ -18,11 +19,26 @@ body.gig-poster .mood[data-mood=sad]{--mood-position:100% 0%}
 body.gig-poster .mood[data-mood=weird]{--mood-position:0% 100%}
 body.gig-poster .mood[data-mood=criminal]{--mood-position:50% 100%}
 body.gig-poster .mood[data-mood=funky]{--mood-position:100% 100%}
-/* Hide comparison-sheet margins without rescaling either expression. */
-body.gig-poster .mood[data-mood=happy] .face::before,body.gig-poster .mood[data-mood=happy] .face::after{clip-path:inset(6% 6% 8% 6%)}
-body.gig-poster .mood:is([data-mood=criminal],[data-mood=funky]) .face::before,body.gig-poster .mood:is([data-mood=criminal],[data-mood=funky]) .face::after{clip-path:inset(6% 6% 21% 6%)}
+/* Keep the last key borderless in both states: its square portrait must not shrink. */
+body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood:last-child{border-right:0}
+/* Paper and comparison-sheet margins are removed in the shared alpha assets. */
 body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood{transition:background-color 160ms ease-out,color 160ms ease-out}
 body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[aria-pressed=true]{background:#a83223;color:#f2e5c7;box-shadow:inset 0 0 0 2px #f2e5c7}
 body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[aria-pressed=true] .word{background:transparent;color:#f2e5c7;padding:0;text-decoration:underline;text-underline-offset:3px}
 body.gig-poster .mood-grid .mood:focus-visible{outline:3px solid var(--ink);outline-offset:3px;z-index:1}
-@media(prefers-reduced-motion:reduce){body.gig-poster .mood-grid .mood,body.gig-poster .mood-grid .mood .face::after{transition:none!important}}
+@media(prefers-reduced-motion:reduce){body.gig-poster .mood-grid .mood,body.gig-poster .mood-grid .mood .face::before,body.gig-poster .mood-grid .mood .face::after{transition:none!important}}
+
+/* Eight-mood cast; original six sprite plates remain locked. */
+body.gig-poster .mood-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+body.gig-poster .mood-grid .mood .word{font-size:clamp(12px,3.2vw,24px)}
+body.gig-poster .mood-grid .mood[aria-pressed=true]{background:#d64b30}
+body.gig-poster .mood-grid .mood[data-mood=desire] .face::before{background-image:url('/editions/gig-poster/assets/desire-neutral-v1.png');background-size:contain;background-position:center;background-repeat:no-repeat;filter:url(#referenceInk);transform:translateY(-1%) scale(.90);clip-path:inset(0 0 5%)}
+body.gig-poster .mood-grid .mood[data-mood=desire] .face::after{background-image:url('/editions/gig-poster/assets/desire-selected-v1.png');background-size:contain;background-position:center;background-repeat:no-repeat;filter:url(#referenceInk);transform:translateY(-1%) scale(.90);clip-path:inset(0 0 5%)}
+body.gig-poster .mood-grid .mood[data-mood=triumphant] .face::before{background-image:url('/editions/gig-poster/assets/triumph-neutral-v1.png');background-size:contain;background-position:center;background-repeat:no-repeat;filter:url(#alphaInk);transform:translateY(-7%) scale(.90);clip-path:inset(0 0 5%)}
+body.gig-poster .mood-grid .mood[data-mood=triumphant] .face::after{background-image:url('/editions/gig-poster/assets/triumph-selected-v1.png');background-size:contain;background-position:center;background-repeat:no-repeat;filter:url(#alphaInk);transform:translateY(-7%) scale(.90);clip-path:inset(0 0 5%)}
+body.gig-poster .mood-grid .mood[aria-pressed=true]:is([data-mood=desire],[data-mood=triumphant]) .face::before{opacity:0}
+
+body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood:nth-child(n){border-right:1px solid var(--ink);border-bottom:0}
+body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood:nth-child(4n){border-right:0}
+body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood:nth-child(-n+4){border-bottom:1px solid var(--ink)}

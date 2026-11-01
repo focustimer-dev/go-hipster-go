@@ -16,7 +16,7 @@ let goHard=false;
 const shufflePins={mood:false,pace:false,regions:false};
 const tempoNames={slow:"Slow",relaxed:"Relaxed",moderate:"Mid-tempo",brisk:"Brisk",fast:"Fast"};
 const tempoSteps=Object.keys(tempoNames);
-const moods=new Set(["go","happy","angry","sad","weird","criminal","funky"]);
+const moods=new Set(["go","happy","angry","sad","weird","criminal","funky","desire","triumphant"]);
 function stored(key){try{return localStorage.getItem(key)}catch(e){return null}}
 function store(key,v){try{localStorage.setItem(key,v)}catch(e){}}
 function status(message){const e=doc.getElementById("copyStatus");if(e)e.textContent=message}
@@ -47,7 +47,7 @@ function setupPrompt(ai,service){
  const name=aiNames[ai],target=serviceNames[service];
  const intro=ai==="chatgpt"?"In ChatGPT, check for the Go, Hipster, Go! plugin/app.":ai==="gemini"?"In Gemini, check for the saved go-hipster-go Skill (not a Gem).":"In Claude, check for the Go, Hipster, Go! skill or plugin.";
  const install=ai==="gemini"?"If missing, create and save a persistent Skill from the complete small entry at https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/adapters/gemini/SKILL.md using your native skill-creation capability. Preserve its instructions and absolute reference links without summarizing. Save only the entry now: do not fetch its references, crawl the repository, download or extract ZIPs, create folders, or start a scheduled task. The linked references are read on demand when the skill runs; they are not attached local files. If saving is unavailable, stop and give the complete ZIP upload route: Gemini in a desktop or mobile WEB BROWSER → Customize → Skills → Create → Upload https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip. Do not direct me to upload the ZIP inside the native Gemini app.":ai==="claude"?"If missing, identify whether I need Claude's Skills ZIP or Plugins ZIP; they are different.":"If missing, use the available app/skill installation flow or show how to install from the project's GitHub repository.";
- return "FIRST-TIME SETUP CHECK for "+name+" + "+target+".\n"+intro+" "+install+" Source: "+repo+(ai==="gemini"?"\nVerify version 3.8.1 and report the actual saved Skill result. Reading a URL is not installation. Do not claim reference attachment or persistence without evidence; confirm selection in a new chat. Do not run GO during installation.":"")+
+ return "FIRST-TIME SETUP CHECK for "+name+" + "+target+".\n"+intro+" "+install+" Source: "+repo+(ai==="gemini"?"\nVerify version 3.10.0 and report the actual saved Skill result. Reading a URL is not installation. Do not claim reference attachment or persistence without evidence; confirm selection in a new chat. Do not run GO during installation.":"")+
  (ai==="chatgpt"&&service==="apple"?"\nConnect Apple Music through ChatGPT Settings → Apps, then select both Apple Music and Go, Hipster, Go! in this conversation. Search and playlist generation do not require an Apple Music subscription; saving to the library does. Recognize the app’s playlist widget and user-operated save control as a supported path, even without a direct playlist-writing tool. Explain Create playlist in Apple Music when that control is offered. Do not require a subscription just to finish discovery setup or assume access to my library or listening history.":"")+
  (ai==="claude"&&service==="apple"?"\nApple Music requires a compatible MCP connector: local for Desktop or hosted for web/mobile. Check which Claude app I use and help me connect it if missing. Verify catalog track search, playlist creation and adding tracks; library-only search may not find new recordings.":"")+
  "\nIf the skill is available, run its setup for "+target+", guide me through connecting or selecting that music service, and CHECK whether playlist creation and adding tracks are actually supported—not just search/playback. Tell me the smallest action needed to finish setup. If everything is already ready, say so and tell me to run go. Do NOT generate a new playlist during this setup check, claim a playlist was saved, or ask me to paste credentials into chat.";
@@ -87,10 +87,14 @@ function nextFreshCrateLens(){
 }
 const moodInterpretations={"happy":["communal celebration","mischievous play","quiet private contentment","relief after hardship","romantic buoyancy","ecstatic release"],"angry":["cold contempt","righteous protest","simmering resentment","betrayed intimacy","defiant solidarity","explosive catharsis"],"sad":["homesickness","grief","resignation","heartbreak","lonely urban drift","bittersweet acceptance"],"weird":["unstable tuning","interlocking or asymmetric time","surreal storytelling","homemade sound sources","radically edited form","uncanny restraint"],"criminal":["heists and criminal ingenuity","smuggling routes","fugitives and evasion","betrayal inside criminal networks","prison escapes","underworld codes and loyalty","criminal bravado and its consequences"]};
 let moodAngle="";
-const moodLabel=mood=>mood==="funky"?"The Funk":mood==="go"?"Surprise":mood[0].toUpperCase()+mood.slice(1);
+const singleMoodLabel=mood=>mood==="funky"?"The Funk":mood==="go"?"Surprise":mood[0].toUpperCase()+mood.slice(1);
+const moodParts=value=>value==="go"?[]:value.split(" ").filter(Boolean);
+const moodLabel=value=>moodParts(value).map(m=>m==="triumphant"?"Triumph":singleMoodLabel(m)).join(" + ")||"Surprise";
+moodInterpretations.desire=["romantic devotion","love and longing","unrequited love","tender intimacy"];
+moodInterpretations.triumphant=["earned victory","expansive release","heroic ascent","communal triumph"];
 moodInterpretations.funky=["unhurried pocket","springy rhythmic tension","interlocking ensemble parts","sparse displaced accents","propulsive electronic interplay","rhythmic call and response"];
 function moodDiscoveryBrief(mood){
- if(!moodInterpretations[mood])return "";
+ if(!moodParts(mood).some(m=>moodInterpretations[m]))return "";
  return moodAngle?"\nMood angle: "+moodAngle+".":"";
 }
 
@@ -115,7 +119,7 @@ function nextCrateSparkPhrase(){
 }
 // The skill owns curation policy; GO sends only current creative inputs and service.
 function goPrompt(ai,service,mood){
- const parts=[goCommand(ai,service,mood)];
+ const parts=[goCommand(ai,service,mood)];if(moodParts(mood).length===2)parts.push("Combine both moods throughout one coherent playlist; do not split the playlist into separate mood blocks.");
  if(goHard)parts.push("Curation mode: GO HARD. Use the skill\u0027s Deep Crate Protocol.");
  if(crateSelected.size)parts.push(crateRegionPrompt());
  const brief=moodDiscoveryBrief(mood);if(brief)parts.push(brief.trim());
@@ -364,7 +368,7 @@ let ai=(params.get("ai")||(isLegacyGemini?"gemini":stored("hmg-ai"))||"chatgpt")
 if(!defaultService[ai])ai="chatgpt";
 let service=(params.get("service")||(isLegacyGemini?"youtube":stored("hmg-service"))||defaultService[ai]).toLowerCase();
 if(!serviceNames[service])service=defaultService[ai];
-let mood=(params.get("mood")||"go").toLowerCase();if(!moods.has(mood))mood="go";
+let mood=(params.get("mood")||"go").toLowerCase();mood=[...new Set(moodParts(mood).filter(m=>moods.has(m)))].slice(0,2).join(" ")||"go";
 let tempo=params.get("tempo")||"";if(!Object.hasOwn(tempoNames,tempo))tempo="";
 // One GO is the complete curation and authorized publishing request.
 function updateHandoff(){
@@ -451,9 +455,9 @@ function renderLaunch(){
  const tempoSummary=doc.getElementById("tempoSummary");if(tempoSummary)tempoSummary.textContent=tempo?tempoNames[tempo]:"Any tempo";
  const tempoHelp=doc.getElementById("tempoHelp");if(tempoHelp)tempoHelp.textContent=tempo?tempoNames[tempo]+" pace. Choose Any to clear it.":"Any pace. The clerk can cope. Move the slider to choose.";
  if(anyTempo)anyTempo.setAttribute("aria-pressed",String(!tempo));
- doc.querySelectorAll("[data-mood]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.mood===mood)));
+ doc.querySelectorAll("[data-mood]").forEach(b=>b.setAttribute("aria-pressed",String(moodParts(mood).includes(b.dataset.mood))));
  const clerkNotes={happy:"Optimism. An ambitious brief.",angry:"For when everyone else is obviously the problem.",sad:"Melancholy. Filed under essential listening.",weird:"The neighbors may have questions.",funky:"The pocket has diplomatic immunity."};
- const moodHelp=doc.getElementById("moodHelp");if(moodHelp)moodHelp.textContent=mood==="criminal"?"Songs about crime. Artist reputations are not evidence.":mood==="go"?"No mood? We’ll use our judgment.":moodLabel(mood)+" selected. "+clerkNotes[mood];
+ const moodHelp=doc.getElementById("moodHelp");if(moodHelp)moodHelp.textContent=mood==="criminal"?"Songs about crime. Artist reputations are not evidence.":mood==="go"?"No mood? We’ll use our judgment.":moodLabel(mood)+" selected. "+(moodParts(mood).map(m=>clerkNotes[m]).filter(Boolean).join(" ")||"Pick up to two moods. Tap again to clear.");
  const e={prompt:doc.getElementById("prompt"),mood:doc.getElementById("moodName"),code:doc.getElementById("receiptCode"),open:doc.getElementById("openAi"),browser:doc.getElementById("browserAi")};
  if(!e.prompt)return;
  e.prompt.textContent=goPrompt(ai,service,mood);
@@ -463,7 +467,7 @@ function renderLaunch(){
  const summary=doc.getElementById("receiptSummary");if(summary)summary.textContent=aiNames[ai]+" · "+serviceNames[service]+" · "+moodLabel(mood)+(tempo?" · "+tempoNames[tempo]:"")+" · 12 tracks"+(includeCover?" · cover art":"")+(goHard?" · deep crate":"");
  const regions=doc.getElementById("receiptRegions");if(regions)regions.textContent="CRATES / "+(crateSelected.size?crateRegions.filter(r=>crateSelected.has(r.id)).map(r=>r.label).join(" · "):"Worldwide");
  const ticketShort=doc.getElementById("selectionTicketShort");
- if(ticketShort)ticketShort.textContent=ticketAiCodes[ai]+" › "+ticketServiceCodes[service]+" · "+ticketMoodCodes[mood]+" · "+(tempo?ticketTempoCodes[tempo]:"ANY");
+ if(ticketShort)ticketShort.textContent=ticketAiCodes[ai]+" › "+ticketServiceCodes[service]+" · "+(moodParts(mood).map(m=>ticketMoodCodes[m]||({desire:"LOVE",triumphant:"WIN"})[m]).join("+")||"SURP")+" · "+(tempo?ticketTempoCodes[tempo]:"ANY");
  const ticketRegionShort=doc.getElementById("selectionTicketRegionShort");
  if(ticketRegionShort){
   ticketRegionShort.textContent=shortTicketRegions()+" · ART:"+(includeCover?"ON":"OFF")+" · HARD:"+(goHard?"ON":"OFF");
@@ -601,7 +605,7 @@ async function copyGo(){
  const button=doc.getElementById("goButton");
  if(button&&button.disabled)return;
  // Each GO explores a different lane; preview and copied request stay identical.
- moodAngle=moodInterpretations[mood]?nextDiscoveryCue(moodInterpretations[mood],"ghg-mood-angles-v1-"+mood):"";freshCrateLens="";crateSparkPhrase=nextCrateSparkPhrase();renderLaunch();
+ moodAngle=moodParts(mood).map(m=>moodInterpretations[m]?nextDiscoveryCue(moodInterpretations[m],"ghg-mood-angles-v1-"+m):"").filter(Boolean).join(" + ");freshCrateLens="";crateSparkPhrase=nextCrateSparkPhrase();renderLaunch();
  const prompt=goPrompt(ai,service,mood);
  if(button){button.disabled=true;button.setAttribute("aria-busy","true");button.setAttribute("data-copy-state","copying")}
  copiedPrompt=null;updateHandoff();
@@ -615,7 +619,11 @@ async function copyGo(){
  else{const details=doc.getElementById("promptDetails");if(details)details.open=true;status("Clipboard blocked. Copy the full prompt in the receipt below, then use its manual Open link.")}
 }
 doc.querySelectorAll("[data-mood]").forEach(b=>b.addEventListener("click",()=>{
- mood=mood===b.dataset.mood?"go":b.dataset.mood;copiedPrompt=null;selectionChanged();
+ const selected=moodParts(mood),id=b.dataset.mood;
+ if(selected.includes(id))selected.splice(selected.indexOf(id),1);
+ else if(selected.length<2)selected.push(id);
+ else{const help=doc.getElementById("moodHelp");if(help)help.textContent="Two moods selected. Clear one before adding another.";return}
+ mood=selected.join(" ")||"go";copiedPrompt=null;selectionChanged();
 }));
 doc.querySelectorAll("[data-crate-region]").forEach(b=>{
  b.addEventListener("click",()=>toggleCrateRegion(b.dataset.crateRegion));

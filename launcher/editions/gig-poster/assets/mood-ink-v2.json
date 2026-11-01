@@ -1,0 +1,314 @@
+{
+  "source_commit": "40b20e5e95a1d9318114ca8c9a1ae75a19ccb734",
+  "paper_level": 244,
+  "ink_level": 25,
+  "noise_floor": 0.025,
+  "ink_rgb": [
+    16,
+    49,
+    53
+  ],
+  "cells": [
+    "happy",
+    "angry",
+    "sad",
+    "weird",
+    "criminal",
+    "funky"
+  ],
+  "source_hashes": {
+    "neutral": "fc61de6740b8ad4f909c561bb3b34b2d6e5d9347b84cc9fcb2387f425dd5c794",
+    "selected": "f45fa9c3d5915723f393e71a7ee8cb26d11c3931ec533fd8b98f6ace74625a72"
+  },
+  "roi": {
+    "neutral": [
+      [
+        19,
+        49,
+        496,
+        466
+      ],
+      [
+        18,
+        56,
+        496,
+        458
+      ],
+      [
+        18,
+        47,
+        496,
+        454
+      ],
+      [
+        19,
+        56,
+        496,
+        447
+      ],
+      [
+        18,
+        47,
+        496,
+        416
+      ],
+      [
+        18,
+        55,
+        496,
+        416
+      ]
+    ],
+    "selected": [
+      [
+        28,
+        24,
+        496,
+        459
+      ],
+      [
+        18,
+        56,
+        496,
+        458
+      ],
+      [
+        18,
+        54,
+        496,
+        449
+      ],
+      [
+        19,
+        56,
+        496,
+        447
+      ],
+      [
+        25,
+        53,
+        496,
+        416
+      ],
+      [
+        18,
+        55,
+        496,
+        416
+      ]
+    ]
+  },
+  "output_hashes": {
+    "neutral": "d51203d8a3b84cb76e246b5b9322cd17625da07624692a1d43ae32c4f981ab74",
+    "selected": "cf29eeacb28de295141672a1807b7784f1251435cfb9efaed19b0533f03cdbfc"
+  },
+  "frame_rules": {
+    "min_alpha": 3,
+    "max_alpha": 100,
+    "min_length": 160,
+    "perimeter_top": 65,
+    "perimeter_bottom": 435,
+    "perimeter_left": 35,
+    "perimeter_right": 480,
+    "dilation_pixels": 1
+  },
+  "crown_patches": {
+    "neutral": {
+      "file": "mood-crowns-neutral-v2.png",
+      "sha256": "8042d7a0fd7cd969f6b01ed100b831b8f1590c68c50ac950e87f6e91af39aedb",
+      "rows": 80
+    },
+    "selected": {
+      "file": "mood-crowns-selected-v2.png",
+      "sha256": "092c0c896a32a38b6e488124d611eedd9da50224e6bb4b4b7396b042abd0a377",
+      "rows": 80
+    }
+  },
+  "crown_recovery": [
+    {
+      "mood": "angry",
+      "state": "neutral",
+      "source": "Angry Expression: Original vs Approved.png",
+      "new_pixels": 344,
+      "matrix": [
+        [
+          0.6088000747604064,
+          0.01298863609388896,
+          -14.354002514287401
+        ],
+        [
+          -0.01298863609388896,
+          0.6088000747604064,
+          8.973135273658217
+        ]
+      ]
+    },
+    {
+      "mood": "sad",
+      "state": "neutral",
+      "source": "engraved-six-clerks.webp",
+      "new_pixels": 804,
+      "matrix": [
+        [
+          1.0697501371673492,
+          -0.011664965611637735,
+          -1087.1042397616566
+        ],
+        [
+          0.011664965611637735,
+          1.0697501371673492,
+          -31.027438342586578
+        ]
+      ]
+    },
+    {
+      "mood": "weird",
+      "state": "neutral",
+      "source": "weird_selected_expression_v1.png",
+      "new_pixels": 2951,
+      "matrix": [
+        [
+          1.5062872659955915,
+          0.05677811870464544,
+          -3.274403561037075
+        ],
+        [
+          -0.05677811870464544,
+          1.5062872659955915,
+          26.839898254983932
+        ]
+      ]
+    },
+    {
+      "mood": "criminal",
+      "state": "neutral",
+      "source": "approved-six-character-board-2026-10-30.png",
+      "new_pixels": 4512,
+      "matrix": [
+        [
+          1.5152069278968772,
+          0.0007785235152002349,
+          -36.30802356085125
+        ],
+        [
+          -0.0007785235152002349,
+          1.5152069278968772,
+          -1159.3803767162976
+        ]
+      ]
+    },
+    {
+      "mood": "funky",
+      "state": "neutral",
+      "source": "approved-six-character-board-2026-10-30.png",
+      "new_pixels": 3680,
+      "matrix": [
+        [
+          1.4677609761884836,
+          0.00013832723004469048,
+          -1083.3296311633292
+        ],
+        [
+          -0.00013832723004469048,
+          1.4677609761884836,
+          -1114.6212319907488
+        ]
+      ]
+    },
+    {
+      "mood": "angry",
+      "state": "selected",
+      "source": "Angry Expression: Original vs Approved.png",
+      "new_pixels": 1175,
+      "matrix": [
+        [
+          0.6142332063318924,
+          0.012476702865234618,
+          -567.5507800881201
+        ],
+        [
+          -0.012476702865234618,
+          0.6142332063318924,
+          9.82779682493303
+        ]
+      ]
+    },
+    {
+      "mood": "sad",
+      "state": "selected",
+      "source": "approved-six-character-board-2026-10-30.png",
+      "new_pixels": 424,
+      "matrix": [
+        [
+          1.4716209273342977,
+          -0.000993511560050204,
+          -512.9975719669883
+        ],
+        [
+          0.000993511560050204,
+          1.4716209273342977,
+          -604.3070407590851
+        ]
+      ]
+    },
+    {
+      "mood": "weird",
+      "state": "selected",
+      "source": "weird_selected_expression_v1.png",
+      "new_pixels": 958,
+      "matrix": [
+        [
+          1.4578465736714572,
+          0.11393886852238626,
+          4.993277992485444
+        ],
+        [
+          -0.11393886852238626,
+          1.4578465736714572,
+          50.73661832770039
+        ]
+      ]
+    },
+    {
+      "mood": "criminal",
+      "state": "selected",
+      "source": "approved-six-character-board-2026-10-30.png",
+      "new_pixels": 5192,
+      "matrix": [
+        [
+          1.4712549162532007,
+          -0.0004711828003734037,
+          -512.7986420752984
+        ],
+        [
+          0.0004711828003734037,
+          1.4712549162532007,
+          -1118.767158339836
+        ]
+      ]
+    },
+    {
+      "mood": "funky",
+      "state": "selected",
+      "source": "approved-six-character-board-2026-10-30.png",
+      "new_pixels": 3927,
+      "matrix": [
+        [
+          1.4594385505337806,
+          0.00014577458370326974,
+          -1567.5914822225786
+        ],
+        [
+          -0.00014577458370326974,
+          1.4594385505337806,
+          -1106.8231171504256
+        ]
+      ]
+    }
+  ],
+  "crown_source_library_ids": {
+    "approved-six-character-board-2026-10-30.png": "libfile_acfa7ed43e9481919d968e13e2579ab0",
+    "weird_selected_expression_v1.png": "libfile_6eda0d8f72d48191b1ac28eb915770d2",
+    "Angry Expression: Original vs Approved.png": "libfile_806e3be21b88819196e00659e3c26ad7"
+  }
+}
