@@ -16,7 +16,7 @@ class Element{
  async click(){this.focus();const event={preventDefault(){this.prevented=true}};await this.events.click?.(event);return event}
 }
 function harness(write,search='',page='launch',storage=new Map(),runtime={}){
- const ids=['includeCover','goHard','pinMood','pinPace','pinRegions','briefMoodValue','briefPaceValue','briefRegionsValue','serviceDetails','serviceSummary','shuffleHelp','shuffleCrate','undoShuffle','shuffleResult','receiptRegions','welcomeSetup','beginSetup','dismissWelcome','finishSetup','setupJourney','onboardingPair','handoffGuidance','handoffTitle','handoffInstruction','crateGeo','atlasPassport','atlasNamedRegions','atlasLocator','atlasHome','atlasInstruction','atlasStamps','crateAtlasMap','crateGeoStatus','crateGeoClear','aiLabel','copyTailoredSetup','recipeIntro','recipeSteps','recipeResources','recipeCaveat','openSelectedAi','dealerPair','tempoControl','tempoDetails','tempoSummary','tempoHelp','moodHelp','tempoSlider','tempoValue','anyTempo','copyStatus','routeStatus','prompt','moodName','receiptCode','promptReceipt','receiptCopy','openAi','browserAi','manualOpenAi','receiptSummary','goHint','goButton','stripSetupPrompt','setupPromptText','setupPromptDetails','setupTipStatus','openSetupAi','promptDetails','shareButton'];
+ const ids=['skipRough','includeCover','goHard','pinMood','pinPace','pinRegions','briefMoodValue','briefPaceValue','briefRegionsValue','serviceDetails','serviceSummary','shuffleHelp','shuffleCrate','undoShuffle','shuffleResult','receiptRegions','welcomeSetup','beginSetup','dismissWelcome','finishSetup','setupJourney','onboardingPair','handoffGuidance','handoffTitle','handoffInstruction','crateGeo','atlasPassport','atlasNamedRegions','atlasLocator','atlasHome','atlasInstruction','atlasStamps','crateAtlasMap','crateGeoStatus','crateGeoClear','aiLabel','copyTailoredSetup','recipeIntro','recipeSteps','recipeResources','recipeCaveat','openSelectedAi','dealerPair','tempoControl','tempoDetails','tempoSummary','tempoHelp','moodHelp','tempoSlider','tempoValue','anyTempo','copyStatus','routeStatus','prompt','moodName','receiptCode','promptReceipt','receiptCopy','openAi','browserAi','manualOpenAi','receiptSummary','goHint','goButton','stripSetupPrompt','setupPromptText','setupPromptDetails','setupTipStatus','openSetupAi','promptDetails','shareButton'];
  const elements=Object.fromEntries(ids.map(id=>[id,new Element()]));
  elements.setupJourney.hidden=true;
  elements.handoffGuidance.hidden=true;
@@ -626,6 +626,32 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  const hardShared=harness(async()=>{},'?hard=1&mood=angry');
  assert.equal(hardShared.elements.goHard.attrs['aria-pressed'],'true','Shared URL restores TRY HARD');
  assert.match(hardShared.elements.prompt.textContent,/go angry hard/);
+ // Recording quality is independent of era, mood, seed, art and research depth.
+ const cleanStorage=new Map(),cleanCopies=[];
+ const clean=harness(async text=>cleanCopies.push(text),'?mood=funky&cover=1&hard=1','launch',cleanStorage);
+ assert.equal(clean.elements.skipRough.checked,false,'Fresh installs do not filter recordings');
+ assert.doesNotMatch(clean.elements.prompt.textContent,/Recording preference:/);
+ await clean.elements.goButton.click();
+ const seed=clean.elements.prompt.textContent.match(/Seed: .*/)?.[0];
+ clean.elements.skipRough.checked=true;clean.elements.skipRough.events.change();
+ assert.equal(cleanStorage.get('ghg-skip-rough-v1'),'1');
+ assert.match(clean.elements.prompt.textContent,/Skip rough recordings/);
+ assert.match(clean.elements.prompt.textContent,/Clean older recordings and good restorations are welcome/);
+ assert.match(clean.elements.prompt.textContent,/intentional lo-fi production is not automatically excluded/);
+ assert.match(clean.elements.prompt.textContent,/disclose uncertain audio quality/);
+ assert.equal(clean.elements.prompt.textContent.match(/Seed: .*/)?.[0],seed,'Toggle retains creative input');
+ assert.equal(clean.elements.openAi.attrs['aria-disabled'],'true','Preference change invalidates an earlier copy');
+ assert.match(clean.elements.receiptSummary.textContent,/skip rough recordings/);
+ await clean.elements.goButton.click();
+ assert.equal(cleanCopies.at(-1),clean.elements.prompt.textContent,'Receipt matches actual handoff');
+ assert.match(cleanCopies.at(-1),/go funky hard/);
+ assert.match(cleanCopies.at(-1),/Cover art: yes/);
+ assert.equal(harness(async()=>{},'','launch',cleanStorage).elements.skipRough.checked,true,'Choice survives reload');
+ assert.equal(harness(async()=>{},'?clean=0','launch',cleanStorage).elements.skipRough.checked,false,'Shared off overrides saved on');
+ for(const ai of ['chatgpt','gemini','claude'])assert.match(harness(async()=>{},'?clean=1&ai='+ai).elements.prompt.textContent,/Recording preference:/);
+ clean.elements.skipRough.checked=false;clean.elements.skipRough.events.change();
+ assert.equal(cleanStorage.get('ghg-skip-rough-v1'),'0');
+ assert.doesNotMatch(clean.elements.prompt.textContent,/Recording preference:/,'Off restores unfiltered curation');
  const pairCopies=[],pair=harness(async s=>pairCopies.push(s),'?mood=desire%20triumphant');
  assert.equal(pair.elements.moodName.textContent,'DESIRE + TRIUMPH');
  assert.equal(pair.moods.filter(m=>m.attrs['aria-pressed']==='true').length,2);
@@ -633,11 +659,15 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.match(pairCopies.at(-1),/go desire triumphant/);
  assert.match(pairCopies.at(-1),/Combine both moods throughout one coherent playlist/);
  assert.doesNotMatch(pairCopies.at(-1),/undefined/);
- await pair.moods[0].click();assert.equal(pair.elements.moodName.textContent,'DESIRE + TRIUMPH');
- await pair.moods[6].click();assert.equal(pair.elements.moodName.textContent,'TRIUMPH');
- await pair.moods[0].click();assert.equal(pair.elements.moodName.textContent,'TRIUMPH + HAPPY');
+ await pair.moods[0].click();assert.equal(pair.elements.moodName.textContent,'DESIRE + HAPPY','Third tap replaces the most recently selected mood');
+ assert.equal(pair.moods[7].attrs['aria-pressed'],'false','Replaced mood clears its selected state');
+ assert.equal(pair.moods[0].attrs['aria-pressed'],'true');
+ assert.equal(pair.elements.openAi.attrs['aria-disabled'],'true','Replacement invalidates the copied request');
+ await pair.moods[1].click();assert.equal(pair.elements.moodName.textContent,'DESIRE + ANGRY','Repeated replacements preserve the first mood');
+ await pair.moods[6].click();assert.equal(pair.elements.moodName.textContent,'ANGRY','Tapping a selected mood still removes it');
+ await pair.moods[0].click();assert.equal(pair.elements.moodName.textContent,'ANGRY + HAPPY');
  await pair.elements.shuffleCrate.click();await pair.elements.undoShuffle.click();
- assert.equal(pair.elements.moodName.textContent,'TRIUMPH + HAPPY');
+ assert.equal(pair.elements.moodName.textContent,'ANGRY + HAPPY');
  assert.equal(harness(async()=>{},'?mood=bogus%20desire%20desire%20sad%20happy').elements.moodName.textContent,'DESIRE + SAD');
  console.log('PASS: mood selection, reset, current-copy handoff, setup invalidation, blocked clipboard, copy race');
 })().catch(e=>{console.error(e);process.exit(1)});

@@ -828,3 +828,9 @@ body[data-page=launch] .onboarding-ticket[hidden]{display:none!important}
 
 .decheese-note{color:#982b1d;font-size:.875rem;line-height:1.5;margin:16px 0 8px;overflow-wrap:break-word}
 .decheese-note strong{display:block;font-weight:800}
+
+/* Lightweight listening preference: shares the page's ink and native checkbox. */
+.recording-preference{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:48px;margin:12px 0;padding:8px 0;color:var(--ink);font:700 .875rem/1.4 Arial,Helvetica,sans-serif;cursor:pointer}
+.recording-preference small{display:block;max-width:60ch;margin-top:3px;font-weight:400;font-size:.8125rem;line-height:1.5}
+.recording-preference input{flex:0 0 22px;width:22px;height:22px;margin:0;accent-color:var(--ink);cursor:pointer}
+.recording-preference input:focus-visible{outline:2px solid var(--ink);outline-offset:4px}

@@ -7,6 +7,7 @@ on:
     branches: [main]
     paths:
       - '.github/one-shot-clean-mood-art-2026-11-01'
+      - '.github/releases/mood-quality-2026-11-01'
 
 permissions:
   contents: read
