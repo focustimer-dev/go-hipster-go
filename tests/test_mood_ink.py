@@ -1,6 +1,7 @@
 """Source provenance and lossless alpha sprite contracts, without authoring dependencies."""
 import hashlib
 import json
+import re
 import struct
 import unittest
 from pathlib import Path
@@ -32,6 +33,23 @@ class MoodInkTests(unittest.TestCase):
             self.assertEqual(hashlib.sha256(data).hexdigest(),patch['sha256'])
             self.assertEqual(data[:8],b'\x89PNG\r\n\x1a\n')
             self.assertEqual(struct.unpack('>II',data[16:24]),(1536,1024))
+
+    def test_funk_lasers_exclude_the_full_figure(self):
+        svg=(ART/'funk-laser-exclusion.svg').read_text()
+        source=(ART/'moods-selected-ink-v2.webp').read_bytes()
+        self.assertIn(hashlib.sha256(source).hexdigest(),svg,'Mask must track the locked portrait alpha')
+        rows={}
+        for x,y,width in re.findall(r'M(\d+) (\d+)h(\d+)v1H\d+z',svg):
+            rows.setdefault(int(y),[]).append((int(x),int(x)+int(width)))
+        def excluded(x,y): return any(left<=x<right for left,right in rows.get(y,[]))
+        for x,y in [(270,180),(270,240),(280,330),(230,360)]:
+            self.assertTrue(excluded(x,y),'Interior portrait highlights must block lasers')
+        for x,y in [(0,0),(10,50),(500,25)]:
+            self.assertFalse(excluded(x,y),'Background must still show laser linework')
+        css=(ART.parent/'mood-portraits.css').read_text()
+        self.assertIn('mask-mode:luminance',css)
+        self.assertIn('background:#efd0d0',css,'Red cannot mix with the yellow paper')
+        self.assertNotIn('background:rgb(214 75 48 / 22%)',css)
 
     def test_current_pages_preload_ink_sprites(self):
         page=(ROOT/'launcher/editions/gig-poster/index.html').read_text()
