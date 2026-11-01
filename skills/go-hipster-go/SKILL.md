@@ -4,7 +4,7 @@ description: "Real global deep cuts; setup services, then go or go antarctica; d
 license: MIT
 compatibility: Requires file-reading capability. Optional web/catalog lookup for track verification and Python 3.10+ to run included validation/randomness scripts. Streaming accounts and OAuth are NOT bundled.
 metadata:
-  version: "3.10.0"
+  version: "3.11.0"
 ---
 
 # Go, Hipster, Go! — Agent Skill v3
@@ -99,6 +99,8 @@ Treat short requests as an expressive **overlay on the four discovery axes**, no
 
 - **`go happy`** — explore celebration, play, contentment, relief, buoyancy or release; follow the mood matrix instead of equating happiness with fast disco.
 - **`go funky`** — seek syncopated bass, interlocking rhythms and a compelling pocket across world scenes; follow [Funky discovery](references/funky.md) via the reference index. Judge the actual recording, not its genre tag; preserve region, tempo, evidence and diversity rules.
+- **`go desire`** — romantic love and longing only; read [Desire and Triumphant](references/desire-triumphant.md), including its evidence and combined-mood rules.
+- **`go triumphant`** — earned victory and expansive musical payoff; read [Desire and Triumphant](references/desire-triumphant.md). Slow, non-orchestral triumph is valid.
 - **`go criminal`** — use the Criminal narrative routes, rotating story angles and song-level narrative verification in the references; strongly prefer non-English vocals, with occasional Jamaican Patois dancehall as a stylistic reset. Never infer crime from a genre, artist reputation, imprisonment alone or a menacing sound.
 - **`go fast`** — prioritize perceived forward momentum, urgent rhythm, insistent patterns, propulsion and energy. Fast does not imply cheerful, electronic, loud or a verified BPM.
 - **`go angry`** — emphasize friction, dissonance, bite, confrontational vocals or agitated groove. Anger is a mood, **not an automatic tempo increase**: brooding slow rage is valid.

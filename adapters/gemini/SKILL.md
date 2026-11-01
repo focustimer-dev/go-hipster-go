@@ -1,7 +1,7 @@
 ---
 name: go-hipster-go
-version: 3.10.0
-description: Use for Go, Hipster, Go! go, mood, speed and length commands, de-cheese audit, setup, obscure global music discovery, and verified deep-cut playlists with authorized Gemini YouTube Music publishing.
+version: 3.11.0
+description: Go, Hipster, Go! moods, discovery routes, de-cheese and setup; verified global playlists with authorized YouTube Music publishing.
 ---
 
 # Go, Hipster, Go! — Gemini Apps
@@ -40,4 +40,4 @@ Follow the [reference index](https://raw.githubusercontent.com/focustimer-dev/go
 
 ## Detailed workflow
 
-Read [workflow.md](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/adapters/gemini/references/workflow.md) before curation. Load relevant references only; no installation preloading or region crawling. Disclose inaccessible required files.
+Read [workflow.md](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/adapters/gemini/references/workflow.md) before curation. Only load relevant references; no installation preload or region crawling. Disclose missing files.

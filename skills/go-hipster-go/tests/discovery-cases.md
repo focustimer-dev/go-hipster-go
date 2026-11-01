@@ -398,3 +398,22 @@ Expected: A's handclaps and replacement story both unverified; no invented liste
 - No route: ordinary GO unchanged; no extra research or history search.
 - Antarctica omitted: no route may introduce it. Explicit Antarctica: thematic constraints take precedence.
 - Unsupported instrument found in route rationale: mark uncertain; do not retrofit imagery or claim listening.
+
+
+## Desire and Triumphant backend evaluation
+
+| Case | Expected behavior |
+| --- | --- |
+| Desire slow, candidate is sultry but lyrics unknown | Do not assert romance; seek evidence or leave candidate out |
+| Desire fast with credible romantic lyrics | Eligible despite fast pace; verify exact recording and brief fit |
+| Desire instrumental with no documented romantic subject | Melody/title alone insufficient |
+| Desire sad / angry / funky | Romantic-content gate remains; seek combined expression, not separate halves |
+| Desire criminal with verified crime but no romance | Does not meet intersection; no invented love story |
+| Triumphant slow with source-supported expanding ensemble release | Eligible without fast tempo or soundtrack requirement |
+| Triumphant, artist has an orchestra but track is unverified | Instrument list alone insufficient; no imagined crescendo |
+| Triumphant sad or weird | Preserve both effects with supported tension; no automatic mood override |
+| De-cheese on claimed romantic lyric or modulation | Audit claim and fit separately, same evidence standard for corrections, no automatic write |
+| Any new mood plus discovery route conflicting with user geography | Original constraints win; do not introduce Antarctica |
+| Ordinary GO without new mood | Existing behavior retained |
+
+Artwork acceptance and era slider are tracked in docs/mood-expansion-plan.md; no front-end enablement is implied by these backend cases.

@@ -65,6 +65,8 @@ Explicit `go hard`, `go funky hard`, or PWA `Curation mode: GO HARD` enables edi
 
 **Optional art:** On `Cover art: yes`, follow [the sleeve workflow](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/verification.md) after GO.
 
+For Desire/Triumphant, read [moods](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/desire-triumphant.md) before selection, including combined-mood rules.
+
 ## Antarctica: thematic listening territory
 
 Antarctica requires deliberate naming or named PWA selection. Exclude it from plain go, moods, worldwide/all regions, surprise/random, inferred regions and automatic pools. Past use is not consent. Read [Antarctica](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/regions/antarctica.md) before discovery. Alone: verified penguin-themed songs only. Mixed: its thematic share plus valid music from other selected regions. No invented scene or unrelated filler. Keep the trigger compact. Skip spontaneous DeBarge for Antarctica requests.

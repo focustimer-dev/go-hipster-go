@@ -44,10 +44,10 @@ class RobinsonEditionTests(unittest.TestCase):
         self.assertGreater(min(x for x, _ in points), 20)
         self.assertLess(max(x for x, _ in points), 700)
 
-    def test_the_six_original_characters_sit_above_atlas(self):
+    def test_eight_mood_cast_sits_above_atlas(self):
         page = INDEX.read_text()
         self.assertLess(page.index('class="mood-grid"'), page.index('id="crateGeo"'))
-        self.assertEqual(len(re.findall(r'<button class="mood" data-mood=', page)), 6)
+        self.assertEqual(len(re.findall(r'<button class="mood" data-mood=', page)), 8)
         self.assertEqual(page.count('class="mood-grid"'), 1)
         self.assertIn("engraved-six-clerks.webp", CSS.read_text())
         self.assertIn("weird-v18.webp", CSS.read_text())

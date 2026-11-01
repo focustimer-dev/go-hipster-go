@@ -16,6 +16,7 @@ REFERENCES = (
     "references/de-cheese.md",
     "references/discovery-routes.md",
     "references/funky.md",
+    "references/desire-triumphant.md",
     "references/regions/antarctica.md",
     "references/go-hard.md",
     "references/regional-review.md",
@@ -76,6 +77,8 @@ def common_sections(canonical: str):
     parts[keys[2]] = (parts[keys[2]].replace("including in **Claude**", "including in **Gemini**")
                        .replace("Spotify's playlist description field", "a playlist description field")
                        .replace("Spotify/YouTube result status", "YouTube Music result status"))
+    parts["Go modifiers and playlist length"] = re.sub(r"(?m)^- \*\*`go (?:desire|triumphant)`\*\*.*\n", "", parts["Go modifiers and playlist length"])
+    parts["Go modifiers and playlist length"] += "\n\nFor Desire/Triumphant, read [moods](references/desire-triumphant.md) before selection, including combined-mood rules."
     # Keep the compact Gemini file below its host budget without dropping policy.
     marker = "**Voice calibration (hypothetical examples; not verified claims about specific recordings):**"
     prose, samples = parts[keys[2]].split(marker, 1)
@@ -127,8 +130,8 @@ def render_reference(relative: str, content: str) -> str:
 def render(canonical: str) -> str:
     preface = """---
 name: go-hipster-go
-version: 3.10.0
-description: Use for Go, Hipster, Go! go, mood, speed and length commands, de-cheese audit, setup, obscure global music discovery, and verified deep-cut playlists with authorized Gemini YouTube Music publishing.
+version: 3.11.0
+description: Go, Hipster, Go! moods, discovery routes, de-cheese and setup; verified global playlists with authorized YouTube Music publishing.
 ---
 
 # Go, Hipster, Go! — Gemini Apps
@@ -181,7 +184,7 @@ def modular_files(canonical: str, online: bool = False) -> dict[str, str]:
     full = render(canonical)
     split = full.index("## Intent and activation")
     entry, workflow = full[:split], full[split:]
-    entry += "## Detailed workflow\n\nRead [workflow.md](references/workflow.md) before curation. Load relevant references only; no installation preloading or region crawling. Disclose inaccessible required files.\n"
+    entry += "## Detailed workflow\n\nRead [workflow.md](references/workflow.md) before curation. Only load relevant references; no installation preload or region crawling. Disclose missing files.\n"
     files = {"SKILL.md": entry, "references/workflow.md": workflow}
     if online:
         base = "https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/"
