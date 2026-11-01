@@ -96,13 +96,14 @@
       }
     ],
     "moodSelection": {
-      "vermilionWash": "rgb(214 75 48 / 22%)",
+      "vermilionWash": "#efd0d0",
       "funkPink": "#E03FD8",
       "funkPaper": "#f4efdf",
       "funkTintOpacity": 0.22,
       "laserInk": "#d64b30",
       "laserOpacity": 0.8,
-      "replacement": "Preserve first selected mood; replace most recently selected."
+      "replacement": "Preserve first selected mood; replace most recently selected.",
+      "laserOcclusion": "Alpha-derived full-figure exclusion mask in face coordinates"
     }
   },
   "components": [
