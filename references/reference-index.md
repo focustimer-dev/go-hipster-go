@@ -18,6 +18,10 @@ For `Discovery route: v1/Rxx`, read [Discovery routes](discovery-routes.md) befo
 
 For explicit `de-cheese`, read [De-cheese audit](de-cheese.md) first. Audit the existing snapshot read-only; do not start the discovery routes above or a new GO run.
 
+## Desire and Triumphant requests
+
+Read [Desire and Triumphant](desire-triumphant.md) before selecting for either mood, including combinations. Desire requires supported romantic content; Triumphant requires a supported musical sense of victory or arrival.
+
 ## Funky requests
 
 For `go funky`, also read [Funky: worldwide groove discovery](funky.md) before choosing the thesis. Use its recording-level groove judgment alongside the ordinary taxonomy, regional and verification routes; other moods need not load it.

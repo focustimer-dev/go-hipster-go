@@ -41,7 +41,11 @@ These are listening hypotheses, never claims that an entire culture feels one wa
 | Sad | homesickness; grief; resignation; heartbreak; lonely urban drift; bittersweet acceptance | slow piano, English breakup lyrics or minor key by default |
 | Weird | unstable tuning; interlocking or asymmetric time; surreal narratives; homemade sound sources; radically edited form; uncanny restraint | unfamiliar language is weird; abrasive is always better |
 | Funky | unhurried pocket; springy rhythmic tension; interlocking ensemble parts; sparse displaced accents; propulsive electronic interplay | American funk template, cheerful dance music or a funk tag automatically qualifies |
+| Desire | infatuation; devotion; yearning; separation; reunion; torch-song longing | sultry sound or a romantic title proves romantic content |
+| Triumphant | earned victory; expansive release; collective affirmation; stately arrival; bittersweet survival | fast, loud, major-key or orchestral automatically means triumphant |
 | Criminal | heists; smuggling; fugitives; criminal betrayal; prison escapes; criminal codes | prison, geography or artist reputation proves a crime narrative |
+
+For Desire or Triumphant, read [their mood rules](desire-triumphant.md), including the content/effect distinction and combined-mood handling.
 
 For Criminal, strongly prefer non-English vocals; occasional Jamaican Patois dancehall can offer a more English-accessible change of pace without assuming comprehension. Verify explicit crime at **song level**; see verification.md. Songs may boast, confess, mourn, warn, question or narrate. Rotate story angles: heists and criminal ingenuity; smuggling routes; fugitives and evasion; betrayal inside criminal networks; prison escapes; underworld codes and loyalty; and criminal bravado with its consequences. The selected angle is a discovery hypothesis, not a quota across twelve songs. Avoid twelve interchangeable tough-guy declarations. Criminal's documented narrative requirement outranks random discovery lenses and crate sparks; the user's tempo still applies. Keep the DeBarge exception intact.
 

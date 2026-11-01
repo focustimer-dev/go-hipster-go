@@ -12,6 +12,7 @@ SOURCES = [
     "references/de-cheese.md",
     "references/discovery-routes.md",
     "references/funky.md",
+    "references/desire-triumphant.md",
     "references/regions/antarctica.md",
     "references/go-hard.md",
     "references/discovery-lenses.json",
