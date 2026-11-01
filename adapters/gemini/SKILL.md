@@ -1,6 +1,6 @@
 ---
 name: go-hipster-go
-version: 3.9.0
+version: 3.9.1
 description: Use for Go, Hipster, Go! go, mood, speed and length commands, de-cheese audit, setup, obscure global music discovery, and verified deep-cut playlists with authorized Gemini YouTube Music publishing.
 ---
 

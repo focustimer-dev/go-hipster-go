@@ -76,6 +76,16 @@ Use targeted lookup for disputed claims and replacement identities, rather than 
 
 Assign each entry once: **KEEP—supported**, **QUESTIONABLE—uncertain**, or **REPLACE—recommended**. Keep includes defensible musical choices whose notes need correction; identify that separately. Questionable entries remain unchanged pending evidence or listener choice. Replace requires a specific mismatch with the brief or sequence, not mere dislike of the explanation. Repeated audits of unchanged evidence should be stable, not manufacture churn.
 
+## Seed-to-evidence check
+
+A seed is a discovery suggestion, never evidence about a recording. Check concrete details apparently borrowed from it: named instruments, playing techniques, rhythmic interactions, lyrics, recording history and exact intro/outro behavior. Preserve expressive metaphors when clearly presented as interpretation; do not turn imagery into a literal claim that every track shares the seed's feature.
+
+For each consequential disputed claim, quote the short original claim and mark it **supported**, **contradicted**, or **unverified**, with the evidence and its scope. These are claim findings, separate from the track's KEEP / QUESTIONABLE / REPLACE judgment. A catalog match proves identity, not instrumentation. Album-level credits do not automatically establish a sound on this recording. A prior model answer, confident confession or paraphrase of the seed is not independent evidence. No source found means unverified, not absent. Contradicted requires affirmative recording-specific evidence; never claim listening without actual audio access.
+
+Remove the disputed detail mentally and reassess the song against the original mood, pace, constraints and neighbors. If supported qualities still justify it, keep the song and propose the smallest note correction. If fit depended entirely on the disputed detail, mark it QUESTIONABLE pending evidence; recommend replacement only for a supported mismatch. An explicit literal requirement from the listener remains a constraint, while a metaphorical seed is not a mandatory instrument checklist.
+
+Audit the proposed correction by the same standard. Do not replace invented handclaps with unsupported mouth clicks, guitar-body taps or brushwork, or say “no handclaps” merely because none were verified. When evidence is thin, propose deleting or qualifying the original claim instead of supplying a more elaborate story. Do not declare whole sections “100% real” or adopt a self-accusatory confession without checking the individual claims. Show only meaningful disputed claims, not a full ledger for every adjective; retain the existing approval step before applying note or track edits.
+
 ## Findings and proposed fix
 
 Lead with counts that sum to the snapshot size, then only meaningful findings: position, exact recording, classification, evidence/uncertainty and the smallest remedy. A concise “all keep; no changes needed” is a valid result. Do not fabricate defects, quotas or a repair request when the audit passes.
@@ -2007,7 +2017,7 @@ description: "Real global deep cuts; setup services, then go or go antarctica; d
 license: MIT
 compatibility: Requires file-reading capability. Optional web/catalog lookup for track verification and Python 3.10+ to run included validation/randomness scripts. Streaming accounts and OAuth are NOT bundled.
 metadata:
-  version: "3.9.0"
+  version: "3.9.1"
 ---
 
 # Go, Hipster, Go! — Agent Skill v3
