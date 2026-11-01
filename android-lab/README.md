@@ -263,3 +263,10 @@ uses the full approved pair; neutral Sad uses the existing full-frame engraving.
 Source identifiers, alignment matrices and checksummed crown masks are recorded
 in mood-ink-v2.json. The builder verifies the crown masks and decoded output.
 Version 1 sprites and source sheets remain available for regression comparison.
+
+
+## Discovery routes experiment (Lab 0.8)
+
+Each explicit GO draws one stable v1 route ID from a shuffled 24-route deck. Lab stores only remaining IDs and the last 30 draws locally. It uses the whole deck before reuse, avoids the preceding family when possible, and avoids the last eight IDs after reshuffling when possible. Preview/Open/Copy again do not draw. A supplied musical reference skips random routing. The old three-part seed is omitted in Lab; the skill owns route interpretation and must be updated to 3.10.0. Unknown routes fall back honestly. Clear Android app data to reset the deck. This varies requests, not a guarantee of different recordings.
+
+Run `node scripts/test_lab_discovery_routes.cjs` for deck persistence and exhaustion checks.

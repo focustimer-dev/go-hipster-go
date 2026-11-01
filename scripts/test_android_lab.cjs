@@ -29,7 +29,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   await page.locator('#goButton').click();
   await page.waitForFunction(()=>labCalls.some(c=>c[0]==='go'));
   let calls=await page.evaluate(()=>labCalls);
-  const first=calls.find(c=>c[0]==='go');assert.equal(first[1],'chatgpt');assert.equal(first[2],calls.find(c=>c[0]==='copy')[1]);
+  const first=calls.find(c=>c[0]==='go');assert.match(first[2],/Discovery route: v1\/R\d\d\./);assert.doesNotMatch(first[2],/Seed:/);assert.equal(first[1],'chatgpt');assert.equal(first[2],calls.find(c=>c[0]==='copy')[1]);
   await page.locator('#openAi').click();
   assert.equal((await page.evaluate(()=>labCalls)).filter(c=>c[0]==='open').length,1);
   assert.equal(await page.locator('#labJukebox .service-counter').count(),0);

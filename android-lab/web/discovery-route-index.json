@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "routes": [
+    {
+      "id": "R01",
+      "family": "era"
+    },
+    {
+      "id": "R02",
+      "family": "era"
+    },
+    {
+      "id": "R03",
+      "family": "era"
+    },
+    {
+      "id": "R04",
+      "family": "production"
+    },
+    {
+      "id": "R05",
+      "family": "production"
+    },
+    {
+      "id": "R06",
+      "family": "production"
+    },
+    {
+      "id": "R07",
+      "family": "ensemble"
+    },
+    {
+      "id": "R08",
+      "family": "ensemble"
+    },
+    {
+      "id": "R09",
+      "family": "ensemble"
+    },
+    {
+      "id": "R10",
+      "family": "catalog"
+    },
+    {
+      "id": "R11",
+      "family": "catalog"
+    },
+    {
+      "id": "R12",
+      "family": "catalog"
+    },
+    {
+      "id": "R13",
+      "family": "scene"
+    },
+    {
+      "id": "R14",
+      "family": "scene"
+    },
+    {
+      "id": "R15",
+      "family": "scene"
+    },
+    {
+      "id": "R16",
+      "family": "arrangement"
+    },
+    {
+      "id": "R17",
+      "family": "arrangement"
+    },
+    {
+      "id": "R18",
+      "family": "arrangement"
+    },
+    {
+      "id": "R19",
+      "family": "discovery"
+    },
+    {
+      "id": "R20",
+      "family": "discovery"
+    },
+    {
+      "id": "R21",
+      "family": "discovery"
+    },
+    {
+      "id": "R22",
+      "family": "production"
+    },
+    {
+      "id": "R23",
+      "family": "catalog"
+    },
+    {
+      "id": "R24",
+      "family": "arrangement"
+    }
+  ]
+}

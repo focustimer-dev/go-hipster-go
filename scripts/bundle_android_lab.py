@@ -51,6 +51,15 @@ def bundle(destination=None):
     needle = 'function render(){'
     assert text.count(needle) == 1, 'Render hook changed; review Lab inspiration.'
     text = text.replace(needle, needle + 'renderLabInspiration();')
+    import json
+    route_index = json.loads((ROOT / 'android-lab/web/discovery-route-index.json').read_text())
+    routes_js = (ROOT / 'android-lab/web/discovery-routes.js').read_text().replace('/*LAB_ROUTE_INDEX*/', json.dumps(route_index, separators=(',', ':')))
+    text = text.replace('const doc=document,body=doc.body;', 'const doc=document,body=doc.body;\n' + routes_js, 1)
+    # Only explicit GO consumes a route. Render/copy-again/open keep that same draw.
+    needle_route = 'crateSparkPhrase=nextCrateSparkPhrase();renderLaunch();'
+    assert text.count(needle_route) == 1, 'GO route hook changed.'
+    text = text.replace(needle_route, 'crateSparkPhrase="";labActiveRoute=labInspiration()?null:nextLabDiscoveryRoute();renderLaunch();')
+    text = text.replace('const parts=[goCommand(ai,service,mood)];', 'const parts=[goCommand(ai,service,mood)];if(labRoutePrompt())parts.push(labRoutePrompt());', 1)
     workspace_js = (ROOT / 'android-lab/web/workspace.js').read_text()
     needle = 'render();\nif(crateSelected.size)frameSelectedAtlas();'
     assert text.count(needle) == 1, 'Workspace boot hook changed.'
