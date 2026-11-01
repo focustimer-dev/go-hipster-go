@@ -20,6 +20,11 @@ export function verifyAsset(actual, expected, label) {
   const digest = bytes => createHash('sha256').update(bytes).digest('hex');
   assert.equal(digest(actual), digest(expected), `${label}: served bytes differ from the expected release`);
 }
+export function verifyMoodSpriteCSS(neutral, selected) {
+  assert.match(neutral, /moods-neutral-ink-v2\.webp/, 'Clean neutral mood art is not active');
+  assert.match(selected, /moods-selected-ink-v2\.webp/, 'Clean selected mood art is not active');
+}
+
 export function verifyCommit(commit) {
   assert.match(commit || '', /^[a-f0-9]{40}$/i, 'Supply the full expected release commit SHA');
   return commit;
@@ -103,8 +108,7 @@ export async function checkRelease(browser, baseURL, expectedCommit, sourceCache
       }
       const neutral = await page.locator('[data-mood="happy"] .face').evaluate(el => getComputedStyle(el, '::before').backgroundImage);
       const selected = await page.locator('[data-mood="angry"] .face').evaluate(el => getComputedStyle(el, '::after').backgroundImage);
-      assert.match(neutral, /moods-neutral-ink-v2\\.webp/, 'Clean neutral mood art is not active');
-      assert.match(selected, /moods-selected-ink-v2\\.webp/, 'Clean selected mood art is not active');
+      verifyMoodSpriteCSS(neutral, selected);
     }
   }
   try {

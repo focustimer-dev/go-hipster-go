@@ -2,3 +2,5 @@ One-time Cloudflare deployment request for the clean canonical mood artwork, Nov
 Only the merging push that introduces this file should start a deployment. Do not edit this sentinel again.
 Release scope: verified transparent six-mood ink sprites, preserving approved character identities and Desire/Triumph, plus corrected gig-poster Manual route and live QA.
 GitHub validation and the signed production Cloudflare workflow remain the release gates.
+
+Follow-up one-time push: retry exact-release browser smoke after correcting the escaped WebP filename assertion. No changes to approved artwork or published application code.
