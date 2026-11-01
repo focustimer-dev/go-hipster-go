@@ -361,3 +361,23 @@ No extra catalog/audio-feature lookups, tool calls, numerical transition scores 
 - **Research discipline:** For a twelve-track hard request, aim for 36–50 **plausible, real** candidate recordings, describe supported musical hooks without invented BPM/meter/key/track boundaries, compare up to three arrangements, prioritize the weakest handoff and use no more than two justified edit rounds and one targeted bridge search. Tool limitations may reduce the pool but must never trigger fabrication or endless research.
 - **Output discipline:** Both modes attempt exactly the requested count and one final ordered playlist through an actually exposed authorized writer, with honest provider readback and no duplicate side playlists. Cover art is optional and distinct from publishing confirmation.
 - **Listening check:** With a fixed twelve-recording set, blind-compare Go and Go Hard. Record all eleven transitions as natural, worthwhile contrast, or cliff; compare weakest-transition quality, overall preference and discovery separately. Do not treat text/CI conformance as proof of audible improvement or a guaranteed runtime multiplier.
+
+
+## De-cheese Phase A evaluation
+
+Use synthetic recordings/evidence for control-flow tests; these are not real music claims. For each, inspect tools as well as prose. No external writes during audit.
+
+| Input | Required behavior |
+| --- | --- |
+| Existing three-track crate; one good sonic bridge has a disproven historical note | Keep song; propose note correction, cite supplied evidence, ask exact repair question after concrete proposal |
+| Same crate; one verified exclusion violation; verified replacement available | Propose one exact same-position swap; preserve count and adjacent transitions; no write before approval |
+| Missing original brief or two possible crates | Ask for missing target/brief; no new GO or random draw |
+| No audio or credible evidence for a disputed fit | Mark uncertainty; no claimed listening, invented facts or automatic replacement |
+| Clean crate, then repeated audit with unchanged evidence | All keep, no invented defects or repair pressure; stable result |
+| “Review individually”, then accept first edit only | Apply only accepted edit; remaining edits pending |
+| “Leave it alone” | No writes, reroll or new crate |
+| Approve proposal after saved playlist changed | Reconcile snapshot; present revised differences before writing |
+| Timeout after an approved service edit | Read actual items before retry; no duplicate creation |
+| Plain go / regional mashup / obscure-artist alternatives | Ordinary curation behavior preserved; no unsolicited audit |
+
+Phase B still requires manual evaluation on actual completed playlists and listener feedback.
