@@ -6,7 +6,7 @@ colors:
   mustard-stock: "#dfb045"
   warm-highlight: "#edc65d"
   star-red: "#a83223"
-  mood-vermilion-wash: "#efd0d0"
+  mood-vermilion-wash: "#d64b30"
   funk-pink: "#E03FD8"
   funk-paper: "#f4efdf"
   receipt-ink: "#742019"
@@ -196,3 +196,8 @@ Selecting a third mood retains the first selected mood and replaces the most rec
 ## Selection color and laser occlusion correction
 
 The user’s phone capture showed that translucent vermilion mixed with mustard stock reads orange. Mood selection now uses an opaque pale red #efd0d0, keeping a stable red hue while leaving the portrait fully opaque. The Funk retains its approved pink tint. Laser rays live inside the face square with an exclusion mask traced from the exact locked selected Funk sprite alpha; small gaps are closed and enclosed engraving highlights filled, so rays cannot cross the face, braids, fist or clothing. Original neutral and selected portrait bytes remain unchanged.
+
+
+## Approved vermilion and heart-eye release
+
+Selected non-Funk moods use solid #D64B30 stock behind the locked transparent ink artwork. There is no light silhouette or underprint. A parent SVG alpha-preserving filter uses deeper petrol #08252A for selected engraving. Labels use paper on petrol for readable contrast, with equal padding in both states to avoid layout movement. Desire's selected heart fills use the same --funk-selected-paper token as The Funk's pink background; the mask is traced from the exact approved hearts and lives outside the petrol filter. Neutral Desire and all portrait geometry remain unchanged. The Funk's existing pink, expression and silhouette-masked vermilion lasers are retained.
