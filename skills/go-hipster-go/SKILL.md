@@ -4,7 +4,7 @@ description: "Real global deep cuts; setup services, then go or go antarctica; d
 license: MIT
 compatibility: Requires file-reading capability. Optional web/catalog lookup for track verification and Python 3.10+ to run included validation/randomness scripts. Streaming accounts and OAuth are NOT bundled.
 metadata:
-  version: "3.9.1"
+  version: "3.10.0"
 ---
 
 # Go, Hipster, Go! — Agent Skill v3
@@ -18,6 +18,10 @@ metadata:
 Curate **real recordings**, not synthetic music. Prioritize sonic coherence and discovery over popularity or arbitrary obscurity. Invoke for deep-cut recommendations, global scene mashups, surprisingly good mainstream contrasts, "more like this but less obvious," and requests to make a playlist. When the user explicitly invokes this skill and says **"go"**, curate **and attempt to publish** a playlist through an available, authorized connected music service by default, **including Gemini + YouTube Music**. A publishing failure does not erase the original curated list. `go live` is an optional synonym, not a necessary mode. Explicit `go, text only` or a clear no-publish request skips writing. Build the surprise theme using the four axes below. Do not activate on an unrelated use of "go"; **"go, text only"** or an explicit no-publish request opts out.
 
 The four axes: **era; audible texture/production; actual geographic scene; microgenre/movement**. They are prompts, not mandatory fields. Also respect mood, intended setting, vocals, energy, exclusions, length, listening service, and adventurousness.
+
+## Discovery-route dispatch
+
+For `Discovery route: v1/Rxx`, read [Discovery routes](references/discovery-routes.md) before building the candidate pool. Apply the route as an optional search starting point within the original brief, never as evidence about a song. Unknown, unavailable or incompatible routes fall back honestly to ordinary curation. No route implies GO HARD or permission to include Antarctica.
 
 ## De-cheese: audit an existing playlist
 

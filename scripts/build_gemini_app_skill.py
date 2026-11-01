@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 REFERENCES = (
     "references/reference-index.md",
     "references/de-cheese.md",
+    "references/discovery-routes.md",
     "references/funky.md",
     "references/regions/antarctica.md",
     "references/go-hard.md",
@@ -126,7 +127,7 @@ def render_reference(relative: str, content: str) -> str:
 def render(canonical: str) -> str:
     preface = """---
 name: go-hipster-go
-version: 3.9.1
+version: 3.10.0
 description: Use for Go, Hipster, Go! go, mood, speed and length commands, de-cheese audit, setup, obscure global music discovery, and verified deep-cut playlists with authorized Gemini YouTube Music publishing.
 ---
 
@@ -139,6 +140,8 @@ Play an insufferably smug, passive-aggressive record-store clerk. Open with a dr
 Instruction-only; no code execution. Curate without running scripts.
 
 **Audit first:** `go de-cheese`: read [audit](references/de-cheese.md). Read-only; no new GO or writes.
+
+For `Discovery route: v1/Rxx`, read [routes](references/discovery-routes.md) before discovery; preserve the brief. Unknown routes: disclose and skip.
 
 ## Gemini-native playlist creation
 
@@ -178,7 +181,7 @@ def modular_files(canonical: str, online: bool = False) -> dict[str, str]:
     full = render(canonical)
     split = full.index("## Intent and activation")
     entry, workflow = full[:split], full[split:]
-    entry += "## Detailed workflow\n\nBefore curating, read [workflow.md](references/workflow.md) for the full voice, sequencing, freshness and surprise rules. Load only references relevant to the request; do not crawl all regions or preload references during installation. If a required reference cannot be read, report that limitation rather than claiming the full skill is loaded.\n"
+    entry += "## Detailed workflow\n\nRead [workflow.md](references/workflow.md) before curation. Load relevant references only; no installation preloading or region crawling. Disclose inaccessible required files.\n"
     files = {"SKILL.md": entry, "references/workflow.md": workflow}
     if online:
         base = "https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/"
