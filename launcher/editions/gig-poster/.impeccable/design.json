@@ -96,14 +96,17 @@
       }
     ],
     "moodSelection": {
-      "vermilionWash": "#efd0d0",
+      "vermilionWash": "#d64b30",
       "funkPink": "#E03FD8",
       "funkPaper": "#f4efdf",
       "funkTintOpacity": 0.22,
       "laserInk": "#d64b30",
       "laserOpacity": 0.8,
       "replacement": "Preserve first selected mood; replace most recently selected.",
-      "laserOcclusion": "Alpha-derived full-figure exclusion mask in face coordinates"
+      "laserOcclusion": "Alpha-derived full-figure exclusion mask in face coordinates",
+      "selectedPetrol": "#08252a",
+      "portraitBacking": "none",
+      "desireHeartColor": "--funk-selected-paper"
     }
   },
   "components": [
