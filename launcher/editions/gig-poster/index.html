@@ -14,7 +14,7 @@
 <link rel="preload" href="/editions/gig-poster/assets/moods-selected-ink-v2.webp" as="image">
 <link rel="preload" href="/editions/gig-poster/assets/anton.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="/editions/gig-poster/edition.css?v=fc61243aa739">
-<link rel="stylesheet" href="/editions/gig-poster/mood-portraits.css?v=ee9e3a1cc3ea">
+<link rel="stylesheet" href="/editions/gig-poster/mood-portraits.css?v=a756f90b07b4">
 </head>
 <body data-page="launch" class="gig-poster"><svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;overflow:hidden"><defs><filter id="poster-engraving-ink" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -.2126 -.7152 -.0722 0 1"/><feComposite in2="SourceAlpha" operator="in" result="ink-alpha"/><feComponentTransfer in="ink-alpha" result="ink-alpha"><feFuncA type="linear" slope="1.3"/></feComponentTransfer><feFlood flood-color="#103135"/><feComposite in2="ink-alpha" operator="in"/></filter></defs></svg>
 <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -161,6 +161,7 @@
       </div>
       <p id="tempoHelp">Any is on. Move the fader to choose a pace.</p>
     </div>
+    <label class="recording-preference" for="skipRough"><span>Skip rough recordings<small id="recordingHelp">Avoid heavy hiss, crackle and muffled archival audio. Clean older recordings welcome.</small></span><input type="checkbox" id="skipRough" aria-describedby="recordingHelp"></label>
     <details class="crate-geo" id="crateGeo" open>
       <summary class="crate-geo-summary">
         <span class="crate-geo-identity"><strong>THE CRATE ATLAS</strong><small>TAKE YOUR TASTE ABROAD</small></span>
