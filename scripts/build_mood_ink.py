@@ -9,8 +9,8 @@ from scipy import ndimage as ndi
 
 ART = Path(__file__).resolve().parents[1] / 'launcher/editions/gig-poster/assets'
 
-def build(check=False):
-    spec = json.loads((ART / 'mood-ink-v1.json').read_text())
+def build(check=False, version="v2"):
+    spec = json.loads((ART / ('mood-ink-'+version+'.json')).read_text())
     for state in ('neutral', 'selected'):
         source = ART / f'moods-{state}-approved-v1.webp'
         assert hashlib.sha256(source.read_bytes()).hexdigest() == spec['source_hashes'][state], 'Approved source changed'
@@ -35,9 +35,15 @@ def build(check=False):
             alpha[ndi.binary_dilation(horizontal | vertical, iterations=r['dilation_pixels'])] = 0
             if i == 0:
                 alpha = np.minimum(alpha, np.array(Image.open(ART / f'happy-{state}-ink-support-v1.png')))
+            if 'crown_patches' in spec:
+                patch = spec['crown_patches'][state]
+                patch_path = ART / patch['file']
+                assert hashlib.sha256(patch_path.read_bytes()).hexdigest() == patch['sha256']
+                crown = np.array(Image.open(patch_path))
+                alpha[:patch['rows']] = crown[y:y+patch['rows'],x:x+512]
             result[y:y+512,x:x+512,:3] = spec['ink_rgb']
             result[y:y+512,x:x+512,3] = alpha
-        target = ART / f'moods-{state}-ink-v1.webp'
+        target = ART / f'moods-{state}-ink-{version}.webp'
         if check:
             actual = np.array(Image.open(target).convert('RGBA'))
             assert np.array_equal(actual[:,:,3],result[:,:,3]), state+' alpha differs'
@@ -49,4 +55,6 @@ def build(check=False):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--check', action='store_true')
-    build(parser.parse_args().check)
+    parser.add_argument('--version', choices=['v1','v2'], default='v2')
+    args = parser.parse_args()
+    build(args.check, args.version)

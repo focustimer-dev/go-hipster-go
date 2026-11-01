@@ -10,7 +10,7 @@ s=s.replace('<body data-page="launch">','<body data-page="launch" class="gig-pos
 edition_css=ROOT/'launcher/editions/gig-poster/edition.css'
 version=hashlib.sha256(edition_css.read_bytes()).hexdigest()[:12] if edition_css.exists() else 'initial'
 mood_version=hashlib.sha256((edition_css.parent/'mood-portraits.css').read_bytes()).hexdigest()[:12]
-s=s.replace('</head>',f'<link rel="preload" href="/editions/gig-poster/assets/moods-neutral-ink-v1.webp" as="image">\n<link rel="preload" href="/editions/gig-poster/assets/moods-selected-ink-v1.webp" as="image">\n<link rel="preload" href="/editions/gig-poster/assets/anton.woff" as="font" type="font/woff" crossorigin>\n<link rel="stylesheet" href="/editions/gig-poster/edition.css?v={version}">\n<link rel="stylesheet" href="/editions/gig-poster/mood-portraits.css?v={mood_version}">\n</head>')
+s=s.replace('</head>',f'<link rel="preload" href="/editions/gig-poster/assets/moods-neutral-ink-v2.webp" as="image">\n<link rel="preload" href="/editions/gig-poster/assets/moods-selected-ink-v2.webp" as="image">\n<link rel="preload" href="/editions/gig-poster/assets/anton.woff" as="font" type="font/woff" crossorigin>\n<link rel="stylesheet" href="/editions/gig-poster/edition.css?v={version}">\n<link rel="stylesheet" href="/editions/gig-poster/mood-portraits.css?v={mood_version}">\n</head>')
 s=s.replace('<title>Go, Hipster, Go! — Press GO, Question Everything</title>','<title>Go, Hipster, Go! — Gig Poster edition</title>')
 s=s.replace('href="/" aria-label="Go, Hipster, Go! home"','href="/editions/gig-poster/" aria-label="Go, Hipster, Go! home"')
 s=s.replace('<a href="/" aria-current="page">','<a href="/editions/gig-poster/" aria-current="page">')

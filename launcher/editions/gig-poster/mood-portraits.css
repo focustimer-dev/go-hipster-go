@@ -9,8 +9,8 @@ body.gig-poster .mood-grid .mood .face::after{
  content:"";position:absolute;inset:0;background-repeat:no-repeat;background-size:300% 200%;
  background-position:var(--mood-position);pointer-events:none;filter:none;transition:opacity 160ms ease-out;
 }
-body.gig-poster .mood-grid .mood .face::before{background-image:url('/editions/gig-poster/assets/moods-neutral-ink-v1.webp');opacity:1}
-body.gig-poster .mood-grid .mood .face::after{background-image:url('/editions/gig-poster/assets/moods-selected-ink-v1.webp');opacity:0}
+body.gig-poster .mood-grid .mood .face::before{background-image:url('/editions/gig-poster/assets/moods-neutral-ink-v2.webp');opacity:1}
+body.gig-poster .mood-grid .mood .face::after{background-image:url('/editions/gig-poster/assets/moods-selected-ink-v2.webp');opacity:0}
 body.gig-poster .mood-grid .mood[aria-pressed=true] .face::before{opacity:0}
 body.gig-poster .mood-grid .mood[aria-pressed=true] .face::after{opacity:1}
 body.gig-poster .mood[data-mood=happy]{--mood-position:0% 0%}

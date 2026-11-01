@@ -22,7 +22,7 @@ class LabSnapshotTests(unittest.TestCase):
             end=stripped.index('<div class="site">',start)
             stripped=stripped[:start]+stripped[end:]
             self.assertEqual(stripped,(ROOT/'launcher/editions/gig-poster/index.html').read_text())
-            for asset in ('moods-neutral-ink-v1.webp','moods-selected-ink-v1.webp','anton.woff','stock.webp'):
+            for asset in ('moods-neutral-ink-v2.webp','moods-selected-ink-v2.webp','anton.woff','stock.webp'):
                 path=Path('editions/gig-poster/assets')/asset
                 self.assertEqual((dest/path).read_bytes(),(ROOT/'launcher'/path).read_bytes())
             self.assertTrue((dest/'editions/gig-poster/assets/moods-neutral-approved-v1.webp').is_file())

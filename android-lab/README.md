@@ -252,3 +252,14 @@ Browser QA: `node scripts/test_mood_ink.cjs` checks all six moods in the shared
 PWA and bundled Lab at 360, 412, 915 and 1280 pixel widths, including exclusive
 state layers, fixed geometry, reduced motion and touch targets. Real Android
 WebView rendering remains an on-device check. Install over Lab; do not uninstall.
+
+## Lab 0.7 — recover clipped crowns
+
+Several source-sheet portrait crops cut across hair or caps. Version 2 restores
+only each cell's top 80 rows from aligned earlier artwork. Faces, expressions,
+body pixels, sprite cell geometry and the atlas are unchanged. Criminal/Funk
+use the canonical source board; Weird uses its earlier full-frame hair; Angry
+uses the full approved pair; neutral Sad uses the existing full-frame engraving.
+Source identifiers, alignment matrices and checksummed crown masks are recorded
+in mood-ink-v2.json. The builder verifies the crown masks and decoded output.
+Version 1 sprites and source sheets remain available for regression comparison.
