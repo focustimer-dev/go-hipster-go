@@ -38,7 +38,7 @@ test('Worker serves the setup directory without an HTML canonicalization loop', 
   }} };
   const response = await worker.fetch(new Request('https://example.org/setup/?ai=gemini'), env);
   assert.equal(response.status, 200);
-  assert.equal(assetURL.pathname, '/setup/', 'ASSETS must receive canonical directory path, not /setup/index.html');
+  assert.equal(assetURL.pathname, '/editions/gig-poster/setup/', 'ASSETS must receive canonical gig-poster Manual directory');
   assert.equal(assetURL.search, '?ai=gemini');
   assert.equal(response.headers.get('x-ghg-release'), 'test-release');
   const redirect = await worker.fetch(new Request('https://example.org/setup?ai=gemini'), env);
