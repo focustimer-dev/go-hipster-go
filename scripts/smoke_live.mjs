@@ -11,6 +11,11 @@ export const criticalAssets = new Map([
   ['/assets/hipster.css', 'launcher/assets/hipster.css'],
   ['/editions/gig-poster/edition.css', 'launcher/editions/gig-poster/edition.css'],
 ]);
+export const artworkAssets = new Map([
+  ['/editions/gig-poster/mood-portraits.css', 'launcher/editions/gig-poster/mood-portraits.css'],
+  ['/editions/gig-poster/assets/moods-neutral-ink-v2.webp', 'launcher/editions/gig-poster/assets/moods-neutral-ink-v2.webp'],
+  ['/editions/gig-poster/assets/moods-selected-ink-v2.webp', 'launcher/editions/gig-poster/assets/moods-selected-ink-v2.webp'],
+]);
 export function verifyAsset(actual, expected, label) {
   const digest = bytes => createHash('sha256').update(bytes).digest('hex');
   assert.equal(digest(actual), digest(expected), `${label}: served bytes differ from the expected release`);
@@ -89,6 +94,17 @@ export async function checkRelease(browser, baseURL, expectedCommit, sourceCache
       if (!sourceCache.has(expectedURL)) sourceCache.set(expectedURL, await responseBytes(expectedURL));
       // Compare actual bytes, never trust a reassuring version query string.
       verifyAsset(await responseBytes(live), sourceCache.get(expectedURL), path);
+    }
+    if (await page.locator('body').getAttribute('data-page') === 'launch') {
+      for (const [path, sourcePath] of artworkAssets) {
+        const expectedURL = `${sourceRoot}/${expectedCommit}/${sourcePath}`;
+        if (!sourceCache.has(expectedURL)) sourceCache.set(expectedURL, await responseBytes(expectedURL));
+        verifyAsset(await responseBytes(origin + path), sourceCache.get(expectedURL), path);
+      }
+      const neutral = await page.locator('[data-mood="happy"] .face').evaluate(el => getComputedStyle(el, '::before').backgroundImage);
+      const selected = await page.locator('[data-mood="angry"] .face').evaluate(el => getComputedStyle(el, '::after').backgroundImage);
+      assert.match(neutral, /moods-neutral-ink-v2\\.webp/, 'Clean neutral mood art is not active');
+      assert.match(selected, /moods-selected-ink-v2\\.webp/, 'Clean selected mood art is not active');
     }
   }
   try {
