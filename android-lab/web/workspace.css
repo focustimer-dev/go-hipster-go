@@ -1,0 +1,75 @@
+/* Lab snapshot only: canonical atlas and portraits keep their geometry. */
+body.gig-poster.lab-workspace{padding-top:56px;--lab-rail-height:56px;color:#103135;background-color:#dfb045;scrollbar-color:#103135 #dfb045}
+.lab-workspace [hidden]{display:none!important}
+.lab-workspace .site>.masthead .topnav{display:none}
+.lab-workspace .site>.masthead .brandrow{display:flex;align-items:center;gap:12px}
+.lab-edition-mark{font:bold .6875rem/1.3 'Courier New',monospace;border:1px solid #103135;padding:4px 6px;margin-left:auto}
+.lab-workspace .service-counter{scroll-margin-top:calc(var(--lab-rail-height) + 8px)}
+.lab-rail{position:fixed;inset:0 0 auto;z-index:1000;height:56px;background:#103135;color:#dfb045;display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) 48px;padding:0 max(0px,env(safe-area-inset-right)) 0 max(0px,env(safe-area-inset-left));border:0}
+.lab-rail button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;position:relative;min-width:0;min-height:48px;border:0;border-bottom:3px solid transparent;border-radius:0;background:transparent;color:inherit;padding:4px 2px;font:700 .6875rem/1.15 Arial,sans-serif;letter-spacing:.025em;touch-action:manipulation}
+.lab-rail button[aria-current=page]{border-bottom-color:#dfb045;background:#dfb0450b}
+.lab-rail button:last-child{border-left:1px solid #dfb04566}
+.lab-rail svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round;stroke-linecap:round}
+.lab-update-dot{position:absolute;top:7px;left:calc(50% + 12px);width:6px;height:6px;border-radius:50%;background:#dfb045;outline:2px solid #103135}
+body.gig-poster.lab-workspace .selection-ticket:not(.is-docked){top:64px;max-height:calc(100dvh - 80px);z-index:900}
+body.lab-workspace:not([data-lab-screen=jukebox]) .selection-ticket{display:none!important}
+.lab-workspace :is(button,a,input,summary):focus-visible{outline:3px solid #a83223;outline-offset:3px}
+.lab-workspace .lab-rail button:focus-visible{outline-color:#dfb045;outline-offset:-4px}
+.lab-page{width:100%;max-width:760px;margin:auto;padding:28px 5% 40px;min-height:calc(100dvh - 56px);background-image:url('/editions/gig-poster/assets/stock.webp');background-size:460px;background-blend-mode:luminosity;background-color:#dfb045;color:#103135;font:1rem/1.5 Arial,sans-serif}
+.lab-page h1{margin:0 0 12px;font:400 clamp(2.8rem,11vw,4rem)/1.08 Poster,sans-serif;letter-spacing:0}
+.lab-intro{margin:0 0 32px;max-width:45ch}
+.lab-page section{margin:32px 0 0}
+.lab-page h2,.lab-dialog h2{font:400 1.6rem/1.15 Poster,sans-serif;margin:0}
+.lab-page h3{font:700 1rem/1.35 Arial,sans-serif;margin:0 0 6px;overflow-wrap:anywhere}
+.lab-page p{max-width:65ch}
+.lab-page section>h2,.lab-section-head{padding-bottom:12px;border-bottom:2px solid #103135}
+.lab-section-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.lab-meta{font:bold .75rem/1.4 'Courier New',monospace;white-space:nowrap}
+.lab-record{display:flex;align-items:flex-start;gap:12px;padding:18px 0;border-bottom:1px solid #10313580}
+.lab-record-main{flex:1;min-width:0}
+.lab-record p{font-size:.875rem;margin:0;line-height:1.5;overflow-wrap:anywhere}
+.lab-record .lab-date{margin-top:8px;font-size:.75rem}
+.lab-text-button,.lab-wide-button{min-height:48px;min-width:48px;background:transparent;color:#103135;border:1px solid #103135;padding:10px 12px;font:400 1.125rem/1.2 Poster,sans-serif;border-radius:0;cursor:pointer;touch-action:manipulation;text-decoration:none}
+.lab-text-button{border-color:transparent;padding:10px 6px;text-decoration:underline;text-underline-offset:4px;flex-shrink:0}
+.lab-wide-button{display:block;width:100%;margin-top:18px}
+.lab-help{font:.8125rem/1.5 Arial,sans-serif;margin:10px 0 16px}
+.lab-local-note{font:.75rem/1.6 'Courier New',monospace;border-top:2px solid #103135;padding-top:18px;margin:36px 0 0}
+.lab-empty{padding:18px 0;border-bottom:1px solid #10313580}
+.lab-empty p{font-size:.875rem;margin:0 0 10px}
+.lab-save-button{margin-left:auto;flex-shrink:0;font-size:1rem}
+body.gig-poster.lab-workspace .receipt-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
+body.gig-poster.lab-workspace #labInspiration{display:flex;align-items:center;gap:12px;border-block:1px solid #103135;border-inline:0;margin:22px 0 16px;padding:12px 0;color:#103135;background:transparent}
+#labInspiration>div:first-child{flex:1;min-width:0}
+#labInspiration strong{display:block;font:bold .6875rem/1.4 'Courier New',monospace}
+#labInspirationPreview{font:.875rem/1.45 Arial,sans-serif;margin:4px 0 0;overflow-wrap:anywhere}
+#labInspiration button{min-height:48px;min-width:48px;background:transparent;border:0;color:#103135;font:400 1.125rem Poster,sans-serif;text-decoration:underline;text-underline-offset:4px}
+.lab-dialog{box-sizing:border-box;width:calc(100% - 24px);max-width:480px;max-height:85dvh;padding:0;background:#dfb045;color:#103135;border:1px solid #103135;box-shadow:0 12px 32px #0005;overflow:auto;font:1rem/1.5 Arial,sans-serif}
+.lab-dialog::backdrop{background:#10313599}
+.lab-dialog-head{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #103135;padding:12px 18px}
+.lab-dialog-body{padding:18px}
+.lab-dialog fieldset{padding:0;margin:0;border:0}
+.lab-dialog legend{font:400 1.375rem Poster,sans-serif;margin-bottom:10px}
+.lab-choice{min-height:48px;display:flex;align-items:center;gap:12px;padding:10px 0}
+.lab-choice input{width:22px;height:22px;accent-color:#103135;flex-shrink:0}
+.lab-toggle{justify-content:space-between;border-top:1px solid #10313580;margin-top:12px}
+.lab-choice small{display:block;font:.8125rem/1.5 Arial,sans-serif;margin-top:3px}
+.lab-page .manual-liner,.lab-page .resource-shelf{margin:32px 0 0}
+.lab-page :is(.manual-liner,.resource-shelf)>summary{min-height:48px;padding:14px 0;cursor:pointer}
+.lab-page a{color:inherit;text-underline-offset:3px}
+.lab-page pre{white-space:pre-wrap;overflow-wrap:anywhere}
+body.lab-modal-open{overflow:hidden}
+@media(max-width:360px){.lab-page{padding-inline:16px}.lab-page h1{font-size:2.7rem}}
+@media(min-width:840px){.lab-rail{grid-template-columns:repeat(3,minmax(0,160px)) 56px;justify-content:center}.lab-page{padding-inline:40px}}
+@media(prefers-reduced-motion:reduce){.lab-workspace{scroll-behavior:auto}}
+
+/* Services are occasional preferences, using the existing selection handlers. */
+#labServicePreferences{margin-bottom:24px}
+#labServicePreferences .service-counter{margin:0;padding:0;border:0;background:none}
+#labServicePreferences .counter-heading{font:400 1.375rem Poster,sans-serif;margin:0 0 14px;padding:0;border:0}
+#labServicePreferences .selector-grid{display:block}
+#labServicePreferences .panel{padding:0;margin:0 0 18px;border:0;background:none;box-shadow:none}
+#labServicePreferences .panel-head{font:700 .875rem/1.4 Arial,sans-serif;margin:0 0 8px;padding:0;border:0;background:none;color:inherit}
+#labServicePreferences .switch{display:flex;flex-wrap:wrap;gap:6px}
+#labServicePreferences .switch button{flex:1 1 90px;min-height:48px;padding:10px 8px;border:1px solid #103135;background:transparent;color:#103135;font:700 .8125rem/1.3 Arial,sans-serif;white-space:normal;box-shadow:none;transform:none;transition:none}
+#labServicePreferences .switch button[aria-pressed=true]{background:#103135;color:#dfb045;text-decoration:underline;text-underline-offset:3px}
+#labServicePreferences .connector-status{margin:0;padding:0;border:0;background:none;color:#103135;font:.8125rem/1.5 Arial,sans-serif}
