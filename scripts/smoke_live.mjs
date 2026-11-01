@@ -106,6 +106,11 @@ export async function checkRelease(browser, baseURL, expectedCommit, sourceCache
       const after = await anchorPositions();
       after.forEach((position, i) => assert.ok(Math.abs(position - initialAnchors[i]) <= 1, `${profile.name}: ${state} moved ${i === 0 ? 'GO' : 'receipt'} by ${position - initialAnchors[i]}px`));
     }
+    async function verifyIdleReceipt(label) {
+      assert.equal(await page.locator('#promptReceipt').getAttribute('data-copy-state'), 'idle', `${label}: receipt must return to idle`);
+      assert.equal(await page.locator('#receiptCopy').textContent(), '', `${label}: obsolete copy label must stay cleared`);
+      assert.ok(await page.locator('#receiptCopy').isHidden(), `${label}: idle copy mark must be hidden`);
+    }
     const before = await page.locator('#prompt').textContent();
     await page.locator('#pinMood').click();
     await verifyStableShuffleLayout('pin feedback');
@@ -116,7 +121,7 @@ export async function checkRelease(browser, baseURL, expectedCommit, sourceCache
     assert.match(shuffled, /go angry/, 'Pinned mood changed');
     assert.doesNotMatch(shuffled, /Regional exploration:/, 'Pinned Worldwide selection changed');
     assert.doesNotMatch(shuffled, /Tempo preference: Slow/, 'Unpinned pace did not change');
-    assert.equal(await page.locator('#receiptCopy').textContent(), 'REQUEST DRAFT', 'Shuffle incorrectly claims a copy');
+    await verifyIdleReceipt('Shuffle must invalidate an old copy');
     await checkGeometry(page, `${profile.name}: shuffled`, mainTargets);
     await page.locator('#pinPace').click();
     assert.ok(await page.locator('#shuffleCrate').isDisabled(), 'All pinned must disable shuffle');
@@ -133,13 +138,13 @@ export async function checkRelease(browser, baseURL, expectedCommit, sourceCache
     await page.locator('#goHard').click();
     assert.equal(await page.locator('#goHard').getAttribute('aria-pressed'), 'true', 'TRY HARD must be pressed');
     assert.match(await page.locator('#prompt').textContent(), /Curation mode: GO HARD/);
-    assert.equal(await page.locator('#receiptCopy').textContent(), 'REQUEST DRAFT', 'TRY HARD must invalidate old copy');
+    await verifyIdleReceipt('TRY HARD must invalidate an old copy');
     await page.locator('#goButton').click();
     await page.waitForFunction(() => document.querySelector('#receiptCopy')?.textContent === 'COPIED TO CLIPBOARD');
     assert.equal(await page.evaluate(() => navigator.clipboard.readText()), await page.locator('#prompt').textContent(), 'Hard receipt differs from clipboard');
     await page.locator('#goHard').click();
     assert.doesNotMatch(await page.locator('#prompt').textContent(), /Curation mode: GO HARD/);
-    assert.equal(await page.locator('#receiptCopy').textContent(), 'REQUEST DRAFT', 'Turning TRY HARD off invalidates old copy');
+    await verifyIdleReceipt('Turning TRY HARD off invalidates an old copy');
     await checkGeometry(page, `${profile.name}: hard toggled`, mainTargets);
 
     await page.locator('#atlasNamedRegions > summary').click();
