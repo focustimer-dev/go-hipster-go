@@ -13,6 +13,7 @@ let previousShuffle=null;
 let printImpression=0;
 let includeCover=false;
 let goHard=false;
+let skipRough=false;
 const shufflePins={mood:false,pace:false,regions:false};
 const tempoNames={slow:"Slow",relaxed:"Relaxed",moderate:"Mid-tempo",brisk:"Brisk",fast:"Fast"};
 const tempoSteps=Object.keys(tempoNames);
@@ -124,6 +125,7 @@ function goPrompt(ai,service,mood){
  if(crateSelected.size)parts.push(crateRegionPrompt());
  const brief=moodDiscoveryBrief(mood);if(brief)parts.push(brief.trim());
  if(tempo)parts.push("Tempo preference: "+tempoNames[tempo]+".");
+ if(skipRough)parts.push("Recording preference: Skip rough recordings. Avoid heavy hiss, crackle, accidental distortion and muffled archival transfers. Clean older recordings and good restorations are welcome; intentional lo-fi production is not automatically excluded. Find cleaner alternatives within the requested region and mood; disclose uncertain audio quality rather than claiming it was auditioned.");
  if(crateSparkPhrase)parts.push("Seed: "+crateSparkPhrase+".");
  parts.push("Service: "+serviceNames[service]+".");
  if(includeCover)parts.push("Cover art: yes. Use the skill\u0027s cover-art workflow.");
@@ -363,6 +365,7 @@ function updateCrateMap(){
 const params=new URLSearchParams(location.search);
 includeCover=params.get("cover")==="1";
 goHard=params.get("hard")==="1";
+skipRough=params.has("clean")?params.get("clean")==="1":stored("ghg-skip-rough-v1")==="1";
 const isLegacyGemini=location.pathname.startsWith("/gemini/");
 let ai=(params.get("ai")||(isLegacyGemini?"gemini":stored("hmg-ai"))||"chatgpt").toLowerCase();
 if(!defaultService[ai])ai="chatgpt";
@@ -464,17 +467,18 @@ function renderLaunch(){
  e.mood.textContent=moodLabel(mood).toUpperCase();
  e.code.textContent=(ai==="chatgpt"?"CG":ai==="gemini"?"GM":"CL")+"-"+mood.slice(0,3).toUpperCase()+"-01";
  e.open.href=ai==="gemini"?geminiIntent:destinations[ai];e.open.textContent="↗ OPEN "+aiNames[ai].toUpperCase();
- const summary=doc.getElementById("receiptSummary");if(summary)summary.textContent=aiNames[ai]+" · "+serviceNames[service]+" · "+moodLabel(mood)+(tempo?" · "+tempoNames[tempo]:"")+" · 12 tracks"+(includeCover?" · cover art":"")+(goHard?" · deep crate":"");
+ const summary=doc.getElementById("receiptSummary");if(summary)summary.textContent=aiNames[ai]+" · "+serviceNames[service]+" · "+moodLabel(mood)+(tempo?" · "+tempoNames[tempo]:"")+" · 12 tracks"+(includeCover?" · cover art":"")+(goHard?" · deep crate":"")+(skipRough?" · skip rough recordings":"");
  const regions=doc.getElementById("receiptRegions");if(regions)regions.textContent="CRATES / "+(crateSelected.size?crateRegions.filter(r=>crateSelected.has(r.id)).map(r=>r.label).join(" · "):"Worldwide");
  const ticketShort=doc.getElementById("selectionTicketShort");
  if(ticketShort)ticketShort.textContent=ticketAiCodes[ai]+" › "+ticketServiceCodes[service]+" · "+(moodParts(mood).map(m=>ticketMoodCodes[m]||({desire:"LOVE",triumphant:"WIN"})[m]).join("+")||"SURP")+" · "+(tempo?ticketTempoCodes[tempo]:"ANY");
  const ticketRegionShort=doc.getElementById("selectionTicketRegionShort");
  if(ticketRegionShort){
-  ticketRegionShort.textContent=shortTicketRegions()+" · ART:"+(includeCover?"ON":"OFF")+" · HARD:"+(goHard?"ON":"OFF");
+  ticketRegionShort.textContent=shortTicketRegions()+" · ART:"+(includeCover?"ON":"OFF")+" · HARD:"+(goHard?"ON":"OFF")+(skipRough?" · CLEAN:ON":"");
   ticketRegionShort.title=crateSelected.size?crateRegions.filter(r=>crateSelected.has(r.id)).map(r=>r.label).join(", "):"Worldwide";
  }
  const cover=doc.getElementById("includeCover");if(cover)cover.setAttribute("aria-pressed",String(includeCover));
  const hard=doc.getElementById("goHard");if(hard)hard.setAttribute("aria-pressed",String(goHard));
+ const recording=doc.getElementById("skipRough");if(recording)recording.checked=skipRough;
  const hint=doc.getElementById("goHint");if(hint)hint.textContent="Copy your prompt";
  const goButton=doc.getElementById("goButton");if(goButton)goButton.setAttribute("aria-label","GO! Copy "+(mood==="go"?"surprise":moodLabel(mood))+" playlist prompt");
  const manual=doc.getElementById("manualOpenAi");if(manual){manual.href=destinations[ai];manual.textContent="I COPIED IT MANUALLY — OPEN "+aiNames[ai].toUpperCase()}
@@ -485,6 +489,7 @@ function renderLaunch(){
  if(tempo)u.searchParams.set("tempo",tempo);else u.searchParams.delete("tempo");
  if(includeCover)u.searchParams.set("cover","1");else u.searchParams.delete("cover");
  if(goHard)u.searchParams.set("hard","1");else u.searchParams.delete("hard");
+ u.searchParams.set("clean",skipRough?"1":"0");
  u.searchParams.delete("mode");
  history.replaceState(null,"",u.pathname+u.search);
 }
@@ -591,6 +596,11 @@ const undoShuffle=doc.getElementById("undoShuffle");if(undoShuffle)undoShuffle.a
  const result=doc.getElementById("shuffleResult");if(result)result.textContent="Previous brief restored.";
  shuffle?.focus();status("Shuffle undone. Press GO to copy the restored brief.");
 });
+const recordingOption=doc.getElementById("skipRough");
+if(recordingOption)recordingOption.addEventListener("change",()=>{
+ skipRough=recordingOption.checked;store("ghg-skip-rough-v1",skipRough?"1":"0");copiedPrompt=null;renderLaunch();
+ status("Skip rough recordings "+(skipRough?"enabled":"disabled")+". Press GO to copy the updated request.");
+});
 const hardOption=doc.getElementById("goHard");
 if(hardOption)hardOption.addEventListener("click",()=>{
  goHard=!goHard;copiedPrompt=null;renderLaunch();
@@ -621,8 +631,7 @@ async function copyGo(){
 doc.querySelectorAll("[data-mood]").forEach(b=>b.addEventListener("click",()=>{
  const selected=moodParts(mood),id=b.dataset.mood;
  if(selected.includes(id))selected.splice(selected.indexOf(id),1);
- else if(selected.length<2)selected.push(id);
- else{const help=doc.getElementById("moodHelp");if(help)help.textContent="Two moods selected. Clear one before adding another.";return}
+ else{if(selected.length===2)selected.pop();selected.push(id)}
  mood=selected.join(" ")||"go";copiedPrompt=null;selectionChanged();
 }));
 doc.querySelectorAll("[data-crate-region]").forEach(b=>{

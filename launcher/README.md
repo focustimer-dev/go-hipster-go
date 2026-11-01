@@ -194,3 +194,13 @@ The sixth mood, **The Funk**, sends `go funky` with independent tempo and region
 **+ Art** is a native pressed toggle button beside GO, including on phones, off by default. It reuses the shuffle-pin border, selected fill and focus treatment with a 44px minimum target and the accessible name Include playlist cover art. It adds only `Cover art: yes. Use the skill's cover-art workflow.` to the prompt. The skill owns the post-curation cover workflow: one square original album sleeve, one track's verified original year/local scene as the visual anchor, symbolic treatment of the full mix, and the exact final playlist title. Unknown provenance stays approximate; a reissue date is not the original year. The AI supplies a prompt if image generation is unavailable. Generating artwork does not confirm uploading it to the music service.
 
 The option appears in the receipt and shared URL (`cover=1`), changes invalidate the clipboard handoff, and toggling it preserves the current music seed. It is not saved as a lasting preference. The PWA itself generates no images and uploads no covers.
+
+
+## Recording-quality preference
+
+**Skip rough recordings** is an optional native checkbox below tempo, off by default. It steers away from heavy hiss, crackle, accidental distortion and muffled archival transfers without imposing an era cutoff. Clean older recordings, good restorations and intentional lo-fi remain eligible. The copied prompt asks for cleaner alternatives within the requested region and mood and for honest uncertainty about audio quality; the launcher does not audition tracks.
+
+The choice is remembered locally (`ghg-skip-rough-v1`). Explicit shared `clean=1` or `clean=0` overrides the saved value for that visit; clicking the toggle saves the new preference. Changing it invalidates the previous clipboard handoff while preserving seed, mood, tempo, geography, cover and research settings. The receipt reports the active preference. Android Lab relocates the same control into its existing Preferences panel when bundling.
+
+
+Mood selection accepts up to two moods without blocking a third tap: a new choice replaces the most recently selected mood and preserves the first. Tapping an active mood removes it.

@@ -274,3 +274,8 @@ Run `node scripts/test_lab_discovery_routes.cjs` for deck persistence and exhaus
 ## Lab 0.9 — refreshed production launcher
 
 Build a new isolated Lab APK from the production PWA at the November 1 clean-art verified release, preserving native handoffs, preferences, saved requests, inspiration and experimental discovery routes. All eight mood controls appear, with transparent approved portraits for the original six and unchanged Desire/Triumph portraits. The APK bundles this snapshot locally and does not automatically receive future Cloudflare PWA updates. A new APK must be signed with the existing private keystore and installed over the previous Lab (same application ID and signer) to retain data. The Lab remains a separate experiment, not a production Android release.
+
+
+## Recording-quality preference
+
+Preferences includes **Skip rough recordings**, using the existing checkbox row. It is off by default and remembered in this app's WebView storage. The shared launcher handles the actual prompt, receipt and clipboard invalidation. Clean older recordings and intentional lo-fi remain eligible; heavy hiss, crackle and muffled archival transfers are discouraged. This build requires a new APK; installed Lab copies do not update from the PWA.

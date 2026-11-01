@@ -6,6 +6,9 @@ colors:
   mustard-stock: "#dfb045"
   warm-highlight: "#edc65d"
   star-red: "#a83223"
+  mood-vermilion-wash: "rgb(214 75 48 / 22%)"
+  funk-pink: "#E03FD8"
+  funk-paper: "#f4efdf"
   receipt-ink: "#742019"
   focus-paper: "#f5cf64"
 typography:
@@ -183,3 +186,8 @@ The entire request assembly now uses the same petrol ink ground and mustard lett
 The Gig Poster Jukebox leads with moods before the tempo fader, then presents the **unchanged** Crate Atlas. Map paths, viewport dimensions, Robinson projection, map art, camera gestures, stamps and region-selection behavior are explicitly out of scope. The map remains open and retains its full existing size.
 
 The + ART and TRY HARD keys target a compact 56px minimum height where content allows while retaining readable descriptions and responsive wrapping. Shuffle remains a secondary tool with the existing reserved feedback line to prevent GO from jumping. The selection ticket still appears after the first AI choice scrolls offscreen, and the same ticket docks inside the printer receipt; the docking threshold follows the stable receipt edge to avoid jumping during reparenting. The enabled post-copy Open AI action receives the stronger display hierarchy without changing clipboard permissions or handoff semantics.
+
+
+## Mood selection refinement
+
+Selecting a third mood retains the first selected mood and replaces the most recently selected one. Tapping a selected mood still removes it. Selected mood backgrounds use 22% opacity vermilion over the existing stock, with petrol text, underline and inset selection outline. The Funk uses #E03FD8 at the same opacity, with static vermilion laser linework behind its unchanged portrait. Selection does not fade the portrait itself. Reduced motion removes the laser fade.
