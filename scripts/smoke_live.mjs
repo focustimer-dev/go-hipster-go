@@ -176,6 +176,8 @@ export async function checkRelease(browser, baseURL, expectedCommit, sourceCache
     await checkGeometry(page, `${profile.name}: expanded atlas`, `${mainTargets}, .crate-continents button, .crate-regions button, #crateGeoClear`);
     assert.equal(await page.locator('#promptReceipt').getAttribute('data-copy-state'), 'idle', 'Manual region changes must invalidate the copied receipt');
     // Check the approved selected treatment in the actually served page.
+    const moodBoxes = () => page.locator('.mood-grid .mood').evaluateAll(nodes => nodes.map(el => { const r = el.getBoundingClientRect(); return { x: r.x, y: r.y + window.scrollY, width: r.width, height: r.height }; }));
+    const beforeMoodBoxes = await moodBoxes();
     await page.locator('[data-mood="angry"]').click();
     await page.locator('[data-mood="desire"]').click();
     await page.locator('[data-mood="funky"]').click();
@@ -189,7 +191,7 @@ export async function checkRelease(browser, baseURL, expectedCommit, sourceCache
     assert.equal(selectedColors.hearts, selectedColors.funk, 'Desire hearts must match Funk background');
     assert.equal(selectedColors.desire, 'rgb(214, 75, 48)', 'Selected stock must remain true vermilion');
     assert.match(selectedColors.ink, /selectedMoodPetrol/, 'Approved deeper petrol is not active');
-    await verifyStableShuffleLayout('mood selection');
+    assert.deepEqual(await moodBoxes(), beforeMoodBoxes, 'Mood selection moved portrait controls');
     await page.locator('[data-mood="desire"]').click();
     await page.waitForFunction(() => getComputedStyle(document.querySelector('.desire-hearts')).opacity === '0');
 
