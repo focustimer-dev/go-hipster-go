@@ -10,6 +10,10 @@ Before choosing a thesis, read these sections (exact headings):
 2. [Global scenes](global-scenes.md): **Category discovery index — expand the search before choosing artists** (including its route tables) and **Responsible cross-scene reasoning**. Compare three distinct routes; then read the relevant scene detail under **Geographic research map**, **Movement and microgenre touchstones**, **Further scene horizons — research leads, not default playlists**, or **US East and West discovery routes**. For unstructured GO, consider an under-covered route before settling on familiar choices.
 3. [Verification](verification.md): apply the recording and publishing evidence rules to every final selection. For Criminal, also apply **Criminal mood: verify the song's actual story**, using song-level narrative evidence rather than genre, reputation or title association.
 
+## Existing-playlist audit
+
+For explicit `de-cheese`, read [De-cheese audit](de-cheese.md) first. Audit the existing snapshot read-only; do not start the discovery routes above or a new GO run.
+
 ## Funky requests
 
 For `go funky`, also read [Funky: worldwide groove discovery](funky.md) before choosing the thesis. Use its recording-level groove judgment alongside the ordinary taxonomy, regional and verification routes; other moods need not load it.
