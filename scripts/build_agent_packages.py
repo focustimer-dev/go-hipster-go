@@ -8,6 +8,7 @@ from zipfile import ZipFile, ZIP_DEFLATED
 ROOT = Path(__file__).resolve().parents[1]
 SKILL_PATH = Path("skills/go-hipster-go")
 SOURCES = [
+    "references/recording-quality.md",
     "references/reference-index.md",
     "references/de-cheese.md",
     "references/discovery-routes.md",

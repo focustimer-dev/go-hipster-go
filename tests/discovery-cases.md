@@ -417,3 +417,12 @@ Expected: A's handclaps and replacement story both unverified; no invented liste
 | Ordinary GO without new mood | Existing behavior retained |
 
 Artwork acceptance and era slider are tracked in docs/mood-expansion-plan.md; no front-end enablement is implied by these backend cases.
+
+
+## Recording-quality preference regression
+
+- With the preference absent or explicitly off, do not impose a new age or recording-quality exclusion.
+- With `Recording preference: Skip rough recordings.`, reject a documented damaged transfer dominated by hiss; prefer an evidenced cleaner transfer of the same performance. Do not treat a “remastered” label alone as proof.
+- Keep a clean mono archival release eligible. Do not infer quality from a region, tradition or date. Intentional fuzz and lo-fi remain eligible unless their actual presentation conflicts with the listening preference.
+- With uncertain quality and no audio access, disclose uncertainty; never claim an audition. If no suitable alternative is verifiable within the brief, explain the shortfall without silently changing regions or dropping the preference.
+- Repeat for GO HARD and for a legacy long app prompt. The compact app flag must invoke the same skill policy.

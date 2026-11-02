@@ -4,8 +4,22 @@ A generated, text-forward snapshot of the **canonical** repository skill. This i
 
 **Source:** https://github.com/focustimer-dev/go-hipster-go
 
-**Files included:** `references/reference-index.md`, `references/de-cheese.md`, `references/discovery-routes.md`, `references/funky.md`, `references/desire-triumphant.md`, `references/regions/antarctica.md`, `references/go-hard.md`, `references/regional-review.md`, `references/regions/oceania-additions.md`, `references/regions/central-america-additions.md`, `references/regions/central-africa-additions.md`, `references/regions/southern-africa-additions.md`, `references/regional-atlas.md`, `references/regions/us-west.md`, `references/regions/us-east.md`, `references/regions/canada-west.md`, `references/regions/canada-east.md`, `references/regions/mexico.md`, `references/regions/central-america.md`, `references/regions/caribbean.md`, `references/regions/northern-south-america.md`, `references/regions/southern-south-america.md`, `references/regions/atlantic-europe.md`, `references/regions/mediterranean-europe.md`, `references/regions/northern-europe.md`, `references/regions/eastern-europe.md`, `references/regions/north-africa.md`, `references/regions/west-africa.md`, `references/regions/east-africa.md`, `references/regions/central-southern-africa.md`, `references/regions/middle-east.md`, `references/regions/central-asia.md`, `references/regions/south-asia.md`, `references/regions/east-asia.md`, `references/regions/southeast-asia.md`, `references/regions/northern-asia.md`, `references/regions/oceania.md`, `SKILL.md`, `references/global-scenes.md`, `references/sonic-taxonomy.md`, `references/curation-examples.md`, `references/verification.md`.
+**Files included:** `references/recording-quality.md`, `references/reference-index.md`, `references/de-cheese.md`, `references/discovery-routes.md`, `references/funky.md`, `references/desire-triumphant.md`, `references/regions/antarctica.md`, `references/go-hard.md`, `references/regional-review.md`, `references/regions/oceania-additions.md`, `references/regions/central-america-additions.md`, `references/regions/central-africa-additions.md`, `references/regions/southern-africa-additions.md`, `references/regional-atlas.md`, `references/regions/us-west.md`, `references/regions/us-east.md`, `references/regions/canada-west.md`, `references/regions/canada-east.md`, `references/regions/mexico.md`, `references/regions/central-america.md`, `references/regions/caribbean.md`, `references/regions/northern-south-america.md`, `references/regions/southern-south-america.md`, `references/regions/atlantic-europe.md`, `references/regions/mediterranean-europe.md`, `references/regions/northern-europe.md`, `references/regions/eastern-europe.md`, `references/regions/north-africa.md`, `references/regions/west-africa.md`, `references/regions/east-africa.md`, `references/regions/central-southern-africa.md`, `references/regions/middle-east.md`, `references/regions/central-asia.md`, `references/regions/south-asia.md`, `references/regions/east-asia.md`, `references/regions/southeast-asia.md`, `references/regions/northern-asia.md`, `references/regions/oceania.md`, `SKILL.md`, `references/global-scenes.md`, `references/sonic-taxonomy.md`, `references/curation-examples.md`, `references/verification.md`.
 
+
+---
+
+# BEGIN SOURCE: references/recording-quality.md
+
+## Recording preference: Skip rough recordings
+
+Treat `Recording preference: Skip rough recordings.` or an equivalent explicit request as an opt-in recording-quality filter. Default OFF when absent; an explicit off overrides a saved preference. Accept older, longer app prompts using the same preference. Apply in ordinary GO and GO HARD before sequencing and exact-version matching.
+
+Exclude recordings dominated by heavy hiss, crackle, accidental clipping/distortion or muffled, damaged transfers. Keep clean older recordings and good restorations eligible; age, mono, archival provenance, region and genre alone never establish poor quality. Do not automatically exclude intentional lo-fi, fuzz or musical distortion. Judge the particular recording/version against available evidence, not release labels such as “remastered.”
+
+Prefer a verified cleaner transfer of the same performance; otherwise choose a suitable alternative within the requested region, moods and tempo. Never silently relax the preference or fill gaps with unrelated music. If suitable recordings cannot be verified, report the limitation and offer a choice rather than claiming the request is fulfilled. Disclose material uncertainty briefly; never claim to have auditioned audio without actual audio access. Keep this policy in the skill; the app sends only the preference flag.
+
+# END SOURCE: references/recording-quality.md
 
 ---
 
@@ -56,6 +70,8 @@ Use section reads when supported. If the host can only fetch whole files, read t
 ## Antarctica
 
 For `go antarctica` or an Antarctica selection, load [Antarctica](regions/antarctica.md) first. It contributes a verified thematic share when mixed with other regions; it does not invent a local scene.
+
+- [Recording quality](recording-quality.md): load for Skip rough recordings, including legacy app prompts.
 
 # END SOURCE: references/reference-index.md
 
@@ -2193,7 +2209,7 @@ description: "Real global deep cuts; setup services, then go or go antarctica; d
 license: MIT
 compatibility: Requires file-reading capability. Optional web/catalog lookup for track verification and Python 3.10+ to run included validation/randomness scripts. Streaming accounts and OAuth are NOT bundled.
 metadata:
-  version: "3.11.0"
+  version: "3.11.1"
 ---
 
 # Go, Hipster, Go! — Agent Skill v3
@@ -2303,6 +2319,10 @@ Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation;
 **Length:** `go` and `go angry` default to **12 tracks**; `go short` requests **6**; `go long` requests **24**. `go 20`, `go fast 20`, `go weird slow 30`, or an explicit `N tracks` request selects **exactly N**, overriding the short/long shorthand. Aim for up to **50** carefully resolved tracks as a *soft quality target*, **not a schema or platform maximum**; when asked for more, attempt the actual requested count if the current host can handle verification and publishing, otherwise be transparent and propose batches or splitting—never silently cap or downgrade the playlist.
 
 **Count fidelity:** before publishing, check the number of distinct ordered selections against the requested count; don't silently turn 12 into 6. After writing, reconcile the saved count and track order where provider results allow it. If the host has a fixed cap or truncates output, report the actual result as incomplete rather than claiming the requested list was published. **DeBarge eligibility applies to every `go` variant**: `go fast`, `go angry`, `go chill`, `go slow`, `go weird`, **`go sad`**, their combinations, `go short`, `go long`, and numeric requests such as `go fast 20` or `go weird slow 30`. Ordinary length targets, even numeric ones, **must not suppress the one-in-100 roll**; on a genuine hit, the Protocol's 25 entries intentionally override the ordinary requested count, energy, mood and diversity. Only a listener's **explicit no-surprises/no-overrides strict length**, `no DeBarge`, or `unique songs only` constraint excludes the random surprise. Run the single eligibility check/roll once per *new* playlist, not per modifier, candidate theme, publication retry or follow-up.
+
+### Recording preference
+
+On `Recording preference: Skip rough recordings.` or an equivalent explicit request, read [Recording quality](references/recording-quality.md) before selecting or matching recordings. Default OFF; older app prompts invoke the same rule.
 
 ### Go Hard — optional Deep Crate Protocol
 

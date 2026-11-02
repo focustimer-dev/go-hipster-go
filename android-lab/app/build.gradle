@@ -6,8 +6,8 @@ android {
         applicationId 'work.samelling.hipstergo.lab'
         minSdkVersion 24
         targetSdkVersion 36
-        versionCode 13
-        versionName '0.9.4'
+        versionCode 14
+        versionName '0.9.5'
     }
     buildTypes { release { minifyEnabled false } }
     compileOptions {

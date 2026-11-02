@@ -19,9 +19,10 @@ The mobile-friendly **Jukebox** assembles a short music-curation request for **C
 
 **Build a crate:**
 
-- **Mood:** Happy, Angry, Sad, Weird, Criminal or **The Funk**. Leave the mood unselected for a surprise; tap the selected mood again to clear it. Criminal requires *real songs about crime*, not just suspicious-sounding music.
+- **Mood:** Happy, Angry, Sad, Desire, Weird, Criminal, **The Funk** or Triumph. Pick up to two; a third choice replaces your most recent selection. Tap an active mood to remove it; leave all unselected for a surprise. Criminal requires *real songs about crime*, not just suspicious-sounding music.
 - **Pace and place:** Slow, Relaxed, Mid, Brisk, Fast or **Any**; optionally choose from **25 listening territories** in the interactive atlas or accessible region controls. No region means worldwide. **Antarctica is strictly opt-in**—never included in worldwide or automatic shuffle. The map uses a primary region per country while honoring documented musical overlaps; [Turkey, Spain and other cases](references/regional-atlas.md#map-regions-and-musical-overlap) are explained in the regional atlas.
 - **Make it yours:** Shuffle the crate's selections; pin **Mood**, **Pace** or **Regions** to hold them during shuffle, and **Undo** a shuffle. **+ ART** requests thematic cover art; **TRY HARD** opts into the [Deep Crate Protocol](references/go-hard.md). Both are optional and off by default.
+- **Recording quality:** **Skip rough recordings** is optional and off by default. The app sends one preference flag; the [skill owns the recording-quality rules](references/recording-quality.md). Clean older recordings and good restorations remain eligible.
 - **GO, then hand off:** GO copies the current 12-track request. A floating **YOUR CRATE** selection ticket follows you down the page, then docks **collapsed, with its drop shadow**, into the printed receipt; tap it to expand. After a successful copy, the receipt says **COPIED. NOW OPEN [AI]** and gives the next step. A copied prompt is not a saved playlist.
 
 Add the PWA to your home screen where your browser supports it. It does not install the skill, submit prompts, play music or publish playlists itself; there is no offline service-worker cache.
@@ -29,6 +30,12 @@ Add the PWA to your home screen where your browser supports it. It does not inst
 **Claude + Apple Music requires a compatible MCP connector**, with actual track-search and playlist-writing tools; see the [Claude guide](adapters/claude/README.md#apple-music-requires-a-separate-mcp-connector).
 
 Prefer working directly in chat? Follow the steps below. The skill defaults to Spotify; an explicit PWA service choice takes precedence. For implementation and maintenance details, see the [PWA guide](launcher/README.md). The [skill](SKILL.md) and [plugin manifest](plugin.json) are authoritative for the current source version; previously installed ZIPs or saved skills do **not** auto-update from GitHub.
+
+## Current releases and updates
+
+The curation skill and portable packages are **3.11.1**. The [latest platform ZIPs](https://github.com/focustimer-dev/go-hipster-go/releases/latest) cover ChatGPT, Claude and Gemini. Existing uploaded or saved copies need an explicit update; reading a GitHub URL does not install a skill.
+
+The PWA receives web deployments. **Android Lab 0.9.5** bundles an offline snapshot with native AI handoffs and Preferences; it needs a new APK for interface updates. Keep the existing Lab installed and use an APK signed with the same key to retain its data. Lab remains on its separate experiment branch; do not merge the Android workspace into main. See the [Lab guide](https://github.com/focustimer-dev/go-hipster-go/blob/fix/android-lab-sync-0-9/android-lab/README.md).
 
 ## Start here — load, setup, go
 
@@ -251,7 +258,7 @@ See the [full changelog](CHANGELOG.md) for dates and version-specific detail. Th
 
 - **First-run preferences:** conversational `setup`, revisitable provider choices, and honest session-only versus persistent settings.
 - **Jukebox onboarding:** one-time setup ticket, compact clipboard-to-AI handoff, returning-user "NO REFUNDS" stamp, and floating selection receipt with a collapsed paper dock.
-- **Crate controls:** six moods including The Funk and Criminal, tempo/Any, regional atlas, constrained shuffle/pins/Undo, optional + ART and TRY HARD, and deliberate-only Antarctica.
+- **Crate controls:** eight moods, effortless two-mood selection, Skip rough recordings, tempo/Any, regional atlas, constrained shuffle/pins/Undo, optional + ART and TRY HARD, and deliberate-only Antarctica.
 - **Claude and Meta Muse:** platform-specific onboarding, native Spotify connector guidance and conservative cross-conversation skill persistence claims.
 - **Musical discovery:** wider scene taxonomy, track-level sonic bridges, authentic recordings and feedback-driven adjustments.
 - **Publishing handoff:** one-command intent, capability preflight and faithful recovery of already-curated lists.
