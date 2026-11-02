@@ -299,8 +299,8 @@ class EngravedEditionChecks(unittest.TestCase):
         built=(BASE/"index.html").read_text()
         script=(ROOT/"launcher/assets/app.js").read_text()
         builder=(ROOT/"scripts/build_gig_poster.py").read_text()
-        for page in (original,built):
-            with self.subTest(page="poster" if page is built else "base"):
+        for page in (original,):
+            with self.subTest(page="base"):
                 self.assertEqual(page.count('id="welcomeSetup"'),1)
                 self.assertLess(page.index('id="routeStatus"'),page.index('id="welcomeSetup"'))
                 self.assertLess(page.index('id="welcomeSetup"'),page.index('id="tempoControl"'))
@@ -311,6 +311,12 @@ class EngravedEditionChecks(unittest.TestCase):
                 self.assertIn('id="setupJourney" hidden',page)
                 self.assertIn('id="handoffGuidance" hidden',page)
                 self.assertIn('data-atlas-zone="antarctica"',page)
+        self.assertEqual(built.count('id="firstCrateSetup"'),1)
+        self.assertLess(built.index('id="routeStatus"'),built.index('id="firstCrateSetup"'))
+        self.assertLess(built.index('id="firstCrateSetup"'),built.index('id="tempoControl"'))
+        self.assertIn('/assets/first-crate.js',built)
+        self.assertIn('/assets/first-crate.css',built)
+        self.assertIn('data-atlas-zone="antarctica"',built)
         self.assertIn("welcome+'    <h2 class=",builder)
         self.assertNotIn("welcome-invitation.html",builder)
         self.assertIn("copiedSetupPrompt===setupPrompt(ai,service)",script)

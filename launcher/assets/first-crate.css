@@ -1,0 +1,125 @@
+/* Setup uses the poster font and palette; no new art or dependencies. */
+#firstCrateSetup{--cream:#f4efdf;--ticket-stock:#f4efdf;--receipt-red:#742019;--setup-rule:#d64b30;font:16px/1.5 Arial,Helvetica,sans-serif;color:var(--ink);margin:18px 0 24px}
+#firstCrateSetup [hidden]{display:none!important}
+#firstCrateSetup textarea{font:inherit;color:inherit}
+#firstCrateSetup .services{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:18px 0}
+#firstCrateSetup label{display:block}
+#firstCrateSetup .services label>span,#firstCrateSetup .advanced label>span{display:block;font:12px/1.5 Georgia,serif;letter-spacing:.09em;margin-bottom:5px}
+#firstCrateSetup .ticket{background:var(--cream);padding:22px 22px 16px;position:relative;border-top:3px solid var(--ink);border-bottom:1px dashed var(--ink);box-shadow:0 5px 12px #10313518;margin:0 0 24px}
+#firstCrateSetup .ticket-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+#firstCrateSetup .ticket-step{font:12px Georgia,serif;letter-spacing:.07em}
+#firstCrateSetup h2{font:32px/1.1 Poster,sans-serif;margin:0 0 10px;letter-spacing:-.01em}
+#firstCrateSetup .ticket p{max-width:52ch}
+#firstCrateSetup .primary{display:block;min-height:48px;width:100%;border:1px solid var(--ink);background:var(--ink);color:var(--cream);padding:12px 16px;font:19px/1.2 Poster,sans-serif;letter-spacing:.015em}
+#firstCrateSetup .primary:disabled{opacity:.5;cursor:default}
+#firstCrateSetup .text-action{border:0;background:none;min-height:44px;text-decoration:underline;text-underline-offset:3px;padding:9px 0;font-size:13px}
+#firstCrateSetup .secondary-row{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-top:3px}
+#firstCrateSetup details{font-size:13px}
+#firstCrateSetup summary{min-height:44px;padding:12px 0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+#firstCrateSetup textarea{width:100%;min-height:140px;background:var(--cream);border:1px solid var(--ink);padding:10px;font-size:14px;line-height:1.5;resize:vertical}
+#firstCrateSetup .note{font-size:12px;margin:8px 0 0}
+#firstCrateSetup .example{border-top:1px solid #10313555;border-bottom:1px solid #10313555;padding:14px 0;margin:15px 0}
+#firstCrateSetup .status{font-size:13px;margin:10px 0 0}
+#firstCrateSetup .status:empty{display:none}
+#firstCrateSetup .flags label{display:flex;align-items:center;gap:7px;min-height:44px;font-size:14px}
+#firstCrateSetup .help-list{padding-left:20px}
+#firstCrateSetup .help-list li{margin:0 0 12px}
+#firstCrateSetup .ticket{padding:18px 16px 12px}
+#firstCrateSetup h2{font-size:29px}
+#firstCrateSetup .services{gap:10px}
+#firstCrateSetup .ticket-top{align-items:flex-start;flex-wrap:wrap}
+#firstCrateSetup .ticket{transition:background-color 160ms ease-out}
+#firstCrateSetup .close-setup{border:0;background:none;min-width:56px;min-height:44px;padding:8px;font:14px Poster,sans-serif;text-decoration:underline;text-underline-offset:3px}
+#firstCrateSetup .ticket-top{margin-bottom:0}
+#firstCrateSetup .setup-pair{font-size:12px;margin:0 0 14px}
+#firstCrateSetup .is-paused{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;box-shadow:none;border-top-width:1px}
+#firstCrateSetup .resume-copy{display:flex;flex-direction:column;min-width:0}
+#firstCrateSetup .resume-copy strong{font:20px/1.2 Poster,sans-serif}
+#firstCrateSetup .resume-copy span{font-size:12px;margin-top:3px}
+#firstCrateSetup .resume-copy small{font-size:12px;margin-top:2px}
+#firstCrateSetup .resume-action{border:0;background:none;text-decoration:underline;text-underline-offset:4px;min-height:48px;padding:8px 0 8px 8px;flex-shrink:0;font:16px Poster,sans-serif}
+#firstCrateSetup .services label>span,#firstCrateSetup .advanced label>span,#firstCrateSetup .ticket-step{font-family:'Courier New',monospace;font-weight:700}
+#firstCrateSetup .ticket-top{border-bottom:1px solid #10313555;margin-bottom:14px;padding-bottom:4px}
+#firstCrateSetup .ticket h2{font-size:36px;line-height:1.08;max-width:19ch}
+#firstCrateSetup .setup-pair{font:700 12px/1.4 'Courier New',monospace;margin-bottom:8px}
+#firstCrateSetup .primary{color:var(--paper)}
+#firstCrateSetup .ticket .primary{margin-top:17px}
+#firstCrateSetup .clerk-signoff{display:flex;justify-content:space-between;align-items:center;gap:16px;border-top:1px dashed #10313588;margin-top:11px;padding:13px 0 2px}
+#firstCrateSetup .clerk-signoff p{font-size:12px;line-height:1.4;margin:0;max-width:30ch}
+#firstCrateSetup .ink-stamp{display:inline-block;flex-shrink:0;transform:rotate(-4deg);font:700 12px/1 'Courier New',monospace;color:var(--receipt-red);border:1px solid currentColor;padding:6px 7px;letter-spacing:.04em}
+#firstCrateSetup .is-paused{border-top:1px solid var(--ink);padding:12px 16px}
+#firstCrateSetup .resume-copy strong{font-size:22px}
+#firstCrateSetup .resume-action{background:var(--ink);color:var(--paper);padding:9px 12px;min-height:44px;text-decoration:none}
+#firstCrateSetup .copy-stamp{color:var(--receipt-red);border:2px solid currentColor;padding:7px 10px;display:inline-block;transform:rotate(-1deg);font-size:25px}
+#firstCrateSetup .close-setup{font:700 12px 'Courier New',monospace}
+#firstCrateSetup .ticket .example{border-color:#10313566}
+#firstCrateSetup .ticket h2{font-size:31px}
+#firstCrateSetup .ticket{padding-left:16px;padding-right:16px}
+#firstCrateSetup .is-paused{padding:12px}
+#firstCrateSetup .clerk-signoff{gap:10px}
+#firstCrateSetup .ink-stamp{font-size:11px;padding:6px}
+#firstCrateSetup .resume-copy strong{font-size:21px}
+#firstCrateSetup .clerk-aside{font-size:13px;margin:-6px 0 12px}
+#firstCrateSetup .services{padding:4px 0 8px}
+#firstCrateSetup .pair-advice{font-size:13px;margin:4px 0 14px}
+#firstCrateSetup .install-steps{padding-left:23px;margin:18px 0 22px}
+#firstCrateSetup .install-steps>li{padding:0 0 20px 4px;border-bottom:1px dashed #10313566;margin-bottom:17px}
+#firstCrateSetup .install-steps>li:last-child{padding-bottom:0;border-bottom:0;margin-bottom:0}
+#firstCrateSetup .install-steps p{font-size:14px;line-height:1.6;margin:7px 0 11px}
+#firstCrateSetup .install-steps .primary{font-size:17px;margin-top:10px}
+#firstCrateSetup .install-link{display:inline-block;color:var(--ink);font-size:13px;font-weight:700;text-underline-offset:3px;padding:10px 0;min-height:44px;overflow-wrap:anywhere}
+#firstCrateSetup .fallback-steps{padding-left:18px}
+#firstCrateSetup .fallback-steps li{margin:0 0 12px}
+#firstCrateSetup .uploader-choices{display:flex;gap:8px;margin:10px 0}
+#firstCrateSetup .uploader-choices button{background:transparent;border:1px solid var(--ink);padding:10px 16px;min-height:44px;font:17px Poster,sans-serif}
+#firstCrateSetup .uploader-choices button[aria-pressed=true]{background:var(--ink);color:var(--paper)}
+#firstCrateSetup #fc-current-setup{display:flex;align-items:center;justify-content:space-between;gap:10px;font:700 12px/1.5 'Courier New',monospace;border-bottom:1px solid var(--ink);margin:10px 0 16px}
+#firstCrateSetup .install-intro{font-size:14px}
+#firstCrateSetup .install-intro{margin-bottom:0}
+#firstCrateSetup .install-steps{margin-top:12px}
+#firstCrateSetup .install-steps .status{font-size:14px;line-height:1.5;margin:8px 0 12px}
+#firstCrateSetup .install-steps summary{font-size:13px}
+#firstCrateSetup textarea{font-size:16px;min-height:132px}
+#firstCrateSetup .ticket-top{flex-wrap:nowrap;align-items:center}
+#firstCrateSetup .ticket-navigation{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+#firstCrateSetup .ticket-navigation .ticket-step{min-width:0;line-height:1.4}
+#firstCrateSetup .setup-back{min-width:44px;min-height:44px;border:0;padding:8px 0;background:transparent;color:var(--ink);font:700 12px/1.3 'Courier New',monospace;text-decoration:underline;text-underline-offset:3px;flex-shrink:0}
+#firstCrateSetup .close-setup{flex-shrink:0}
+#firstCrateSetup .ticket{background:var(--ticket-stock);margin-top:18px;padding-top:13px;border-top:3px solid var(--red)}
+#firstCrateSetup .ticket-step{color:var(--receipt-red)}
+#firstCrateSetup .ticket .services select{background:#fff9e9}
+#firstCrateSetup .ticket .services label>span{color:var(--receipt-red)}
+#firstCrateSetup .install-steps>li::marker{font:700 17px 'Courier New',monospace;color:var(--receipt-red)}
+#firstCrateSetup .ticket .primary:hover,#firstCrateSetup .resume-action:hover{background:#19484d}
+#firstCrateSetup .install-link:hover,#firstCrateSetup .text-action:hover{color:var(--receipt-red)}
+#firstCrateSetup .ticket .setup-back:hover,#firstCrateSetup .ticket .close-setup:hover{color:var(--receipt-red)}
+#firstCrateSetup #fc-current-setup{flex-wrap:wrap;padding:12px 0 14px;gap:8px 16px;align-items:center}
+#firstCrateSetup .setup-confirmed{display:flex;align-items:center;flex-wrap:wrap;gap:10px 14px;min-width:0;flex:1}
+#firstCrateSetup .setup-confirmed .ink-stamp{font-size:12px;line-height:1.2;white-space:nowrap;background:var(--cream);border-width:2px}
+#firstCrateSetup .setup-confirmed .confirmed-pair{overflow-wrap:anywhere}
+#firstCrateSetup .is-paused{border-top-width:1px;background:var(--cream)}
+#firstCrateSetup textarea{caret-color:var(--receipt-red)}
+#firstCrateSetup .ticket a{color:var(--ink);text-underline-offset:3px}
+#firstCrateSetup .ticket a:hover{color:var(--receipt-red)}
+#firstCrateSetup .confirm-setup{border-top:1px dashed var(--ink);padding-top:18px;margin:20px 0 8px}
+#firstCrateSetup .confirm-setup>strong{font:24px/1.2 Poster,sans-serif}
+#firstCrateSetup .confirm-setup>p{font-size:14px;margin:7px 0 12px}
+#firstCrateSetup .confirm-ready{display:block;width:100%;min-height:48px;border:2px solid var(--ink);background:transparent;padding:12px;color:var(--ink);font:19px/1.25 Poster,sans-serif}
+#firstCrateSetup .confirm-ready:hover{background:var(--ink);color:var(--cream)}
+#firstCrateSetup .confirm-setup .note{font-size:12px;margin-top:8px}
+#firstCrateSetup .confirmed-pair small{display:block;font:12px/1.5 Arial,sans-serif;margin-top:4px}
+#firstCrateSetup .ticket{background:var(--ticket-stock);border:0;border-top:3px solid var(--setup-rule);border-bottom:1px dashed var(--ink);box-shadow:none;padding:13px 22px 16px}
+#firstCrateSetup h2{font:400 clamp(29px,5cqw,36px)/1.08 Poster,sans-serif;max-width:22ch;margin:0 0 10px;color:var(--ink)}
+#firstCrateSetup p{max-width:60ch;margin:0 0 16px}
+#firstCrateSetup select{width:100%;min-width:0;min-height:46px;background:var(--cream);border:1px solid var(--ink);padding:7px 10px;font:16px/1.5 Arial,sans-serif;color:var(--ink)}
+#firstCrateSetup label{display:block;min-width:0}
+#firstCrateSetup .primary{text-align:center;text-decoration:none;color:var(--paper)}
+#firstCrateSetup .services{grid-template-columns:repeat(2,minmax(0,1fr))}
+#firstCrateSetup .note,#firstCrateSetup .setup-confirmed small{font-size:13px}
+@media(max-width:440px){#firstCrateSetup .ticket{padding-left:16px;padding-right:16px}#firstCrateSetup .services{gap:10px}}
+
+#firstCrateSetup button{cursor:pointer}
+#firstCrateSetup .primary,#firstCrateSetup .resume-action,#firstCrateSetup .confirm-ready{font-family:Poster,sans-serif}
+#firstCrateSetup .setup-back,#firstCrateSetup .close-setup,#firstCrateSetup .ticket-step,#firstCrateSetup .setup-pair{font-family:'Courier New',monospace}
+#firstCrateSetup .install-link,#firstCrateSetup .ticket a{color:var(--ink)}
+#firstCrateSetup .ticket a.primary{color:var(--paper)}

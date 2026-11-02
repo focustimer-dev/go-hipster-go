@@ -73,6 +73,13 @@ s=s.replace('class="setup-crate-record" src=','class="setup-crate-record" loadin
 s=s.replace('/editions/gig-poster/assets/setup-crate-record.png','/editions/gig-poster/assets/setup-crate-record-480.webp',1)
 s=s.replace('setup-crate-record-480.webp" width="1292" height="1196"','setup-crate-record-480.webp" width="480" height="444"',1)
 
+# Reviewed first-crate onboarding replaces only the poster's legacy invitation.
+start=s.index('    <aside class="welcome-setup')
+end=s.index('    </aside>',start)+len('    </aside>')
+s=s[:start]+(art/'first-crate.html').read_text().rstrip()+s[end:]
+s=s.replace('</head>','<link rel="stylesheet" href="/assets/first-crate.css">\n</head>')
+s=s.replace('<script defer src="/assets/app.js"></script>','<script defer src="/assets/app.js"></script>\n<script defer src="/assets/first-crate.js"></script>')
+
 out=ROOT/'launcher/editions/gig-poster/index.html';out.parent.mkdir(parents=True,exist_ok=True);out.write_text(s)
 
 # Manual edition inherits current setup behavior and all recovery/download content.

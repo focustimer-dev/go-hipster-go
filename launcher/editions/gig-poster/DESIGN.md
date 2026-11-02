@@ -201,3 +201,12 @@ The user’s phone capture showed that translucent vermilion mixed with mustard 
 ## Approved vermilion and heart-eye release
 
 Selected non-Funk moods use solid #D64B30 stock behind the locked transparent ink artwork. There is no light silhouette or underprint. A parent SVG alpha-preserving filter uses deeper petrol #08252A for selected engraving. Labels use paper on petrol for readable contrast, with equal padding in both states to avoid layout movement. Desire's selected heart fills use the same --funk-selected-paper token as The Funk's pink background; the mask is traced from the exact approved hearts and lives outside the petrol filter. Neutral Desire and all portrait geometry remain unchanged. The Funk's existing pink, expression and silhouette-masked vermilion lasers are retained.
+
+
+## First-crate setup ticket
+
+The reviewed first-crate flow replaces the poster’s legacy dismissal notice. It uses the existing Poster (Anton) display face, petrol #103135, mustard #dfb045, and square native controls. A cream #f4efdf ticket separates setup from the working stock; vermilion #d64b30 marks its top edge, while deep red #742019 carries short annotations and the ALL SET stamp. Primary keys remain petrol with mustard lettering. No new artwork, font, dependency, motion, map geometry or portrait treatment is introduced.
+
+Setup chooses AI and service, gives matching installation instructions, then asks the AI to check actual capabilities. Other uses a generic installation request with explicit chat-only and file-upload fallbacks. Claude download selection requires identifying the Skills or Plugins uploader. Real AI links open externally; nothing is silently sent. The explicit “My AI confirmed — I’m ready” action records a browser-local confirmation per pairing, never a verified account connection. Close and Escape preserve unfinished progress; Back revisits the prior step. Manual copy returns to a compact handoff. Three help disclosures separate installation, connection and playlist-saving problems. Prior notice dismissal means “later”, not successful setup.
+
+The Manual and existing controls remain available. Integration tests cover clipboard denial, dismissal, reload, Back, confirmation isolation and restoration, help, and all AI/service pairs. Fresh browser and native visual QA remain required before release; this entry records design alignment, not visual certification.
