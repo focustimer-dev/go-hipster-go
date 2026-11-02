@@ -219,7 +219,9 @@ public class LabActivity extends Activity {
             runOnUiThread(()->LabActivity.this.copy(text));return true;
         }
         @JavascriptInterface public void go(String ai,String text) {
-            if(url(ai)==null || !validText(text)) return;
+            if(!validText(text)) return;
+            if("other".equals(ai)){runOnUiThread(()->{copy(text);toast("Request copied. Open your AI manually, paste and send.");});return;}
+            if(url(ai)==null) return;
             runOnUiThread(()->{if(prefs.getBoolean("oneTap",true)) handoff(ai,text); else {copy(text);pulse();toast("Prompt copied. Tap OPEN to launch your AI.");}});
         }
         @JavascriptInterface public void open(String ai,String text) {

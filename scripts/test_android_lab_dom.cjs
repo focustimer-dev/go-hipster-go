@@ -71,6 +71,16 @@ const root=path.resolve(__dirname,'../android-lab/app/src/main/assets/site');
   click('[data-lab-tab="manual"]');assert.equal(scroll,155);click('[data-lab-action="updates"]');assert(calls.some(c=>c[0]==='updates'));assert.equal(w.HipsterLabBack(),true);assert.equal(w.document.querySelector('#labJukebox').hidden,false);assert.equal(w.HipsterLabBack(),false);
   click('[data-lab-tab="manual"]');click('[data-lab-action="services"]');assert(w.document.querySelector('#labPreferences').open);assert.equal(w.document.querySelector('#labManual').hidden,false);w.HipsterLabBack();
   w.document.querySelector('#labJukebox .footnote a[href$="setup/"]').click();assert.equal(w.document.querySelector('#labManual').hidden,false);
-  console.log('PASS: top workspace, scroll restoration, preferences, Back, saved actions, native handoffs, exact shared inspiration, plain-text rendering, unchanged regions, explicit remove and stale-copy race.');
+  calls.length=0;
+ w.HipsterSetup.setPair({ai:'other',service:'spotify'});
+ click('#goButton');await flush();
+ assert(calls.some(c=>c[0]==='copy'),'Other AI retains native clipboard');
+ assert(!calls.some(c=>c[0]==='go'||c[0]==='open'),'Other AI does not promise a native launch');
+ assert(w.document.querySelector('#handoffTitle').textContent.includes('MANUALLY'));
+ assert(!w.document.querySelector('#selectionTicketShort').textContent.includes('undefined'));
+ assert.equal(w.document.querySelector('#listeningPreferences'),null,'No empty PWA disclosure in Lab');
+ w.HipsterSetup.setPair({ai:'chatgpt',service:'spotify'});click('#goButton');await flush();
+ assert(calls.some(c=>c[0]==='go'&&c[1]==='chatgpt'),'Known native handoff still works');
+ console.log('PASS: top workspace, scroll restoration, preferences, Back, saved actions, native handoffs, exact shared inspiration, plain-text rendering, unchanged regions, explicit remove and stale-copy race.');
  }finally{w.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});

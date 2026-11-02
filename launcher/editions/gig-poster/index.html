@@ -13,7 +13,7 @@
 <link rel="preload" href="/editions/gig-poster/assets/moods-neutral-ink-v2.webp" as="image">
 <link rel="preload" href="/editions/gig-poster/assets/moods-selected-ink-v2.webp" as="image">
 <link rel="preload" href="/editions/gig-poster/assets/anton.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="/editions/gig-poster/edition.css?v=e3194e503924">
+<link rel="stylesheet" href="/editions/gig-poster/edition.css?v=b7838f6696c4">
 <link rel="stylesheet" href="/editions/gig-poster/mood-portraits.css?v=bf28c7586af1">
 <link rel="stylesheet" href="/assets/first-crate.css">
 </head>
@@ -141,7 +141,6 @@
       </div>
       <p id="tempoHelp">Any is on. Move the fader to choose a pace.</p>
     </div>
-    <label class="recording-preference recording-hifi" for="skipRough"><span class="recording-copy"><strong>SKIP ROUGH RECORDINGS</strong><small id="recordingHelp">Less hiss, crackle and muffled audio. Clean older recordings welcome.</small></span><span class="recording-switch"><input type="checkbox" id="skipRough" aria-describedby="recordingHelp"><span class="recording-rocker" aria-hidden="true"><span class="recording-off">OFF</span><span class="recording-on">ON</span><span class="recording-tab"></span></span></span></label>
     <details class="crate-geo" id="crateGeo" open>
       <summary class="crate-geo-summary">
         <span class="crate-geo-identity"><strong>THE CRATE ATLAS</strong><small>TAKE YOUR TASTE ABROAD</small></span>
@@ -487,6 +486,7 @@
       </div>
     </details>
     </div>
+    <details class="listening-preferences" id="listeningPreferences"><summary><span>LISTENING PREFERENCES</span><small class="recording-active">SKIP ROUGH: ON</small></summary>    <label class="recording-preference recording-hifi" for="skipRough"><span class="recording-copy"><strong>SKIP ROUGH RECORDINGS</strong><small id="recordingHelp">Less hiss, crackle and muffled audio. Clean older recordings welcome.</small></span><span class="recording-switch"><input type="checkbox" id="skipRough" aria-describedby="recordingHelp"><span class="recording-rocker" aria-hidden="true"><span class="recording-off">OFF</span><span class="recording-on">ON</span><span class="recording-tab"></span></span></span></label></details>
     <section class="crate-shuffle" aria-label="Shuffle your listening brief">
       <div class="shuffle-controls">
         <button type="button" id="shuffleCrate" aria-describedby="shuffleHelp"><svg class="shuffle-lever" viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><path d="M5 26h22M10 26v-5h12v5M16 21V12l8-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="5" r="3" fill="currentColor"/></svg><span>SHUFFLE</span></button>
@@ -496,7 +496,7 @@
     </section>
     <div class="go-options">
     <div class="go-extras" role="group" aria-label="Optional playlist enhancements">
-      <button type="button" class="shuffle-pin cover-toggle" id="includeCover" aria-pressed="false" aria-label="Include playlist cover art" aria-describedby="artOptionHelp" title="Give it a sleeve."><svg class="extra-mark art-mark" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><g class="art-record"><circle cx="14" cy="11" r="8"/><circle cx="14" cy="11" r="2"/></g><path class="art-sleeve" d="M2 5h13v16H2z"/><path d="M5 17h7"/></svg><span class="option-copy"><span class="option-label">+ Art</span><small id="artOptionHelp">Album cover</small></span><span class="option-state" aria-hidden="true"><svg viewBox="0 0 12 12" width="12" height="12"><path d="M2 6l3 3 5-6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span></button>
+      <button type="button" class="shuffle-pin cover-toggle" id="includeCover" aria-pressed="false" aria-label="Include playlist cover art" aria-describedby="artOptionHelp" title="Give it a sleeve."><svg class="extra-mark art-mark" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><g class="art-record"><circle cx="14" cy="11" r="8"/><circle cx="14" cy="11" r="2"/></g><path class="art-sleeve" d="M2 5h13v16H2z"/><path d="M5 17h7"/></svg><span class="option-copy"><span class="option-label">+ Art</span><small id="artOptionHelp">Playlist cover</small></span><span class="option-state" aria-hidden="true"><svg viewBox="0 0 12 12" width="12" height="12"><path d="M2 6l3 3 5-6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span></button>
       <button type="button" class="shuffle-pin cover-toggle" id="goHard" aria-pressed="false" aria-label="Use deeper playlist research and sequencing" aria-describedby="hardOptionHelp" title="Deep Crate Protocol"><svg class="extra-mark crate-mark" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path class="crate-back" d="M6 11V5h12v6M9 5V3h6v2"/><path class="crate-front" d="M4 13V8h16v5"/><path d="M2 12h20l-2 9H4zM9 16h6"/></svg><span class="option-copy"><span class="option-label">TRY HARD</span><small id="hardOptionHelp">Deeper research &amp; sequencing</small></span><span class="option-state" aria-hidden="true"><svg viewBox="0 0 12 12" width="12" height="12"><path d="M2 6l3 3 5-6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span></button>
     </div>
     <div class="grind">

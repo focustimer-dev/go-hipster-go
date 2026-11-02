@@ -32,7 +32,7 @@ def bundle(destination=None):
     text = text.replace(needle, needle + '\n if(window.HipsterLab)return window.HipsterLab.copy(text);')
     needle = 'if(ok)status("Copied to clipboard. Playlist creation and saving happen in your AI, not in the Jukebox.");'
     assert text.count(needle) == 1, 'GO hook changed; review Lab integration.'
-    text = text.replace(needle, 'if(ok&&window.HipsterLab){window.HipsterLab.go(ai,prompt);status(labState().oneTap===false?"Request copied. Choose OPEN when ready.":labState().mode==="share"?"Continue in your AI to review and send the shared request.":"Request copied. Paste and send it in your AI.")}else ' + needle)
+    text = text.replace(needle, 'if(ok&&window.HipsterLab){if(ai==="other"){status("Request copied. Open your AI manually, paste and send.")}else{window.HipsterLab.go(ai,prompt);status(labState().oneTap===false?"Request copied. Choose OPEN when ready.":labState().mode==="share"?"Continue in your AI to review and send the shared request.":"Request copied. Paste and send it in your AI.")}}else ' + needle)
     # The original stale-prompt guard runs before this added native launch hook.
     needle = 'const share=doc.getElementById("shareButton");'
     text = text.replace(needle, '''for(const id of ["openAi","manualOpenAi"]){const link=doc.getElementById(id);if(link)link.addEventListener("click",event=>{
