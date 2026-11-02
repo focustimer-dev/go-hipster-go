@@ -13,6 +13,15 @@ function labNavigate(next,focus=true){
 function updateHandoff(){updatePwaHandoff();renderLabHandoff()}
 function renderLabHandoff(){
  const state=labState(),mode=state.mode||'open',oneTap=state.oneTap!==false;
+ if(ai==='other'){
+  const hint=doc.getElementById('goHint');if(hint)hint.textContent='COPY YOUR REQUEST';
+  const heading=doc.getElementById('handoffTitle');if(heading)heading.textContent='COPIED. OPEN YOUR AI MANUALLY.';
+  const instructions=doc.getElementById('handoffInstruction');if(instructions)instructions.textContent='Open your chosen AI yourself, paste the request and send it. Native handoff is unavailable for an unspecified AI.';
+  const open=doc.getElementById('openAi');if(open)open.hidden=true;
+  const button=doc.getElementById('goButton');if(button)button.setAttribute('aria-label','GO! Copy request for manual use in your AI');
+  return;
+ }
+
  const verb=mode==='share'?'SHARE TO':mode==='browser'?'OPEN WEB':'OPEN APP';
  const hint=doc.getElementById('goHint');if(hint)hint.textContent=oneTap?verb+' '+aiNames[ai].toUpperCase():'COPY YOUR REQUEST';
  const ready=copiedPrompt===goPrompt(ai,service,mood);
@@ -52,7 +61,7 @@ function initLabWorkspace(){
  const services=doc.querySelector('.service-counter'),route=doc.getElementById('routeStatus'),slot=doc.getElementById('labServicePreferences');
  if(services&&slot){slot.append(services);if(route)slot.append(route);doc.getElementById('servicesHeading').textContent='AI & MUSIC';doc.getElementById('aiLabel').textContent='AI ASSISTANT';doc.getElementById('musicLabel').textContent='MUSIC SERVICE'}
  const recording=doc.querySelector('.recording-preference'),recordingSlot=doc.getElementById('labRecordingPreferences');
- if(recording&&recordingSlot){recording.classList.add('lab-choice','lab-toggle');recordingSlot.append(recording)}
+ if(recording&&recordingSlot){const oldPanel=recording.closest('.listening-preferences');recording.classList.add('lab-choice','lab-toggle');recordingSlot.append(recording);if(oldPanel)oldPanel.remove()}
  const trail=doc.querySelector('.poster-go-trail-steps>.poster-go-trail-word:last-child');if(trail)trail.textContent='CONTINUE IN YOUR AI';
  body.classList.add('lab-workspace');body.dataset.labScreen='jukebox';doc.querySelectorAll('.topnav').forEach(nav=>nav.hidden=true);
  const heading=doc.querySelector('.receipt-heading');if(heading){const label=doc.createElement('span');while(heading.firstChild)label.appendChild(heading.firstChild);const b=doc.createElement('button');b.type='button';b.className='lab-text-button lab-save-button';b.dataset.labAction='save';b.textContent='SAVE REQUEST';heading.append(label,b)}
