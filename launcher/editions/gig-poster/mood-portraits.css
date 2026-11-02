@@ -60,7 +60,6 @@ body.gig-poster .mood-grid .mood[data-mood=funky][aria-pressed=true] .funk-rays{
 body.gig-poster{--funk-selected-paper:color-mix(in srgb,#e03fd8 22%,#f4efdf)}
 body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[data-mood][aria-pressed=true]:not([data-mood=funky]) .face{filter:url(#selectedMoodPetrol)}
 body.gig-poster .mood-grid .mood .word{padding:1px 4px}
-body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[aria-pressed=true]:not([data-mood=funky]) .word{background:var(--ink);color:#f4efdf;padding:1px 4px}
 /* Separate from .face's petrol filter so both hearts match Funk's stock exactly. */
 body.gig-poster .mood-grid .mood[data-mood=desire] .desire-hearts{position:absolute;inset:4px 2px auto;aspect-ratio:1;pointer-events:none;z-index:2;opacity:0;background:var(--funk-selected-paper);mask:url('/editions/gig-poster/assets/desire-heart-ink-mask.svg') center/100% 100% no-repeat;transform:translateY(-1%) scale(.90);clip-path:inset(0 0 5%);transition:opacity 160ms ease-out}
 body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=true] .desire-hearts{opacity:1}
