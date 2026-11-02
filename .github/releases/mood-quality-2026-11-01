@@ -15,3 +15,5 @@ Release skill 3.11.1 alignment: deploy compact recording preference flag and upd
 First-crate onboarding release: publish the reviewed setup ticket, explicit pairing confirmation, Back/Close recovery, Other installation flow and focused help. Keep existing portraits, atlas and music controls. Run the existing production deployment and live smoke gates.
 
 Approved UI release: deploy the hi-fi recording switch and one-shot clerk confirmation stamp together, preserving recording preference and setup confirmation behavior.
+
+Approved placement release: move Skip rough recordings into collapsed Listening preferences below the atlas; retain visible enabled-state annotation and all existing preference behavior.

@@ -218,3 +218,8 @@ Explicit “My AI confirmed — I’m ready” earns one 280ms deep-red ALL SET 
 ## Recording hi-fi switch
 
 Skip rough recordings uses a compact 112×48px petrol hardware key with a mustard sliding tab, persistent OFF/ON markings and an underlined ON state. The existing native checkbox owns state, keyboard interaction, preferences and prompt generation. The full descriptive row is tappable. One 180ms tab translation confirms the change; reduced motion keeps the instantaneous position and label change. Forced colors restores the native checkbox. Poster lettering and thin ink rules match the tempo control and Crate Atlas. The preference still welcomes clean older recordings and adds no era cutoff.
+
+
+## Infrequent listening preference placement
+
+Recording quality now sits inside a native, collapsed-by-default Listening preferences disclosure after the atlas and before shuffle/request controls. Moods, tempo and region exploration keep priority. The existing hi-fi switch, saved state and prompt behavior are unchanged. A small SKIP ROUGH: ON annotation remains visible on the closed summary when the preference is enabled. The atlas geometry and footprint remain unchanged.
