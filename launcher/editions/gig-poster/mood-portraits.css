@@ -24,7 +24,7 @@ body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood:last-c
 /* Paper and comparison-sheet margins are removed in the shared alpha assets. */
 body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood{transition:background-color 160ms ease-out,color 160ms ease-out}
 body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[aria-pressed=true]{background:#d64b30;color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
-body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[aria-pressed=true] .word{background:transparent;color:var(--ink);padding:0;text-decoration:underline;text-underline-offset:3px}
+body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[aria-pressed=true] .word{background:transparent;color:var(--ink);padding:1px 4px;text-decoration:underline;text-underline-offset:3px}
 body.gig-poster .mood-grid .mood:focus-visible{outline:3px solid var(--ink);outline-offset:3px;z-index:1}
 @media(prefers-reduced-motion:reduce){body.gig-poster .mood-grid .mood,body.gig-poster .mood-grid .mood .face::before,body.gig-poster .mood-grid .mood .face::after{transition:none!important}}
 
