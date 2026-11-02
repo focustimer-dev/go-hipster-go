@@ -635,10 +635,8 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  const seed=clean.elements.prompt.textContent.match(/Seed: .*/)?.[0];
  clean.elements.skipRough.checked=true;clean.elements.skipRough.events.change();
  assert.equal(cleanStorage.get('ghg-skip-rough-v1'),'1');
- assert.match(clean.elements.prompt.textContent,/Skip rough recordings/);
- assert.match(clean.elements.prompt.textContent,/Clean older recordings and good restorations are welcome/);
- assert.match(clean.elements.prompt.textContent,/intentional lo-fi production is not automatically excluded/);
- assert.match(clean.elements.prompt.textContent,/disclose uncertain audio quality/);
+ assert.equal(clean.elements.prompt.textContent.split('\n').find(line=>line.startsWith('Recording preference:')), 'Recording preference: Skip rough recordings.');
+ assert.doesNotMatch(clean.elements.prompt.textContent,/heavy hiss|Clean older recordings|intentional lo-fi|disclose uncertain audio quality/,'Curation policy belongs in the skill');
  assert.equal(clean.elements.prompt.textContent.match(/Seed: .*/)?.[0],seed,'Toggle retains creative input');
  assert.equal(clean.elements.openAi.attrs['aria-disabled'],'true','Preference change invalidates an earlier copy');
  assert.match(clean.elements.receiptSummary.textContent,/skip rough recordings/);

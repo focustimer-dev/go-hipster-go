@@ -279,3 +279,8 @@ Build a new isolated Lab APK from the production PWA at the November 1 clean-art
 ## Recording-quality preference
 
 Preferences includes **Skip rough recordings**, using the existing checkbox row. It is off by default and remembered in this app's WebView storage. The shared launcher handles the actual prompt, receipt and clipboard invalidation. Clean older recordings and intentional lo-fi remain eligible; heavy hiss, crackle and muffled archival transfers are discouraged. This build requires a new APK; installed Lab copies do not update from the PWA.
+
+
+## Lab 0.9.5 — recording-quality policy alignment
+
+Bundles skill 3.11.1 source and the compact `Recording preference: Skip rough recordings.` app flag. Recording-quality rules live in the shared skill reference; saved toggle and URL behavior are unchanged. The eight locked portraits retain printed petrol labels, vermilion stock, matching Desire hearts and Funk pink with occluded laser rays. Version code 14; use the existing signer to update in place.

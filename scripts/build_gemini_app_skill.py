@@ -12,6 +12,7 @@ from zipfile import ZipFile, ZIP_DEFLATED
 
 ROOT = Path(__file__).resolve().parents[1]
 REFERENCES = (
+    "references/recording-quality.md",
     "references/reference-index.md",
     "references/de-cheese.md",
     "references/discovery-routes.md",
@@ -79,6 +80,11 @@ def common_sections(canonical: str):
                        .replace("Spotify/YouTube result status", "YouTube Music result status"))
     parts["Go modifiers and playlist length"] = re.sub(r"(?m)^- \*\*`go (?:desire|triumphant)`\*\*.*\n", "", parts["Go modifiers and playlist length"])
     parts["Go modifiers and playlist length"] += "\n\nFor Desire/Triumphant, read [moods](references/desire-triumphant.md) before selection, including combined-mood rules."
+    # Recording-quality policy is packaged separately and routed through the mandatory
+    # reference index; avoid duplicating its dispatch in the size-limited workflow.
+    parts["Go modifiers and playlist length"] = re.sub(
+        r"### Recording preference\n.*?(?=### Go Hard)", "",
+        parts["Go modifiers and playlist length"], flags=re.S)
     # Keep the compact Gemini file below its host budget without dropping policy.
     marker = "**Voice calibration (hypothetical examples; not verified claims about specific recordings):**"
     prose, samples = parts[keys[2]].split(marker, 1)
@@ -130,7 +136,7 @@ def render_reference(relative: str, content: str) -> str:
 def render(canonical: str) -> str:
     preface = """---
 name: go-hipster-go
-version: 3.11.0
+version: 3.11.1
 description: Go, Hipster, Go! moods, discovery routes, de-cheese and setup; verified global playlists with authorized YouTube Music publishing.
 ---
 
