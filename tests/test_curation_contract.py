@@ -12,6 +12,17 @@ class CurationContractTests(unittest.TestCase):
         self.assertEqual((ROOT / "SKILL.md").read_bytes(),
                          (ROOT / "skills/go-hipster-go/SKILL.md").read_bytes())
 
+    def test_recording_preference_policy_ships_to_every_host(self):
+        for name in ("references/recording-quality.md",
+                     "skills/go-hipster-go/references/recording-quality.md",
+                     "adapters/chatgpt/CHATGPT_KNOWLEDGE.md", "adapters/gemini/GEM_KNOWLEDGE.md"):
+            text = (ROOT / name).read_text(encoding="utf-8")
+            with self.subTest(host=name):
+                for rule in ("Recording preference: Skip rough recordings.", "Default OFF when absent",
+                             "Keep clean older recordings", "intentional lo-fi", "same performance",
+                             "Never silently relax", "without actual audio access"):
+                    self.assertIn(rule, text)
+
     def test_fresh_crate_and_recent_repeat_rules_present(self):
         skill=(ROOT / "SKILL.md").read_text(encoding="utf-8")
         cases=(ROOT / "tests/discovery-cases.md").read_text(encoding="utf-8")

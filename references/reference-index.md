@@ -43,3 +43,5 @@ Use section reads when supported. If the host can only fetch whole files, read t
 ## Antarctica
 
 For `go antarctica` or an Antarctica selection, load [Antarctica](regions/antarctica.md) first. It contributes a verified thematic share when mixed with other regions; it does not invent a local scene.
+
+- [Recording quality](recording-quality.md): load for Skip rough recordings, including legacy app prompts.
