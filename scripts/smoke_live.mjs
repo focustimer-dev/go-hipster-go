@@ -182,6 +182,10 @@ export async function checkRelease(browser, baseURL, expectedCommit, sourceCache
     await page.locator('[data-mood="desire"]').click();
     await page.locator('[data-mood="funky"]').click();
     await page.waitForFunction(() => getComputedStyle(document.querySelector('.desire-hearts')).opacity === '1');
+    await page.waitForFunction(() => ['desire', 'funky'].every(mood => {
+      const button = document.querySelector(`[data-mood="${mood}"]`);
+      return button.getAnimations().every(animation => animation.playState !== 'running');
+    }));
     const selectedColors = await page.evaluate(() => ({
       hearts: getComputedStyle(document.querySelector('.desire-hearts')).backgroundColor,
       funk: getComputedStyle(document.querySelector('[data-mood="funky"]')).backgroundColor,
