@@ -223,3 +223,8 @@ Skip rough recordings uses a compact 112×48px petrol hardware key with a mustar
 ## Infrequent listening preference placement
 
 Recording quality now sits inside a native, collapsed-by-default Listening preferences disclosure after the atlas and before shuffle/request controls. Moods, tempo and region exploration keep priority. The existing hi-fi switch, saved state and prompt behavior are unchanged. A small SKIP ROUGH: ON annotation remains visible on the closed summary when the preference is enabled. The atlas geometry and footprint remain unchanged.
+
+
+## Vertical listening-preference lever
+
+The recording control now has one physical-looking lever, ON above and OFF below. Up means skip rough recordings; down means allow them. The active label uses petrol with mustard lettering, matching selected AI/music keys. A restrained collar, shaft and tip supply hardware depth using local CSS. The whole label remains tappable; the native checkbox, saved preference, keyboard focus and prompt behavior are unchanged. Reduced motion moves the lever instantly; forced colors restores the native checkbox. Keep the PWA’s collapsed Listening preferences placement and the Lab’s Preferences placement.
