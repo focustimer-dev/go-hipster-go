@@ -5,7 +5,7 @@
 
 (()=>{
 const root=document.getElementById('firstCrateSetup');if(!root)return;const $=id=>root.querySelector('#fc-'+id);
-const servicePanel=$('services');let installNotice='';
+const servicePanel=$('services');let installNotice='';let stampFresh=false;
 const key='hmg-first-crate-v1';let stage='welcome',paused=false,completed=false,help=false,notice='',copySerial=0,confirmedPairs={};
 const repo='https://github.com/focustimer-dev/go-hipster-go';
 const release=repo+'/releases/latest/download/';
@@ -71,7 +71,7 @@ function manualText(){return `<details><summary>View connection check / copy man
 function render(){
  $('options-holder').append(servicePanel);const ticket=$('ticket');ticket.hidden=completed&&!help;ticket.classList.toggle('is-paused',paused&&!help&&!completed);
 
- if(completed&&!help){ticket.innerHTML='';$('current-setup').hidden=false;$('current-setup').innerHTML=`<span class="setup-confirmed"><span class="ink-stamp">ALL SET</span><span class="confirmed-pair">${esc(pair())}<small>Setup confirmed by you · Pick your sound.</small></span></span>${action('Change setup','choose',true)}`;persist();return}
+ if(completed&&!help){ticket.innerHTML='';$('current-setup').hidden=false;$('current-setup').innerHTML=`<span class="setup-confirmed"><span class="ink-stamp${stampFresh?' stamp-arrival':''}">ALL SET</span><span class="confirmed-pair">${esc(pair())}<small>Setup confirmed by you · Pick your sound.</small></span></span>${action('Change setup','choose',true)}`;stampFresh=false;persist();return}
  $('current-setup').hidden=true;
  if(paused&&!help){
   const labels={choose:'Choose your AI and music service',install:'Continue your installation steps',welcome:'Start when you’re ready',check:'Copy your connection check',copied:'Next: open your AI',away:'Next: confirm how setup went',return:'Next: confirm how setup went'};
@@ -88,7 +88,7 @@ function render(){
  else if(stage==='copied')body=`<p>Open ${esc(aiName())}, paste the connection check and send it. Return when it confirms readiness.</p><p class="clerk-aside">Yes, you still have to press Send.</p>${$('ai').value==='Other'?'<p>Open your chosen AI, paste the check and send it.</p>':`<a class="primary" href="${({ChatGPT:'https://chatgpt.com/',Gemini:'https://gemini.google.com/app',Claude:'https://claude.ai/'})[$('ai').value]}" target="_blank" rel="noopener noreferrer">OPEN ${esc(aiName().toUpperCase())}</a>`}${confirmSetup()}${manualText()}<div class="secondary-row">${action('Need help?','help',true)}${action('Finish later','pause',true)}</div>`;
 
  else if(stage==='return')body=`<p>Did your AI confirm the setup is ready?</p>${action('MY AI CONFIRMED — I’M READY','ready')}<div class="secondary-row">${action('I need help','help',true)}${action('Finish later','pause',true)}</div><p class="note">This records your confirmation. Returning alone doesn’t confirm a connection.</p>`;
- ticket.innerHTML=`<div class="ticket-top"><div class="ticket-navigation">${help||previousStage(stage)?`<button type="button" class="setup-back" data-action="previous" aria-label="${backLabel()}">BACK</button>`:''}<span class="ticket-step">${help?'THE MANUAL':steps[stage]}</span></div><button type="button" class="close-setup" data-action="pause" aria-label="Close setup and keep my progress">CLOSE</button></div><p class="setup-pair">${stage==='welcome'?'Suggested: ':''}${esc(pair())}</p><h2>${help?'LET’S GET YOU UNSTUCK':heads[stage]}</h2>${body}${!help&&stage==='welcome'?'<div class="clerk-signoff"><p>A little paperwork.<br>A lot of opinions.</p><span class="ink-stamp" aria-hidden="true">ADMIT ONE</span></div>':''}`;if(stage==='choose'&&!help)$('service-slot').append(servicePanel);const current=$('current-setup');current.hidden=stage==='welcome'||stage==='choose'||!completed;current.innerHTML=completed?`<span class="setup-confirmed"><span class="ink-stamp">ALL SET</span><span class="confirmed-pair">${esc(pair())}<small>Setup confirmed by you · Pick your sound.</small></span></span>${action('Change setup','choose',true)}`:'';persist();
+ ticket.innerHTML=`<div class="ticket-top"><div class="ticket-navigation">${help||previousStage(stage)?`<button type="button" class="setup-back" data-action="previous" aria-label="${backLabel()}">BACK</button>`:''}<span class="ticket-step">${help?'THE MANUAL':steps[stage]}</span></div><button type="button" class="close-setup" data-action="pause" aria-label="Close setup and keep my progress">CLOSE</button></div><p class="setup-pair">${stage==='welcome'?'Suggested: ':''}${esc(pair())}</p><h2>${help?'LET’S GET YOU UNSTUCK':heads[stage]}</h2>${body}${!help&&stage==='welcome'?'<div class="clerk-signoff"><p>A little paperwork.<br>A lot of opinions.</p><span class="ink-stamp" aria-hidden="true">ADMIT ONE</span></div>':''}`;if(stage==='choose'&&!help)$('service-slot').append(servicePanel);const current=$('current-setup');current.hidden=stage==='welcome'||stage==='choose'||!completed;current.innerHTML=completed?`<span class="setup-confirmed"><span class="ink-stamp${stampFresh?' stamp-arrival':''}">ALL SET</span><span class="confirmed-pair">${esc(pair())}<small>Setup confirmed by you · Pick your sound.</small></span></span>${action('Change setup','choose',true)}`:'';persist();
 }
 async function copy(text){if(!navigator.clipboard?.writeText)return false;try{await navigator.clipboard.writeText(text);return true}catch{return false}}
 root.addEventListener('click',async e=>{
@@ -100,7 +100,7 @@ root.addEventListener('click',async e=>{
  if(a==='pause'){pause();return}
  if(a==='resume'){resume();return}
  if(a==='restore'&&!hasConfirmation())return;
- if(a==='ready'||a==='restore'){copySerial++;confirmedPairs[pairingKey()]=true;completed=true;paused=false;help=false;render();document.querySelector('[data-mood]').focus();document.querySelector('[data-mood]').scrollIntoView({block:'nearest'});return}
+ if(a==='ready'||a==='restore'){stampFresh=a==='ready';copySerial++;confirmedPairs[pairingKey()]=true;completed=true;paused=false;help=false;render();document.querySelector('[data-mood]').focus();document.querySelector('[data-mood]').scrollIntoView({block:'nearest'});return}
  if(a==='help'){help=true;paused=false;render();$('ticket').querySelector('[data-action]:not([data-action="pause"]):not([data-action="previous"])')?.focus();return}
  if(a==='copy'){
   const serial=++copySerial,snapshot=setup();button.disabled=true;const ok=await copy(snapshot);if(serial!==copySerial||snapshot!==setup())return;

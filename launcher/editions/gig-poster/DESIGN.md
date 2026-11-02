@@ -212,6 +212,9 @@ Setup chooses AI and service, gives matching installation instructions, then ask
 The Manual and existing controls remain available. Integration tests cover clipboard denial, dismissal, reload, Back, confirmation isolation and restoration, help, and all AI/service pairs. Fresh browser and native visual QA remain required before release; this entry records design alignment, not visual certification.
 
 
+## Clerk confirmation stamp
+
+Explicit “My AI confirmed — I’m ready” earns one 280ms deep-red ALL SET ink impression in the compact pairing summary. The always-visible stamp makes a short downward press and settles at the existing −4° print angle. The summary, focus handoff and confirmation save happen immediately; there is no timed delay, replay on reload or celebration when restoring a previously confirmed pairing. Reduced motion shows the static finished stamp. It remains a listener confirmation, not a claim of verified service access.
 ## Recording hi-fi switch
 
 Skip rough recordings uses a compact 112×48px petrol hardware key with a mustard sliding tab, persistent OFF/ON markings and an underlined ON state. The existing native checkbox owns state, keyboard interaction, preferences and prompt generation. The full descriptive row is tappable. One 180ms tab translation confirms the change; reduced motion keeps the instantaneous position and label change. Forced colors restores the native checkbox. Poster lettering and thin ink rules match the tempo control and Crate Atlas. The preference still welcomes clean older recordings and adds no era cutoff.
