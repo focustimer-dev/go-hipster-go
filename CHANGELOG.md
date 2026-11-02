@@ -1,3 +1,9 @@
+## 3.11.1 — skill-owned recording quality
+
+- Move Skip rough recordings policy into a shared skill reference; the app sends only a short preference flag. Keep clean older recordings, restorations and intentional lo-fi eligible, require evidence for recording-quality claims, and preserve the listener’s musical brief.
+- Synchronize ChatGPT, Claude and Gemini distributions, retaining Gemini’s existing size budget and legacy prompt support.
+- Align release documentation with eight moods, two-mood replacement, printed labels, and the separate Android Lab 0.9.5 snapshot.
+
 ## The helpful clerk: PWA flow and voice
 
 ## Unreleased — optional Go Hard deep crate mode
