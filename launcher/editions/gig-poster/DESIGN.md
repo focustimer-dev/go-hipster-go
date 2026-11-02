@@ -210,3 +210,8 @@ The reviewed first-crate flow replaces the poster’s legacy dismissal notice. I
 Setup chooses AI and service, gives matching installation instructions, then asks the AI to check actual capabilities. Other uses a generic installation request with explicit chat-only and file-upload fallbacks. Claude download selection requires identifying the Skills or Plugins uploader. Real AI links open externally; nothing is silently sent. The explicit “My AI confirmed — I’m ready” action records a browser-local confirmation per pairing, never a verified account connection. Close and Escape preserve unfinished progress; Back revisits the prior step. Manual copy returns to a compact handoff. Three help disclosures separate installation, connection and playlist-saving problems. Prior notice dismissal means “later”, not successful setup.
 
 The Manual and existing controls remain available. Integration tests cover clipboard denial, dismissal, reload, Back, confirmation isolation and restoration, help, and all AI/service pairs. Fresh browser and native visual QA remain required before release; this entry records design alignment, not visual certification.
+
+
+## Clerk confirmation stamp
+
+Explicit “My AI confirmed — I’m ready” earns one 280ms deep-red ALL SET ink impression in the compact pairing summary. The always-visible stamp makes a short downward press and settles at the existing −4° print angle. The summary, focus handoff and confirmation save happen immediately; there is no timed delay, replay on reload or celebration when restoring a previously confirmed pairing. Reduced motion shows the static finished stamp. It remains a listener confirmation, not a claim of verified service access.

@@ -123,3 +123,14 @@
 #firstCrateSetup .setup-back,#firstCrateSetup .close-setup,#firstCrateSetup .ticket-step,#firstCrateSetup .setup-pair{font-family:'Courier New',monospace}
 #firstCrateSetup .install-link,#firstCrateSetup .ticket a{color:var(--ink)}
 #firstCrateSetup .ticket a.primary{color:var(--paper)}
+
+/* A single ink impression, earned only by the listener's explicit confirmation. */
+#firstCrateSetup .setup-confirmed .ink-stamp{font-size:15px;line-height:1.1;letter-spacing:.06em;padding:9px 11px;border:2px solid var(--receipt-red);color:var(--receipt-red);background:var(--cream);transform:rotate(-4deg);transform-origin:center}
+@media(prefers-reduced-motion:no-preference){
+ #firstCrateSetup .setup-confirmed .stamp-arrival{animation:clerk-ink-impression 280ms cubic-bezier(.16,1,.3,1) both}
+ @keyframes clerk-ink-impression{
+  0%{transform:translateY(-5px) scale(1.12) rotate(-8deg);filter:blur(.5px)}
+  58%{transform:translateY(1px) scale(.98) rotate(-4deg);filter:blur(0)}
+  100%{transform:translateY(0) scale(1) rotate(-4deg);filter:blur(0)}
+ }
+}
