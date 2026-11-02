@@ -11,3 +11,5 @@ Label correction release: restore direct petrol lettering and selection underlin
 Keep selected and neutral label padding identical so portrait rows remain stable.
 
 Release skill 3.11.1 alignment: deploy compact recording preference flag and updated release documentation.
+
+First-crate onboarding release: publish the reviewed setup ticket, explicit pairing confirmation, Back/Close recovery, Other installation flow and focused help. Keep existing portraits, atlas and music controls. Run the existing production deployment and live smoke gates.

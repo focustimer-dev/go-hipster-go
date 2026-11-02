@@ -16,3 +16,9 @@ class LauncherBehaviorTests(unittest.TestCase):
         root = pathlib.Path(__file__).resolve().parents[1]
         process = subprocess.run(['node', 'tests/fixtures/launcher_behavior.cjs'], cwd=root, capture_output=True, text=True)
         self.assertEqual(process.returncode, 0, 'Launcher Node test failed:\\n' + process.stdout + '\\n' + process.stderr)
+
+    @unittest.skipUnless(shutil.which('node'), 'Node is required for onboarding tests')
+    def test_first_crate_setup_recovery(self):
+        root = pathlib.Path(__file__).resolve().parents[1]
+        process = subprocess.run(['node', 'tests/fixtures/first_crate.cjs'], cwd=root, capture_output=True, text=True)
+        self.assertEqual(process.returncode, 0, process.stdout + process.stderr)
