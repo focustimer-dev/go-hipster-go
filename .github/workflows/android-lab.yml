@@ -2,7 +2,7 @@ name: Android Lab (no deployment)
 on:
   workflow_dispatch:
   push:
-    branches: [release/lab-0-9-6, fix/lab-handoff-consistency]
+    branches: [release/lab-0-9-7, release/lab-0-9-6, fix/lab-handoff-consistency]
   pull_request:
     paths:
       - 'android-lab/**'
