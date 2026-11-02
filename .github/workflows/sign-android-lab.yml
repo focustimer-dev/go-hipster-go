@@ -1,4 +1,4 @@
-name: Sign verified Android Lab 0.9.1 APK
+name: Sign verified Android Lab 0.9.6 APK
 
 # Only the explicit release sentinel or a manual run can sign this exact verified artifact.
 on:
@@ -6,14 +6,14 @@ on:
   push:
     branches: [main]
     paths:
-      - '.github/releases/sign-lab-0-9-1'
+      - '.github/releases/sign-lab-0-9-6'
 
 permissions:
   contents: read
   actions: read
 
 concurrency:
-  group: sign-verified-android-lab-0-9-1
+  group: sign-verified-android-lab-0-9-6
   cancel-in-progress: false
 
 jobs:
@@ -29,8 +29,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          run_id=41349192402
-          expected_sha=0aa8aa0aaf8040434dec0da4bf7a4d2f9c67462f
+          run_id=41508087937
+          expected_sha=cae5c3eacbe7666035e9674c43e680ce90c0c165
           actual_sha="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}" --jq .head_sha)"
           conclusion="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}" --jq .conclusion)"
           test "$actual_sha" = "$expected_sha" || { echo "::error::Lab build commit differs from the reviewed one"; exit 1; }
@@ -48,7 +48,7 @@ jobs:
           build_tools="$(find "$ANDROID_HOME/build-tools" -mindepth 1 -maxdepth 1 -type d | sort -V | tail -n 1)"
           test -x "$build_tools/zipalign" && test -x "$build_tools/apksigner" && test -x "$build_tools/aapt"
           badging="$("$build_tools/aapt" dump badging unsigned/app-release-unsigned.apk)"
-          [[ "$badging" == *"name='work.samelling.hipstergo.lab' versionCode='10' versionName='0.9.1'"* ]] ||
+          [[ "$badging" == *"name='work.samelling.hipstergo.lab' versionCode='15' versionName='0.9.6'"* ]] ||
             { echo "::error::Unexpected Android package ID or version; refusing to sign"; exit 1; }
           "$build_tools/zipalign" -p -f 4 unsigned/app-release-unsigned.apk "$RUNNER_TEMP/lab-aligned.apk"
           "$build_tools/zipalign" -c 4 "$RUNNER_TEMP/lab-aligned.apk"
@@ -74,14 +74,14 @@ jobs:
             sign_args+=(--key-pass env:ANDROID_KEY_PASSWORD)
           fi
           "$LAB_ANDROID_BUILD_TOOLS/apksigner" sign "${sign_args[@]}" \
-            --out Hipster-GO-Lab-0.9.1.apk "$RUNNER_TEMP/lab-aligned.apk"
-          "$LAB_ANDROID_BUILD_TOOLS/apksigner" verify --verbose --print-certs Hipster-GO-Lab-0.9.1.apk
-          sha256sum Hipster-GO-Lab-0.9.1.apk
+            --out Hipster-GO-Lab-0.9.6.apk "$RUNNER_TEMP/lab-aligned.apk"
+          "$LAB_ANDROID_BUILD_TOOLS/apksigner" verify --verbose --print-certs Hipster-GO-Lab-0.9.6.apk
+          sha256sum Hipster-GO-Lab-0.9.6.apk
 
       - name: Publish signed APK (not the keystore)
         uses: actions/upload-artifact@v4
         with:
-          name: hipster-go-lab-0.9.1-signed-apk
-          path: Hipster-GO-Lab-0.9.1.apk
+          name: hipster-go-lab-0.9.6-signed-apk
+          path: Hipster-GO-Lab-0.9.6.apk
           if-no-files-found: error
           retention-days: 7
