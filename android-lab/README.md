@@ -289,3 +289,9 @@ Bundles skill 3.11.1 source and the compact `Recording preference: Skip rough re
 ## Lab 0.9.6 — first-crate setup and tactile controls
 
 Bundles production PWA commit 457ccbe1d9acdf022b15f7395b3592af4ff6b6c6: first-crate onboarding, per-pair listener confirmations, focused recovery, the hi-fi recording switch and one-shot clerk stamp. Setup copying uses the native clipboard; its supported AI links use the existing native handoff without sending. Existing preferences, saved requests and inspiration remain device-local. Package ID and signer are unchanged; version code 15 updates Lab 0.9.5 in place.
+
+## Lab 0.9.7 — physical listening switch
+
+Preferences now uses an original metal bat-handle switch for Skip rough recordings: ON above the mount, OFF below, with the lever pointing to the current state. The active label uses the same petrol selection treatment as the service buttons. The entire row remains tappable; the existing checkbox, persisted preference and curation behavior are unchanged. Keyboard focus, reduced motion and forced-color native fallback are supported.
+
+Version code 16 retains the Lab package identity and release signer for an in-place update from 0.9.6. This hardware treatment is confined to the Android workspace.

@@ -27,6 +27,15 @@ const root=path.resolve(__dirname,'../android-lab/app/src/main/assets/site');
   assert(w.document.querySelector('#fc-current-setup').textContent.includes('ALL SET'));
   calls.length=0; // Keep existing GO assertions independent of the setup handoff above.
   assert.equal(w.document.querySelector('#labJukebox .service-counter'),null);
+  const recording=w.document.querySelector('#labRecordingPreferences');
+  assert.equal(w.document.querySelectorAll('#skipRough').length,1,'One semantic preference input');
+  assert(recording.querySelector('.recording-hardware .recording-metal-lever'),'Native hardware replaces decorative rocker');
+  assert.equal(recording.querySelector('.recording-rocker').firstElementChild.textContent,'ON');
+  assert.equal(recording.querySelector('.recording-rocker').lastElementChild.textContent,'OFF');
+  const rough=recording.querySelector('#skipRough'), initialRough=rough.checked;
+  recording.querySelector('label').click();assert.equal(rough.checked,!initialRough,'Whole preference row toggles');
+  recording.querySelector('label').click();assert.equal(rough.checked,initialRough,'Whole preference row toggles back');
+
   assert(w.document.querySelector('#labPreferences [data-ai="chatgpt"]'));
   assert.equal(w.document.querySelector('.poster-go-trail-word:last-child').textContent,'CONTINUE IN YOUR AI');
   assert(w.document.querySelector('#labPreferences #skipRough'),'Recording toggle lives in existing Preferences');

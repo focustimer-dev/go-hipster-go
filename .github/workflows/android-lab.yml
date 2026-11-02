@@ -2,7 +2,7 @@ name: Android Lab (no deployment)
 on:
   workflow_dispatch:
   push:
-    branches: [release/lab-0-9-6, fix/lab-handoff-consistency]
+    branches: [release/lab-0-9-7, release/lab-0-9-6, fix/lab-handoff-consistency]
   pull_request:
     paths:
       - 'android-lab/**'
@@ -45,5 +45,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: hipster-go-lab-unsigned-apk
-          path: android-lab/app/build/outputs/apk/release/app-release-unsigned.apk
+          path: |
+            android-lab/app/build/outputs/apk/release/app-release-unsigned.apk
+            android-lab/build/switch-review/*.png
           if-no-files-found: error
