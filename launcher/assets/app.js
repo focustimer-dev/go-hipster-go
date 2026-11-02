@@ -135,7 +135,7 @@ function goPrompt(ai,service,mood){
 
 const crateRegions=[{"id":"us-west","label":"US West","continent":"americas-north"},{"id":"us-east","label":"US East","continent":"americas-north"},{"id":"canada-west","label":"Canada West","continent":"americas-north"},{"id":"canada-east","label":"Canada East","continent":"americas-north"},{"id":"mexico","label":"Mexico","continent":"americas-north"},{"id":"central-america","label":"Central America","continent":"americas-north"},{"id":"caribbean","label":"Caribbean","continent":"americas-north"},{"id":"northern-south-america","label":"Northern South America","continent":"americas-south"},{"id":"southern-south-america","label":"Southern South America","continent":"americas-south"},{"id":"atlantic-europe","label":"Atlantic & Western Europe","continent":"europe"},{"id":"mediterranean-europe","label":"Mediterranean & Balkans","continent":"europe"},{"id":"northern-europe","label":"Northern Europe","continent":"europe"},{"id":"eastern-europe","label":"Eastern Europe","continent":"europe"},{"id":"north-africa","label":"North Africa","continent":"africa"},{"id":"west-africa","label":"West Africa","continent":"africa"},{"id":"east-africa","label":"East Africa","continent":"africa"},{"id":"central-southern-africa","label":"Central & Southern Africa","continent":"africa"},{"id":"middle-east","label":"Middle East & Caucasus","continent":"asia"},{"id":"central-asia","label":"Central Asia","continent":"asia"},{"id":"south-asia","label":"South Asia","continent":"asia"},{"id":"east-asia","label":"East Asia","continent":"asia"},{"id":"southeast-asia","label":"Southeast Asia","continent":"asia"},{"id":"northern-asia","label":"Northern Asia","continent":"asia"},{"id":"oceania","label":"Oceania","continent":"oceania"},{"id":"antarctica","label":"Antarctica","continent":"antarctica"}];
 // Live ticket shorthand: abbreviations remain legible on a narrow phone.
-const ticketAiCodes={chatgpt:"GPT",gemini:"GEM",claude:"CLD"};
+const ticketAiCodes={chatgpt:"GPT",gemini:"GEM",claude:"CLD",other:"OTHER"};
 const ticketServiceCodes={spotify:"SPOT",youtube:"YTM",apple:"APPLE"};
 const ticketMoodCodes={go:"SURP",happy:"HAPPY",angry:"ANGRY",sad:"SAD",weird:"WEIRD",criminal:"CRIME",funky:"FUNK"};
 const ticketTempoCodes={slow:"SLOW",relaxed:"RELAX",moderate:"MID",brisk:"BRISK",fast:"FAST"};
@@ -383,12 +383,12 @@ function updateHandoff(){
  const receipt=doc.getElementById("promptReceipt"),mark=doc.getElementById("receiptCopy");
  if(receipt)receipt.setAttribute("data-copy-state",state);
  if(mark){mark.hidden=state==="idle";mark.textContent=state==="copied"?"COPIED TO CLIPBOARD":state==="copying"?"COPYING…":"";}
- for(const id of ["openAi","browserAi"]){const a=doc.getElementById(id);if(a)a.setAttribute("aria-disabled",String(!ready))}
- const a=doc.getElementById("openAi");if(a)a.textContent=ready?"NEXT: OPEN "+aiNames[ai].toUpperCase():"COPY WITH GO FIRST";
+ for(const id of ["openAi","browserAi"]){const a=doc.getElementById(id);if(a){a.setAttribute("aria-disabled",String(!ready));if(ai==="other")a.hidden=true}}
+ const a=doc.getElementById("openAi");if(a){a.hidden=ai==="other";a.textContent=ready?"NEXT: OPEN "+aiNames[ai].toUpperCase():"COPY WITH GO FIRST";}
  const guide=doc.getElementById("handoffGuidance"),heading=doc.getElementById("handoffTitle"),instructions=doc.getElementById("handoffInstruction");
  if(guide)guide.hidden=!ready;
- if(heading)heading.textContent="COPIED. NOW OPEN "+aiNames[ai].toUpperCase()+".";
- if(instructions)instructions.textContent=ai==="chatgpt"?"Paste and send. Select Go, Hipster, Go! and "+serviceNames[service]+" in your chat if needed. The playlist isn't saved yet.":ai==="gemini"?"Paste and send. Select the saved Go, Hipster, Go! skill and "+serviceNames[service]+" if needed. Check whether the playlist was created.":"Paste and send. Enable Go, Hipster, Go! and "+serviceNames[service]+" if needed. Check the playlist result in your AI.";
+ if(heading)heading.textContent=ai==="other"?"COPIED. OPEN YOUR AI MANUALLY.":"COPIED. NOW OPEN "+aiNames[ai].toUpperCase()+".";
+ if(instructions)instructions.textContent=ai==="other"?"Open your chosen AI yourself, paste the copied request and send it. This app cannot open an unspecified AI.":ai==="chatgpt"?"Paste and send. Select Go, Hipster, Go! and "+serviceNames[service]+" in your chat if needed. The playlist isn't saved yet.":ai==="gemini"?"Paste and send. Select the saved Go, Hipster, Go! skill and "+serviceNames[service]+" if needed. Check whether the playlist was created.":"Paste and send. Enable Go, Hipster, Go! and "+serviceNames[service]+" if needed. Check the playlist result in your AI.";
 }
 function selectionChanged(preserveShuffle=false){
  if(!preserveShuffle){previousShuffle=null;const result=doc.getElementById("shuffleResult");if(result)result.textContent="";}
@@ -425,8 +425,10 @@ function renderSetup(){
  let install="",connection="";
  if(ai==="chatgpt")install="In ChatGPT, select Go, Hipster, Go!. If missing, install/load it using the project source or app directory.";
  else if(ai==="gemini")install="In Gemini, paste the setup check to save the small entry skill. References load when needed; use the complete ZIP in Gemini web if saving is unavailable.";
+ else if(ai==="other")install="Load the skill using your AI’s supported method. Ask what loaded and whether it persists. If it cannot read GitHub, upload the files it requests; a pasted URL alone is not installation.";
  else install="In Claude Customize, install Go, Hipster, Go!. Use the Skill ZIP for Skills, or the Plugin ZIP for Plugins; they are not interchangeable.";
- if(service==="spotify"&&ai==="gemini")connection="On Gemini mobile, link Spotify if offered. Google's connected app supports search/play, not playlist creation.";
+ if(ai==="other")connection="Ask your AI which authorized "+serviceNames[service]+" search and playlist-writing tools it actually has. If saving is unavailable, request a text playlist instead.";
+ else if(service==="spotify"&&ai==="gemini")connection="On Gemini mobile, link Spotify if offered. Google's connected app supports search/play, not playlist creation.";
  else if(service==="spotify"&&ai==="claude")connection="Connect Spotify in Claude. Premium is required for personalized prompted playlists; inspect whether saving is supported here.";
  else if(service==="spotify")connection="In ChatGPT, connect and select Spotify in the same conversation as Go, Hipster, Go!.";
  else if(service==="youtube"&&ai==="gemini")connection="Connect YouTube Music if available. Plain GO curates and attempts one playlist; if no writer is accessible, the Skill should return the crate and explain what failed.";
@@ -445,7 +447,7 @@ function renderSetup(){
  const caveat=doc.getElementById("recipeCaveat");if(caveat)caveat.textContent=q.note;
  const setupReady=copiedPrompt===setupPrompt(ai,service);
  const copyButton=doc.getElementById("copyTailoredSetup");if(copyButton){copyButton.setAttribute("data-copy-state",copyButton.disabled?"copying":setupReady?"copied":"idle");copyButton.textContent=copyButton.disabled?"COPYING…":setupReady?"COPIED — COPY AGAIN":"COPY MY SETUP PROMPT"}
- const target=doc.getElementById("openSelectedAi");if(target){target.href=destinations[ai];target.textContent=(setupReady?"NEXT: OPEN ":"OPEN ")+aiNames[ai].toUpperCase();target.setAttribute("data-copy-ready",String(setupReady))}
+ const target=doc.getElementById("openSelectedAi");if(target){target.hidden=ai==="other";target.href=destinations[ai];target.textContent=(setupReady?"NEXT: OPEN ":"OPEN ")+aiNames[ai].toUpperCase();target.setAttribute("data-copy-ready",String(setupReady))}
  const tryFirst=doc.getElementById("trySetupPrompt");if(tryFirst)tryFirst.dataset.readyPair=ai+":"+service;
 }
 function renderLaunch(){
@@ -467,7 +469,7 @@ function renderLaunch(){
  if(!e.prompt)return;
  e.prompt.textContent=goPrompt(ai,service,mood);
  e.mood.textContent=moodLabel(mood).toUpperCase();
- e.code.textContent=(ai==="chatgpt"?"CG":ai==="gemini"?"GM":"CL")+"-"+mood.slice(0,3).toUpperCase()+"-01";
+ e.code.textContent=(ai==="chatgpt"?"CG":ai==="gemini"?"GM":ai==="claude"?"CL":"OTHER")+"-"+mood.slice(0,3).toUpperCase()+"-01";
  e.open.href=ai==="gemini"?geminiIntent:destinations[ai];e.open.textContent="↗ OPEN "+aiNames[ai].toUpperCase();
  const summary=doc.getElementById("receiptSummary");if(summary)summary.textContent=aiNames[ai]+" · "+serviceNames[service]+" · "+moodLabel(mood)+(tempo?" · "+tempoNames[tempo]:"")+" · 12 tracks"+(includeCover?" · cover art":"")+(goHard?" · deep crate":"")+(skipRough?" · skip rough recordings":"");
  const regions=doc.getElementById("receiptRegions");if(regions)regions.textContent="CRATES / "+(crateSelected.size?crateRegions.filter(r=>crateSelected.has(r.id)).map(r=>r.label).join(" · "):"Worldwide");
@@ -475,7 +477,7 @@ function renderLaunch(){
  if(ticketShort)ticketShort.textContent=ticketAiCodes[ai]+" › "+ticketServiceCodes[service]+" · "+(moodParts(mood).map(m=>ticketMoodCodes[m]||({desire:"LOVE",triumphant:"WIN"})[m]).join("+")||"SURP")+" · "+(tempo?ticketTempoCodes[tempo]:"ANY");
  const ticketRegionShort=doc.getElementById("selectionTicketRegionShort");
  if(ticketRegionShort){
-  ticketRegionShort.textContent=shortTicketRegions()+" · ART:"+(includeCover?"ON":"OFF")+" · HARD:"+(goHard?"ON":"OFF")+(skipRough?" · CLEAN:ON":"");
+  ticketRegionShort.textContent=shortTicketRegions()+" · ART:"+(includeCover?"ON":"OFF")+" · HARD:"+(goHard?"ON":"OFF")+(skipRough?" · SKIP ROUGH: ON":"");
   ticketRegionShort.title=crateSelected.size?crateRegions.filter(r=>crateSelected.has(r.id)).map(r=>r.label).join(", "):"Worldwide";
  }
  const cover=doc.getElementById("includeCover");if(cover)cover.setAttribute("aria-pressed",String(includeCover));
@@ -483,7 +485,7 @@ function renderLaunch(){
  const recording=doc.getElementById("skipRough");if(recording)recording.checked=skipRough;
  const hint=doc.getElementById("goHint");if(hint)hint.textContent="Copy your prompt";
  const goButton=doc.getElementById("goButton");if(goButton)goButton.setAttribute("aria-label","GO! Copy "+(mood==="go"?"surprise":moodLabel(mood))+" playlist prompt");
- const manual=doc.getElementById("manualOpenAi");if(manual){manual.href=destinations[ai];manual.textContent="I COPIED IT MANUALLY — OPEN "+aiNames[ai].toUpperCase()}
+ const manual=doc.getElementById("manualOpenAi");if(manual){manual.href=destinations[ai];manual.textContent=ai==="other"?"I COPIED IT — SHOW NEXT STEP":"I COPIED IT MANUALLY — OPEN "+aiNames[ai].toUpperCase()}
  updateHandoff();
  e.browser.hidden=ai!=="gemini";e.browser.href=destinations[ai];e.browser.textContent="open "+aiNames[ai]+" in browser";
  const u=new URL(location.href);u.searchParams.set("ai",ai);u.searchParams.set("service",service);
@@ -1190,7 +1192,7 @@ if(doc.getElementById("firstCrateSetup")){globalThis.HipsterSetup={getPair:()=>(
  if(!Object.hasOwn(defaultService,next.ai)||!Object.hasOwn(serviceNames,next.service))return;
  ai=next.ai;service=next.service;copiedPrompt=null;copiedSetupPrompt=null;selectionChanged();
 }};
-doc.addEventListener("click",event=>{if(ai!=="other")return;const link=event.target.closest("#openAi,#browserAi,#manualOpenAi,#openSelectedAi");if(link){event.preventDefault();status("Open your chosen AI, paste the copied request and send it.")}},true);}
+doc.addEventListener("click",event=>{if(ai!=="other")return;const link=event.target.closest("#openAi,#browserAi,#manualOpenAi,#openSelectedAi");if(link){event.preventDefault();status("Open your chosen AI yourself, paste the request and send it.");const guide=doc.getElementById("handoffGuidance");if(guide)guide.hidden=false;const heading=doc.getElementById("handoffTitle");if(heading)heading.textContent="OPEN YOUR AI MANUALLY.";const instructions=doc.getElementById("handoffInstruction");if(instructions)instructions.textContent="Paste the request you copied, then send it. This app cannot open an unspecified AI.";}},true);}
 render();
 if(crateSelected.size)frameSelectedAtlas();
 // One ticket travels with the reader and docks in the printed receipt.

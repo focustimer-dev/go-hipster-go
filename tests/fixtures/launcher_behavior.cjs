@@ -16,7 +16,7 @@ class Element{
  async click(){this.focus();const event={preventDefault(){this.prevented=true}};await this.events.click?.(event);return event}
 }
 function harness(write,search='',page='launch',storage=new Map(),runtime={}){
- const ids=['skipRough','includeCover','goHard','pinMood','pinPace','pinRegions','briefMoodValue','briefPaceValue','briefRegionsValue','serviceDetails','serviceSummary','shuffleHelp','shuffleCrate','undoShuffle','shuffleResult','receiptRegions','welcomeSetup','beginSetup','dismissWelcome','finishSetup','setupJourney','onboardingPair','handoffGuidance','handoffTitle','handoffInstruction','crateGeo','atlasPassport','atlasNamedRegions','atlasLocator','atlasHome','atlasInstruction','atlasStamps','crateAtlasMap','crateGeoStatus','crateGeoClear','aiLabel','copyTailoredSetup','recipeIntro','recipeSteps','recipeResources','recipeCaveat','openSelectedAi','dealerPair','tempoControl','tempoDetails','tempoSummary','tempoHelp','moodHelp','tempoSlider','tempoValue','anyTempo','copyStatus','routeStatus','prompt','moodName','receiptCode','promptReceipt','receiptCopy','openAi','browserAi','manualOpenAi','receiptSummary','goHint','goButton','stripSetupPrompt','setupPromptText','setupPromptDetails','setupTipStatus','openSetupAi','promptDetails','shareButton'];
+ const ids=['selectionTicketShort','selectionTicketRegionShort','skipRough','includeCover','goHard','pinMood','pinPace','pinRegions','briefMoodValue','briefPaceValue','briefRegionsValue','serviceDetails','serviceSummary','shuffleHelp','shuffleCrate','undoShuffle','shuffleResult','receiptRegions','welcomeSetup','beginSetup','dismissWelcome','finishSetup','setupJourney','onboardingPair','handoffGuidance','handoffTitle','handoffInstruction','crateGeo','atlasPassport','atlasNamedRegions','atlasLocator','atlasHome','atlasInstruction','atlasStamps','crateAtlasMap','crateGeoStatus','crateGeoClear','aiLabel','copyTailoredSetup','recipeIntro','recipeSteps','recipeResources','recipeCaveat','openSelectedAi','dealerPair','tempoControl','tempoDetails','tempoSummary','tempoHelp','moodHelp','tempoSlider','tempoValue','anyTempo','copyStatus','routeStatus','prompt','moodName','receiptCode','promptReceipt','receiptCopy','openAi','browserAi','manualOpenAi','receiptSummary','goHint','goButton','stripSetupPrompt','setupPromptText','setupPromptDetails','setupTipStatus','openSetupAi','promptDetails','shareButton'];
  const elements=Object.fromEntries(ids.map(id=>[id,new Element()]));
  elements.setupJourney.hidden=true;
  elements.handoffGuidance.hidden=true;
@@ -667,5 +667,17 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  await pair.elements.shuffleCrate.click();await pair.elements.undoShuffle.click();
  assert.equal(pair.elements.moodName.textContent,'ANGRY + HAPPY');
  assert.equal(harness(async()=>{},'?mood=bogus%20desire%20desire%20sad%20happy').elements.moodName.textContent,'DESIRE + SAD');
+ const other=harness(async()=>{},'?ai=other&service=spotify');
+ assert(other.elements.selectionTicketShort.textContent.startsWith('OTHER › SPOT'));
+ assert(!other.elements.selectionTicketShort.textContent.includes('undefined'));
+ assert(other.elements.openAi.hidden,'Unspecified AI has no fake launch action');
+ await other.elements.goButton.click();
+ assert.equal(other.elements.handoffTitle.textContent,'COPIED. OPEN YOUR AI MANUALLY.');
+ assert(other.elements.handoffInstruction.textContent.includes('cannot open an unspecified AI'));
+ assert(other.elements.manualOpenAi.textContent.includes('SHOW NEXT STEP'));
+ await other.ais[0].click();assert.equal(other.elements.openAi.hidden,false,'Known AI launch returns when selected');
+ const genericSetup=harness(async()=>{},'?ai=other&service=spotify','setup');
+ assert(!genericSetup.elements.recipeSteps.children.some(li=>li.children.some(c=>c.textContent.includes('In Claude')||c.textContent.includes('In ChatGPT'))));
+ assert(genericSetup.elements.openSelectedAi.hidden);
  console.log('PASS: mood selection, reset, current-copy handoff, setup invalidation, blocked clipboard, copy race');
 })().catch(e=>{console.error(e);process.exit(1)});
