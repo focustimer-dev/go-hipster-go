@@ -201,3 +201,20 @@ The user’s phone capture showed that translucent vermilion mixed with mustard 
 ## Approved vermilion and heart-eye release
 
 Selected non-Funk moods use solid #D64B30 stock behind the locked transparent ink artwork. There is no light silhouette or underprint. A parent SVG alpha-preserving filter uses deeper petrol #08252A for selected engraving. Labels use paper on petrol for readable contrast, with equal padding in both states to avoid layout movement. Desire's selected heart fills use the same --funk-selected-paper token as The Funk's pink background; the mask is traced from the exact approved hearts and lives outside the petrol filter. Neutral Desire and all portrait geometry remain unchanged. The Funk's existing pink, expression and silhouette-masked vermilion lasers are retained.
+
+
+## First-crate setup ticket
+
+The reviewed first-crate flow replaces the poster’s legacy dismissal notice. It uses the existing Poster (Anton) display face, petrol #103135, mustard #dfb045, and square native controls. A cream #f4efdf ticket separates setup from the working stock; vermilion #d64b30 marks its top edge, while deep red #742019 carries short annotations and the ALL SET stamp. Primary keys remain petrol with mustard lettering. No new artwork, font, dependency, motion, map geometry or portrait treatment is introduced.
+
+Setup chooses AI and service, gives matching installation instructions, then asks the AI to check actual capabilities. Other uses a generic installation request with explicit chat-only and file-upload fallbacks. Claude download selection requires identifying the Skills or Plugins uploader. Real AI links open externally; nothing is silently sent. The explicit “My AI confirmed — I’m ready” action records a browser-local confirmation per pairing, never a verified account connection. Close and Escape preserve unfinished progress; Back revisits the prior step. Manual copy returns to a compact handoff. Three help disclosures separate installation, connection and playlist-saving problems. Prior notice dismissal means “later”, not successful setup.
+
+The Manual and existing controls remain available. Integration tests cover clipboard denial, dismissal, reload, Back, confirmation isolation and restoration, help, and all AI/service pairs. Fresh browser and native visual QA remain required before release; this entry records design alignment, not visual certification.
+
+
+## Clerk confirmation stamp
+
+Explicit “My AI confirmed — I’m ready” earns one 280ms deep-red ALL SET ink impression in the compact pairing summary. The always-visible stamp makes a short downward press and settles at the existing −4° print angle. The summary, focus handoff and confirmation save happen immediately; there is no timed delay, replay on reload or celebration when restoring a previously confirmed pairing. Reduced motion shows the static finished stamp. It remains a listener confirmation, not a claim of verified service access.
+## Recording hi-fi switch
+
+Skip rough recordings uses a compact 112×48px petrol hardware key with a mustard sliding tab, persistent OFF/ON markings and an underlined ON state. The existing native checkbox owns state, keyboard interaction, preferences and prompt generation. The full descriptive row is tappable. One 180ms tab translation confirms the change; reduced motion keeps the instantaneous position and label change. Forced colors restores the native checkbox. Poster lettering and thin ink rules match the tempo control and Crate Atlas. The preference still welcomes clean older recordings and adds no era cutoff.

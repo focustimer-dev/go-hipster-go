@@ -71,6 +71,16 @@ def bundle(destination=None):
     assert text.count(needle) == 1
     text = text.replace(needle, 'function render(){renderLabWorkspace();renderLabInspiration();')
     text = text.replace('firstAiChoice.getBoundingClientRect().bottom>0', 'firstAiChoice.getBoundingClientRect().bottom>56')
+    # Setup uses the same native clipboard and external handoff as GO, without sending.
+    setup_script = destination / 'assets/first-crate.js'
+    if setup_script.exists():
+        setup_text = setup_script.read_text()
+        setup_text = setup_text.replace('async function copy(text){', 'async function copy(text){if(window.HipsterLab)return window.HipsterLab.copy(text);', 1)
+        setup_text = setup_text.replace("root.addEventListener('click',async e=>{", """root.addEventListener('click',async e=>{
+ const external=e.target.closest('a.primary[href]');
+ if(external&&window.HipsterLab){e.preventDefault();window.HipsterLab.open(aiKeys[$('ai').value],setup());return}
+""", 1)
+        setup_script.write_text(setup_text)
     script.write_text(text)
     return destination
 

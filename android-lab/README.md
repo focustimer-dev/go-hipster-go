@@ -283,4 +283,9 @@ Preferences includes **Skip rough recordings**, using the existing checkbox row.
 
 ## Lab 0.9.5 — recording-quality policy alignment
 
-Aligns the bundled app snapshot with skill 3.11.1 and the compact `Recording preference: Skip rough recordings.` app flag. Recording-quality rules live in the separately installed skill's shared reference; the APK does not install that skill. Saved toggle and URL behavior are unchanged. The eight locked portraits retain printed petrol labels, vermilion stock, matching Desire hearts and Funk pink with occluded laser rays. Version code 14; use the existing signer to update in place.
+Bundles skill 3.11.1 source and the compact `Recording preference: Skip rough recordings.` app flag. Recording-quality rules live in the shared skill reference; saved toggle and URL behavior are unchanged. The eight locked portraits retain printed petrol labels, vermilion stock, matching Desire hearts and Funk pink with occluded laser rays. Version code 14; use the existing signer to update in place.
+
+
+## Lab 0.9.6 — first-crate setup and tactile controls
+
+Bundles production PWA commit 457ccbe1d9acdf022b15f7395b3592af4ff6b6c6: first-crate onboarding, per-pair listener confirmations, focused recovery, the hi-fi recording switch and one-shot clerk stamp. Setup copying uses the native clipboard; its supported AI links use the existing native handoff without sending. Existing preferences, saved requests and inspiration remain device-local. Package ID and signer are unchanged; version code 15 updates Lab 0.9.5 in place.

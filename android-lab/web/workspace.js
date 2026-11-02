@@ -52,7 +52,7 @@ function initLabWorkspace(){
  const services=doc.querySelector('.service-counter'),route=doc.getElementById('routeStatus'),slot=doc.getElementById('labServicePreferences');
  if(services&&slot){slot.append(services);if(route)slot.append(route);doc.getElementById('servicesHeading').textContent='AI & MUSIC';doc.getElementById('aiLabel').textContent='AI ASSISTANT';doc.getElementById('musicLabel').textContent='MUSIC SERVICE'}
  const recording=doc.querySelector('.recording-preference'),recordingSlot=doc.getElementById('labRecordingPreferences');
- if(recording&&recordingSlot){recording.className='lab-choice lab-toggle recording-preference';recordingSlot.append(recording)}
+ if(recording&&recordingSlot){recording.classList.add('lab-choice','lab-toggle');recordingSlot.append(recording)}
  const trail=doc.querySelector('.poster-go-trail-steps>.poster-go-trail-word:last-child');if(trail)trail.textContent='CONTINUE IN YOUR AI';
  body.classList.add('lab-workspace');body.dataset.labScreen='jukebox';doc.querySelectorAll('.topnav').forEach(nav=>nav.hidden=true);
  const heading=doc.querySelector('.receipt-heading');if(heading){const label=doc.createElement('span');while(heading.firstChild)label.appendChild(heading.firstChild);const b=doc.createElement('button');b.type='button';b.className='lab-text-button lab-save-button';b.dataset.labAction='save';b.textContent='SAVE REQUEST';heading.append(label,b)}

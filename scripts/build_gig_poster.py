@@ -73,6 +73,17 @@ s=s.replace('class="setup-crate-record" src=','class="setup-crate-record" loadin
 s=s.replace('/editions/gig-poster/assets/setup-crate-record.png','/editions/gig-poster/assets/setup-crate-record-480.webp',1)
 s=s.replace('setup-crate-record-480.webp" width="1292" height="1196"','setup-crate-record-480.webp" width="480" height="444"',1)
 
+# A native checkbox remains the source of truth for the hi-fi recording switch.
+s=s.replace('<label class="recording-preference" for="skipRough"><span>Skip rough recordings<small id="recordingHelp">Avoid heavy hiss, crackle and muffled archival audio. Clean older recordings welcome.</small></span><input type="checkbox" id="skipRough" aria-describedby="recordingHelp"></label>',
+    '<label class="recording-preference recording-hifi" for="skipRough"><span class="recording-copy"><strong>SKIP ROUGH RECORDINGS</strong><small id="recordingHelp">Less hiss, crackle and muffled audio. Clean older recordings welcome.</small></span><span class="recording-switch"><input type="checkbox" id="skipRough" aria-describedby="recordingHelp"><span class="recording-rocker" aria-hidden="true"><span class="recording-off">OFF</span><span class="recording-on">ON</span><span class="recording-tab"></span></span></span></label>')
+
+# Reviewed first-crate onboarding replaces only the poster's legacy invitation.
+start=s.index('    <aside class="welcome-setup')
+end=s.index('    </aside>',start)+len('    </aside>')
+s=s[:start]+(art/'first-crate.html').read_text().rstrip()+s[end:]
+s=s.replace('</head>','<link rel="stylesheet" href="/assets/first-crate.css">\n</head>')
+s=s.replace('<script defer src="/assets/app.js"></script>','<script defer src="/assets/app.js"></script>\n<script defer src="/assets/first-crate.js"></script>')
+
 out=ROOT/'launcher/editions/gig-poster/index.html';out.parent.mkdir(parents=True,exist_ok=True);out.write_text(s)
 
 # Manual edition inherits current setup behavior and all recovery/download content.
