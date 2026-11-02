@@ -25,6 +25,7 @@ const root=path.resolve(__dirname,'../android-lab/app/src/main/assets/site');
   assert(calls.some(c=>c[0]==='open'&&c[1]==='chatgpt'&&c[2].includes('Confirm whether the skill')),'Setup uses native AI handoff');
   click('#firstCrateSetup [data-action="ready"]');
   assert(w.document.querySelector('#fc-current-setup').textContent.includes('ALL SET'));
+  calls.length=0; // Keep existing GO assertions independent of the setup handoff above.
   assert.equal(w.document.querySelector('#labJukebox .service-counter'),null);
   assert(w.document.querySelector('#labPreferences [data-ai="chatgpt"]'));
   assert.equal(w.document.querySelector('.poster-go-trail-word:last-child').textContent,'CONTINUE IN YOUR AI');
