@@ -223,3 +223,8 @@ Skip rough recordings uses a compact 112×48px petrol hardware key with a mustar
 ## Infrequent listening preference placement
 
 Recording quality now sits inside a native, collapsed-by-default Listening preferences disclosure after the atlas and before shuffle/request controls. Moods, tempo and region exploration keep priority. The existing hi-fi switch, saved state and prompt behavior are unchanged. A small SKIP ROUGH: ON annotation remains visible on the closed summary when the preference is enabled. The atlas geometry and footprint remain unchanged.
+
+
+## Selection consistency audit corrections
+
+Other AI is an explicit copy-and-open-manually path, with OTHER receipt shorthand and generic installation guidance. It never promises a native app launch. Any tempo keeps the range interactive but hides its parked thumb and softens the track in both Chromium and Firefox; the selected Any key and heading identify the bypass. Compact recording summaries use SKIP ROUGH: ON. +ART’s helper says Playlist cover. The existing red-dot +ART and TRY HARD selection treatment is explicitly approved and remains unchanged.

@@ -881,3 +881,12 @@ body.gig-poster .listening-preferences .recording-active{display:none;font:700 1
 body.gig-poster .listening-preferences:has(#skipRough:checked) .recording-active{display:inline;text-decoration:underline;text-underline-offset:3px}
 body.gig-poster .listening-preferences .recording-hifi{border:0;margin:0;padding:8px 0 16px;min-height:72px}
 body.gig-poster .listening-preferences .recording-hifi strong{font-size:20px}
+
+
+/* Any bypasses tempo; it must not appear to select the middle stop. */
+body.gig-poster .tempo-control[data-tempo=any]::before{content:'SET THE TEMPO · ANY'}
+body.gig-poster .tempo-control[data-tempo=any] #tempoSlider::-webkit-slider-thumb{opacity:0}
+body.gig-poster .tempo-control[data-tempo=any] #tempoSlider::-moz-range-thumb{opacity:0}
+body.gig-poster .tempo-control[data-tempo=any] #tempoSlider::-webkit-slider-runnable-track{opacity:.7}
+body.gig-poster .tempo-control[data-tempo=any] #tempoSlider::-moz-range-track{opacity:.7}
+body.gig-poster .tempo-control[data-tempo=any] #tempoSlider:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
