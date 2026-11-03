@@ -78,9 +78,23 @@ const roots=process.argv.slice(2);if(roots.length!==2)throw Error('Provide basel
    await page.screenshot({path:'android-lab/build/atlas-perf/'+test.label+'-'+test.round+'.png'});
    await page.locator('.crate-map-frame').scrollIntoViewIfNeeded();
    await page.evaluate(()=>document.querySelector('[data-crate-continent="europe"]').click());await page.waitForTimeout(80);
+   const retarget=await page.evaluate(()=>new Promise(resolve=>{
+    const map=document.querySelector('#crateAtlasMap'),before={rect:map.getBoundingClientRect().toJSON(),viewBox:map.getAttribute('viewBox')};
+    document.querySelector('[data-crate-continent="europe"]').click();
+    requestAnimationFrame(()=>resolve({before,rect:map.getBoundingClientRect().toJSON(),viewBox:map.getAttribute('viewBox')}));
+   }));
+   if(test.label==='candidate'){
+    assert.equal(retarget.viewBox,retarget.before.viewBox,'Retarget must not commit the SVG between destinations');
+    for(const key of ['x','y','width','height'])assert(Math.abs(retarget.rect[key]-retarget.before.rect[key])<.1,'Retarget starts at visible camera '+key);
+   }
    const pressBox=await page.locator('.crate-map-frame').boundingBox();
+   await page.evaluate(()=>document.querySelector('#crateAtlasMap').addEventListener('touchstart',()=>{const map=document.querySelector('#crateAtlasMap');window.pressBefore={rect:map.getBoundingClientRect().toJSON(),viewBox:map.getAttribute('viewBox')}},{capture:true,once:true}));
    await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:pressBox.x+pressBox.width/2,y:pressBox.y+pressBox.height/2}]});
-   assert.equal(await page.locator('#crateAtlasMap').evaluate(el=>el.style.transform),'','Pressing during zoom commits the visual camera before hit testing');
+   const interrupted=await page.evaluate(()=>({before:pressBefore,after:document.querySelector('#crateAtlasMap').getBoundingClientRect().toJSON(),viewBox:document.querySelector('#crateAtlasMap').getAttribute('viewBox')}));
+   if(test.label==='candidate'){
+    assert.equal(interrupted.viewBox,interrupted.before.viewBox,'Press must not force an SVG camera commit');
+    for(const key of ['x','y','width','height'])assert(Math.abs(interrupted.after[key]-interrupted.before.rect[key])<.1,'Press preserves visual camera '+key);
+   }
    await cdp.send('Input.dispatchTouchEvent',{type:'touchCancel',touchPoints:[]});await page.waitForTimeout(350);
    assert.equal(await page.locator('#crateAtlasMap').evaluate(el=>el.style.transform),'','Interrupted zoom leaves no stale transform');
   }finally{await context.close();server.close()}
