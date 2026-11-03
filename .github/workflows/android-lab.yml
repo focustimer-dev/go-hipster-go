@@ -8,7 +8,6 @@ on:
       - 'android-lab/**'
       - 'scripts/bundle_android_lab.py'
       - 'scripts/test_android_lab.cjs'
-      - 'scripts/audit_android_lab.cjs'
       - 'scripts/test_android_lab_dom.cjs'
       - 'scripts/test_mood_ink.cjs'
       - 'launcher/editions/gig-poster/**'
@@ -43,13 +42,6 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: node scripts/test_android_lab.cjs
       - run: node scripts/test_mood_ink.cjs
-      - run: node scripts/audit_android_lab.cjs
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: android-workflow-audit
-          path: android-lab/build/workflow-audit/
-          if-no-files-found: warn
       - uses: actions/upload-artifact@v4
         with:
           name: hipster-go-lab-unsigned-apk

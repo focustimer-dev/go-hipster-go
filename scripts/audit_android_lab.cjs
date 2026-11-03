@@ -52,7 +52,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    if(!await page.locator('#firstCrateSetup [data-action="choose"]').first().isVisible()){
     results.push({profile:profile.name,state:'setup-blocked',finding:'First-run setup controls exist but are not visible in the shipped interface.'});
     // Diagnostic only: inspect downstream setup without claiming the shipped UI works.
-    await page.addStyleTag({content:'#firstCrateSetup .ticket{display:block !important}'});
+    await page.addStyleTag({content:'#firstCrateSetup .ticket:not([hidden]){display:block !important}'});
     setupDiagnostic=true;
    }
    for(const action of ['choose','install','check'])await page.locator('#firstCrateSetup [data-action="'+action+'"]').first().click();
