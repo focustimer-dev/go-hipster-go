@@ -9,7 +9,7 @@ const roots=process.argv.slice(2);if(roots.length!==2)throw Error('Provide basel
   const root=path.resolve(rootArg),server=http.createServer((req,res)=>{let name=new URL(req.url,'http://local').pathname;if(name.endsWith('/'))name+='index.html';const file=path.resolve(root,'.'+name);if(!file.startsWith(root+path.sep)){res.writeHead(403);return res.end()}
    try{res.setHeader('Content-Type',({'.js':'application/javascript','.css':'text/css','.svg':'image/svg+xml','.html':'text/html','.png':'image/png','.webp':'image/webp','.woff':'font/woff'})[path.extname(file)]||'application/octet-stream');res.end(fs.readFileSync(file))}catch{res.writeHead(404);res.end()}});
   await new Promise(r=>server.listen(0,'127.0.0.1',r));
-  const context=await browser.newContext({viewport:{width:412,height:915},isMobile:true,hasTouch:true,reducedMotion:'no-preference'}),page=await context.newPage(),cdp=await context.newCDPSession(page);
+  const context=await browser.newContext({viewport:{width:412,height:915},isMobile:true,hasTouch:true,deviceScaleFactor:3,reducedMotion:'no-preference'}),page=await context.newPage(),cdp=await context.newCDPSession(page);
   try{
    await cdp.send('Emulation.setCPUThrottlingRate',{rate:8});await cdp.send('Performance.enable');
    await page.addInitScript(()=>{window.HipsterLab={state:()=>'{"saved":[]}',inspiration:()=>'',copy:()=>true};window.perfLongTasks=[];new PerformanceObserver(list=>perfLongTasks.push(...list.getEntries().map(e=>e.duration))).observe({type:'longtask',buffered:true});});
