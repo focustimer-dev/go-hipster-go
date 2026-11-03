@@ -30,5 +30,6 @@ const roots=process.argv.slice(2);if(roots.length!==2)throw Error('Provide basel
   }finally{await context.close();server.close()}
  }}finally{await browser.close()}
  fs.writeFileSync('android-lab/build/atlas-perf/results.json',JSON.stringify(reports,null,2));console.log(JSON.stringify(reports,null,2));
+ assert(reports[1].mutations.tabindex<reports[0].mutations.tabindex/2,'Hotspot attributes must not be rewritten every frame');
  assert.equal(reports[1].finalViewBox,reports[0].finalViewBox,'Camera destination must be preserved');
 })().catch(e=>{console.error(e);process.exitCode=1});

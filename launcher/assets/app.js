@@ -171,8 +171,11 @@ function atlasDetailsForView(map,view){
  const threshold=map.getAttribute("data-details")==="true"?2.05:2.3;
  if(720/width>=1.5)warmAtlasArtwork();
  const visible=720/width>=threshold;
- map.setAttribute("data-details",String(visible));
- map._atlasSecretsSync?.(visible);
+ // Crossing the reveal threshold is a state change, not per-frame work.
+ if(map.getAttribute("data-details")!==String(visible)){
+  map.setAttribute("data-details",String(visible));
+  map._atlasSecretsSync?.(visible);
+ }
 }
 // Robinson rays follow the geography camera but remain underneath its
 // opaque ocean. The ocean masks rays at the CURRENT map edge while panning.
@@ -188,6 +191,14 @@ if(atlasRadialField&&atlasRadialMap){
   new MutationObserver(syncRadialBackdrop).observe(atlasRadialMap,{attributes:true,attributeFilter:["viewBox"]});
  }
  syncRadialBackdrop();
+ // Decode the existing artwork before the first zoom, once the atlas is near
+ // the screen. Keep it deferred on launch and retain pointer/zoom fallbacks.
+ if(typeof IntersectionObserver==='function'){
+  const artworkObserver=new IntersectionObserver(entries=>{
+   if(entries.some(entry=>entry.isIntersecting)){warmAtlasArtwork();artworkObserver.disconnect()}
+  },{rootMargin:'240px'});
+  artworkObserver.observe(atlasRadialMap);
+ }
 }
 const atlasNames={"americas-north":"N. America","americas-south":"S. America","europe":"Europe","africa":"Africa","asia":"Asia","oceania":"Oceania","antarctica":"Antarctica"};
 let atlasFocus=null, atlasZoomFrame=0;
@@ -1142,7 +1153,10 @@ function installAtlasSecrets(){
  });
  // The original atlas already computes data-details as its camera zooms.
  // Keep the optional art targets out of the pointer/keyboard path until then.
+ let lastSecretsVisible=null;
  map._atlasSecretsSync=visible=>{
+  if(visible===lastSecretsVisible)return;
+  lastSecretsVisible=visible;
   layer.setAttribute("aria-hidden",String(!visible));
   for(const target of hotspots)target.setAttribute("tabindex",visible?"0":"-1");
   if(!visible&&!card.hidden)closeCard();
