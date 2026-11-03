@@ -17,6 +17,10 @@ try{
   assert(stateReads<=1,selector+' reads native state at most once');assert.equal(inspirationReads,0);
   assert.equal(map.getAttribute('viewBox'),camera);
  }
+ const pace=w.document.querySelector('#tempoSlider');pace.value='4';pace.dispatchEvent(new w.Event('input'));
+ const paceObserver=new w.MutationObserver(()=>{});paceObserver.observe(w.document.body,{subtree:true,attributes:true,childList:true,characterData:true});
+ stateReads=0;for(let i=0;i<8;i++)pace.dispatchEvent(new w.Event('input'));
+ assert.equal(paceObserver.takeRecords().length,0,'Repeated pace notch does not redraw the page');assert.equal(stateReads,0);paceObserver.disconnect();
  const unrelated=new w.MutationObserver(()=>{});
  for(const selector of ['.mood-grid','#tempoControl','#labServicePreferences','#labSetupPreferences']){
   const node=w.document.querySelector(selector);if(node)unrelated.observe(node,{attributes:true,childList:true,characterData:true,subtree:true});
