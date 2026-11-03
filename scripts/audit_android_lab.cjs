@@ -62,7 +62,11 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    await page.locator('[data-lab-tab="crate"]').click();await capture('saved-crate');
    await page.locator('[data-lab-tab="manual"]').click();await capture('manual');
    await page.locator('[data-lab-action="services"]').click();await capture('preferences');
-   await page.locator('[data-ai="other"]').click();await page.locator('[data-lab-action="close-preferences"]').click();
+   await page.locator('[data-lab-action="close-preferences"]').click();
+   await page.locator('[data-lab-tab="jukebox"]').click();
+   await page.locator('#fc-current-setup [data-action="choose"]').click();
+   await page.locator('#fc-ai').selectOption('Other');
+   await page.locator('#firstCrateSetup [data-action="pause"]').click();
    await page.locator('[data-lab-tab="jukebox"]').click();await page.locator('#goButton').click();
    await page.waitForFunction(()=>document.querySelector('#handoffTitle').textContent.includes('MANUALLY'));
    await capture('other-ai');
