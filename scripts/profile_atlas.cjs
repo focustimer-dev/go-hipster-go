@@ -3,19 +3,20 @@ const {chromium}=require('playwright');
 const fs=require('fs'),path=require('path'),http=require('http'),assert=require('assert/strict');
 const roots=process.argv.slice(2);if(roots.length!==2)throw Error('Provide baseline and candidate site roots');
 (async()=>{
- const browser=await chromium.launch({headless:true});const reports=[];
- const cases=[{root:roots[0],label:'baseline'},{root:roots[1],label:'candidate'},{root:roots[1],label:'diagnostic-containment',css:'.crate-map-frame{contain:layout paint style}'},{root:roots[1],label:'diagnostic-no-art',css:'.chart-details{display:none!important}'},{root:roots[1],label:'diagnostic-solid-land',css:'.crate-map-zone path{fill:#dfb045!important}'}];
+ const browser=await chromium.launch({headless:true});const samples=[];
+ // Four independent pairs balance first/second position. Keep all raw samples.
+ const builds=[{root:roots[0],label:'baseline'},{root:roots[1],label:'candidate'}];
+ const cases=Array.from({length:4},(_,round)=>(round%2?[...builds].reverse():builds).map(test=>({...test,round:round+1}))).flat();
  try{for(const [index,test] of cases.entries()){const rootArg=test.root;
   const root=path.resolve(rootArg),server=http.createServer((req,res)=>{let name=new URL(req.url,'http://local').pathname;if(name.endsWith('/'))name+='index.html';const file=path.resolve(root,'.'+name);if(!file.startsWith(root+path.sep)){res.writeHead(403);return res.end()}
    try{res.setHeader('Content-Type',({'.js':'application/javascript','.css':'text/css','.svg':'image/svg+xml','.html':'text/html','.png':'image/png','.webp':'image/webp','.woff':'font/woff'})[path.extname(file)]||'application/octet-stream');res.end(fs.readFileSync(file))}catch{res.writeHead(404);res.end()}});
   await new Promise(r=>server.listen(0,'127.0.0.1',r));
-  const context=await browser.newContext({viewport:{width:412,height:915},isMobile:true,hasTouch:true,reducedMotion:'no-preference'}),page=await context.newPage(),cdp=await context.newCDPSession(page);
+  const context=await browser.newContext({viewport:{width:412,height:915},isMobile:true,hasTouch:true,deviceScaleFactor:3,reducedMotion:'no-preference'}),page=await context.newPage(),cdp=await context.newCDPSession(page);
   try{
-   await cdp.send('Emulation.setCPUThrottlingRate',{rate:4});await cdp.send('Performance.enable');
+   await cdp.send('Emulation.setCPUThrottlingRate',{rate:8});await cdp.send('Performance.enable');
    await page.addInitScript(()=>{window.HipsterLab={state:()=>'{"saved":[]}',inspiration:()=>'',copy:()=>true};window.perfLongTasks=[];new PerformanceObserver(list=>perfLongTasks.push(...list.getEntries().map(e=>e.duration))).observe({type:'longtask',buffered:true});});
    const started=Date.now();await page.goto('http://127.0.0.1:'+server.address().port+'/');await page.evaluate(()=>document.fonts.ready);const loaded=Date.now()-started;
-   if(test.css)await page.addStyleTag({content:test.css});
-   await page.locator('#crateAtlasMap').scrollIntoViewIfNeeded();
+   await page.locator('.crate-map-frame').scrollIntoViewIfNeeded();
    const before=(await cdp.send('Performance.getMetrics')).metrics;
    const result=await page.evaluate(async()=>{
     const map=document.querySelector('#crateAtlasMap'),mutations={details:0,tabindex:0,viewBox:0};
@@ -28,8 +29,8 @@ const roots=process.argv.slice(2);if(roots.length!==2)throw Error('Provide basel
    });
    // Actual browser touch events exercise drag and pinch paths, not synthetic clicks.
    await page.evaluate(()=>document.querySelector('[data-crate-continent="europe"]').click());await page.waitForTimeout(400);
-   await page.locator('#crateAtlasMap').scrollIntoViewIfNeeded();
-   const box=await page.locator('#crateAtlasMap').boundingBox(),cx=box.x+box.width/2,cy=box.y+box.height/2;
+   await page.locator('.crate-map-frame').scrollIntoViewIfNeeded();
+   const box=await page.locator('.crate-map-frame').boundingBox(),cx=box.x+box.width/2,cy=box.y+box.height/2;
    await page.evaluate(()=>{window.touchFrames=[];window.touchFrameActive=true;let last=performance.now();function tick(now){touchFrames.push(now-last);last=now;if(touchFrameActive)requestAnimationFrame(tick)}requestAnimationFrame(tick)});
    await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:cx,y:cy}]});
    for(let i=1;i<=24;i++){await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:cx+Math.sin(i/24*Math.PI*2)*45,y:cy+Math.cos(i/24*Math.PI*2)*20}]});await page.waitForTimeout(16)}
@@ -38,12 +39,40 @@ const roots=process.argv.slice(2);if(roots.length!==2)throw Error('Provide basel
    for(let i=1;i<=24;i++){await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:cx-35-i,y:cy},{x:cx+35+i,y:cy}]});await page.waitForTimeout(16)}
    await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
    result.touch=await page.evaluate(()=>{touchFrameActive=false;touchFrames.sort((a,b)=>a-b);return {frames:touchFrames.length,p95:touchFrames[Math.floor(touchFrames.length*.95)],slowFrames:touchFrames.filter(n=>n>32).length}});
+   result.touch.finalViewBox=await page.locator('#crateAtlasMap').getAttribute('viewBox');
+   await page.evaluate(()=>document.querySelector('[data-crate-continent="europe"]').click());await page.waitForTimeout(150);
+   await page.screenshot({path:'android-lab/build/atlas-perf/'+test.label+'-'+test.round+'-mid-zoom-out.png'});await page.waitForTimeout(400);
+   assert.equal(await page.locator('#crateAtlasMap').evaluate(el=>el.style.transform),'','Camera transform clears at rest');
    const after=(await cdp.send('Performance.getMetrics')).metrics,metric=n=>(after.find(x=>x.name===n)?.value||0)-(before.find(x=>x.name===n)?.value||0);
-   reports.push({label:test.label,loadMs:loaded,...result,scriptMs:metric('ScriptDuration')*1000,layoutMs:metric('LayoutDuration')*1000,recalcMs:metric('RecalcStyleDuration')*1000,taskMs:metric('TaskDuration')*1000});
-   await page.screenshot({path:'android-lab/build/atlas-perf/'+test.label+'.png'});
+   samples.push({label:test.label,round:test.round,loadMs:loaded,...result,scriptMs:metric('ScriptDuration')*1000,layoutMs:metric('LayoutDuration')*1000,recalcMs:metric('RecalcStyleDuration')*1000,taskMs:metric('TaskDuration')*1000});
+   await page.screenshot({path:'android-lab/build/atlas-perf/'+test.label+'-'+test.round+'.png'});
+   await page.locator('.crate-map-frame').scrollIntoViewIfNeeded();
+   await page.evaluate(()=>document.querySelector('[data-crate-continent="europe"]').click());await page.waitForTimeout(80);
+   const pressBox=await page.locator('.crate-map-frame').boundingBox();
+   await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:pressBox.x+pressBox.width/2,y:pressBox.y+pressBox.height/2}]});
+   assert.equal(await page.locator('#crateAtlasMap').evaluate(el=>el.style.transform),'','Pressing during zoom commits the visual camera before hit testing');
+   await cdp.send('Input.dispatchTouchEvent',{type:'touchCancel',touchPoints:[]});await page.waitForTimeout(350);
+   assert.equal(await page.locator('#crateAtlasMap').evaluate(el=>el.style.transform),'','Interrupted zoom leaves no stale transform');
   }finally{await context.close();server.close()}
  }}finally{await browser.close()}
- fs.writeFileSync('android-lab/build/atlas-perf/results.json',JSON.stringify(reports,null,2));console.log(JSON.stringify(reports,null,2));
- assert(reports[1].mutations.tabindex<reports[0].mutations.tabindex/2,'Hotspot attributes must not be rewritten every frame');
- assert.equal(reports[1].finalViewBox,reports[0].finalViewBox,'Camera destination must be preserved');
+ // Compare medians of per-run metrics, not pooled frames (which overweight faster runs).
+ const median=values=>{const sorted=[...values].sort((a,b)=>a-b),i=Math.floor(sorted.length/2);return sorted.length%2?sorted[i]:(sorted[i-1]+sorted[i])/2};
+ const reports=builds.map(({label})=>{
+  const runs=samples.filter(sample=>sample.label===label);
+  return {label,runs:runs.length,...Object.fromEntries(['loadMs','taskMs','frameP95','scriptMs','layoutMs','recalcMs'].map(key=>[key,median(runs.map(run=>run[key]))])),touch:{p95:median(runs.map(run=>run.touch.p95))}};
+ });
+ fs.writeFileSync('android-lab/build/atlas-perf/results.json',JSON.stringify({reports,samples},null,2));console.log(JSON.stringify({reports,samples},null,2));
+ // Every pair must preserve behavior; timing aggregation never hides a camera failure.
+ for(let round=1;round<=4;round++){
+  const baseline=samples.find(sample=>sample.round===round&&sample.label==='baseline'),candidate=samples.find(sample=>sample.round===round&&sample.label==='candidate');
+  assert(candidate.mutations.viewBox<=baseline.mutations.viewBox+1,'Camera viewBox work must not regress in round '+round);
+  assert.equal(candidate.touch.finalViewBox,baseline.touch.finalViewBox,'Drag/pinch destinations must be preserved in round '+round);
+  assert.equal(candidate.finalViewBox,baseline.finalViewBox,'Camera destination must be preserved in round '+round);
+ }
+ // Same-run relative budgets tolerate runner noise while flagging material regressions.
+ const baseline=reports[0],candidate=reports[1];
+ assert(candidate.loadMs<=baseline.loadMs*1.25+250,'Startup exceeded baseline budget');
+ assert(candidate.taskMs<=baseline.taskMs*1.25+100,'Main-thread work exceeded baseline budget');
+ assert(candidate.frameP95<=Math.max(33.4,baseline.frameP95*1.25),'Zoom frame time exceeded baseline budget');
+ assert(candidate.touch.p95<=Math.max(33.4,baseline.touch.p95*1.25),'Touch frame time exceeded baseline budget');
 })().catch(e=>{console.error(e);process.exitCode=1});

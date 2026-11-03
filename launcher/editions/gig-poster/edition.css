@@ -552,26 +552,10 @@ body.gig-poster .chart-rhumbs{fill:none;stroke:var(--ink);stroke-width:.35;opaci
 body.gig-poster .chart-edge{fill:none;stroke:var(--ink);stroke-width:.55;opacity:.4;pointer-events:none}
 body.gig-poster .chart-routes{opacity:.5;stroke-width:.85}
 
-/* One engraving family. Stable portraits preserve recognition across selection. */
-body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood .face,
-body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[aria-pressed=true] .face{
- background-image:url("/editions/gig-poster/assets/engraved-six-clerks.webp");
- background-size:300% 200%;aspect-ratio:1;filter:url(#poster-engraving-ink);
-}
-body.gig-poster .mood-grid .mood:nth-child(1) .face{background-position:0 0}
-body.gig-poster .mood-grid .mood:nth-child(2) .face{background-position:50% 0}
-body.gig-poster .mood-grid .mood:nth-child(3) .face{background-position:100% 0}
-body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[data-mood=weird] .face{background-position:0 100%}
-body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[data-mood=criminal] .face{background-position:50% 100%}
-body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[data-mood=funky] .face{background-position:100% 100%}
-
 /* Fixed chart furniture stays registered while the geography pans beneath it. */
 body.gig-poster .crate-map-frame{position:relative}
 body.gig-poster .chart-viewport-frame{position:absolute;inset:8px 0;width:100%;height:calc(100% - 16px);pointer-events:none;z-index:1}
-body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[data-mood=weird] .face{
- background-image:url("/editions/gig-poster/assets/weird-v18.webp");
- background-size:100% 100%;background-position:center;
-}
+
 
 /* Robinson plate: a paper-and-ink engraving, not a flat digital choropleth. */
 body.gig-poster .crate-robinson{display:block;width:100%;height:auto;aspect-ratio:720/372;background:transparent}

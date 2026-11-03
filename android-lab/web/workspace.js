@@ -27,8 +27,18 @@ function labRequestSummary(prompt){
  }).filter(Boolean);
  return labSummary([go?go[1]:'',...details].filter(Boolean).join(' · '),180);
 }
+let labSnapshot=null;
+function labRefreshState(){labSnapshot=null;return labState()}
 function labState(){
- try{const state=JSON.parse(window.HipsterLab?.state?.()||'{}');if(!state||typeof state!=='object'||Array.isArray(state))return {};if(!['open','share','browser'].includes(state.mode))state.mode='open';return state}catch(e){return {}}
+ if(labSnapshot)return labSnapshot;
+ try{
+  let state=JSON.parse(window.HipsterLab?.state?.()||'{}');
+  if(!state||typeof state!=='object'||Array.isArray(state))state={};
+  if(!['open','share','browser'].includes(state.mode))state.mode='open';
+  // Legacy bridge support is read once per snapshot, never per prompt render.
+  if(typeof state.activeInspiration!=='string')state.activeInspiration=String(window.HipsterLab?.inspiration?.()||'');
+  return labSnapshot=state;
+ }catch(e){return labSnapshot={activeInspiration:''}}
 }
 function labNavigate(next,focus=true){
  if(!['jukebox','crate','manual'].includes(next)||next===labScreen)return;
@@ -38,7 +48,6 @@ function labNavigate(next,focus=true){
  renderLabWorkspace();window.scrollTo({top:labPositions[next],behavior:'instant'});window.dispatchEvent(new Event('scroll'));
  if(focus)doc.querySelector(`[data-lab-tab="${next}"]`)?.focus({preventScroll:true});
 }
-function updateHandoff(){updatePwaHandoff();renderLabHandoff()}
 function renderLabHandoff(){
  const state=labState(),mode=state.mode||'open',oneTap=state.oneTap!==false;
  if(ai==='other'){
@@ -130,5 +139,5 @@ function initLabWorkspace(){
  });
  doc.getElementById('labPreferences').addEventListener('close',()=>{body.classList.remove('lab-modal-open');doc.querySelector('[data-lab-action="preferences"]')?.focus({preventScroll:true})});
  doc.getElementById('labPreferences').addEventListener('change',event=>{const i=event.target;if(i.name==='labHandoff')window.HipsterLab?.setPreference?.('mode',i.value);else if(i.dataset.labPref)window.HipsterLab?.setPreference?.(i.dataset.labPref,String(i.checked));renderLabWorkspace()});
- window.HipsterLabStateChanged=()=>renderLabWorkspace();window.HipsterLabBack=()=>{const d=doc.getElementById('labPreferences');if(d.open){d.close();return true}if(labScreen!=='jukebox'){labNavigate('jukebox');return true}return false};renderLabWorkspace();
+ window.HipsterLabStateChanged=()=>{labRefreshState();renderLabWorkspace();renderLabInspiration()};window.HipsterLabBack=()=>{const d=doc.getElementById('labPreferences');if(d.open){d.close();return true}if(labScreen!=='jukebox'){labNavigate('jukebox');return true}return false};renderLabWorkspace();
 }

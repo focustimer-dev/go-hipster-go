@@ -12,12 +12,14 @@ import java.util.*;
 final class SavedRequests {
     interface Replay { void open(String ai,String prompt); }
     interface TextAction { void run(String text); }
+    interface CopyAction { boolean run(String text); }
     private final Activity activity;
     private final SharedPreferences prefs;
     private final Replay replay;
-    private final TextAction copy, share;
+    private final CopyAction copy;
+    private final TextAction share;
     private final Runnable changed;
-    SavedRequests(Activity activity,SharedPreferences prefs,Replay replay,TextAction copy,TextAction share,Runnable changed) {
+    SavedRequests(Activity activity,SharedPreferences prefs,Replay replay,CopyAction copy,TextAction share,Runnable changed) {
         this.activity=activity;this.prefs=prefs;this.replay=replay;this.copy=copy;this.share=share;this.changed=changed;
     }
     private JSONArray load(){try{return new JSONArray(prefs.getString("savedRequests","[]"));}catch(Exception e){return new JSONArray();}}
@@ -56,7 +58,7 @@ final class SavedRequests {
             .setItems(choices,(d,n)->{
                 int action=SavedRequestPolicy.action(ai,n);
                 if(action==0)replay.open(ai,prompt);
-                else if(action==1){copy.run(prompt);Toast.makeText(activity,SavedRequestPolicy.isManual(ai)?"Saved request copied. Open your AI manually, paste and send.":"Saved request copied.",Toast.LENGTH_SHORT).show();}
+                else if(action==1){boolean ok=copy.run(prompt);Toast.makeText(activity,!ok?"Clipboard unavailable. View the exact request to copy it manually.":SavedRequestPolicy.isManual(ai)?"Saved request copied. Open your AI manually, paste and send.":"Saved request copied.",Toast.LENGTH_LONG).show();}
                 else if(action==2)share.run(prompt);
                 else new AlertDialog.Builder(activity).setTitle("Delete saved request?")
                     .setMessage("Remove ‘"+entry.optString("name")+"’ from this device?")
