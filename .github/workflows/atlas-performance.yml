@@ -1,0 +1,43 @@
+name: Atlas performance comparison
+on:
+  pull_request:
+    paths:
+      - 'launcher/**'
+      - 'android-lab/web/**'
+      - 'scripts/bundle_android_lab.py'
+      - 'scripts/atlas_navigation.py'
+      - 'scripts/robinson_atlas.py'
+      - 'scripts/build_gig_poster.py'
+      - 'scripts/profile_atlas.cjs'
+      - 'android-lab/release-baseline.json'
+      - '.github/workflows/atlas-performance.yml'
+permissions:
+  contents: read
+concurrency:
+  group: atlas-performance-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+jobs:
+  profile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save --package-lock=false playwright@1.64.1
+      - run: npx playwright install --with-deps chromium
+      - run: |
+          baseline=$(python -c 'import json,re; s=json.load(open("android-lab/release-baseline.json"))["comparison_commit"]; assert re.fullmatch("[0-9a-f]{40}",s); print(s)')
+          git worktree add --detach /tmp/atlas-baseline "$baseline"
+          python /tmp/atlas-baseline/scripts/bundle_android_lab.py
+          python scripts/bundle_android_lab.py
+          mkdir -p android-lab/build/atlas-perf
+          node scripts/profile_atlas.cjs /tmp/atlas-baseline/android-lab/app/src/main/assets/site android-lab/app/src/main/assets/site
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: atlas-performance
+          path: android-lab/build/atlas-perf/

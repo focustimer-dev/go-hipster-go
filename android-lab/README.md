@@ -1,23 +1,29 @@
 # Hipster GO Lab
 
-A separate native Android experiment. Package `work.samelling.hipstergo.lab`,
-version `0.9.0`, Android 7+. It installs alongside the production APK and PWA.
+The canonical application baseline for Google Play release preparation is the
+**Lab 0.9.9** phone-test candidate (version code 18), built from the delivered Lab 0.9.7 baseline, package
+`work.samelling.hipstergo.lab`, Android 7+. Preserve its existing workspace and
+native handoffs while improving quality under the feature freeze. The package
+still installs alongside the older production APK and PWA; selecting this
+baseline does not publish it or settle the eventual production package name.
+
+The versioned sections below record historical iterations, not current test
+results. Check `android-lab/app/build.gradle` and the exact build's CI evidence
+before distributing a new artifact. The separately installed curation skill
+has its own version and update process.
 
 ## Isolation
 
-The release bundles a frozen copy of `launcher/`. No production deployment,
+The release bundles the explicit runtime subset of `launcher/` listed in `web/runtime-assets.json`. No production deployment,
 Worker changes, API credentials, or production data are required. Lab preferences
 and WebView storage belong to this separate app. UI updates require a new Lab APK.
-The build script only modifies the generated, ignored asset copy. No interface
-or portrait changes are applied to the canonical launcher sources.
+The build script only modifies the generated, ignored asset copy. The bundle uses named platform extension slots in the canonical sources; packaging never rewrites their implementation statements.
 
 The native bridge is available only to packaged pages on a synthetic local HTTPS
 origin. External navigation opens outside the WebView, external resource requests
 are blocked, frames and network connections are blocked, and file/content access
-is disabled. Native code now requests INTERNET permission only to check public
-GitHub release metadata. The WebView still cannot load external resources or
-make network connections. No AI login happens in Lab. Native prompt storage is
-limited to requests you explicitly save on the device.
+is disabled. Native code uses INTERNET permission for public GitHub release metadata and bounded public HTTPS inspiration previews. The WebView still cannot load external resources or
+make network connections. No AI login happens in Lab. Native storage keeps up to ten explicitly saved requests and the last three accepted inspirations on the device.
 
 ## Native handoffs
 
@@ -33,7 +39,7 @@ limited to requests you explicitly save on the device.
 - **Launcher shortcuts:** long-press the icon for Funky or Weird.
 - **Native share:** opens Android's chooser with the current prompt.
 
-Open **⋯ → Preferences** to change handoff mode and toggles. Skill selection,
+Open **Preferences** in the top workspace rail to change handoff mode and toggles. Skill selection,
 connected music apps, pasting, and sending remain controlled by the receiving AI.
 This experiment does not automate sending prompts or publishing playlists.
 
@@ -83,7 +89,7 @@ The accepted reference is stored locally and stays active until removed. A
 **FROM YOUR CRATE** card appears above GO with **Review**; **Remove** lives inside the editor. Crate also has an Inspiration section. Your region, mood and tempo choices
 are preserved. The reference replaces the generated seed in the prompt while
 active, is quoted as data, and is explicitly not an instruction or required track.
-After removing it, the ordinary seed behavior returns. Editing the reference
+After removing it, the discovery-route deck resumes on the next GO. Editing the reference
 invalidates any older copied prompt, including a copy already in progress.
 
 Lab accepts `ACTION_SEND` with `text/plain`, reads text/subject and a safe textual
@@ -267,9 +273,15 @@ Version 1 sprites and source sheets remain available for regression comparison.
 
 ## Discovery routes experiment (Lab 0.8)
 
-Each explicit GO draws one stable v1 route ID from a shuffled 24-route deck. Lab stores only remaining IDs and the last 30 draws locally. It uses the whole deck before reuse, avoids the preceding family when possible, and avoids the last eight IDs after reshuffling when possible. Preview/Open/Copy again do not draw. A supplied musical reference skips random routing. The old three-part seed is omitted in Lab; the skill owns route interpretation and must be updated to 3.10.0. Unknown routes fall back honestly. Clear Android app data to reset the deck. This varies requests, not a guarantee of different recordings.
+Each explicit GO draws one stable v1 route ID from a shuffled 24-route deck. Lab stores only remaining IDs and the last 30 draws locally. It uses the whole deck before reuse, avoids the preceding family when possible, and avoids the last eight IDs after reshuffling when possible. Preview, Open and Share do not draw; pressing GO again does. Saved-request actions replay the saved text. A supplied musical reference skips random routing. The old three-part seed is omitted in Lab; the skill owns route interpretation and requires version 3.10.0 or later. Unknown routes fall back honestly. Clearing Android app data resets the deck but also deletes saved requests and preferences; it is not a normal troubleshooting step. This varies requests, not a guarantee of different recordings.
 
-Run `node scripts/test_lab_discovery_routes.cjs` for deck persistence and exhaustion checks.
+Run `node scripts/test_lab_discovery_routes.cjs` with Node for deck exhaustion,
+reload persistence, family/recent avoidance, bounded history and corrupt-state
+recovery. No npm packages are required. After generating the bundled snapshot,
+`node scripts/test_android_lab_dom.cjs` (jsdom 26) also checks that only GO draws,
+open/share preserve the route, and inspiration bypasses the deck. Both run in
+the isolated Android CI workflow. These checks do not verify musical freshness
+or substitute for an on-device handoff check.
 
 ## Lab 0.9 — refreshed production launcher
 
@@ -295,3 +307,36 @@ Bundles production PWA commit 457ccbe1d9acdf022b15f7395b3592af4ff6b6c6: first-cr
 Preferences now uses an original metal bat-handle switch for Skip rough recordings: ON above the mount, OFF below, with the lever pointing to the current state. The active label uses the same petrol selection treatment as the service buttons. The entire row remains tappable; the existing checkbox, persisted preference and curation behavior are unchanged. Keyboard focus, reduced motion and forced-color native fallback are supported.
 
 Version code 16 retains the Lab package identity and release signer for an in-place update from 0.9.6. This hardware treatment is confined to the Android workspace.
+
+
+## Lab 0.9.8 — release hardening
+
+Restores visible first-run setup, including pause/resume and completed state.
+Other AI requests can be saved locally and replayed through exact copy/share
+without claiming a native launch. The Manual version is generated from build
+metadata. Failed setup copying reveals the exact selectable check and removes
+stale text when the selected pairing changes. Secondary help links have larger
+tap targets. Discovery-route verification now runs in CI.
+
+This is a feature-frozen phone-test candidate, not a Google Play publication.
+Install over Lab 0.9.7 with the original signer to preserve the same application
+data. Do not uninstall. Verify actual phone handoffs, native saved-request
+dialogs, Android Back and data retention before calling the candidate accepted.
+
+
+## Lab 0.9.9 — prompt-first setup and inspiration workflow
+
+Installation starts with a copyable setup prompt for ChatGPT, Gemini, Claude
+and Other AI. Upload/package instructions are a fallback, with Claude Skills
+and Plugins kept distinct. After a successful setup-request or connection-check
+copy, supported native AI targets offer Yes, share / No, keep copied. Yes uses
+Android text sharing; receiving-app support determines prefilling, and sending
+remains the user's action. Declining keeps the copied text and changes no setup
+confirmation. Unspecified Other AI remains manual.
+
+An active inspiration reference stays compact above the music choices. Accepting
+a reference returns to Jukebox; Shape this crate moves to moods without changing
+the reference or existing choices. A reminder near GO confirms inclusion.
+
+Sam confirmed all previous data survived the 0.9.8 update. This is user-reported
+update-retention evidence for 0.9.8; 0.9.9 phone acceptance remains pending.
