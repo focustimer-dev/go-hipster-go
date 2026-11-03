@@ -19,7 +19,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
  try{
   browser=await chromium.launch({headless:true});
   for(const profile of [{name:'phone',width:412,height:915},{name:'narrow',width:320,height:740},{name:'large-text',width:412,height:915,scale:2},{name:'landscape',width:915,height:412}]){
-   const context=await browser.newContext({viewport:{width:profile.width,height:profile.height},isMobile:true,hasTouch:true,reducedMotion:'reduce'});
+   const context=await browser.newContext({viewport:{width:profile.width,height:profile.height},isMobile:true,hasTouch:true,reducedMotion:profile.name==='phone'?'no-preference':'reduce'});
    const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
    await page.addInitScript(()=>{
     window.auditCalls=[];window.auditCopyOK=true;window.auditReference='';
@@ -74,8 +74,10 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    assert(!await page.locator('#fc-ticket').isVisible(),'Completed setup stays hidden');
    await capture('jukebox');
    await page.locator('[data-lab-tab="crate"]').click();
-   await page.evaluate(()=>{auditReference='A shared song reference — keep this while choosing the sound';window.HipsterLabRefresh()});
+   await page.evaluate(()=>{auditReference='Harlem Prom Night 1986';window.HipsterLabRefresh()});
    assert(await page.locator('#labJukebox').isVisible(),'Accepted inspiration returns to the shaping workspace');
+   await page.locator('#labInspiration').evaluate(async el=>{await Promise.all(el.getAnimations().map(animation=>animation.finished.catch(()=>{})))});
+   assert.equal(await page.locator('#labInspiration').evaluate(el=>getComputedStyle(el).animationName),profile.name==='phone'?'lab-sleeve-in':'none');
    await capture('inspiration-guidance');
    await page.locator('[data-lab-tab="crate"]').click();
    await page.locator('#labCrateContinue').click();
