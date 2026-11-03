@@ -9,6 +9,7 @@ on:
       - 'scripts/bundle_android_lab.py'
       - 'scripts/test_android_lab.cjs'
       - 'scripts/test_android_lab_dom.cjs'
+      - 'scripts/test_lab_discovery_routes.cjs'
       - 'scripts/test_mood_ink.cjs'
       - 'launcher/editions/gig-poster/**'
       - '.github/workflows/android-lab.yml'
@@ -38,6 +39,7 @@ jobs:
         with:
           node-version: '22'
       - run: npm install --no-save --package-lock=false playwright jsdom@26
+      - run: node scripts/test_lab_discovery_routes.cjs
       - run: node scripts/test_android_lab_dom.cjs
       - run: npx playwright install --with-deps chromium
       - run: node scripts/test_android_lab.cjs
