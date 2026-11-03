@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "work.samelling.hipstergo",
+      "sha256_cert_fingerprints": [
+        "2E:1C:2C:7D:0A:E0:A7:5D:AA:6D:A4:43:C0:C3:19:3F:21:2A:5A:86:E6:85:C8:85:C2:E9:34:00:09:9A:4A:F0"
+      ]
+    }
+  }
+]
