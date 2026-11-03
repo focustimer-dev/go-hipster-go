@@ -19,7 +19,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
  try{
   browser=await chromium.launch({headless:true});
   for(const profile of [{name:'phone',width:412,height:915},{name:'narrow',width:320,height:740},{name:'large-text',width:412,height:915,scale:2},{name:'landscape',width:915,height:412}]){
-   const context=await browser.newContext({viewport:{width:profile.width,height:profile.height},isMobile:true,hasTouch:true,reducedMotion:'reduce'});
+   const context=await browser.newContext({viewport:{width:profile.width,height:profile.height},isMobile:true,hasTouch:true,reducedMotion:profile.name==='phone'?'no-preference':'reduce'});
    const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
    await page.addInitScript(()=>{
     window.auditCalls=[];window.auditCopyOK=true;window.auditReference='';
@@ -34,6 +34,9 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    if(profile.scale)await page.addStyleTag({content:'html{font-size:200% !important}'});
    await page.evaluate(()=>document.fonts.ready);
    const capture=async name=>{
+    const navigation=await page.locator('.lab-rail [data-lab-tab]').evaluateAll(tabs=>tabs.map(e=>({tab:e.dataset.labTab,active:e.getAttribute('aria-current')==='page',background:getComputedStyle(e).backgroundColor,color:getComputedStyle(e).color})));
+    assert.equal(navigation.filter(t=>t.active).length,1,'Exactly one current destination');
+    for(const tab of navigation){assert.equal(tab.background,tab.active?'rgb(223, 176, 69)':'rgba(0, 0, 0, 0)','Only the current tab is highlighted: '+tab.tab);assert.equal(tab.color,tab.active?'rgb(16, 49, 53)':'rgb(223, 176, 69)')}
     await page.screenshot({path:path.join(output,profile.name+'-'+name+'.png'),fullPage:true});
     const metrics=await page.evaluate(()=>{
      const visible=e=>!!e.getClientRects().length&&getComputedStyle(e).visibility!=='hidden'&&!e.closest('[hidden]');
@@ -71,10 +74,13 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    assert(!await page.locator('#fc-ticket').isVisible(),'Completed setup stays hidden');
    await capture('jukebox');
    await page.locator('[data-lab-tab="crate"]').click();
-   await page.evaluate(()=>{auditReference='A shared song reference — keep this while choosing the sound';window.HipsterLabRefresh()});
+   await page.evaluate(()=>{auditReference='Harlem Prom Night 1986';window.HipsterLabRefresh()});
    assert(await page.locator('#labJukebox').isVisible(),'Accepted inspiration returns to the shaping workspace');
+   await page.locator('#labInspiration').evaluate(async el=>{await Promise.all(el.getAnimations().map(animation=>animation.finished.catch(()=>{})))});
+   assert.equal(await page.locator('#labInspiration').evaluate(el=>getComputedStyle(el).animationName),profile.name==='phone'?'lab-sleeve-in':'none');
    await capture('inspiration-guidance');
-   await page.locator('#labShapeInspiration').click();
+   await page.locator('[data-lab-tab="crate"]').click();
+   await page.locator('#labCrateContinue').click();
    assert.equal(await page.evaluate(()=>document.activeElement===document.querySelector('[data-mood]')),true);
    await capture('inspiration-music-choices');
    await page.locator('[data-mood="desire"]').click();await page.locator('[data-mood="weird"]').click();
@@ -85,6 +91,14 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    await capture('receipt');
    await page.locator('[data-lab-action="save"]').click();
    await page.locator('[data-lab-tab="crate"]').click();await capture('saved-crate');
+   await page.evaluate(()=>{
+    auditState.recentInspirations=[{id:'recent-preview',text:auditReference,title:'Harlem Prom Night 1986',description:'A page-supplied music reference description.'}];auditState.inspirationPreview={title:'Harlem Prom Night 1986',description:'A page-supplied music reference description.'};
+    HipsterLab.useRecentInspiration=id=>{auditReference=auditState.recentInspirations.find(e=>e.id===id).text;window.HipsterLabRefresh()};window.HipsterLabRefresh();
+   });
+   await page.locator('[data-lab-tab="jukebox"]').click();await page.locator('#labInspiration').scrollIntoViewIfNeeded();await capture('link-preview');
+   await page.locator('#labDismissInspiration').click();assert(!await page.locator('#labInspiration').isVisible());
+   await page.locator('[data-lab-tab="crate"]').click();await page.locator('[data-lab-recent="recent-preview"]').click();
+   assert(await page.locator('#labJukebox').isVisible());assert(await page.locator('#labInspiration').isVisible());
    await page.locator('[data-lab-tab="manual"]').click();await capture('manual');
    const appVersion=fs.readFileSync(path.resolve(__dirname,'../android-lab/app/build.gradle'),'utf8').match(/versionName\s+'([^']+)'/)[1];
    assert.equal(await page.locator('#labAppVersion').textContent(),appVersion);
@@ -110,6 +124,17 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    await page.waitForFunction(()=>!document.querySelector('#goButton').disabled);
    assert.equal(await page.evaluate(()=>auditCalls.some(c=>c[0]==='go')),false,'Failed clipboard cannot launch an AI');
    await capture('clipboard-failure');
+   // Relaunch a confirmed user; setup must be reachable without occupying Jukebox.
+   await page.evaluate(()=>{localStorage.setItem('hmg-ai','chatgpt');localStorage.setItem('hmg-service','spotify');localStorage.setItem('hmg-first-crate-v1',JSON.stringify({completed:true,ai:'ChatGPT',service:'Spotify',confirmedPairs:{'["ChatGPT","Spotify"]':true}}))});
+   await page.goto('http://127.0.0.1:'+server.address().port+'/?ai=chatgpt&service=spotify');if(profile.scale)await page.addStyleTag({content:'html{font-size:200% !important}'});
+   assert.equal(await page.locator('#labJukebox #firstCrateSetup').count(),0);
+   await capture('returning-jukebox');
+   await page.locator('.lab-rail [data-lab-action="preferences"]').click();
+   assert(await page.locator('#labSetupDetails').isVisible());
+   await page.locator('#labSetupDetails>summary').click();
+   assert(await page.locator('#fc-current-setup [data-action="choose"]').isVisible());
+   await capture('returning-preferences');
+   await page.evaluate(()=>window.HipsterLabBack());assert(!await page.locator('#labPreferences').evaluate(e=>e.open));
    assert.deepEqual(errors,[],profile.name+' has no uncaught JS errors');
    await context.close();
   }

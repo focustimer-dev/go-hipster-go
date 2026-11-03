@@ -1,0 +1,11 @@
+{
+  "comparison_commit": "ba7560dec8a7d8a0f7a8b1d0da06fae291981a0d",
+  "comparison_version": "0.9.15",
+  "required_device_checks": [
+    "Cold and warm launch on the target Android phone",
+    "Atlas drag, pinch, double tap, interruption and deselection",
+    "TalkBack navigation, Preferences and returning setup",
+    "Clipboard failure recovery and installed AI handoffs",
+    "Rapid inspiration replacement, removal and offline preview failure"
+  ]
+}

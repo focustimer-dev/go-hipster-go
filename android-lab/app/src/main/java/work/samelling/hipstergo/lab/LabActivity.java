@@ -137,6 +137,7 @@ public class LabActivity extends Activity {
     private void toast(String s) { Toast.makeText(this,s,Toast.LENGTH_LONG).show(); }
     private boolean validText(String text) { return text != null && !text.isEmpty() && text.length() <= 24000; }
     private String url(String ai) {
+        if(ai==null)return null;
         switch(ai) {
             case "chatgpt": return "https://chatgpt.com/";
             case "gemini": return "https://gemini.google.com/app";
@@ -144,8 +145,11 @@ public class LabActivity extends Activity {
             default: return null;
         }
     }
-    private void copy(String text) {
-        ((ClipboardManager)getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("Go, Hipster, Go! prompt",text));
+    private boolean copy(String text) {
+        try {
+            ((ClipboardManager)getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("Go, Hipster, Go! prompt",text));
+            return true;
+        } catch (RuntimeException failure) { return false; }
     }
     private void pulse() {
         if (prefs.getBoolean("haptics",true)) web.performHapticFeedback(Build.VERSION.SDK_INT >= 30 ? HapticFeedbackConstants.CONFIRM : HapticFeedbackConstants.KEYBOARD_TAP);
@@ -156,7 +160,7 @@ public class LabActivity extends Activity {
         android.content.ComponentName b = selector.resolveActivity(getPackageManager());
         if (b != null && !"android".equals(b.getPackageName())) i.setPackage(b.getPackageName());
         try { startActivity(i); }
-        catch (ActivityNotFoundException e) { toast("No browser available. Your prompt is copied."); }
+        catch (ActivityNotFoundException e) { toast("No browser available to open this link."); }
     }
     private void share(String text, String target) {
         Intent i = new Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT,text);
@@ -166,7 +170,7 @@ public class LabActivity extends Activity {
             catch (ActivityNotFoundException e) { i.setPackage(null); toast("Choose your AI from the share menu, or paste the copied prompt."); }
         }
         try { startActivity(Intent.createChooser(i,"Share your playlist request")); }
-        catch (ActivityNotFoundException e) { toast("No sharing app available. Your prompt is copied."); }
+        catch (ActivityNotFoundException e) { toast("No sharing app available. View the request in Lab to copy it manually."); }
     }
     private String aiPackage(String ai) {
         return "chatgpt".equals(ai)?"com.openai.chatgpt":"gemini".equals(ai)?"com.google.android.apps.bard":"claude".equals(ai)?"com.anthropic.claude":null;
@@ -179,10 +183,11 @@ public class LabActivity extends Activity {
             .setPositiveButton("Yes, share",(d,n)->{copy(text);share(text,aiPackage(ai));})
             .setNegativeButton("No, keep copied",null).show();
     }
-    private void handoff(String ai, String text) {
+    private void handoff(String ai, String text) { handoff(ai,text,false); }
+    private void handoff(String ai, String text, boolean alreadyCopied) {
         String destination = url(ai);
         if (destination == null || !validText(text)) return;
-        copy(text); pulse();
+        if(!alreadyCopied&&!copy(text)){toast("Clipboard unavailable. Copy the request manually before opening your AI.");return;} pulse();
         String pkg = aiPackage(ai);
         String mode = prefs.getString("mode","open");
         if ("browser".equals(mode)) { browser(destination); return; }
@@ -204,6 +209,7 @@ public class LabActivity extends Activity {
     private String workspaceState() {
         try {
             return new org.json.JSONObject().put("saved",shelf.entries())
+                .put("activeInspiration",inspiration.value()).put("recentInspirations",inspiration.recent()).put("inspirationPreview",inspiration.preview())
                 .put("mode",prefs.getString("mode","open")).put("oneTap",prefs.getBoolean("oneTap",true))
                 .put("haptics",prefs.getBoolean("haptics",true)).put("updateAvailable",updates.available())
                 .put("updateSummary",updates.summary()).put("updateDetail",updates.detail()).toString();
@@ -225,16 +231,18 @@ public class LabActivity extends Activity {
         }
         @JavascriptInterface public String inspiration(){return inspiration.value();}
         @JavascriptInterface public void reviewInspiration(){runOnUiThread(()->inspiration.review());}
+        @JavascriptInterface public void useRecentInspiration(String id){if(id!=null&&id.length()<=64)runOnUiThread(()->inspiration.reuse(id));}
         @JavascriptInterface public void clearInspiration(){runOnUiThread(()->inspiration.clear());}
         @JavascriptInterface public boolean copy(String text) {
             if(!validText(text)) return false;
-            runOnUiThread(()->LabActivity.this.copy(text));return true;
+            // ClipboardManager is a synchronous binder API; no UI-thread post or optimistic acknowledgement.
+            return LabActivity.this.copy(text);
         }
         @JavascriptInterface public void go(String ai,String text) {
             if(!validText(text)) return;
-            if("other".equals(ai)){runOnUiThread(()->{copy(text);toast("Request copied. Open your AI manually, paste and send.");});return;}
+            if("other".equals(ai)){runOnUiThread(()->toast("Request copied. Open your AI manually, paste and send."));return;}
             if(url(ai)==null) return;
-            runOnUiThread(()->{if(prefs.getBoolean("oneTap",true)) handoff(ai,text); else {copy(text);pulse();toast("Prompt copied. Tap OPEN to launch your AI.");}});
+            runOnUiThread(()->{if(prefs.getBoolean("oneTap",true)) handoff(ai,text,true); else {pulse();toast("Prompt copied. Tap OPEN to launch your AI.");}});
         }
         @JavascriptInterface public void open(String ai,String text) {
             if(url(ai)!=null && validText(text))runOnUiThread(()->handoff(ai,text));
@@ -250,5 +258,5 @@ public class LabActivity extends Activity {
     }
     @Override public void onBackPressed() { back(); }
     @Override public void onSaveInstanceState(Bundle state) { web.saveState(state);super.onSaveInstanceState(state); }
-    @Override public void onDestroy() { updates.close();web.removeJavascriptInterface("HipsterLab");web.destroy();super.onDestroy(); }
+    @Override public void onDestroy() { updates.close();inspiration.close();web.removeJavascriptInterface("HipsterLab");web.destroy();super.onDestroy(); }
 }

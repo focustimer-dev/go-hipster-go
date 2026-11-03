@@ -30,8 +30,8 @@ class LabSnapshotTests(unittest.TestCase):
             for asset in ('moods-neutral-ink-v2.webp','moods-selected-ink-v2.webp','anton.woff','stock.webp'):
                 path=Path('editions/gig-poster/assets')/asset
                 self.assertEqual((dest/path).read_bytes(),(ROOT/'launcher'/path).read_bytes())
-            self.assertTrue((dest/'editions/gig-poster/assets/moods-neutral-approved-v1.webp').is_file())
-            self.assertTrue((dest/'editions/gig-poster/assets/moods-selected-approved-v1.webp').is_file())
+            self.assertFalse((dest/'editions/gig-poster/assets/moods-neutral-approved-v1.webp').exists())
+            self.assertFalse((dest/'editions/gig-poster/assets/moods-selected-approved-v1.webp').exists())
             script=(dest/'assets/app.js').read_text()
             self.assertIn('window.HipsterLab.go(ai,prompt)',script)
             self.assertIn('if(event.defaultPrevented||!window.HipsterLab)return',script)
@@ -50,3 +50,47 @@ class LabSnapshotTests(unittest.TestCase):
             self.assertIn('<span id="labAppVersion">9.8.7</span>',(dest/'index.html').read_text())
 
 if __name__ == '__main__': unittest.main()
+
+class RuntimeAssetTests(unittest.TestCase):
+    def test_declared_assets_cover_local_resources(self):
+        import json
+        from html.parser import HTMLParser
+        from urllib.parse import urljoin,urlparse
+        root=ROOT/'launcher'
+        assets=set(json.loads((ROOT/'android-lab/web/runtime-assets.json').read_text()))
+        self.assertLess(sum((root/name).stat().st_size for name in assets),13000000)
+        class Links(HTMLParser):
+            def __init__(self):super().__init__();self.refs=[]
+            def handle_starttag(self,tag,attrs):
+                self.refs += [v for k,v in attrs if k in ('href','src','data-src') and v]
+        for name in assets:
+            p=root/name
+            refs=[]
+            if p.suffix in ('.html','.svg'):
+                parser=Links();parser.feed(p.read_text());refs+=parser.refs
+            if p.suffix=='.css':refs+=re.findall(r'''url\(["']?([^\s)'";]+)''',p.read_text())
+            for ref in refs:
+                parsed=urlparse(ref)
+                if parsed.scheme or ref.startswith('#'):continue
+                target=urlparse(urljoin('/'+name,ref)).path.lstrip('/')
+                if target.endswith('/'):target+='index.html'
+                # Navigation anchors are checked by workflow tests; assets must exist offline.
+                if Path(target).suffix in ('.css','.js','.png','.webp','.svg','.woff','.webmanifest'):
+                    self.assertIn(target,assets,(name,ref))
+
+    def test_portrait_runtime_pixels_match_locked_sources(self):
+        from PIL import Image
+        for stem in ('desire-neutral-v1','desire-selected-v1','triumph-neutral-v1','triumph-selected-v1'):
+            base=ROOT/'launcher/editions/gig-poster/assets'/stem
+            original=Image.open(base.with_suffix('.png')).convert('RGBA')
+            runtime=Image.open(base.with_suffix('.webp')).convert('RGBA')
+            self.assertEqual(original.size,runtime.size)
+            self.assertEqual(original.tobytes(),runtime.tobytes(),stem)
+
+    def test_missing_extension_slot_fails_build(self):
+        original=Path.read_text
+        def read(path,*args,**kwargs):
+            content=original(path,*args,**kwargs)
+            return content.replace('/* PLATFORM_COPY */','') if path.name=='app.js' else content
+        with tempfile.TemporaryDirectory() as temp,patch.object(Path,'read_text',read):
+            with self.assertRaisesRegex(ValueError,'COPY'):module.bundle(Path(temp)/'site')

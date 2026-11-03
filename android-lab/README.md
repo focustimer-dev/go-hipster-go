@@ -14,19 +14,16 @@ has its own version and update process.
 
 ## Isolation
 
-The release bundles a frozen copy of `launcher/`. No production deployment,
+The release bundles the explicit runtime subset of `launcher/` listed in `web/runtime-assets.json`. No production deployment,
 Worker changes, API credentials, or production data are required. Lab preferences
 and WebView storage belong to this separate app. UI updates require a new Lab APK.
-The build script only modifies the generated, ignored asset copy. No interface
-or portrait changes are applied to the canonical launcher sources.
+The build script only modifies the generated, ignored asset copy. The bundle uses named platform extension slots in the canonical sources; packaging never rewrites their implementation statements.
 
 The native bridge is available only to packaged pages on a synthetic local HTTPS
 origin. External navigation opens outside the WebView, external resource requests
 are blocked, frames and network connections are blocked, and file/content access
-is disabled. Native code now requests INTERNET permission only to check public
-GitHub release metadata. The WebView still cannot load external resources or
-make network connections. No AI login happens in Lab. Native prompt storage is
-limited to requests you explicitly save on the device.
+is disabled. Native code uses INTERNET permission for public GitHub release metadata and bounded public HTTPS inspiration previews. The WebView still cannot load external resources or
+make network connections. No AI login happens in Lab. Native storage keeps up to ten explicitly saved requests and the last three accepted inspirations on the device.
 
 ## Native handoffs
 

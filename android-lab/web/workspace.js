@@ -16,17 +16,30 @@ async function labCopySetup(button){
  }finally{if(serial===labSetupCopySerial)button.disabled=false}
 }
 function labSummary(text,limit=130){
- const clean=String(text||'').replace(/\s+/g,' ').trim();return clean.length>limit?clean.slice(0,limit-1)+'…':clean;
+ const chars=Array.from(String(text||'').replace(/\s+/g,' ').trim());return chars.length>limit?chars.slice(0,limit-1).join('')+'…':chars.join('');
 }
 function labRequestSummary(prompt){
- const text=String(prompt||'');
+ const lines=String(prompt||'').split('\n');
+ const command=lines.find(line=>/(?:^|\s)go(?:\s|$)/i.test(line))||'';
+ const go=command.match(/(?:^|\s)(go(?:\s.*)?)$/i);
  const details=['Regional exploration','Mood angle','Tempo preference'].map(label=>{
-  const line=text.split('\n').find(line=>line.startsWith(label+': '));return line?line.slice(label.length+2).replace(/\.$/,''):'';
+  const line=lines.find(line=>line.startsWith(label+': '));return line?line.slice(label.length+2).replace(/\.$/,''):'';
  }).filter(Boolean);
- const command=text.split('\n').find(line=>/\bgo\b/i.test(line))||'';
- return labSummary([command.replace(/^@\S+\s*/,'').trim(),...details].filter(Boolean).join(' · '),180);
+ return labSummary([go?go[1]:'',...details].filter(Boolean).join(' · '),180);
 }
-function labState(){try{return JSON.parse(window.HipsterLab?.state?.()||'{}')}catch(e){return {}}}
+let labSnapshot=null;
+function labRefreshState(){labSnapshot=null;return labState()}
+function labState(){
+ if(labSnapshot)return labSnapshot;
+ try{
+  let state=JSON.parse(window.HipsterLab?.state?.()||'{}');
+  if(!state||typeof state!=='object'||Array.isArray(state))state={};
+  if(!['open','share','browser'].includes(state.mode))state.mode='open';
+  // Legacy bridge support is read once per snapshot, never per prompt render.
+  if(typeof state.activeInspiration!=='string')state.activeInspiration=String(window.HipsterLab?.inspiration?.()||'');
+  return labSnapshot=state;
+ }catch(e){return labSnapshot={activeInspiration:''}}
+}
 function labNavigate(next,focus=true){
  if(!['jukebox','crate','manual'].includes(next)||next===labScreen)return;
  labPositions[labScreen]=window.scrollY;labScreen=next;body.dataset.labScreen=next;
@@ -35,7 +48,6 @@ function labNavigate(next,focus=true){
  renderLabWorkspace();window.scrollTo({top:labPositions[next],behavior:'instant'});window.dispatchEvent(new Event('scroll'));
  if(focus)doc.querySelector(`[data-lab-tab="${next}"]`)?.focus({preventScroll:true});
 }
-function updateHandoff(){updatePwaHandoff();renderLabHandoff()}
 function renderLabHandoff(){
  const state=labState(),mode=state.mode||'open',oneTap=state.oneTap!==false;
  if(ai==='other'){
@@ -63,35 +75,47 @@ function renderLabWorkspace(){
   setupText.value='';doc.getElementById('labSetupFallback').hidden=true;doc.getElementById('labSetupFallback').open=false;
   doc.getElementById('labSetupStatus').textContent='Setup changed. Copy a fresh connection check for your chosen AI and music service.';
  }
- const state=labState(),reference=labInspiration(),entries=Array.isArray(state.saved)?state.saved:[];
+ const state=labState(),reference=labInspiration(),entries=Array.isArray(state.saved)?state.saved.filter(e=>e&&typeof e==='object'&&typeof e.id==='string'&&e.id.length>0&&typeof e.prompt==='string').slice(-10):[];
  const dot=doc.getElementById('labUpdateDot');dot.hidden=!state.updateAvailable;dot.setAttribute('aria-hidden','true');
  doc.querySelector('[data-lab-tab="manual"]').setAttribute('aria-label',state.updateAvailable?'Manual, Gemini skill update available':'Manual');
- doc.getElementById('labCrateHeaderSummary').textContent=reference?labSummary(reference):'Inspiration and exact requests, saved on this device.';
- const first=reference.split('\n')[0];doc.getElementById('labCrateReference').textContent=reference?first.slice(0,160)+(first.length>160?'…':''):'No reference on the counter.';
- doc.getElementById('labCrateReferenceHelp').textContent=reference?'Reference kept. Shape moods, pace and places in Jukebox, then GO.':'Share a song link to Hipster GO Lab, or add a musical idea here.';
+ doc.getElementById('labCrateHeaderSummary').textContent=reference?labSummary(state.inspirationPreview?.title||reference):'Inspiration and exact requests, saved on this device.';
+ doc.getElementById('labCrateReference').textContent=reference?'Reference ready':'No reference yet';
+ doc.getElementById('labCrateReferenceHelp').textContent=reference?(state.inspirationPreview?.description||'Use it in Jukebox, or review the full reference.'):'Share a song link to Lab, or add an idea.';
  doc.getElementById('labCrateReview').textContent=reference?'REVIEW':'ADD';doc.getElementById('labCrateContinue').hidden=!reference;doc.getElementById('labSavedCount').textContent=entries.length+' / 10';
+ const recent=Array.isArray(state.recentInspirations)?state.recentInspirations.filter(e=>e&&typeof e.id==='string'&&typeof e.text==='string').slice(0,3):[];
+ const shelf=doc.getElementById('labRecentInspirations');
+ if(shelf&&shelf.dataset.records!==JSON.stringify([reference,recent])){
+  shelf.dataset.records=JSON.stringify([reference,recent]);shelf.replaceChildren();
+  if(!recent.length){const p=doc.createElement('p');p.className='lab-help';p.textContent='Your last three inspirations appear here automatically.';shelf.append(p)}
+  for(const entry of recent){
+   const row=doc.createElement('div');row.className='lab-record';const main=doc.createElement('div');main.className='lab-record-main';
+   const title=doc.createElement('h3');title.textContent=labSummary(entry.title||entry.text);
+   main.append(title);if(entry.description){const p=doc.createElement('p');p.textContent=labSummary(entry.description,180);main.append(p)}
+   const use=doc.createElement('button');use.type='button';use.className='lab-text-button';use.dataset.labRecent=entry.id;use.textContent=reference===entry.text?'IN USE':'USE';use.disabled=reference===entry.text;use.setAttribute('aria-label','Use inspiration: '+title.textContent);row.append(main,use);shelf.append(row);
+  }
+ }
  const rows=doc.getElementById('labSavedRows'),stamp=JSON.stringify(entries);
  if(rows.dataset.records!==stamp){
   rows.dataset.records=stamp;rows.replaceChildren();
-  if(!entries.length){const empty=doc.createElement('div');empty.className='lab-empty';const p=doc.createElement('p');p.textContent='An empty shelf. Choose Save request beside the Jukebox receipt when you find a brief worth keeping.';const b=doc.createElement('button');b.type='button';b.className='lab-text-button';b.dataset.labAction='jukebox';b.textContent='BACK TO THE JUKEBOX';empty.append(p,b);rows.append(empty)}
+  if(!entries.length){const empty=doc.createElement('div');empty.className='lab-empty';const p=doc.createElement('p');p.textContent='Save a request beside the Jukebox receipt to keep it here.';const b=doc.createElement('button');b.type='button';b.className='lab-text-button';b.dataset.labAction='jukebox';b.textContent='BACK TO THE JUKEBOX';empty.append(p,b);rows.append(empty)}
   for(const entry of entries.slice().reverse()){
    const row=doc.createElement('div');row.className='lab-record';const main=doc.createElement('div');main.className='lab-record-main';
-   const h=doc.createElement('h3');h.textContent=String(entry.name||'Untitled crate');const p=doc.createElement('p');p.textContent=(aiNames[entry.ai]||'AI')+' · '+(labRequestSummary(entry.prompt)||'Exact saved request');
-   const date=doc.createElement('p');date.className='lab-date';const when=new Date(Number(entry.time));date.textContent=Number.isFinite(when.getTime())?when.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}):'Saved on this device';main.append(h,p,date);
+   const h=doc.createElement('h3');h.textContent=typeof entry.name==='string'&&entry.name.trim()?entry.name:'Untitled crate';const p=doc.createElement('p');p.textContent=(aiNames[entry.ai]||'AI')+' · '+(labRequestSummary(entry.prompt)||'Exact saved request');
+   const date=doc.createElement('p');date.className='lab-date';const when=new Date(Number(entry.time));date.textContent=entry.time!==null&&entry.time!==''&&Number(entry.time)>0&&Number.isFinite(when.getTime())?when.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}):'Saved on this device';main.append(h,p,date);
    const b=doc.createElement('button');b.type='button';b.className='lab-text-button';b.dataset.labSaved=String(entry.id);b.textContent='OPTIONS';b.setAttribute('aria-label','Options for saved request: '+h.textContent);row.append(main,b);rows.append(row);
   }
  }
  doc.getElementById('labServicePair').textContent=aiNames[ai]+' → '+serviceNames[service];doc.getElementById('labUpdateState').textContent=state.updateSummary||'Check your installed skill';doc.getElementById('labUpdateDetail').textContent=state.updateDetail||'Review the release, download deliberately, then record your installation.';
- doc.getElementById('labHandoffDescription').textContent=state.oneTap===false?'GO copies your request. Then choose OPEN to launch your selected AI.':state.mode==='share'?'GO copies the request and tries sharing it to your selected AI. If unavailable, choose an app from Android’s share menu.':state.mode==='browser'?'GO copies your request and opens your selected AI in the browser. Paste and send when ready.':'GO copies your request and opens the selected AI app. Paste and send when ready. If the app is unavailable, Lab opens its website.';renderLabHandoff();
+ doc.getElementById('labHandoffDescription').textContent=ai==='other'?'GO copies your request. Open your AI yourself, paste and send.':state.oneTap===false?'GO copies your request. Then choose OPEN to launch your selected AI.':state.mode==='share'?'GO copies the request and tries sharing it to your selected AI. If unavailable, choose an app from Android’s share menu.':state.mode==='browser'?'GO copies your request and opens your selected AI in the browser. Paste and send when ready.':'GO copies your request and opens the selected AI app. Paste and send when ready. If the app is unavailable, Lab opens its website.';renderLabHandoff();
 }
 function labPreferences(){
- const state=labState(),dialog=doc.getElementById('labPreferences');dialog.querySelectorAll('[name="labHandoff"]').forEach(i=>i.checked=i.value===(state.mode||'open'));dialog.querySelectorAll('[data-lab-pref]').forEach(i=>i.checked=state[i.dataset.labPref]!==false);dialog.querySelector('.lab-dialog-body').scrollTop=0;dialog.showModal();body.classList.add('lab-modal-open');
+ const state=labState(),dialog=doc.getElementById('labPreferences');if(dialog.open)return;dialog.querySelectorAll('[name="labHandoff"]').forEach(i=>i.checked=i.value===(state.mode||'open'));dialog.querySelectorAll('[data-lab-pref]').forEach(i=>i.checked=state[i.dataset.labPref]!==false);dialog.querySelector('.lab-dialog-body').scrollTop=0;dialog.showModal();body.classList.add('lab-modal-open');
 }
 function initLabWorkspace(){
  // Completed setup yields the Jukebox space on the next launch. Keep its
  // original controls and storage inside Preferences, including Change setup.
  try{const setup=JSON.parse(localStorage.getItem('hmg-first-crate-v1')||'null');
-  if(setup?.completed)doc.getElementById('labSetupPreferences').append(doc.getElementById('firstCrateSetup'));
+  if(setup?.completed===true){doc.getElementById('labSetupPreferences').append(doc.getElementById('firstCrateSetup'));doc.getElementById('labSetupDetails').hidden=false;}
  }catch(e){}
  const jukebox=doc.querySelector('.site');jukebox.id='labJukebox';const mark=doc.createElement('span');mark.className='lab-edition-mark';mark.textContent='LAB';jukebox.querySelector('.brandrow')?.append(mark);
  const services=doc.querySelector('.service-counter'),route=doc.getElementById('routeStatus'),slot=doc.getElementById('labServicePreferences');
@@ -103,7 +127,8 @@ function initLabWorkspace(){
  const heading=doc.querySelector('.receipt-heading');if(heading){const label=doc.createElement('span');while(heading.firstChild)label.appendChild(heading.firstChild);const b=doc.createElement('button');b.type='button';b.className='lab-text-button lab-save-button';b.dataset.labAction='save';b.textContent='SAVE REQUEST';heading.append(label,b)}
  doc.addEventListener('click',event=>{
   const a=event.target.closest('a[href]');if(a){const u=new URL(a.href,location.href);if(u.origin===location.origin){if(/\/(?:setup\/?)$/.test(u.pathname)){event.preventDefault();labNavigate('manual');return}if(['/','/editions/gig-poster/'].includes(u.pathname)){event.preventDefault();labNavigate('jukebox');return}}}
-  const b=event.target.closest('[data-lab-tab],[data-lab-action],[data-lab-saved]');if(!b)return;
+  const b=event.target.closest('[data-lab-tab],[data-lab-action],[data-lab-saved],[data-lab-recent]');if(!b)return;
+  if(b.dataset.labRecent){window.HipsterLab?.useRecentInspiration?.(b.dataset.labRecent);return}
   if(b.dataset.labTab){labNavigate(b.dataset.labTab);return}if(b.dataset.labSaved){window.HipsterLab?.savedRequest?.(b.dataset.labSaved);return}
   const action=b.dataset.labAction;
   if(action==='preferences')labPreferences();else if(action==='close-preferences')doc.getElementById('labPreferences').close();
@@ -114,5 +139,5 @@ function initLabWorkspace(){
  });
  doc.getElementById('labPreferences').addEventListener('close',()=>{body.classList.remove('lab-modal-open');doc.querySelector('[data-lab-action="preferences"]')?.focus({preventScroll:true})});
  doc.getElementById('labPreferences').addEventListener('change',event=>{const i=event.target;if(i.name==='labHandoff')window.HipsterLab?.setPreference?.('mode',i.value);else if(i.dataset.labPref)window.HipsterLab?.setPreference?.(i.dataset.labPref,String(i.checked));renderLabWorkspace()});
- window.HipsterLabStateChanged=()=>renderLabWorkspace();window.HipsterLabBack=()=>{const d=doc.getElementById('labPreferences');if(d.open){d.close();return true}if(labScreen!=='jukebox'){labNavigate('jukebox');return true}return false};renderLabWorkspace();
+ window.HipsterLabStateChanged=()=>{labRefreshState();renderLabWorkspace();renderLabInspiration()};window.HipsterLabBack=()=>{const d=doc.getElementById('labPreferences');if(d.open){d.close();return true}if(labScreen!=='jukebox'){labNavigate('jukebox');return true}return false};renderLabWorkspace();
 }

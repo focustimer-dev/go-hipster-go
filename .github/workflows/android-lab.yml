@@ -11,10 +11,17 @@ on:
       - 'scripts/test_android_lab_dom.cjs'
       - 'scripts/test_lab_discovery_routes.cjs'
       - 'scripts/test_mood_ink.cjs'
-      - 'launcher/editions/gig-poster/**'
+      - 'launcher/**'
+      - 'scripts/atlas_navigation.py'
+      - 'scripts/robinson_atlas.py'
+      - 'scripts/build_gig_poster.py'
+      - 'scripts/test_render_efficiency.cjs'
       - '.github/workflows/android-lab.yml'
 permissions:
   contents: read
+concurrency:
+  group: android-lab-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
 jobs:
   lab:
     runs-on: ubuntu-latest
@@ -33,14 +40,16 @@ jobs:
           packages: 'platform-tools'
           log-accepted-android-sdk-licenses: false
       - run: sdkmanager 'platforms;android-36' 'build-tools;35.0.0'
+      - run: python -m pip install Pillow==12.0.0
       - run: python -m unittest discover -s android-lab/tests -v
       - run: bash android/gradlew -p android-lab testReleaseUnitTest assembleRelease lintVitalRelease --no-daemon
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: npm install --no-save --package-lock=false playwright jsdom@26
+      - run: npm install --no-save --package-lock=false playwright@1.64.1 jsdom@26.1.0
       - run: node scripts/test_lab_discovery_routes.cjs
       - run: node scripts/test_android_lab_dom.cjs
+      - run: node scripts/test_render_efficiency.cjs
       - run: npx playwright install --with-deps chromium
       - run: node scripts/test_android_lab.cjs
       - run: node scripts/test_mood_ink.cjs

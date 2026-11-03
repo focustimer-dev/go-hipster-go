@@ -2,6 +2,7 @@
 (function(){
 "use strict";
 const doc=document,body=doc.body;
+/* PLATFORM_DECLARATIONS */
 const defaultService={chatgpt:"spotify",gemini:"youtube",claude:"apple",other:"spotify"};
 const aiNames={chatgpt:"ChatGPT",gemini:"Gemini",claude:"Claude",other:"Other AI"};
 const serviceNames={spotify:"Spotify",youtube:"YouTube Music",apple:"Apple Music"};
@@ -22,6 +23,7 @@ function stored(key){try{return localStorage.getItem(key)}catch(e){return null}}
 function store(key,v){try{localStorage.setItem(key,v)}catch(e){}}
 function status(message){const e=doc.getElementById("copyStatus");if(e)e.textContent=message}
 async function copyText(text){
+ /* PLATFORM_COPY */
  try{await navigator.clipboard.writeText(text);return true}
  catch(e){
   const t=doc.createElement("textarea");t.value=text;t.style.cssText="position:fixed;left:-9999px;opacity:0";doc.body.appendChild(t);t.select();
@@ -121,12 +123,14 @@ function nextCrateSparkPhrase(){
 }
 // The skill owns curation policy; GO sends only current creative inputs and service.
 function goPrompt(ai,service,mood){
- const parts=[goCommand(ai,service,mood)];if(moodParts(mood).length===2)parts.push("Combine both moods throughout one coherent playlist; do not split the playlist into separate mood blocks.");
+ const parts=[goCommand(ai,service,mood)];
+ /* PLATFORM_ROUTE_PROMPT */if(moodParts(mood).length===2)parts.push("Combine both moods throughout one coherent playlist; do not split the playlist into separate mood blocks.");
  if(goHard)parts.push("Curation mode: GO HARD. Use the skill\u0027s Deep Crate Protocol.");
  if(crateSelected.size)parts.push(crateRegionPrompt());
  const brief=moodDiscoveryBrief(mood);if(brief)parts.push(brief.trim());
  if(tempo)parts.push("Tempo preference: "+tempoNames[tempo]+".");
  if(skipRough)parts.push("Recording preference: Skip rough recordings.");
+ /* PLATFORM_REFERENCE */
  if(crateSparkPhrase)parts.push("Seed: "+crateSparkPhrase+".");
  parts.push("Service: "+serviceNames[service]+".");
  if(includeCover)parts.push("Cover art: yes. Use the skill\u0027s cover-art workflow.");
@@ -171,8 +175,11 @@ function atlasDetailsForView(map,view){
  const threshold=map.getAttribute("data-details")==="true"?2.05:2.3;
  if(720/width>=1.5)warmAtlasArtwork();
  const visible=720/width>=threshold;
- map.setAttribute("data-details",String(visible));
- map._atlasSecretsSync?.(visible);
+ // Crossing the reveal threshold is a state change, not per-frame work.
+ if(map.getAttribute("data-details")!==String(visible)){
+  map.setAttribute("data-details",String(visible));
+  map._atlasSecretsSync?.(visible);
+ }
 }
 // Robinson rays follow the geography camera but remain underneath its
 // opaque ocean. The ocean masks rays at the CURRENT map edge while panning.
@@ -188,13 +195,21 @@ if(atlasRadialField&&atlasRadialMap){
   new MutationObserver(syncRadialBackdrop).observe(atlasRadialMap,{attributes:true,attributeFilter:["viewBox"]});
  }
  syncRadialBackdrop();
+ // Decode the existing artwork before the first zoom, once the atlas is near
+ // the screen. Keep it deferred on launch and retain pointer/zoom fallbacks.
+ if(typeof IntersectionObserver==='function'){
+  const artworkObserver=new IntersectionObserver(entries=>{
+   if(entries.some(entry=>entry.isIntersecting)){warmAtlasArtwork();artworkObserver.disconnect()}
+  },{rootMargin:'240px'});
+  artworkObserver.observe(atlasRadialMap);
+ }
 }
 const atlasNames={"americas-north":"N. America","americas-south":"S. America","europe":"Europe","africa":"Africa","asia":"Asia","oceania":"Oceania","antarctica":"Antarctica"};
 let atlasFocus=null, atlasZoomFrame=0;
 let atlasUserNavigated=false, atlasTouchGesture=null, atlasSuppressTapUntil=0;
 let lastCrateStamp=null;
 const atlasStampNodes=new Map();
-let atlasNavigationFrame=0,atlasPendingView=null;
+let atlasNavigationFrame=0,atlasPendingView=null,atlasWheelTimer=0;
 const crateStorageKey="ghg-crate-map-regions-v1";
 const validCrateRegions=new Set(crateRegions.map(r=>r.id));
 function readCrateRegions(){
@@ -222,6 +237,35 @@ function crateRegionPrompt(){
  return "Regional exploration: "+all.join(", ")+".";
 }
 function atlasBoxText(a){return a.map(v=>Math.round(v*10)/10).join(" ")}
+// Composite one SVG layer during movement; commit the vector camera at rest.
+// The frame still clips the map, while overflow lets zoom-out reveal geography
+// outside the starting SVG viewport rather than exposing empty edges.
+const atlasCanComposite=typeof CSS!=='undefined'&&typeof CSS.supports==='function'&&CSS.supports('transform','translate(0%,0%) scale(1)')&&CSS.supports('transform-box','border-box');
+let atlasMotionBase=null,atlasMotionView=null,atlasMotionRect=null;
+function paintAtlasMotion(view){
+ const map=doc.getElementById("crateAtlasMap");if(!map)return;
+ if(!map.style||!atlasCanComposite){map.setAttribute("viewBox",atlasBoxText(view));return;}
+ if(!atlasMotionBase){
+  atlasMotionBase=(map.getAttribute("viewBox")||"0 0 720 372").split(/\s+/).map(Number);atlasMotionRect=map.getBoundingClientRect();
+  for(const layer of [map,atlasRadialField])if(layer?.style){
+   layer.style.transformOrigin='0 0';layer.style.transformBox='border-box';layer.style.overflow='visible';layer.style.willChange='transform';
+  }
+ }
+ atlasMotionView=view;
+ const [bx,by,bw]=atlasMotionBase,[x,y,w,h]=view;
+ const transform=`translate(${(bx-x)/w*100}%,${(by-y)/h*100}%) scale(${bw/w})`;
+ for(const layer of [map,atlasRadialField])if(layer?.style)layer.style.transform=transform;
+ atlasDetailsForView(map,atlasBoxText(view));
+}
+function commitAtlasMotion(){
+ if(!atlasMotionView)return;
+ const map=doc.getElementById("crateAtlasMap"),view=atlasBoxText(atlasMotionView);
+ map?.setAttribute("viewBox",view);atlasRadialField?.setAttribute("viewBox",view);
+ for(const layer of [map,atlasRadialField])if(layer?.style){
+  layer.style.transform='';layer.style.transformOrigin='';layer.style.transformBox='';layer.style.overflow='';layer.style.willChange='';
+ }
+ atlasMotionBase=null;atlasMotionView=null;atlasMotionRect=null;
+}
 function animateAtlasView(view){
  flushAtlasNavigation();
  const map=doc.getElementById("crateAtlasMap");if(!map)return;
@@ -235,8 +279,8 @@ function animateAtlasView(view){
  const frame=time=>{
   if(started===null)started=time;
   const t=Math.min(1,(time-started)/300),e=1-Math.pow(1-t,3);
-  map.setAttribute("viewBox",atlasBoxText(goal.map((v,i)=>from[i]+(v-from[i])*e)));
-  if(t<1)atlasZoomFrame=requestAnimationFrame(frame);else atlasZoomFrame=0;
+  paintAtlasMotion(goal.map((v,i)=>from[i]+(v-from[i])*e));
+  if(t<1)atlasZoomFrame=requestAnimationFrame(frame);else{atlasZoomFrame=0;commitAtlasMotion();}
  };
  atlasZoomFrame=requestAnimationFrame(frame);
 }
@@ -286,19 +330,26 @@ function toggleCrateRegion(id){
  updateCrateMap(added);
 }
 const crateStampNames={"us-west":"US W","us-east":"US E","canada-west":"CAN W","canada-east":"CAN E","mexico":"MEX","central-america":"CENT AM","caribbean":"CARIB","northern-south-america":"N S AM","southern-south-america":"S S AM","atlantic-europe":"W EUR","mediterranean-europe":"MED / BALK","northern-europe":"N EUR","eastern-europe":"E EUR","north-africa":"N AFR","west-africa":"W AFR","east-africa":"E AFR","central-southern-africa":"C / S AFR","middle-east":"MID EAST","central-asia":"C ASIA","south-asia":"S ASIA","east-asia":"E ASIA","southeast-asia":"SE ASIA","northern-asia":"N ASIA","oceania":"OCEANIA","antarctica":"ANTARCTICA"};
+function setAtlasAttribute(node,name,value){
+ const text=String(value);if(node.getAttribute(name)!==text)node.setAttribute(name,text);
+}
+let atlasSelectionStamp="";
 function renderCrateMap(){
+ const stamp=JSON.stringify([atlasFocus,atlasUserNavigated,[...crateSelected].sort(),lastCrateStamp]);
+ if(stamp===atlasSelectionStamp)return;
+ atlasSelectionStamp=stamp;
  const focused=Boolean(atlasFocus);
  doc.querySelectorAll("[data-crate-region]").forEach(b=>{
   b.hidden=!focused||b.dataset.continent!==atlasFocus;
-  b.setAttribute("aria-pressed",String(crateSelected.has(b.dataset.crateRegion)));
+  setAtlasAttribute(b,"aria-pressed",String(crateSelected.has(b.dataset.crateRegion)));
  });
- doc.querySelectorAll("[data-crate-continent]").forEach(b=>b.setAttribute("aria-pressed",String(atlasFocus===b.dataset.crateContinent)));
+ doc.querySelectorAll("[data-crate-continent]").forEach(b=>setAtlasAttribute(b,"aria-pressed",String(atlasFocus===b.dataset.crateContinent)));
  doc.querySelectorAll("[data-atlas-zone]").forEach(z=>{
-  z.setAttribute("data-selected",String(crateSelected.has(z.dataset.atlasZone)));
-  z.setAttribute("data-press",String(z.dataset.atlasZone===lastCrateStamp));
+  setAtlasAttribute(z,"data-selected",String(crateSelected.has(z.dataset.atlasZone)));
+  setAtlasAttribute(z,"data-press",String(z.dataset.atlasZone===lastCrateStamp));
  });
  doc.querySelectorAll("[data-atlas-country]").forEach(path=>{
-  path.setAttribute("data-inked",String(crateSelected.has(path.dataset.atlasRegion)));
+  setAtlasAttribute(path,"data-inked",String(crateSelected.has(path.dataset.atlasRegion)));
  });
  const st=doc.getElementById("crateGeoStatus");
  const selectionStatus=crateSelected.size?crateSelected.size+" region"+(crateSelected.size===1?"":"s")+" selected. Tap a stamp to remove a region.":"No regions selected. All areas are available.";
@@ -389,6 +440,7 @@ function updateHandoff(){
  if(guide)guide.hidden=!ready;
  if(heading)heading.textContent=ai==="other"?"COPIED. OPEN YOUR AI MANUALLY.":"COPIED. NOW OPEN "+aiNames[ai].toUpperCase()+".";
  if(instructions)instructions.textContent=ai==="other"?"Open your chosen AI yourself, paste the copied request and send it. This app cannot open an unspecified AI.":ai==="chatgpt"?"Paste and send. Select Go, Hipster, Go! and "+serviceNames[service]+" in your chat if needed. The playlist isn't saved yet.":ai==="gemini"?"Paste and send. Select the saved Go, Hipster, Go! skill and "+serviceNames[service]+" if needed. Check whether the playlist was created.":"Paste and send. Enable Go, Hipster, Go! and "+serviceNames[service]+" if needed. Check the playlist result in your AI.";
+ /* PLATFORM_HANDOFF_RENDER */
 }
 function selectionChanged(preserveShuffle=false){
  if(!preserveShuffle){previousShuffle=null;const result=doc.getElementById("shuffleResult");if(result)result.textContent="";}
@@ -497,7 +549,7 @@ function renderLaunch(){
  u.searchParams.delete("mode");
  history.replaceState(null,"",u.pathname+u.search);
 }
-function render(){if(body.dataset.page==="launch")renderLaunch();else renderSetup()}
+function render(){/* PLATFORM_RENDER */if(body.dataset.page==="launch")renderLaunch();else renderSetup()}
 doc.querySelectorAll("[data-ai]").forEach(b=>b.addEventListener("click",()=>{
  ai=b.dataset.ai;copiedPrompt=null;copiedSetupPrompt=null;selectionChanged();
 }));
@@ -619,7 +671,7 @@ async function copyGo(){
  const button=doc.getElementById("goButton");
  if(button&&button.disabled)return;
  // Each GO explores a different lane; preview and copied request stay identical.
- moodAngle=moodParts(mood).map(m=>moodInterpretations[m]?nextDiscoveryCue(moodInterpretations[m],"ghg-mood-angles-v1-"+m):"").filter(Boolean).join(" + ");freshCrateLens="";crateSparkPhrase=nextCrateSparkPhrase();renderLaunch();
+ moodAngle=moodParts(mood).map(m=>moodInterpretations[m]?nextDiscoveryCue(moodInterpretations[m],"ghg-mood-angles-v1-"+m):"").filter(Boolean).join(" + ");freshCrateLens="";crateSparkPhrase=nextCrateSparkPhrase();/* PLATFORM_ROUTE_DRAW */renderLaunch();
  const prompt=goPrompt(ai,service,mood);
  if(button){button.disabled=true;button.setAttribute("aria-busy","true");button.setAttribute("data-copy-state","copying")}
  copiedPrompt=null;updateHandoff();
@@ -629,6 +681,7 @@ async function copyGo(){
  copiedPrompt=ok?prompt:null;updateHandoff();
  if(prompt!==goPrompt(ai,service,mood)){status("Selection changed while copying. Press GO again for the current prompt.");return}
  if(ok){store("ghg-jukebox-used-v1","yes");doc.getElementById("promptReceipt")?.setAttribute("data-impression",String(++printImpression%2));}
+ /* PLATFORM_COPIED */
  if(ok)status("Copied to clipboard. Playlist creation and saving happen in your AI, not in the Jukebox.");
  else{const details=doc.getElementById("promptDetails");if(details)details.open=true;status("Clipboard blocked. Copy the full prompt in the receipt below, then use its manual Open link.")}
 }
@@ -644,18 +697,20 @@ doc.querySelectorAll("[data-crate-region]").forEach(b=>{
 
 /* Direct manipulation: one finger or mouse drags; two fingers pinch.
    Normal desktop scrolling remains with the page unless modified. */
-function atlasView(){const map=doc.getElementById("crateAtlasMap");return (map?.getAttribute("viewBox")||"0 0 720 372").trim().split(/\s+/).map(Number)}
+function atlasView(){if(atlasMotionView)return [...atlasMotionView];const map=doc.getElementById("crateAtlasMap");return (map?.getAttribute("viewBox")||"0 0 720 372").trim().split(/\s+/).map(Number)}
 function flushAtlasNavigation(){
+ if(atlasWheelTimer){clearTimeout(atlasWheelTimer);atlasWheelTimer=0;}
  if(atlasNavigationFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasNavigationFrame);
  atlasNavigationFrame=0;
- if(atlasPendingView){doc.getElementById("crateAtlasMap")?.setAttribute("viewBox",atlasBoxText(atlasPendingView));atlasPendingView=null}
+ if(atlasPendingView){paintAtlasMotion(atlasPendingView);atlasPendingView=null}
+ commitAtlasMotion();
 }
 function queueAtlasNavigation(view){
  atlasPendingView=view;
  if(typeof requestAnimationFrame!=="function"){flushAtlasNavigation();return}
  if(!atlasNavigationFrame)atlasNavigationFrame=requestAnimationFrame(()=>{
   atlasNavigationFrame=0;
-  if(atlasPendingView){doc.getElementById("crateAtlasMap")?.setAttribute("viewBox",atlasBoxText(atlasPendingView));atlasPendingView=null}
+  if(atlasPendingView){paintAtlasMotion(atlasPendingView);atlasPendingView=null}
  });
 }
 function atlasGesturePoints(touches){
@@ -738,7 +793,7 @@ function atlasBindGestures(){
  atlasDetailsForView(map,map.getAttribute("viewBox")||"0 0 720 372");
  const stopZoom=()=>{
   if(atlasZoomFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasZoomFrame);
-  atlasZoomFrame=0;
+  atlasZoomFrame=0;commitAtlasMotion();
  };
  // Treat one finger tap as selection, but reserve a short window for a
  // second tap before dispatching it. Otherwise a double tap first selects
@@ -870,7 +925,7 @@ function atlasBindGestures(){
   if(event.cancelable)event.preventDefault();
   if(atlasZoomFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasZoomFrame);
   atlasZoomFrame=0;
-  const view=atlasPendingView||atlasView(),rect=map.getBoundingClientRect();
+  const view=atlasPendingView||atlasView(),rect=atlasMotionRect||map.getBoundingClientRect();
   const center={x:event.clientX,y:event.clientY};
   const anchor=atlasScreenAnchor(map,view,center.x,center.y,rect);
   let result;
@@ -883,6 +938,10 @@ function atlasBindGestures(){
    result=atlasConstrain([view[0]+event.deltaX*unit/scale,view[1]+event.deltaY*unit/scale,view[2],view[3]]);
   }
   queueAtlasNavigation(result);
+  if(atlasCanComposite&&typeof setTimeout==="function"){
+   if(atlasWheelTimer)clearTimeout(atlasWheelTimer);
+   atlasWheelTimer=setTimeout(flushAtlasNavigation,120);
+  }
   if(!atlasUserNavigated){atlasUserNavigated=true;renderAtlasNavigation()}
   atlasSuppressTapUntil=Date.now()+500;
  },{passive:false});
@@ -1142,7 +1201,10 @@ function installAtlasSecrets(){
  });
  // The original atlas already computes data-details as its camera zooms.
  // Keep the optional art targets out of the pointer/keyboard path until then.
+ let lastSecretsVisible=null;
  map._atlasSecretsSync=visible=>{
+  if(visible===lastSecretsVisible)return;
+  lastSecretsVisible=visible;
   layer.setAttribute("aria-hidden",String(!visible));
   for(const target of hotspots)target.setAttribute("tabindex",visible?"0":"-1");
   if(!visible&&!card.hidden)closeCard();
@@ -1184,7 +1246,9 @@ const go=doc.getElementById("goButton");if(go)go.addEventListener("click",copyGo
 for(const id of ["openAi","browserAi"]){const a=doc.getElementById(id);if(a)a.addEventListener("click",event=>{
  if(copiedPrompt!==goPrompt(ai,service,mood)){event.preventDefault();status("Press GO to copy the current prompt before opening your AI.")}
 })}
+/* PLATFORM_OPEN */
 const share=doc.getElementById("shareButton");if(share)share.addEventListener("click",async()=>{
+ /* PLATFORM_SHARE */
  if(!navigator.share){status("No share sheet available. Copy the prompt instead.");return}
  try{await navigator.share({text:goPrompt(ai,service,mood)})}catch(e){if(e.name!=="AbortError")status("Share failed. Copy the prompt instead.")}
 });
@@ -1193,13 +1257,14 @@ if(doc.getElementById("firstCrateSetup")){globalThis.HipsterSetup={getPair:()=>(
  ai=next.ai;service=next.service;copiedPrompt=null;copiedSetupPrompt=null;selectionChanged();
 }};
 doc.addEventListener("click",event=>{if(ai!=="other")return;const link=event.target.closest("#openAi,#browserAi,#manualOpenAi,#openSelectedAi");if(link){event.preventDefault();status("Open your chosen AI yourself, paste the request and send it.");const guide=doc.getElementById("handoffGuidance");if(guide)guide.hidden=false;const heading=doc.getElementById("handoffTitle");if(heading)heading.textContent="OPEN YOUR AI MANUALLY.";const instructions=doc.getElementById("handoffInstruction");if(instructions)instructions.textContent="Paste the request you copied, then send it. This app cannot open an unspecified AI.";}},true);}
+/* PLATFORM_BOOT */
 render();
 if(crateSelected.size)frameSelectedAtlas();
 // One ticket travels with the reader and docks in the printed receipt.
 // No mirrored summary is painted over the paper feed or clipboard ink.
 const ticket=doc.getElementById("selectionTicket");
 if(ticket){
- const firstAiChoice=doc.querySelector(".service-counter .panel");
+ const firstAiChoice=doc.querySelector(body.classList.contains("lab-workspace")?".poster-go-trail":".service-counter .panel");
  const dock=doc.getElementById("receiptTicketDock");
  const receipt=doc.getElementById("promptReceipt");
  const details=ticket.querySelector("details");
@@ -1223,7 +1288,7 @@ if(ticket){
     ticket.classList.remove("is-docked");
     details.open=false;
    }
-   ticket.hidden=firstAiChoice.getBoundingClientRect().bottom>0;
+   ticket.hidden=firstAiChoice.getBoundingClientRect().bottom>(body.classList.contains("lab-workspace")?56:0);
    if(ticket.hidden)details.open=false;
   }
  }
