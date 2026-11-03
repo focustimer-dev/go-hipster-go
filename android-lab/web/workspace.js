@@ -69,10 +69,22 @@ function renderLabWorkspace(){
  const state=labState(),reference=labInspiration(),entries=Array.isArray(state.saved)?state.saved.filter(e=>e&&typeof e==='object'&&typeof e.id==='string'&&e.id.length>0&&typeof e.prompt==='string').slice(-10):[];
  const dot=doc.getElementById('labUpdateDot');dot.hidden=!state.updateAvailable;dot.setAttribute('aria-hidden','true');
  doc.querySelector('[data-lab-tab="manual"]').setAttribute('aria-label',state.updateAvailable?'Manual, Gemini skill update available':'Manual');
- doc.getElementById('labCrateHeaderSummary').textContent=reference?labSummary(reference):'Inspiration and exact requests, saved on this device.';
+ doc.getElementById('labCrateHeaderSummary').textContent=reference?labSummary(state.inspirationPreview?.title||reference):'Inspiration and exact requests, saved on this device.';
  doc.getElementById('labCrateReference').textContent=reference?'Reference ready':'No reference yet';
- doc.getElementById('labCrateReferenceHelp').textContent=reference?'Use it in Jukebox, or review the full reference.':'Share a song link to Lab, or add an idea.';
+ doc.getElementById('labCrateReferenceHelp').textContent=reference?(state.inspirationPreview?.description||'Use it in Jukebox, or review the full reference.'):'Share a song link to Lab, or add an idea.';
  doc.getElementById('labCrateReview').textContent=reference?'REVIEW':'ADD';doc.getElementById('labCrateContinue').hidden=!reference;doc.getElementById('labSavedCount').textContent=entries.length+' / 10';
+ const recent=Array.isArray(state.recentInspirations)?state.recentInspirations.filter(e=>e&&typeof e.id==='string'&&typeof e.text==='string').slice(0,3):[];
+ const shelf=doc.getElementById('labRecentInspirations');
+ if(shelf&&shelf.dataset.records!==JSON.stringify([reference,recent])){
+  shelf.dataset.records=JSON.stringify([reference,recent]);shelf.replaceChildren();
+  if(!recent.length){const p=doc.createElement('p');p.className='lab-help';p.textContent='Your last three inspirations appear here automatically.';shelf.append(p)}
+  for(const entry of recent){
+   const row=doc.createElement('div');row.className='lab-record';const main=doc.createElement('div');main.className='lab-record-main';
+   const title=doc.createElement('h3');title.textContent=labSummary(entry.title||entry.text);
+   main.append(title);if(entry.description){const p=doc.createElement('p');p.textContent=labSummary(entry.description,180);main.append(p)}
+   const use=doc.createElement('button');use.type='button';use.className='lab-text-button';use.dataset.labRecent=entry.id;use.textContent=reference===entry.text?'IN USE':'USE';use.disabled=reference===entry.text;use.setAttribute('aria-label','Use inspiration: '+title.textContent);row.append(main,use);shelf.append(row);
+  }
+ }
  const rows=doc.getElementById('labSavedRows'),stamp=JSON.stringify(entries);
  if(rows.dataset.records!==stamp){
   rows.dataset.records=stamp;rows.replaceChildren();
@@ -106,7 +118,8 @@ function initLabWorkspace(){
  const heading=doc.querySelector('.receipt-heading');if(heading){const label=doc.createElement('span');while(heading.firstChild)label.appendChild(heading.firstChild);const b=doc.createElement('button');b.type='button';b.className='lab-text-button lab-save-button';b.dataset.labAction='save';b.textContent='SAVE REQUEST';heading.append(label,b)}
  doc.addEventListener('click',event=>{
   const a=event.target.closest('a[href]');if(a){const u=new URL(a.href,location.href);if(u.origin===location.origin){if(/\/(?:setup\/?)$/.test(u.pathname)){event.preventDefault();labNavigate('manual');return}if(['/','/editions/gig-poster/'].includes(u.pathname)){event.preventDefault();labNavigate('jukebox');return}}}
-  const b=event.target.closest('[data-lab-tab],[data-lab-action],[data-lab-saved]');if(!b)return;
+  const b=event.target.closest('[data-lab-tab],[data-lab-action],[data-lab-saved],[data-lab-recent]');if(!b)return;
+  if(b.dataset.labRecent){window.HipsterLab?.useRecentInspiration?.(b.dataset.labRecent);return}
   if(b.dataset.labTab){labNavigate(b.dataset.labTab);return}if(b.dataset.labSaved){window.HipsterLab?.savedRequest?.(b.dataset.labSaved);return}
   const action=b.dataset.labAction;
   if(action==='preferences')labPreferences();else if(action==='close-preferences')doc.getElementById('labPreferences').close();

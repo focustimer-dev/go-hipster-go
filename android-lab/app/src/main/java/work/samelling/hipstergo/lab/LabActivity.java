@@ -205,6 +205,7 @@ public class LabActivity extends Activity {
     private String workspaceState() {
         try {
             return new org.json.JSONObject().put("saved",shelf.entries())
+                .put("recentInspirations",inspiration.recent()).put("inspirationPreview",inspiration.preview())
                 .put("mode",prefs.getString("mode","open")).put("oneTap",prefs.getBoolean("oneTap",true))
                 .put("haptics",prefs.getBoolean("haptics",true)).put("updateAvailable",updates.available())
                 .put("updateSummary",updates.summary()).put("updateDetail",updates.detail()).toString();
@@ -226,6 +227,7 @@ public class LabActivity extends Activity {
         }
         @JavascriptInterface public String inspiration(){return inspiration.value();}
         @JavascriptInterface public void reviewInspiration(){runOnUiThread(()->inspiration.review());}
+        @JavascriptInterface public void useRecentInspiration(String id){if(id!=null&&id.length()<=64)runOnUiThread(()->inspiration.reuse(id));}
         @JavascriptInterface public void clearInspiration(){runOnUiThread(()->inspiration.clear());}
         @JavascriptInterface public boolean copy(String text) {
             if(!validText(text)) return false;
@@ -251,5 +253,5 @@ public class LabActivity extends Activity {
     }
     @Override public void onBackPressed() { back(); }
     @Override public void onSaveInstanceState(Bundle state) { web.saveState(state);super.onSaveInstanceState(state); }
-    @Override public void onDestroy() { updates.close();web.removeJavascriptInterface("HipsterLab");web.destroy();super.onDestroy(); }
+    @Override public void onDestroy() { updates.close();inspiration.close();web.removeJavascriptInterface("HipsterLab");web.destroy();super.onDestroy(); }
 }
