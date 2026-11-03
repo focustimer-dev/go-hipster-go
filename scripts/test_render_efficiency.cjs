@@ -9,6 +9,7 @@ w.HipsterLab={state(){stateReads++;return JSON.stringify(state)},inspiration(){i
 try{
  w.eval(fs.readFileSync(root+'/assets/app.js','utf8'));
  const map=w.document.querySelector('#crateAtlasMap'),camera=map.getAttribute('viewBox');
+ assert.equal(map.querySelector('.crate-map-ocean').parentNode,map.querySelector('.robinson-plate-content'),'Ocean and countries share clipped paint group');
  const observer=new w.MutationObserver(()=>{});observer.observe(map,{subtree:true,attributes:true});
  for(const selector of ['[data-mood="happy"]','#includeCover','#goHard']){
   stateReads=0;inspirationReads=0;observer.takeRecords();w.document.querySelector(selector).click();

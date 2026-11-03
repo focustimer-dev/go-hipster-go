@@ -1,5 +1,6 @@
 // Compare exact bundled atlas code under the same mobile/CPU conditions.
 const {chromium}=require('playwright');
+const assertOcean=require('./assert_atlas_ocean.cjs');
 const fs=require('fs'),path=require('path'),http=require('http'),assert=require('assert/strict');
 const roots=process.argv.slice(2);if(roots.length!==2)throw Error('Provide baseline and candidate site roots');
 (async()=>{
@@ -97,6 +98,22 @@ const roots=process.argv.slice(2);if(roots.length!==2)throw Error('Provide basel
    }
    await cdp.send('Input.dispatchTouchEvent',{type:'touchCancel',touchPoints:[]});await page.waitForTimeout(350);
    assert.equal(await page.locator('#crateAtlasMap').evaluate(el=>el.style.transform),'','Interrupted zoom leaves no stale transform');
+   // Recorded phone failure: ocean vanishes at settle although coordinates pass.
+   // Sample the actual pixels through zoom-out; timing metrics above exclude this.
+   await page.locator('.crate-map-frame').scrollIntoViewIfNeeded();
+   await page.evaluate(()=>document.querySelector('[data-crate-continent="europe"]').click());await page.waitForTimeout(400);
+   await page.evaluate(()=>document.querySelector('#atlasHome').click());
+   let paintedWorldFrames=0;
+   for(let capture=0;capture<8;capture++){
+    await page.waitForTimeout(60);
+    const settled=()=>page.locator('#crateAtlasMap').evaluate(el=>!el.style.transform&&el.getAttribute('viewBox')==='0 0 720 372');
+    const before=await settled();
+    const buffer=await page.locator('.crate-map-frame').screenshot({path:'android-lab/build/atlas-perf/'+test.label+'-'+test.round+'-ocean-'+capture+'.png',animations:'allow'});
+    if(before&&await settled()){assertOcean(buffer);paintedWorldFrames++}
+   }
+   assert(paintedWorldFrames>=2,'Capture at least two settled world frames');
+   if(test.label==='candidate')assert(await page.locator('#crateAtlasMap').evaluate(el=>el.style.willChange==='transform'),'Keep SVG promotion stable at rest');
+
   }finally{await context.close();server.close()}
  }}finally{await browser.close()}
  // Compare medians of per-run metrics, not pooled frames (which overweight faster runs).
