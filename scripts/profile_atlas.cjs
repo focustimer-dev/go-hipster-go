@@ -80,18 +80,18 @@ const roots=process.argv.slice(2);if(roots.length!==2)throw Error('Provide basel
    await page.locator('.crate-map-frame').scrollIntoViewIfNeeded();
    await page.evaluate(()=>document.querySelector('[data-crate-continent="europe"]').click());await page.waitForTimeout(80);
    const retarget=await page.evaluate(()=>new Promise(resolve=>{
-    const map=document.querySelector('#crateAtlasMap'),before={rect:(map.querySelector('.atlas-camera-scene')||map).getBoundingClientRect().toJSON(),viewBox:(map.getAttribute('data-camera-view')||map.getAttribute('viewBox'))};
+    const map=document.querySelector('#crateAtlasMap'),before={rect:(map.closest('.atlas-camera-scene')||map).getBoundingClientRect().toJSON(),viewBox:(map.getAttribute('data-camera-view')||map.getAttribute('viewBox'))};
     document.querySelector('[data-crate-continent="europe"]').click();
-    requestAnimationFrame(()=>resolve({before,rect:(map.querySelector('.atlas-camera-scene')||map).getBoundingClientRect().toJSON(),viewBox:(map.getAttribute('data-camera-view')||map.getAttribute('viewBox'))}));
+    requestAnimationFrame(()=>resolve({before,rect:(map.closest('.atlas-camera-scene')||map).getBoundingClientRect().toJSON(),viewBox:(map.getAttribute('data-camera-view')||map.getAttribute('viewBox'))}));
    }));
    if(test.label==='candidate'){
     assert.equal(retarget.viewBox,retarget.before.viewBox,'Retarget must not commit the SVG between destinations');
     for(const key of ['x','y','width','height'])assert(Math.abs(retarget.rect[key]-retarget.before.rect[key])<.1,'Retarget starts at visible camera '+key);
    }
    const pressBox=await page.locator('.crate-map-frame').boundingBox();
-   await page.evaluate(()=>document.querySelector('#crateAtlasMap').addEventListener('touchstart',()=>{const map=document.querySelector('#crateAtlasMap');window.pressBefore={rect:(map.querySelector('.atlas-camera-scene')||map).getBoundingClientRect().toJSON(),viewBox:(map.getAttribute('data-camera-view')||map.getAttribute('viewBox'))}},{capture:true,once:true}));
+   await page.evaluate(()=>document.querySelector('#crateAtlasMap').addEventListener('touchstart',()=>{const map=document.querySelector('#crateAtlasMap');window.pressBefore={rect:(map.closest('.atlas-camera-scene')||map).getBoundingClientRect().toJSON(),viewBox:(map.getAttribute('data-camera-view')||map.getAttribute('viewBox'))}},{capture:true,once:true}));
    await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:pressBox.x+pressBox.width/2,y:pressBox.y+pressBox.height/2}]});
-   const interrupted=await page.evaluate(()=>({before:pressBefore,after:(document.querySelector('#crateAtlasMap .atlas-camera-scene')||document.querySelector('#crateAtlasMap')).getBoundingClientRect().toJSON(),viewBox:document.querySelector('#crateAtlasMap').dataset.cameraView||document.querySelector('#crateAtlasMap').getAttribute('viewBox')}));
+   const interrupted=await page.evaluate(()=>({before:pressBefore,after:(document.querySelector('.atlas-camera-scene')||document.querySelector('#crateAtlasMap')).getBoundingClientRect().toJSON(),viewBox:document.querySelector('#crateAtlasMap').dataset.cameraView||document.querySelector('#crateAtlasMap').getAttribute('viewBox')}));
    if(test.label==='candidate'){
     assert.equal(interrupted.viewBox,interrupted.before.viewBox,'Press must not force an SVG camera commit');
     for(const key of ['x','y','width','height'])assert(Math.abs(interrupted.after[key]-interrupted.before.rect[key])<.1,'Press preserves visual camera '+key);
@@ -112,7 +112,7 @@ const roots=process.argv.slice(2);if(roots.length!==2)throw Error('Provide basel
     if(before&&await settled()){assertOcean(buffer);paintedWorldFrames++}
    }
    assert(paintedWorldFrames>=2,'Capture at least two settled world frames');
-   if(test.label==='candidate')assert(await page.locator('#crateAtlasMap').evaluate(el=>el.getAttribute('viewBox')==='0 0 720 372'&&!!el.querySelector('.atlas-camera-scene')?.style.transform),'Fixed SVG viewport with persistent inner camera at rest');
+   if(test.label==='candidate')assert(await page.locator('#crateAtlasMap').evaluate(el=>el.getAttribute('viewBox')==='0 0 720 372'&&!!el.closest('.atlas-camera-scene')?.style.transform),'Fixed SVG viewport with persistent inner camera at rest');
 
   }finally{await context.close();server.close()}
  }}finally{await browser.close()}
