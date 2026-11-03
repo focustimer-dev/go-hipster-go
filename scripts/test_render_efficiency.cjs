@@ -4,7 +4,7 @@ const root=__dirname+'/../android-lab/app/src/main/assets/site';
 const dom=new JSDOM(fs.readFileSync(root+'/index.html','utf8'),{url:'https://lab.hipster.invalid/',runScripts:'outside-only',pretendToBeVisual:true});
 const w=dom.window;let stateReads=0,inspirationReads=0;
 const state={saved:[],mode:'open',activeInspiration:'A musical reference',recentInspirations:[]};
-w.scrollTo=()=>{};w.matchMedia=()=>({matches:false,addEventListener(){}});w.HTMLElement.prototype.scrollIntoView=()=>{};
+w.scrollTo=()=>{};w.scrollBy=()=>{};w.matchMedia=()=>({matches:false,addEventListener(){}});w.HTMLElement.prototype.scrollIntoView=()=>{};
 w.HipsterLab={state(){stateReads++;return JSON.stringify(state)},inspiration(){inspirationReads++;return 'legacy'}};
 try{
  w.eval(fs.readFileSync(root+'/assets/app.js','utf8'));

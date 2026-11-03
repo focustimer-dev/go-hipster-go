@@ -56,7 +56,7 @@ const roots=process.argv.slice(2);if(roots.length!==2)throw Error('Provide basel
     const start=performance.now();
     for(let i=0;i<12;i++){document.querySelector('[data-crate-continent="europe"]').click();await new Promise(r=>setTimeout(r,360));}
     running=false;observer.disconnect();intervals.sort((a,b)=>a-b);
-    return {elapsedMs:performance.now()-start,mutations,frames:intervals.length,frameP95:intervals[Math.floor(intervals.length*.95)],slowFrames:intervals.filter(n=>n>32).length,longTasks:perfLongTasks.length,maxLongTask:Math.max(0,...perfLongTasks),finalViewBox:map.getAttribute('viewBox')};
+    return {elapsedMs:performance.now()-start,mutations,frames:intervals.length,frameP95:intervals[Math.floor(intervals.length*.95)],slowFrames:intervals.filter(n=>n>32).length,longTasks:perfLongTasks.length,maxLongTask:Math.max(0,...perfLongTasks),finalViewBox:(map.getAttribute('data-camera-view')||map.getAttribute('viewBox'))};
    });
    // Actual browser touch events exercise drag and pinch paths, not synthetic clicks.
    await page.evaluate(()=>document.querySelector('[data-crate-continent="europe"]').click());await page.waitForTimeout(400);
@@ -70,7 +70,7 @@ const roots=process.argv.slice(2);if(roots.length!==2)throw Error('Provide basel
    for(let i=1;i<=24;i++){await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:cx-35-i,y:cy},{x:cx+35+i,y:cy}]});await page.waitForTimeout(16)}
    await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
    result.touch=await page.evaluate(()=>{touchFrameActive=false;touchFrames.sort((a,b)=>a-b);return {frames:touchFrames.length,p95:touchFrames[Math.floor(touchFrames.length*.95)],slowFrames:touchFrames.filter(n=>n>32).length}});
-   result.touch.finalViewBox=await page.locator('#crateAtlasMap').getAttribute('viewBox');
+   result.touch.finalViewBox=await page.locator('#crateAtlasMap').evaluate(el=>el.dataset.cameraView||el.getAttribute('viewBox'));
    await page.evaluate(()=>document.querySelector('[data-crate-continent="europe"]').click());await page.waitForTimeout(150);
    await page.screenshot({path:'android-lab/build/atlas-perf/'+test.label+'-'+test.round+'-mid-zoom-out.png'});await page.waitForTimeout(400);
    assert.equal(await page.locator('#crateAtlasMap').evaluate(el=>el.style.transform),'','Camera transform clears at rest');
@@ -80,18 +80,18 @@ const roots=process.argv.slice(2);if(roots.length!==2)throw Error('Provide basel
    await page.locator('.crate-map-frame').scrollIntoViewIfNeeded();
    await page.evaluate(()=>document.querySelector('[data-crate-continent="europe"]').click());await page.waitForTimeout(80);
    const retarget=await page.evaluate(()=>new Promise(resolve=>{
-    const map=document.querySelector('#crateAtlasMap'),before={rect:map.getBoundingClientRect().toJSON(),viewBox:map.getAttribute('viewBox')};
+    const map=document.querySelector('#crateAtlasMap'),before={rect:(map.closest('.atlas-camera-scene')||map).getBoundingClientRect().toJSON(),viewBox:(map.getAttribute('data-camera-view')||map.getAttribute('viewBox'))};
     document.querySelector('[data-crate-continent="europe"]').click();
-    requestAnimationFrame(()=>resolve({before,rect:map.getBoundingClientRect().toJSON(),viewBox:map.getAttribute('viewBox')}));
+    requestAnimationFrame(()=>resolve({before,rect:(map.closest('.atlas-camera-scene')||map).getBoundingClientRect().toJSON(),viewBox:(map.getAttribute('data-camera-view')||map.getAttribute('viewBox'))}));
    }));
    if(test.label==='candidate'){
     assert.equal(retarget.viewBox,retarget.before.viewBox,'Retarget must not commit the SVG between destinations');
     for(const key of ['x','y','width','height'])assert(Math.abs(retarget.rect[key]-retarget.before.rect[key])<.1,'Retarget starts at visible camera '+key);
    }
    const pressBox=await page.locator('.crate-map-frame').boundingBox();
-   await page.evaluate(()=>document.querySelector('#crateAtlasMap').addEventListener('touchstart',()=>{const map=document.querySelector('#crateAtlasMap');window.pressBefore={rect:map.getBoundingClientRect().toJSON(),viewBox:map.getAttribute('viewBox')}},{capture:true,once:true}));
+   await page.evaluate(()=>document.querySelector('#crateAtlasMap').addEventListener('touchstart',()=>{const map=document.querySelector('#crateAtlasMap');window.pressBefore={rect:(map.closest('.atlas-camera-scene')||map).getBoundingClientRect().toJSON(),viewBox:(map.getAttribute('data-camera-view')||map.getAttribute('viewBox'))}},{capture:true,once:true}));
    await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:pressBox.x+pressBox.width/2,y:pressBox.y+pressBox.height/2}]});
-   const interrupted=await page.evaluate(()=>({before:pressBefore,after:document.querySelector('#crateAtlasMap').getBoundingClientRect().toJSON(),viewBox:document.querySelector('#crateAtlasMap').getAttribute('viewBox')}));
+   const interrupted=await page.evaluate(()=>({before:pressBefore,after:(document.querySelector('.atlas-camera-scene')||document.querySelector('#crateAtlasMap')).getBoundingClientRect().toJSON(),viewBox:document.querySelector('#crateAtlasMap').dataset.cameraView||document.querySelector('#crateAtlasMap').getAttribute('viewBox')}));
    if(test.label==='candidate'){
     assert.equal(interrupted.viewBox,interrupted.before.viewBox,'Press must not force an SVG camera commit');
     for(const key of ['x','y','width','height'])assert(Math.abs(interrupted.after[key]-interrupted.before.rect[key])<.1,'Press preserves visual camera '+key);
@@ -106,13 +106,13 @@ const roots=process.argv.slice(2);if(roots.length!==2)throw Error('Provide basel
    let paintedWorldFrames=0;
    for(let capture=0;capture<8;capture++){
     await page.waitForTimeout(60);
-    const settled=()=>page.locator('#crateAtlasMap').evaluate(el=>!el.style.transform&&el.getAttribute('viewBox')==='0 0 720 372');
+    const settled=()=>page.locator('#crateAtlasMap').evaluate(el=>!el.style.transform&&(el.dataset.cameraView||el.getAttribute('viewBox'))==='0 0 720 372');
     const before=await settled();
     const buffer=await page.locator('.crate-map-frame').screenshot({path:'android-lab/build/atlas-perf/'+test.label+'-'+test.round+'-ocean-'+capture+'.png',animations:'allow'});
     if(before&&await settled()){assertOcean(buffer);paintedWorldFrames++}
    }
    assert(paintedWorldFrames>=2,'Capture at least two settled world frames');
-   if(test.label==='candidate')assert(await page.locator('#crateAtlasMap').evaluate(el=>el.style.willChange==='transform'),'Keep SVG promotion stable at rest');
+   if(test.label==='candidate')assert(await page.locator('#crateAtlasMap').evaluate(el=>el.getAttribute('viewBox')==='0 0 720 372'&&!!el.closest('.atlas-camera-scene')?.style.transform),'Fixed SVG viewport with persistent inner camera at rest');
 
   }finally{await context.close();server.close()}
  }}finally{await browser.close()}

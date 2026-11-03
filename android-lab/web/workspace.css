@@ -138,3 +138,10 @@ body.gig-poster.lab-workspace #labInspiration #labDismissInspiration{position:ab
 .lab-text-button:disabled{opacity:.7;cursor:default;text-decoration:none}
 
 #labInspirationDescription{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+/* Keep the live receipt to one line while choosing moods; expansion is deliberate. */
+body.lab-workspace .selection-ticket.is-compact:not(.is-docked) details:not([open]) .ticket-kicker,
+body.lab-workspace .selection-ticket.is-compact:not(.is-docked) details:not([open]) .ticket-region-short{display:none}
+body.lab-workspace .selection-ticket.is-compact:not(.is-docked) details:not([open]) summary{min-height:48px;padding-block:6px}
+body.lab-workspace .mood-grid .mood{scroll-margin-top:128px}
+body.lab-workspace .selection-ticket.is-compact details:not([open]) :is(.ticket-brief,.ticket-expander){grid-row:1}
