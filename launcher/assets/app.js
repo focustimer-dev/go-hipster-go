@@ -245,32 +245,32 @@ const atlasCanComposite=typeof CSS!=='undefined'&&typeof CSS.supports==='functio
 // otherwise briefly drop the independent ocean path when its SVG layer settles.
 const atlasPaintMap=doc.getElementById("crateAtlasMap"),atlasPlate=atlasPaintMap?.querySelector?.('.robinson-plate-content'),atlasOcean=atlasPaintMap?.querySelector?.('.crate-map-ocean');
 if(atlasPlate&&atlasOcean&&atlasOcean.parentNode===atlasPaintMap)atlasPlate.insertBefore(atlasOcean,atlasPlate.firstChild);
-// Keep promotion and viewport policy stable across zoom/commit; only the camera
-// transform changes. Recreating the compositing layer on every stop causes flash.
-if(atlasCanComposite)for(const layer of [atlasPaintMap,atlasRadialField])if(layer?.style){
- layer.style.transformOrigin='0 0';layer.style.transformBox='border-box';layer.style.overflow='visible';layer.style.willChange='transform';
+// Keep the SVG viewport fixed. Transform one internal scene continuously,
+// including at rest, rather than rescaling then replacing the outer SVG tiles.
+const atlasCameraLayers=[];
+if(atlasCanComposite&&typeof doc.createElementNS==='function')for(const root of [atlasPaintMap,atlasRadialField])if(root?.children){
+ const scene=doc.createElementNS('http://www.w3.org/2000/svg','g');scene.setAttribute('class','atlas-camera-scene');
+ for(const child of [...root.children])if(!['defs','title','desc'].includes(child.tagName.toLowerCase()))scene.appendChild(child);
+ root.appendChild(scene);scene.style.transformOrigin='0 0';scene.style.transformBox='view-box';scene.style.willChange='transform';
+ atlasCameraLayers.push(scene);
 }
-let atlasMotionBase=null,atlasMotionView=null,atlasMotionRect=null;
+let atlasCommittedView=null,atlasMotionView=null,atlasMotionRect=null;
 function paintAtlasMotion(view){
  const map=doc.getElementById("crateAtlasMap");if(!map)return;
- if(!map.style||!atlasCanComposite){map.setAttribute("viewBox",atlasBoxText(view));return;}
- if(!atlasMotionBase){
-  atlasMotionBase=(map.getAttribute("viewBox")||"0 0 720 372").split(/\s+/).map(Number);atlasMotionRect=map.getBoundingClientRect();
- }
- atlasMotionView=view;
- const [bx,by,bw]=atlasMotionBase,[x,y,w,h]=view;
- const transform=`translate(${(bx-x)/w*100}%,${(by-y)/h*100}%) scale(${bw/w})`;
- for(const layer of [map,atlasRadialField])if(layer?.style)layer.style.transform=transform;
+ if(!atlasCameraLayers.length){map.setAttribute("viewBox",atlasBoxText(view));return;}
+ if(!atlasMotionRect)atlasMotionRect=map.getBoundingClientRect();
+ atlasMotionView=[...view];
+ const [x,y,w]=view,scale=720/w;
+ const transform=`matrix(${scale},0,0,${scale},${-x*scale},${-y*scale})`;
+ for(const scene of atlasCameraLayers)scene.style.transform=transform;
  atlasDetailsForView(map,atlasBoxText(view));
 }
 function commitAtlasMotion(){
  if(!atlasMotionView)return;
- const map=doc.getElementById("crateAtlasMap"),view=atlasBoxText(atlasMotionView);
- map?.setAttribute("viewBox",view);atlasRadialField?.setAttribute("viewBox",view);
- for(const layer of [map,atlasRadialField])if(layer?.style){
-  layer.style.transform='';
- }
- atlasMotionBase=null;atlasMotionView=null;atlasMotionRect=null;
+ atlasCommittedView=[...atlasMotionView];
+ // Expose logical camera coordinates without changing the rendered viewport.
+ const map=doc.getElementById("crateAtlasMap");map?.setAttribute('data-camera-view',atlasBoxText(atlasCommittedView));
+ atlasMotionView=null;atlasMotionRect=null;
 }
 function animateAtlasView(view){
  flushAtlasNavigation(false);
@@ -377,7 +377,7 @@ function renderAtlasNavigation(){
  if(panel)panel.setAttribute("data-focus",String(focused||atlasUserNavigated));
  const loc=doc.getElementById("atlasLocator");
  if(loc){
-  const place=focused?atlasNames[atlasFocus]:"WHOLE WORLD";
+  const place=atlasUserNavigated?(crateSelected.size?"SELECTED REGIONS":"EXPLORING"):focused?atlasNames[atlasFocus]:"WHOLE WORLD";
   loc.textContent=place+" / "+(crateSelected.size?crateSelected.size+" STAMP"+(crateSelected.size===1?"":"S"):"OPEN CRATE");
  }
  const home=doc.getElementById("atlasHome");if(home)home.hidden=!(focused||atlasUserNavigated);
@@ -717,7 +717,7 @@ doc.querySelectorAll("[data-crate-region]").forEach(b=>{
 
 /* Direct manipulation: one finger or mouse drags; two fingers pinch.
    Normal desktop scrolling remains with the page unless modified. */
-function atlasView(){if(atlasMotionView)return [...atlasMotionView];const map=doc.getElementById("crateAtlasMap");return (map?.getAttribute("viewBox")||"0 0 720 372").trim().split(/\s+/).map(Number)}
+function atlasView(){if(atlasMotionView)return [...atlasMotionView];if(atlasCommittedView)return [...atlasCommittedView];const map=doc.getElementById("crateAtlasMap");return (map?.getAttribute("viewBox")||"0 0 720 372").trim().split(/\s+/).map(Number)}
 function flushAtlasNavigation(commit=true){
  if(atlasWheelTimer){clearTimeout(atlasWheelTimer);atlasWheelTimer=0;}
  if(atlasNavigationFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasNavigationFrame);
@@ -911,7 +911,7 @@ function atlasBindGestures(){
   if(!s.moved)map.setPointerCapture(event.pointerId);
   s.moved=true;if(event.cancelable)event.preventDefault();
   queueAtlasNavigation(atlasViewForGesture(s.view,s.anchor,screen,s.rect,1));
-  atlasUserNavigated=true;atlasSuppressTapUntil=Date.now()+700;
+  if(!atlasUserNavigated){atlasUserNavigated=true;renderAtlasNavigation()}atlasSuppressTapUntil=Date.now()+700;
  });
  const endPointer=event=>{
   if(!pointerGesture||pointerGesture.id!==event.pointerId)return;
@@ -933,7 +933,7 @@ function atlasBindGestures(){
   if(event.cancelable)event.preventDefault();
   s.moved=true;clearPendingTap();twoFingerTap=null;
   queueAtlasNavigation(atlasViewForGesture(s.view,s.anchor,screen,s.rect,s.count===2?s.distance/screen.distance:1));
-  atlasUserNavigated=true;atlasSuppressTapUntil=Date.now()+700;
+  if(!atlasUserNavigated){atlasUserNavigated=true;renderAtlasNavigation()}atlasSuppressTapUntil=Date.now()+700;
  },{passive:false});
  const endTouch=event=>{
   const s=atlasTouchGesture;if(!s)return;
@@ -1315,7 +1315,7 @@ if(ticket){
   if(receiptReached){
    if(ticket.parentElement!==dock){
     dock.appendChild(ticket);
-    ticket.classList.add("is-docked");
+    ticket.classList.add("is-docked");ticket.classList.remove('is-compact');
     // File the summary closed by default; let the visitor expand it deliberately.
     // The compact receipt must not crowd the post-GO handoff below.
     details.open=false;
@@ -1328,6 +1328,9 @@ if(ticket){
     details.open=false;
    }
    ticket.hidden=firstAiChoice.getBoundingClientRect().bottom>(body.classList.contains("lab-workspace")?56:0);
+   const moods=doc.querySelector('.mood-grid'),bounds=moods?.getBoundingClientRect();
+   const choosingMoods=Boolean(body.classList.contains('lab-workspace')&&bounds&&bounds.bottom>64&&bounds.top<window.innerHeight);
+   ticket.classList.toggle('is-compact',choosingMoods);
    if(ticket.hidden)details.open=false;
   }
  }
@@ -1338,6 +1341,11 @@ if(ticket){
  }
  window.addEventListener("scroll",queueSelectionTicketVisibility,{passive:true});
  window.addEventListener("resize",queueSelectionTicketVisibility,{passive:true});
+ doc.addEventListener('focusin',event=>{
+  if(!body.classList.contains('lab-workspace')||ticket.hidden||ticket.classList.contains('is-docked')||!event.target.closest?.('.mood-grid'))return;
+  const bounds=event.target.getBoundingClientRect(),bottom=ticket.getBoundingClientRect().bottom;
+  if(bounds.top<bottom+12)window.scrollBy({top:bounds.top-bottom-12,behavior:'instant'});
+ });
  // The receipt sheet moves during the printer animation. Recheck its dock.
  doc.getElementById("promptReceipt")?.addEventListener("animationend",queueSelectionTicketVisibility);
  const edit=doc.getElementById("selectionTicketEdit");
