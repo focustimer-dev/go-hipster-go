@@ -514,9 +514,9 @@ function renderSetup(){
 function renderLaunch(regionsOnly=false){
  if(!regionsOnly)renderSelections();
  renderCrateMap();
+ const undo=doc.getElementById("undoShuffle");if(undo)undo.hidden=!previousShuffle;
  if(!regionsOnly){
  renderShufflePins();
- const undo=doc.getElementById("undoShuffle");if(undo)undo.hidden=!previousShuffle;
  const slider=doc.getElementById("tempoSlider"),tempoValue=doc.getElementById("tempoValue"),anyTempo=doc.getElementById("anyTempo");
  if(slider){slider.value=tempo?tempoSteps.indexOf(tempo)+1:3;slider.setAttribute("aria-valuetext",tempo?tempoNames[tempo]:"Any tempo — no pace preference")}
  const tempoControl=doc.getElementById("tempoControl");if(tempoControl)tempoControl.setAttribute("data-tempo",tempo||"any");
