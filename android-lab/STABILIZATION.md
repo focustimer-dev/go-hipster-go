@@ -84,3 +84,18 @@ zoom p95 50 -> 49.9 ms, touch p95 16.7 -> 16.8 ms and total task time
 show no material gesture improvement or regression; the demonstrated reduction is
 unrelated UI work (235 unchanged atlas writes -> zero on a mood tap; four full
 native reads -> at most one). Timing is a single diagnostic run, not a phone SLA.
+
+## 0.9.21 Jukebox candidate
+
+- Continuous convex pan limits replace nearest-land snapping. Ocean crossings
+  are allowed; camera aspect, zoom limits, world bounds and artwork are unchanged.
+- Motion retains the fixed SVG viewport and persistent HTML transform. At rest,
+  releasing `will-change` permits Chromium to rasterize detail at the final scale.
+  Logical coordinates retain full precision; rounding is display metadata only.
+- Resize updates pixel translation while preserving the geographic camera.
+- Ticket geometry reads precede DOM moves; unchanged pace input skips rendering.
+
+Local checks: 139 core tests, five offline bundle tests, DOM, route and render
+checks pass. The new boundary regression covers 216,486 small drag movements
+and continuity through the former 600-unit cutoff. Browser/native CI and
+phone sharpness/smoothness acceptance remain pending. No APK is built yet.

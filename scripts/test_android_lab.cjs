@@ -81,6 +81,17 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert.notEqual(await map.getAttribute('data-camera-view'),'0 0 720 372','Inner camera actually zoomed');
   assert.equal(await page.locator('.atlas-camera-scene').count(),1);
   assert(await page.locator('.atlas-camera-scene').evaluate(el=>getComputedStyle(el).transform.startsWith('matrix(')));
+  assert.equal(await page.locator('.atlas-camera-scene').evaluate(el=>el.style.willChange),'auto','Settled SVG can rasterize at its current scale');
+  const cameraBeforeResize=await map.getAttribute('data-camera-view');
+  await page.setViewportSize({width:360,height:800});await page.waitForTimeout(100);
+  assert.equal(await map.getAttribute('data-camera-view'),cameraBeforeResize,'Resize preserves geographic destination');
+  const resizeError=await page.locator('.atlas-camera-viewport').evaluate(el=>{
+   const scene=el.querySelector('.atlas-camera-scene'),m=new DOMMatrix(getComputedStyle(scene).transform),v=scene.querySelector('svg#crateAtlasMap').dataset.cameraView.split(/\s+/).map(Number),r=el.getBoundingClientRect();
+   return Math.max(Math.abs(m.e+v[0]*720/v[2]*r.width/720),Math.abs(m.f+v[1]*720/v[2]*r.height/372));
+  });
+  assert(resizeError<.2,'Resize recalculates pixel translation');
+  await page.locator('.crate-map-frame').screenshot({path:'android-lab/build/switch-review/settled-detail-360.png'});
+  await page.setViewportSize({width:412,height:915});await page.waitForTimeout(100);
   await page.locator('[data-crate-region="south-asia"]').evaluate(el=>el.click());
   assert.match(await page.locator('#atlasLocator').textContent(),/^SELECTED REGIONS/,'Auto-framing does not claim an old continent');
   await page.locator('#atlasHome').evaluate(el=>el.click());

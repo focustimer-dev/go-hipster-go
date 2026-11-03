@@ -127,7 +127,11 @@ const roots=process.argv.slice(2);if(roots.length!==2)throw Error('Provide basel
  for(let round=1;round<=4;round++){
   const baseline=samples.find(sample=>sample.round===round&&sample.label==='baseline'),candidate=samples.find(sample=>sample.round===round&&sample.label==='candidate');
   assert(candidate.mutations.viewBox<=baseline.mutations.viewBox+1,'Camera viewBox work must not regress in round '+round);
-  assert.equal(candidate.touch.finalViewBox,baseline.touch.finalViewBox,'Drag/pinch destinations must be preserved in round '+round);
+  // The old camera rounded each settled gesture to 0.1 map unit. The new
+  // camera retains precision to avoid a release/retarget jump; compare numeric
+  // destinations within one metadata rounding unit rather than string equality.
+  const actual=candidate.touch.finalViewBox.split(/\s+/).map(Number),expected=baseline.touch.finalViewBox.split(/\s+/).map(Number);
+  actual.forEach((value,i)=>assert(Math.abs(value-expected[i])<=(i<2?.100000001:1e-9),'Drag/pinch destination exceeds rounding tolerance in round '+round));
   assert.equal(candidate.finalViewBox,baseline.finalViewBox,'Camera destination must be preserved in round '+round);
  }
  // Same-run relative budgets tolerate runner noise while flagging material regressions.

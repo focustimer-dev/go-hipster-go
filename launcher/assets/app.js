@@ -237,9 +237,7 @@ function crateRegionPrompt(){
  return "Regional exploration: "+all.join(", ")+".";
 }
 function atlasBoxText(a){return a.map(v=>Math.round(v*10)/10).join(" ")}
-// Composite one SVG layer during movement; commit the vector camera at rest.
-// The frame still clips the map, while overflow lets zoom-out reveal geography
-// outside the starting SVG viewport rather than exposing empty edges.
+// Composite the fixed camera during movement; release its raster hint at rest.
 const atlasCanComposite=typeof CSS!=='undefined'&&typeof CSS.supports==='function'&&CSS.supports('transform','translate(0%,0%) scale(1)')&&CSS.supports('transform-box','border-box');
 // The ocean must share the countries' clipping/paint ownership. WebView can
 // otherwise briefly drop the independent ocean path when its SVG layer settles.
@@ -251,7 +249,7 @@ const atlasCameraLayers=[];let atlasCameraViewport=null;
 if(atlasCanComposite&&atlasPaintMap?.parentNode&&typeof doc.createElementNS==='function'){
  const frame=atlasPaintMap.parentNode,viewport=doc.createElement('div'),scene=doc.createElement('div');
  viewport.className='atlas-camera-viewport';viewport.style.cssText='position:relative;width:100%;aspect-ratio:720/372;overflow:hidden';
- scene.className='atlas-camera-scene';scene.style.cssText='position:relative;width:100%;height:100%;transform-origin:0 0;will-change:transform';
+ scene.className='atlas-camera-scene';scene.style.cssText='position:relative;width:100%;height:100%;transform-origin:0 0';
  frame.insertBefore(viewport,atlasPaintMap);viewport.appendChild(scene);
  if(atlasRadialField){scene.appendChild(atlasRadialField);atlasRadialField.style.top='0'}
  scene.appendChild(atlasPaintMap);atlasCameraViewport=viewport;atlasCameraLayers.push(scene);
@@ -265,16 +263,34 @@ function paintAtlasMotion(view){
  atlasMotionView=[...view];
  const [x,y,w]=view,scale=720/w;
  const transform=`matrix(${scale},0,0,${scale},${-x*scale*atlasMotionRect.width/720},${-y*scale*atlasMotionRect.height/372})`;
- for(const scene of atlasCameraLayers)scene.style.transform=transform;
+ for(const scene of atlasCameraLayers){
+  if(scene.style.willChange!=='transform')scene.style.willChange='transform';
+  scene.style.transform=transform;
+ }
  atlasDetailsForView(map,atlasBoxText(view));
 }
 function commitAtlasMotion(){
  if(!atlasMotionView)return;
- atlasCommittedView=atlasBoxText(atlasMotionView).split(/\s+/).map(Number);
+ atlasCommittedView=[...atlasMotionView];
  // Expose logical camera coordinates without changing the rendered viewport.
  const map=doc.getElementById("crateAtlasMap");map?.setAttribute('data-camera-view',atlasBoxText(atlasCommittedView));
  atlasMotionView=null;atlasMotionRect=null;
+ // Let Chromium rasterize SVG detail at the final scale. Keep exactly the same
+ // transform and viewport: no camera handoff or rounding jump at release.
+ for(const scene of atlasCameraLayers)scene.style.willChange='auto';
 }
+if(typeof ResizeObserver==='function'&&atlasCameraViewport){
+ let size='';
+ new ResizeObserver(entries=>{
+  const rect=entries[0].contentRect,next=rect.width+' '+rect.height;
+  if(next===size)return;size=next;
+  // A new layout changes pixel translation, not the geographic destination.
+  const moving=Boolean(atlasMotionView),view=atlasMotionView||atlasCommittedView;
+  if(!view)return;
+  atlasMotionRect=null;paintAtlasMotion(view);if(!moving)commitAtlasMotion();
+ }).observe(atlasCameraViewport);
+}
+
 function animateAtlasView(view){
  flushAtlasNavigation(false);
  const map=doc.getElementById("crateAtlasMap");if(!map)return;
@@ -784,25 +800,42 @@ function atlasCollectLand(map){
   if(paths.some(({path,box:b})=>x>=b.x&&x<=b.x+b.width&&y>=b.y&&y<=b.y+b.height&&path.isPointInFill(point)))atlasLandAnchors.push([x,y]);
  }
 }
+// A single convex navigation boundary prevents nearest-island switches during
+// a drag. It spans ocean crossings and still limits the empty map corners.
+function atlasHull(points){
+ const sorted=points.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]);
+ const cross=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]);
+ const half=items=>{const result=[];for(const p of items){while(result.length>1&&cross(result.at(-2),result.at(-1),p)<=0)result.pop();result.push(p)}return result};
+ const lower=half(sorted),upper=half(sorted.slice().reverse());lower.pop();upper.pop();return lower.concat(upper);
+}
+let atlasLandHull=null,atlasPanBoundary=null,atlasPanSize='';
 function atlasConstrain(view){
  let [x,y,w,h]=atlasNormalize(view);
  const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
  x=clamp(x,0,720-w);y=clamp(y,0,372-h);
- // Keep sampled land inside the central 70% of the viewport. The camera can
- // cross oceans, but cannot settle with its only coastline off-screen.
- if(atlasLandAnchors.length&&w<600){
-  const mx=w*.15,my=h*.15;
-  let best=null,distance=Infinity;
-  for(const [lx,ly] of atlasLandAnchors){
-   const nx=clamp(clamp(x,lx-w+mx,lx-mx),0,720-w);
-   const ny=clamp(clamp(y,ly-h+my,ly-my),0,372-h);
-   const d=(nx-x)**2+(ny-y)**2;
-   if(d<distance){best=[nx,ny];distance=d}
+ if(!atlasLandAnchors.length||w===720)return [x,y,w,h];
+ if(!atlasLandHull)atlasLandHull=atlasHull(atlasLandAnchors);
+ const size=w+' '+h;
+ if(size!==atlasPanSize){
+  atlasPanSize=size;
+  const mx=w*.15,my=h*.15,points=[];
+  for(const [lx,ly] of atlasLandHull){
+   for(const dx of [mx,w-mx])for(const dy of [my,h-my])points.push([clamp(lx-dx,0,720-w),clamp(ly-dy,0,372-h)]);
   }
-  if(best)[x,y]=best;
+  atlasPanBoundary=atlasHull(points);
  }
+ let inside=true,best=[x,y],distance=Infinity;
+ for(let i=0;i<atlasPanBoundary.length;i++){
+  const a=atlasPanBoundary[i],b=atlasPanBoundary[(i+1)%atlasPanBoundary.length],dx=b[0]-a[0],dy=b[1]-a[1];
+  if(dx*(y-a[1])-dy*(x-a[0]) < -1e-9)inside=false;
+  const t=clamp(((x-a[0])*dx+(y-a[1])*dy)/(dx*dx+dy*dy||1),0,1);
+  const nx=a[0]+dx*t,ny=a[1]+dy*t,d=(nx-x)**2+(ny-y)**2;
+  if(d<distance){best=[nx,ny];distance=d}
+ }
+ if(!inside)[x,y]=best;
  return [x,y,w,h];
 }
+
 function atlasViewForGesture(base,anchor,screen,rect,zoom){
  const ratio=Math.max(Math.max(120/base[2],(120*372/720)/base[3]),Math.min(Math.min(720/base[2],372/base[3]),zoom));
  const width=base[2]*ratio,height=base[3]*ratio;
@@ -1275,7 +1308,7 @@ doc.querySelectorAll("[data-crate-continent]").forEach(b=>b.addEventListener("cl
 const atlasHome=doc.getElementById("atlasHome");if(atlasHome)atlasHome.addEventListener("click",()=>{atlasFocus=null;atlasUserNavigated=false;renderCrateMap();animateAtlasView(null)});
 const crateClear=doc.getElementById("crateGeoClear");if(crateClear)crateClear.addEventListener("click",()=>{crateSelected.clear();lastCrateStamp=null;updateCrateMap(false)});
 const tempoSlider=doc.getElementById("tempoSlider");
-function selectTempo(){tempo=tempoSteps[Number(tempoSlider.value)-1]||"";copiedPrompt=null;selectionChanged()}
+function selectTempo(){const next=tempoSteps[Number(tempoSlider.value)-1]||"";if(next===tempo)return;tempo=next;copiedPrompt=null;selectionChanged()}
 if(tempoSlider){
  tempoSlider.addEventListener("input",selectTempo);
  // Pointer and keyboard selection use the same six positions, including Any.
@@ -1314,7 +1347,12 @@ if(ticket){
  function updateSelectionTicketVisibility(){
   if(!firstAiChoice||!dock||!receipt||!site)return;
   // Stable threshold: moving the ticket must not move the trigger itself.
+  // Read all geometry before moving or resizing the ticket.
+  const lab=body.classList.contains('lab-workspace');
   const receiptReached=receipt.getBoundingClientRect().top<=window.innerHeight-88;
+  const choiceBottom=firstAiChoice.getBoundingClientRect().bottom;
+  const moodBounds=doc.querySelector('.mood-grid')?.getBoundingClientRect();
+  const choosingMoods=Boolean(lab&&moodBounds&&moodBounds.bottom>64&&moodBounds.top<window.innerHeight);
   if(receiptReached){
    if(ticket.parentElement!==dock){
     dock.appendChild(ticket);
@@ -1330,9 +1368,8 @@ if(ticket){
     ticket.classList.remove("is-docked");
     details.open=false;
    }
-   ticket.hidden=firstAiChoice.getBoundingClientRect().bottom>(body.classList.contains("lab-workspace")?56:0);
-   const moods=doc.querySelector('.mood-grid'),bounds=moods?.getBoundingClientRect();
-   const choosingMoods=Boolean(body.classList.contains('lab-workspace')&&bounds&&bounds.bottom>64&&bounds.top<window.innerHeight);
+   const hidden=choiceBottom>(lab?56:0);
+   if(ticket.hidden!==hidden)ticket.hidden=hidden;
    ticket.classList.toggle('is-compact',choosingMoods);
    if(ticket.hidden)details.open=false;
   }
