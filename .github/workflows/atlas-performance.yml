@@ -9,6 +9,7 @@ on:
       - 'scripts/robinson_atlas.py'
       - 'scripts/build_gig_poster.py'
       - 'scripts/profile_atlas.cjs'
+      - 'scripts/assert_atlas_ocean.cjs'
       - 'android-lab/release-baseline.json'
       - '.github/workflows/atlas-performance.yml'
 permissions:
