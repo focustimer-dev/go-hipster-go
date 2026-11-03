@@ -73,6 +73,30 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   await page.locator('[data-lab-action="close-preferences"]').click();
   await page.locator('[data-lab-tab="jukebox"]').click();
   await page.locator('[data-lab-action="save"]').click();assert((await page.evaluate(()=>labCalls)).some(c=>c[0]==='save'));
+  // Fixed viewport, continuous inner camera, truthful navigation and compact ticket.
+  await page.emulateMedia({reducedMotion:'reduce'});
+  const map=page.locator('#crateAtlasMap');
+  await page.locator('[data-crate-continent="europe"]').evaluate(el=>el.click());
+  assert.equal(await map.getAttribute('viewBox'),'0 0 720 372','Outer SVG viewport remains fixed');
+  assert.notEqual(await map.getAttribute('data-camera-view'),'0 0 720 372','Inner camera actually zoomed');
+  assert.equal(await map.locator('.atlas-camera-scene').count(),1);
+  assert(await map.locator('.atlas-camera-scene').evaluate(el=>getComputedStyle(el).transform.startsWith('matrix(')));
+  await page.locator('[data-crate-region="south-asia"]').evaluate(el=>el.click());
+  assert.match(await page.locator('#atlasLocator').textContent(),/^SELECTED REGIONS/,'Auto-framing does not claim an old continent');
+  await page.locator('#atlasHome').evaluate(el=>el.click());
+  assert.equal(await map.getAttribute('data-camera-view'),'0 0 720 372');
+  await page.locator('.crate-map-frame').screenshot({path:'android-lab/build/switch-review/fixed-viewport-world.png'});
+  await page.locator('.mood-grid').evaluate(el=>window.scrollTo({top:window.scrollY+el.getBoundingClientRect().top+60,behavior:'instant'}));
+  await page.waitForTimeout(80);
+  const ticket=page.locator('#selectionTicket');
+  assert(await ticket.evaluate(el=>el.classList.contains('is-compact')&&!el.hidden&&!el.classList.contains('is-docked')),'Ticket condenses while choosing moods');
+  assert((await ticket.boundingBox()).height<=64,'Compact summary does not retain a multi-line panel');
+  await ticket.screenshot({path:'android-lab/build/switch-review/compact-mood-ticket.png'});
+  await page.locator('.mood-grid [data-mood]').first().focus();await page.waitForTimeout(80);
+  const focusBounds=await page.locator('.mood-grid [data-mood]').first().boundingBox(),ticketBounds=await ticket.boundingBox();
+  assert(focusBounds.y>=ticketBounds.y+ticketBounds.height+10,'Focused mood clears the floating ticket');
+  await ticket.locator('summary').click();
+  assert(await ticket.locator('.ticket-region-short').isVisible(),'Expanded ticket restores region/option details');
   assert.deepEqual(errors,[]);
   console.log('PASS: mobile workspace, scroll restoration, preferences, save, exact-prompt copy, ChatGPT/Gemini GO, Open, and native Share hooks.');
  }finally{if(browser)await browser.close();server.close()}
