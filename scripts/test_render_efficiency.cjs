@@ -34,7 +34,21 @@ try{
   assert.equal(w.document.querySelector('[data-crate-region="atlantic-europe"]').getAttribute('aria-pressed'),String(selected));
   assert.equal(w.document.querySelector('#prompt').textContent.includes('Regional exploration:'),selected);
  }
- unrelated.disconnect();
+ unrelated.disconnect(); // Touch capture must apply the first tap before its 290ms timer expires.
+ const timers=[],originalTimer=w.setTimeout;
+ w.setTimeout=(callback,ms)=>ms===290?(timers.push(callback),timers.length):originalTimer(callback,ms);
+ const touch=land=>{const tap=new w.MouseEvent('click',{bubbles:true,cancelable:true,detail:1,clientX:100,clientY:100});Object.defineProperty(tap,'pointerType',{value:'touch'});land.dispatchEvent(tap)};
+ w.document.querySelector('[data-crate-continent="asia"]').click();
+ const land=w.document.querySelector('[data-atlas-country][data-atlas-region="east-asia"]');
+ touch(land);assert.equal(land.getAttribute('data-inked'),'true','First touch selects immediately');
+ timers.shift()();assert.equal(land.getAttribute('data-inked'),'true','Timer does not select twice');
+ touch(land);assert.equal(land.getAttribute('data-inked'),'false','Touch deselection is immediate');timers.shift()();
+ const beforeDouble=w.document.querySelector('#prompt').textContent;
+ touch(land);touch(land);
+ assert.equal(land.getAttribute('data-inked'),'false','Double tap restores prior selection before zoom');
+ assert.equal(w.document.querySelector('#prompt').textContent,beforeDouble,'Double tap restores exact request');
+ w.setTimeout=originalTimer;
+
  w.document.querySelector('[data-crate-region="south-asia"]').click();
  assert(observer.takeRecords().length>0,'Region changes still update geography');
  state.activeInspiration='Updated reference';w.HipsterLabRefresh();
