@@ -32,6 +32,8 @@ const root=path.resolve(__dirname,'../android-lab/app/src/main/assets/site');
   assert(calls.some(c=>c[0]==='open'&&c[1]==='chatgpt'&&c[2].includes('Confirm whether the skill')),'Setup uses native AI handoff');
   click('#firstCrateSetup [data-action="ready"]');
   assert(w.document.querySelector('#fc-current-setup').textContent.includes('ALL SET'));
+  // A subsequent launch relocates the original confirmed setup, not a copy.
+  assert.equal(w.document.querySelector('#labSetupPreferences #firstCrateSetup'),null);
   calls.length=0; // Keep existing GO assertions independent of the setup handoff above.
   assert.equal(w.document.querySelector('#labJukebox .service-counter'),null);
   const recording=w.document.querySelector('#labRecordingPreferences');
@@ -65,6 +67,14 @@ const root=path.resolve(__dirname,'../android-lab/app/src/main/assets/site');
   const afterSecondRoute=routeState();
   click('#shareButton');await flush();assert(calls.some(c=>c[0]==='share'&&c[1]===second[2]));
   assert.equal(routeState(),afterSecondRoute,'Sharing the current request does not reroll');
+  click('[data-crate-region="south-asia"]');
+  await new Promise(resolve=>setTimeout(resolve,700));
+  const atlas=w.document.querySelector('[data-atlas-country]')?.closest('svg');
+  assert(atlas,'Atlas SVG exists');
+  const camera=atlas?.getAttribute('viewBox');
+  click('[data-crate-region="south-asia"]');
+  await new Promise(resolve=>setTimeout(resolve,700));
+  assert.equal(atlas?.getAttribute('viewBox'),camera,'Deselecting preserves the atlas camera');
   click('[data-crate-region="south-asia"]');
   const selectedBefore=[...w.document.querySelectorAll('[data-crate-region][aria-pressed="true"]')].map(e=>e.dataset.crateRegion);
   const handoffsBefore=calls.filter(c=>c[0]==='go').length;
@@ -145,6 +155,16 @@ const root=path.resolve(__dirname,'../android-lab/app/src/main/assets/site');
  let finishInstall;w.HipsterLab.copy=()=>new Promise(resolve=>{finishInstall=resolve});
  click('#firstCrateSetup [data-action="install-copy"]');w.HipsterSetup.setPair({ai:'gemini',service:'youtube'});finishInstall(true);await flush();
  assert.equal(calls.filter(c=>c[0]==='offerSetupShare').length,beforeStaleOffer,'Changing AI during install copy must not offer a stale share');
+ const returning=new JSDOM(fs.readFileSync(root+'/index.html','utf8'),{url:'https://lab.hipster.invalid/',runScripts:'outside-only',pretendToBeVisual:true});
+ try{
+  const r=returning.window;r.matchMedia=w.matchMedia;r.scrollTo=()=>{};r.HTMLElement.prototype.scrollIntoView=function(){};
+  r.HipsterLab={state:()=>JSON.stringify(state),inspiration:()=>''};
+  r.localStorage.setItem('hmg-first-crate-v1',JSON.stringify({completed:true,ai:'ChatGPT',service:'Spotify',confirmedPairs:{'["ChatGPT","Spotify"]':true}}));
+  r.eval(fs.readFileSync(root+'/assets/app.js','utf8'));r.eval(fs.readFileSync(root+'/assets/first-crate.js','utf8'));
+  assert(r.document.querySelector('#labSetupPreferences #firstCrateSetup'),'Returning setup lives in Preferences');
+  assert.equal(r.document.querySelector('#labJukebox #firstCrateSetup'),null,'No setup footprint in returning Jukebox');
+  assert(r.document.querySelector('#labSetupPreferences [data-action="choose"]'),'Change setup stays available');
+ }finally{returning.window.close()}
  console.log('PASS: top workspace, scroll restoration, preferences, Back, saved actions, native handoffs, exact shared inspiration, plain-text rendering, unchanged regions, explicit remove and stale-copy race.');
  }finally{w.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});

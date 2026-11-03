@@ -283,7 +283,7 @@ function toggleCrateRegion(id){
  const added=!crateSelected.has(id);
  if(added)crateSelected.add(id);else crateSelected.delete(id);
  lastCrateStamp=added?id:null;
- updateCrateMap();
+ updateCrateMap(added);
 }
 const crateStampNames={"us-west":"US W","us-east":"US E","canada-west":"CAN W","canada-east":"CAN E","mexico":"MEX","central-america":"CENT AM","caribbean":"CARIB","northern-south-america":"N S AM","southern-south-america":"S S AM","atlantic-europe":"W EUR","mediterranean-europe":"MED / BALK","northern-europe":"N EUR","eastern-europe":"E EUR","north-africa":"N AFR","west-africa":"W AFR","east-africa":"E AFR","central-southern-africa":"C / S AFR","middle-east":"MID EAST","central-asia":"C ASIA","south-asia":"S ASIA","east-asia":"E ASIA","southeast-asia":"SE ASIA","northern-asia":"N ASIA","oceania":"OCEANIA","antarctica":"ANTARCTICA"};
 function renderCrateMap(){
@@ -359,9 +359,9 @@ function renderCrateStamps(){
  }
  lastCrateStamp=null;
 }
-function updateCrateMap(){
+function updateCrateMap(reframe=true){
  store(crateStorageKey,JSON.stringify([...crateSelected]));
- copiedPrompt=null;selectionChanged();frameSelectedAtlas();
+ copiedPrompt=null;selectionChanged();if(reframe)frameSelectedAtlas();
 }
 const params=new URLSearchParams(location.search);
 includeCover=params.get("cover")==="1";
@@ -1169,7 +1169,7 @@ doc.querySelectorAll("[data-atlas-country]").forEach(path=>{
 });
 doc.querySelectorAll("[data-crate-continent]").forEach(b=>b.addEventListener("click",()=>focusCrateContinent(b.dataset.crateContinent)));
 const atlasHome=doc.getElementById("atlasHome");if(atlasHome)atlasHome.addEventListener("click",()=>{atlasFocus=null;atlasUserNavigated=false;renderCrateMap();animateAtlasView(null)});
-const crateClear=doc.getElementById("crateGeoClear");if(crateClear)crateClear.addEventListener("click",()=>{crateSelected.clear();lastCrateStamp=null;updateCrateMap()});
+const crateClear=doc.getElementById("crateGeoClear");if(crateClear)crateClear.addEventListener("click",()=>{crateSelected.clear();lastCrateStamp=null;updateCrateMap(false)});
 const tempoSlider=doc.getElementById("tempoSlider");
 function selectTempo(){tempo=tempoSteps[Number(tempoSlider.value)-1]||"";copiedPrompt=null;selectionChanged()}
 if(tempoSlider){
