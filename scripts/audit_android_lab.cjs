@@ -91,6 +91,14 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    await capture('receipt');
    await page.locator('[data-lab-action="save"]').click();
    await page.locator('[data-lab-tab="crate"]').click();await capture('saved-crate');
+   await page.evaluate(()=>{
+    auditState.recentInspirations=[{id:'recent-preview',text:auditReference,title:'Harlem Prom Night 1986',description:'A page-supplied music reference description.'}];auditState.inspirationPreview={title:'Harlem Prom Night 1986',description:'A page-supplied music reference description.'};
+    HipsterLab.useRecentInspiration=id=>{auditReference=auditState.recentInspirations.find(e=>e.id===id).text;window.HipsterLabRefresh()};window.HipsterLabRefresh();
+   });
+   await page.locator('[data-lab-tab="jukebox"]').click();await page.locator('#labInspiration').scrollIntoViewIfNeeded();await capture('link-preview');
+   await page.locator('#labDismissInspiration').click();assert(!await page.locator('#labInspiration').isVisible());
+   await page.locator('[data-lab-tab="crate"]').click();await page.locator('[data-lab-recent="recent-preview"]').click();
+   assert(await page.locator('#labJukebox').isVisible());assert(await page.locator('#labInspiration').isVisible());
    await page.locator('[data-lab-tab="manual"]').click();await capture('manual');
    const appVersion=fs.readFileSync(path.resolve(__dirname,'../android-lab/app/build.gradle'),'utf8').match(/versionName\s+'([^']+)'/)[1];
    assert.equal(await page.locator('#labAppVersion').textContent(),appVersion);

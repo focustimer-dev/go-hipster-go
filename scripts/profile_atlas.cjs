@@ -26,6 +26,18 @@ const roots=process.argv.slice(2);if(roots.length!==2)throw Error('Provide basel
     running=false;observer.disconnect();intervals.sort((a,b)=>a-b);
     return {elapsedMs:performance.now()-start,mutations,frames:intervals.length,frameP95:intervals[Math.floor(intervals.length*.95)],slowFrames:intervals.filter(n=>n>32).length,longTasks:perfLongTasks.length,maxLongTask:Math.max(0,...perfLongTasks),finalViewBox:map.getAttribute('viewBox')};
    });
+   // Actual browser touch events exercise drag and pinch paths, not synthetic clicks.
+   await page.evaluate(()=>document.querySelector('[data-crate-continent="europe"]').click());await page.waitForTimeout(400);
+   await page.locator('#crateAtlasMap').scrollIntoViewIfNeeded();
+   const box=await page.locator('#crateAtlasMap').boundingBox(),cx=box.x+box.width/2,cy=box.y+box.height/2;
+   await page.evaluate(()=>{window.touchFrames=[];window.touchFrameActive=true;let last=performance.now();function tick(now){touchFrames.push(now-last);last=now;if(touchFrameActive)requestAnimationFrame(tick)}requestAnimationFrame(tick)});
+   await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:cx,y:cy}]});
+   for(let i=1;i<=24;i++){await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:cx+Math.sin(i/24*Math.PI*2)*45,y:cy+Math.cos(i/24*Math.PI*2)*20}]});await page.waitForTimeout(16)}
+   await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+   await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:cx-35,y:cy},{x:cx+35,y:cy}]});
+   for(let i=1;i<=24;i++){await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:cx-35-i,y:cy},{x:cx+35+i,y:cy}]});await page.waitForTimeout(16)}
+   await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+   result.touch=await page.evaluate(()=>{touchFrameActive=false;touchFrames.sort((a,b)=>a-b);return {frames:touchFrames.length,p95:touchFrames[Math.floor(touchFrames.length*.95)],slowFrames:touchFrames.filter(n=>n>32).length}});
    const after=(await cdp.send('Performance.getMetrics')).metrics,metric=n=>(after.find(x=>x.name===n)?.value||0)-(before.find(x=>x.name===n)?.value||0);
    reports.push({label:test.label,loadMs:loaded,...result,scriptMs:metric('ScriptDuration')*1000,layoutMs:metric('LayoutDuration')*1000,recalcMs:metric('RecalcStyleDuration')*1000,taskMs:metric('TaskDuration')*1000});
    await page.screenshot({path:'android-lab/build/atlas-perf/'+test.label+'.png'});

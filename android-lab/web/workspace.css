@@ -130,3 +130,11 @@ body.gig-poster.lab-workspace #labInspiration button:active{background:#dfb045}
 #labSetupDetails>summary{min-height:48px;cursor:pointer;font:400 1.375rem/1.3 Poster,sans-serif;align-content:center}
 .lab-dialog .lab-choice small{max-width:38ch}
 @media(forced-colors:active){.lab-rail button[aria-current=page]{outline:2px solid Highlight;outline-offset:-3px}}
+
+body.gig-poster.lab-workspace #labInspiration{padding-top:22px}
+body.gig-poster.lab-workspace #labInspiration #labDismissInspiration{position:absolute;inset:0 0 auto auto;z-index:4;min-width:44px;min-height:44px;padding:0;background:#103135;color:#f4efdf;font:400 1.75rem/1 Arial,sans-serif}
+#labInspiration>div:first-child{padding-inline-end:12px}
+#labInspirationDescription{font:.875rem/1.45 Arial,sans-serif;margin:10px 0 0;color:#f4efdf;overflow-wrap:anywhere}
+.lab-text-button:disabled{opacity:.7;cursor:default;text-decoration:none}
+
+#labInspirationDescription{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
