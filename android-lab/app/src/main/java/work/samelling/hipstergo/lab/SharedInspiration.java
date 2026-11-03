@@ -14,6 +14,8 @@ final class SharedInspiration {
     private final Runnable changed;
     private final ExecutorService worker=Executors.newSingleThreadExecutor();
     private Future<?> pending;
+    private LinkPreview.Request previewRequest;
+    private long generation;
     private boolean closed;
     private volatile boolean previewLoading;
     private volatile String loadingText="";
@@ -35,20 +37,22 @@ final class SharedInspiration {
         return new JSONObject();
     }
     private void remember(String text){prefs.edit().putString("recentInspirationsV1",InspirationHistory.remember(recent(),text,System.currentTimeMillis()).toString()).apply();}
-    void clear(){previewLoading=false;if(pending!=null)pending.cancel(true);prefs.edit().remove("sharedInspiration").apply();changed.run();}
+    void clear(){previewLoading=false;cancelPreview();prefs.edit().remove("sharedInspiration").apply();changed.run();}
     void reuse(String id){JSONArray entries=recent();for(int i=0;i<entries.length();i++){JSONObject e=entries.optJSONObject(i);if(e!=null&&id.equals(e.optString("id"))){use(e.optString("text"));return;}}}
-    void close(){closed=true;worker.shutdownNow();}
+    void close(){closed=true;cancelPreview();worker.shutdownNow();}
+    private void cancelPreview(){generation++;if(previewRequest!=null)previewRequest.cancel();if(pending!=null)pending.cancel(true);}
     private void use(String text){
-        if(pending!=null)pending.cancel(true);
+        cancelPreview();
         remember(text);prefs.edit().putString("sharedInspiration",text).apply();
         String url=LinkPreview.firstUrl(text);previewLoading=!url.isEmpty()&&preview().optString("title").isEmpty();loadingText=text;changed.run();
         if(!previewLoading)return;
+        final long version=generation;final LinkPreview.Request request=new LinkPreview.Request();previewRequest=request;
         pending=worker.submit(()->{
-            try{LinkPreview.Result result=LinkPreview.fetch(url);activity.runOnUiThread(()->{
-                if(closed)return;if(text.equals(loadingText))previewLoading=false;JSONArray entries=recent();boolean found=false;
+            try{LinkPreview.Result result=LinkPreview.fetch(url,request);activity.runOnUiThread(()->{
+                if(closed||version!=generation)return;if(text.equals(loadingText))previewLoading=false;JSONArray entries=recent();boolean found=false;
                 for(int i=0;i<entries.length();i++){JSONObject entry=entries.optJSONObject(i);if(entry!=null&&text.equals(entry.optString("text"))){try{entry.put("title",result.title).put("description",result.description).put("url",result.url);found=true;}catch(JSONException ignored){}}}
                 if(found){prefs.edit().putString("recentInspirationsV1",entries.toString()).apply();changed.run();}
-            });}catch(Exception ignored){activity.runOnUiThread(()->{if(!closed&&text.equals(loadingText)){previewLoading=false;changed.run();}});}
+            });}catch(Exception ignored){activity.runOnUiThread(()->{if(!closed&&version==generation&&text.equals(loadingText)){previewLoading=false;changed.run();}});}
         });
     }
     void review(){edit(value(),false);}
