@@ -809,9 +809,9 @@ function atlasBindGestures(){
   if(atlasZoomFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasZoomFrame);
   atlasZoomFrame=0;commitAtlasMotion();
  };
- // Treat one finger tap as selection, but reserve a short window for a
- // second tap before dispatching it. Otherwise a double tap first selects
- // land (and moves the map) instead of zooming at the user's finger.
+ // Land taps respond immediately. Keep a short reversible snapshot so a
+ // second nearby tap can restore the original selection before zooming.
+ // Secret cards retain deferred activation: opening one is a separate action.
  const doubleTapWindow=290,doubleTapRadius=32;
  // Near the 120-unit zoom ceiling, a double-tap gently pulls back instead
  // of silently doing nothing. Everywhere else it still zooms toward the tap.
@@ -837,8 +837,14 @@ function atlasBindGestures(){
   const now=Date.now(),screen={x:event.clientX,y:event.clientY};
   if(pendingTap&&now-pendingTap.time<=doubleTapWindow&&
      Math.hypot(screen.x-pendingTap.x,screen.y-pendingTap.y)<=doubleTapRadius){
-   clearPendingTap();
-   const view=atlasView(),rect=map.getBoundingClientRect();
+   const first=pendingTap;clearPendingTap();
+   if(first.snapshot){
+    const old=first.snapshot;stopZoom();crateSelected.clear();for(const id of old.selected)crateSelected.add(id);
+    atlasFocus=old.focus;atlasUserNavigated=old.navigated;lastCrateStamp=old.stamp;
+    copiedPrompt=old.copied;moodAngle=old.angle;freshCrateLens=old.lens;crateSparkPhrase=old.seed;previousShuffle=old.shuffle;
+    store(crateStorageKey,JSON.stringify([...crateSelected]));renderLaunch(true);status(old.status);
+   }
+   const view=first.snapshot?.view||atlasView(),rect=map.getBoundingClientRect();
    const scale=view[2]<=doubleTapTurnaroundWidth?doubleTapPullback:.5;
    zoomAt(view,atlasScreenAnchor(map,view,screen.x,screen.y,rect),screen,rect,scale);
    return;
@@ -846,18 +852,27 @@ function atlasBindGestures(){
   // A distant second tap still counts as two independent map selections.
   if(pendingTap){
    const first=pendingTap;clearPendingTap();replayingTouchClick=true;
-   try{first.target?.dispatchEvent(new MouseEvent("click",{bubbles:true,cancelable:true,clientX:first.x,clientY:first.y}))}
+   try{if(!first.snapshot)first.target?.dispatchEvent(new MouseEvent("click",{bubbles:true,cancelable:true,clientX:first.x,clientY:first.y}))}
    finally{replayingTouchClick=false}
   }
   const target=event.target;
-  pendingTap={target,x:screen.x,y:screen.y,time:now,timer:setTimeout(()=>{
+  const snapshot=target.closest?.('[data-atlas-country]')?{
+   selected:[...crateSelected],focus:atlasFocus,navigated:atlasUserNavigated,stamp:lastCrateStamp,view:atlasView(),
+   copied:copiedPrompt,angle:moodAngle,lens:freshCrateLens,seed:crateSparkPhrase,shuffle:previousShuffle,status:doc.getElementById('copyStatus')?.textContent||''
+  }:null;
+  pendingTap={target,snapshot,x:screen.x,y:screen.y,time:now,timer:setTimeout(()=>{
    if(!pendingTap||pendingTap.target!==target)return;
    clearPendingTap();
-   if(Date.now()<atlasSuppressTapUntil)return;
+   if(snapshot||Date.now()<atlasSuppressTapUntil)return;
    replayingTouchClick=true;
    try{target.dispatchEvent(new MouseEvent("click",{bubbles:true,cancelable:true,clientX:screen.x,clientY:screen.y}))}
    finally{replayingTouchClick=false}
   },doubleTapWindow)};
+  if(snapshot){
+   replayingTouchClick=true;
+   try{target.dispatchEvent(new MouseEvent("click",{bubbles:true,cancelable:true,clientX:screen.x,clientY:screen.y}))}
+   finally{replayingTouchClick=false}
+  }
  },true);
  // The browser's native double click must not also zoom the document.
  map.addEventListener("dblclick",event=>event.preventDefault());
