@@ -247,27 +247,30 @@ const atlasPaintMap=doc.getElementById("crateAtlasMap"),atlasPlate=atlasPaintMap
 if(atlasPlate&&atlasOcean&&atlasOcean.parentNode===atlasPaintMap)atlasPlate.insertBefore(atlasOcean,atlasPlate.firstChild);
 // Keep the SVG viewport fixed. Transform one internal scene continuously,
 // including at rest, rather than rescaling then replacing the outer SVG tiles.
-const atlasCameraLayers=[];
-if(atlasCanComposite&&typeof doc.createElementNS==='function')for(const root of [atlasPaintMap,atlasRadialField])if(root?.children){
- const scene=doc.createElementNS('http://www.w3.org/2000/svg','g');scene.setAttribute('class','atlas-camera-scene');
- for(const child of [...root.children])if(!['defs','title','desc'].includes(child.tagName.toLowerCase()))scene.appendChild(child);
- root.appendChild(scene);scene.style.transformOrigin='0 0';scene.style.transformBox='view-box';scene.style.willChange='transform';
- atlasCameraLayers.push(scene);
+const atlasCameraLayers=[];let atlasCameraViewport=null;
+if(atlasCanComposite&&atlasPaintMap?.parentNode&&typeof doc.createElementNS==='function'){
+ const frame=atlasPaintMap.parentNode,viewport=doc.createElement('div'),scene=doc.createElement('div');
+ viewport.className='atlas-camera-viewport';viewport.style.cssText='position:relative;width:100%;aspect-ratio:720/372;overflow:hidden';
+ scene.className='atlas-camera-scene';scene.style.cssText='position:relative;width:100%;height:100%;transform-origin:0 0;will-change:transform';
+ frame.insertBefore(viewport,atlasPaintMap);viewport.appendChild(scene);
+ if(atlasRadialField){scene.appendChild(atlasRadialField);atlasRadialField.style.top='0'}
+ scene.appendChild(atlasPaintMap);atlasCameraViewport=viewport;atlasCameraLayers.push(scene);
 }
+function atlasViewportRect(){return (atlasCameraViewport||doc.getElementById('crateAtlasMap')).getBoundingClientRect()}
 let atlasCommittedView=null,atlasMotionView=null,atlasMotionRect=null;
 function paintAtlasMotion(view){
  const map=doc.getElementById("crateAtlasMap");if(!map)return;
  if(!atlasCameraLayers.length){map.setAttribute("viewBox",atlasBoxText(view));return;}
- if(!atlasMotionRect)atlasMotionRect=map.getBoundingClientRect();
+ if(!atlasMotionRect)atlasMotionRect=atlasViewportRect();
  atlasMotionView=[...view];
  const [x,y,w]=view,scale=720/w;
- const transform=`matrix(${scale},0,0,${scale},${-x*scale},${-y*scale})`;
+ const transform=`matrix(${scale},0,0,${scale},${-x*scale*atlasMotionRect.width/720},${-y*scale*atlasMotionRect.height/372})`;
  for(const scene of atlasCameraLayers)scene.style.transform=transform;
  atlasDetailsForView(map,atlasBoxText(view));
 }
 function commitAtlasMotion(){
  if(!atlasMotionView)return;
- atlasCommittedView=[...atlasMotionView];
+ atlasCommittedView=atlasBoxText(atlasMotionView).split(/\s+/).map(Number);
  // Expose logical camera coordinates without changing the rendered viewport.
  const map=doc.getElementById("crateAtlasMap");map?.setAttribute('data-camera-view',atlasBoxText(atlasCommittedView));
  atlasMotionView=null;atlasMotionRect=null;
@@ -850,7 +853,7 @@ function atlasBindGestures(){
     copiedPrompt=old.copied;moodAngle=old.angle;freshCrateLens=old.lens;crateSparkPhrase=old.seed;previousShuffle=old.shuffle;
     store(crateStorageKey,JSON.stringify([...crateSelected]));renderLaunch(true);status(old.status);
    }
-   const view=first.snapshot?.view||atlasView(),rect=atlasMotionRect||map.getBoundingClientRect();
+   const view=first.snapshot?.view||atlasView(),rect=atlasMotionRect||atlasViewportRect();
    const scale=view[2]<=doubleTapTurnaroundWidth?doubleTapPullback:.5;
    zoomAt(view,atlasScreenAnchor(map,view,screen.x,screen.y,rect),screen,rect,scale);
    return;
@@ -887,7 +890,7 @@ function atlasBindGestures(){
  const beginTouch=(event,continuing=false)=>{
   if(event.touches.length<1||event.touches.length>2){atlasTouchGesture=null;flushAtlasNavigation();return;}
   stopZoom();flushAtlasNavigation(false);
-  const view=atlasView(),screen=atlasGesturePoints(event.touches),rect=atlasMotionRect||map.getBoundingClientRect();
+  const view=atlasView(),screen=atlasGesturePoints(event.touches),rect=atlasMotionRect||atlasViewportRect();
   atlasTouchGesture={view,anchor:atlasScreenAnchor(map,view,screen.x,screen.y,rect),distance:screen.distance,rect,count:event.touches.length,start:screen,moved:continuing,at:Date.now()};
   if(event.touches.length===2){
    clearPendingTap();twoFingerTap=null;
@@ -901,7 +904,7 @@ function atlasBindGestures(){
  map.addEventListener("pointerdown",(event={})=>{
   stopZoom();flushAtlasNavigation(false);warmAtlasArtwork();
   if(event.pointerType==="touch"||event.button!==0)return;
-  const view=atlasView(),rect=atlasMotionRect||map.getBoundingClientRect();
+  const view=atlasView(),rect=atlasMotionRect||atlasViewportRect();
   pointerGesture={id:event.pointerId,view,rect,start:{x:event.clientX,y:event.clientY},anchor:atlasScreenAnchor(map,view,event.clientX,event.clientY,rect),moved:false};
  });
  map.addEventListener("pointermove",event=>{
@@ -964,7 +967,7 @@ function atlasBindGestures(){
   if(event.cancelable)event.preventDefault();
   if(atlasZoomFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasZoomFrame);
   atlasZoomFrame=0;
-  const view=atlasPendingView||atlasView(),rect=atlasMotionRect||map.getBoundingClientRect();
+  const view=atlasPendingView||atlasView(),rect=atlasMotionRect||atlasViewportRect();
   const center={x:event.clientX,y:event.clientY};
   const anchor=atlasScreenAnchor(map,view,center.x,center.y,rect);
   let result;
