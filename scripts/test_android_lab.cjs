@@ -79,8 +79,8 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   await page.locator('[data-crate-continent="europe"]').evaluate(el=>el.click());
   assert.equal(await map.getAttribute('viewBox'),'0 0 720 372','Outer SVG viewport remains fixed');
   assert.notEqual(await map.getAttribute('data-camera-view'),'0 0 720 372','Inner camera actually zoomed');
-  assert.equal(await map.locator('.atlas-camera-scene').count(),1);
-  assert(await map.locator('.atlas-camera-scene').evaluate(el=>getComputedStyle(el).transform.startsWith('matrix(')));
+  assert.equal(await page.locator('.atlas-camera-scene').count(),1);
+  assert(await page.locator('.atlas-camera-scene').evaluate(el=>getComputedStyle(el).transform.startsWith('matrix(')));
   await page.locator('[data-crate-region="south-asia"]').evaluate(el=>el.click());
   assert.match(await page.locator('#atlasLocator').textContent(),/^SELECTED REGIONS/,'Auto-framing does not claim an old continent');
   await page.locator('#atlasHome').evaluate(el=>el.click());
