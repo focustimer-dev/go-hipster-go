@@ -6,6 +6,7 @@ on:
       - 'scripts/audit_android_lab.cjs'
       - 'scripts/bundle_android_lab.py'
       - 'android-lab/web/**'
+      - 'android-lab/app/build.gradle'
       - 'launcher/**'
       - '.github/workflows/android-workflow-audit.yml'
 permissions:

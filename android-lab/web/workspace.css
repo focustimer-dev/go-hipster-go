@@ -96,3 +96,19 @@ body.gig-poster.lab-workspace #labRecordingPreferences :not(:checked)+.recording
 body.gig-poster.lab-workspace #labRecordingPreferences #skipRough:focus-visible+.recording-rocker{outline:3px solid #103135;outline-offset:5px}
 @media(prefers-reduced-motion:no-preference){body.gig-poster.lab-workspace #labRecordingPreferences .recording-metal-lever{transition:transform 180ms ease-out}}
 @media(forced-colors:active){body.gig-poster.lab-workspace #labRecordingPreferences #skipRough{position:static;opacity:1;width:44px;height:44px;appearance:auto}body.gig-poster.lab-workspace #labRecordingPreferences .recording-rocker{display:none}}
+
+/* Keep inspiration beside the task, with clear next steps and no fixed overlay. */
+body.gig-poster.lab-workspace #labInspiration{align-items:flex-start;flex-wrap:wrap;scroll-margin-top:72px;margin:18px 0;padding:14px 0}
+#labInspiration>div:first-child{flex:1 1 210px}
+#labInspirationPreview{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#labInspiration .lab-inspiration-next{font:.875rem/1.5 Arial,sans-serif;margin:8px 0 0}
+.lab-inspiration-actions{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px}
+body.gig-poster.lab-workspace #labShapeInspiration{border:1px solid #103135;padding:8px 12px;background:#103135;color:#dfb045;text-decoration:none}
+.lab-workspace [data-mood]{scroll-margin-top:72px}
+#labInspirationGo{font:700 .8125rem/1.5 'Courier New',monospace;color:#103135;margin:12px 0}
+
+/* Give the crate a distinct place in the persistent top rail. */
+body.gig-poster.lab-workspace .lab-rail [data-lab-tab=crate]{font-weight:800;background:#dfb045;color:#103135}
+body.gig-poster.lab-workspace .lab-rail [data-lab-tab=crate][aria-current=page]{background:#dfb045;color:#103135;border-bottom-color:#a83223}
+#labSetupPreferences:empty{display:none}
+#labSetupPreferences #firstCrateSetup{margin:0 0 24px;padding:0}
