@@ -1,6 +1,3 @@
-Warning: truncated output (original token count: 32558)
-Total output lines: 1322
-
 /* HIPSTER GO: user-selectable crate digging, no imaginary music writers. */
 (function(){
 "use strict";
@@ -163,7 +160,308 @@ function shortTicketRegions(){
  return active.slice(0,2).map(r=>ticketRegionCodes[r.id]||r.label).join(" / ")+(active.length>2?" +"+(active.length-2):"");
 }
 const crateContinents=[{"id":"americas-north","label":"N. America"},{"id":"americas-south","label":"S. America"},{"id":"europe","label":"Europe"},{"id":"africa","label":"Africa"},{"id":"asia","label":"Asia"},{"id":"oceania","label":"Oceania"},{"id":"antarctica","label":"Antarctica"}];
-const atlasViews={"world":[0,0,720,372],"americas-north":[40,18,300,190],"americas-south":[165,132,183,222],"e…4558 tokens truncated…
+const atlasViews={"world":[0,0,720,372],"americas-north":[40,18,300,190],"americas-south":[165,132,183,222],"europe":[296,20,204,175],"africa":[310,83,210,245],"asia":[415,20,267,255],"oceania":[545,165,175,190],"antarctica":[180,186,360,186]};
+// Robinson focus boxes use projected geography, not the old Mercator extents.
+const atlasRobinsonViews={world:[0,0,720,372],"americas-north":[48,18,312,174],"americas-south":[192,145,120,172],europe:[298,30,174,100],africa:[312,94,180,208],asia:[403,25,240,198],oceania:[555,179,145,117],antarctica:[180,186,360,186]};
+const atlasLandAnchors=[];
+const atlasRegionShapes=[];
+function warmAtlasArtwork(){
+ const image=doc.getElementById("chart-engravings");
+ if(image?.dataset?.src&&!image.getAttribute("href"))image.setAttribute("href",image.dataset.src);
+}
+function atlasDetailsForView(map,view){
+ const width=Number(view.trim().split(/\s+/)[2]);
+ // A small dead band prevents flicker while pinching around the reveal point.
+ const threshold=map.getAttribute("data-details")==="true"?2.05:2.3;
+ if(720/width>=1.5)warmAtlasArtwork();
+ const visible=720/width>=threshold;
+ // Crossing the reveal threshold is a state change, not per-frame work.
+ if(map.getAttribute("data-details")!==String(visible)){
+  map.setAttribute("data-details",String(visible));
+  map._atlasSecretsSync?.(visible);
+ }
+}
+// Robinson rays follow the geography camera but remain underneath its
+// opaque ocean. The ocean masks rays at the CURRENT map edge while panning.
+// Never use a fixed cutout or hide rays during drag/pinch: both leave gaps.
+const atlasRadialField=typeof doc.querySelector==="function"?doc.querySelector(".atlas-radial-field"):null;
+const atlasRadialMap=doc.getElementById("crateAtlasMap");
+if(atlasRadialField&&atlasRadialMap){
+ const syncRadialBackdrop=()=>{
+  const view=atlasRadialMap.getAttribute("viewBox");
+  if(view){atlasRadialField.setAttribute("viewBox",view);atlasDetailsForView(atlasRadialMap,view)}
+ };
+ if(typeof MutationObserver==="function"){
+  new MutationObserver(syncRadialBackdrop).observe(atlasRadialMap,{attributes:true,attributeFilter:["viewBox"]});
+ }
+ syncRadialBackdrop();
+ // Decode the existing artwork before the first zoom, once the atlas is near
+ // the screen. Keep it deferred on launch and retain pointer/zoom fallbacks.
+ if(typeof IntersectionObserver==='function'){
+  const artworkObserver=new IntersectionObserver(entries=>{
+   if(entries.some(entry=>entry.isIntersecting)){warmAtlasArtwork();artworkObserver.disconnect()}
+  },{rootMargin:'240px'});
+  artworkObserver.observe(atlasRadialMap);
+ }
+}
+const atlasNames={"americas-north":"N. America","americas-south":"S. America","europe":"Europe","africa":"Africa","asia":"Asia","oceania":"Oceania","antarctica":"Antarctica"};
+let atlasFocus=null, atlasZoomFrame=0;
+let atlasUserNavigated=false, atlasTouchGesture=null, atlasSuppressTapUntil=0;
+let lastCrateStamp=null;
+const atlasStampNodes=new Map();
+let atlasNavigationFrame=0,atlasPendingView=null,atlasWheelTimer=0;
+const crateStorageKey="ghg-crate-map-regions-v1";
+const validCrateRegions=new Set(crateRegions.map(r=>r.id));
+function readCrateRegions(){
+ try{
+  const raw=JSON.parse(stored(crateStorageKey)||"[]");
+  if(!Array.isArray(raw))return new Set();
+  const selected=new Set();
+  const migration={"north-america":["us-west","us-east","canada-west","canada-east"],"mexico-central":["mexico","central-america"]};
+  for(const id of raw){
+   const children=migration[id]||[id];
+   for(const child of children)if(validCrateRegions.has(child))selected.add(child);
+  }
+  return selected;
+ }catch(e){return new Set()}
+}
+let crateSelected=readCrateRegions();
+function crateRegionPrompt(){
+ if(!crateSelected.size)return "";
+ const all=[];
+ for(const group of crateContinents){
+  const members=crateRegions.filter(r=>r.continent===group.id);
+  if(group.id!=="americas-north"&&members.every(r=>crateSelected.has(r.id))){all.push(group.label);continue}
+  for(const r of members)if(crateSelected.has(r.id))all.push(r.label);
+ }
+ return "Regional exploration: "+all.join(", ")+".";
+}
+function atlasBoxText(a){return a.map(v=>Math.round(v*10)/10).join(" ")}
+// Composite one SVG layer during movement; commit the vector camera at rest.
+// The frame still clips the map, while overflow lets zoom-out reveal geography
+// outside the starting SVG viewport rather than exposing empty edges.
+const atlasCanComposite=typeof CSS!=='undefined'&&typeof CSS.supports==='function'&&CSS.supports('transform','translate(0%,0%) scale(1)')&&CSS.supports('transform-box','border-box');
+let atlasMotionBase=null,atlasMotionView=null,atlasMotionRect=null;
+function paintAtlasMotion(view){
+ const map=doc.getElementById("crateAtlasMap");if(!map)return;
+ if(!map.style||!atlasCanComposite){map.setAttribute("viewBox",atlasBoxText(view));return;}
+ if(!atlasMotionBase){
+  atlasMotionBase=(map.getAttribute("viewBox")||"0 0 720 372").split(/\s+/).map(Number);atlasMotionRect=map.getBoundingClientRect();
+  for(const layer of [map,atlasRadialField])if(layer?.style){
+   layer.style.transformOrigin='0 0';layer.style.transformBox='border-box';layer.style.overflow='visible';layer.style.willChange='transform';
+  }
+ }
+ atlasMotionView=view;
+ const [bx,by,bw]=atlasMotionBase,[x,y,w,h]=view;
+ const transform=`translate(${(bx-x)/w*100}%,${(by-y)/h*100}%) scale(${bw/w})`;
+ for(const layer of [map,atlasRadialField])if(layer?.style)layer.style.transform=transform;
+ atlasDetailsForView(map,atlasBoxText(view));
+}
+function commitAtlasMotion(){
+ if(!atlasMotionView)return;
+ const map=doc.getElementById("crateAtlasMap"),view=atlasBoxText(atlasMotionView);
+ map?.setAttribute("viewBox",view);atlasRadialField?.setAttribute("viewBox",view);
+ for(const layer of [map,atlasRadialField])if(layer?.style){
+  layer.style.transform='';layer.style.transformOrigin='';layer.style.transformBox='';layer.style.overflow='';layer.style.willChange='';
+ }
+ atlasMotionBase=null;atlasMotionView=null;atlasMotionRect=null;
+}
+function animateAtlasView(view){
+ flushAtlasNavigation();
+ const map=doc.getElementById("crateAtlasMap");if(!map)return;
+ const views=map.classList?.contains?.("crate-robinson")?atlasRobinsonViews:atlasViews;
+ const goal=atlasConstrain(Array.isArray(view)?view:(views[view||"world"]||views.world)),raw=map.getAttribute("viewBox")||"0 0 720 372";
+ const from=raw.split(/\s+/).map(Number);
+ if(atlasZoomFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasZoomFrame);
+ const reduced=typeof window!=="undefined"&&window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+ if(typeof requestAnimationFrame!=="function"||reduced||from.length!==4||from.some(n=>!Number.isFinite(n))){map.setAttribute("viewBox",atlasBoxText(goal));return;}
+ let started=null;
+ const frame=time=>{
+  if(started===null)started=time;
+  const t=Math.min(1,(time-started)/300),e=1-Math.pow(1-t,3);
+  paintAtlasMotion(goal.map((v,i)=>from[i]+(v-from[i])*e));
+  if(t<1)atlasZoomFrame=requestAnimationFrame(frame);else{atlasZoomFrame=0;commitAtlasMotion();}
+ };
+ atlasZoomFrame=requestAnimationFrame(frame);
+}
+// Fit the selected painted geography; tiny offshore fragments must not
+// pull a mainland selection to the opposite edge of the Robinson plate.
+function atlasSelectedView(shapes,selected){
+ const visible=[];
+ for(const id of selected){
+  const parts=shapes.filter(p=>p.id===id),largest=Math.max(0,...parts.map(p=>p.area));
+  visible.push(...parts.filter(p=>p.area>=Math.max(.05,largest*.005)));
+ }
+ if(!visible.length)return null;
+ const left=Math.min(...visible.map(p=>p.x)),top=Math.min(...visible.map(p=>p.y));
+ const right=Math.max(...visible.map(p=>p.x+p.w)),bottom=Math.max(...visible.map(p=>p.y+p.h));
+ const pad=Math.max(10,(right-left)*.12,(bottom-top)*.12);
+ const box=atlasNormalize([left-pad,top-pad,right-left+2*pad,bottom-top+2*pad]);
+ if(box[2]<160){const cx=box[0]+box[2]/2,cy=box[1]+box[3]/2;return [cx-80,cy-160*372/720/2,160,160*372/720]}
+ return box;
+}
+// A selected region should provide context, not fill the entire viewport.
+// Ease auto-framing out by 18%, centered on the same projected geography.
+// Manual pinch/pan, continent focus and Antarctica's explicit view are unchanged.
+function atlasRelaxSelectedView(view){
+ if(!view)return null;
+ const [x,y,w,h]=atlasNormalize(view);
+ const width=Math.min(720,w*1.18),height=width*372/720;
+ return [x+(w-width)/2,y+(h-height)/2,width,height];
+}
+function frameSelectedAtlas(){
+ if(!atlasRegionShapes.length)return; // Manual/setup and test environments may lack painted paths.
+ const antarcticaOnly=crateSelected.size===1&&crateSelected.has("antarctica");
+ const view=antarcticaOnly?atlasRobinsonViews.antarctica:crateSelected.size?atlasRelaxSelectedView(atlasSelectedView(atlasRegionShapes,crateSelected)):null;
+ atlasUserNavigated=Boolean(view);
+ if(!crateSelected.size){atlasFocus=null;renderCrateMap()}else renderAtlasNavigation();
+ animateAtlasView(view||null);
+}
+function focusCrateContinent(id){
+ atlasFocus=id===atlasFocus?null:id;
+ atlasUserNavigated=false;
+ renderCrateMap();animateAtlasView(atlasFocus);
+}
+function toggleCrateRegion(id){
+ if(!validCrateRegions.has(id))return;
+ const added=!crateSelected.has(id);
+ if(added)crateSelected.add(id);else crateSelected.delete(id);
+ lastCrateStamp=added?id:null;
+ updateCrateMap(added);
+}
+const crateStampNames={"us-west":"US W","us-east":"US E","canada-west":"CAN W","canada-east":"CAN E","mexico":"MEX","central-america":"CENT AM","caribbean":"CARIB","northern-south-america":"N S AM","southern-south-america":"S S AM","atlantic-europe":"W EUR","mediterranean-europe":"MED / BALK","northern-europe":"N EUR","eastern-europe":"E EUR","north-africa":"N AFR","west-africa":"W AFR","east-africa":"E AFR","central-southern-africa":"C / S AFR","middle-east":"MID EAST","central-asia":"C ASIA","south-asia":"S ASIA","east-asia":"E ASIA","southeast-asia":"SE ASIA","northern-asia":"N ASIA","oceania":"OCEANIA","antarctica":"ANTARCTICA"};
+function setAtlasAttribute(node,name,value){
+ const text=String(value);if(node.getAttribute(name)!==text)node.setAttribute(name,text);
+}
+let atlasSelectionStamp="",atlasPaintedSelection=null;
+// Country geometry is static. Index once, then touch only regions whose ink changed.
+const atlasCountriesByRegion=new Map();
+doc.querySelectorAll("[data-atlas-country]").forEach(path=>{
+ const id=path.dataset.atlasRegion;if(!atlasCountriesByRegion.has(id))atlasCountriesByRegion.set(id,[]);
+ atlasCountriesByRegion.get(id).push(path);
+});
+function renderCrateMap(){
+ const stamp=JSON.stringify([atlasFocus,atlasUserNavigated,[...crateSelected].sort(),lastCrateStamp]);
+ if(stamp===atlasSelectionStamp)return;
+ atlasSelectionStamp=stamp;
+ const focused=Boolean(atlasFocus);
+ doc.querySelectorAll("[data-crate-region]").forEach(b=>{
+  b.hidden=!focused||b.dataset.continent!==atlasFocus;
+  setAtlasAttribute(b,"aria-pressed",String(crateSelected.has(b.dataset.crateRegion)));
+ });
+ doc.querySelectorAll("[data-crate-continent]").forEach(b=>setAtlasAttribute(b,"aria-pressed",String(atlasFocus===b.dataset.crateContinent)));
+ doc.querySelectorAll("[data-atlas-zone]").forEach(z=>{
+  setAtlasAttribute(z,"data-selected",String(crateSelected.has(z.dataset.atlasZone)));
+  setAtlasAttribute(z,"data-press",String(z.dataset.atlasZone===lastCrateStamp));
+ });
+ for(const [id,paths] of atlasCountriesByRegion){
+  const inked=crateSelected.has(id);
+  if(atlasPaintedSelection&&atlasPaintedSelection.has(id)===inked)continue;
+  for(const path of paths)setAtlasAttribute(path,"data-inked",String(inked));
+ }
+ atlasPaintedSelection=new Set(crateSelected);
+ const st=doc.getElementById("crateGeoStatus");
+ const selectionStatus=crateSelected.size?crateSelected.size+" region"+(crateSelected.size===1?"":"s")+" selected. Tap a stamp to remove a region.":"No regions selected. All areas are available.";
+ if(st&&st.textContent!==selectionStatus)st.textContent=selectionStatus;
+ renderAtlasNavigation();
+ renderCrateStamps();
+}
+function renderAtlasNavigation(){
+ const focused=Boolean(atlasFocus),panel=doc.getElementById("crateGeo");
+ if(panel)panel.setAttribute("data-focus",String(focused||atlasUserNavigated));
+ const loc=doc.getElementById("atlasLocator");
+ if(loc){
+  const place=focused?atlasNames[atlasFocus]:"WHOLE WORLD";
+  loc.textContent=place+" / "+(crateSelected.size?crateSelected.size+" STAMP"+(crateSelected.size===1?"":"S"):"OPEN CRATE");
+ }
+ const home=doc.getElementById("atlasHome");if(home)home.hidden=!(focused||atlasUserNavigated);
+ const hint=doc.getElementById("atlasInstruction");
+ if(hint){
+  const desktop=typeof window!=="undefined"&&window.matchMedia&&window.matchMedia("(pointer: fine)").matches;
+  const action=focused?"TAP TO INK / UNINK":"TAP LAND TO EXPLORE";
+  hint.textContent=action+(desktop?" · SHIFT + SCROLL TO PAN · PINCH TO ZOOM":" · DRAG TO PAN · TWO FINGERS TO ZOOM");
+ }
+}
+function renderCrateStamps(){
+ const passport=doc.getElementById("atlasPassport");if(passport)passport.hidden=!crateSelected.size;
+ const holder=doc.getElementById("atlasStamps");
+ if(holder){
+  const activeId=doc.activeElement?.dataset?.crateStampRegion;
+  const previousIds=Array.from(holder.children,node=>node.dataset.crateStampRegion);
+  for(const [id,node] of atlasStampNodes){
+   if(!crateSelected.has(id)){node.remove();atlasStampNodes.delete(id)}
+  }
+  let index=0;
+  for(const reg of crateRegions){
+   if(!crateSelected.has(reg.id))continue;
+   let stamp=atlasStampNodes.get(reg.id);
+   if(!stamp){
+    stamp=doc.createElement("button");stamp.type="button";
+    stamp.dataset.crateStampRegion=reg.id;
+    stamp.className="crate-stamp";
+    stamp.setAttribute("aria-label","Remove "+reg.label+" from listening regions");
+    stamp.setAttribute("title",reg.label+" — tap to remove");
+    const strong=doc.createElement("strong");strong.textContent=crateStampNames[reg.id]||reg.label;
+    const x=doc.createElement("span");x.className="crate-stamp-x";x.setAttribute("aria-hidden","true");x.textContent="×";
+    stamp.append(strong,x);stamp.addEventListener("click",()=>toggleCrateRegion(reg.id));
+    atlasStampNodes.set(reg.id,stamp);
+   }
+   stamp.classList.toggle("is-new",reg.id===lastCrateStamp);
+   if(holder.children[index]!==stamp)holder.insertBefore(stamp,holder.children[index]||null);
+   index++;
+  }
+  if(activeId&&!crateSelected.has(activeId)){
+   const remaining=crateRegions.filter(reg=>crateSelected.has(reg.id));
+   const next=remaining[Math.min(previousIds.indexOf(activeId),remaining.length-1)];
+   const target=next?atlasStampNodes.get(next.id):doc.getElementById("atlasNamedRegions");
+   if(target){const summary=next?target:target.querySelector("summary");if(summary)summary.focus({preventScroll:true})}
+  }
+ }
+ lastCrateStamp=null;
+}
+function updateCrateMap(reframe=true){
+ store(crateStorageKey,JSON.stringify([...crateSelected]));
+ copiedPrompt=null;selectionChanged(false,true);if(reframe)frameSelectedAtlas();
+}
+const params=new URLSearchParams(location.search);
+includeCover=params.get("cover")==="1";
+goHard=params.get("hard")==="1";
+skipRough=params.has("clean")?params.get("clean")==="1":stored("ghg-skip-rough-v1")==="1";
+const isLegacyGemini=location.pathname.startsWith("/gemini/");
+let ai=(params.get("ai")||(isLegacyGemini?"gemini":stored("hmg-ai"))||"chatgpt").toLowerCase();
+if(!defaultService[ai])ai="chatgpt";
+let service=(params.get("service")||(isLegacyGemini?"youtube":stored("hmg-service"))||defaultService[ai]).toLowerCase();
+if(!serviceNames[service])service=defaultService[ai];
+let mood=(params.get("mood")||"go").toLowerCase();mood=[...new Set(moodParts(mood).filter(m=>moods.has(m)))].slice(0,2).join(" ")||"go";
+let tempo=params.get("tempo")||"";if(!Object.hasOwn(tempoNames,tempo))tempo="";
+// One GO is the complete curation and authorized publishing request.
+function updateHandoff(){
+ const ready=copiedPrompt===goPrompt(ai,service,mood);
+ const button=doc.getElementById("goButton");
+ const state=button&&button.disabled?"copying":ready?"copied":"idle";
+ if(button)button.setAttribute("data-copy-state",state);
+ const receipt=doc.getElementById("promptReceipt"),mark=doc.getElementById("receiptCopy");
+ if(receipt)receipt.setAttribute("data-copy-state",state);
+ if(mark){mark.hidden=state==="idle";mark.textContent=state==="copied"?"COPIED TO CLIPBOARD":state==="copying"?"COPYING…":"";}
+ for(const id of ["openAi","browserAi"]){const a=doc.getElementById(id);if(a){a.setAttribute("aria-disabled",String(!ready));if(ai==="other")a.hidden=true}}
+ const a=doc.getElementById("openAi");if(a){a.hidden=ai==="other";a.textContent=ready?"NEXT: OPEN "+aiNames[ai].toUpperCase():"COPY WITH GO FIRST";}
+ const guide=doc.getElementById("handoffGuidance"),heading=doc.getElementById("handoffTitle"),instructions=doc.getElementById("handoffInstruction");
+ if(guide)guide.hidden=!ready;
+ if(heading)heading.textContent=ai==="other"?"COPIED. OPEN YOUR AI MANUALLY.":"COPIED. NOW OPEN "+aiNames[ai].toUpperCase()+".";
+ if(instructions)instructions.textContent=ai==="other"?"Open your chosen AI yourself, paste the copied request and send it. This app cannot open an unspecified AI.":ai==="chatgpt"?"Paste and send. Select Go, Hipster, Go! and "+serviceNames[service]+" in your chat if needed. The playlist isn't saved yet.":ai==="gemini"?"Paste and send. Select the saved Go, Hipster, Go! skill and "+serviceNames[service]+" if needed. Check whether the playlist was created.":"Paste and send. Enable Go, Hipster, Go! and "+serviceNames[service]+" if needed. Check the playlist result in your AI.";
+ /* PLATFORM_HANDOFF_RENDER */
+}
+function selectionChanged(preserveShuffle=false,regionsOnly=false){
+ if(!preserveShuffle){previousShuffle=null;const result=doc.getElementById("shuffleResult");if(result)result.textContent="";}
+ moodAngle="";freshCrateLens="";crateSparkPhrase="";
+ if(regionsOnly&&body.dataset.page==="launch")renderLaunch(true);else render();
+ if(body.dataset.page==="launch")status("Prompt changed. Press GO to copy the current selection.");
+ else status("Selection updated. Copy the setup check above.");
+ const tip=doc.getElementById("setupTipStatus");if(tip)tip.textContent="";
+}
+function renderSelections(){
+ doc.querySelectorAll("[data-ai]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.ai===ai)));
+ doc.querySelectorAll("[data-service]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.service===service)));
  const pair=doc.getElementById("dealerPair");if(pair)pair.textContent=aiNames[ai]+" · "+serviceNames[service];
  const info=routeInfo(ai,service),r=doc.getElementById("routeStatus");
  if(r){const span=r.querySelector("span");if(span)span.textContent=info.message;r.classList.toggle("warn",info.tone==="warn")}
