@@ -137,6 +137,7 @@ public class LabActivity extends Activity {
     private void toast(String s) { Toast.makeText(this,s,Toast.LENGTH_LONG).show(); }
     private boolean validText(String text) { return text != null && !text.isEmpty() && text.length() <= 24000; }
     private String url(String ai) {
+        if(ai==null)return null;
         switch(ai) {
             case "chatgpt": return "https://chatgpt.com/";
             case "gemini": return "https://gemini.google.com/app";
