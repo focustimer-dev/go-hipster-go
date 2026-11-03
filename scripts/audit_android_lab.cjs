@@ -28,7 +28,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
      copy(t){auditCalls.push(['copy',t]);return auditCopyOK},go(a,t){auditCalls.push(['go',a,t])},open(a,t){auditCalls.push(['open',a,t])},share(t){auditCalls.push(['share',t])},
      setPreference(k,v){auditState[k]=k==='mode'?v:v==='true';window.HipsterLabStateChanged()},
      saveRequest(ai,prompt){auditState.saved.push({id:'audit-1',name:'A deliberately long saved request title for narrow screens',ai,prompt,time:0});window.HipsterLabStateChanged()},
-     savedRequest(id){auditCalls.push(['saved',id])},reviewInspiration(){auditCalls.push(['review'])},clearInspiration(){auditReference='';window.HipsterLabRefresh()},showUpdates(){auditCalls.push(['updates'])}};
+     savedRequest(id){auditCalls.push(['saved',id])},reviewInspiration(){auditCalls.push(['review'])},clearInspiration(){auditReference='';window.HipsterLabRefresh()},showUpdates(){auditCalls.push(['updates'])},offerSetupShare(a,t){auditCalls.push(['offerSetupShare',a,t])}};
    });
    await page.goto('http://127.0.0.1:'+server.address().port+'/');
    if(profile.scale)await page.addStyleTag({content:'html{font-size:200% !important}'});
@@ -52,16 +52,36 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    await page.locator('#firstCrateSetup [data-action="pause"]').first().click();
    assert(await page.locator('#firstCrateSetup [data-action="resume"]').isVisible(),'Paused setup offers resume');
    await page.locator('#firstCrateSetup [data-action="resume"]').click();
-   for(const action of ['choose','install','check'])await page.locator('#firstCrateSetup [data-action="'+action+'"]').first().click();
+   await page.locator('#firstCrateSetup [data-action="choose"]').first().click();
+   await page.locator('#fc-ai').selectOption('Claude');
+   await page.locator('#firstCrateSetup [data-action="install"]').first().click();
+   assert(await page.locator('#firstCrateSetup [data-action="install-copy"]').isVisible(),'Claude prompt-first installation is directly visible');
+   assert.equal(await page.locator('#firstCrateSetup .install-fallback').getAttribute('open'),null,'Manual uploader instructions stay secondary');
+   await page.locator('#firstCrateSetup [data-action="install-copy"]').click();
+   await page.waitForFunction(()=>auditCalls.some(c=>c[0]==='offerSetupShare'&&c[1]==='claude'));
+   assert.equal(await page.evaluate(()=>auditCalls.filter(c=>c[0]==='offerSetupShare').at(-1)[2]===auditCalls.filter(c=>c[0]==='copy').at(-1)[1]),true);
+   assert.equal(await page.evaluate(()=>auditCalls.some(c=>c[0]==='share'||c[0]==='go')),false,'Copy offers consent without auto-sharing');
+   await capture('claude-prompt-first');
+   await page.locator('#firstCrateSetup [data-action="choose"]').first().click();
+   await page.locator('#fc-ai').selectOption('ChatGPT');
+   for(const action of ['install','check'])await page.locator('#firstCrateSetup [data-action="'+action+'"]').first().click();
    await page.locator('#firstCrateSetup [data-action="copy"]').click();
    await capture('setup-copied');
    await page.locator('#firstCrateSetup [data-action="ready"]').click();
    assert(!await page.locator('#fc-ticket').isVisible(),'Completed setup stays hidden');
    await capture('jukebox');
+   await page.locator('[data-lab-tab="crate"]').click();
+   await page.evaluate(()=>{auditReference='A shared song reference — keep this while choosing the sound';window.HipsterLabRefresh()});
+   assert(await page.locator('#labJukebox').isVisible(),'Accepted inspiration returns to the shaping workspace');
+   await capture('inspiration-guidance');
+   await page.locator('#labShapeInspiration').click();
+   assert.equal(await page.evaluate(()=>document.activeElement===document.querySelector('[data-mood]')),true);
+   await capture('inspiration-music-choices');
    await page.locator('[data-mood="desire"]').click();await page.locator('[data-mood="weird"]').click();
    await page.locator('#goButton').click();
    await page.waitForFunction(()=>auditCalls.some(c=>c[0]==='go'));
    assert.equal(await page.evaluate(()=>auditCalls.filter(c=>c[0]==='copy').at(-1)[1]===auditCalls.filter(c=>c[0]==='go').at(-1)[2]),true,'Exact prompt reaches native handoff');
+   assert((await page.locator('#prompt').textContent()).includes('Musical reference only'),'GO retains inspiration');
    await capture('receipt');
    await page.locator('[data-lab-action="save"]').click();
    await page.locator('[data-lab-tab="crate"]').click();await capture('saved-crate');

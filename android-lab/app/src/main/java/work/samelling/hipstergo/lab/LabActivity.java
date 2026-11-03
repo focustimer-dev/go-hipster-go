@@ -168,11 +168,22 @@ public class LabActivity extends Activity {
         try { startActivity(Intent.createChooser(i,"Share your playlist request")); }
         catch (ActivityNotFoundException e) { toast("No sharing app available. Your prompt is copied."); }
     }
+    private String aiPackage(String ai) {
+        return "chatgpt".equals(ai)?"com.openai.chatgpt":"gemini".equals(ai)?"com.google.android.apps.bard":"claude".equals(ai)?"com.anthropic.claude":null;
+    }
+    private void offerSetupShare(String ai, String text) {
+        if(url(ai)==null || !validText(text))return;
+        String label="chatgpt".equals(ai)?"ChatGPT":"gemini".equals(ai)?"Gemini":"Claude";
+        new AlertDialog.Builder(this).setTitle("Share to "+label+"?")
+            .setMessage("Your setup request is copied. Share it to "+label+" to review and send. If it cannot accept the share, paste the copied request.")
+            .setPositiveButton("Yes, share",(d,n)->{copy(text);share(text,aiPackage(ai));})
+            .setNegativeButton("No, keep copied",null).show();
+    }
     private void handoff(String ai, String text) {
         String destination = url(ai);
         if (destination == null || !validText(text)) return;
         copy(text); pulse();
-        String pkg = "chatgpt".equals(ai) ? "com.openai.chatgpt" : "gemini".equals(ai) ? "com.google.android.apps.bard" : null;
+        String pkg = aiPackage(ai);
         String mode = prefs.getString("mode","open");
         if ("browser".equals(mode)) { browser(destination); return; }
         if ("share".equals(mode)) { share(text,pkg); return; }
@@ -200,6 +211,7 @@ public class LabActivity extends Activity {
     }
     public final class Bridge {
         @JavascriptInterface public String state(){return workspaceState();}
+        @JavascriptInterface public void offerSetupShare(String ai,String text){if(url(ai)!=null&&validText(text))runOnUiThread(()->LabActivity.this.offerSetupShare(ai,text));}
         @JavascriptInterface public void showUpdates(){runOnUiThread(()->updates.show());}
         @JavascriptInterface public void saveRequest(String ai,String text){if(SavedRequestPolicy.canSave(ai,text))runOnUiThread(()->shelf.save(ai,text));}
         @JavascriptInterface public void savedRequest(String id){if(id!=null&&id.length()<=64)runOnUiThread(()->shelf.showEntry(id));}

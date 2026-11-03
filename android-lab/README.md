@@ -1,7 +1,7 @@
 # Hipster GO Lab
 
 The canonical application baseline for Google Play release preparation is the
-**Lab 0.9.8** release candidate (version code 17), built from the delivered Lab 0.9.7 baseline, package
+**Lab 0.9.9** phone-test candidate (version code 18), built from the delivered Lab 0.9.7 baseline, package
 `work.samelling.hipstergo.lab`, Android 7+. Preserve its existing workspace and
 native handoffs while improving quality under the feature freeze. The package
 still installs alongside the older production APK and PWA; selecting this
@@ -325,3 +325,21 @@ This is a feature-frozen phone-test candidate, not a Google Play publication.
 Install over Lab 0.9.7 with the original signer to preserve the same application
 data. Do not uninstall. Verify actual phone handoffs, native saved-request
 dialogs, Android Back and data retention before calling the candidate accepted.
+
+
+## Lab 0.9.9 — prompt-first setup and inspiration workflow
+
+Installation starts with a copyable setup prompt for ChatGPT, Gemini, Claude
+and Other AI. Upload/package instructions are a fallback, with Claude Skills
+and Plugins kept distinct. After a successful setup-request or connection-check
+copy, supported native AI targets offer Yes, share / No, keep copied. Yes uses
+Android text sharing; receiving-app support determines prefilling, and sending
+remains the user's action. Declining keeps the copied text and changes no setup
+confirmation. Unspecified Other AI remains manual.
+
+An active inspiration reference stays compact above the music choices. Accepting
+a reference returns to Jukebox; Shape this crate moves to moods without changing
+the reference or existing choices. A reminder near GO confirms inclusion.
+
+Sam confirmed all previous data survived the 0.9.8 update. This is user-reported
+update-retention evidence for 0.9.8; 0.9.9 phone acceptance remains pending.

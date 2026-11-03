@@ -12,7 +12,7 @@ async function labCopySetup(button){
   if(snapshot!==setupPrompt(ai,service)){message.textContent='Setup changed while copying. Copy the current connection check.';return}
   fallback.hidden=ok;fallback.open=!ok;text.value=ok?'':snapshot;
   message.textContent=ok?'Setup check copied. Paste and send it in '+aiNames[ai]+'.':'Clipboard unavailable. Select and copy the connection check below, then paste and send it in your AI.';
-  if(!ok){text.focus();text.select()}
+  if(!ok){text.focus();text.select()}else window.HipsterLab?.offerSetupShare?.(ai,snapshot)
  }finally{if(serial===labSetupCopySerial)button.disabled=false}
 }
 function labState(){try{return JSON.parse(window.HipsterLab?.state?.()||'{}')}catch(e){return {}}}
@@ -56,8 +56,8 @@ function renderLabWorkspace(){
  const dot=doc.getElementById('labUpdateDot');dot.hidden=!state.updateAvailable;dot.setAttribute('aria-hidden','true');
  doc.querySelector('[data-lab-tab="manual"]').setAttribute('aria-label',state.updateAvailable?'Manual, Gemini skill update available':'Manual');
  const first=reference.split('\n')[0];doc.getElementById('labCrateReference').textContent=reference?first.slice(0,160)+(first.length>160?'…':''):'No reference on the counter.';
- doc.getElementById('labCrateReferenceHelp').textContent=reference?'Musical reference · stays active until removed':'Share a song link to Hipster GO Lab, or add a musical idea here.';
- doc.getElementById('labCrateReview').textContent=reference?'REVIEW':'ADD';doc.getElementById('labSavedCount').textContent=entries.length+' / 10';
+ doc.getElementById('labCrateReferenceHelp').textContent=reference?'Reference kept. Shape moods, pace and places in Jukebox, then GO.':'Share a song link to Hipster GO Lab, or add a musical idea here.';
+ doc.getElementById('labCrateReview').textContent=reference?'REVIEW':'ADD';doc.getElementById('labCrateContinue').hidden=!reference;doc.getElementById('labSavedCount').textContent=entries.length+' / 10';
  const rows=doc.getElementById('labSavedRows'),stamp=JSON.stringify(entries);
  if(rows.dataset.records!==stamp){
   rows.dataset.records=stamp;rows.replaceChildren();
@@ -92,6 +92,7 @@ function initLabWorkspace(){
   if(action==='preferences')labPreferences();else if(action==='close-preferences')doc.getElementById('labPreferences').close();
   else if(action==='inspiration')window.HipsterLab?.reviewInspiration?.();else if(action==='save')window.HipsterLab?.saveRequest?.(ai,goPrompt(ai,service,mood));else if(action==='updates')window.HipsterLab?.showUpdates?.();else if(action==='jukebox')labNavigate('jukebox');
   else if(action==='services')labPreferences();
+  else if(action==='shape-inspiration')labShapeInspiration();
   else if(action==='setup')labCopySetup(b);
  });
  doc.getElementById('labPreferences').addEventListener('close',()=>{body.classList.remove('lab-modal-open');doc.querySelector('[data-lab-action="preferences"]')?.focus({preventScroll:true})});
