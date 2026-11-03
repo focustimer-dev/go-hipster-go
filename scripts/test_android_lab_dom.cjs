@@ -90,6 +90,26 @@ const root=path.resolve(__dirname,'../android-lab/app/src/main/assets/site');
  assert.equal(w.document.querySelector('#listeningPreferences'),null,'No empty PWA disclosure in Lab');
  w.HipsterSetup.setPair({ai:'chatgpt',service:'spotify'});click('#goButton');await flush();
  assert(calls.some(c=>c[0]==='go'&&c[1]==='chatgpt'),'Known native handoff still works');
+ // Manual copy failure must retain the exact check and recover without stale pairing text.
+ click('[data-lab-tab="manual"]');
+ const originalCopy=w.HipsterLab.copy;
+ w.HipsterLab.copy=t=>{calls.push(['copy',t]);return false};
+ click('[data-lab-action="setup"]');await flush();
+ const fallback=w.document.querySelector('#labSetupFallback'),setupText=w.document.querySelector('#labSetupText');
+ assert(!fallback.hidden&&fallback.open,'Clipboard failure exposes manual recovery');
+ assert.equal(setupText.value,calls.filter(c=>c[0]==='copy').at(-1)[1],'Fallback preserves exact attempted connection check');
+ assert(w.document.querySelector('#labSetupStatus').textContent.includes('Select and copy'));
+ w.HipsterSetup.setPair({ai:'gemini',service:'youtube'});
+ assert(fallback.hidden,'Changing pairing hides the obsolete connection check');assert.equal(setupText.value,'');
+ let finishCopy;
+ w.HipsterLab.copy=()=>new Promise(resolve=>{finishCopy=resolve});
+ click('[data-lab-action="setup"]');
+ w.HipsterSetup.setPair({ai:'chatgpt',service:'spotify'});finishCopy(false);await flush();
+ assert(fallback.hidden,'An old in-flight failure cannot reveal stale pairing text');
+ assert(w.document.querySelector('#labSetupStatus').textContent.includes('changed while copying'));
+ w.HipsterLab.copy=originalCopy;click('[data-lab-action="setup"]');await flush();
+ assert(fallback.hidden);assert.equal(w.document.querySelector('[data-lab-action="setup"]').disabled,false);
+ assert(w.document.querySelector('#labSetupStatus').textContent.includes('copied'));
  console.log('PASS: top workspace, scroll restoration, preferences, Back, saved actions, native handoffs, exact shared inspiration, plain-text rendering, unchanged regions, explicit remove and stale-copy race.');
  }finally{w.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});

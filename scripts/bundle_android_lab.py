@@ -17,6 +17,10 @@ def bundle(destination=None):
     html = page.read_text()
     manual = (ROOT / 'launcher/editions/gig-poster/setup/index.html').read_text()
     workspace = (ROOT / 'android-lab/web/workspace.html').read_text()
+    version = re.findall(r"versionName\s+['\"]([0-9A-Za-z.+_-]+)['\"]", (ROOT / 'android-lab/app/build.gradle').read_text())
+    assert len(version) == 1, 'Expected one Android versionName for the Manual.'
+    assert workspace.count('<!--LAB_APP_VERSION-->') == 1, 'Manual version placeholder changed.'
+    workspace = workspace.replace('<!--LAB_APP_VERSION-->', version[0])
     for marker, cls in [('LINER', 'manual-liner'), ('RESOURCES', 'resource-shelf')]:
         block = re.search(r'<details class="' + cls + r'">.*?</details>', manual, re.S)
         assert block, 'Manual section changed; review Lab integration.'

@@ -48,17 +48,15 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    await capture('first-use');
    await page.locator('.lab-rail [data-lab-action="preferences"]').click();await capture('first-use-preferences');
    await page.locator('[data-lab-action="close-preferences"]').click();
-   let setupDiagnostic=false;
-   if(!await page.locator('#firstCrateSetup [data-action="choose"]').first().isVisible()){
-    results.push({profile:profile.name,state:'setup-blocked',finding:'First-run setup controls exist but are not visible in the shipped interface.'});
-    // Diagnostic only: inspect downstream setup without claiming the shipped UI works.
-    await page.addStyleTag({content:'#firstCrateSetup .ticket:not([hidden]){display:block !important}'});
-    setupDiagnostic=true;
-   }
+   assert(await page.locator('#firstCrateSetup [data-action="choose"]').first().isVisible(),'Shipped first-run setup must be visible');
+   await page.locator('#firstCrateSetup [data-action="pause"]').first().click();
+   assert(await page.locator('#firstCrateSetup [data-action="resume"]').isVisible(),'Paused setup offers resume');
+   await page.locator('#firstCrateSetup [data-action="resume"]').click();
    for(const action of ['choose','install','check'])await page.locator('#firstCrateSetup [data-action="'+action+'"]').first().click();
    await page.locator('#firstCrateSetup [data-action="copy"]').click();
-   await capture(setupDiagnostic?'setup-copied-DIAGNOSTIC-OVERRIDE':'setup-copied');
+   await capture('setup-copied');
    await page.locator('#firstCrateSetup [data-action="ready"]').click();
+   assert(!await page.locator('#fc-ticket').isVisible(),'Completed setup stays hidden');
    await capture('jukebox');
    await page.locator('[data-mood="desire"]').click();await page.locator('[data-mood="weird"]').click();
    await page.locator('#goButton').click();
@@ -68,6 +66,16 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    await page.locator('[data-lab-action="save"]').click();
    await page.locator('[data-lab-tab="crate"]').click();await capture('saved-crate');
    await page.locator('[data-lab-tab="manual"]').click();await capture('manual');
+   const appVersion=fs.readFileSync(path.resolve(__dirname,'../android-lab/app/build.gradle'),'utf8').match(/versionName\s+'([^']+)'/)[1];
+   assert.equal(await page.locator('#labAppVersion').textContent(),appVersion);
+   await page.evaluate(()=>window.auditCopyOK=false);
+   await page.locator('[data-lab-action="setup"]').click();
+   await page.locator('#labSetupText').waitFor({state:'visible'});
+   assert.equal(await page.locator('#labSetupText').inputValue(),await page.evaluate(()=>auditCalls.filter(c=>c[0]==='copy').at(-1)[1]));
+   await capture('manual-copy-recovery');
+   await page.evaluate(()=>window.auditCopyOK=true);
+   await page.locator('[data-lab-action="setup"]').click();
+   await page.waitForFunction(()=>document.querySelector('#labSetupFallback').hidden);
    await page.locator('[data-lab-action="services"]').click();await capture('preferences');
    await page.locator('[data-lab-action="close-preferences"]').click();
    await page.locator('[data-lab-tab="jukebox"]').click();
@@ -85,6 +93,6 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    assert.deepEqual(errors,[],profile.name+' has no uncaught JS errors');
    await context.close();
   }
- }finally{if(browser)await browser.close();server.close();fs.writeFileSync(path.join(output,'report.json'),JSON.stringify({boundary:'Setup may use an explicitly recorded CSS visibility override after detecting a blocker; overridden setup is diagnostic, not a shipped-app pass. Bundled interface in Chromium with simulated Android bridge; no device, external AI, account or publication verification.',results},null,2))}
+ }finally{if(browser)await browser.close();server.close();fs.writeFileSync(path.join(output,'report.json'),JSON.stringify({boundary:'Unmodified bundled interface in Chromium with simulated Android bridge; no diagnostic CSS overrides, device, external AI, account or publication verification.',results},null,2))}
  console.log('PASS: setup, exact handoff, two moods, saving, navigation, Preferences, Other AI and clipboard failure across four profiles. Review screenshots and metrics separately.');
 })().catch(e=>{console.error(e);process.exitCode=1});
