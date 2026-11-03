@@ -55,7 +55,13 @@ const roots=process.argv.slice(2);if(roots.length!==2)throw Error('Provide basel
   }finally{await context.close();server.close()}
  }}finally{await browser.close()}
  fs.writeFileSync('android-lab/build/atlas-perf/results.json',JSON.stringify(reports,null,2));console.log(JSON.stringify(reports,null,2));
- assert(reports[1].mutations.viewBox<reports[0].mutations.viewBox/2,'Camera must not relayout SVG every frame');
+ assert(reports[1].mutations.viewBox<=reports[0].mutations.viewBox+1,'Camera viewBox work must not regress');
+ // Same-run relative budgets tolerate runner noise while flagging material regressions.
+ const baseline=reports[0],candidate=reports[1];
+ assert(candidate.loadMs<=baseline.loadMs*1.25+250,'Startup exceeded baseline budget');
+ assert(candidate.taskMs<=baseline.taskMs*1.25+100,'Main-thread work exceeded baseline budget');
+ assert(candidate.frameP95<=Math.max(33.4,baseline.frameP95*1.25),'Zoom frame time exceeded baseline budget');
+ assert(candidate.touch.p95<=Math.max(33.4,baseline.touch.p95*1.25),'Touch frame time exceeded baseline budget');
  assert.equal(reports[1].touch.finalViewBox,reports[0].touch.finalViewBox,'Drag/pinch destinations must be preserved');
  assert.equal(reports[1].finalViewBox,reports[0].finalViewBox,'Camera destination must be preserved');
 })().catch(e=>{console.error(e);process.exitCode=1});

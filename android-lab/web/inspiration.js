@@ -1,5 +1,5 @@
 // Inserted inside the Lab-only app.js closure. Shared text remains plain text.
-function labInspiration(){try{return window.HipsterLab&&typeof window.HipsterLab.inspiration==="function"?String(window.HipsterLab.inspiration()||""):""}catch(e){return ""}}
+function labInspiration(){return labState().activeInspiration||''}
 let labLastInspiration=labInspiration();
 function labRevealInspiration(target){
  if(!target)return;
@@ -45,6 +45,7 @@ function renderLabInspiration(){
  if(reminder)reminder.hidden=!value;
 }
 window.HipsterLabRefresh=()=>{
+ labRefreshState();
  const value=labInspiration(),changed=value!==labLastInspiration;labLastInspiration=value;
  if(changed)copiedPrompt=null;render();
  if(value&&changed){labNavigate('jukebox');labRevealInspiration(doc.getElementById('labInspiration'))}
