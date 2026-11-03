@@ -49,11 +49,15 @@ final class SavedRequests {
     }
     private void actions(JSONObject entry) {
         String prompt=entry.optString("prompt"),ai=entry.optString("ai");
+        String[] choices=SavedRequestPolicy.isManual(ai)
+            ? new String[]{"Copy exact request","Share exact request","Delete"}
+            : new String[]{("share".equals(prefs.getString("mode","open"))?"Share to ":"browser".equals(prefs.getString("mode","open"))?"Open browser for ":"Open app for ")+ai,"Copy exact request","Share exact request","Delete"};
         new AlertDialog.Builder(activity).setTitle(entry.optString("name"))
-            .setItems(new String[]{("share".equals(prefs.getString("mode","open"))?"Share to ":"browser".equals(prefs.getString("mode","open"))?"Open browser for ":"Open app for ")+ai,"Copy exact request","Share exact request","Delete"},(d,n)->{
-                if(n==0)replay.open(ai,prompt);
-                else if(n==1){copy.run(prompt);Toast.makeText(activity,"Saved request copied.",Toast.LENGTH_SHORT).show();}
-                else if(n==2)share.run(prompt);
+            .setItems(choices,(d,n)->{
+                int action=SavedRequestPolicy.action(ai,n);
+                if(action==0)replay.open(ai,prompt);
+                else if(action==1){copy.run(prompt);Toast.makeText(activity,SavedRequestPolicy.isManual(ai)?"Saved request copied. Open your AI manually, paste and send.":"Saved request copied.",Toast.LENGTH_SHORT).show();}
+                else if(action==2)share.run(prompt);
                 else new AlertDialog.Builder(activity).setTitle("Delete saved request?")
                     .setMessage("Remove ‘"+entry.optString("name")+"’ from this device?")
                     .setPositiveButton("Delete",(dialog,which)->{

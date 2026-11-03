@@ -2,6 +2,8 @@ import hashlib
 import importlib.util
 import tempfile
 import unittest
+import re
+from unittest.mock import patch
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -17,6 +19,9 @@ class LabSnapshotTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             dest=module.bundle(Path(temp)/'site')
             page=(dest/'index.html').read_text()
+            version=re.search(r"versionName\s+'([^']+)'",(ROOT/'android-lab/app/build.gradle').read_text()).group(1)
+            self.assertIn('<span id="labAppVersion">'+version+'</span>',page)
+            self.assertNotIn('<!--LAB_APP_VERSION-->',page)
             stripped=page.replace('<link rel="stylesheet" href="/assets/lab-workspace.css">','')
             start=stripped.index('<nav class="lab-rail"')
             end=stripped.index('<div class="site">',start)
@@ -31,5 +36,17 @@ class LabSnapshotTests(unittest.TestCase):
             self.assertIn('window.HipsterLab.go(ai,prompt)',script)
             self.assertIn('if(event.defaultPrevented||!window.HipsterLab)return',script)
         self.assertEqual(before,hashes())
+
+    def test_manual_version_follows_build_metadata(self):
+        original=Path.read_text
+        def read(path,*args,**kwargs):
+            text=original(path,*args,**kwargs)
+            if path==ROOT/'android-lab/app/build.gradle':
+                return re.sub(r"versionName\s+'[^']+'", "versionName '9.8.7'", text)
+            return text
+        with tempfile.TemporaryDirectory() as temp:
+            with patch.object(Path,'read_text',read):
+                dest=module.bundle(Path(temp)/'site')
+            self.assertIn('<span id="labAppVersion">9.8.7</span>',(dest/'index.html').read_text())
 
 if __name__ == '__main__': unittest.main()

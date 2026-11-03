@@ -201,7 +201,7 @@ public class LabActivity extends Activity {
     public final class Bridge {
         @JavascriptInterface public String state(){return workspaceState();}
         @JavascriptInterface public void showUpdates(){runOnUiThread(()->updates.show());}
-        @JavascriptInterface public void saveRequest(String ai,String text){if(url(ai)!=null&&validText(text))runOnUiThread(()->shelf.save(ai,text));}
+        @JavascriptInterface public void saveRequest(String ai,String text){if(SavedRequestPolicy.canSave(ai,text))runOnUiThread(()->shelf.save(ai,text));}
         @JavascriptInterface public void savedRequest(String id){if(id!=null&&id.length()<=64)runOnUiThread(()->shelf.showEntry(id));}
         @JavascriptInterface public void setPreference(String key,String value){
             runOnUiThread(()->{

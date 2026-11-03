@@ -1,6 +1,11 @@
 /* Lab snapshot only: canonical atlas and portraits keep their geometry. */
 body.gig-poster.lab-workspace{padding-top:56px;--lab-rail-height:56px;color:#103135;background-color:#dfb045;scrollbar-color:#103135 #dfb045}
 .lab-workspace [hidden]{display:none!important}
+/* The poster hides legacy tickets; the app's setup ticket must remain usable. */
+body.gig-poster.lab-workspace #firstCrateSetup .ticket:not([hidden]){display:block}
+.lab-workspace :is(.footnote,.footer) a{display:inline-flex;align-items:center;min-height:48px}
+#labSetupText{box-sizing:border-box;display:block;width:100%;min-height:160px;margin-top:10px;padding:12px;background:#f4efdf;color:#103135;border:1px solid #103135;font:1rem/1.5 Arial,sans-serif;overflow-wrap:anywhere}
+#labSetupFallback summary{min-height:48px;display:flex;align-items:center;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .lab-workspace .site>.masthead .topnav{display:none}
 .lab-workspace .site>.masthead .brandrow{display:flex;align-items:center;gap:12px}
 .lab-edition-mark{font:bold .6875rem/1.3 'Courier New',monospace;border:1px solid #103135;padding:4px 6px;margin-left:auto}

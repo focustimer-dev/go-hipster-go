@@ -1,6 +1,20 @@
 // Injected inside the incumbent app closure in the Lab snapshot only.
 let labScreen='jukebox';
 const labPositions={jukebox:0,crate:0,manual:0};
+let labSetupCopySerial=0;
+async function labCopySetup(button){
+ const serial=++labSetupCopySerial,snapshot=setupPrompt(ai,service);
+ const message=doc.getElementById('labSetupStatus'),fallback=doc.getElementById('labSetupFallback'),text=doc.getElementById('labSetupText');
+ button.disabled=true;
+ try{
+  let ok=false;try{ok=await copyText(snapshot)}catch(e){}
+  if(serial!==labSetupCopySerial)return;
+  if(snapshot!==setupPrompt(ai,service)){message.textContent='Setup changed while copying. Copy the current connection check.';return}
+  fallback.hidden=ok;fallback.open=!ok;text.value=ok?'':snapshot;
+  message.textContent=ok?'Setup check copied. Paste and send it in '+aiNames[ai]+'.':'Clipboard unavailable. Select and copy the connection check below, then paste and send it in your AI.';
+  if(!ok){text.focus();text.select()}
+ }finally{if(serial===labSetupCopySerial)button.disabled=false}
+}
 function labState(){try{return JSON.parse(window.HipsterLab?.state?.()||'{}')}catch(e){return {}}}
 function labNavigate(next,focus=true){
  if(!['jukebox','crate','manual'].includes(next)||next===labScreen)return;
@@ -33,6 +47,11 @@ function renderLabHandoff(){
 }
 function renderLabWorkspace(){
  if(!doc.getElementById('labCrate'))return;
+ const setupText=doc.getElementById('labSetupText');
+ if(setupText?.value&&setupText.value!==setupPrompt(ai,service)){
+  setupText.value='';doc.getElementById('labSetupFallback').hidden=true;doc.getElementById('labSetupFallback').open=false;
+  doc.getElementById('labSetupStatus').textContent='Setup changed. Copy a fresh connection check for your chosen AI and music service.';
+ }
  const state=labState(),reference=labInspiration(),entries=Array.isArray(state.saved)?state.saved:[];
  const dot=doc.getElementById('labUpdateDot');dot.hidden=!state.updateAvailable;dot.setAttribute('aria-hidden','true');
  doc.querySelector('[data-lab-tab="manual"]').setAttribute('aria-label',state.updateAvailable?'Manual, Gemini skill update available':'Manual');
@@ -73,7 +92,7 @@ function initLabWorkspace(){
   if(action==='preferences')labPreferences();else if(action==='close-preferences')doc.getElementById('labPreferences').close();
   else if(action==='inspiration')window.HipsterLab?.reviewInspiration?.();else if(action==='save')window.HipsterLab?.saveRequest?.(ai,goPrompt(ai,service,mood));else if(action==='updates')window.HipsterLab?.showUpdates?.();else if(action==='jukebox')labNavigate('jukebox');
   else if(action==='services')labPreferences();
-  else if(action==='setup'){b.disabled=true;copyText(setupPrompt(ai,service)).then(ok=>{doc.getElementById('labSetupStatus').textContent=ok?'Setup check copied. Paste and send it in '+aiNames[ai]+'.':'Could not copy. Try again.'}).finally(()=>b.disabled=false)}
+  else if(action==='setup')labCopySetup(b);
  });
  doc.getElementById('labPreferences').addEventListener('close',()=>{body.classList.remove('lab-modal-open');doc.querySelector('[data-lab-action="preferences"]')?.focus({preventScroll:true})});
  doc.getElementById('labPreferences').addEventListener('change',event=>{const i=event.target;if(i.name==='labHandoff')window.HipsterLab?.setPreference?.('mode',i.value);else if(i.dataset.labPref)window.HipsterLab?.setPreference?.(i.dataset.labPref,String(i.checked));renderLabWorkspace()});
