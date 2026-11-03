@@ -17,7 +17,8 @@ function renderLabInspiration(){
   text.append(label,preview,next);
   const actions=doc.createElement('div');actions.className='lab-inspiration-actions';
   const review=doc.createElement('button');review.type='button';review.id='labReviewInspiration';review.textContent='REVIEW';review.addEventListener('click',()=>window.HipsterLab?.reviewInspiration?.());
-  actions.append(review);card.append(text,actions);anchor.parentNode.insertBefore(card,anchor);
+  const vinyl=doc.createElement('span');vinyl.className='lab-sleeve-vinyl';vinyl.setAttribute('aria-hidden','true');
+  actions.append(review);card.append(text,actions,vinyl);anchor.parentNode.insertBefore(card,anchor);
  }
  const value=labInspiration();card.hidden=!value;
  doc.getElementById('labInspirationPreview').textContent=labSummary(value);
