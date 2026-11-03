@@ -91,7 +91,7 @@ const roots=process.argv.slice(2);if(roots.length!==2)throw Error('Provide basel
    const pressBox=await page.locator('.crate-map-frame').boundingBox();
    await page.evaluate(()=>document.querySelector('#crateAtlasMap').addEventListener('touchstart',()=>{const map=document.querySelector('#crateAtlasMap');window.pressBefore={rect:(map.querySelector('.atlas-camera-scene')||map).getBoundingClientRect().toJSON(),viewBox:(map.getAttribute('data-camera-view')||map.getAttribute('viewBox'))}},{capture:true,once:true}));
    await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:pressBox.x+pressBox.width/2,y:pressBox.y+pressBox.height/2}]});
-   const interrupted=await page.evaluate(()=>({before:pressBefore,after:(document.querySelector('#crateAtlasMap .atlas-camera-scene')||document.querySelector('#crateAtlasMap')).getBoundingClientRect().toJSON(),viewBox:document.querySelector('#crateAtlasMap').getAttribute('viewBox')}));
+   const interrupted=await page.evaluate(()=>({before:pressBefore,after:(document.querySelector('#crateAtlasMap .atlas-camera-scene')||document.querySelector('#crateAtlasMap')).getBoundingClientRect().toJSON(),viewBox:document.querySelector('#crateAtlasMap').dataset.cameraView||document.querySelector('#crateAtlasMap').getAttribute('viewBox')}));
    if(test.label==='candidate'){
     assert.equal(interrupted.viewBox,interrupted.before.viewBox,'Press must not force an SVG camera commit');
     for(const key of ['x','y','width','height'])assert(Math.abs(interrupted.after[key]-interrupted.before.rect[key])<.1,'Press preserves visual camera '+key);
