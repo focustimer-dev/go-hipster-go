@@ -205,7 +205,7 @@ let atlasFocus=null, atlasZoomFrame=0;
 let atlasUserNavigated=false, atlasTouchGesture=null, atlasSuppressTapUntil=0;
 let lastCrateStamp=null;
 const atlasStampNodes=new Map();
-let atlasNavigationFrame=0,atlasPendingView=null;
+let atlasNavigationFrame=0,atlasPendingView=null,atlasWheelTimer=0;
 const crateStorageKey="ghg-crate-map-regions-v1";
 const validCrateRegions=new Set(crateRegions.map(r=>r.id));
 function readCrateRegions(){
@@ -233,6 +233,33 @@ function crateRegionPrompt(){
  return "Regional exploration: "+all.join(", ")+".";
 }
 function atlasBoxText(a){return a.map(v=>Math.round(v*10)/10).join(" ")}
+// Composite one SVG layer during movement; commit the vector camera at rest.
+// The frame still clips the map, while overflow lets zoom-out reveal geography
+// outside the starting SVG viewport rather than exposing empty edges.
+const atlasCanComposite=typeof CSS!=='undefined'&&typeof CSS.supports==='function'&&CSS.supports('transform','translate(0%,0%) scale(1)');
+let atlasMotionBase=null,atlasMotionView=null,atlasMotionRect=null;
+function paintAtlasMotion(view){
+ const map=doc.getElementById("crateAtlasMap");if(!map)return;
+ if(!map.style||!atlasCanComposite){map.setAttribute("viewBox",atlasBoxText(view));return;}
+ if(!atlasMotionBase){atlasMotionBase=(map.getAttribute("viewBox")||"0 0 720 372").split(/\s+/).map(Number);atlasMotionRect=map.getBoundingClientRect();}
+ atlasMotionView=view;
+ const [bx,by,bw]=atlasMotionBase,[x,y,w,h]=view;
+ const transform=`translate(${(bx-x)/w*100}%,${(by-y)/h*100}%) scale(${bw/w})`;
+ for(const layer of [map,atlasRadialField])if(layer?.style){
+  layer.style.transformOrigin='0 0';layer.style.transformBox='border-box';
+  layer.style.overflow='visible';layer.style.willChange='transform';layer.style.transform=transform;
+ }
+ atlasDetailsForView(map,atlasBoxText(view));
+}
+function commitAtlasMotion(){
+ if(!atlasMotionView)return;
+ const map=doc.getElementById("crateAtlasMap"),view=atlasBoxText(atlasMotionView);
+ map?.setAttribute("viewBox",view);atlasRadialField?.setAttribute("viewBox",view);
+ for(const layer of [map,atlasRadialField])if(layer?.style){
+  layer.style.transform='';layer.style.transformOrigin='';layer.style.transformBox='';layer.style.overflow='';layer.style.willChange='';
+ }
+ atlasMotionBase=null;atlasMotionView=null;atlasMotionRect=null;
+}
 function animateAtlasView(view){
  flushAtlasNavigation();
  const map=doc.getElementById("crateAtlasMap");if(!map)return;
@@ -246,8 +273,8 @@ function animateAtlasView(view){
  const frame=time=>{
   if(started===null)started=time;
   const t=Math.min(1,(time-started)/300),e=1-Math.pow(1-t,3);
-  map.setAttribute("viewBox",atlasBoxText(goal.map((v,i)=>from[i]+(v-from[i])*e)));
-  if(t<1)atlasZoomFrame=requestAnimationFrame(frame);else atlasZoomFrame=0;
+  paintAtlasMotion(goal.map((v,i)=>from[i]+(v-from[i])*e));
+  if(t<1)atlasZoomFrame=requestAnimationFrame(frame);else{atlasZoomFrame=0;commitAtlasMotion();}
  };
  atlasZoomFrame=requestAnimationFrame(frame);
 }
@@ -655,18 +682,20 @@ doc.querySelectorAll("[data-crate-region]").forEach(b=>{
 
 /* Direct manipulation: one finger or mouse drags; two fingers pinch.
    Normal desktop scrolling remains with the page unless modified. */
-function atlasView(){const map=doc.getElementById("crateAtlasMap");return (map?.getAttribute("viewBox")||"0 0 720 372").trim().split(/\s+/).map(Number)}
+function atlasView(){if(atlasMotionView)return [...atlasMotionView];const map=doc.getElementById("crateAtlasMap");return (map?.getAttribute("viewBox")||"0 0 720 372").trim().split(/\s+/).map(Number)}
 function flushAtlasNavigation(){
+ if(atlasWheelTimer){clearTimeout(atlasWheelTimer);atlasWheelTimer=0;}
  if(atlasNavigationFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasNavigationFrame);
  atlasNavigationFrame=0;
- if(atlasPendingView){doc.getElementById("crateAtlasMap")?.setAttribute("viewBox",atlasBoxText(atlasPendingView));atlasPendingView=null}
+ if(atlasPendingView){paintAtlasMotion(atlasPendingView);atlasPendingView=null}
+ commitAtlasMotion();
 }
 function queueAtlasNavigation(view){
  atlasPendingView=view;
  if(typeof requestAnimationFrame!=="function"){flushAtlasNavigation();return}
  if(!atlasNavigationFrame)atlasNavigationFrame=requestAnimationFrame(()=>{
   atlasNavigationFrame=0;
-  if(atlasPendingView){doc.getElementById("crateAtlasMap")?.setAttribute("viewBox",atlasBoxText(atlasPendingView));atlasPendingView=null}
+  if(atlasPendingView){paintAtlasMotion(atlasPendingView);atlasPendingView=null}
  });
 }
 function atlasGesturePoints(touches){
@@ -749,7 +778,7 @@ function atlasBindGestures(){
  atlasDetailsForView(map,map.getAttribute("viewBox")||"0 0 720 372");
  const stopZoom=()=>{
   if(atlasZoomFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasZoomFrame);
-  atlasZoomFrame=0;
+  atlasZoomFrame=0;commitAtlasMotion();
  };
  // Treat one finger tap as selection, but reserve a short window for a
  // second tap before dispatching it. Otherwise a double tap first selects
@@ -881,7 +910,7 @@ function atlasBindGestures(){
   if(event.cancelable)event.preventDefault();
   if(atlasZoomFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasZoomFrame);
   atlasZoomFrame=0;
-  const view=atlasPendingView||atlasView(),rect=map.getBoundingClientRect();
+  const view=atlasPendingView||atlasView(),rect=atlasMotionRect||map.getBoundingClientRect();
   const center={x:event.clientX,y:event.clientY};
   const anchor=atlasScreenAnchor(map,view,center.x,center.y,rect);
   let result;
@@ -894,6 +923,10 @@ function atlasBindGestures(){
    result=atlasConstrain([view[0]+event.deltaX*unit/scale,view[1]+event.deltaY*unit/scale,view[2],view[3]]);
   }
   queueAtlasNavigation(result);
+  if(atlasCanComposite&&typeof setTimeout==="function"){
+   if(atlasWheelTimer)clearTimeout(atlasWheelTimer);
+   atlasWheelTimer=setTimeout(flushAtlasNavigation,120);
+  }
   if(!atlasUserNavigated){atlasUserNavigated=true;renderAtlasNavigation()}
   atlasSuppressTapUntil=Date.now()+500;
  },{passive:false});
