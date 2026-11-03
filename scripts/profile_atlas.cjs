@@ -17,6 +17,36 @@ const roots=process.argv.slice(2);if(roots.length!==2)throw Error('Provide basel
    await page.addInitScript(()=>{window.HipsterLab={state:()=>'{"saved":[]}',inspiration:()=>'',copy:()=>true};window.perfLongTasks=[];new PerformanceObserver(list=>perfLongTasks.push(...list.getEntries().map(e=>e.duration))).observe({type:'longtask',buffered:true});});
    const started=Date.now();await page.goto('http://127.0.0.1:'+server.address().port+'/');await page.evaluate(()=>document.fonts.ready);const loaded=Date.now()-started;
    await page.locator('.crate-map-frame').scrollIntoViewIfNeeded();
+   // Selection is a different workload from camera motion. Measure both ink/unink.
+   await page.evaluate(()=>document.querySelector('[data-crate-continent="europe"]').click());await page.waitForTimeout(400);
+   const selection=await page.evaluate(async()=>{
+    const samples=[],unrelated=document.querySelector('.mood-grid');let unrelatedMutations=0;
+    const observer=new MutationObserver(records=>{unrelatedMutations+=records.length});observer.observe(unrelated,{attributes:true,subtree:true,childList:true,characterData:true});
+    for(const id of ['atlantic-europe','northern-europe','mediterranean-europe','eastern-europe']){
+     for(const selected of [true,false]){
+      observer.takeRecords();unrelatedMutations=0;const start=performance.now();
+      const land=document.querySelector('[data-atlas-country][data-atlas-region="'+id+'"]');
+      const tap=new MouseEvent('click',{bubbles:true,cancelable:true,detail:1,clientX:120,clientY:120});Object.defineProperty(tap,'pointerType',{value:'touch'});
+      land.dispatchEvent(tap);
+      const handlerMs=performance.now()-start;
+      // Include the touch double-tap arbitration delay in the baseline measurement.
+      while(land.getAttribute('data-inked')!==String(selected)&&performance.now()-start<2000)await new Promise(requestAnimationFrame);
+      if(land.getAttribute('data-inked')!==String(selected))throw Error('Selection ink incorrect: '+id);
+      const prompt=document.querySelector('#prompt').textContent;
+      const button=document.querySelector('[data-crate-region="'+id+'"]');
+      if(button.getAttribute('aria-pressed')!==String(selected))throw Error('Named control state incorrect');
+      if(selected&&!prompt.includes('Regional exploration:'))throw Error('Selected region missing from request');
+      if(!selected&&prompt.includes('Regional exploration:'))throw Error('Removed region retained in request');
+      await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+      samples.push({id,selected,handlerMs,nextPaintMs:performance.now()-start,unrelatedMutations:unrelatedMutations+observer.takeRecords().length});
+      await new Promise(resolve=>setTimeout(resolve,420));
+     }
+    }
+    observer.disconnect();
+    const p95=key=>{const values=samples.map(s=>s[key]).sort((a,b)=>a-b);return values[Math.floor(values.length*.95)]};
+    return {handlerP95:p95('handlerMs'),nextPaintP95:p95('nextPaintMs'),unrelatedMutations:samples.reduce((n,s)=>n+s.unrelatedMutations,0),samples};
+   });
+   await page.evaluate(()=>document.querySelector('[data-crate-continent="europe"]').click());await page.waitForTimeout(400);
    const before=(await cdp.send('Performance.getMetrics')).metrics;
    const result=await page.evaluate(async()=>{
     const map=document.querySelector('#crateAtlasMap'),mutations={details:0,tabindex:0,viewBox:0};
@@ -44,7 +74,7 @@ const roots=process.argv.slice(2);if(roots.length!==2)throw Error('Provide basel
    await page.screenshot({path:'android-lab/build/atlas-perf/'+test.label+'-'+test.round+'-mid-zoom-out.png'});await page.waitForTimeout(400);
    assert.equal(await page.locator('#crateAtlasMap').evaluate(el=>el.style.transform),'','Camera transform clears at rest');
    const after=(await cdp.send('Performance.getMetrics')).metrics,metric=n=>(after.find(x=>x.name===n)?.value||0)-(before.find(x=>x.name===n)?.value||0);
-   samples.push({label:test.label,round:test.round,loadMs:loaded,...result,scriptMs:metric('ScriptDuration')*1000,layoutMs:metric('LayoutDuration')*1000,recalcMs:metric('RecalcStyleDuration')*1000,taskMs:metric('TaskDuration')*1000});
+   samples.push({label:test.label,round:test.round,loadMs:loaded,selection,...result,scriptMs:metric('ScriptDuration')*1000,layoutMs:metric('LayoutDuration')*1000,recalcMs:metric('RecalcStyleDuration')*1000,taskMs:metric('TaskDuration')*1000});
    await page.screenshot({path:'android-lab/build/atlas-perf/'+test.label+'-'+test.round+'.png'});
    await page.locator('.crate-map-frame').scrollIntoViewIfNeeded();
    await page.evaluate(()=>document.querySelector('[data-crate-continent="europe"]').click());await page.waitForTimeout(80);
@@ -59,7 +89,7 @@ const roots=process.argv.slice(2);if(roots.length!==2)throw Error('Provide basel
  const median=values=>{const sorted=[...values].sort((a,b)=>a-b),i=Math.floor(sorted.length/2);return sorted.length%2?sorted[i]:(sorted[i-1]+sorted[i])/2};
  const reports=builds.map(({label})=>{
   const runs=samples.filter(sample=>sample.label===label);
-  return {label,runs:runs.length,...Object.fromEntries(['loadMs','taskMs','frameP95','scriptMs','layoutMs','recalcMs'].map(key=>[key,median(runs.map(run=>run[key]))])),touch:{p95:median(runs.map(run=>run.touch.p95))}};
+  return {label,runs:runs.length,...Object.fromEntries(['loadMs','taskMs','frameP95','scriptMs','layoutMs','recalcMs'].map(key=>[key,median(runs.map(run=>run[key]))])),selection:{handlerP95:median(runs.map(run=>run.selection.handlerP95)),nextPaintP95:median(runs.map(run=>run.selection.nextPaintP95)),unrelatedMutations:median(runs.map(run=>run.selection.unrelatedMutations))},touch:{p95:median(runs.map(run=>run.touch.p95))}};
  });
  fs.writeFileSync('android-lab/build/atlas-perf/results.json',JSON.stringify({reports,samples},null,2));console.log(JSON.stringify({reports,samples},null,2));
  // Every pair must preserve behavior; timing aggregation never hides a camera failure.
@@ -71,6 +101,8 @@ const roots=process.argv.slice(2);if(roots.length!==2)throw Error('Provide basel
  }
  // Same-run relative budgets tolerate runner noise while flagging material regressions.
  const baseline=reports[0],candidate=reports[1];
+ assert(candidate.selection.unrelatedMutations===0,'Region taps must leave mood portraits untouched');
+ assert(candidate.selection.nextPaintP95<=baseline.selection.nextPaintP95*1.25+16.7,'Selection paint exceeded baseline budget');
  assert(candidate.loadMs<=baseline.loadMs*1.25+250,'Startup exceeded baseline budget');
  assert(candidate.taskMs<=baseline.taskMs*1.25+100,'Main-thread work exceeded baseline budget');
  assert(candidate.frameP95<=Math.max(33.4,baseline.frameP95*1.25),'Zoom frame time exceeded baseline budget');

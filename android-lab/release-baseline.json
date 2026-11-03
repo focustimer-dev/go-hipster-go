@@ -1,6 +1,6 @@
 {
-  "comparison_commit": "ba7560dec8a7d8a0f7a8b1d0da06fae291981a0d",
-  "comparison_version": "0.9.15",
+  "comparison_commit": "abfaa510c48a38c593bce9e39cc3f2d41c62b82c",
+  "comparison_version": "0.9.16",
   "required_device_checks": [
     "Cold and warm launch on the target Android phone",
     "Atlas drag, pinch, double tap, interruption and deselection",

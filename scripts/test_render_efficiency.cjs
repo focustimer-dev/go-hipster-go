@@ -16,6 +16,39 @@ try{
   assert(stateReads<=1,selector+' reads native state at most once');assert.equal(inspirationReads,0);
   assert.equal(map.getAttribute('viewBox'),camera);
  }
+ const unrelated=new w.MutationObserver(()=>{});
+ for(const selector of ['.mood-grid','#tempoControl','#labServicePreferences','#labSetupPreferences']){
+  const node=w.document.querySelector(selector);if(node)unrelated.observe(node,{attributes:true,childList:true,characterData:true,subtree:true});
+ }
+ w.document.querySelector("#undoShuffle").hidden=false;
+ let pairEvents=0;w.document.addEventListener('hipster-pair-changed',()=>pairEvents++);
+ const storageWrites=[],originalSet=w.Storage.prototype.setItem;
+ w.Storage.prototype.setItem=function(key,value){storageWrites.push(key);return originalSet.call(this,key,value)};
+ for(const selected of [true,false]){
+  stateReads=0;unrelated.takeRecords();storageWrites.length=0;
+  w.document.querySelector('[data-crate-region="atlantic-europe"]').click();
+  assert.equal(w.document.querySelector('#undoShuffle').hidden,true,'Region change clears stale shuffle undo');
+  assert.equal(unrelated.takeRecords().length,0,'Region tap leaves moods, pace, setup and service controls untouched');
+  assert.equal(stateReads,0,'Region tap reuses native snapshot');assert.equal(pairEvents,0,'Region tap does not restart pairing/setup');
+  assert.deepEqual(storageWrites,['ghg-crate-map-regions-v1'],'Only region storage is written');
+  assert.equal(w.document.querySelector('[data-crate-region="atlantic-europe"]').getAttribute('aria-pressed'),String(selected));
+  assert.equal(w.document.querySelector('#prompt').textContent.includes('Regional exploration:'),selected);
+ }
+ unrelated.disconnect(); // Touch capture must apply the first tap before its 290ms timer expires.
+ const timers=[],originalTimer=w.setTimeout;
+ w.setTimeout=(callback,ms)=>ms===290?(timers.push(callback),timers.length):originalTimer(callback,ms);
+ const touch=land=>{const tap=new w.MouseEvent('click',{bubbles:true,cancelable:true,detail:1,clientX:100,clientY:100});Object.defineProperty(tap,'pointerType',{value:'touch'});land.dispatchEvent(tap)};
+ w.document.querySelector('[data-crate-continent="asia"]').click();
+ const land=w.document.querySelector('[data-atlas-country][data-atlas-region="east-asia"]');
+ touch(land);assert.equal(land.getAttribute('data-inked'),'true','First touch selects immediately');
+ timers.shift()();assert.equal(land.getAttribute('data-inked'),'true','Timer does not select twice');
+ touch(land);assert.equal(land.getAttribute('data-inked'),'false','Touch deselection is immediate');timers.shift()();
+ const beforeDouble=w.document.querySelector('#prompt').textContent;
+ touch(land);touch(land);
+ assert.equal(land.getAttribute('data-inked'),'false','Double tap restores prior selection before zoom');
+ assert.equal(w.document.querySelector('#prompt').textContent,beforeDouble,'Double tap restores exact request');
+ w.setTimeout=originalTimer;
+
  w.document.querySelector('[data-crate-region="south-asia"]').click();
  assert(observer.takeRecords().length>0,'Region changes still update geography');
  state.activeInspiration='Updated reference';w.HipsterLabRefresh();

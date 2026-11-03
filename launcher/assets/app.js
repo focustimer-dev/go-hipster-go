@@ -333,7 +333,13 @@ const crateStampNames={"us-west":"US W","us-east":"US E","canada-west":"CAN W","
 function setAtlasAttribute(node,name,value){
  const text=String(value);if(node.getAttribute(name)!==text)node.setAttribute(name,text);
 }
-let atlasSelectionStamp="";
+let atlasSelectionStamp="",atlasPaintedSelection=null;
+// Country geometry is static. Index once, then touch only regions whose ink changed.
+const atlasCountriesByRegion=new Map();
+doc.querySelectorAll("[data-atlas-country]").forEach(path=>{
+ const id=path.dataset.atlasRegion;if(!atlasCountriesByRegion.has(id))atlasCountriesByRegion.set(id,[]);
+ atlasCountriesByRegion.get(id).push(path);
+});
 function renderCrateMap(){
  const stamp=JSON.stringify([atlasFocus,atlasUserNavigated,[...crateSelected].sort(),lastCrateStamp]);
  if(stamp===atlasSelectionStamp)return;
@@ -348,9 +354,12 @@ function renderCrateMap(){
   setAtlasAttribute(z,"data-selected",String(crateSelected.has(z.dataset.atlasZone)));
   setAtlasAttribute(z,"data-press",String(z.dataset.atlasZone===lastCrateStamp));
  });
- doc.querySelectorAll("[data-atlas-country]").forEach(path=>{
-  setAtlasAttribute(path,"data-inked",String(crateSelected.has(path.dataset.atlasRegion)));
- });
+ for(const [id,paths] of atlasCountriesByRegion){
+  const inked=crateSelected.has(id);
+  if(atlasPaintedSelection&&atlasPaintedSelection.has(id)===inked)continue;
+  for(const path of paths)setAtlasAttribute(path,"data-inked",String(inked));
+ }
+ atlasPaintedSelection=new Set(crateSelected);
  const st=doc.getElementById("crateGeoStatus");
  const selectionStatus=crateSelected.size?crateSelected.size+" region"+(crateSelected.size===1?"":"s")+" selected. Tap a stamp to remove a region.":"No regions selected. All areas are available.";
  if(st&&st.textContent!==selectionStatus)st.textContent=selectionStatus;
@@ -412,7 +421,7 @@ function renderCrateStamps(){
 }
 function updateCrateMap(reframe=true){
  store(crateStorageKey,JSON.stringify([...crateSelected]));
- copiedPrompt=null;selectionChanged();if(reframe)frameSelectedAtlas();
+ copiedPrompt=null;selectionChanged(false,true);if(reframe)frameSelectedAtlas();
 }
 const params=new URLSearchParams(location.search);
 includeCover=params.get("cover")==="1";
@@ -442,10 +451,10 @@ function updateHandoff(){
  if(instructions)instructions.textContent=ai==="other"?"Open your chosen AI yourself, paste the copied request and send it. This app cannot open an unspecified AI.":ai==="chatgpt"?"Paste and send. Select Go, Hipster, Go! and "+serviceNames[service]+" in your chat if needed. The playlist isn't saved yet.":ai==="gemini"?"Paste and send. Select the saved Go, Hipster, Go! skill and "+serviceNames[service]+" if needed. Check whether the playlist was created.":"Paste and send. Enable Go, Hipster, Go! and "+serviceNames[service]+" if needed. Check the playlist result in your AI.";
  /* PLATFORM_HANDOFF_RENDER */
 }
-function selectionChanged(preserveShuffle=false){
+function selectionChanged(preserveShuffle=false,regionsOnly=false){
  if(!preserveShuffle){previousShuffle=null;const result=doc.getElementById("shuffleResult");if(result)result.textContent="";}
  moodAngle="";freshCrateLens="";crateSparkPhrase="";
- render();
+ if(regionsOnly&&body.dataset.page==="launch")renderLaunch(true);else render();
  if(body.dataset.page==="launch")status("Prompt changed. Press GO to copy the current selection.");
  else status("Selection updated. Copy the setup check above.");
  const tip=doc.getElementById("setupTipStatus");if(tip)tip.textContent="";
@@ -502,11 +511,12 @@ function renderSetup(){
  const target=doc.getElementById("openSelectedAi");if(target){target.hidden=ai==="other";target.href=destinations[ai];target.textContent=(setupReady?"NEXT: OPEN ":"OPEN ")+aiNames[ai].toUpperCase();target.setAttribute("data-copy-ready",String(setupReady))}
  const tryFirst=doc.getElementById("trySetupPrompt");if(tryFirst)tryFirst.dataset.readyPair=ai+":"+service;
 }
-function renderLaunch(){
- renderSelections();
+function renderLaunch(regionsOnly=false){
+ if(!regionsOnly)renderSelections();
  renderCrateMap();
- renderShufflePins();
  const undo=doc.getElementById("undoShuffle");if(undo)undo.hidden=!previousShuffle;
+ if(!regionsOnly){
+ renderShufflePins();
  const slider=doc.getElementById("tempoSlider"),tempoValue=doc.getElementById("tempoValue"),anyTempo=doc.getElementById("anyTempo");
  if(slider){slider.value=tempo?tempoSteps.indexOf(tempo)+1:3;slider.setAttribute("aria-valuetext",tempo?tempoNames[tempo]:"Any tempo — no pace preference")}
  const tempoControl=doc.getElementById("tempoControl");if(tempoControl)tempoControl.setAttribute("data-tempo",tempo||"any");
@@ -517,6 +527,7 @@ function renderLaunch(){
  doc.querySelectorAll("[data-mood]").forEach(b=>b.setAttribute("aria-pressed",String(moodParts(mood).includes(b.dataset.mood))));
  const clerkNotes={happy:"Optimism. An ambitious brief.",angry:"For when everyone else is obviously the problem.",sad:"Melancholy. Filed under essential listening.",weird:"The neighbors may have questions.",funky:"The pocket has diplomatic immunity."};
  const moodHelp=doc.getElementById("moodHelp");if(moodHelp)moodHelp.textContent=mood==="criminal"?"Songs about crime. Artist reputations are not evidence.":mood==="go"?"No mood? We’ll use our judgment.":moodLabel(mood)+" selected. "+(moodParts(mood).map(m=>clerkNotes[m]).filter(Boolean).join(" ")||"Pick up to two moods. Tap again to clear.");
+ }
  const e={prompt:doc.getElementById("prompt"),mood:doc.getElementById("moodName"),code:doc.getElementById("receiptCode"),open:doc.getElementById("openAi"),browser:doc.getElementById("browserAi")};
  if(!e.prompt)return;
  e.prompt.textContent=goPrompt(ai,service,mood);
@@ -532,13 +543,16 @@ function renderLaunch(){
   ticketRegionShort.textContent=shortTicketRegions()+" · ART:"+(includeCover?"ON":"OFF")+" · HARD:"+(goHard?"ON":"OFF")+(skipRough?" · SKIP ROUGH: ON":"");
   ticketRegionShort.title=crateSelected.size?crateRegions.filter(r=>crateSelected.has(r.id)).map(r=>r.label).join(", "):"Worldwide";
  }
+ if(!regionsOnly){
  const cover=doc.getElementById("includeCover");if(cover)cover.setAttribute("aria-pressed",String(includeCover));
  const hard=doc.getElementById("goHard");if(hard)hard.setAttribute("aria-pressed",String(goHard));
  const recording=doc.getElementById("skipRough");if(recording)recording.checked=skipRough;
  const hint=doc.getElementById("goHint");if(hint)hint.textContent="Copy your prompt";
  const goButton=doc.getElementById("goButton");if(goButton)goButton.setAttribute("aria-label","GO! Copy "+(mood==="go"?"surprise":moodLabel(mood))+" playlist prompt");
  const manual=doc.getElementById("manualOpenAi");if(manual){manual.href=destinations[ai];manual.textContent=ai==="other"?"I COPIED IT — SHOW NEXT STEP":"I COPIED IT MANUALLY — OPEN "+aiNames[ai].toUpperCase()}
+ }
  updateHandoff();
+ if(regionsOnly)return;
  e.browser.hidden=ai!=="gemini";e.browser.href=destinations[ai];e.browser.textContent="open "+aiNames[ai]+" in browser";
  const u=new URL(location.href);u.searchParams.set("ai",ai);u.searchParams.set("service",service);
  if(mood==="go")u.searchParams.delete("mood");else u.searchParams.set("mood",mood);
@@ -795,9 +809,9 @@ function atlasBindGestures(){
   if(atlasZoomFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasZoomFrame);
   atlasZoomFrame=0;commitAtlasMotion();
  };
- // Treat one finger tap as selection, but reserve a short window for a
- // second tap before dispatching it. Otherwise a double tap first selects
- // land (and moves the map) instead of zooming at the user's finger.
+ // Land taps respond immediately. Keep a short reversible snapshot so a
+ // second nearby tap can restore the original selection before zooming.
+ // Secret cards retain deferred activation: opening one is a separate action.
  const doubleTapWindow=290,doubleTapRadius=32;
  // Near the 120-unit zoom ceiling, a double-tap gently pulls back instead
  // of silently doing nothing. Everywhere else it still zooms toward the tap.
@@ -823,8 +837,14 @@ function atlasBindGestures(){
   const now=Date.now(),screen={x:event.clientX,y:event.clientY};
   if(pendingTap&&now-pendingTap.time<=doubleTapWindow&&
      Math.hypot(screen.x-pendingTap.x,screen.y-pendingTap.y)<=doubleTapRadius){
-   clearPendingTap();
-   const view=atlasView(),rect=map.getBoundingClientRect();
+   const first=pendingTap;clearPendingTap();
+   if(first.snapshot){
+    const old=first.snapshot;stopZoom();crateSelected.clear();for(const id of old.selected)crateSelected.add(id);
+    atlasFocus=old.focus;atlasUserNavigated=old.navigated;lastCrateStamp=old.stamp;
+    copiedPrompt=old.copied;moodAngle=old.angle;freshCrateLens=old.lens;crateSparkPhrase=old.seed;previousShuffle=old.shuffle;
+    store(crateStorageKey,JSON.stringify([...crateSelected]));renderLaunch(true);status(old.status);
+   }
+   const view=first.snapshot?.view||atlasView(),rect=map.getBoundingClientRect();
    const scale=view[2]<=doubleTapTurnaroundWidth?doubleTapPullback:.5;
    zoomAt(view,atlasScreenAnchor(map,view,screen.x,screen.y,rect),screen,rect,scale);
    return;
@@ -832,18 +852,27 @@ function atlasBindGestures(){
   // A distant second tap still counts as two independent map selections.
   if(pendingTap){
    const first=pendingTap;clearPendingTap();replayingTouchClick=true;
-   try{first.target?.dispatchEvent(new MouseEvent("click",{bubbles:true,cancelable:true,clientX:first.x,clientY:first.y}))}
+   try{if(!first.snapshot)first.target?.dispatchEvent(new MouseEvent("click",{bubbles:true,cancelable:true,clientX:first.x,clientY:first.y}))}
    finally{replayingTouchClick=false}
   }
   const target=event.target;
-  pendingTap={target,x:screen.x,y:screen.y,time:now,timer:setTimeout(()=>{
+  const snapshot=target.closest?.('[data-atlas-country]')?{
+   selected:[...crateSelected],focus:atlasFocus,navigated:atlasUserNavigated,stamp:lastCrateStamp,view:atlasView(),
+   copied:copiedPrompt,angle:moodAngle,lens:freshCrateLens,seed:crateSparkPhrase,shuffle:previousShuffle,status:doc.getElementById('copyStatus')?.textContent||''
+  }:null;
+  pendingTap={target,snapshot,x:screen.x,y:screen.y,time:now,timer:setTimeout(()=>{
    if(!pendingTap||pendingTap.target!==target)return;
    clearPendingTap();
-   if(Date.now()<atlasSuppressTapUntil)return;
+   if(snapshot||Date.now()<atlasSuppressTapUntil)return;
    replayingTouchClick=true;
    try{target.dispatchEvent(new MouseEvent("click",{bubbles:true,cancelable:true,clientX:screen.x,clientY:screen.y}))}
    finally{replayingTouchClick=false}
   },doubleTapWindow)};
+  if(snapshot){
+   replayingTouchClick=true;
+   try{target.dispatchEvent(new MouseEvent("click",{bubbles:true,cancelable:true,clientX:screen.x,clientY:screen.y}))}
+   finally{replayingTouchClick=false}
+  }
  },true);
  // The browser's native double click must not also zoom the document.
  map.addEventListener("dblclick",event=>event.preventDefault());
