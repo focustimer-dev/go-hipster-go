@@ -241,15 +241,21 @@ function atlasBoxText(a){return a.map(v=>Math.round(v*10)/10).join(" ")}
 // The frame still clips the map, while overflow lets zoom-out reveal geography
 // outside the starting SVG viewport rather than exposing empty edges.
 const atlasCanComposite=typeof CSS!=='undefined'&&typeof CSS.supports==='function'&&CSS.supports('transform','translate(0%,0%) scale(1)')&&CSS.supports('transform-box','border-box');
+// The ocean must share the countries' clipping/paint ownership. WebView can
+// otherwise briefly drop the independent ocean path when its SVG layer settles.
+const atlasPaintMap=doc.getElementById("crateAtlasMap"),atlasPlate=atlasPaintMap?.querySelector?.('.robinson-plate-content'),atlasOcean=atlasPaintMap?.querySelector?.('.crate-map-ocean');
+if(atlasPlate&&atlasOcean&&atlasOcean.parentNode===atlasPaintMap)atlasPlate.insertBefore(atlasOcean,atlasPlate.firstChild);
+// Keep promotion and viewport policy stable across zoom/commit; only the camera
+// transform changes. Recreating the compositing layer on every stop causes flash.
+if(atlasCanComposite)for(const layer of [atlasPaintMap,atlasRadialField])if(layer?.style){
+ layer.style.transformOrigin='0 0';layer.style.transformBox='border-box';layer.style.overflow='visible';layer.style.willChange='transform';
+}
 let atlasMotionBase=null,atlasMotionView=null,atlasMotionRect=null;
 function paintAtlasMotion(view){
  const map=doc.getElementById("crateAtlasMap");if(!map)return;
  if(!map.style||!atlasCanComposite){map.setAttribute("viewBox",atlasBoxText(view));return;}
  if(!atlasMotionBase){
   atlasMotionBase=(map.getAttribute("viewBox")||"0 0 720 372").split(/\s+/).map(Number);atlasMotionRect=map.getBoundingClientRect();
-  for(const layer of [map,atlasRadialField])if(layer?.style){
-   layer.style.transformOrigin='0 0';layer.style.transformBox='border-box';layer.style.overflow='visible';layer.style.willChange='transform';
-  }
  }
  atlasMotionView=view;
  const [bx,by,bw]=atlasMotionBase,[x,y,w,h]=view;
@@ -262,7 +268,7 @@ function commitAtlasMotion(){
  const map=doc.getElementById("crateAtlasMap"),view=atlasBoxText(atlasMotionView);
  map?.setAttribute("viewBox",view);atlasRadialField?.setAttribute("viewBox",view);
  for(const layer of [map,atlasRadialField])if(layer?.style){
-  layer.style.transform='';layer.style.transformOrigin='';layer.style.transformBox='';layer.style.overflow='';layer.style.willChange='';
+  layer.style.transform='';
  }
  atlasMotionBase=null;atlasMotionView=null;atlasMotionRect=null;
 }
