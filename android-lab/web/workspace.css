@@ -136,3 +136,5 @@ body.gig-poster.lab-workspace #labInspiration #labDismissInspiration{position:ab
 #labInspiration>div:first-child{padding-inline-end:12px}
 #labInspirationDescription{font:.875rem/1.45 Arial,sans-serif;margin:10px 0 0;color:#f4efdf;overflow-wrap:anywhere}
 .lab-text-button:disabled{opacity:.7;cursor:default;text-decoration:none}
+
+#labInspirationDescription{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}

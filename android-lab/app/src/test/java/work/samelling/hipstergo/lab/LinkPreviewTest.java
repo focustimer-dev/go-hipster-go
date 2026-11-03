@@ -14,5 +14,5 @@ public class LinkPreviewTest {
    try{LinkPreview.allowedUrl(url);fail("Unsafe preview URL accepted");}catch(java.io.IOException expected){}
   }
  }
- @Test public void urlAndUnicodeBounds(){assertEquals("https://example.com/song",LinkPreview.firstUrl("Try https://example.com/song)."));assertEquals("a🎵…",LinkPreview.clean("a🎵bc",3));}
+ @Test public void urlAndUnicodeBounds(){assertEquals("https://example.com/song",LinkPreview.firstUrl("Try https://example.com/song)."));assertEquals("https://en.wikipedia.org/wiki/Song_(music)",LinkPreview.firstUrl("https://en.wikipedia.org/wiki/Song_(music)"));assertEquals("a🎵…",LinkPreview.clean("a🎵bc",3));}
 }

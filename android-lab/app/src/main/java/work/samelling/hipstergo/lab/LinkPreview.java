@@ -6,7 +6,13 @@ import java.util.regex.*;
 /** Bounded public HTTPS metadata only. Never executes pages or fetches media. */
 final class LinkPreview {
  static final class Result { final String url,title,description;Result(String u,String t,String d){url=u;title=t;description=d;} }
- static String firstUrl(String text){Matcher m=Pattern.compile("https://[^\\s<>\\\"]+",Pattern.CASE_INSENSITIVE).matcher(text);return m.find()?m.group().replaceAll("[).,;]+$",""):"";}
+ static String firstUrl(String text){
+  Matcher m=Pattern.compile("https://[^\\s<>\"']+",Pattern.CASE_INSENSITIVE).matcher(text);if(!m.find())return "";
+  String url=m.group().replaceAll("[.,;]+$","");
+  int balance=0;for(int i=0;i<url.length();i++){if(url.charAt(i)=='(')balance++;if(url.charAt(i)==')')balance--;}
+  while(url.endsWith(")")&&balance<0){url=url.substring(0,url.length()-1);balance++;}
+  return url;
+ }
  static URL allowedUrl(String value)throws IOException {
   URL u=new URL(value);String host=u.getHost().toLowerCase(Locale.ROOT);
   if(!"https".equals(u.getProtocol())||u.getUserInfo()!=null||(u.getPort()!=-1&&u.getPort()!=443)||!host.contains(".")||host.endsWith(".local")||host.endsWith(".localhost"))throw new IOException("Public HTTPS required");
