@@ -106,3 +106,9 @@ body.gig-poster.lab-workspace #labInspiration{align-items:flex-start;flex-wrap:w
 body.gig-poster.lab-workspace #labShapeInspiration{border:1px solid #103135;padding:8px 12px;background:#103135;color:#dfb045;text-decoration:none}
 .lab-workspace [data-mood]{scroll-margin-top:72px}
 #labInspirationGo{font:700 .8125rem/1.5 'Courier New',monospace;color:#103135;margin:12px 0}
+
+/* Give the crate a distinct place in the persistent top rail. */
+body.gig-poster.lab-workspace .lab-rail [data-lab-tab=crate]{font-weight:800;background:#dfb045;color:#103135}
+body.gig-poster.lab-workspace .lab-rail [data-lab-tab=crate][aria-current=page]{background:#dfb045;color:#103135;border-bottom-color:#a83223}
+#labSetupPreferences:empty{display:none}
+#labSetupPreferences #firstCrateSetup{margin:0 0 24px;padding:0}

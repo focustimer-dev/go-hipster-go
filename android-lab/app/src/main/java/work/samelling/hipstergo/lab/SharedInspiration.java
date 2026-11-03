@@ -26,7 +26,7 @@ final class SharedInspiration {
         explanation.setText("Review or edit this reference. Keep this reference, then shape the playlist in Jukebox: choose moods, pace and places, then press GO. Your existing choices stay in place. Links are passed to your AI; Lab does not open or inspect them.");
         content.addView(explanation);content.addView(input);
         AlertDialog.Builder dialog=new AlertDialog.Builder(activity).setTitle(incoming?"Shared inspiration":"Your inspiration")
-            .setView(content).setPositiveButton("Keep & shape crate",(d,n)->{
+            .setView(content).setPositiveButton("Use in Jukebox",(d,n)->{
                 String value=InspirationText.normalize(null,input.getText().toString());
                 if(value.isEmpty()){Toast.makeText(activity,"No inspiration added. Use Remove to clear an existing reference.",Toast.LENGTH_LONG).show();return;}
                 prefs.edit().putString("sharedInspiration",value).apply();changed.run();

@@ -11,7 +11,7 @@ function renderLabInspiration(){
  const anchor=doc.querySelector('.refinements');if(!anchor)return;let card=doc.getElementById('labInspiration');
  if(!card){
   card=doc.createElement('aside');card.id='labInspiration';card.setAttribute('aria-label','Active musical inspiration');
-  const text=doc.createElement('div'),label=doc.createElement('strong');label.textContent='INSPIRATION ON THE COUNTER';
+  const text=doc.createElement('div'),label=doc.createElement('strong');label.textContent='YOUR CRATE';
   const preview=doc.createElement('p');preview.id='labInspirationPreview';
   const next=doc.createElement('p');next.className='lab-inspiration-next';next.textContent='Reference kept. Choose moods, pace and places below, then GO.';
   text.append(label,preview,next);
@@ -21,7 +21,7 @@ function renderLabInspiration(){
   actions.append(shape,review);card.append(text,actions);anchor.parentNode.insertBefore(card,anchor);
  }
  const value=labInspiration();card.hidden=!value;
- doc.getElementById('labInspirationPreview').textContent=value.length>100?value.slice(0,100)+'…':value;
+ doc.getElementById('labInspirationPreview').textContent=labSummary(value);
  let reminder=doc.getElementById('labInspirationGo');
  const options=doc.querySelector('.go-options');
  if(!reminder&&options){reminder=doc.createElement('p');reminder.id='labInspirationGo';reminder.textContent='YOUR INSPIRATION IS INCLUDED. READY? PRESS GO.';options.before(reminder)}
