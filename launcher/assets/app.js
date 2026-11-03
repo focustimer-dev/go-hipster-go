@@ -267,14 +267,14 @@ function commitAtlasMotion(){
  atlasMotionBase=null;atlasMotionView=null;atlasMotionRect=null;
 }
 function animateAtlasView(view){
- flushAtlasNavigation();
+ flushAtlasNavigation(false);
  const map=doc.getElementById("crateAtlasMap");if(!map)return;
  const views=map.classList?.contains?.("crate-robinson")?atlasRobinsonViews:atlasViews;
  const goal=atlasConstrain(Array.isArray(view)?view:(views[view||"world"]||views.world)),raw=map.getAttribute("viewBox")||"0 0 720 372";
- const from=raw.split(/\s+/).map(Number);
+ const from=atlasView();
  if(atlasZoomFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasZoomFrame);
  const reduced=typeof window!=="undefined"&&window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
- if(typeof requestAnimationFrame!=="function"||reduced||from.length!==4||from.some(n=>!Number.isFinite(n))){map.setAttribute("viewBox",atlasBoxText(goal));return;}
+ if(typeof requestAnimationFrame!=="function"||reduced||from.length!==4||from.some(n=>!Number.isFinite(n))){paintAtlasMotion(goal);commitAtlasMotion();return;}
  let started=null;
  const frame=time=>{
   if(started===null)started=time;
@@ -712,12 +712,12 @@ doc.querySelectorAll("[data-crate-region]").forEach(b=>{
 /* Direct manipulation: one finger or mouse drags; two fingers pinch.
    Normal desktop scrolling remains with the page unless modified. */
 function atlasView(){if(atlasMotionView)return [...atlasMotionView];const map=doc.getElementById("crateAtlasMap");return (map?.getAttribute("viewBox")||"0 0 720 372").trim().split(/\s+/).map(Number)}
-function flushAtlasNavigation(){
+function flushAtlasNavigation(commit=true){
  if(atlasWheelTimer){clearTimeout(atlasWheelTimer);atlasWheelTimer=0;}
  if(atlasNavigationFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasNavigationFrame);
  atlasNavigationFrame=0;
  if(atlasPendingView){paintAtlasMotion(atlasPendingView);atlasPendingView=null}
- commitAtlasMotion();
+ if(commit)commitAtlasMotion();
 }
 function queueAtlasNavigation(view){
  atlasPendingView=view;
@@ -807,7 +807,7 @@ function atlasBindGestures(){
  atlasDetailsForView(map,map.getAttribute("viewBox")||"0 0 720 372");
  const stopZoom=()=>{
   if(atlasZoomFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasZoomFrame);
-  atlasZoomFrame=0;commitAtlasMotion();
+  atlasZoomFrame=0;
  };
  // Land taps respond immediately. Keep a short reversible snapshot so a
  // second nearby tap can restore the original selection before zooming.
@@ -823,7 +823,7 @@ function atlasBindGestures(){
   pendingTap=null;
  };
  const zoomAt=(view,anchor,screen,rect,scale)=>{
-  stopZoom();flushAtlasNavigation();
+  stopZoom();flushAtlasNavigation(false);
   animateAtlasView(atlasViewForGesture(view,anchor,screen,rect,scale));
   atlasUserNavigated=true;renderAtlasNavigation();
   atlasSuppressTapUntil=Date.now()+500;
@@ -844,7 +844,7 @@ function atlasBindGestures(){
     copiedPrompt=old.copied;moodAngle=old.angle;freshCrateLens=old.lens;crateSparkPhrase=old.seed;previousShuffle=old.shuffle;
     store(crateStorageKey,JSON.stringify([...crateSelected]));renderLaunch(true);status(old.status);
    }
-   const view=first.snapshot?.view||atlasView(),rect=map.getBoundingClientRect();
+   const view=first.snapshot?.view||atlasView(),rect=atlasMotionRect||map.getBoundingClientRect();
    const scale=view[2]<=doubleTapTurnaroundWidth?doubleTapPullback:.5;
    zoomAt(view,atlasScreenAnchor(map,view,screen.x,screen.y,rect),screen,rect,scale);
    return;
@@ -880,8 +880,8 @@ function atlasBindGestures(){
  // between pointer-down and click while a continent zoom is still running.
  const beginTouch=(event,continuing=false)=>{
   if(event.touches.length<1||event.touches.length>2){atlasTouchGesture=null;flushAtlasNavigation();return;}
-  stopZoom();flushAtlasNavigation();
-  const view=atlasView(),screen=atlasGesturePoints(event.touches),rect=map.getBoundingClientRect();
+  stopZoom();flushAtlasNavigation(false);
+  const view=atlasView(),screen=atlasGesturePoints(event.touches),rect=atlasMotionRect||map.getBoundingClientRect();
   atlasTouchGesture={view,anchor:atlasScreenAnchor(map,view,screen.x,screen.y,rect),distance:screen.distance,rect,count:event.touches.length,start:screen,moved:continuing,at:Date.now()};
   if(event.touches.length===2){
    clearPendingTap();twoFingerTap=null;
@@ -893,9 +893,9 @@ function atlasBindGestures(){
  // movement so an ordinary click still reaches the painted country path.
  let pointerGesture=null;
  map.addEventListener("pointerdown",(event={})=>{
-  stopZoom();flushAtlasNavigation();warmAtlasArtwork();
+  stopZoom();flushAtlasNavigation(false);warmAtlasArtwork();
   if(event.pointerType==="touch"||event.button!==0)return;
-  const view=atlasView(),rect=map.getBoundingClientRect();
+  const view=atlasView(),rect=atlasMotionRect||map.getBoundingClientRect();
   pointerGesture={id:event.pointerId,view,rect,start:{x:event.clientX,y:event.clientY},anchor:atlasScreenAnchor(map,view,event.clientX,event.clientY,rect),moved:false};
  });
  map.addEventListener("pointermove",event=>{
@@ -931,7 +931,11 @@ function atlasBindGestures(){
  },{passive:false});
  const endTouch=event=>{
   const s=atlasTouchGesture;if(!s)return;
-  flushAtlasNavigation();
+  flushAtlasNavigation(s.moved||s.count===2);
+  // A tap's click may immediately retarget the paused camera. Give it that
+  // turn before committing; empty-space taps still settle without stale layers.
+  if(!s.moved&&s.count===1&&event.touches.length===0)
+   atlasWheelTimer=setTimeout(flushAtlasNavigation,120);
   if(s.count===1&&!s.moved&&event.touches.length===0)lastTouchEnd=Date.now();
   // A two-finger tap zooms out one level. Some devices release the fingers
   // separately; keep the candidate until the second finger lifts.
