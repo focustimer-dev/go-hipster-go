@@ -116,7 +116,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    await capture('clipboard-failure');
    // Relaunch a confirmed user; setup must be reachable without occupying Jukebox.
    await page.evaluate(()=>{localStorage.setItem('hmg-ai','chatgpt');localStorage.setItem('hmg-service','spotify');localStorage.setItem('hmg-first-crate-v1',JSON.stringify({completed:true,ai:'ChatGPT',service:'Spotify',confirmedPairs:{'["ChatGPT","Spotify"]':true}}))});
-   await page.reload();if(profile.scale)await page.addStyleTag({content:'html{font-size:200% !important}'});
+   await page.goto('http://127.0.0.1:'+server.address().port+'/?ai=chatgpt&service=spotify');if(profile.scale)await page.addStyleTag({content:'html{font-size:200% !important}'});
    assert.equal(await page.locator('#labJukebox #firstCrateSetup').count(),0);
    await capture('returning-jukebox');
    await page.locator('.lab-rail [data-lab-action="preferences"]').click();
