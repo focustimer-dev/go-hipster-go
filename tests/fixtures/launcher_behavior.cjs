@@ -162,6 +162,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  svg.events.touchmove({touches:[{clientX:120,clientY:160}],cancelable:true,preventDefault(){consumed=true}});
  assert.equal(consumed,true,'One finger drags the map');
  assert.notEqual(svg.getAttribute('viewBox'),'177.9 83 474.2 245','One-finger dragging changes camera position');
+ assert.match(atlas.elements.atlasLocator.textContent,/^EXPLORING \/ /,'Panning no longer claims the focused continent');
  svg.events.touchend({touches:[]});
  await atlas.atlasCountries.find(b=>b.dataset.atlasRegion==='east-africa').click();
  assert.equal(atlas.elements.atlasPassport.hidden,true,'Dragging cannot accidentally stamp a territory');
