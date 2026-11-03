@@ -16,6 +16,23 @@ try{
   assert(stateReads<=1,selector+' reads native state at most once');assert.equal(inspirationReads,0);
   assert.equal(map.getAttribute('viewBox'),camera);
  }
+ const unrelated=new w.MutationObserver(()=>{});
+ for(const selector of ['.mood-grid','#tempoControl','#labServicePreferences','#labSetupPreferences']){
+  const node=w.document.querySelector(selector);if(node)unrelated.observe(node,{attributes:true,childList:true,characterData:true,subtree:true});
+ }
+ let pairEvents=0;w.document.addEventListener('hipster-pair-changed',()=>pairEvents++);
+ const storageWrites=[],originalSet=w.Storage.prototype.setItem;
+ w.Storage.prototype.setItem=function(key,value){storageWrites.push(key);return originalSet.call(this,key,value)};
+ for(const selected of [true,false]){
+  stateReads=0;unrelated.takeRecords();storageWrites.length=0;
+  w.document.querySelector('[data-crate-region="atlantic-europe"]').click();
+  assert.equal(unrelated.takeRecords().length,0,'Region tap leaves moods, pace, setup and service controls untouched');
+  assert.equal(stateReads,0,'Region tap reuses native snapshot');assert.equal(pairEvents,0,'Region tap does not restart pairing/setup');
+  assert.deepEqual(storageWrites,['ghg-crate-map-regions-v1'],'Only region storage is written');
+  assert.equal(w.document.querySelector('[data-crate-region="atlantic-europe"]').getAttribute('aria-pressed'),String(selected));
+  assert.equal(w.document.querySelector('#prompt').textContent.includes('Regional exploration:'),selected);
+ }
+ unrelated.disconnect();
  w.document.querySelector('[data-crate-region="south-asia"]').click();
  assert(observer.takeRecords().length>0,'Region changes still update geography');
  state.activeInspiration='Updated reference';w.HipsterLabRefresh();
