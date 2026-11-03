@@ -48,7 +48,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    await capture('first-use');
    await page.locator('.lab-rail [data-lab-action="preferences"]').click();await capture('first-use-preferences');
    await page.locator('[data-lab-action="close-preferences"]').click();
-   for(const action of ['choose','install','check'])await page.locator('#firstCrateSetup [data-action="'+action+'"]').click();
+   for(const action of ['choose','install','check'])await page.locator('#firstCrateSetup [data-action="'+action+'"]').first().click();
    await page.locator('#firstCrateSetup [data-action="copy"]').click();
    await capture('setup-copied');
    await page.locator('#firstCrateSetup [data-action="ready"]').click();
