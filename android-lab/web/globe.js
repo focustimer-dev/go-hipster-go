@@ -12,7 +12,7 @@ function labGlobeBounds(view){
  const west=xs[Math.floor(n*.02)],east=xs[Math.min(n-1,Math.floor(n*.98))],south=ys[Math.floor(n*.02)],north=ys[Math.min(n-1,Math.floor(n*.98))];
  labGlobe.fitBounds([[west,south],[east,north]],{padding:24,maxZoom:3.4,duration:320});
 }
-function labGlobeHomeZoom(){return Math.log2(Math.max(200,labGlobe.getContainer().clientHeight)/256)-.25}
+function labGlobeHomeZoom(){return Math.log2(Math.max(120,labGlobe.getContainer().clientHeight)*Math.PI/512)-.08}
 function labGlobeSync(){
  if(!labGlobeReady)return;
  for(const f of labGlobeGeography.features)labGlobe.setFeatureState({source:'land',id:f.id},{selected:crateSelected.has(f.properties.region)});
