@@ -128,7 +128,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   await page.locator('#labAtlasGlobe').screenshot({path:'android-lab/build/switch-review/integrated-globe.png'});
   await page.locator('#atlasHome').evaluate(el=>el.click());await page.waitForTimeout(500);
   assert.equal(await page.evaluate(()=>labAtlasGlobe.getCenter().lng),10,'Whole World resets camera while preserving stamps');
-  const discoveries=page.locator('details').filter({has:page.locator('summary', {hasText:'SHIPS, ROUTES & MARGINALIA'})});
+  const discoveries=page.getByText('SHIPS, ROUTES & MARGINALIA',{exact:true}).locator('..');
   await discoveries.locator('summary').click();
   await discoveries.getByRole('button',{name:'THE WESTBOUND MANIFEST',exact:true}).click();
   await page.locator('.atlas-secret-add').click();
