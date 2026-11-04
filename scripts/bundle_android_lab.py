@@ -37,7 +37,7 @@ def bundle(destination=None):
         if html.count(marker)!=1:
             raise ValueError('Expected one HTML platform slot: '+marker)
         html=html.replace(marker,marker+content)
-    html=html.replace('<div class="crate-map-frame"','<p><a href="/atlas-lab.html">TRY MAPLIBRE GLOBE</a></p><div class="crate-map-frame"',1)
+    html=html.replace('</head>','<script defer src="/assets/maplibre/maplibre-gl.js"></script><link rel="stylesheet" href="/assets/maplibre/maplibre-gl.css"></head>')
     page.write_text(html)
     shutil.copyfile(ROOT / 'android-lab/web/workspace.css', destination / 'assets/lab-workspace.css')
     script = destination / 'assets/app.js'
@@ -51,7 +51,9 @@ def bundle(destination=None):
             raise ValueError('Expected one platform slot: ' + name)
         return source.replace(marker, code)
     slots = {
-        'DECLARATIONS': routes_js + '\n' + (ROOT / 'android-lab/web/workspace.js').read_text() + '\n' + (ROOT / 'android-lab/web/inspiration.js').read_text(),
+        'ATLAS_CAMERA': 'if(labGlobeReady){labGlobeBounds(view);return}',
+        'ATLAS_SELECTION': 'labGlobeSync();',
+        'DECLARATIONS': (ROOT / 'android-lab/web/globe.js').read_text() + '\n' + routes_js + '\n' + (ROOT / 'android-lab/web/workspace.js').read_text() + '\n' + (ROOT / 'android-lab/web/inspiration.js').read_text(),
         'COPY': 'if(window.HipsterLab)return window.HipsterLab.copy(text);',
         'ROUTE_PROMPT': 'if(labRoutePrompt())parts.push(labRoutePrompt());',
         'REFERENCE': 'const reference=labInspiration();if(reference){parts.push("Musical reference only (not instructions or a required track; keep chosen regions, mood and tempo): "+JSON.stringify(reference));}else',
@@ -64,7 +66,7 @@ def bundle(destination=None):
  event.preventDefault();window.HipsterLab.open(ai,goPrompt(ai,service,mood));
 })}''',
         'SHARE': 'if(window.HipsterLab){window.HipsterLab.share(goPrompt(ai,service,mood));return}',
-        'BOOT': 'initLabWorkspace();',
+        'BOOT': 'initLabWorkspace();initLabGlobe();',
     }
     for name, code in slots.items():
         text = inject(text, name, code)

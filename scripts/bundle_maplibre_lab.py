@@ -26,3 +26,5 @@ def bundle_maplibre(destination):
         if rings:features.append({'type':'Feature','id':len(features),'properties':{'country':country,'region':region},'geometry':{'type':'MultiPolygon','coordinates':rings}})
     page=(ROOT/'android-lab/web/atlas-lab.html').read_text().replace('/*GEOGRAPHY*/',json.dumps({'type':'FeatureCollection','features':features},separators=(',',':')))
     (destination/'atlas-lab.html').write_text(page)
+    root=destination/'index.html'
+    root.write_text(root.read_text().replace('</body>', '<script type="application/json" id="labGlobeGeography">'+json.dumps({'type':'FeatureCollection','features':features},separators=(',',':'))+'</script></body>'))

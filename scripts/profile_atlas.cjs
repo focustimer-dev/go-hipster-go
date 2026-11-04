@@ -16,7 +16,7 @@ const roots=process.argv.slice(2);if(roots.length!==2)throw Error('Provide basel
   try{
    await cdp.send('Emulation.setCPUThrottlingRate',{rate:8});await cdp.send('Performance.enable');
    await page.addInitScript(()=>{window.HipsterLab={state:()=>'{"saved":[]}',inspiration:()=>'',copy:()=>true};window.perfLongTasks=[];new PerformanceObserver(list=>perfLongTasks.push(...list.getEntries().map(e=>e.duration))).observe({type:'longtask',buffered:true});});
-   const started=Date.now();await page.goto('http://127.0.0.1:'+server.address().port+'/');await page.evaluate(()=>document.fonts.ready);const loaded=Date.now()-started;
+   const started=Date.now();await page.goto('http://127.0.0.1:'+server.address().port+'/?atlas=legacy');await page.evaluate(()=>document.fonts.ready);const loaded=Date.now()-started;
    await page.locator('.crate-map-frame').scrollIntoViewIfNeeded();
    // Selection is a different workload from camera motion. Measure both ink/unink.
    await page.evaluate(()=>document.querySelector('[data-crate-continent="europe"]').click());await page.waitForTimeout(400);

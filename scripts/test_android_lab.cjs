@@ -25,7 +25,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    window.labCalls=[];window.labState={saved:[],mode:'open',oneTap:true,haptics:true,updateAvailable:false};
    window.HipsterLab={state(){return JSON.stringify(window.labState)},setPreference(k,v){window.labState[k]=k==='mode'?v:v==='true';window.HipsterLabStateChanged()},saveRequest(a,t){labCalls.push(['save',a,t])},showUpdates(){labCalls.push(['updates'])},copy(t){labCalls.push(['copy',t]);return true},go(a,t){labCalls.push(['go',a,t])},open(a,t){labCalls.push(['open',a,t])},share(t){labCalls.push(['share',t])}};
   });
-  await page.goto('http://127.0.0.1:'+server.address().port+'/?ai=chatgpt&service=spotify');
+  await page.goto('http://127.0.0.1:'+server.address().port+'/?ai=chatgpt&service=spotify&atlas=legacy');
   await page.locator('#goButton').click();
   await page.waitForFunction(()=>labCalls.some(c=>c[0]==='go'));
   let calls=await page.evaluate(()=>labCalls);
@@ -38,7 +38,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   // Verify the native switch's state, selection colors and narrow-phone layout.
   const rough=page.locator('#skipRough');
   await rough.check();
-  await page.waitForTimeout(220);
+  await page.waitForFunction(()=>document.querySelector('#skipRough').checked&&getComputedStyle(document.querySelector('.recording-metal-lever')).transform==='matrix(1, 0, 0, 1, 0, 0)');
   assert.equal(await page.locator('.recording-on').evaluate(e=>getComputedStyle(e).backgroundColor),'rgb(16, 49, 53)');
   assert.equal(await page.locator('.recording-metal-lever').evaluate(e=>getComputedStyle(e).transform),'matrix(1, 0, 0, 1, 0, 0)');
   fs.mkdirSync('android-lab/build/switch-review',{recursive:true});
@@ -117,6 +117,32 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert(focusBounds.y>=ticketBounds.y+ticketBounds.height+10,'Focused mood clears the floating ticket');
   await ticket.locator('summary').click();
   assert(await ticket.locator('.ticket-region-short').isVisible(),'Expanded ticket restores region/option details');
+  assert.deepEqual(errors,[]);
+  await page.goto('http://127.0.0.1:'+server.address().port+'/');
+  await page.waitForFunction(()=>window.labAtlasGlobe&&labAtlasGlobe.loaded());
+  assert(await page.locator('#labAtlasGlobe').isVisible());
+  await page.locator('[data-crate-region="west-africa"]').evaluate(el=>el.click());
+  assert.match(await page.locator('#prompt').textContent(),/West Africa/);
+  assert(await page.locator('[data-crate-stamp-region="west-africa"]').count());
+  await page.waitForTimeout(500);
+  await page.locator('#labAtlasGlobe').screenshot({path:'android-lab/build/switch-review/integrated-globe.png'});
+  await page.locator('#atlasHome').evaluate(el=>el.click());await page.waitForTimeout(500);
+  assert.equal(await page.evaluate(()=>labAtlasGlobe.getCenter().lng),10,'Whole World resets camera while preserving stamps');
+  const discoveries=page.getByText('SHIPS, ROUTES & MARGINALIA',{exact:true}).locator('..');
+  await discoveries.locator('summary').click();
+  await discoveries.getByRole('button',{name:'THE WESTBOUND MANIFEST',exact:true}).click();
+  await page.locator('.atlas-secret-add').click();
+  const selected=await page.locator('[data-crate-stamp-region]').evaluateAll(nodes=>nodes.map(n=>n.dataset.crateStampRegion));
+  assert.deepEqual(selected.sort(),['atlantic-europe','canada-east','caribbean'].sort(),'Route picks replace previous selections');
+  const cdp=await page.context().newCDPSession(page);await cdp.send('Emulation.setCPUThrottlingRate',{rate:8});
+  await page.locator('#labAtlasGlobe').scrollIntoViewIfNeeded();
+  await page.evaluate(()=>{window.globeFrames=[];window.globeMeasuring=true;let last=performance.now();function frame(t){globeFrames.push(t-last);last=t;if(globeMeasuring)requestAnimationFrame(frame)}requestAnimationFrame(frame)});
+  const b=await page.locator('#labAtlasGlobe').boundingBox(),cx=b.x+b.width/2,cy=b.y+b.height/2;
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:cx,y:cy}]});
+  for(let i=1;i<=24;i++){await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:cx+Math.sin(i/24*Math.PI*2)*40,y:cy+Math.cos(i/24*Math.PI*2)*15}]});await page.waitForTimeout(16)}
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await cdp.send('Emulation.setCPUThrottlingRate',{rate:1});
+  console.log('Globe 8xCPU drag frames:',await page.evaluate(()=>{globeMeasuring=false;globeFrames.sort((a,b)=>a-b);return {frames:globeFrames.length,p95:globeFrames[Math.floor(globeFrames.length*.95)]}}));
+  await page.locator('#labAtlasGlobe').screenshot({path:'android-lab/build/switch-review/integrated-globe-after-drag.png'});
   assert.deepEqual(errors,[]);
   const requests=[];page.on('request',r=>requests.push(r.url()));
   await page.goto('http://127.0.0.1:'+server.address().port+'/atlas-lab.html');
