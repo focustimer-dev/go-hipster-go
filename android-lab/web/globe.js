@@ -70,10 +70,7 @@ function installLabGlobeSecrets(old){
  labGlobe.addLayer({id:'routes',type:'line',source:'routes',paint:{'line-color':'#edc65d','line-opacity':.65,'line-width':1,'line-dasharray':[3,5]}});
  labGlobe.addLayer({id:'route-targets',type:'line',source:'routes',paint:{'line-color':'rgba(0,0,0,0)','line-width':20}});
  labGlobe.on('click','route-targets',event=>{if(event.originalEvent)event.originalEvent._atlasSecret=true;old._atlasSecretsSync?.(true);old._atlasOpenSecret?.(event.features[0].properties.secret)});
- // Expose discoveries through normal buttons as well as painted map targets.
- const names=doc.createElement('details');const summary=doc.createElement('summary');summary.textContent='SHIPS, ROUTES & MARGINALIA';names.appendChild(summary);
- for(const hot of hotspots){const button=doc.createElement('button');button.type='button';button.textContent=hot.getAttribute('aria-label').replace('Discover: ','');button.onclick=()=>{old._atlasSecretsSync?.(true);old._atlasOpenSecret?.(hot.dataset.secret)};names.appendChild(button)}
- doc.getElementById('atlasSecretCard')?.before(names);
+
 }
 
 // For this bounded, offline atlas, prepare Robinson geometry once in MapLibre's

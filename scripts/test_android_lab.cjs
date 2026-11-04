@@ -140,9 +140,19 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   await page.locator('#labAtlasGlobe').screenshot({path:'android-lab/build/switch-review/integrated-globe.png'});
   await page.locator('#atlasHome').evaluate(el=>el.click());await page.waitForTimeout(500);
   assert.equal(await page.evaluate(()=>labAtlasGlobe.getCenter().lng),10,'Whole World resets camera while preserving stamps');
-  const discoveries=page.getByText('SHIPS, ROUTES & MARGINALIA',{exact:true}).locator('..');
-  await discoveries.locator('summary').click();
-  await discoveries.getByRole('button',{name:'THE WESTBOUND MANIFEST',exact:true}).click();
+  assert.equal(await page.getByText('SHIPS, ROUTES & MARGINALIA',{exact:true}).count(),0,'Discoveries are not exposed as a list');
+  const routePoint=await page.evaluate(()=>{
+   const map=labAtlasGlobe,rect=map.getCanvas().getBoundingClientRect();
+   const routes=map.querySourceFeatures('routes').filter(f=>f.properties.secret==='westbound-manifest');
+   for(const feature of routes)for(const coordinate of feature.geometry.coordinates){
+    const p=map.project(coordinate);if(p.x<8||p.y<8||p.x>rect.width-8||p.y>rect.height-8)continue;
+    if(map.queryRenderedFeatures(p,{layers:['route-targets']}).some(f=>f.properties.secret==='westbound-manifest'))return {x:rect.left+p.x,y:rect.top+p.y};
+   }
+   return null;
+  });
+  assert(routePoint,'Westbound route can be discovered on the map');
+  await page.mouse.click(routePoint.x,routePoint.y);
+  await page.locator('#atlasSecretCard').waitFor({state:'visible'});
   await page.locator('.atlas-secret-add').click();
   const selected=await page.locator('[data-crate-stamp-region]').evaluateAll(nodes=>nodes.map(n=>n.dataset.crateStampRegion));
   assert.deepEqual(selected.sort(),['atlantic-europe','canada-east','caribbean'].sort(),'Route picks replace previous selections');
