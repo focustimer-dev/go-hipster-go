@@ -125,6 +125,14 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert.match(await page.locator('#prompt').textContent(),/West Africa/);
   assert(await page.locator('[data-crate-stamp-region="west-africa"]').count());
   await page.waitForTimeout(500);
+  const beforeModes=await page.locator('#prompt').textContent();
+  for(const mode of ['mercator','robinson','globe']){
+   await page.locator('[data-atlas-view="'+mode+'"]').click();
+   await page.waitForFunction(()=>labAtlasGlobe.loaded());
+   assert.equal(await page.locator('[data-atlas-view="'+mode+'"]').getAttribute('aria-pressed'),'true');
+   assert.equal(await page.locator('#prompt').textContent(),beforeModes,'Projection changes preserve the request');
+   await page.locator('#labAtlasGlobe').screenshot({path:'android-lab/build/switch-review/atlas-'+mode+'.png'});
+  }
   await page.locator('#labAtlasGlobe').screenshot({path:'android-lab/build/switch-review/integrated-globe.png'});
   await page.locator('#atlasHome').evaluate(el=>el.click());await page.waitForTimeout(500);
   assert.equal(await page.evaluate(()=>labAtlasGlobe.getCenter().lng),10,'Whole World resets camera while preserving stamps');

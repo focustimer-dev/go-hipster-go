@@ -5,14 +5,14 @@ function labGlobeBounds(view){
  let regions=crateSelected;
  if(atlasFocus)regions=new Set(crateRegions.filter(r=>r.continent===atlasFocus).map(r=>r.id));
  const points=labGlobeGeography.features.filter(f=>regions.has(f.properties.region)).flatMap(f=>f.geometry.coordinates.flat(2));
- if(!points.length||view===null){labGlobe.easeTo({center:[10,15],zoom:labGlobeHomeZoom(),duration:320});return}
+ if(!points.length||view===null){labGlobe.easeTo({center:labAtlasHome(),zoom:labGlobeHomeZoom(),duration:320});return}
  // Fit mainland extents; offshore fragments must not send the camera across the globe.
- const lon=points.map(p=>p[0]),lat=points.map(p=>p[1]);
+ const transformed=points.map(labAtlasPoint),lon=transformed.map(p=>p[0]),lat=transformed.map(p=>p[1]);
  const sorted=values=>values.slice().sort((a,b)=>a-b),xs=sorted(lon),ys=sorted(lat),n=xs.length;
  const west=xs[Math.floor(n*.02)],east=xs[Math.min(n-1,Math.floor(n*.98))],south=ys[Math.floor(n*.02)],north=ys[Math.min(n-1,Math.floor(n*.98))];
  labGlobe.fitBounds([[west,south],[east,north]],{padding:24,maxZoom:3.4,duration:320});
 }
-function labGlobeHomeZoom(){return Math.log2(Math.max(120,labGlobe.getContainer().clientHeight)*Math.PI/512)+.3}
+function labGlobeHomeZoom(){if(labAtlasMode!=='globe')return Math.log2(Math.max(200,labGlobe.getContainer().clientWidth)/512)-.08;return Math.log2(Math.max(120,labGlobe.getContainer().clientHeight)*Math.PI/512)+.3}
 function labGlobeSync(){
  if(!labGlobeReady)return;
  for(const f of labGlobeGeography.features)labGlobe.setFeatureState({source:'land',id:f.id},{selected:crateSelected.has(f.properties.region)});
@@ -34,7 +34,7 @@ function initLabGlobe(){
   labGlobe.jumpTo({center:[10,15],zoom:labGlobeHomeZoom()});labGlobeSync();if(crateSelected.size)labGlobeBounds();
   const chart=doc.createElement('canvas');chart.width=chart.height=16;const ctx=chart.getContext('2d');ctx.clearRect(0,0,16,16);ctx.strokeStyle='rgba(16,49,53,.26)';ctx.lineWidth=.7;for(let n=-16;n<32;n+=8){ctx.beginPath();ctx.moveTo(n,16);ctx.lineTo(n+16,0);ctx.stroke()}labGlobe.addImage('engraved-hatch',ctx.getImageData(0,0,16,16));
   labGlobe.addLayer({id:'hatching',type:'fill',source:'land',paint:{'fill-pattern':'engraved-hatch'}},'borders');
-  installLabGlobeSecrets(old);
+  installLabGlobeSecrets(old);installLabAtlasModes(frame);
  });
  labGlobe.on('click','land',event=>{
   if(event.originalEvent?._atlasSecret||labGlobe.getLayer('route-targets')&&labGlobe.queryRenderedFeatures(event.point,{layers:['route-targets']}).length)return;
@@ -62,10 +62,11 @@ function installLabGlobeSecrets(old){
    const art=arts.find(a=>Math.abs(+a.getAttribute('x')+(+a.getAttribute('width'))/2-x)<1&&Math.abs(+a.getAttribute('y')+(+a.getAttribute('height'))/2-y)<1);
    if(art){const clone=art.cloneNode(true);clone.removeAttribute('x');clone.removeAttribute('y');clone.setAttribute('width','38');clone.setAttribute('height','38');button.appendChild(clone)}else{button.innerHTML='<svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12" fill="none" stroke="currentColor"/><path d="M16 7V25M7 16H25" stroke="currentColor"/></svg>'}
    button.onclick=event=>{event.stopPropagation();old._atlasSecretsSync?.(true);old._atlasOpenSecret?.(hot.dataset.secret)};
-   new maplibregl.Marker({element:button}).setLngLat(labGlobeUnproject([x,y])).addTo(labGlobe);
+   const point=labGlobeUnproject([x,y]),marker=new maplibregl.Marker({element:button}).setLngLat(point).addTo(labGlobe);labSecretMarkers.push({marker,point});
   }
  }
- labGlobe.addSource('routes',{type:'geojson',data:{type:'FeatureCollection',features}});
+ labRouteGeography={type:'FeatureCollection',features};
+ labGlobe.addSource('routes',{type:'geojson',data:labRouteGeography});
  labGlobe.addLayer({id:'routes',type:'line',source:'routes',paint:{'line-color':'#edc65d','line-opacity':.65,'line-width':1,'line-dasharray':[3,5]}});
  labGlobe.addLayer({id:'route-targets',type:'line',source:'routes',paint:{'line-color':'rgba(0,0,0,0)','line-width':20}});
  labGlobe.on('click','route-targets',event=>{if(event.originalEvent)event.originalEvent._atlasSecret=true;old._atlasSecretsSync?.(true);old._atlasOpenSecret?.(event.features[0].properties.secret)});
@@ -73,4 +74,46 @@ function installLabGlobeSecrets(old){
  const names=doc.createElement('details');const summary=doc.createElement('summary');summary.textContent='SHIPS, ROUTES & MARGINALIA';names.appendChild(summary);
  for(const hot of hotspots){const button=doc.createElement('button');button.type='button';button.textContent=hot.getAttribute('aria-label').replace('Discover: ','');button.onclick=()=>{old._atlasSecretsSync?.(true);old._atlasOpenSecret?.(hot.dataset.secret)};names.appendChild(button)}
  doc.getElementById('atlasSecretCard')?.before(names);
+}
+
+// For this bounded, offline atlas, prepare Robinson geometry once in MapLibre's
+// planar address space. Geographic data remains canonical for globe/markers.
+let labAtlasMode='globe',labRobinsonData=null,labRouteGeography=null;
+const labSecretMarkers=[];
+function labRobinsonPoint([lon,lat]){
+ const X=[1,.9986,.9954,.99,.9822,.973,.96,.9427,.9216,.8962,.8679,.835,.7986,.7597,.7186,.6732,.6213,.5722,.5322],Y=[0,.062,.124,.186,.248,.31,.372,.434,.4958,.5571,.6176,.6769,.7346,.7903,.8435,.8936,.9394,.9761,1];
+ const a=Math.min(90,Math.abs(lat)),i=Math.min(17,Math.floor(a/5)),t=(a-i*5)/5;
+ const x=lon*(X[i]+t*(X[i+1]-X[i])),y=Math.sign(lat)*(Y[i]+t*(Y[i+1]-Y[i]))*168/335*Math.PI;
+ return [x,Math.atan(Math.sinh(y))*180/Math.PI];
+}
+function labRobinsonGeometry(data){
+ const coordinates=c=>typeof c[0]==='number'?labRobinsonPoint(c):c.map(coordinates);
+ return {type:'FeatureCollection',features:data.features.map(f=>({...f,geometry:{...f.geometry,coordinates:coordinates(f.geometry.coordinates)}}))};
+}
+function labAtlasPoint(point){return labAtlasMode==='robinson'?labRobinsonPoint(point):point}
+function labAtlasHome(){return labAtlasMode==='globe'?[10,15]:[0,0]}
+function labSetAtlasMode(mode){
+ if(!labGlobeReady||!['globe','mercator','robinson'].includes(mode))return;
+ labAtlasMode=mode;store('ghg-atlas-view-v1',mode);
+ labGlobe.stop();labGlobe.setProjection({type:mode==='globe'?'globe':'mercator'});
+ if(!labRobinsonData)labRobinsonData=labRobinsonGeometry(labGlobeGeography);
+ labGlobe.getSource('land').setData(mode==='robinson'?labRobinsonData:labGlobeGeography);
+ if(labRouteGeography)labGlobe.getSource('routes').setData(mode==='robinson'?labRobinsonGeometry(labRouteGeography):labRouteGeography);
+ for(const {marker,point} of labSecretMarkers)marker.setLngLat(labAtlasPoint(point));
+ labGlobe.setPaintProperty('ocean','background-color',mode==='robinson'?'rgba(0,0,0,0)':'#103135');
+ labGlobe.setLayoutProperty('robinson-ocean','visibility',mode==='robinson'?'visible':'none');
+ for(const b of doc.querySelectorAll('[data-atlas-view]')){const active=b.dataset.atlasView===mode;b.setAttribute('aria-pressed',String(active));b.style.background=active?'#103135':'transparent';b.style.color=active?'#dfb045':'#103135'}
+ labGlobe.jumpTo({center:labAtlasHome(),zoom:labGlobeHomeZoom()});
+ labGlobe.once('idle',labGlobeSync);labGlobeSync();
+}
+function installLabAtlasModes(frame){
+ const controls=doc.createElement('div');controls.setAttribute('role','group');controls.setAttribute('aria-label','Atlas view');controls.style.cssText='display:flex;gap:6px;flex-wrap:wrap;margin:8px 0';
+ for(const [mode,label] of [['globe','GLOBE'],['mercator','FLAT · MERCATOR'],['robinson','FLAT · ROBINSON']]){
+  const b=doc.createElement('button');b.type='button';b.dataset.atlasView=mode;b.textContent=label;b.setAttribute('aria-pressed',String(mode==='globe'));b.style.cssText='min-height:44px;padding:8px 10px;font:bold 12px Arial,sans-serif';b.onclick=()=>labSetAtlasMode(mode);controls.appendChild(b);
+ }
+ frame.before(controls);
+ const edge=[];for(let lat=90;lat>=-90;lat-=2)edge.push(labRobinsonPoint([-180,lat]));for(let lat=-90;lat<=90;lat+=2)edge.push(labRobinsonPoint([180,lat]));edge.push(edge[0]);
+ labGlobe.addSource('robinson-ocean',{type:'geojson',data:{type:'Feature',properties:{},geometry:{type:'Polygon',coordinates:[edge]}}});
+ labGlobe.addLayer({id:'robinson-ocean',type:'fill',source:'robinson-ocean',layout:{visibility:'none'},paint:{'fill-color':'#103135'}},'land');
+ labSetAtlasMode(stored('ghg-atlas-view-v1')||'globe');
 }
