@@ -1,3 +1,9 @@
+## Gemini Publish follow-up — 2026-11-04
+
+- Add a Gemini-only `Publish` / `publish it` continuation for the finished GO crate: save an existing YouTube Music result where authorized, apply description and track-specific liner notes when supported, and provide manual cover-art upload steps without claiming an automatic upload.
+- Preserve the original ordered selections, prevent duplicate playlists or rerolls, and ship synchronized Gemini Skill, Gem knowledge, regression tests and user guide.
+- No change to default GO curation or ChatGPT/Claude adapters.
+
 ## 3.11.1 — skill-owned recording quality
 
 - Move Skip rough recordings policy into a shared skill reference; the app sends only a short preference flag. Keep clean older recordings, restorations and intentional lo-fi eligible, require evidence for recording-quality claims, and preserve the listener’s musical brief.
