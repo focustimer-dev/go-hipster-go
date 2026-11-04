@@ -70,7 +70,7 @@ public class LabActivity extends Activity {
                     headers.put("Content-Security-Policy", "default-src 'self' data:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'");
                     headers.put("Cache-Control","no-store");
                     headers.put("X-Content-Type-Options","nosniff");
-                    if ("/atlas-lab.html".equals(path)) headers.put("Content-Security-Policy", "default-src 'self' data:; script-src 'self' 'unsafe-inline'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'self'");
+                    if ("/atlas-lab.html".equals(path) || "/index.html".equals(path)) headers.put("Content-Security-Policy", "default-src 'self' data:; script-src 'self' 'unsafe-inline'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'self'");
                     return new WebResourceResponse(mime(path),"UTF-8",200,"OK",headers,stream);
                 } catch (IOException e) { return blocked(); }
             }

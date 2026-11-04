@@ -306,6 +306,7 @@ if(typeof ResizeObserver==='function'&&atlasCameraViewport){
 }
 
 function animateAtlasView(view){
+ /* PLATFORM_ATLAS_CAMERA */
  flushAtlasNavigation(false);
  const map=doc.getElementById("crateAtlasMap");if(!map)return;
  const views=map.classList?.contains?.("crate-robinson")?atlasRobinsonViews:atlasViews;
@@ -380,6 +381,7 @@ doc.querySelectorAll("[data-atlas-country]").forEach(path=>{
  atlasCountriesByRegion.get(id).push(path);
 });
 function renderCrateMap(){
+ /* PLATFORM_ATLAS_SELECTION */
  const stamp=JSON.stringify([atlasFocus,atlasUserNavigated,[...crateSelected].sort(),lastCrateStamp]);
  if(stamp===atlasSelectionStamp)return;
  atlasSelectionStamp=stamp;
@@ -1268,6 +1270,7 @@ function installAtlasSecrets(){
   if(fromKeyboard)heading.focus({preventScroll:true});
   else if(firstOpen)card.setAttribute("aria-live","polite");
  }
+ map._atlasOpenSecret=id=>{const secret=secrets.find(s=>s.id===id);if(secret)openAtlasSecret(secret,hotspots.find(h=>h.dataset.secret===id))};
  close.addEventListener("click",()=>closeCard(true));
  card.addEventListener("keydown",event=>{
   if(event.key==="Escape"){event.preventDefault();closeCard(true)}
