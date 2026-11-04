@@ -103,12 +103,12 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    const appVersion=fs.readFileSync(path.resolve(__dirname,'../android-lab/app/build.gradle'),'utf8').match(/versionName\s+'([^']+)'/)[1];
    assert.equal(await page.locator('#labAppVersion').textContent(),appVersion);
    await page.evaluate(()=>window.auditCopyOK=false);
-   await page.evaluate(()=>labShowManualResources(true));await page.locator('[data-lab-action="setup"]').click();
+   await page.evaluate(()=>{document.getElementById('labMoreResources').hidden=false;document.getElementById('labManualGuide').hidden=true});await page.locator('[data-lab-action="setup"]').click();
    await page.locator('#labSetupText').waitFor({state:'visible'});
    assert.equal(await page.locator('#labSetupText').inputValue(),await page.evaluate(()=>auditCalls.filter(c=>c[0]==='copy').at(-1)[1]));
    await capture('manual-copy-recovery');
    await page.evaluate(()=>window.auditCopyOK=true);
-   await page.evaluate(()=>labShowManualResources(true));await page.locator('[data-lab-action="setup"]').click();
+   await page.evaluate(()=>{document.getElementById('labMoreResources').hidden=false;document.getElementById('labManualGuide').hidden=true});await page.locator('[data-lab-action="setup"]').click();
    await page.waitForFunction(()=>document.querySelector('#labSetupFallback').hidden);
    await page.locator('.lab-rail [data-lab-action="preferences"]').click();await capture('preferences');
    await page.locator('[data-lab-action="close-preferences"]').click();
