@@ -1,3 +1,14 @@
+## Test P — Publish the finished crate (Gemini only)
+
+1. In a Gemini chat with the updated installed skill and actual YouTube Music connection, complete normal GO with 12 tracks and generated art. Leave the provider card **not saved** if it offers Save to library. Say only `Publish`. Verify it targets this crate: no new curation, DeBarge roll or second themed mix.
+2. Check the actual library and URL, track count and order. If Gemini cannot invoke Save to library, it must tell the listener to tap that control, not claim saved.
+3. Where a metadata edit action exists, confirm the short description plus tracklist/liner notes are on the playlist. Where missing or too long, expect copy-ready text and a clear **NOT APPLIED** status.
+4. Reissue `publish it`: reconcile or edit the same playlist; do not create a duplicate. In a fresh chat without the earlier crate, ask for it rather than invent it.
+5. Generated cover art without upload permission: expect **ART NOT UPLOADED** and one web-player handoff (save image → music.youtube.com → artwork pencil → choose/crop/save), noting the Android UI can differ.
+6. Negative control: this Gemini-only command must not change ordinary GO, or ChatGPT and Claude behavior.
+
+These are **manual Gemini runtime tests**. Static packaging tests do not establish live playlist saving, edit access or image-upload availability.
+
 ## Acceptance: GO actually tries to produce a playlist (v3.6.2)
 
 1. In a fresh Gemini conversation with verified v3.6.2 Skill and YouTube Music connection, issue **`go`** from the Jukebox. Confirm it first curates a verified 12-track list, then attempts **one YouTube Music playlist generation** without any extra command or publishing toggle.
