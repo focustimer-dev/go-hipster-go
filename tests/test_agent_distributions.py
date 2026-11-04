@@ -143,17 +143,17 @@ class PortableAgentTests(unittest.TestCase):
         policy = (ROOT / "references/gemini-publish.md").read_text()
         gem = (ROOT / "adapters/gemini/GEM_INSTRUCTIONS.md").read_text()
         self.assertIn("references/gemini-publish.md", REFERENCES)
-        self.assertIn("**Publish follow-up:**", entry)
+        self.assertIn("**Publish follow-up — EXECUTE BEFORE EXPLAINING:**", entry)
         self.assertIn("raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/gemini-publish.md", entry)
-        self.assertIn("**Publish follow-up:**", render((ROOT / "SKILL.md").read_text()))
+        self.assertIn("**Publish follow-up — EXECUTE BEFORE EXPLAINING:**", render((ROOT / "SKILL.md").read_text()))
         self.assertEqual(knowledge.count("# BEGIN SOURCE: references/gemini-publish.md"), 1)
         self.assertIn("# Gemini Publish — finalization of an existing crate", knowledge)
         for needle in ("Save to library", "TRACKLIST / LINER NOTES", "music.youtube.com",
                        "must not publish a duplicate", "copy-ready metadata"):
             self.assertIn(needle, policy)
         self.assertIn("## Publish — finalize the existing playlist", gem)
-        self.assertNotIn("**Publish follow-up:**", (ROOT / "SKILL.md").read_text())
-        self.assertNotIn("**Publish follow-up:**", (ROOT / "adapters/claude/README.md").read_text())
+        self.assertNotIn("**Publish follow-up — EXECUTE BEFORE EXPLAINING:**", (ROOT / "SKILL.md").read_text())
+        self.assertNotIn("**Publish follow-up — EXECUTE BEFORE EXPLAINING:**", (ROOT / "adapters/claude/README.md").read_text())
 
     def test_gemini_publish_must_attempt_save_before_tutorial(self):
         from scripts.build_gemini_app_skill import render
@@ -171,7 +171,7 @@ class PortableAgentTests(unittest.TestCase):
                        "No duplicates", "SAVE FAILED", "SAVE TOOL UNAVAILABLE"):
             self.assertIn(needle, policy)
         self.assertIn("MUST execute that tool", policy)
-        self.assertIn("description including the full liner notes", (ROOT / "adapters/gemini/README.md").read_text())
+        self.assertIn("description **including the full liner notes**", (ROOT / "adapters/gemini/README.md").read_text())
         self.assertNotIn("youtube_music:save", root)  # Gemini only
         self.assertNotIn("youtube_music:save", (ROOT / "adapters/claude/README.md").read_text())
 
