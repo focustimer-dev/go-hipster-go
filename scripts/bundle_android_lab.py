@@ -53,6 +53,7 @@ def bundle(destination=None):
     slots = {
         'ATLAS_CAMERA': 'if(labGlobeReady){labGlobeBounds(view);return}',
         'ATLAS_SELECTION': 'labGlobeSync();',
+        'ATLAS_INSTRUCTION': 'labAtlasInstruction();',
         'DECLARATIONS': (ROOT / 'android-lab/web/globe.js').read_text() + '\n' + routes_js + '\n' + (ROOT / 'android-lab/web/workspace.js').read_text() + '\n' + (ROOT / 'android-lab/web/inspiration.js').read_text(),
         'COPY': 'if(window.HipsterLab)return window.HipsterLab.copy(text);',
         'ROUTE_PROMPT': 'if(labRoutePrompt())parts.push(labRoutePrompt());',

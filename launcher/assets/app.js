@@ -421,6 +421,7 @@ function renderAtlasNavigation(){
   const desktop=typeof window!=="undefined"&&window.matchMedia&&window.matchMedia("(pointer: fine)").matches;
   const action=focused?"TAP TO INK / UNINK":"TAP LAND TO EXPLORE";
   hint.textContent=action+(desktop?" · SHIFT + SCROLL TO PAN · PINCH TO ZOOM":" · DRAG TO PAN · TWO FINGERS TO ZOOM");
+  /* PLATFORM_ATLAS_INSTRUCTION */
  }
 }
 function renderCrateStamps(){

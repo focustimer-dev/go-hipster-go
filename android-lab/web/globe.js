@@ -75,7 +75,7 @@ function installLabGlobeSecrets(old){
 
 // For this bounded, offline atlas, prepare Robinson geometry once in MapLibre's
 // planar address space. Geographic data remains canonical for globe/markers.
-let labAtlasMode='globe',labRobinsonData=null,labRouteGeography=null;
+let labAtlasMode='robinson',labRobinsonData=null,labRouteGeography=null;
 const labSecretMarkers=[];
 function labRobinsonPoint([lon,lat]){
  const X=[1,.9986,.9954,.99,.9822,.973,.96,.9427,.9216,.8962,.8679,.835,.7986,.7597,.7186,.6732,.6213,.5722,.5322],Y=[0,.062,.124,.186,.248,.31,.372,.434,.4958,.5571,.6176,.6769,.7346,.7903,.8435,.8936,.9394,.9761,1];
@@ -92,7 +92,7 @@ function labAtlasHome(){return labAtlasMode==='globe'?[10,15]:[0,0]}
 function labSetAtlasMode(mode){
  if(mode==='mercator')mode='robinson'; // Migrate the retired flat-view preference.
  if(!labGlobeReady||!['globe','robinson'].includes(mode))return;
- labAtlasMode=mode;store('ghg-atlas-view-v1',mode);
+ labAtlasMode=mode;labGlobe.getContainer().setAttribute('aria-label',mode==='robinson'?'Interactive regional Robinson map':'Interactive regional globe');store('ghg-atlas-view-v2',mode);
  labGlobe.stop();labGlobe.setMaxBounds(null);labGlobe.setMinZoom(-1);labGlobe.setProjection({type:mode==='globe'?'globe':'mercator'});
  if(mode==='robinson'){
   // Bounds are in the prepared planar address space, with a small paper margin.
@@ -119,14 +119,15 @@ function labSetAtlasMode(mode){
 }
 function installLabAtlasModes(frame){
  const controls=doc.createElement('div');controls.setAttribute('role','group');controls.setAttribute('aria-label','Atlas view');controls.style.cssText='display:flex;gap:6px;flex-wrap:wrap;margin:8px 0';
- for(const [mode,label] of [['globe','GLOBE'],['robinson','ROBINSON']]){
-  const b=doc.createElement('button');b.type='button';b.dataset.atlasView=mode;b.textContent=label;b.setAttribute('aria-pressed',String(mode==='globe'));b.style.cssText='min-height:44px;padding:8px 10px;font:bold 12px Arial,sans-serif';b.onclick=()=>labSetAtlasMode(mode);controls.appendChild(b);
+ for(const [mode,label] of [['robinson','ROBINSON'],['globe','GLOBE']]){
+  const b=doc.createElement('button');b.type='button';b.dataset.atlasView=mode;b.textContent=label;b.setAttribute('aria-pressed',String(mode==='robinson'));b.style.cssText='min-height:44px;padding:8px 10px;font:bold 12px Arial,sans-serif';b.onclick=()=>labSetAtlasMode(mode);controls.appendChild(b);
  }
  frame.before(controls);
  const edge=[];for(let lat=90;lat>=-90;lat-=2)edge.push(labRobinsonPoint([-180,lat]));for(let lat=-90;lat<=90;lat+=2)edge.push(labRobinsonPoint([180,lat]));edge.push(edge[0]);
  labGlobe.addSource('robinson-ocean',{type:'geojson',data:{type:'Feature',properties:{},geometry:{type:'Polygon',coordinates:[edge]}}});
  labGlobe.addLayer({id:'robinson-ocean',type:'fill',source:'robinson-ocean',layout:{visibility:'none'},paint:{'fill-color':'#103135'}},'land');
- labSetAtlasMode(stored('ghg-atlas-view-v1')||'globe');
+ const saved=stored('ghg-atlas-view-v2');
+ labSetAtlasMode(['robinson','globe'].includes(saved)?saved:'robinson');
 }
 
 function labRobinsonMinimumZoom(){
@@ -145,4 +146,14 @@ function labAtlasGestures(){
  const action=scroll?'pan-y':'none';
  labGlobe.getCanvas().style.touchAction=action;
  labGlobe.getCanvasContainer().style.touchAction=action;
+ labAtlasInstruction();
+}
+
+function labAtlasInstruction(){
+ if(!labGlobeReady)return;
+ const hint=doc.getElementById('atlasInstruction');if(!hint)return;
+ const touch=!window.matchMedia('(pointer: fine)').matches;
+ const scroll=labAtlasMode==='robinson'&&labGlobe.getZoom()<=labGlobeHomeZoom()+.025;
+ const navigation=touch?(scroll?'SWIPE TO SCROLL':'DRAG TO PAN')+' · PINCH TO ZOOM':'DRAG TO PAN · SCROLL TO ZOOM';
+ hint.textContent='TAP LAND TO EXPLORE · '+navigation;
 }

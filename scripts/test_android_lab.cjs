@@ -35,6 +35,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert.equal(await page.locator('#labJukebox .service-counter').count(),0);
   assert.equal(await page.locator('.poster-go-trail-word').last().textContent(),'CONTINUE IN YOUR AI');
   await page.locator('.lab-rail [data-lab-action="preferences"]').click();
+  assert.deepEqual(await page.locator('[name=labHandoff]').evaluateAll(nodes=>nodes.map(n=>n.nextElementSibling.firstChild.textContent)),['Copy + Open Installed App','Copy + Open Installed App + Paste','Copy + Open Browser']);
   // Verify the native switch's state, selection colors and narrow-phone layout.
   const rough=page.locator('#skipRough');
   await rough.check();
@@ -121,6 +122,15 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   await page.goto('http://127.0.0.1:'+server.address().port+'/');
   await page.waitForFunction(()=>window.labAtlasGlobe&&labAtlasGlobe.loaded());
   assert(await page.locator('#labAtlasGlobe').isVisible());
+  assert.deepEqual(await page.locator('[data-atlas-view]').evaluateAll(nodes=>nodes.map(n=>n.dataset.atlasView)),['robinson','globe']);
+  assert.equal(await page.locator('[data-atlas-view="robinson"]').getAttribute('aria-pressed'),'true','Fresh installs default to Robinson');
+  assert.match(await page.locator('#labAtlasGlobe').getAttribute('aria-label'),/Robinson/);
+  assert.match(await page.locator('#atlasInstruction').textContent(),/SWIPE TO SCROLL/);
+  await page.locator('[data-atlas-view="globe"]').click();
+  await page.reload();await page.waitForFunction(()=>window.labAtlasGlobe&&labAtlasGlobe.loaded());
+  assert.equal(await page.locator('[data-atlas-view="globe"]').getAttribute('aria-pressed'),'true','An explicit Globe choice survives reload');
+  await page.locator('[data-atlas-view="robinson"]').click();
+
   await page.locator('[data-crate-region="west-africa"]').evaluate(el=>el.click());
   assert.match(await page.locator('#prompt').textContent(),/West Africa/);
   assert(await page.locator('[data-crate-stamp-region="west-africa"]').count());
@@ -132,6 +142,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    await page.waitForFunction(()=>labAtlasGlobe.loaded());
    assert.equal(await page.locator('[data-atlas-view="'+mode+'"]').getAttribute('aria-pressed'),'true');
    if(mode==='robinson'){
+    await page.locator('#atlasHome').evaluate(el=>el.click());await page.waitForTimeout(500);
     const drift=await page.evaluate(()=>{labAtlasGlobe.jumpTo({center:[170,85]});const c=labAtlasGlobe.getCenter();return {lng:c.lng,lat:c.lat}});
     assert(Math.abs(drift.lat)<6&&Math.abs(drift.lng)<12,'Whole-world Robinson cannot be dragged into empty margins');
     const zoomed=await page.evaluate(()=>{labAtlasGlobe.jumpTo({zoom:2,center:[0,50]});return labAtlasGlobe.getCenter().lat});
