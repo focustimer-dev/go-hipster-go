@@ -33,6 +33,26 @@ for(const profile of profiles){
   assert.ok(rects.every(r=>r.width>=44&&r.height>=44),'rail touch targets');
   const dimensions=await page.evaluate(()=>[document.documentElement.scrollWidth,document.documentElement.clientWidth]);
   assert.ok(dimensions[0]<=dimensions[1]+2,'page horizontal overflow: '+dimensions.join('/'));
+  // Regression: the floating receipt must not be clipped behind the fixed PWA rail.
+  await page.evaluate(()=>{
+    const first=document.querySelector('.service-counter .panel');
+    if(first)window.scrollTo({top:window.scrollY+first.getBoundingClientRect().bottom+18,behavior:'instant'});
+  });
+  await page.waitForFunction(()=>{
+    const ticket=document.getElementById('selectionTicket');
+    return ticket && !ticket.hidden && !ticket.classList.contains('is-docked');
+  },null,{timeout:6000});
+  const collision=await page.evaluate(()=>{
+    const nav=document.querySelector('.pwa-rail').getBoundingClientRect();
+    const ticket=document.getElementById('selectionTicket').getBoundingClientRect();
+    const summary=document.querySelector('#selectionTicket summary').getBoundingClientRect();
+    return {railBottom:nav.bottom,ticketTop:ticket.top,summaryHeight:summary.height};
+  });
+  assert.ok(collision.ticketTop>=collision.railBottom+6,
+    'floating Crate clipped by fixed navigation: '+JSON.stringify(collision));
+  assert.ok(collision.summaryHeight>=44,'floating Crate summary too small for touch');
+  await page.screenshot({path:folder+'/'+profile.name+'-floating-ticket.png'});
+  await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
   await page.locator('[data-pwa-tab="crate"]').click();
   await page.locator('#pwaCrate').waitFor({state:'visible'});
   assert.equal(await page.locator('#pwaJukebox').isVisible(),false,'Jukebox hides in Crate');
