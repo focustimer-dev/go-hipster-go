@@ -252,6 +252,20 @@ if(atlasCanComposite&&atlasPaintMap?.parentNode&&typeof doc.createElementNS==='f
  scene.className='atlas-camera-scene';scene.style.cssText='position:relative;width:100%;height:100%;transform-origin:0 0';
  frame.insertBefore(viewport,atlasPaintMap);viewport.appendChild(scene);
  if(atlasRadialField){scene.appendChild(atlasRadialField);atlasRadialField.style.top='0'}
+ // Give the ocean a simple paint surface below the detailed SVG. Android can
+ // drop an SVG fill while rerasterizing its clipped country group at rest.
+ // Reuse the exact Robinson outline, so rays and transparent corners survive.
+ if(atlasOcean?.getAttribute('d')){
+  const backplate=doc.createElement('div');backplate.className='atlas-ocean-backplate';
+  backplate.setAttribute('aria-hidden','true');
+  const svg=doc.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('xmlns','http://www.w3.org/2000/svg');svg.setAttribute('viewBox','0 0 720 372');
+  const shape=doc.createElementNS('http://www.w3.org/2000/svg','path');
+  shape.setAttribute('d',atlasOcean.getAttribute('d'));shape.setAttribute('fill','#103135');svg.appendChild(shape);
+  backplate.style.cssText='position:absolute;inset:0;pointer-events:none;background-size:100% 100%;background-repeat:no-repeat';
+  backplate.style.backgroundImage='url("data:image/svg+xml,'+encodeURIComponent(svg.outerHTML)+'")';
+  scene.appendChild(backplate);
+ }
  scene.appendChild(atlasPaintMap);atlasCameraViewport=viewport;atlasCameraLayers.push(scene);
 }
 function atlasViewportRect(){return (atlasCameraViewport||doc.getElementById('crateAtlasMap')).getBoundingClientRect()}
