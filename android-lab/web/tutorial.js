@@ -58,7 +58,7 @@ function labRenderGuide(step){
 function labOpenGuide(){
  doc.getElementById('labPreferences')?.close();labNavigate('manual');
  labRenderGuide(labGuideStep);
- const title=doc.getElementById('labTutorialTitle');title.scrollIntoView({block:'start',behavior:'instant'});title.focus({preventScroll:true});
+ labShowManualResources(false);doc.getElementById('labManualFrame').contentWindow.location.hash=labGuideStep==='setup'?'setup':'idea';const title=doc.getElementById('labManualTitle');title.scrollIntoView({block:'start',behavior:'instant'});title.focus({preventScroll:true});
 }
 function initLabGuide(){
  const target=doc.getElementById('handoffInstruction');
