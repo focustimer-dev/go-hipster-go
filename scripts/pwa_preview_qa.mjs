@@ -64,7 +64,7 @@ for(const profile of profiles){
   await page.locator('#pwaPrefs').waitFor({state:'visible'});
   await page.locator('[data-pwa-action="close"]').click();
   await page.locator('[data-pwa-tab="jukebox"]').click();
-  await page.locator('[data-pwa-action="remove-reference"]').first().click();
+  await page.locator('#pwaInspiration [data-pwa-action="remove-reference"]').click();
   assert.ok(!(await page.locator('#prompt').textContent()).includes('violin pulses'),'removed reference cleared from GO');
   await page.locator('[data-pwa-tab="crate"]').click();
   assert.match(await page.locator('#pwaRecent').innerText(),/violin pulses/);
