@@ -135,6 +135,25 @@ class PortableAgentTests(unittest.TestCase):
                 if "://" not in link:
                     self.assertIn(link, names)
 
+    def test_gemini_publish_follow_up_contract(self):
+        from scripts.build_gemini_app_skill import render, REFERENCES
+        entry = (ROOT / "adapters/gemini/SKILL.md").read_text()
+        knowledge = (ROOT / "adapters/gemini/GEM_KNOWLEDGE.md").read_text()
+        policy = (ROOT / "references/gemini-publish.md").read_text()
+        gem = (ROOT / "adapters/gemini/GEM_INSTRUCTIONS.md").read_text()
+        self.assertIn("references/gemini-publish.md", REFERENCES)
+        self.assertIn("**Publish follow-up:**", entry)
+        self.assertIn("raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/gemini-publish.md", entry)
+        self.assertIn("**Publish follow-up:**", render((ROOT / "SKILL.md").read_text()))
+        self.assertEqual(knowledge.count("# BEGIN SOURCE: references/gemini-publish.md"), 1)
+        self.assertIn("# Gemini Publish — finalization of an existing crate", knowledge)
+        for needle in ("Save to library", "TRACKLIST / LINER NOTES", "music.youtube.com",
+                       "must not publish a duplicate", "copy-ready metadata"):
+            self.assertIn(needle, policy)
+        self.assertIn("## Publish — finalize the existing playlist", gem)
+        self.assertNotIn("**Publish follow-up:**", (ROOT / "SKILL.md").read_text())
+        self.assertNotIn("**Publish follow-up:**", (ROOT / "adapters/claude/README.md").read_text())
+
     def test_gemini_persona_and_refresh_instructions(self):
         script=(ROOT/"scripts/build_gemini_app_skill.py").read_text(encoding="utf-8")
         gem=(ROOT/"adapters/gemini/GEM_INSTRUCTIONS.md").read_text(encoding="utf-8")
