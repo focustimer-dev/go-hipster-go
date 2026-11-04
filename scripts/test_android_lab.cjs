@@ -131,7 +131,11 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    await page.waitForFunction(()=>labAtlasGlobe.loaded());
    assert.equal(await page.locator('[data-atlas-view="'+mode+'"]').getAttribute('aria-pressed'),'true');
    assert.equal(await page.locator('#prompt').textContent(),beforeModes,'Projection changes preserve the request');
-   await page.locator('#labAtlasGlobe').screenshot({path:'android-lab/build/switch-review/atlas-'+mode+'.png'});
+   await page.locator('#labAtlasGlobe').evaluate(el=>window.scrollTo({top:scrollY+el.getBoundingClientRect().top-160,behavior:'instant'}));
+   const positions=await page.locator('#labAtlasGlobe').evaluate(el=>new Promise(resolve=>{const samples=[];let count=0;function frame(){const r=el.getBoundingClientRect();samples.push({x:r.x,y:r.y,width:r.width,height:r.height});if(++count<8)requestAnimationFrame(frame);else resolve(samples)}requestAnimationFrame(frame)}));
+   console.log('Atlas mode bounds',mode,positions);
+   const last=positions.at(-1);assert(positions.slice(-3).every(p=>Math.abs(p.width-last.width)<.5&&Math.abs(p.height-last.height)<.5),'Projection switch settles viewport dimensions');
+   await page.screenshot({path:'android-lab/build/switch-review/atlas-'+mode+'.png',clip:last});
   }
   await page.locator('#labAtlasGlobe').screenshot({path:'android-lab/build/switch-review/integrated-globe.png'});
   await page.locator('#atlasHome').evaluate(el=>el.click());await page.waitForTimeout(500);
