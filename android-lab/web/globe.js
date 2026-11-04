@@ -43,7 +43,7 @@ function initLabGlobe(){
  labGlobe.on('dragstart',()=>{atlasFocus=null;atlasUserNavigated=true;renderAtlasNavigation()});
  labGlobe.on('zoomstart',event=>{if(event.originalEvent){atlasUserNavigated=true;renderAtlasNavigation()}});
  labGlobe.on('zoomend',()=>{const visible=labGlobe.getZoom()>labGlobeHomeZoom()+.8;old._atlasSecretsSync?.(visible);for(const node of host.querySelectorAll('.lab-globe-secret'))node.hidden=!visible});
- new ResizeObserver(()=>{if(labAtlasMode==='robinson')labGlobe.setMinZoom(labRobinsonMinimumZoom());labGlobe.resize()}).observe(host);
+ new ResizeObserver(()=>{if(host.clientWidth&&host.clientHeight&&labAtlasMode==='robinson')labGlobe.setMinZoom(labRobinsonMinimumZoom());labGlobe.resize()}).observe(host);
 }
 function labGlobeUnproject([x,y]){
  const X=[1,.9986,.9954,.99,.9822,.973,.96,.9427,.9216,.8962,.8679,.835,.7986,.7597,.7186,.6732,.6213,.5722,.5322],Y=[0,.062,.124,.186,.248,.31,.372,.434,.4958,.5571,.6176,.6769,.7346,.7903,.8435,.8936,.9394,.9761,1];
@@ -130,5 +130,5 @@ function labRobinsonMinimumZoom(){
  const yRange=Math.log(Math.tan(Math.PI/4+pole*Math.PI/360))/Math.PI;
  // Fit the bounds in both axes. A small epsilon avoids the engine's
  // simultaneous zoom-and-pan constraint branch at exactly the minimum.
- return Math.log2(Math.max(host.clientWidth/(512*(359.998/360)),host.clientHeight/(512*yRange)))+.002;
+ return Math.log2(Math.max((host.clientWidth||387)/(512*(359.998/360)),(host.clientHeight||200)/(512*yRange)))+.002;
 }
