@@ -99,3 +99,12 @@ Local checks: 139 core tests, five offline bundle tests, DOM, route and render
 checks pass. The new boundary regression covers 216,486 small drag movements
 and continuity through the former 600-unit cutoff. Browser/native CI and
 phone sharpness/smoothness acceptance remain pending. No APK is built yet.
+
+
+## Lab 0.9.30 — Gemini workflow tutorial
+
+The Manual and Preferences expose Gemini Quick Start; the Gemini + YouTube Music receipt links directly to Review. Five optional illustrated demos teach Setup, Submit, Review/de-cheese, Publish, and manual cover art. They use local CSS, require Play, stop on navigation/backgrounding, and become static under reduced motion. Copy controls use the established clipboard path; tutorial navigation never submits a prompt, runs de-cheese, or publishes.
+
+Copy follows the Gemini 3.11.1 entry and references/gemini-publish.md on main at 5b0eb0cd0a5416511f64300cf705af21ad0ff5e4: standalone Publish finalizes the existing playlist with description, ordered tracklist and liner notes; the user checks the save result. Artwork uses the browser's manual edit control where available. Setup retains the actual prompt-first saved-Skill route and web ZIP fallback.
+
+Local validation: 139 core tests, 5 bundle tests, playlist validation, existing DOM contract, four-profile workflow audit and new tutorial browser test pass. The latter checks all five scenes, exact command copies, denied clipboard recovery, no automatic submissions, receipt entry at Review, stop-on-leave, reduced motion and phone/narrow/landscape/200% layouts. Bounded visual review corrected enlarged-text label wrapping. Native-device QA is pending. Bound Robinson minimum zoom to the pinned engine's allowed [-2,maxZoom] range, fixing the error exposed by the prior four-profile audit during small layout transitions. No production deployment.
