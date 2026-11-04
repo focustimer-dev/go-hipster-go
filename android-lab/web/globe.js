@@ -12,7 +12,7 @@ function labGlobeBounds(view){
  const west=xs[Math.floor(n*.02)],east=xs[Math.min(n-1,Math.floor(n*.98))],south=ys[Math.floor(n*.02)],north=ys[Math.min(n-1,Math.floor(n*.98))];
  labGlobe.fitBounds([[west,south],[east,north]],{padding:24,maxZoom:3.4,duration:320});
 }
-function labGlobeHomeZoom(){if(labAtlasMode!=='globe')return Math.log2(Math.max(200,labGlobe.getContainer().clientWidth)/512)-.08;return Math.log2(Math.max(120,labGlobe.getContainer().clientHeight)*Math.PI/512)+.3}
+function labGlobeHomeZoom(){if(labAtlasMode==='robinson')return labRobinsonMinimumZoom();return Math.log2(Math.max(120,labGlobe.getContainer().clientHeight)*Math.PI/512)+.3}
 function labGlobeSync(){
  if(!labGlobeReady)return;
  for(const f of labGlobeGeography.features)labGlobe.setFeatureState({source:'land',id:f.id},{selected:crateSelected.has(f.properties.region)});
@@ -43,7 +43,7 @@ function initLabGlobe(){
  labGlobe.on('dragstart',()=>{atlasFocus=null;atlasUserNavigated=true;renderAtlasNavigation()});
  labGlobe.on('zoomstart',event=>{if(event.originalEvent){atlasUserNavigated=true;renderAtlasNavigation()}});
  labGlobe.on('zoomend',()=>{const visible=labGlobe.getZoom()>labGlobeHomeZoom()+.8;old._atlasSecretsSync?.(visible);for(const node of host.querySelectorAll('.lab-globe-secret'))node.hidden=!visible});
- new ResizeObserver(()=>{labGlobe.resize()}).observe(host);
+ new ResizeObserver(()=>{if(labAtlasMode==='robinson')labGlobe.setMinZoom(labRobinsonMinimumZoom());labGlobe.resize()}).observe(host);
 }
 function labGlobeUnproject([x,y]){
  const X=[1,.9986,.9954,.99,.9822,.973,.96,.9427,.9216,.8962,.8679,.835,.7986,.7597,.7186,.6732,.6213,.5722,.5322],Y=[0,.062,.124,.186,.248,.31,.372,.434,.4958,.5571,.6176,.6769,.7346,.7903,.8435,.8936,.9394,.9761,1];
@@ -93,12 +93,15 @@ function labSetAtlasMode(mode){
  if(mode==='mercator')mode='robinson'; // Migrate the retired flat-view preference.
  if(!labGlobeReady||!['globe','robinson'].includes(mode))return;
  labAtlasMode=mode;store('ghg-atlas-view-v1',mode);
- labGlobe.stop();labGlobe.setMaxBounds(null);labGlobe.setProjection({type:mode==='globe'?'globe':'mercator'});
+ labGlobe.stop();labGlobe.setMaxBounds(null);labGlobe.setMinZoom(-1);labGlobe.setProjection({type:mode==='globe'?'globe':'mercator'});
  if(mode==='robinson'){
   // Bounds are in the prepared planar address space, with a small paper margin.
   // MapLibre constrains the camera itself: no corrective snap after each move.
   const pole=labRobinsonPoint([0,90])[1]+1;
-  labGlobe.setMaxBounds([[-185,-pole],[185,pole]]);
+  // This engine wraps longitudes beyond 180: ±185 describes a narrow
+  // Date Line interval, not a padded world. Stay just inside ±180 instead.
+  labGlobe.setMinZoom(labRobinsonMinimumZoom());
+  labGlobe.setMaxBounds([[-179.999,-pole],[179.999,pole]]);
  }
  if(!labRobinsonData)labRobinsonData=labRobinsonGeometry(labGlobeGeography);
  labGlobe.getSource('land').setData(mode==='robinson'?labRobinsonData:labGlobeGeography);
@@ -120,4 +123,12 @@ function installLabAtlasModes(frame){
  labGlobe.addSource('robinson-ocean',{type:'geojson',data:{type:'Feature',properties:{},geometry:{type:'Polygon',coordinates:[edge]}}});
  labGlobe.addLayer({id:'robinson-ocean',type:'fill',source:'robinson-ocean',layout:{visibility:'none'},paint:{'fill-color':'#103135'}},'land');
  labSetAtlasMode(stored('ghg-atlas-view-v1')||'globe');
+}
+
+function labRobinsonMinimumZoom(){
+ const host=labGlobe.getContainer(),pole=labRobinsonPoint([0,90])[1]+1;
+ const yRange=Math.log(Math.tan(Math.PI/4+pole*Math.PI/360))/Math.PI;
+ // Fit the bounds in both axes. A small epsilon avoids the engine's
+ // simultaneous zoom-and-pan constraint branch at exactly the minimum.
+ return Math.log2(Math.max(host.clientWidth/(512*(359.998/360)),host.clientHeight/(512*yRange)))+.002;
 }
