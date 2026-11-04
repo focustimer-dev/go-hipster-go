@@ -108,3 +108,12 @@ The Manual and Preferences expose Gemini Quick Start; the Gemini + YouTube Music
 Copy follows the Gemini 3.11.1 entry and references/gemini-publish.md on main at 5b0eb0cd0a5416511f64300cf705af21ad0ff5e4: standalone Publish finalizes the existing playlist with description, ordered tracklist and liner notes; the user checks the save result. Artwork uses the browser's manual edit control where available. Setup retains the actual prompt-first saved-Skill route and web ZIP fallback.
 
 Local validation: 139 core tests, 5 bundle tests, playlist validation, existing DOM contract, four-profile workflow audit and new tutorial browser test pass. The latter checks all five scenes, exact command copies, denied clipboard recovery, no automatic submissions, receipt entry at Review, stop-on-leave, reduced motion and phone/narrow/landscape/200% layouts. Bounded visual review corrected enlarged-text label wrapping. Native-device QA is pending. Bound Robinson minimum zoom to the pinned engine's allowed [-2,maxZoom] range, fixing the error exposed by the prior four-profile audit during small layout transitions. No production deployment.
+
+
+## Lab 0.9.31 — captured app tutorials and inspiration
+
+Setup, Inspiration and Submit use actual Playwright screenshots encoded as silent, finite H.264 clips. Native bridge data is deterministic and fictional; no native dialog or external Gemini interface is portrayed as recorded. The capture manifest pins the source and viewport. The three MP4s total approximately 530 KB. Posters are bundled, preload is none, and videos play only by explicit request and stop on navigation/backgrounding. Static transcripts remain available; reduced-motion users see the poster until they choose the native video controls.
+
+Inspiration is an early, separate lesson: add/share a song link, artist or idea in Your Crate, Use in Jukebox, adjust choices, then GO. The text accurately explains that active inspiration replaces the random discovery route while explicit moods, pace and regions remain in force. The capture asserts reference inclusion and route omission. Tutorial actions route to the actual Crate.
+
+Regenerate captures with scripts/capture_lab_tutorial.cjs after bundling, then bundle again to include the new media. scripts/build_lab_tutorial_preview.py embeds the current guide and all three clips for an offline review copy. No recording is loaded from a third party at runtime. Browser checks decode all three clips, verify dimensions, test stop-on-leave and all six steps at four sizes, including enlarged text.

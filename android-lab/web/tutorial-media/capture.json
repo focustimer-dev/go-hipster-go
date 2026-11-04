@@ -1,0 +1,14 @@
+{
+  "source": "7ed927bfc57ca2b666558020cbebc37c879d617a",
+  "viewport": {
+    "width": 390,
+    "height": 620
+  },
+  "fps": 10,
+  "scenes": [
+    "setup",
+    "inspiration",
+    "submit"
+  ],
+  "fixture": "Deterministic native bridge; fictional inspiration already saved. No messages sent. Native dialogs and external Gemini UI not recorded."
+}

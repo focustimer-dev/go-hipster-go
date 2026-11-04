@@ -2,7 +2,7 @@ const {chromium}=require('playwright');
 const fs=require('node:fs'),http=require('node:http'),path=require('node:path'),assert=require('node:assert/strict');
 const root=path.resolve(__dirname,'../android-lab/app/src/main/assets/site');
 (async()=>{
- const server=http.createServer((req,res)=>{const name=new URL(req.url,'http://local').pathname;const f=path.resolve(root,'.'+(name==='/'?'/index.html':name));if(!f.startsWith(root+path.sep)){res.writeHead(403);res.end();return}try{const ext=path.extname(f);res.setHeader('Content-Type',({'.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.html':'text/html','.png':'image/png','.webp':'image/webp','.woff':'font/woff'})[ext]||'application/octet-stream');res.end(fs.readFileSync(f))}catch{res.writeHead(404);res.end()}});
+ const server=http.createServer((req,res)=>{const name=new URL(req.url,'http://local').pathname;const f=path.resolve(root,'.'+(name==='/'?'/index.html':name));if(!f.startsWith(root+path.sep)){res.writeHead(403);res.end();return}try{const ext=path.extname(f);res.setHeader('Content-Type',({'.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.html':'text/html','.png':'image/png','.webp':'image/webp','.woff':'font/woff','.mp4':'video/mp4'})[ext]||'application/octet-stream');res.end(fs.readFileSync(f))}catch{res.writeHead(404);res.end()}});
  await new Promise(r=>server.listen(0,'127.0.0.1',r));let browser;
  try{
  browser=await chromium.launch({headless:true,args:['--no-sandbox','--use-angle=swiftshader','--enable-unsafe-swiftshader'],...(process.env.LAB_CHROMIUM?{executablePath:process.env.LAB_CHROMIUM}:{})});
@@ -15,10 +15,12 @@ const root=path.resolve(__dirname,'../android-lab/app/src/main/assets/site');
   await page.locator('[data-lab-tab=manual]').click();
   await page.locator('#labGuideAction').click();
   assert.match(await page.evaluate(()=>guideCalls.at(-1)[1]),/FIRST-TIME SETUP CHECK for Gemini/);
-  for(const step of ['setup','submit','review','publish','cover']){
+  for(const step of ['setup','inspiration','submit','review','publish','cover']){
    await page.locator('[data-guide-step='+step+']').click();
    assert.equal(await page.locator('[data-guide-step='+step+']').getAttribute('aria-pressed'),'true');
    assert.equal(await page.locator('#labGuideDemo .lab-guide-frame').count(),3);
+   if(['setup','inspiration','submit'].includes(step)){assert(await page.locator('#labGuideDemo video').isVisible());assert.equal(await page.locator('#labGuideDemo video').getAttribute('preload'),'none');if(profile.name==='phone'){await page.locator('#labGuidePlay').click();await page.waitForFunction(()=>document.querySelector('#labGuideDemo video').currentTime>.1);assert.equal(await page.locator('#labGuideDemo video').evaluate(v=>v.videoWidth),390);await page.locator('[data-lab-tab=jukebox]').click();assert.equal(await page.locator('#labGuideDemo video').evaluate(v=>v.paused),true);await page.locator('[data-lab-tab=manual]').click()}}
+   if(step==='inspiration')assert.match(await page.locator('#labGuideNote').textContent(),/replaces the random discovery route/);
    if(step==='review'||step==='publish'){
     await page.locator('#labGuideAction').click();assert.equal(await page.evaluate(()=>guideCalls.at(-1)[1]),step==='publish'?'Publish':'go de-cheese');assert.match(await page.locator('#labGuideStatus').textContent(),/Command copied/);
    }
@@ -32,10 +34,11 @@ const root=path.resolve(__dirname,'../android-lab/app/src/main/assets/site');
   if(profile.name==='phone'){
    await page.locator('#labGuidePlay').click();assert(await page.locator('#labGuideDemo').evaluate(e=>e.classList.contains('is-playing')));
    await page.locator('[data-lab-tab=jukebox]').click();assert.equal(await page.locator('#labGuideDemo').evaluate(e=>e.classList.contains('is-playing')),false,'Leaving Manual stops motion');
+   await page.locator('[data-lab-tab=manual]').click();await page.locator('[data-guide-step=inspiration]').click();await page.locator('#labGuideAction').click();assert(await page.locator('#labCrate').isVisible(),'Inspiration guide opens the actual Crate');await page.locator('[data-lab-tab=jukebox]').click();
    await page.locator('#goButton').click();await page.locator('#labGeminiGuide').click();assert.equal(await page.locator('[data-guide-step=review]').getAttribute('aria-pressed'),'true','Receipt help opens at review');
   }else assert.equal(await page.locator('#labGuidePlay').isVisible(),false,'Reduced motion keeps the static steps');
   assert.deepEqual(errors,[]);await page.close();
  }
- console.log('PASS: tutorial setup, exact command copies, no submissions, all five demos, stop-on-leave, reduced motion and four layouts');
+ console.log('PASS: tutorial setup, exact command copies, no submissions, all six demos, stop-on-leave, reduced motion and four layouts');
  }finally{await browser?.close();await new Promise(r=>server.close(r))}
 })().catch(e=>{console.error(e);process.exitCode=1});

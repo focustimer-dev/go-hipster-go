@@ -40,6 +40,7 @@ def bundle(destination=None):
     html=html.replace('</head>','<script defer src="/assets/maplibre/maplibre-gl.js"></script><link rel="stylesheet" href="/assets/maplibre/maplibre-gl.css"></head>')
     page.write_text(html)
     shutil.copyfile(ROOT / 'android-lab/web/workspace.css', destination / 'assets/lab-workspace.css')
+    shutil.copytree(ROOT / 'android-lab/web/tutorial-media', destination / 'assets/tutorial-media')
     script = destination / 'assets/app.js'
     text = script.read_text()
     route_index = json.loads((ROOT / 'android-lab/web/discovery-route-index.json').read_text())
