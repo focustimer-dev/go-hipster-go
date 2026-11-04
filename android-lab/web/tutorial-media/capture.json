@@ -1,5 +1,5 @@
 {
-  "source": "7ed927bfc57ca2b666558020cbebc37c879d617a",
+  "source": "cd5497c767bd29d67e97ea8b2e583908ef57bea9",
   "viewport": {
     "width": 390,
     "height": 620
@@ -10,5 +10,5 @@
     "inspiration",
     "submit"
   ],
-  "fixture": "Deterministic native bridge; fictional inspiration already saved. No messages sent. Native dialogs and external Gemini UI not recorded."
+  "fixture": "Deterministic native bridge; fictional inspiration entered from empty state. Entry dialog is explicitly labelled recreation matching SharedInspiration.java; remaining app UI is real. No messages sent; external Gemini UI not recorded."
 }

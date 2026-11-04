@@ -1,10 +1,10 @@
 let labGuideStep='inspiration';
 const labGuideSteps={
  setup:{title:'Set up Gemini',text:'Copy the setup check, paste it into Gemini and send. Confirm the Go, Hipster, Go! Skill is saved and YouTube Music is available.',frames:[['LAB','Copy Setup Check'],['GEMINI','Paste → Send'],['CHECK','Skill saved · YouTube Music available']],note:'Use the latest Skill. A link or playlist preview alone does not confirm setup.',action:'COPY SETUP CHECK'},
- inspiration:{title:'Let your inspiration lead',text:'Share a song link to Lab, or add a song, artist or idea in Your Crate. Choose Use in Jukebox, shape the moods, pace and places, then GO.',frames:[['YOUR CRATE','Add or share a reference'],['JUKEBOX','Use in Jukebox → Shape it'],['GO','Your reference leads the search']],note:'Active inspiration replaces the random discovery route. Your chosen moods, regions and pace still apply. Remove it to return to random routes.',action:'OPEN YOUR CRATE'},
+ inspiration:{title:'An idea is all you need',text:'Your Crate → ADD. Type “A rainy train ride after midnight”. Tap Use in Jukebox, then GO. Paste the request in Gemini and send.',frames:[['1 · ADD','Type: A rainy train ride after midnight'],['2 · USE IN JUKEBOX','Add a mood if you like. Or leave it to us.'],['3 · GO','Paste in Gemini → Send. Wait for your playlist.']],note:'Active inspiration replaces the random discovery route. Your chosen moods, regions and pace still apply. Remove it to return to random routes.',action:'OPEN YOUR CRATE'},
  submit:{title:'Send your crate',text:'Choose your moods, pace and regions in Jukebox. Press GO, then review and send the request in Gemini.',frames:[['JUKEBOX','Moods · Pace · Regions'],['GO','Copy + Open Gemini'],['GEMINI','Paste if needed → Send']],note:'Keep the whole workflow in the same Gemini conversation.',action:'OPEN JUKEBOX'},
- review:{title:'Listen. Then de-cheese.',text:'Review the playlist. Send “go de-cheese” for an audit. Read the findings and approve any fixes you want before publishing.',frames:[['GEMINI','go de-cheese'],['REVIEW','Read the findings'],['YOU','Approve fixes, if needed']],note:'De-cheese starts with a read-only audit. It does not change the playlist without your approval.',action:'COPY DE-CHEESE COMMAND'},
- publish:{title:'Make it yours',text:'Send “Publish” in the same Gemini chat to save the playlist, description, tracklist and liner notes to your YouTube Music account.',frames:[['GEMINI','Publish'],['SAVE','Existing playlist + liner notes'],['CHECK','Confirm the saved result']],note:'Open the playlist to check the saved result. If saving or metadata fails, follow Gemini’s recovery step.',action:'COPY PUBLISH COMMAND'},
+ review:{title:'Give it a listen. Then de-cheese.',text:'Stay in the same Gemini chat. Send “go de-cheese”. Read the audit and tell Gemini which fixes you want.',frames:[['GEMINI','go de-cheese'],['READ','Look for weak fits in your rainy-night playlist'],['REPLY','Happy with it? Move on. Want changes? Say which.']],note:'De-cheese starts with a read-only audit. It does not change the playlist without your approval.',action:'COPY DE-CHEESE COMMAND'},
+ publish:{title:'One word: Publish',text:'Send “Publish” in the same Gemini chat to save the playlist, description, tracklist and liner notes to your YouTube Music account.',frames:[['GEMINI','Publish'],['WAIT','Gemini saves this playlist and its liner notes'],['OPEN YOUTUBE MUSIC','Library → Playlists. Check your playlist and description.']],note:'Open the playlist to check the saved result. If saving or metadata fails, follow Gemini’s recovery step.',action:'COPY PUBLISH COMMAND'},
  cover:{title:'Finish the sleeve',text:'Download the generated cover. Open your saved playlist at music.youtube.com in a browser, edit its artwork, choose the image, crop and save.',frames:[['COVER','Download image'],['BROWSER','Saved playlist → Edit artwork'],['YOU','Choose image → Crop → Save']],note:'Cover art is manual. Try Desktop site if the edit control is missing on mobile; custom artwork may not be available on every account.',action:'OPEN YOUTUBE MUSIC'}
 };
 const labGuideOutcomes={
@@ -30,13 +30,13 @@ function labRenderGuide(step){
  doc.getElementById('labGuideReady').textContent='Ready to move on when: '+outcome[1];
  doc.getElementById('labGuideNext').textContent=outcome[3];
  doc.getElementById('labGuideBack').hidden=step==='inspiration'||step==='setup';
- doc.getElementById('labGuideWatch').open=false;doc.getElementById('labGuideHelp').open=false;
+ doc.getElementById('labGuideWatch').open=step==='inspiration';doc.getElementById('labGuideHelp').open=false;
  doc.querySelectorAll('[data-guide-step]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.guideStep===step)));
  doc.getElementById('labGuideTitle').textContent=data.title;doc.getElementById('labGuideText').textContent=data.text;doc.getElementById('labGuideNote').textContent=data.note;doc.getElementById('labGuideAction').textContent=step==='setup'&&(ai!=='gemini'||service!=='youtube')?'CHOOSE GEMINI + YOUTUBE MUSIC':data.action;
  const demo=doc.getElementById('labGuideDemo');demo.replaceChildren();demo.setAttribute('aria-label',data.frames.map(f=>f.join(': ')).join('. '));
  const recorded=['setup','inspiration','submit'].includes(step);
  demo.setAttribute('role',recorded?'group':'img');
- doc.getElementById('labGuideWatchLabel').textContent=recorded?'Watch the '+(step==='inspiration'?'9':'7')+'-second app demo':'See the steps';
+ doc.getElementById('labGuideWatchLabel').textContent=recorded?'Watch the '+(step==='inspiration'?'17':'7')+'-second app demo':'See the steps';
  doc.querySelector('.lab-guide-controls').hidden=recorded;
  let transcript=demo;
  if(recorded){
@@ -44,8 +44,9 @@ function labRenderGuide(step){
   video.addEventListener('play',()=>{demo.classList.add('is-playing');doc.getElementById('labGuidePlay').textContent='PAUSE DEMO'});
   video.addEventListener('pause',()=>{demo.classList.remove('is-playing');doc.getElementById('labGuidePlay').textContent='PLAY DEMO'});
   video.addEventListener('ended',labStopGuide);
-  const caption=doc.createElement('p');caption.className='lab-help';caption.textContent=step==='inspiration'?'App recording · Example idea already added to Your Crate.':'App recording · Demo choices. Nothing sent to Gemini.';
+  const caption=doc.createElement('p');caption.className='lab-help';caption.textContent=step==='inspiration'?'Real app walkthrough · Android entry dialog recreated and labelled. No request sent.':'App recording · Demo choices. Nothing sent to Gemini.';
   const details=doc.createElement('details'),summary=doc.createElement('summary');summary.textContent='Steps in this clip';details.append(summary);demo.append(video,caption,details);transcript=details;
+  if(step==='inspiration'){const chapters=doc.createElement('div');chapters.className='lab-guide-chapters';chapters.setAttribute('aria-label','Replay a part of the walkthrough');for(const [label,time] of [['Add an idea',0],['Type it',2.7],['Use it',7.9],['GO',12.7]]){const b=doc.createElement('button');b.type='button';b.className='lab-text-button';b.textContent=label;b.onclick=()=>{video.currentTime=time;video.play().catch(()=>{doc.getElementById('labGuideStatus').textContent='Use the video play button to continue.'})};chapters.append(b)}video.after(chapters)}
  }
  for(const [i,frame] of data.frames.entries()){
   const row=doc.createElement('div');row.className='lab-guide-frame';row.style.setProperty('--guide-order',i);

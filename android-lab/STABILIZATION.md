@@ -124,3 +124,11 @@ Regenerate captures with scripts/capture_lab_tutorial.cjs after bundling, then b
 Offer inspiration-led and random-discovery starting paths, with setup and existing-playlist shortcuts. Keep the six-topic index collapsed. Each lesson leads with its real action, a concrete user-observable readiness check, optional demo/transcript, contextual recovery help, and a named next lesson. Inspiration and Submit converge at Review, then Publish; artwork is optional. Next/Back focus and scroll the new heading into view. Save only the last lesson locally, never account readiness or completion. The UI does not claim to inspect Gemini or the streaming library.
 
 Watch is collapsed by default, pauses when closed, and retains local captures/native playback controls. Manual installation help appears only for Setup. Browser checks exercise entry paths, readiness text, Next/Back, remembered lesson, optional video playback, and four sizes including 200% text after reload. No external action is added.
+
+### Worked-example tutorial pass
+
+The inspiration clip starts with an empty Crate, taps ADD, enters “A rainy train ride after midnight”, then uses the reference, selects moods and presses GO. The native entry dialog is an explicitly labelled recreation of SharedInspiration.java; other controls are captured from the bundled app. No external Gemini session or publication is simulated. Four chapter buttons replay individual actions. The player is initially visible, without autoplay, and pauses when leaving Manual.
+
+Design evidence: Nielsen Norman Group, “Videos as Instructional Content: User Behaviors and UX Guidelines” (2020), https://www.nngroup.com/articles/instructional-video-guidelines/ — short task-focused segments, visible duration, captions, chapter navigation and equivalent written directions. Applied as design guidance, not proof of measured tutorial success.
+
+Validation: core 139 tests, Android bundle 5 tests and playlist structure validation passed. Playwright covers four viewport/text profiles, playback, command copying, navigation and retained lesson state. Real Android keyboard, Gemini handoff and saved playlist acceptance remain device checks.
