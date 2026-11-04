@@ -19,3 +19,5 @@ Approved UI release: deploy the hi-fi recording switch and one-shot clerk confir
 Approved placement release: move Skip rough recordings into collapsed Listening preferences below the atlas; retain visible enabled-state annotation and all existing preference behavior.
 
 Approved consistency release: publish the vertical ON/OFF lever, honest Other AI manual routing, Any-tempo bypass and consistent recording/playlist-cover wording. Preserve the approved red-dot +ART and TRY HARD appearance.
+
+Approved PWA parity release (PR #156): publish the browser-only Jukebox/Your Crate/Manual/Preferences navigation, exact saved requests and recent inspiration support, fix the floating ticket/nav overlap, retain the existing Robinson SVG atlas and character artwork, and keep Android Lab experimental work separate. User approved live mobile preview; GitHub validation and isolated Chromium QA passed. Production deployment must use the exact release SHA and existing post-deploy live smoke gate.
