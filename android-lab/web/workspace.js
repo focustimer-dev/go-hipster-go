@@ -144,3 +144,7 @@ function initLabWorkspace(){
  doc.getElementById('labPreferences').addEventListener('change',event=>{const i=event.target;if(i.name==='labHandoff')window.HipsterLab?.setPreference?.('mode',i.value);else if(i.dataset.labPref)window.HipsterLab?.setPreference?.(i.dataset.labPref,String(i.checked));renderLabWorkspace()});
  window.HipsterLabStateChanged=()=>{labRefreshState();renderLabWorkspace();renderLabInspiration()};window.HipsterLabBack=()=>{const d=doc.getElementById('labPreferences');if(d.open){d.close();return true}if(labScreen!=='jukebox'){labNavigate('jukebox');return true}return false};renderLabWorkspace();
 }
+
+function labShowManualResources(show){doc.getElementById('labMoreResources').hidden=!show;doc.getElementById('labManualGuide').hidden=show;if(!show){const frame=doc.getElementById('labManualFrame');if(frame.contentWindow)frame.contentWindow.location.hash='manual'}doc.getElementById('labManualTitle').scrollIntoView({block:'start'})}
+window.addEventListener('message',event=>{if(event.source===doc.getElementById('labManualFrame')?.contentWindow&&event.origin===location.origin&&event.data?.type==='lab-manual-resources')labShowManualResources(true)});
+doc.getElementById('labManualReturn').onclick=()=>labShowManualResources(false);
