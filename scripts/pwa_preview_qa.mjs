@@ -40,9 +40,9 @@ for(const profile of profiles){
   await page.locator('#pwaReferenceInput').fill('QA: violin pulses over brushed drums');
   await page.locator('#pwaReferenceKeep').click();
   await page.locator('#pwaInspiration').waitFor({state:'visible'});
-  assert.match(await page.locator('#prompt').innerText(),/Musical reference only.*violin pulses over brushed drums/);
+  assert.match(await page.locator('#prompt').textContent(),/Musical reference only.*violin pulses over brushed drums/);
   await page.screenshot({path:folder+'/'+profile.name+'-inspiration.png'});
-  const prompt=await page.locator('#prompt').innerText();
+  const prompt=await page.locator('#prompt').textContent();
   await page.locator('[data-pwa-action="save"]').click();
   await page.locator('#pwaSaveName').fill('QA saved crate');
   await page.locator('#pwaSaveDialog button[type="submit"]').click();
@@ -56,7 +56,7 @@ for(const profile of profiles){
   assert.match(await page.locator('#pwaRecent').innerText(),/violin pulses/);
   await page.locator('#pwaSaved button').first().click();
   await page.locator('#pwaSavedDialog').waitFor({state:'visible'});
-  assert.equal(await page.locator('#pwaSavedPrompt').innerText(),prompt,'exact saved prompt after reload');
+  assert.equal(await page.locator('#pwaSavedPrompt').textContent(),prompt,'exact saved prompt after reload');
   await page.locator('[data-pwa-action="close-saved"]').click();
   await page.locator('[data-pwa-tab="manual"]').click();
   await page.locator('#pwaManual').waitFor({state:'visible'});
@@ -65,7 +65,7 @@ for(const profile of profiles){
   await page.locator('[data-pwa-action="close"]').click();
   await page.locator('[data-pwa-tab="jukebox"]').click();
   await page.locator('[data-pwa-action="remove-reference"]').first().click();
-  assert.ok(!(await page.locator('#prompt').innerText()).includes('violin pulses'),'removed reference cleared from GO');
+  assert.ok(!(await page.locator('#prompt').textContent()).includes('violin pulses'),'removed reference cleared from GO');
   await page.locator('[data-pwa-tab="crate"]').click();
   assert.match(await page.locator('#pwaRecent').innerText(),/violin pulses/);
   assert.deepEqual(errors,[],errors.join('; '));
