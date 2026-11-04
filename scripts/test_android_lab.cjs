@@ -126,10 +126,18 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert(await page.locator('[data-crate-stamp-region="west-africa"]').count());
   await page.waitForTimeout(500);
   const beforeModes=await page.locator('#prompt').textContent();
-  for(const mode of ['mercator','robinson','globe']){
+  assert.equal(await page.locator('[data-atlas-view="mercator"]').count(),0,'Only Globe and Robinson are offered');
+  for(const mode of ['robinson','globe']){
    await page.locator('[data-atlas-view="'+mode+'"]').click();
    await page.waitForFunction(()=>labAtlasGlobe.loaded());
    assert.equal(await page.locator('[data-atlas-view="'+mode+'"]').getAttribute('aria-pressed'),'true');
+   if(mode==='robinson'){
+    const drift=await page.evaluate(()=>{labAtlasGlobe.jumpTo({center:[170,85]});const c=labAtlasGlobe.getCenter();return {lng:c.lng,lat:c.lat}});
+    assert(Math.abs(drift.lat)<6&&Math.abs(drift.lng)<12,'Whole-world Robinson cannot be dragged into empty margins');
+    const zoomed=await page.evaluate(()=>{labAtlasGlobe.jumpTo({zoom:2,center:[0,50]});return labAtlasGlobe.getCenter().lat});
+    assert(zoomed>20,'Zoomed Robinson retains useful north/south exploration');
+    await page.evaluate(()=>labAtlasGlobe.jumpTo({center:[0,0],zoom:Math.log2(labAtlasGlobe.getContainer().clientWidth/512)-.08}));
+   }
    assert.equal(await page.locator('#prompt').textContent(),beforeModes,'Projection changes preserve the request');
    await page.locator('#labAtlasGlobe').evaluate(el=>window.scrollTo({top:scrollY+el.getBoundingClientRect().top-160,behavior:'instant'}));
    const positions=await page.locator('#labAtlasGlobe').evaluate(el=>new Promise(resolve=>{const samples=[];let count=0;function frame(){const r=el.getBoundingClientRect();samples.push({x:r.x,y:r.y,width:r.width,height:r.height});if(++count<8)requestAnimationFrame(frame);else resolve(samples)}requestAnimationFrame(frame)}));

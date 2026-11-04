@@ -90,9 +90,16 @@ function labRobinsonGeometry(data){
 function labAtlasPoint(point){return labAtlasMode==='robinson'?labRobinsonPoint(point):point}
 function labAtlasHome(){return labAtlasMode==='globe'?[10,15]:[0,0]}
 function labSetAtlasMode(mode){
- if(!labGlobeReady||!['globe','mercator','robinson'].includes(mode))return;
+ if(mode==='mercator')mode='robinson'; // Migrate the retired flat-view preference.
+ if(!labGlobeReady||!['globe','robinson'].includes(mode))return;
  labAtlasMode=mode;store('ghg-atlas-view-v1',mode);
- labGlobe.stop();labGlobe.setProjection({type:mode==='globe'?'globe':'mercator'});
+ labGlobe.stop();labGlobe.setMaxBounds(null);labGlobe.setProjection({type:mode==='globe'?'globe':'mercator'});
+ if(mode==='robinson'){
+  // Bounds are in the prepared planar address space, with a small paper margin.
+  // MapLibre constrains the camera itself: no corrective snap after each move.
+  const pole=labRobinsonPoint([0,90])[1]+1;
+  labGlobe.setMaxBounds([[-185,-pole],[185,pole]]);
+ }
  if(!labRobinsonData)labRobinsonData=labRobinsonGeometry(labGlobeGeography);
  labGlobe.getSource('land').setData(mode==='robinson'?labRobinsonData:labGlobeGeography);
  if(labRouteGeography)labGlobe.getSource('routes').setData(mode==='robinson'?labRobinsonGeometry(labRouteGeography):labRouteGeography);
@@ -105,7 +112,7 @@ function labSetAtlasMode(mode){
 }
 function installLabAtlasModes(frame){
  const controls=doc.createElement('div');controls.setAttribute('role','group');controls.setAttribute('aria-label','Atlas view');controls.style.cssText='display:flex;gap:6px;flex-wrap:wrap;margin:8px 0';
- for(const [mode,label] of [['globe','GLOBE'],['mercator','FLAT · MERCATOR'],['robinson','FLAT · ROBINSON']]){
+ for(const [mode,label] of [['globe','GLOBE'],['robinson','ROBINSON']]){
   const b=doc.createElement('button');b.type='button';b.dataset.atlasView=mode;b.textContent=label;b.setAttribute('aria-pressed',String(mode==='globe'));b.style.cssText='min-height:44px;padding:8px 10px;font:bold 12px Arial,sans-serif';b.onclick=()=>labSetAtlasMode(mode);controls.appendChild(b);
  }
  frame.before(controls);
