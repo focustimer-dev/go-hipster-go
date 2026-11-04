@@ -8,7 +8,29 @@ body.gig-poster.pwa-workspace{padding-top:56px;--pwa-petrol:#103135;--pwa-mustar
 .pwa-rail button span{font:700 1.3rem/1.1 Arial,sans-serif}
 .pwa-rail button[aria-current=page]{background:#dfb045;color:#103135;border-bottom-color:#a83223}
 .pwa-rail button:last-child{border-left:1px solid #dfb04566}
-.pwa-workspace .selection-ticket:not(.is-docked){top:64px;max-height:calc(100dvh - 80px);z-index:900}
+/* The base poster ticket has a more specific body selector than the old PWA rule.
+   Keep this one fully BELOW the 56px navigation instead of clipping its title behind it.
+   The duplicate YOU CRATE heading is already in the rail, so use a 48px receipt strip. */
+body.gig-poster.pwa-workspace[data-page=launch] .selection-ticket:not(.is-docked){
+ top:64px;
+ max-height:calc(100dvh - 76px);
+ z-index:900;
+}
+body.gig-poster.pwa-workspace[data-page=launch] .selection-ticket:not(.is-docked) > details > summary{
+ box-sizing:border-box;
+ min-height:48px;
+ padding:5px 10px;
+ gap:0 8px;
+}
+body.gig-poster.pwa-workspace[data-page=launch] .selection-ticket:not(.is-docked) .ticket-kicker{display:none}
+body.gig-poster.pwa-workspace[data-page=launch] .selection-ticket:not(.is-docked) .ticket-brief{
+ grid-row:1;
+ gap:0;
+}
+body.gig-poster.pwa-workspace[data-page=launch] .selection-ticket:not(.is-docked) .ticket-expander{grid-row:1}
+body.gig-poster.pwa-workspace[data-page=launch] :is(.service-counter,[data-mood],.refinements){
+ scroll-margin-top:124px;
+}
 body.pwa-workspace:not([data-pwa-screen=jukebox]) .selection-ticket{display:none!important}
 .pwa-page{box-sizing:border-box;width:100%;max-width:760px;min-height:calc(100dvh - 56px);margin:auto;padding:28px 5% 42px;background:#dfb045 url('/editions/gig-poster/assets/stock.webp') repeat;color:#103135;font:1rem/1.5 Arial,sans-serif}
 .pwa-page h1{margin:0 0 12px;font:400 clamp(2.8rem,11vw,4rem)/1.08 Poster,sans-serif}
