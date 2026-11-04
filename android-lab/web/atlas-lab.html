@@ -1,0 +1,19 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Atlas engine test</title>
+<link rel="stylesheet" href="assets/maplibre/maplibre-gl.css"><style>
+*{box-sizing:border-box}body{margin:0;background:#dfb045;color:#103135;font:16px Arial,sans-serif}header{padding:14px;display:flex;align-items:center;justify-content:space-between;gap:10px}h1{font-size:19px;margin:0}button,a{font:inherit;min-height:44px;padding:10px;color:#dfb045;background:#103135;border:1px solid #103135;text-decoration:none}#map{height:65vh;min-height:300px;background:#dfb045}section{padding:12px}nav{display:flex;gap:8px;flex-wrap:wrap}#status{min-height:24px;margin:10px 0}.maplibregl-ctrl-attrib{font-size:10px}button[aria-pressed=true]{background:#a83223;color:#fff}
+</style><header><h1>ATLAS ENGINE TEST</h1><a href="index.html">Back to Jukebox</a></header><div id="map" aria-label="Interactive globe"></div><section><nav><button id="globe" aria-pressed="true">Globe</button><button id="flat" aria-pressed="false">Flat</button><button id="home">Whole world</button><button id="clear">Clear test picks</button></nav><p id="status" role="status">Starting graphics engine…</p><p>Drag to explore · Pinch to zoom · Tap land to pick a region.</p><p>Offline renderer experiment. Picks here are temporary. Flat uses Mercator; the Robinson atlas is still in the Jukebox.</p></section>
+<script src="assets/maplibre/maplibre-gl.js"></script><script>
+const geography=/*GEOGRAPHY*/;
+const status=document.getElementById('status'),selected=new Set();let map;
+try{
+map=window.atlasTestMap=new maplibregl.Map({container:'map',style:{version:8,sources:{land:{type:'geojson',data:geography}},layers:[{id:'ocean',type:'background',paint:{'background-color':'#103135'}},{id:'land',type:'fill',source:'land',paint:{'fill-color':['case',['boolean',['feature-state','selected'],false],'#a83223','#dfb045']}},{id:'borders',type:'line',source:'land',paint:{'line-color':'#103135','line-width':.7}}]},center:[10,20],zoom:.5,maxZoom:6,attributionControl:false,renderWorldCopies:false,dragRotate:false,pitchWithRotate:false,canvasContextAttributes:{antialias:true}});
+map.addControl(new maplibregl.AttributionControl({compact:true,customAttribution:'Country geometry: Natural Earth'}));
+map.on('load',()=>{map.setProjection({type:'globe'});status.textContent='Ready · MapLibre 5.6.1 · fully bundled offline';window.atlasTestReady=true});
+map.on('error',e=>{status.textContent='Map could not render: '+e.error.message});
+map.on('webglcontextlost',()=>{status.textContent='Graphics context lost. Return to the Jukebox and reopen the test.'});
+map.on('click','land',e=>{const region=e.features[0].properties.region;selected.has(region)?selected.delete(region):selected.add(region);for(const f of geography.features)map.setFeatureState({source:'land',id:f.id},{selected:selected.has(f.properties.region)});status.textContent=selected.size?'Test regions: '+[...selected].join(' · '):'No test regions selected'});
+for(const [id,type] of [['globe','globe'],['flat','mercator']])document.getElementById(id).onclick=()=>{map.setProjection({type});document.getElementById('globe').setAttribute('aria-pressed',String(type==='globe'));document.getElementById('flat').setAttribute('aria-pressed',String(type==='mercator'))};
+document.getElementById('home').onclick=()=>map.flyTo({center:[10,20],zoom:.5,duration:500});
+document.getElementById('clear').onclick=()=>{selected.clear();map.removeFeatureState({source:'land'});status.textContent='Test picks cleared'};
+}catch(e){status.textContent='Graphics engine unavailable: '+e.message}
+</script></html>

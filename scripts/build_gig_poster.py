@@ -75,7 +75,7 @@ s=s.replace('setup-crate-record-480.webp" width="1292" height="1196"','setup-cra
 
 # A native checkbox remains the source of truth for the hi-fi recording switch.
 s=s.replace('<label class="recording-preference" for="skipRough"><span>Skip rough recordings<small id="recordingHelp">Avoid heavy hiss, crackle and muffled archival audio. Clean older recordings welcome.</small></span><input type="checkbox" id="skipRough" aria-describedby="recordingHelp"></label>',
-    '<label class="recording-preference recording-hifi" for="skipRough"><span class="recording-copy"><strong>SKIP ROUGH RECORDINGS</strong><small id="recordingHelp">Less hiss, crackle and muffled audio. Clean older recordings welcome.</small></span><span class="recording-switch"><input type="checkbox" id="skipRough" aria-describedby="recordingHelp"><span class="recording-rocker" aria-hidden="true"><span class="recording-on">ON</span><span class="recording-tab"></span><span class="recording-off">OFF</span></span></span></label>')
+    '<label class="recording-preference recording-hifi" for="skipRough"><span class="recording-copy"><strong>SKIP ROUGH RECORDINGS</strong><small id="recordingHelp">Less hiss, crackle and muffled audio. Clean older recordings welcome.</small></span><span class="recording-switch"><input type="checkbox" id="skipRough" aria-describedby="recordingHelp"><span class="recording-rocker" aria-hidden="true"><span class="recording-off">OFF</span><span class="recording-on">ON</span><span class="recording-tab"></span></span></span></label>')
 
 # Recording quality is a persistent, infrequent preference, not a primary music choice.
 recording=re.search(r'    <label class="recording-preference recording-hifi".*?</label>',s).group()

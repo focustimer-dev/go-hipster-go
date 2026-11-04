@@ -1,0 +1,44 @@
+{
+  "packageId": "work.samelling.hipstergo",
+  "host": "hipster-go.samelling.workers.dev",
+  "name": "Go, Hipster, Go!",
+  "launcherName": "Hipster GO",
+  "display": "standalone",
+  "themeColor": "#252320",
+  "themeColorDark": "#000000",
+  "navigationColor": "#252320",
+  "navigationColorDark": "#000000",
+  "navigationDividerColor": "#000000",
+  "navigationDividerColorDark": "#000000",
+  "backgroundColor": "#F0E4CC",
+  "enableNotifications": false,
+  "startUrl": "/?ai=chatgpt&service=spotify",
+  "iconUrl": "https://hipster-go.samelling.workers.dev/icon-512.png",
+  "signingKey": {
+    "path": "../../private-signing/hipster-go.keystore",
+    "alias": "hipster-go"
+  },
+  "appVersionCode": 1,
+  "shortcuts": [],
+  "generatorApp": "bubblewrap-cli",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "minSdkVersion": 24,
+  "orientation": "default",
+  "fingerprints": [
+    {
+      "value": "2E:1C:2C:7D:0A:E0:A7:5D:AA:6D:A4:43:C0:C3:19:3F:21:2A:5A:86:E6:85:C8:85:C2:E9:34:00:09:9A:4A:F0"
+    }
+  ],
+  "additionalTrustedOrigins": [],
+  "retainedBundles": [],
+  "displayOverride": [],
+  "appVersion": "1.0.0",
+  "splashScreenFadeOutDuration": 300
+}

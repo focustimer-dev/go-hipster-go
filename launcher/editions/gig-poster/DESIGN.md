@@ -228,6 +228,3 @@ Recording quality now sits inside a native, collapsed-by-default Listening prefe
 ## Selection consistency audit corrections
 
 Other AI is an explicit copy-and-open-manually path, with OTHER receipt shorthand and generic installation guidance. It never promises a native app launch. Any tempo keeps the range interactive but hides its parked thumb and softens the track in both Chromium and Firefox; the selected Any key and heading identify the bypass. Compact recording summaries use SKIP ROUGH: ON. +ART’s helper says Playlist cover. The existing red-dot +ART and TRY HARD selection treatment is explicitly approved and remains unchanged.
-## Vertical listening-preference lever
-
-The recording control now has one physical-looking lever, ON above and OFF below. Up means skip rough recordings; down means allow them. The active label uses petrol with mustard lettering, matching selected AI/music keys. A restrained collar, shaft and tip supply hardware depth using local CSS. The whole label remains tappable; the native checkbox, saved preference, keyboard focus and prompt behavior are unchanged. Reduced motion moves the lever instantly; forced colors restores the native checkbox. Keep the PWA’s collapsed Listening preferences placement and the Lab’s Preferences placement.

@@ -1,0 +1,14 @@
+{
+  "source": "cd5497c767bd29d67e97ea8b2e583908ef57bea9",
+  "viewport": {
+    "width": 390,
+    "height": 620
+  },
+  "fps": 10,
+  "scenes": [
+    "setup",
+    "inspiration",
+    "submit"
+  ],
+  "fixture": "Deterministic native bridge; fictional inspiration entered from empty state. Entry dialog is explicitly labelled recreation matching SharedInspiration.java; remaining app UI is real. No messages sent; external Gemini UI not recorded."
+}

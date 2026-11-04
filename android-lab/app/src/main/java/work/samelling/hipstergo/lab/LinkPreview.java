@@ -1,0 +1,98 @@
+package work.samelling.hipstergo.lab;
+import java.net.*;
+import java.io.*;
+import java.util.*;
+import java.util.regex.*;
+/** Bounded public HTTPS metadata only. Never executes pages or fetches media. */
+final class LinkPreview {
+ static final class Result { final String url,title,description;Result(String u,String t,String d){url=u;title=t;description=d;} }
+ static String firstUrl(String text){
+  Matcher m=Pattern.compile("https://[^\\s<>\"']+",Pattern.CASE_INSENSITIVE).matcher(text);if(!m.find())return "";
+  String url=m.group().replaceAll("[.,;]+$","");
+  int balance=0;for(int i=0;i<url.length();i++){if(url.charAt(i)=='(')balance++;if(url.charAt(i)==')')balance--;}
+  while(url.endsWith(")")&&balance<0){url=url.substring(0,url.length()-1);balance++;}
+  return url;
+ }
+ static boolean publicAddress(InetAddress a){
+  byte[] b=a.getAddress();int first=b[0]&255,second=b.length>1?b[1]&255:0;
+  return !(a.isAnyLocalAddress()||a.isLoopbackAddress()||a.isLinkLocalAddress()||a.isSiteLocalAddress()||a.isMulticastAddress()||(b.length==4&&(first==0||first>=224||(first==100&&second>=64&&second<=127)))||(b.length==16&&(first&254)==252));
+ }
+ static URL allowedUrl(String value)throws IOException {
+  URL u=new URL(value);String host=u.getHost().toLowerCase(Locale.ROOT);
+  if(!"https".equals(u.getProtocol())||u.getUserInfo()!=null||(u.getPort()!=-1&&u.getPort()!=443)||!host.contains(".")||host.endsWith(".local")||host.endsWith(".localhost"))throw new IOException("Public HTTPS required");
+  // Literal addresses must pass the same check even if the HTTP client skips DNS.
+  if(host.matches("[0-9.]+")||host.contains(":"))for(InetAddress a:InetAddress.getAllByName(host))if(!publicAddress(a))throw new IOException("Private destination");
+  return u;
+ }
+ private static final java.util.concurrent.ThreadPoolExecutor resolver=new java.util.concurrent.ThreadPoolExecutor(0,2,30,java.util.concurrent.TimeUnit.SECONDS,new java.util.concurrent.SynchronousQueue<>(),r->{Thread t=new Thread(r,"preview-dns");t.setDaemon(true);return t;});
+ static final okhttp3.Dns PUBLIC_DNS=host->resolvePublic(host,okhttp3.Dns.SYSTEM,2000);
+ static List<InetAddress> resolvePublic(String host,okhttp3.Dns dns,long timeoutMillis)throws UnknownHostException {
+  java.util.concurrent.Future<List<InetAddress>> lookup;
+  try{lookup=resolver.submit(()->{
+   List<InetAddress> addresses=dns.lookup(host);
+   for(InetAddress a:addresses)if(!publicAddress(a))throw new UnknownHostException("Private destination");
+   return addresses;
+  });}catch(java.util.concurrent.RejectedExecutionException busy){throw new UnknownHostException("Resolver busy");}
+  try{return lookup.get(timeoutMillis,java.util.concurrent.TimeUnit.MILLISECONDS);}
+  catch(Exception failure){lookup.cancel(true);if(failure instanceof InterruptedException)Thread.currentThread().interrupt();throw new UnknownHostException("Preview DNS unavailable");}
+ }
+ private static final okhttp3.OkHttpClient client=new okhttp3.OkHttpClient.Builder()
+  .dns(PUBLIC_DNS).proxy(Proxy.NO_PROXY).followRedirects(false).followSslRedirects(false)
+  .connectTimeout(3,java.util.concurrent.TimeUnit.SECONDS).readTimeout(3,java.util.concurrent.TimeUnit.SECONDS)
+  .callTimeout(12,java.util.concurrent.TimeUnit.SECONDS).build();
+ static final class Request {
+  private volatile okhttp3.Call call;private volatile boolean cancelled;
+  void cancel(){cancelled=true;okhttp3.Call active=call;if(active!=null)active.cancel();}
+  void attach(okhttp3.Call next)throws IOException{call=next;if(cancelled){next.cancel();throw new IOException("Preview cancelled");}}
+ }
+ static Result fetch(String value)throws IOException{return fetch(value,new Request());}
+ static Result fetch(String value,Request request)throws IOException {
+  URL u=allowedUrl(value);long deadline=System.nanoTime()+java.util.concurrent.TimeUnit.SECONDS.toNanos(12);
+  for(int redirect=0;redirect<4;redirect++){
+   long remaining=deadline-System.nanoTime();
+   if(Thread.currentThread().isInterrupted()||remaining<=0)throw new IOException("Preview timed out");
+   u=allowedUrl(u.toString());
+   okhttp3.Call call=client.newCall(new okhttp3.Request.Builder().url(u).header("User-Agent","HipsterGOLinkPreview/1.0").header("Accept","text/html,application/xhtml+xml").build());
+   call.timeout().timeout(remaining,java.util.concurrent.TimeUnit.NANOSECONDS);request.attach(call);
+   try(okhttp3.Response response=call.execute()){
+    int code=response.code();
+    if(code>=300&&code<400){String location=response.header("Location");if(location==null)throw new IOException("No redirect target");u=allowedUrl(new URL(u,location).toString());continue;}
+    okhttp3.ResponseBody body=response.body();String type=String.valueOf(response.header("Content-Type")).toLowerCase(Locale.ROOT);
+    if(code!=200||body==null||!(type.startsWith("text/html")||type.startsWith("application/xhtml+xml")))throw new IOException("No page metadata");
+    ByteArrayOutputStream bytes=new ByteArrayOutputStream();
+    try(InputStream in=body.byteStream()){
+     byte[] buffer=new byte[4096];int n;
+     while(bytes.size()<262144&&(n=in.read(buffer,0,Math.min(buffer.length,262144-bytes.size())))!=-1){bytes.write(buffer,0,n);if(System.nanoTime()>deadline||Thread.currentThread().isInterrupted())throw new IOException("Preview timed out");}
+    }
+    String charset="UTF-8";Matcher encoding=Pattern.compile("charset=[\\\"']?([a-zA-Z0-9_-]+)").matcher(type);if(encoding.find())charset=encoding.group(1);
+    return parse(u.toString(),new String(bytes.toByteArray(),charset));
+   }
+  }
+  throw new IOException("Too many redirects");
+ }
+ static Result parse(String url,String html){
+  org.jsoup.nodes.Document document=org.jsoup.Jsoup.parse(html,url);
+  org.jsoup.nodes.Element head=document.head();String title="",description="",fallbackTitle="",fallbackDescription="";
+  for(org.jsoup.nodes.Element tag:head.select("meta")){
+   String name=tag.hasAttr("property")?tag.attr("property"):tag.attr("name"),content=tag.attr("content");
+   if("og:title".equalsIgnoreCase(name))title=content;else if("og:description".equalsIgnoreCase(name))description=content;else if("twitter:title".equalsIgnoreCase(name))fallbackTitle=content;else if("description".equalsIgnoreCase(name)||"twitter:description".equalsIgnoreCase(name))fallbackDescription=content;
+  }
+  if(title.isEmpty())title=fallbackTitle;
+  if(title.isEmpty())title=document.title();
+  return new Result(url,truncate(title,140),truncate(description.isEmpty()?fallbackDescription:description,240));
+ }
+ static String truncate(String text,int limit){
+  String value=text.replaceAll("[\\p{Cntrl}\\s]+"," ").trim();
+  return value.codePointCount(0,value.length())>limit?value.substring(0,value.offsetByCodePoints(0,limit-1))+"…":value;
+ }
+ static String clean(String text,int limit){
+  Matcher m=Pattern.compile("&(#x[0-9a-fA-F]+|#[0-9]+|amp|lt|gt|quot|apos|nbsp);").matcher(text);StringBuffer out=new StringBuffer();
+  while(m.find()){
+   String entity=m.group(1),value=m.group();
+   try{if(entity.startsWith("#")){int cp=Integer.parseInt(entity.substring(entity.startsWith("#x")?2:1),entity.startsWith("#x")?16:10);if(Character.isValidCodePoint(cp)&&!(cp>=0xD800&&cp<=0xDFFF))value=new String(Character.toChars(cp));}else value=entity.equals("amp")?"&":entity.equals("lt")?"<":entity.equals("gt")?">":entity.equals("quot")?"\"":entity.equals("apos")?"'":" ";}catch(Exception ignored){}
+   m.appendReplacement(out,Matcher.quoteReplacement(value));
+  }m.appendTail(out);String value=out.toString().replaceAll("[\\p{Cntrl}\\s]+"," ").trim();
+  return value.codePointCount(0,value.length())>limit?value.substring(0,value.offsetByCodePoints(0,limit-1))+"…":value;
+ }
+ private LinkPreview(){}
+}

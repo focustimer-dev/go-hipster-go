@@ -49,8 +49,8 @@ class RobinsonEditionTests(unittest.TestCase):
         self.assertLess(page.index('class="mood-grid"'), page.index('id="crateGeo"'))
         self.assertEqual(len(re.findall(r'<button class="mood" data-mood=', page)), 8)
         self.assertEqual(page.count('class="mood-grid"'), 1)
-        self.assertIn("engraved-six-clerks.webp", CSS.read_text())
-        self.assertIn("weird-v18.webp", CSS.read_text())
+        self.assertNotIn("engraved-six-clerks.webp", CSS.read_text())
+        self.assertNotIn("weird-v18.webp", CSS.read_text())
         self.assertNotIn("The masthead is the imprint: one bold ink plate", CSS.read_text())
 
     def test_gig_poster_builder_is_reproducible(self):

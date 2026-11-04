@@ -1,3 +1,4 @@
+
 ## Gemini Publish save-first correction — 2026-11-04
 
 - On `Publish`, prioritize the user-observed `youtube_music:save` call using the existing `create` URI, playlist title, complete description/liner notes and `PERSONAL_PLAYLIST` where supported by the active tool schema. Do this before a manual publishing explanation.

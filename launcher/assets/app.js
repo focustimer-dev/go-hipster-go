@@ -2,6 +2,7 @@
 (function(){
 "use strict";
 const doc=document,body=doc.body;
+/* PLATFORM_DECLARATIONS */
 const defaultService={chatgpt:"spotify",gemini:"youtube",claude:"apple",other:"spotify"};
 const aiNames={chatgpt:"ChatGPT",gemini:"Gemini",claude:"Claude",other:"Other AI"};
 const serviceNames={spotify:"Spotify",youtube:"YouTube Music",apple:"Apple Music"};
@@ -14,7 +15,7 @@ let printImpression=0;
 let includeCover=false;
 let goHard=false;
 let skipRough=false;
-let pwaReference=stored("ghg-pwa-reference-v1")||""; // Browser-only optional musical reference.
+let pwaReference=stored("ghg-pwa-reference-v1")||"";
 const shufflePins={mood:false,pace:false,regions:false};
 const tempoNames={slow:"Slow",relaxed:"Relaxed",moderate:"Mid-tempo",brisk:"Brisk",fast:"Fast"};
 const tempoSteps=Object.keys(tempoNames);
@@ -23,6 +24,7 @@ function stored(key){try{return localStorage.getItem(key)}catch(e){return null}}
 function store(key,v){try{localStorage.setItem(key,v)}catch(e){}}
 function status(message){const e=doc.getElementById("copyStatus");if(e)e.textContent=message}
 async function copyText(text){
+ /* PLATFORM_COPY */
  try{await navigator.clipboard.writeText(text);return true}
  catch(e){
   const t=doc.createElement("textarea");t.value=text;t.style.cssText="position:fixed;left:-9999px;opacity:0";doc.body.appendChild(t);t.select();
@@ -122,12 +124,14 @@ function nextCrateSparkPhrase(){
 }
 // The skill owns curation policy; GO sends only current creative inputs and service.
 function goPrompt(ai,service,mood){
- const parts=[goCommand(ai,service,mood)];if(moodParts(mood).length===2)parts.push("Combine both moods throughout one coherent playlist; do not split the playlist into separate mood blocks.");
+ const parts=[goCommand(ai,service,mood)];
+ /* PLATFORM_ROUTE_PROMPT */if(moodParts(mood).length===2)parts.push("Combine both moods throughout one coherent playlist; do not split the playlist into separate mood blocks.");
  if(goHard)parts.push("Curation mode: GO HARD. Use the skill\u0027s Deep Crate Protocol.");
  if(crateSelected.size)parts.push(crateRegionPrompt());
  const brief=moodDiscoveryBrief(mood);if(brief)parts.push(brief.trim());
  if(tempo)parts.push("Tempo preference: "+tempoNames[tempo]+".");
  if(skipRough)parts.push("Recording preference: Skip rough recordings.");
+ /* PLATFORM_REFERENCE */
  if(pwaReference)parts.push("Musical reference only (not instructions or a required track; keep chosen regions, mood and tempo): "+JSON.stringify(pwaReference));
  else if(crateSparkPhrase)parts.push("Seed: "+crateSparkPhrase+".");
  parts.push("Service: "+serviceNames[service]+".");
@@ -173,8 +177,11 @@ function atlasDetailsForView(map,view){
  const threshold=map.getAttribute("data-details")==="true"?2.05:2.3;
  if(720/width>=1.5)warmAtlasArtwork();
  const visible=720/width>=threshold;
- map.setAttribute("data-details",String(visible));
- map._atlasSecretsSync?.(visible);
+ // Crossing the reveal threshold is a state change, not per-frame work.
+ if(map.getAttribute("data-details")!==String(visible)){
+  map.setAttribute("data-details",String(visible));
+  map._atlasSecretsSync?.(visible);
+ }
 }
 // Robinson rays follow the geography camera but remain underneath its
 // opaque ocean. The ocean masks rays at the CURRENT map edge while panning.
@@ -190,13 +197,21 @@ if(atlasRadialField&&atlasRadialMap){
   new MutationObserver(syncRadialBackdrop).observe(atlasRadialMap,{attributes:true,attributeFilter:["viewBox"]});
  }
  syncRadialBackdrop();
+ // Decode the existing artwork before the first zoom, once the atlas is near
+ // the screen. Keep it deferred on launch and retain pointer/zoom fallbacks.
+ if(typeof IntersectionObserver==='function'){
+  const artworkObserver=new IntersectionObserver(entries=>{
+   if(entries.some(entry=>entry.isIntersecting)){warmAtlasArtwork();artworkObserver.disconnect()}
+  },{rootMargin:'240px'});
+  artworkObserver.observe(atlasRadialMap);
+ }
 }
 const atlasNames={"americas-north":"N. America","americas-south":"S. America","europe":"Europe","africa":"Africa","asia":"Asia","oceania":"Oceania","antarctica":"Antarctica"};
 let atlasFocus=null, atlasZoomFrame=0;
 let atlasUserNavigated=false, atlasTouchGesture=null, atlasSuppressTapUntil=0;
 let lastCrateStamp=null;
 const atlasStampNodes=new Map();
-let atlasNavigationFrame=0,atlasPendingView=null;
+let atlasNavigationFrame=0,atlasPendingView=null,atlasWheelTimer=0;
 const crateStorageKey="ghg-crate-map-regions-v1";
 const validCrateRegions=new Set(crateRegions.map(r=>r.id));
 function readCrateRegions(){
@@ -224,21 +239,90 @@ function crateRegionPrompt(){
  return "Regional exploration: "+all.join(", ")+".";
 }
 function atlasBoxText(a){return a.map(v=>Math.round(v*10)/10).join(" ")}
+// Composite the fixed camera during movement; release its raster hint at rest.
+const atlasCanComposite=typeof CSS!=='undefined'&&typeof CSS.supports==='function'&&CSS.supports('transform','translate(0%,0%) scale(1)')&&CSS.supports('transform-box','border-box');
+// The ocean must share the countries' clipping/paint ownership. WebView can
+// otherwise briefly drop the independent ocean path when its SVG layer settles.
+const atlasPaintMap=doc.getElementById("crateAtlasMap"),atlasPlate=atlasPaintMap?.querySelector?.('.robinson-plate-content'),atlasOcean=atlasPaintMap?.querySelector?.('.crate-map-ocean');
+if(atlasPlate&&atlasOcean&&atlasOcean.parentNode===atlasPaintMap)atlasPlate.insertBefore(atlasOcean,atlasPlate.firstChild);
+// Keep the SVG viewport fixed. Transform one internal scene continuously,
+// including at rest, rather than rescaling then replacing the outer SVG tiles.
+const atlasCameraLayers=[];let atlasCameraViewport=null;
+if(atlasCanComposite&&atlasPaintMap?.parentNode&&typeof doc.createElementNS==='function'){
+ const frame=atlasPaintMap.parentNode,viewport=doc.createElement('div'),scene=doc.createElement('div');
+ viewport.className='atlas-camera-viewport';viewport.style.cssText='position:relative;width:100%;aspect-ratio:720/372;overflow:hidden';
+ scene.className='atlas-camera-scene';scene.style.cssText='position:relative;width:100%;height:100%;transform-origin:0 0';
+ frame.insertBefore(viewport,atlasPaintMap);viewport.appendChild(scene);
+ if(atlasRadialField){scene.appendChild(atlasRadialField);atlasRadialField.style.top='0'}
+ // Give the ocean a simple paint surface below the detailed SVG. Android can
+ // drop an SVG fill while rerasterizing its clipped country group at rest.
+ // Reuse the exact Robinson outline, so rays and transparent corners survive.
+ if(atlasOcean?.getAttribute('d')){
+  const backplate=doc.createElement('div');backplate.className='atlas-ocean-backplate';
+  backplate.setAttribute('aria-hidden','true');
+  const svg=doc.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('xmlns','http://www.w3.org/2000/svg');svg.setAttribute('viewBox','0 0 720 372');
+  const shape=doc.createElementNS('http://www.w3.org/2000/svg','path');
+  shape.setAttribute('d',atlasOcean.getAttribute('d'));shape.setAttribute('fill','#103135');svg.appendChild(shape);
+  backplate.style.cssText='position:absolute;inset:0;pointer-events:none;background-size:100% 100%;background-repeat:no-repeat';
+  backplate.style.backgroundImage='url("data:image/svg+xml,'+encodeURIComponent(svg.outerHTML)+'")';
+  scene.appendChild(backplate);
+ }
+ scene.appendChild(atlasPaintMap);atlasCameraViewport=viewport;atlasCameraLayers.push(scene);
+}
+function atlasViewportRect(){return (atlasCameraViewport||doc.getElementById('crateAtlasMap')).getBoundingClientRect()}
+let atlasCommittedView=null,atlasMotionView=null,atlasMotionRect=null;
+function paintAtlasMotion(view){
+ const map=doc.getElementById("crateAtlasMap");if(!map)return;
+ if(!atlasCameraLayers.length){map.setAttribute("viewBox",atlasBoxText(view));return;}
+ if(!atlasMotionRect)atlasMotionRect=atlasViewportRect();
+ atlasMotionView=[...view];
+ const [x,y,w]=view,scale=720/w;
+ const transform=`matrix(${scale},0,0,${scale},${-x*scale*atlasMotionRect.width/720},${-y*scale*atlasMotionRect.height/372})`;
+ for(const scene of atlasCameraLayers){
+  if(scene.style.willChange!=='transform')scene.style.willChange='transform';
+  scene.style.transform=transform;
+ }
+ atlasDetailsForView(map,atlasBoxText(view));
+}
+function commitAtlasMotion(){
+ if(!atlasMotionView)return;
+ atlasCommittedView=[...atlasMotionView];
+ // Expose logical camera coordinates without changing the rendered viewport.
+ const map=doc.getElementById("crateAtlasMap");map?.setAttribute('data-camera-view',atlasBoxText(atlasCommittedView));
+ atlasMotionView=null;atlasMotionRect=null;
+ // Let Chromium rasterize SVG detail at the final scale. Keep exactly the same
+ // transform and viewport: no camera handoff or rounding jump at release.
+ for(const scene of atlasCameraLayers)scene.style.willChange='auto';
+}
+if(typeof ResizeObserver==='function'&&atlasCameraViewport){
+ let size='';
+ new ResizeObserver(entries=>{
+  const rect=entries[0].contentRect,next=rect.width+' '+rect.height;
+  if(next===size)return;size=next;
+  // A new layout changes pixel translation, not the geographic destination.
+  const moving=Boolean(atlasMotionView),view=atlasMotionView||atlasCommittedView;
+  if(!view)return;
+  atlasMotionRect=null;paintAtlasMotion(view);if(!moving)commitAtlasMotion();
+ }).observe(atlasCameraViewport);
+}
+
 function animateAtlasView(view){
- flushAtlasNavigation();
+ /* PLATFORM_ATLAS_CAMERA */
+ flushAtlasNavigation(false);
  const map=doc.getElementById("crateAtlasMap");if(!map)return;
  const views=map.classList?.contains?.("crate-robinson")?atlasRobinsonViews:atlasViews;
  const goal=atlasConstrain(Array.isArray(view)?view:(views[view||"world"]||views.world)),raw=map.getAttribute("viewBox")||"0 0 720 372";
- const from=raw.split(/\s+/).map(Number);
+ const from=atlasView();
  if(atlasZoomFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasZoomFrame);
  const reduced=typeof window!=="undefined"&&window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
- if(typeof requestAnimationFrame!=="function"||reduced||from.length!==4||from.some(n=>!Number.isFinite(n))){map.setAttribute("viewBox",atlasBoxText(goal));return;}
+ if(typeof requestAnimationFrame!=="function"||reduced||from.length!==4||from.some(n=>!Number.isFinite(n))){paintAtlasMotion(goal);commitAtlasMotion();return;}
  let started=null;
  const frame=time=>{
   if(started===null)started=time;
   const t=Math.min(1,(time-started)/300),e=1-Math.pow(1-t,3);
-  map.setAttribute("viewBox",atlasBoxText(goal.map((v,i)=>from[i]+(v-from[i])*e)));
-  if(t<1)atlasZoomFrame=requestAnimationFrame(frame);else atlasZoomFrame=0;
+  paintAtlasMotion(goal.map((v,i)=>from[i]+(v-from[i])*e));
+  if(t<1)atlasZoomFrame=requestAnimationFrame(frame);else{atlasZoomFrame=0;commitAtlasMotion();}
  };
  atlasZoomFrame=requestAnimationFrame(frame);
 }
@@ -285,23 +369,40 @@ function toggleCrateRegion(id){
  const added=!crateSelected.has(id);
  if(added)crateSelected.add(id);else crateSelected.delete(id);
  lastCrateStamp=added?id:null;
- updateCrateMap();
+ updateCrateMap(added);
 }
 const crateStampNames={"us-west":"US W","us-east":"US E","canada-west":"CAN W","canada-east":"CAN E","mexico":"MEX","central-america":"CENT AM","caribbean":"CARIB","northern-south-america":"N S AM","southern-south-america":"S S AM","atlantic-europe":"W EUR","mediterranean-europe":"MED / BALK","northern-europe":"N EUR","eastern-europe":"E EUR","north-africa":"N AFR","west-africa":"W AFR","east-africa":"E AFR","central-southern-africa":"C / S AFR","middle-east":"MID EAST","central-asia":"C ASIA","south-asia":"S ASIA","east-asia":"E ASIA","southeast-asia":"SE ASIA","northern-asia":"N ASIA","oceania":"OCEANIA","antarctica":"ANTARCTICA"};
+function setAtlasAttribute(node,name,value){
+ const text=String(value);if(node.getAttribute(name)!==text)node.setAttribute(name,text);
+}
+let atlasSelectionStamp="",atlasPaintedSelection=null;
+// Country geometry is static. Index once, then touch only regions whose ink changed.
+const atlasCountriesByRegion=new Map();
+doc.querySelectorAll("[data-atlas-country]").forEach(path=>{
+ const id=path.dataset.atlasRegion;if(!atlasCountriesByRegion.has(id))atlasCountriesByRegion.set(id,[]);
+ atlasCountriesByRegion.get(id).push(path);
+});
 function renderCrateMap(){
+ /* PLATFORM_ATLAS_SELECTION */
+ const stamp=JSON.stringify([atlasFocus,atlasUserNavigated,[...crateSelected].sort(),lastCrateStamp]);
+ if(stamp===atlasSelectionStamp)return;
+ atlasSelectionStamp=stamp;
  const focused=Boolean(atlasFocus);
  doc.querySelectorAll("[data-crate-region]").forEach(b=>{
   b.hidden=!focused||b.dataset.continent!==atlasFocus;
-  b.setAttribute("aria-pressed",String(crateSelected.has(b.dataset.crateRegion)));
+  setAtlasAttribute(b,"aria-pressed",String(crateSelected.has(b.dataset.crateRegion)));
  });
- doc.querySelectorAll("[data-crate-continent]").forEach(b=>b.setAttribute("aria-pressed",String(atlasFocus===b.dataset.crateContinent)));
+ doc.querySelectorAll("[data-crate-continent]").forEach(b=>setAtlasAttribute(b,"aria-pressed",String(atlasFocus===b.dataset.crateContinent)));
  doc.querySelectorAll("[data-atlas-zone]").forEach(z=>{
-  z.setAttribute("data-selected",String(crateSelected.has(z.dataset.atlasZone)));
-  z.setAttribute("data-press",String(z.dataset.atlasZone===lastCrateStamp));
+  setAtlasAttribute(z,"data-selected",String(crateSelected.has(z.dataset.atlasZone)));
+  setAtlasAttribute(z,"data-press",String(z.dataset.atlasZone===lastCrateStamp));
  });
- doc.querySelectorAll("[data-atlas-country]").forEach(path=>{
-  path.setAttribute("data-inked",String(crateSelected.has(path.dataset.atlasRegion)));
- });
+ for(const [id,paths] of atlasCountriesByRegion){
+  const inked=crateSelected.has(id);
+  if(atlasPaintedSelection&&atlasPaintedSelection.has(id)===inked)continue;
+  for(const path of paths)setAtlasAttribute(path,"data-inked",String(inked));
+ }
+ atlasPaintedSelection=new Set(crateSelected);
  const st=doc.getElementById("crateGeoStatus");
  const selectionStatus=crateSelected.size?crateSelected.size+" region"+(crateSelected.size===1?"":"s")+" selected. Tap a stamp to remove a region.":"No regions selected. All areas are available.";
  if(st&&st.textContent!==selectionStatus)st.textContent=selectionStatus;
@@ -313,7 +414,7 @@ function renderAtlasNavigation(){
  if(panel)panel.setAttribute("data-focus",String(focused||atlasUserNavigated));
  const loc=doc.getElementById("atlasLocator");
  if(loc){
-  const place=focused?atlasNames[atlasFocus]:"WHOLE WORLD";
+  const place=atlasUserNavigated?(crateSelected.size?"SELECTED REGIONS":"EXPLORING"):focused?atlasNames[atlasFocus]:"WHOLE WORLD";
   loc.textContent=place+" / "+(crateSelected.size?crateSelected.size+" STAMP"+(crateSelected.size===1?"":"S"):"OPEN CRATE");
  }
  const home=doc.getElementById("atlasHome");if(home)home.hidden=!(focused||atlasUserNavigated);
@@ -322,6 +423,7 @@ function renderAtlasNavigation(){
   const desktop=typeof window!=="undefined"&&window.matchMedia&&window.matchMedia("(pointer: fine)").matches;
   const action=focused?"TAP TO INK / UNINK":"TAP LAND TO EXPLORE";
   hint.textContent=action+(desktop?" · SHIFT + SCROLL TO PAN · PINCH TO ZOOM":" · DRAG TO PAN · TWO FINGERS TO ZOOM");
+  /* PLATFORM_ATLAS_INSTRUCTION */
  }
 }
 function renderCrateStamps(){
@@ -361,9 +463,9 @@ function renderCrateStamps(){
  }
  lastCrateStamp=null;
 }
-function updateCrateMap(){
+function updateCrateMap(reframe=true){
  store(crateStorageKey,JSON.stringify([...crateSelected]));
- copiedPrompt=null;selectionChanged();frameSelectedAtlas();
+ copiedPrompt=null;selectionChanged(false,true);if(reframe)frameSelectedAtlas();
 }
 const params=new URLSearchParams(location.search);
 includeCover=params.get("cover")==="1";
@@ -391,11 +493,12 @@ function updateHandoff(){
  if(guide)guide.hidden=!ready;
  if(heading)heading.textContent=ai==="other"?"COPIED. OPEN YOUR AI MANUALLY.":"COPIED. NOW OPEN "+aiNames[ai].toUpperCase()+".";
  if(instructions)instructions.textContent=ai==="other"?"Open your chosen AI yourself, paste the copied request and send it. This app cannot open an unspecified AI.":ai==="chatgpt"?"Paste and send. Select Go, Hipster, Go! and "+serviceNames[service]+" in your chat if needed. The playlist isn't saved yet.":ai==="gemini"?"Paste and send. Select the saved Go, Hipster, Go! skill and "+serviceNames[service]+" if needed. Check whether the playlist was created.":"Paste and send. Enable Go, Hipster, Go! and "+serviceNames[service]+" if needed. Check the playlist result in your AI.";
+ /* PLATFORM_HANDOFF_RENDER */
 }
-function selectionChanged(preserveShuffle=false){
+function selectionChanged(preserveShuffle=false,regionsOnly=false){
  if(!preserveShuffle){previousShuffle=null;const result=doc.getElementById("shuffleResult");if(result)result.textContent="";}
  moodAngle="";freshCrateLens="";crateSparkPhrase="";
- render();
+ if(regionsOnly&&body.dataset.page==="launch")renderLaunch(true);else render();
  if(body.dataset.page==="launch")status("Prompt changed. Press GO to copy the current selection.");
  else status("Selection updated. Copy the setup check above.");
  const tip=doc.getElementById("setupTipStatus");if(tip)tip.textContent="";
@@ -452,11 +555,12 @@ function renderSetup(){
  const target=doc.getElementById("openSelectedAi");if(target){target.hidden=ai==="other";target.href=destinations[ai];target.textContent=(setupReady?"NEXT: OPEN ":"OPEN ")+aiNames[ai].toUpperCase();target.setAttribute("data-copy-ready",String(setupReady))}
  const tryFirst=doc.getElementById("trySetupPrompt");if(tryFirst)tryFirst.dataset.readyPair=ai+":"+service;
 }
-function renderLaunch(){
- renderSelections();
+function renderLaunch(regionsOnly=false){
+ if(!regionsOnly)renderSelections();
  renderCrateMap();
- renderShufflePins();
  const undo=doc.getElementById("undoShuffle");if(undo)undo.hidden=!previousShuffle;
+ if(!regionsOnly){
+ renderShufflePins();
  const slider=doc.getElementById("tempoSlider"),tempoValue=doc.getElementById("tempoValue"),anyTempo=doc.getElementById("anyTempo");
  if(slider){slider.value=tempo?tempoSteps.indexOf(tempo)+1:3;slider.setAttribute("aria-valuetext",tempo?tempoNames[tempo]:"Any tempo — no pace preference")}
  const tempoControl=doc.getElementById("tempoControl");if(tempoControl)tempoControl.setAttribute("data-tempo",tempo||"any");
@@ -467,6 +571,7 @@ function renderLaunch(){
  doc.querySelectorAll("[data-mood]").forEach(b=>b.setAttribute("aria-pressed",String(moodParts(mood).includes(b.dataset.mood))));
  const clerkNotes={happy:"Optimism. An ambitious brief.",angry:"For when everyone else is obviously the problem.",sad:"Melancholy. Filed under essential listening.",weird:"The neighbors may have questions.",funky:"The pocket has diplomatic immunity."};
  const moodHelp=doc.getElementById("moodHelp");if(moodHelp)moodHelp.textContent=mood==="criminal"?"Songs about crime. Artist reputations are not evidence.":mood==="go"?"No mood? We’ll use our judgment.":moodLabel(mood)+" selected. "+(moodParts(mood).map(m=>clerkNotes[m]).filter(Boolean).join(" ")||"Pick up to two moods. Tap again to clear.");
+ }
  const e={prompt:doc.getElementById("prompt"),mood:doc.getElementById("moodName"),code:doc.getElementById("receiptCode"),open:doc.getElementById("openAi"),browser:doc.getElementById("browserAi")};
  if(!e.prompt)return;
  e.prompt.textContent=goPrompt(ai,service,mood);
@@ -482,13 +587,16 @@ function renderLaunch(){
   ticketRegionShort.textContent=shortTicketRegions()+" · ART:"+(includeCover?"ON":"OFF")+" · HARD:"+(goHard?"ON":"OFF")+(skipRough?" · SKIP ROUGH: ON":"");
   ticketRegionShort.title=crateSelected.size?crateRegions.filter(r=>crateSelected.has(r.id)).map(r=>r.label).join(", "):"Worldwide";
  }
+ if(!regionsOnly){
  const cover=doc.getElementById("includeCover");if(cover)cover.setAttribute("aria-pressed",String(includeCover));
  const hard=doc.getElementById("goHard");if(hard)hard.setAttribute("aria-pressed",String(goHard));
  const recording=doc.getElementById("skipRough");if(recording)recording.checked=skipRough;
  const hint=doc.getElementById("goHint");if(hint)hint.textContent="Copy your prompt";
  const goButton=doc.getElementById("goButton");if(goButton)goButton.setAttribute("aria-label","GO! Copy "+(mood==="go"?"surprise":moodLabel(mood))+" playlist prompt");
  const manual=doc.getElementById("manualOpenAi");if(manual){manual.href=destinations[ai];manual.textContent=ai==="other"?"I COPIED IT — SHOW NEXT STEP":"I COPIED IT MANUALLY — OPEN "+aiNames[ai].toUpperCase()}
+ }
  updateHandoff();
+ if(regionsOnly)return;
  e.browser.hidden=ai!=="gemini";e.browser.href=destinations[ai];e.browser.textContent="open "+aiNames[ai]+" in browser";
  const u=new URL(location.href);u.searchParams.set("ai",ai);u.searchParams.set("service",service);
  if(mood==="go")u.searchParams.delete("mood");else u.searchParams.set("mood",mood);
@@ -499,7 +607,7 @@ function renderLaunch(){
  u.searchParams.delete("mode");
  history.replaceState(null,"",u.pathname+u.search);
 }
-function render(){if(body.dataset.page==="launch")renderLaunch();else renderSetup();if(typeof window!=="undefined"&&typeof Event!=="undefined")window.dispatchEvent(new Event("ghg-pwa-render"))}
+function render(){/* PLATFORM_RENDER */if(body.dataset.page==="launch")renderLaunch();else renderSetup()}
 doc.querySelectorAll("[data-ai]").forEach(b=>b.addEventListener("click",()=>{
  ai=b.dataset.ai;copiedPrompt=null;copiedSetupPrompt=null;selectionChanged();
 }));
@@ -621,7 +729,7 @@ async function copyGo(){
  const button=doc.getElementById("goButton");
  if(button&&button.disabled)return;
  // Each GO explores a different lane; preview and copied request stay identical.
- moodAngle=moodParts(mood).map(m=>moodInterpretations[m]?nextDiscoveryCue(moodInterpretations[m],"ghg-mood-angles-v1-"+m):"").filter(Boolean).join(" + ");freshCrateLens="";crateSparkPhrase=nextCrateSparkPhrase();renderLaunch();
+ moodAngle=moodParts(mood).map(m=>moodInterpretations[m]?nextDiscoveryCue(moodInterpretations[m],"ghg-mood-angles-v1-"+m):"").filter(Boolean).join(" + ");freshCrateLens="";crateSparkPhrase=nextCrateSparkPhrase();/* PLATFORM_ROUTE_DRAW */renderLaunch();
  const prompt=goPrompt(ai,service,mood);
  if(button){button.disabled=true;button.setAttribute("aria-busy","true");button.setAttribute("data-copy-state","copying")}
  copiedPrompt=null;updateHandoff();
@@ -631,6 +739,7 @@ async function copyGo(){
  copiedPrompt=ok?prompt:null;updateHandoff();
  if(prompt!==goPrompt(ai,service,mood)){status("Selection changed while copying. Press GO again for the current prompt.");return}
  if(ok){store("ghg-jukebox-used-v1","yes");doc.getElementById("promptReceipt")?.setAttribute("data-impression",String(++printImpression%2));}
+ /* PLATFORM_COPIED */
  if(ok)status("Copied to clipboard. Playlist creation and saving happen in your AI, not in the Jukebox.");
  else{const details=doc.getElementById("promptDetails");if(details)details.open=true;status("Clipboard blocked. Copy the full prompt in the receipt below, then use its manual Open link.")}
 }
@@ -646,18 +755,20 @@ doc.querySelectorAll("[data-crate-region]").forEach(b=>{
 
 /* Direct manipulation: one finger or mouse drags; two fingers pinch.
    Normal desktop scrolling remains with the page unless modified. */
-function atlasView(){const map=doc.getElementById("crateAtlasMap");return (map?.getAttribute("viewBox")||"0 0 720 372").trim().split(/\s+/).map(Number)}
-function flushAtlasNavigation(){
+function atlasView(){if(atlasMotionView)return [...atlasMotionView];if(atlasCommittedView)return [...atlasCommittedView];const map=doc.getElementById("crateAtlasMap");return (map?.getAttribute("viewBox")||"0 0 720 372").trim().split(/\s+/).map(Number)}
+function flushAtlasNavigation(commit=true){
+ if(atlasWheelTimer){clearTimeout(atlasWheelTimer);atlasWheelTimer=0;}
  if(atlasNavigationFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasNavigationFrame);
  atlasNavigationFrame=0;
- if(atlasPendingView){doc.getElementById("crateAtlasMap")?.setAttribute("viewBox",atlasBoxText(atlasPendingView));atlasPendingView=null}
+ if(atlasPendingView){paintAtlasMotion(atlasPendingView);atlasPendingView=null}
+ if(commit)commitAtlasMotion();
 }
 function queueAtlasNavigation(view){
  atlasPendingView=view;
  if(typeof requestAnimationFrame!=="function"){flushAtlasNavigation();return}
  if(!atlasNavigationFrame)atlasNavigationFrame=requestAnimationFrame(()=>{
   atlasNavigationFrame=0;
-  if(atlasPendingView){doc.getElementById("crateAtlasMap")?.setAttribute("viewBox",atlasBoxText(atlasPendingView));atlasPendingView=null}
+  if(atlasPendingView){paintAtlasMotion(atlasPendingView);atlasPendingView=null}
  });
 }
 function atlasGesturePoints(touches){
@@ -708,25 +819,42 @@ function atlasCollectLand(map){
   if(paths.some(({path,box:b})=>x>=b.x&&x<=b.x+b.width&&y>=b.y&&y<=b.y+b.height&&path.isPointInFill(point)))atlasLandAnchors.push([x,y]);
  }
 }
+// A single convex navigation boundary prevents nearest-island switches during
+// a drag. It spans ocean crossings and still limits the empty map corners.
+function atlasHull(points){
+ const sorted=points.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]);
+ const cross=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]);
+ const half=items=>{const result=[];for(const p of items){while(result.length>1&&cross(result.at(-2),result.at(-1),p)<=0)result.pop();result.push(p)}return result};
+ const lower=half(sorted),upper=half(sorted.slice().reverse());lower.pop();upper.pop();return lower.concat(upper);
+}
+let atlasLandHull=null,atlasPanBoundary=null,atlasPanSize='';
 function atlasConstrain(view){
  let [x,y,w,h]=atlasNormalize(view);
  const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
  x=clamp(x,0,720-w);y=clamp(y,0,372-h);
- // Keep sampled land inside the central 70% of the viewport. The camera can
- // cross oceans, but cannot settle with its only coastline off-screen.
- if(atlasLandAnchors.length&&w<600){
-  const mx=w*.15,my=h*.15;
-  let best=null,distance=Infinity;
-  for(const [lx,ly] of atlasLandAnchors){
-   const nx=clamp(clamp(x,lx-w+mx,lx-mx),0,720-w);
-   const ny=clamp(clamp(y,ly-h+my,ly-my),0,372-h);
-   const d=(nx-x)**2+(ny-y)**2;
-   if(d<distance){best=[nx,ny];distance=d}
+ if(!atlasLandAnchors.length||w===720)return [x,y,w,h];
+ if(!atlasLandHull)atlasLandHull=atlasHull(atlasLandAnchors);
+ const size=w+' '+h;
+ if(size!==atlasPanSize){
+  atlasPanSize=size;
+  const mx=w*.15,my=h*.15,points=[];
+  for(const [lx,ly] of atlasLandHull){
+   for(const dx of [mx,w-mx])for(const dy of [my,h-my])points.push([clamp(lx-dx,0,720-w),clamp(ly-dy,0,372-h)]);
   }
-  if(best)[x,y]=best;
+  atlasPanBoundary=atlasHull(points);
  }
+ let inside=true,best=[x,y],distance=Infinity;
+ for(let i=0;i<atlasPanBoundary.length;i++){
+  const a=atlasPanBoundary[i],b=atlasPanBoundary[(i+1)%atlasPanBoundary.length],dx=b[0]-a[0],dy=b[1]-a[1];
+  if(dx*(y-a[1])-dy*(x-a[0]) < -1e-9)inside=false;
+  const t=clamp(((x-a[0])*dx+(y-a[1])*dy)/(dx*dx+dy*dy||1),0,1);
+  const nx=a[0]+dx*t,ny=a[1]+dy*t,d=(nx-x)**2+(ny-y)**2;
+  if(d<distance){best=[nx,ny];distance=d}
+ }
+ if(!inside)[x,y]=best;
  return [x,y,w,h];
 }
+
 function atlasViewForGesture(base,anchor,screen,rect,zoom){
  const ratio=Math.max(Math.max(120/base[2],(120*372/720)/base[3]),Math.min(Math.min(720/base[2],372/base[3]),zoom));
  const width=base[2]*ratio,height=base[3]*ratio;
@@ -742,9 +870,9 @@ function atlasBindGestures(){
   if(atlasZoomFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasZoomFrame);
   atlasZoomFrame=0;
  };
- // Treat one finger tap as selection, but reserve a short window for a
- // second tap before dispatching it. Otherwise a double tap first selects
- // land (and moves the map) instead of zooming at the user's finger.
+ // Land taps respond immediately. Keep a short reversible snapshot so a
+ // second nearby tap can restore the original selection before zooming.
+ // Secret cards retain deferred activation: opening one is a separate action.
  const doubleTapWindow=290,doubleTapRadius=32;
  // Near the 120-unit zoom ceiling, a double-tap gently pulls back instead
  // of silently doing nothing. Everywhere else it still zooms toward the tap.
@@ -756,7 +884,7 @@ function atlasBindGestures(){
   pendingTap=null;
  };
  const zoomAt=(view,anchor,screen,rect,scale)=>{
-  stopZoom();flushAtlasNavigation();
+  stopZoom();flushAtlasNavigation(false);
   animateAtlasView(atlasViewForGesture(view,anchor,screen,rect,scale));
   atlasUserNavigated=true;renderAtlasNavigation();
   atlasSuppressTapUntil=Date.now()+500;
@@ -770,8 +898,14 @@ function atlasBindGestures(){
   const now=Date.now(),screen={x:event.clientX,y:event.clientY};
   if(pendingTap&&now-pendingTap.time<=doubleTapWindow&&
      Math.hypot(screen.x-pendingTap.x,screen.y-pendingTap.y)<=doubleTapRadius){
-   clearPendingTap();
-   const view=atlasView(),rect=map.getBoundingClientRect();
+   const first=pendingTap;clearPendingTap();
+   if(first.snapshot){
+    const old=first.snapshot;stopZoom();crateSelected.clear();for(const id of old.selected)crateSelected.add(id);
+    atlasFocus=old.focus;atlasUserNavigated=old.navigated;lastCrateStamp=old.stamp;
+    copiedPrompt=old.copied;moodAngle=old.angle;freshCrateLens=old.lens;crateSparkPhrase=old.seed;previousShuffle=old.shuffle;
+    store(crateStorageKey,JSON.stringify([...crateSelected]));renderLaunch(true);status(old.status);
+   }
+   const view=first.snapshot?.view||atlasView(),rect=atlasMotionRect||atlasViewportRect();
    const scale=view[2]<=doubleTapTurnaroundWidth?doubleTapPullback:.5;
    zoomAt(view,atlasScreenAnchor(map,view,screen.x,screen.y,rect),screen,rect,scale);
    return;
@@ -779,18 +913,27 @@ function atlasBindGestures(){
   // A distant second tap still counts as two independent map selections.
   if(pendingTap){
    const first=pendingTap;clearPendingTap();replayingTouchClick=true;
-   try{first.target?.dispatchEvent(new MouseEvent("click",{bubbles:true,cancelable:true,clientX:first.x,clientY:first.y}))}
+   try{if(!first.snapshot)first.target?.dispatchEvent(new MouseEvent("click",{bubbles:true,cancelable:true,clientX:first.x,clientY:first.y}))}
    finally{replayingTouchClick=false}
   }
   const target=event.target;
-  pendingTap={target,x:screen.x,y:screen.y,time:now,timer:setTimeout(()=>{
+  const snapshot=target.closest?.('[data-atlas-country]')?{
+   selected:[...crateSelected],focus:atlasFocus,navigated:atlasUserNavigated,stamp:lastCrateStamp,view:atlasView(),
+   copied:copiedPrompt,angle:moodAngle,lens:freshCrateLens,seed:crateSparkPhrase,shuffle:previousShuffle,status:doc.getElementById('copyStatus')?.textContent||''
+  }:null;
+  pendingTap={target,snapshot,x:screen.x,y:screen.y,time:now,timer:setTimeout(()=>{
    if(!pendingTap||pendingTap.target!==target)return;
    clearPendingTap();
-   if(Date.now()<atlasSuppressTapUntil)return;
+   if(snapshot||Date.now()<atlasSuppressTapUntil)return;
    replayingTouchClick=true;
    try{target.dispatchEvent(new MouseEvent("click",{bubbles:true,cancelable:true,clientX:screen.x,clientY:screen.y}))}
    finally{replayingTouchClick=false}
   },doubleTapWindow)};
+  if(snapshot){
+   replayingTouchClick=true;
+   try{target.dispatchEvent(new MouseEvent("click",{bubbles:true,cancelable:true,clientX:screen.x,clientY:screen.y}))}
+   finally{replayingTouchClick=false}
+  }
  },true);
  // The browser's native double click must not also zoom the document.
  map.addEventListener("dblclick",event=>event.preventDefault());
@@ -798,8 +941,8 @@ function atlasBindGestures(){
  // between pointer-down and click while a continent zoom is still running.
  const beginTouch=(event,continuing=false)=>{
   if(event.touches.length<1||event.touches.length>2){atlasTouchGesture=null;flushAtlasNavigation();return;}
-  stopZoom();flushAtlasNavigation();
-  const view=atlasView(),screen=atlasGesturePoints(event.touches),rect=map.getBoundingClientRect();
+  stopZoom();flushAtlasNavigation(false);
+  const view=atlasView(),screen=atlasGesturePoints(event.touches),rect=atlasMotionRect||atlasViewportRect();
   atlasTouchGesture={view,anchor:atlasScreenAnchor(map,view,screen.x,screen.y,rect),distance:screen.distance,rect,count:event.touches.length,start:screen,moved:continuing,at:Date.now()};
   if(event.touches.length===2){
    clearPendingTap();twoFingerTap=null;
@@ -811,9 +954,9 @@ function atlasBindGestures(){
  // movement so an ordinary click still reaches the painted country path.
  let pointerGesture=null;
  map.addEventListener("pointerdown",(event={})=>{
-  stopZoom();flushAtlasNavigation();warmAtlasArtwork();
+  stopZoom();flushAtlasNavigation(false);warmAtlasArtwork();
   if(event.pointerType==="touch"||event.button!==0)return;
-  const view=atlasView(),rect=map.getBoundingClientRect();
+  const view=atlasView(),rect=atlasMotionRect||atlasViewportRect();
   pointerGesture={id:event.pointerId,view,rect,start:{x:event.clientX,y:event.clientY},anchor:atlasScreenAnchor(map,view,event.clientX,event.clientY,rect),moved:false};
  });
  map.addEventListener("pointermove",event=>{
@@ -823,7 +966,7 @@ function atlasBindGestures(){
   if(!s.moved)map.setPointerCapture(event.pointerId);
   s.moved=true;if(event.cancelable)event.preventDefault();
   queueAtlasNavigation(atlasViewForGesture(s.view,s.anchor,screen,s.rect,1));
-  atlasUserNavigated=true;atlasSuppressTapUntil=Date.now()+700;
+  if(!atlasUserNavigated){atlasUserNavigated=true;renderAtlasNavigation()}atlasSuppressTapUntil=Date.now()+700;
  });
  const endPointer=event=>{
   if(!pointerGesture||pointerGesture.id!==event.pointerId)return;
@@ -845,11 +988,15 @@ function atlasBindGestures(){
   if(event.cancelable)event.preventDefault();
   s.moved=true;clearPendingTap();twoFingerTap=null;
   queueAtlasNavigation(atlasViewForGesture(s.view,s.anchor,screen,s.rect,s.count===2?s.distance/screen.distance:1));
-  atlasUserNavigated=true;atlasSuppressTapUntil=Date.now()+700;
+  if(!atlasUserNavigated){atlasUserNavigated=true;renderAtlasNavigation()}atlasSuppressTapUntil=Date.now()+700;
  },{passive:false});
  const endTouch=event=>{
   const s=atlasTouchGesture;if(!s)return;
-  flushAtlasNavigation();
+  flushAtlasNavigation(s.moved||s.count===2);
+  // A tap's click may immediately retarget the paused camera. Give it that
+  // turn before committing; empty-space taps still settle without stale layers.
+  if(!s.moved&&s.count===1&&event.touches.length===0)
+   atlasWheelTimer=setTimeout(flushAtlasNavigation,120);
   if(s.count===1&&!s.moved&&event.touches.length===0)lastTouchEnd=Date.now();
   // A two-finger tap zooms out one level. Some devices release the fingers
   // separately; keep the candidate until the second finger lifts.
@@ -872,7 +1019,7 @@ function atlasBindGestures(){
   if(event.cancelable)event.preventDefault();
   if(atlasZoomFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(atlasZoomFrame);
   atlasZoomFrame=0;
-  const view=atlasPendingView||atlasView(),rect=map.getBoundingClientRect();
+  const view=atlasPendingView||atlasView(),rect=atlasMotionRect||atlasViewportRect();
   const center={x:event.clientX,y:event.clientY};
   const anchor=atlasScreenAnchor(map,view,center.x,center.y,rect);
   let result;
@@ -885,6 +1032,10 @@ function atlasBindGestures(){
    result=atlasConstrain([view[0]+event.deltaX*unit/scale,view[1]+event.deltaY*unit/scale,view[2],view[3]]);
   }
   queueAtlasNavigation(result);
+  if(atlasCanComposite&&typeof setTimeout==="function"){
+   if(atlasWheelTimer)clearTimeout(atlasWheelTimer);
+   atlasWheelTimer=setTimeout(flushAtlasNavigation,120);
+  }
   if(!atlasUserNavigated){atlasUserNavigated=true;renderAtlasNavigation()}
   atlasSuppressTapUntil=Date.now()+500;
  },{passive:false});
@@ -1122,6 +1273,7 @@ function installAtlasSecrets(){
   if(fromKeyboard)heading.focus({preventScroll:true});
   else if(firstOpen)card.setAttribute("aria-live","polite");
  }
+ map._atlasOpenSecret=id=>{const secret=secrets.find(s=>s.id===id);if(secret)openAtlasSecret(secret,hotspots.find(h=>h.dataset.secret===id))};
  close.addEventListener("click",()=>closeCard(true));
  card.addEventListener("keydown",event=>{
   if(event.key==="Escape"){event.preventDefault();closeCard(true)}
@@ -1144,7 +1296,10 @@ function installAtlasSecrets(){
  });
  // The original atlas already computes data-details as its camera zooms.
  // Keep the optional art targets out of the pointer/keyboard path until then.
+ let lastSecretsVisible=null;
  map._atlasSecretsSync=visible=>{
+  if(visible===lastSecretsVisible)return;
+  lastSecretsVisible=visible;
   layer.setAttribute("aria-hidden",String(!visible));
   for(const target of hotspots)target.setAttribute("tabindex",visible?"0":"-1");
   if(!visible&&!card.hidden)closeCard();
@@ -1171,9 +1326,9 @@ doc.querySelectorAll("[data-atlas-country]").forEach(path=>{
 });
 doc.querySelectorAll("[data-crate-continent]").forEach(b=>b.addEventListener("click",()=>focusCrateContinent(b.dataset.crateContinent)));
 const atlasHome=doc.getElementById("atlasHome");if(atlasHome)atlasHome.addEventListener("click",()=>{atlasFocus=null;atlasUserNavigated=false;renderCrateMap();animateAtlasView(null)});
-const crateClear=doc.getElementById("crateGeoClear");if(crateClear)crateClear.addEventListener("click",()=>{crateSelected.clear();lastCrateStamp=null;updateCrateMap()});
+const crateClear=doc.getElementById("crateGeoClear");if(crateClear)crateClear.addEventListener("click",()=>{crateSelected.clear();lastCrateStamp=null;updateCrateMap(false)});
 const tempoSlider=doc.getElementById("tempoSlider");
-function selectTempo(){tempo=tempoSteps[Number(tempoSlider.value)-1]||"";copiedPrompt=null;selectionChanged()}
+function selectTempo(){const next=tempoSteps[Number(tempoSlider.value)-1]||"";if(next===tempo)return;tempo=next;copiedPrompt=null;selectionChanged()}
 if(tempoSlider){
  tempoSlider.addEventListener("input",selectTempo);
  // Pointer and keyboard selection use the same six positions, including Any.
@@ -1186,7 +1341,9 @@ const go=doc.getElementById("goButton");if(go)go.addEventListener("click",copyGo
 for(const id of ["openAi","browserAi"]){const a=doc.getElementById(id);if(a)a.addEventListener("click",event=>{
  if(copiedPrompt!==goPrompt(ai,service,mood)){event.preventDefault();status("Press GO to copy the current prompt before opening your AI.")}
 })}
+/* PLATFORM_OPEN */
 const share=doc.getElementById("shareButton");if(share)share.addEventListener("click",async()=>{
+ /* PLATFORM_SHARE */
  if(!navigator.share){status("No share sheet available. Copy the prompt instead.");return}
  try{await navigator.share({text:goPrompt(ai,service,mood)})}catch(e){if(e.name!=="AbortError")status("Share failed. Copy the prompt instead.")}
 });
@@ -1195,6 +1352,7 @@ if(doc.getElementById("firstCrateSetup")){globalThis.HipsterSetup={getPair:()=>(
  ai=next.ai;service=next.service;copiedPrompt=null;copiedSetupPrompt=null;selectionChanged();
 }};
 doc.addEventListener("click",event=>{if(ai!=="other")return;const link=event.target.closest("#openAi,#browserAi,#manualOpenAi,#openSelectedAi");if(link){event.preventDefault();status("Open your chosen AI yourself, paste the request and send it.");const guide=doc.getElementById("handoffGuidance");if(guide)guide.hidden=false;const heading=doc.getElementById("handoffTitle");if(heading)heading.textContent="OPEN YOUR AI MANUALLY.";const instructions=doc.getElementById("handoffInstruction");if(instructions)instructions.textContent="Paste the request you copied, then send it. This app cannot open an unspecified AI.";}},true);}
+/* PLATFORM_BOOT */
 if(typeof window!=="undefined")window.HipsterPWABridge={
  getSnapshot:()=>({ai,service,mood,tempo,reference:pwaReference,copied:copiedPrompt===goPrompt(ai,service,mood)}),
  getPrompt:()=>goPrompt(ai,service,mood),
@@ -1208,7 +1366,7 @@ if(crateSelected.size)frameSelectedAtlas();
 // No mirrored summary is painted over the paper feed or clipboard ink.
 const ticket=doc.getElementById("selectionTicket");
 if(ticket){
- const firstAiChoice=doc.querySelector(".service-counter .panel");
+ const firstAiChoice=doc.querySelector(body.classList.contains("lab-workspace")?".poster-go-trail":".service-counter .panel");
  const dock=doc.getElementById("receiptTicketDock");
  const receipt=doc.getElementById("promptReceipt");
  const details=ticket.querySelector("details");
@@ -1216,11 +1374,16 @@ if(ticket){
  function updateSelectionTicketVisibility(){
   if(!firstAiChoice||!dock||!receipt||!site)return;
   // Stable threshold: moving the ticket must not move the trigger itself.
+  // Read all geometry before moving or resizing the ticket.
+  const lab=body.classList.contains('lab-workspace');
   const receiptReached=receipt.getBoundingClientRect().top<=window.innerHeight-88;
+  const choiceBottom=firstAiChoice.getBoundingClientRect().bottom;
+  const moodBounds=doc.querySelector('.mood-grid')?.getBoundingClientRect();
+  const choosingMoods=Boolean(lab&&moodBounds&&moodBounds.bottom>64&&moodBounds.top<window.innerHeight);
   if(receiptReached){
    if(ticket.parentElement!==dock){
     dock.appendChild(ticket);
-    ticket.classList.add("is-docked");
+    ticket.classList.add("is-docked");ticket.classList.remove('is-compact');
     // File the summary closed by default; let the visitor expand it deliberately.
     // The compact receipt must not crowd the post-GO handoff below.
     details.open=false;
@@ -1232,7 +1395,9 @@ if(ticket){
     ticket.classList.remove("is-docked");
     details.open=false;
    }
-   ticket.hidden=firstAiChoice.getBoundingClientRect().bottom>0;
+   const hidden=choiceBottom>(lab?56:0);
+   if(ticket.hidden!==hidden)ticket.hidden=hidden;
+   ticket.classList.toggle('is-compact',choosingMoods);
    if(ticket.hidden)details.open=false;
   }
  }
@@ -1243,6 +1408,11 @@ if(ticket){
  }
  window.addEventListener("scroll",queueSelectionTicketVisibility,{passive:true});
  window.addEventListener("resize",queueSelectionTicketVisibility,{passive:true});
+ doc.addEventListener('focusin',event=>{
+  if(!body.classList.contains('lab-workspace')||ticket.hidden||ticket.classList.contains('is-docked')||!event.target.closest?.('.mood-grid'))return;
+  const bounds=event.target.getBoundingClientRect(),bottom=ticket.getBoundingClientRect().bottom;
+  if(bounds.top<bottom+12)window.scrollBy({top:bounds.top-bottom-12,behavior:'instant'});
+ });
  // The receipt sheet moves during the printer animation. Recheck its dock.
  doc.getElementById("promptReceipt")?.addEventListener("animationend",queueSelectionTicketVisibility);
  const edit=doc.getElementById("selectionTicketEdit");

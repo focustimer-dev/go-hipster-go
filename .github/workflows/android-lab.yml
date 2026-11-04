@@ -1,0 +1,78 @@
+name: Android Lab (no deployment)
+on:
+  workflow_dispatch:
+  push:
+    branches: [release/lab-0-9-8, release/lab-0-9-7, release/lab-0-9-6, fix/lab-handoff-consistency]
+  pull_request:
+    paths:
+      - 'android-lab/**'
+      - 'scripts/bundle_android_lab.py'
+      - 'scripts/test_android_lab.cjs'
+      - 'scripts/test_android_lab_dom.cjs'
+      - 'scripts/test_lab_discovery_routes.cjs'
+      - 'scripts/test_mood_ink.cjs'
+      - 'launcher/**'
+      - 'scripts/atlas_navigation.py'
+      - 'scripts/robinson_atlas.py'
+      - 'scripts/build_gig_poster.py'
+      - 'scripts/test_render_efficiency.cjs'
+      - '.github/workflows/android-lab.yml'
+permissions:
+  contents: read
+concurrency:
+  group: android-lab-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+jobs:
+  lab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools'
+          log-accepted-android-sdk-licenses: false
+      - run: sdkmanager 'platforms;android-36' 'build-tools;35.0.0'
+      - run: python -m pip install Pillow==12.0.0
+      - run: python -m unittest discover -s android-lab/tests -v
+      - run: bash android/gradlew -p android-lab testReleaseUnitTest assembleRelease lintVitalRelease --no-daemon
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save --package-lock=false playwright@1.64.1 jsdom@26.1.0
+      - run: node scripts/test_lab_discovery_routes.cjs
+      - run: node scripts/test_android_lab_dom.cjs
+      - run: node scripts/test_render_efficiency.cjs
+      - run: node scripts/test_atlas_boundary.cjs
+      - run: npx playwright install --with-deps chromium
+      - run: node scripts/test_android_lab.cjs
+      - run: node scripts/test_lab_tutorial.cjs
+      - run: node scripts/test_mood_ink.cjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hipster-go-lab-unsigned-apk
+          path: |
+            android-lab/app/build/outputs/apk/release/app-release-unsigned.apk
+            android-lab/build/switch-review/*.png
+          if-no-files-found: error
+
+      - name: Prepare official Android signing tools for local release verification
+        run: |
+          mkdir -p android-lab/build/signing-tools
+          cp "$ANDROID_HOME/build-tools/35.0.0/lib/apksigner.jar" android-lab/build/signing-tools/
+          cp "$ANDROID_HOME/build-tools/35.0.0/zipalign" android-lab/build/signing-tools/
+          cp "$ANDROID_HOME/build-tools/35.0.0/aapt" android-lab/build/signing-tools/
+          if [ -d "$ANDROID_HOME/build-tools/35.0.0/lib64" ]; then cp -R "$ANDROID_HOME/build-tools/35.0.0/lib64" android-lab/build/signing-tools/; fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-release-verification-tools
+          path: android-lab/build/signing-tools/
+          retention-days: 1
+          if-no-files-found: error

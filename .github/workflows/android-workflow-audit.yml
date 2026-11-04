@@ -1,0 +1,36 @@
+name: Android interface workflow audit
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/audit_android_lab.cjs'
+      - 'scripts/bundle_android_lab.py'
+      - 'android-lab/web/**'
+      - 'android-lab/app/build.gradle'
+      - 'launcher/**'
+      - '.github/workflows/android-workflow-audit.yml'
+permissions:
+  contents: read
+concurrency:
+  group: android-interface-audit-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: python3 scripts/bundle_android_lab.py
+      - run: npm install --no-save --package-lock=false playwright@1.64.1
+      - run: npx playwright install --with-deps chromium
+      - run: node scripts/audit_android_lab.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: android-workflow-audit
+          path: android-lab/build/workflow-audit/
+          retention-days: 7
+          if-no-files-found: warn

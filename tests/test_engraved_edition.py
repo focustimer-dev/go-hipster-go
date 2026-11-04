@@ -168,8 +168,8 @@ class EngravedEditionChecks(unittest.TestCase):
             self.assertIn('class="ticket-brief"',page)
             self.assertIn('id="receiptCopy" hidden',page)
             self.assertNotIn("REQUEST DRAFT",page)
-        self.assertIn('firstAiChoice=doc.querySelector(".service-counter .panel")',script)
-        self.assertIn('firstAiChoice.getBoundingClientRect().bottom>0',script)
+        self.assertIn('body.classList.contains("lab-workspace")?".poster-go-trail":".service-counter .panel"',script)
+        self.assertIn('const hidden=choiceBottom>(lab?56:0)',script)
         self.assertNotIn('moodChoices.getBoundingClientRect().bottom<=0',script)
         self.assertIn('receiptTicketDock',script)
         self.assertIn('receipt.getBoundingClientRect().top<=window.innerHeight-88',script)
@@ -326,8 +326,8 @@ class EngravedEditionChecks(unittest.TestCase):
     def test_artwork_and_controls_remain_separate(self):
         css=(BASE/"edition.css").read_text()
         index=(BASE/"index.html").read_text()
-        self.assertIn("assets/weird-v18.webp",css)
-        self.assertIn("assets/engraved-six-clerks.webp",css)
+        self.assertNotIn("assets/weird-v18.webp",css)
+        self.assertNotIn("assets/engraved-six-clerks.webp",css)
         self.assertNotIn("data:image/webp;base64",css)
         for token in ('id="includeCover"','id="goHard"','id="goButton"'):
             self.assertIn(token,index)

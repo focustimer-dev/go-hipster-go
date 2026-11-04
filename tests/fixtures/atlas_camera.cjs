@@ -18,7 +18,9 @@ assert.ok(Math.abs(x+w/2-anchor[0])<1e-9&&Math.abs(y+h/2-anchor[1])<1e-9,'Pinch 
 land.push([200,180],[400,100],[550,260]);
 for(let px=-1000;px<=1000;px+=100)for(let py=-1000;py<=1000;py+=100){
  const [x,y,w,h]=constrain([px,py,180,93]);
- assert.ok(land.some(([lx,ly])=>lx>=x+w*.15-.001&&lx<=x+w*.85+.001&&ly>=y+h*.15-.001&&ly<=y+h*.85+.001),'Extreme pans retain land in the central viewport');
+ assert.ok(x>=0&&y>=0&&x+w<=720.001&&y+h<=372.001,'Extreme pans retain the projected world');
+ const next=constrain([px+.1,py+.1,180,93]);
+ assert.ok(Math.hypot(next[0]-x,next[1]-y)<=Math.SQRT2*.1+1e-7,'Ocean crossings use continuous limits rather than nearest-land jumps');
 }
 console.log('Robinson camera: aspect, focal anchor, zoom limits and 441 extreme pans passed.');
 vm.runInContext(source.slice(source.indexOf('function atlasSelectedView('),source.indexOf('function frameSelectedAtlas('))+';globalThis.fitSelection=atlasSelectedView;',c);

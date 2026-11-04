@@ -31,7 +31,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  const groups={'[data-ai]':ais,'[data-service]':services,'[data-mood]':moods,'[data-crate-region]':crateRegions,'[data-crate-continent]':crateContinents,'[data-atlas-country]':atlasCountries,'[data-atlas-zone]':atlasZones,'[data-setup]':[]};
  const doc={activeElement:null,body:{dataset:{page},appendChild(){}},getElementById:id=>elements[id]||null,querySelectorAll:q=>groups[q]||[],createElement:()=>Object.assign(new Element(),{ownerDocument:doc,style:{},select(){}}),execCommand:()=>false};
  for(const node of [...Object.values(elements),...Object.values(groups).flat()])node.ownerDocument=doc;
- vm.runInNewContext(fs.readFileSync('launcher/assets/app.js','utf8'),{document:doc,navigator:{clipboard:{writeText:write}},localStorage:{getItem(key){return storage.get(key)||null},setItem(key,value){storage.set(key,value)}},URL,URLSearchParams,location:{search,pathname:'/',href:'https://example.test/'},history:{replaceState(){}},...runtime});
+ vm.runInNewContext(fs.readFileSync('launcher/assets/app.js','utf8'),{document:doc,navigator:{clipboard:{writeText:write}},localStorage:{getItem(key){return storage.get(key)||null},setItem(key,value){storage.set(key,value)}},setTimeout,clearTimeout,URL,URLSearchParams,location:{search,pathname:'/',href:'https://example.test/'},history:{replaceState(){}},...runtime});
  return {elements,ais,services,moods,crateRegions,crateContinents,atlasCountries,atlasZones,doc};
 }
 (async()=>{
@@ -162,6 +162,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  svg.events.touchmove({touches:[{clientX:120,clientY:160}],cancelable:true,preventDefault(){consumed=true}});
  assert.equal(consumed,true,'One finger drags the map');
  assert.notEqual(svg.getAttribute('viewBox'),'177.9 83 474.2 245','One-finger dragging changes camera position');
+ assert.match(atlas.elements.atlasLocator.textContent,/^EXPLORING \/ /,'Panning no longer claims the focused continent');
  svg.events.touchend({touches:[]});
  await atlas.atlasCountries.find(b=>b.dataset.atlasRegion==='east-africa').click();
  assert.equal(atlas.elements.atlasPassport.hidden,true,'Dragging cannot accidentally stamp a territory');
