@@ -72,6 +72,7 @@ site.id='pwaJukebox';
 doc.body.insertBefore(shell,site);
 doc.body.classList.add('pwa-workspace');
 doc.body.dataset.pwaScreen='jukebox';
+const pwaNotice=node('p','pwa-notice');pwaNotice.id='pwaNotice';pwaNotice.setAttribute('role','status');pwaNotice.setAttribute('aria-live','polite');shell.append(pwaNotice);
 doc.querySelectorAll('.topnav').forEach(el=>el.hidden=true);
 const heading=doc.querySelector('.receipt-heading');
 if(heading){
