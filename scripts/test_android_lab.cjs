@@ -38,7 +38,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   // Verify the native switch's state, selection colors and narrow-phone layout.
   const rough=page.locator('#skipRough');
   await rough.check();
-  await page.waitForTimeout(220);
+  await page.waitForFunction(()=>document.querySelector('#skipRough').checked&&getComputedStyle(document.querySelector('.recording-metal-lever')).transform==='matrix(1, 0, 0, 1, 0, 0)');
   assert.equal(await page.locator('.recording-on').evaluate(e=>getComputedStyle(e).backgroundColor),'rgb(16, 49, 53)');
   assert.equal(await page.locator('.recording-metal-lever').evaluate(e=>getComputedStyle(e).transform),'matrix(1, 0, 0, 1, 0, 0)');
   fs.mkdirSync('android-lab/build/switch-review',{recursive:true});
