@@ -111,8 +111,8 @@ function labSetAtlasMode(mode){
  labGlobe.setLayoutProperty('robinson-ocean','visibility',mode==='robinson'?'visible':'none');
  for(const b of doc.querySelectorAll('[data-atlas-view]')){const active=b.dataset.atlasView===mode;b.setAttribute('aria-pressed',String(active));b.style.background=active?'#103135':'transparent';b.style.color=active?'#dfb045':'#103135'}
  labGlobe.touchZoomRotate[mode==='robinson'?'disableRotation':'enableRotation']();
- labGlobe.touchPitch.disable();
- labGlobe.keyboard.disable();
+ labGlobe.touchPitch[mode==='robinson'?'disable':'enable']();
+ labGlobe.keyboard[mode==='robinson'?'disableRotation':'enableRotation']();
  labGlobe.jumpTo({center:labAtlasHome(),zoom:labGlobeHomeZoom(),bearing:0,pitch:0});
  labAtlasGestures();
  labGlobe.once('idle',labGlobeSync);labGlobeSync();
