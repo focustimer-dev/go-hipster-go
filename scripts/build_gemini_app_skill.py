@@ -56,6 +56,7 @@ REFERENCES = (
     "references/sonic-taxonomy.md",
     "references/curation-examples.md",
     "references/verification.md",
+    "references/gemini-publish.md",
 )
 
 
@@ -151,6 +152,8 @@ Instruction-only; no code execution. Curate without running scripts.
 **Audit first:** `go de-cheese`: read [audit](references/de-cheese.md). Read-only; no new GO or writes.
 
 For `Discovery route: v1/Rxx`, read [routes](references/discovery-routes.md) before discovery; preserve the brief. Unknown routes: disclose and skip.
+
+**Publish follow-up:** After a completed GO in this Gemini conversation, standalone `Publish` or `publish it` finalizes the existing playlist, not another GO. Read [Gemini Publish](references/gemini-publish.md) before saving, editing metadata or giving cover-art steps. Preserve the crate and distinguish confirmed writes from manual steps.
 
 ## Gemini-native playlist creation
 

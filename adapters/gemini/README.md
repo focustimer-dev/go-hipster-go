@@ -22,6 +22,12 @@ The curator's intended 12 artist/title/version recordings are selected first, th
 
 **Installing or refreshing the Skill:** save the small entry with the PWA prompt and confirm it persists in a new chat. If it only reads the repository, upload the [complete Gemini Skill ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip) from Gemini desktop/mobile web, not the native app.
 
+## `Publish` — finish a Gemini playlist without another GO
+
+After the clerk finishes a crate, say **`Publish`** or **`publish it`** in that same Gemini conversation. This is a follow-up to the most recent completed playlist, not a new mix. It should preserve the song order, save the existing YouTube Music result to your library if the connected app exposes the action, and add the title, short description, ordered set list and track-specific liner notes where the provider exposes metadata editing. Where those edits are unavailable, it gives one copy-ready metadata block rather than pretending they were saved. Repeating `Publish` must not create a second playlist.
+
+**Cover art:** It cannot claim an automatic upload without an actual image-upload action. Save the generated image and edit the playlist art on **music.youtube.com** in a browser (desktop site if necessary): choose the artwork pencil, select the image, crop and save. The native Android app may not expose custom image upload. Use the real `Save to library` action on the Gemini playlist card if it has not yet been saved. See the [manual publish acceptance cases](MOBILE_SMOKE_TEST.md).
+
 ## Historical two-stage experiment (v3.5.5, superseded)
 
 The previous two-stage flow was an experiment following observed mismatches between curated crates and provider-generated YouTube Music mixes. Current GO attempts one authorized playlist by default, while retaining the original curated list and clearly labeling provider mixes APPROXIMATE.
