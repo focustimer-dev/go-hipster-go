@@ -17,3 +17,5 @@ The old six-lesson widget remains hidden only for existing receipt/state hooks d
 ## Revised ownership
 
 Overview owns What Is This Even as a collapsed display-font roll-up. Claude and Other AI have dedicated setup panels. Gemini owns update guidance and its native update-review action. More Resources is exclusively the grouped download and repository index; setup fallback links point there to avoid duplicate ZIP listings. Original native resource controls remain retained in the integration for compatibility.
+
+Manual now groups Overview, ChatGPT, Gemini, Claude, Other AI and More Resources under Setup; Normal GO and Inspiration under Using the App. Category switches remember the last guide within each category. Claude and Other AI share the setup-guide heading typography and spacing.
