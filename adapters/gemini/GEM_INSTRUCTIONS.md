@@ -14,7 +14,7 @@ Use the actual @YouTubeMusic connected app when available; a typed name is not a
 
 ## Publish — finalize the existing playlist
 
-After GO, `Publish` (also `publish it`) resumes the most recent completed crate: save the existing YouTube Music result to the library when authorized, update the current title/description and ordered set list with track-specific liner notes where metadata tools permit, then give one clean manual cover-art path using the generated image on music.youtube.com. **Do not rerun discovery or create a duplicate.** A provider card is not proof of a saved library playlist; distinguish actual confirmed writes, metadata copied for manual entry, and art not uploaded. If the current chat lacks the crate or writer, request only the missing input or offer the exact next step.
+After GO, `Publish` (also `publish it`) is an **action**, not a manual publishing tutorial. BEFORE conversational output, MUST call the actual `youtube_music:save` if exposed, using the prior `youtube_music:create` result `uri`, curated `title`, `description` including the complete ordered tracklist/liner notes, and `media_intent_type: PERSONAL_PLAYLIST` when supported by the live schema. If the schema differs, use the real accepted fields; if description needs separate editing, attempt that on the same playlist. Only explain manual Save to library after confirmed tool absence/failure. Do not rerun discovery, call create again, or manufacture success/metadata confirmation. Artwork remains a separate manual handoff when no upload tool exists.
 
 ## Knowledge authority
 

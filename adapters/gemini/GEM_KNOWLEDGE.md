@@ -22,7 +22,7 @@ Instruction-only; no code execution. Curate without running scripts.
 
 For `Discovery route: v1/Rxx`, read [routes](references/discovery-routes.md) before discovery; preserve the brief. Unknown routes: disclose and skip.
 
-**Publish follow-up:** After a completed GO in this Gemini conversation, standalone `Publish` or `publish it` finalizes the existing playlist, not another GO. Read [Gemini Publish](references/gemini-publish.md) before saving, editing metadata or giving cover-art steps. Preserve the crate and distinguish confirmed writes from manual steps.
+**Publish follow-up — EXECUTE BEFORE EXPLAINING:** After GO, `Publish`, `publish it` or `publish this playlist` finalizes the current playlist. Read [Gemini Publish](references/gemini-publish.md). If exposed, **MUST invoke `youtube_music:save` before conversational text**, using the preceding create-result `uri`, curated `title`, full `description` with liner notes, and `media_intent_type: PERSONAL_PLAYLIST` where the live schema accepts it. Manual steps only after real failure/unavailability. Never reroll, create duplicates, or invent save success.
 
 ## Gemini-native playlist creation
 
@@ -2971,11 +2971,26 @@ Treat standalone `Publish`, `publish it`, or `publish this playlist` (case-insen
 
 ## Save first; never duplicate
 
-Inspect the actual available connected YouTube Music capabilities and the existing provider result. If a playlist already exists and is saved, work on that **same** playlist; never create a duplicate just to update its metadata. If Gemini produced a playlist card that is not yet in the library, use an exposed, authorized **Save to library** action when available; otherwise direct the listener to the card's Save to library control. If no playlist exists, attempt at most one authorized playlist creation using the exact ordered tracks only when the writer supports them. Do not feed the crate into a theme generator and silently replace the selections. Follow any explicitly selected non-YouTube destination; do not change services without approval.
+**Execution gate — tools before talk.** A standalone `Publish` after a completed GO authorizes saving that existing YouTube Music playlist, including its metadata. Inspect the real `youtube_music:create` result and music actions available **in this Gemini session**. If `youtube_music:save` is exposed, **MUST execute that tool before outputting conversational text**, rather than defaulting to an explanation or manual app instructions.
+
+**Preferred call: `youtube_music:save`.** Gemini's reported interface accepts these arguments. Supply all four **if supported by the currently exposed schema**:
+
+- `uri`: the unmodified URI/URL from the previous `youtube_music:create` result, **never** a guessed link or fabricated `PL...` ID.
+- `title`: the existing curated playlist title.
+- `description`: the concise description **plus the full ordered tracklist and liner notes** prepared below.
+- `media_intent_type`: `PERSONAL_PLAYLIST`.
+
+The field names come from a user-tested Gemini interaction, **not** a public API contract. If the live action has a different schema, adapt only to its actually accepted fields rather than inventing parameters. Use another real authorized save action if Gemini exposes it under a different name. If the save tool lacks `description`, save the playlist first with its supported arguments, then attempt an exposed metadata-edit action on the **same** playlist. If there is an actual argument error, make a schema-correct attempt; do not repeatedly submit guesses. Do not claim `youtube_music:save` was invoked if Gemini did not actually run it.
+
+**No duplicates.** If the current playlist has already been confirmed saved, reconcile or edit that existing item; do not create or save a second copy. If saved state is ambiguous, check the known URI/result before writing again. `Publish` never reruns GO, `youtube_music:create`, discovery, the DeBarge draw or a new themed playlist. Do not change public/unlisted/private visibility unless the user requests it.
+
+**Manual saving is a failure path, not the default.** Only ask the listener to tap **Save to library** after the actual save action is unavailable, permission-denied or has returned an error. Say which blocker occurred. Do not claim streaming providers are categorically unable to write descriptions; a missing description on `create` does not prove `save` lacks one.
 
 ## Description and full liner notes
 
-In the same pass, preserve the curated title and assemble ready-to-use playlist metadata: a concise one-to-two-sentence sonic description followed, **when supported**, by **TRACKLIST / LINER NOTES** with the full ordered `1. Artist — Track — specific, defensible note` set list. Keep musical observations grounded in credible evidence, preserve the clerk's voice, and never invent timestamps, versions or credits. Use actual authorized playlist metadata/edit actions on the existing playlist when exposed. Respect real field limits: if the description cannot hold every note, apply the concise description if possible and give one complete formatted liner-notes block for copying. Do not claim metadata or liner notes were attached merely because they appear in chat. When the provider returned an approximate substitute, distinguish the **actual saved tracks** from the original intended crate rather than attaching false notes to substitutions.
+**Prepare metadata before the `save` call.** Compose the `description` from the original completed crate in one string: the existing concise one-to-two-sentence sonic introduction, a blank line, `TRACKLIST / LINER NOTES`, and **every** ordered `1. Artist — Title — specific, defensible note` entry through the last song. Retain the clerk's dry wit and source-supported observations; never invent production details, credits or versions.
+
+Pass this entire assembled string in `youtube_music:save.description` when the live schema supports it. Do not stop after submitting a generic two-sentence description, and do not treat missing description input on `youtube_music:create` as a blocker. If a real field limit rejects or truncates the description, save with the supported shorter metadata and separately provide the remaining liner notes as one copy-ready block. If the playlist has provider substitutions, label those as actual saved tracks rather than falsely claiming exact curation.
 
 ## Cover art — one clean manual handoff
 
@@ -2983,6 +2998,8 @@ If an authorized image-upload action is exposed and the generated art is accessi
 
 ## Honest final receipt
 
-Return the actual playlist link only if supplied by the provider. Distinguish **SAVED TO LIBRARY** (confirmed), **CREATED — SAVE TO LIBRARY REQUIRED**, and **NOT SAVED / UNVERIFIED**. Report intended versus observed track count/order and any approximation or substitutions, plus separate **description**, **liner notes**, and **cover art** statuses: applied, copy-ready, or manual. If saving or metadata editing is not supported, give the shortest next action and the complete copy-ready metadata, without another unapproved playlist attempt. A repeated `Publish` reconciles/updates the same playlist and must not publish a duplicate.
+Only report **SAVED TO LIBRARY** if `youtube_music:save` (or a real equivalent) returns confirmation or a read-back establishes that the same playlist is already saved. Only report an actual playlist link or `PL...` ID returned by the provider; never manufacture an identifier. If the write fails, say **SAVE FAILED** with the observed error; if the tool is absent say **SAVE TOOL UNAVAILABLE**; when the result cannot be confirmed say **SAVE STATUS UNVERIFIED**. **CREATED — SAVE TO LIBRARY REQUIRED** is appropriate only if the save action cannot complete and the card actually needs user intervention—not as a default after GO.
+
+Separately show **description submitted versus persisted** and **liner notes submitted versus persisted**. A save success without evidence of metadata retention is not itself proof that the exact text was written; read it back when an actual detail action permits. Report the intended versus actual track count/order only when the provider exposes that evidence. Cover art stays **manual** unless an actual upload succeeds. Offer the shortest remaining manual action, if any, after the real save attempt. Repeating `Publish` must update/reconcile the same playlist; it **must not publish a duplicate**. If full liner notes could not be applied, preserve the complete **copy-ready metadata**.
 
 # END SOURCE: references/gemini-publish.md
