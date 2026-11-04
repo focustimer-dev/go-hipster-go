@@ -18,7 +18,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
  let browser;
  try{
-  browser=await chromium.launch({headless:true,...(process.env.LAB_CHROMIUM?{executablePath:process.env.LAB_CHROMIUM}:{})});
+  browser=await chromium.launch({headless:true,args:['--use-angle=swiftshader','--enable-unsafe-swiftshader'],...(process.env.LAB_CHROMIUM?{executablePath:process.env.LAB_CHROMIUM}:{})});
   const page=await browser.newPage({viewport:{width:412,height:915},isMobile:true,hasTouch:true});
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.addInitScript(()=>{
@@ -118,6 +118,21 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   await ticket.locator('summary').click();
   assert(await ticket.locator('.ticket-region-short').isVisible(),'Expanded ticket restores region/option details');
   assert.deepEqual(errors,[]);
+  const requests=[];page.on('request',r=>requests.push(r.url()));
+  await page.goto('http://127.0.0.1:'+server.address().port+'/atlas-lab.html');
+  await page.waitForFunction(()=>window.atlasTestReady,{timeout:30000});
+  await page.waitForFunction(()=>atlasTestMap.loaded());
+  assert.equal(await page.evaluate(()=>atlasTestMap.getProjection().type),'globe');
+  await page.screenshot({path:'android-lab/build/switch-review/maplibre-globe.png'});
+  await page.locator('#map').click({position:{x:206,y:290}});
+  await page.locator('#flat').click();
+  await page.evaluate(()=>atlasTestMap.jumpTo({zoom:3,center:[10,20]}));
+  await page.waitForTimeout(300);
+  assert.equal(await page.evaluate(()=>atlasTestMap.getPaintProperty('borders','line-width')),.7,'Border thickness stays screen-relative');
+  await page.screenshot({path:'android-lab/build/switch-review/maplibre-flat.png'});
+  assert(requests.every(url=>url.startsWith('http://127.0.0.1:')||url.startsWith('blob:')||url.startsWith('data:')),'Prototype runs without remote map requests');
+  assert.deepEqual(errors,[]);
+
   console.log('PASS: mobile workspace, scroll restoration, preferences, save, exact-prompt copy, ChatGPT/Gemini GO, Open, and native Share hooks.');
  }finally{if(browser)await browser.close();server.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});

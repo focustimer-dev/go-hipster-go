@@ -37,6 +37,7 @@ def bundle(destination=None):
         if html.count(marker)!=1:
             raise ValueError('Expected one HTML platform slot: '+marker)
         html=html.replace(marker,marker+content)
+    html=html.replace('<div class="crate-map-frame"','<p><a href="/atlas-lab.html">TRY MAPLIBRE GLOBE</a></p><div class="crate-map-frame"',1)
     page.write_text(html)
     shutil.copyfile(ROOT / 'android-lab/web/workspace.css', destination / 'assets/lab-workspace.css')
     script = destination / 'assets/app.js'
@@ -75,6 +76,8 @@ def bundle(destination=None):
 ''')
     setup_script.write_text(setup_text)
     script.write_text(text)
+    import runpy
+    runpy.run_path(str(ROOT/'scripts/bundle_maplibre_lab.py'))['bundle_maplibre'](destination)
     return destination
 
 if __name__ == '__main__':

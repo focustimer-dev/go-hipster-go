@@ -23,6 +23,9 @@ class LabSnapshotTests(unittest.TestCase):
             self.assertIn('<span id="labAppVersion">'+version+'</span>',page)
             self.assertNotIn('<!--LAB_APP_VERSION-->',page)
             stripped=page.replace('<link rel="stylesheet" href="/assets/lab-workspace.css">','')
+            stripped=stripped.replace('<p><a href="/atlas-lab.html">TRY MAPLIBRE GLOBE</a></p>','')
+            self.assertTrue((dest/'assets/maplibre/maplibre-gl.js').stat().st_size>500000)
+            self.assertIn('const geography=',(dest/'atlas-lab.html').read_text())
             start=stripped.index('<nav class="lab-rail"')
             end=stripped.index('<div class="site">',start)
             stripped=stripped[:start]+stripped[end:]
