@@ -16,7 +16,10 @@
 <h1 id="labManualTitle" tabindex="-1">THE MANUAL</h1><p class="lab-intro">The machinery behind the questionable taste.</p>
 <section id="labTutorial" aria-labelledby="labTutorialTitle">
 <h2 id="labTutorialTitle" tabindex="-1">GEMINI QUICK START</h2>
-<p class="lab-help">Gemini + YouTube Music · Setup once. Dig, review, then publish.</p>
+<p class="lab-help">Make a playlist you can keep in YouTube Music. Start with a reference, or let us dig.</p>
+<div class="lab-guide-start" role="group" aria-label="Choose your starting point"><button type="button" class="lab-wide-button" data-guide-start="inspiration">USE AN INSPIRATION</button><button type="button" class="lab-wide-button" data-guide-start="submit">SURPRISE ME</button></div>
+<div class="lab-guide-shortcuts"><button type="button" class="lab-text-button" data-guide-start="setup">SET UP GEMINI</button><button type="button" class="lab-text-button" data-guide-start="review">ALREADY HAVE A PLAYLIST?</button></div>
+<details id="labGuideJump"><summary>Jump to a step</summary>
 <div class="lab-guide-tabs" role="group" aria-label="Tutorial steps">
 <button type="button" data-guide-step="setup" aria-pressed="true">Setup</button>
 <button type="button" data-guide-step="inspiration" aria-pressed="false">Inspiration</button>
@@ -25,12 +28,20 @@
 <button type="button" data-guide-step="publish" aria-pressed="false">Publish</button>
 <button type="button" data-guide-step="cover" aria-pressed="false">Cover Art</button>
 </div>
+</details>
+<p id="labGuidePhase" class="lab-help"></p>
 <div class="lab-guide-copy" aria-live="polite" aria-atomic="true"><h3 id="labGuideTitle"></h3><p id="labGuideText"></p></div>
+<p id="labGuideReady" class="lab-guide-ready"></p>
+<button type="button" id="labGuideAction" class="lab-wide-button">OPEN YOUR CRATE</button>
+<p id="labGuideStatus" class="lab-help" role="status"></p>
+<details id="labGuideWatch"><summary id="labGuideWatchLabel">Watch the app demo</summary>
 <div id="labGuideDemo" class="lab-guide-demo" role="img" aria-label=""></div>
 <div class="lab-guide-controls"><span class="lab-help">Watch, then try it. Nothing is sent.</span><button type="button" id="labGuidePlay" class="lab-text-button">PLAY DEMO</button></div>
-<p id="labGuideStatus" class="lab-help" role="status"></p>
+</details>
+<details id="labGuideHelp"><summary>More help</summary>
 <p id="labGuideNote" class="lab-help"></p>
-<button type="button" id="labGuideAction" class="lab-wide-button">COPY SETUP CHECK</button>
+</details>
+<div class="lab-guide-next"><button type="button" id="labGuideBack" class="lab-text-button">BACK</button><button type="button" id="labGuideNext" class="lab-text-button">NEXT: REVIEW</button></div>
 <details class="lab-guide-fallback"><summary>Need the manual install route?</summary><p>Open Gemini in a web browser → Customize → Skills → Create → Upload the <a href="https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip" target="_blank" rel="noopener">Gemini Skill ZIP</a>. Return to Gemini and run the setup check. For an older installation, use <button type="button" class="lab-text-button" data-lab-action="updates">SKILL UPDATES</button>.</p></details>
 </section>
 <section aria-labelledby="labConnectionsTitle"><h2 id="labConnectionsTitle">YOUR SERVICES</h2><div class="lab-record"><div class="lab-record-main"><h3 id="labServicePair"></h3><p>Choose the skill and connect your music service in your AI. Lab prepares the request.</p></div><button type="button" class="lab-text-button" data-lab-action="services">CHANGE</button></div><button type="button" class="lab-wide-button" data-lab-action="setup">COPY SETUP CHECK</button><p id="labSetupStatus" role="status" class="lab-help">Paste the check into your chosen AI to inspect its available tools.</p><details id="labSetupFallback" hidden><summary>View connection check / copy manually</summary><textarea id="labSetupText" aria-label="Connection check" readonly></textarea></details></section>

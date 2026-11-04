@@ -117,3 +117,10 @@ Setup, Inspiration and Submit use actual Playwright screenshots encoded as silen
 Inspiration is an early, separate lesson: add/share a song link, artist or idea in Your Crate, Use in Jukebox, adjust choices, then GO. The text accurately explains that active inspiration replaces the random discovery route while explicit moods, pace and regions remain in force. The capture asserts reference inclusion and route omission. Tutorial actions route to the actual Crate.
 
 Regenerate captures with scripts/capture_lab_tutorial.cjs after bundling, then bundle again to include the new media. scripts/build_lab_tutorial_preview.py embeds the current guide and all three clips for an offline review copy. No recording is loaded from a third party at runtime. Browser checks decode all three clips, verify dimensions, test stop-on-leave and all six steps at four sizes, including enlarged text.
+
+
+## Lab 0.9.32 — task-first tutorial onboarding
+
+Offer inspiration-led and random-discovery starting paths, with setup and existing-playlist shortcuts. Keep the six-topic index collapsed. Each lesson leads with its real action, a concrete user-observable readiness check, optional demo/transcript, contextual recovery help, and a named next lesson. Inspiration and Submit converge at Review, then Publish; artwork is optional. Next/Back focus and scroll the new heading into view. Save only the last lesson locally, never account readiness or completion. The UI does not claim to inspect Gemini or the streaming library.
+
+Watch is collapsed by default, pauses when closed, and retains local captures/native playback controls. Manual installation help appears only for Setup. Browser checks exercise entry paths, readiness text, Next/Back, remembered lesson, optional video playback, and four sizes including 200% text after reload. No external action is added.
