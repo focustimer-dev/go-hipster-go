@@ -32,6 +32,7 @@ const root=path.resolve(__dirname,'../android-lab/app/src/main/assets/site');
   if(profile.name==='phone'){
    await page.locator('#labGuidePlay').click();assert(await page.locator('#labGuideDemo').evaluate(e=>e.classList.contains('is-playing')));
    await page.locator('[data-lab-tab=jukebox]').click();assert.equal(await page.locator('#labGuideDemo').evaluate(e=>e.classList.contains('is-playing')),false,'Leaving Manual stops motion');
+   await page.locator('#goButton').click();await page.locator('#labGeminiGuide').click();assert.equal(await page.locator('[data-guide-step=review]').getAttribute('aria-pressed'),'true','Receipt help opens at review');
   }else assert.equal(await page.locator('#labGuidePlay').isVisible(),false,'Reduced motion keeps the static steps');
   assert.deepEqual(errors,[]);await page.close();
  }

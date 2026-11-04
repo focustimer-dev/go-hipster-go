@@ -28,7 +28,7 @@ function labOpenGuide(){
 }
 function initLabGuide(){
  const target=doc.getElementById('handoffInstruction');
- if(target){const b=doc.createElement('button');b.id='labGeminiGuide';b.type='button';b.className='lab-text-button';b.textContent='REVIEW → PUBLISH: QUICK GUIDE';b.hidden=true;b.onclick=labOpenGuide;target.after(b)}
+ if(target){const b=doc.createElement('button');b.id='labGeminiGuide';b.type='button';b.className='lab-text-button';b.textContent='REVIEW → PUBLISH: QUICK GUIDE';b.hidden=true;b.onclick=()=>{labRenderGuide('review');labOpenGuide()};target.after(b)}
  const settings=doc.createElement('button');settings.type='button';settings.className='lab-wide-button';settings.textContent='GEMINI QUICK START';settings.onclick=labOpenGuide;doc.getElementById('labSetupDetails').before(settings);
  doc.querySelectorAll('[data-guide-step]').forEach(b=>b.onclick=()=>labRenderGuide(b.dataset.guideStep));
  const demo=doc.getElementById('labGuideDemo'),play=doc.getElementById('labGuidePlay');
