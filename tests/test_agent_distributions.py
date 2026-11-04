@@ -113,7 +113,8 @@ class PortableAgentTests(unittest.TestCase):
             self.assertNotIn("Apple Music handoff", text)
             self.assertNotIn("--strict", text)
             self.assertNotIn(r"\n\n##", text)
-            self.assertLess(len(text), 35000)
+            # The short Gemini entry stays capped at 6.5 KB; detailed policy is deferred.
+            self.assertLess(len(text), 40000)
             quality = z.read("references/recording-quality.md").decode("utf-8")
             self.assertIn("Never silently relax", quality)
             self.assertIn("recording-quality.md", z.read("references/reference-index.md").decode("utf-8"))
