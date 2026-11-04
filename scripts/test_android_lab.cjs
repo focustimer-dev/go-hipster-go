@@ -97,6 +97,15 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   await page.locator('#atlasHome').evaluate(el=>el.click());
   assert.equal(await map.getAttribute('data-camera-view'),'0 0 720 372');
   await page.locator('.crate-map-frame').screenshot({path:'android-lab/build/switch-review/fixed-viewport-world.png'});
+  // Reproduce the recorded WebView fill dropout deliberately. The independent
+  // ocean surface must cover it without filling transparent Robinson corners.
+  const ocean=page.locator('#crateAtlasMap .crate-map-ocean');
+  await ocean.evaluate(el=>el.style.visibility='hidden');
+  const protectedOcean=await page.locator('.crate-map-frame').screenshot({path:'android-lab/build/switch-review/ocean-fill-dropout.png'});
+  require('./assert_atlas_ocean.cjs')(protectedOcean);
+  assert.equal(await page.locator('.atlas-ocean-backplate').count(),1);
+  await ocean.evaluate(el=>el.style.visibility='');
+
   await page.locator('.mood-grid').evaluate(el=>window.scrollTo({top:window.scrollY+el.getBoundingClientRect().top+60,behavior:'instant'}));
   await page.waitForTimeout(80);
   const ticket=page.locator('#selectionTicket');
