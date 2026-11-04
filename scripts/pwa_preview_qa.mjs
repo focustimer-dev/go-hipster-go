@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdir,writeFile } from 'node:fs/promises';
 import { chromium } from 'playwright';
 const base=process.env.PWA_PREVIEW_URL;
-assert.match(base||'',/^https:\/\/[a-z0-9-]+\.workers\.dev$/);
+assert.equal(base,'https://hipster-go-pwa-preview.samelling.workers.dev','Only the dedicated preview is an allowed QA target');
 assert.ok(!base.includes('://hipster-go.'),'Never run browser preview QA on production');
 const folder='artifacts/pwa-preview';
 await mkdir(folder,{recursive:true});
