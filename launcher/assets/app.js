@@ -499,7 +499,7 @@ function renderLaunch(){
  u.searchParams.delete("mode");
  history.replaceState(null,"",u.pathname+u.search);
 }
-function render(){if(body.dataset.page==="launch")renderLaunch();else renderSetup();window.dispatchEvent(new Event("ghg-pwa-render"))}
+function render(){if(body.dataset.page==="launch")renderLaunch();else renderSetup();if(typeof window!=="undefined"&&typeof Event!=="undefined")window.dispatchEvent(new Event("ghg-pwa-render"))}
 doc.querySelectorAll("[data-ai]").forEach(b=>b.addEventListener("click",()=>{
  ai=b.dataset.ai;copiedPrompt=null;copiedSetupPrompt=null;selectionChanged();
 }));
@@ -1195,7 +1195,7 @@ if(doc.getElementById("firstCrateSetup")){globalThis.HipsterSetup={getPair:()=>(
  ai=next.ai;service=next.service;copiedPrompt=null;copiedSetupPrompt=null;selectionChanged();
 }};
 doc.addEventListener("click",event=>{if(ai!=="other")return;const link=event.target.closest("#openAi,#browserAi,#manualOpenAi,#openSelectedAi");if(link){event.preventDefault();status("Open your chosen AI yourself, paste the request and send it.");const guide=doc.getElementById("handoffGuidance");if(guide)guide.hidden=false;const heading=doc.getElementById("handoffTitle");if(heading)heading.textContent="OPEN YOUR AI MANUALLY.";const instructions=doc.getElementById("handoffInstruction");if(instructions)instructions.textContent="Paste the request you copied, then send it. This app cannot open an unspecified AI.";}},true);}
-window.HipsterPWABridge={
+if(typeof window!=="undefined")window.HipsterPWABridge={
  getSnapshot:()=>({ai,service,mood,tempo,reference:pwaReference,copied:copiedPrompt===goPrompt(ai,service,mood)}),
  getPrompt:()=>goPrompt(ai,service,mood),
  getSetupPrompt:()=>setupPrompt(ai,service),
