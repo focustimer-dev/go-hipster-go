@@ -12,7 +12,7 @@ function labGlobeBounds(view){
  const west=xs[Math.floor(n*.02)],east=xs[Math.min(n-1,Math.floor(n*.98))],south=ys[Math.floor(n*.02)],north=ys[Math.min(n-1,Math.floor(n*.98))];
  labGlobe.fitBounds([[west,south],[east,north]],{padding:24,maxZoom:3.4,duration:320});
 }
-function labGlobeHomeZoom(){return Math.log2(Math.max(120,labGlobe.getContainer().clientHeight)*Math.PI/512)-.08}
+function labGlobeHomeZoom(){return Math.log2(Math.max(120,labGlobe.getContainer().clientHeight)*Math.PI/512)+.3}
 function labGlobeSync(){
  if(!labGlobeReady)return;
  for(const f of labGlobeGeography.features)labGlobe.setFeatureState({source:'land',id:f.id},{selected:crateSelected.has(f.properties.region)});
@@ -31,7 +31,6 @@ function initLabGlobe(){
  labGlobe.on('load',()=>{
   labGlobe.setProjection({type:'globe'});labGlobeReady=true;
   const legacy=frame.querySelector('.atlas-camera-viewport');if(legacy)legacy.hidden=true;else old.style.display='none';
-  frame.querySelector('.chart-viewport-frame')?.setAttribute('hidden','');
   labGlobe.jumpTo({center:[10,15],zoom:labGlobeHomeZoom()});labGlobeSync();if(crateSelected.size)labGlobeBounds();
   const chart=doc.createElement('canvas');chart.width=chart.height=16;const ctx=chart.getContext('2d');ctx.clearRect(0,0,16,16);ctx.strokeStyle='rgba(16,49,53,.26)';ctx.lineWidth=.7;for(let n=-16;n<32;n+=8){ctx.beginPath();ctx.moveTo(n,16);ctx.lineTo(n+16,0);ctx.stroke()}labGlobe.addImage('engraved-hatch',ctx.getImageData(0,0,16,16));
   labGlobe.addLayer({id:'hatching',type:'fill',source:'land',paint:{'fill-pattern':'engraved-hatch'}},'borders');
