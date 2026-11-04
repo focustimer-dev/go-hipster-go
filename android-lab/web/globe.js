@@ -135,7 +135,7 @@ function labRobinsonMinimumZoom(){
  const yRange=Math.log(Math.tan(Math.PI/4+pole*Math.PI/360))/Math.PI;
  // Fit the bounds in both axes. A small epsilon avoids the engine's
  // simultaneous zoom-and-pan constraint branch at exactly the minimum.
- return Math.log2(Math.max((host.clientWidth||387)/(512*(359.998/360)),(host.clientHeight||200)/(512*yRange)))+.002;
+ return Math.max(-2,Math.min(labGlobe.getMaxZoom(),Math.log2(Math.max((host.clientWidth||387)/(512*(359.998/360)),(host.clientHeight||200)/(512*yRange)))+.002));
 }
 
 // Let the browser own page scrolling at the flat world's resting zoom.

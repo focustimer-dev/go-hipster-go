@@ -42,7 +42,7 @@ function labState(){
 }
 function labNavigate(next,focus=true){
  if(!['jukebox','crate','manual'].includes(next)||next===labScreen)return;
- labPositions[labScreen]=window.scrollY;labScreen=next;body.dataset.labScreen=next;
+ labStopGuide();labPositions[labScreen]=window.scrollY;labScreen=next;body.dataset.labScreen=next;
  for(const [id,key] of [['labJukebox','jukebox'],['labCrate','crate'],['labManual','manual']])doc.getElementById(id).hidden=key!==next;
  doc.querySelectorAll('[data-lab-tab]').forEach(b=>{if(b.dataset.labTab===next)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
  renderLabWorkspace();window.scrollTo({top:labPositions[next],behavior:'instant'});window.dispatchEvent(new Event('scroll'));
@@ -51,6 +51,7 @@ function labNavigate(next,focus=true){
 function renderLabHandoff(){
  const state=labState(),mode=state.mode||'open',oneTap=state.oneTap!==false;
  if(ai==='other'){
+  const guide=doc.getElementById('labGeminiGuide');if(guide)guide.hidden=true;
   const hint=doc.getElementById('goHint');if(hint)hint.textContent='COPY YOUR REQUEST';
   const heading=doc.getElementById('handoffTitle');if(heading)heading.textContent='COPIED. OPEN YOUR AI MANUALLY.';
   const instructions=doc.getElementById('handoffInstruction');if(instructions)instructions.textContent='Open your chosen AI yourself, paste the request and send it. Native handoff is unavailable for an unspecified AI.';
@@ -65,6 +66,7 @@ function renderLabHandoff(){
  const heading=doc.getElementById('handoffTitle'),instructions=doc.getElementById('handoffInstruction');
  if(heading)heading.textContent=oneTap&&mode==='share'?'CONTINUE IN '+aiNames[ai].toUpperCase():oneTap?'REQUEST COPIED FOR '+aiNames[ai].toUpperCase():'COPIED. OPEN '+aiNames[ai].toUpperCase()+'.';
  if(instructions)instructions.textContent=oneTap&&mode==='share'?'Review and send the shared request in your AI. If it did not arrive, paste the copied request. Check the playlist result there.':'Paste and send the copied request in your AI. Check the playlist result there.';
+ const guide=doc.getElementById('labGeminiGuide');if(guide)guide.hidden=!(ai==='gemini'&&service==='youtube'&&ready);
  const open=doc.getElementById('openAi');if(open&&ready)open.textContent=(mode==='share'?'SHARE AGAIN TO ':'OPEN ')+aiNames[ai].toUpperCase();
  const button=doc.getElementById('goButton');if(button)button.setAttribute('aria-label',oneTap?'GO! Copy request and '+(mode==='share'?'share to ':mode==='browser'?'open browser for ':'open ')+aiNames[ai]:'GO! Copy current playlist request');
 }
@@ -124,6 +126,7 @@ function initLabWorkspace(){
  if(recording&&recordingSlot){const oldPanel=recording.closest('.listening-preferences');recording.classList.add('lab-choice','lab-toggle');recordingSlot.append(recording);const hardware=doc.getElementById('labRecordingHardware');if(hardware)recording.querySelector('.recording-rocker').replaceWith(hardware.content.firstElementChild.cloneNode(true));if(oldPanel)oldPanel.remove()}
  const trail=doc.querySelector('.poster-go-trail-steps>.poster-go-trail-word:last-child');if(trail)trail.textContent='CONTINUE IN YOUR AI';
  body.classList.add('lab-workspace');body.dataset.labScreen='jukebox';doc.querySelectorAll('.topnav').forEach(nav=>nav.hidden=true);
+ initLabGuide();
  const heading=doc.querySelector('.receipt-heading');if(heading){const label=doc.createElement('span');while(heading.firstChild)label.appendChild(heading.firstChild);const b=doc.createElement('button');b.type='button';b.className='lab-text-button lab-save-button';b.dataset.labAction='save';b.textContent='SAVE REQUEST';heading.append(label,b)}
  doc.addEventListener('click',event=>{
   const a=event.target.closest('a[href]');if(a){const u=new URL(a.href,location.href);if(u.origin===location.origin){if(/\/(?:setup\/?)$/.test(u.pathname)){event.preventDefault();labNavigate('manual');return}if(['/','/editions/gig-poster/'].includes(u.pathname)){event.preventDefault();labNavigate('jukebox');return}}}

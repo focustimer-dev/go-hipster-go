@@ -53,6 +53,7 @@ jobs:
       - run: node scripts/test_atlas_boundary.cjs
       - run: npx playwright install --with-deps chromium
       - run: node scripts/test_android_lab.cjs
+      - run: node scripts/test_lab_tutorial.cjs
       - run: node scripts/test_mood_ink.cjs
       - uses: actions/upload-artifact@v4
         with:

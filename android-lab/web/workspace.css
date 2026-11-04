@@ -145,3 +145,20 @@ body.lab-workspace .selection-ticket.is-compact:not(.is-docked) details:not([ope
 body.lab-workspace .selection-ticket.is-compact:not(.is-docked) details:not([open]) summary{min-height:48px;padding-block:6px}
 body.lab-workspace .mood-grid .mood{scroll-margin-top:128px}
 body.lab-workspace .selection-ticket.is-compact details:not([open]) :is(.ticket-brief,.ticket-expander){grid-row:1}
+
+/* Local workflow demos: no video downloads, timers or autoplay. */
+#labTutorialTitle{scroll-margin-top:72px}
+.lab-guide-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0}
+.lab-guide-tabs button{min-height:44px;padding:8px 12px;border:1px solid #103135;background:transparent;color:#103135;font:bold .875rem/1.3 Arial,sans-serif}
+.lab-guide-tabs button[aria-pressed=true]{background:#103135;color:#dfb045;text-decoration:underline;text-underline-offset:4px}
+.lab-guide-copy h3{margin:0 0 8px}.lab-guide-copy p{margin:0 0 18px}
+.lab-guide-demo{border-block:1px solid #103135;padding:8px 0}
+.lab-guide-frame{display:grid;grid-template-columns:minmax(max-content,76px) minmax(0,1fr);align-items:center;gap:10px;padding:12px 8px;min-height:60px;overflow-wrap:anywhere}
+.lab-guide-frame span{font:bold .6875rem/1.4 'Courier New',monospace}
+.lab-guide-frame strong{font:700 .9375rem/1.4 Arial,sans-serif}
+.lab-guide-demo.is-playing .lab-guide-frame{animation:lab-guide-beat 3.6s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--guide-order)*1.2s)}
+@keyframes lab-guide-beat{0%{background:transparent;color:#103135}1%,33%{background:#103135;color:#dfb045}34%,100%{background:transparent;color:#103135}}
+.lab-guide-controls{display:flex;align-items:center;justify-content:space-between;gap:8px}.lab-guide-controls .lab-help{margin:8px 0}
+.lab-guide-fallback summary{display:flex;align-items:center;min-height:48px;text-decoration:underline;text-underline-offset:4px;cursor:pointer}
+.lab-guide-fallback a{color:inherit;text-underline-offset:3px}
+@media(prefers-reduced-motion:reduce){.lab-guide-demo.is-playing .lab-guide-frame{animation:none}.lab-guide-controls #labGuidePlay{display:none}}

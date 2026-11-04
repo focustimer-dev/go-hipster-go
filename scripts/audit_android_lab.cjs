@@ -17,7 +17,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
  const results=[];let browser;
  try{
-  browser=await chromium.launch({headless:true});
+  browser=await chromium.launch({headless:true,...(process.env.LAB_CHROMIUM?{executablePath:process.env.LAB_CHROMIUM}:{})});
   for(const profile of [{name:'phone',width:412,height:915},{name:'narrow',width:320,height:740},{name:'large-text',width:412,height:915,scale:2},{name:'landscape',width:915,height:412}]){
    const context=await browser.newContext({viewport:{width:profile.width,height:profile.height},isMobile:true,hasTouch:true,reducedMotion:profile.name==='phone'?'no-preference':'reduce'});
    const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));

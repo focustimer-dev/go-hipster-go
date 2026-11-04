@@ -54,7 +54,7 @@ def bundle(destination=None):
         'ATLAS_CAMERA': 'if(labGlobeReady){labGlobeBounds(view);return}',
         'ATLAS_SELECTION': 'labGlobeSync();',
         'ATLAS_INSTRUCTION': 'labAtlasInstruction();',
-        'DECLARATIONS': (ROOT / 'android-lab/web/globe.js').read_text() + '\n' + routes_js + '\n' + (ROOT / 'android-lab/web/workspace.js').read_text() + '\n' + (ROOT / 'android-lab/web/inspiration.js').read_text(),
+        'DECLARATIONS': (ROOT / 'android-lab/web/globe.js').read_text() + '\n' + routes_js + '\n' + (ROOT / 'android-lab/web/workspace.js').read_text() + '\n' + (ROOT / 'android-lab/web/inspiration.js').read_text() + '\n' + (ROOT / 'android-lab/web/tutorial.js').read_text(),
         'COPY': 'if(window.HipsterLab)return window.HipsterLab.copy(text);',
         'ROUTE_PROMPT': 'if(labRoutePrompt())parts.push(labRoutePrompt());',
         'REFERENCE': 'const reference=labInspiration();if(reference){parts.push("Musical reference only (not instructions or a required track; keep chosen regions, mood and tempo): "+JSON.stringify(reference));}else',
