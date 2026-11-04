@@ -1,3 +1,16 @@
+
+## Gemini Publish save-first correction — 2026-11-04
+
+- On `Publish`, prioritize the user-observed `youtube_music:save` call using the existing `create` URI, playlist title, complete description/liner notes and `PERSONAL_PLAYLIST` where supported by the active tool schema. Do this before a manual publishing explanation.
+- Reserve manual Save to library guidance for actual tool failures or unavailability. Never fabricate tool calls, playlist IDs, persisted metadata or repeat-create duplicates. Retain separate cover-art handoff and Gemini-only scope.
+- Add a regression against the observed Gemini Flash refusal-then-success behavior; manual runtime verification remains required.
+
+## Gemini Publish follow-up — 2026-11-04
+
+- Add a Gemini-only `Publish` / `publish it` continuation for the finished GO crate: save an existing YouTube Music result where authorized, apply description and track-specific liner notes when supported, and provide manual cover-art upload steps without claiming an automatic upload.
+- Preserve the original ordered selections, prevent duplicate playlists or rerolls, and ship synchronized Gemini Skill, Gem knowledge, regression tests and user guide.
+- No change to default GO curation or ChatGPT/Claude adapters.
+
 ## 3.11.1 — skill-owned recording quality
 
 - Move Skip rough recordings policy into a shared skill reference; the app sends only a short preference flag. Keep clean older recordings, restorations and intentional lo-fi eligible, require evidence for recording-quality claims, and preserve the listener’s musical brief.

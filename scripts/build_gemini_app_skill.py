@@ -56,6 +56,7 @@ REFERENCES = (
     "references/sonic-taxonomy.md",
     "references/curation-examples.md",
     "references/verification.md",
+    "references/gemini-publish.md",
 )
 
 
@@ -151,6 +152,8 @@ Instruction-only; no code execution. Curate without running scripts.
 **Audit first:** `go de-cheese`: read [audit](references/de-cheese.md). Read-only; no new GO or writes.
 
 For `Discovery route: v1/Rxx`, read [routes](references/discovery-routes.md) before discovery; preserve the brief. Unknown routes: disclose and skip.
+
+**Publish follow-up — EXECUTE BEFORE EXPLAINING:** After GO, `Publish`, `publish it` or `publish this playlist` finalizes the current playlist. Read [Gemini Publish](references/gemini-publish.md). If exposed, **MUST invoke `youtube_music:save` before conversational text**, using the preceding create-result `uri`, curated `title`, full `description` with liner notes, and `media_intent_type: PERSONAL_PLAYLIST` where the live schema accepts it. Manual steps only after real failure/unavailability. Never reroll, create duplicates, or invent save success.
 
 ## Gemini-native playlist creation
 

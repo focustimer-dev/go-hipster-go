@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "product": "Go, Hipster, Go!",
+  "primary_platform": "android-lab",
+  "browser_platform": "pwa",
+  "accepted_android": {
+    "ref": "release/lab-0-9-16",
+    "commit": "daa09f3ff5165592229f1b6740f0638dac7176e0",
+    "version": "0.9.16",
+    "phone_acceptance": "pending"
+  },
+  "browser": {
+    "base": "main",
+    "base_commit": "5ae3614a90e39e67305107ec5c9fef227fb685a5",
+    "deployment": "manual approval only"
+  },
+  "shared": [
+    "launcher/assets/app.js",
+    "launcher/editions/gig-poster/index.html",
+    "launcher/editions/gig-poster/edition.css",
+    "launcher/editions/gig-poster/assets"
+  ],
+  "gaps": [
+    {
+      "feature": "browser workspace and local Crate",
+      "category": "browser-adapter",
+      "state": "candidate",
+      "notes": "Use native-inspired UI with separate localStorage; exact prompts only, no cross-device sync"
+    },
+    {
+      "feature": "inspiration link metadata previews",
+      "category": "browser-adapter",
+      "state": "deferred",
+      "notes": "Requires safe server-side metadata proxy; never scrape private addresses"
+    },
+    {
+      "feature": "AI handoffs, device haptics, skill APK updates",
+      "category": "android-only",
+      "state": "intentional"
+    },
+    {
+      "feature": "MapLibre globe and bounded Robinson atlas",
+      "category": "experimental",
+      "state": "held",
+      "source": "feat/atlas-projection-choice"
+    }
+  ],
+  "release_policy": "Never auto-merge, publish, or deploy the production PWA. Approved Android work is the product source of truth."
+}
