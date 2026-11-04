@@ -28,7 +28,7 @@ export default {
           .on("body", { element(el) { el.append('<script defer src="/assets/pwa-workspace.js"></script>', { html: true }); } })
           .transform(response)
       : response;
-    const headers = new Headers(response.headers);
+    const headers = new Headers(served.headers);
     headers.set("x-content-type-options", "nosniff");
     headers.set("referrer-policy", "no-referrer");
     headers.set("x-ghg-release", RELEASE_SHA);
