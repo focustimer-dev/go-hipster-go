@@ -136,7 +136,36 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
     assert(Math.abs(drift.lat)<6&&Math.abs(drift.lng)<12,'Whole-world Robinson cannot be dragged into empty margins');
     const zoomed=await page.evaluate(()=>{labAtlasGlobe.jumpTo({zoom:2,center:[0,50]});return labAtlasGlobe.getCenter().lat});
     assert(zoomed>20,'Zoomed Robinson retains useful north/south exploration');
+    assert(await page.evaluate(()=>labAtlasGlobe.dragPan.isEnabled()),'Zoomed Robinson permits panning');
     await page.evaluate(()=>labAtlasGlobe.jumpTo({center:[0,0],zoom:Math.log2(labAtlasGlobe.getContainer().clientWidth/512)-.08}));
+    await page.locator('#labAtlasGlobe').evaluate(el=>window.scrollTo({top:scrollY+el.getBoundingClientRect().top-200,behavior:'instant'}));
+    assert.equal(await page.evaluate(()=>labAtlasGlobe.dragPan.isEnabled()),false);
+    const scrollBefore=await page.evaluate(()=>scrollY),box=await page.locator('#labAtlasGlobe').boundingBox();
+    const gesture=await page.context().newCDPSession(page);
+    const x=box.x+box.width/2,y=box.y+box.height*.8;
+    await gesture.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y}]});
+    for(let i=1;i<=8;i++){
+     await gesture.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x,y:y-i*12}]});
+     await page.waitForTimeout(25);
+    }
+    await gesture.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+    await page.waitForFunction(before=>scrollY>before+30,scrollBefore);
+    // A fresh two-finger gesture still zooms while one-finger page scrolling is enabled.
+    await page.locator('#labAtlasGlobe').evaluate(el=>window.scrollTo({top:scrollY+el.getBoundingClientRect().top-200,behavior:'instant'}));
+    const pinchBox=await page.locator('#labAtlasGlobe').boundingBox();
+    const cx=pinchBox.x+pinchBox.width/2,cy=pinchBox.y+pinchBox.height/2;
+    const startZoom=await page.evaluate(()=>labAtlasGlobe.getZoom());
+    await gesture.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:cx-25,y:cy,id:1},{x:cx+25,y:cy,id:2}]});
+    for(let i=1;i<=8;i++){
+     await gesture.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:cx-25-i*6,y:cy-i*2,id:1},{x:cx+25+i*6,y:cy+i*2,id:2}]});
+     await page.waitForTimeout(25);
+    }
+    await gesture.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+    await page.waitForFunction(z=>labAtlasGlobe.getZoom()>z+.2,startZoom);
+    assert(Math.abs(await page.evaluate(()=>labAtlasGlobe.getBearing()))<.01,'Robinson remains north-up during a twisting pinch');
+    await gesture.detach();
+    await page.evaluate(()=>labAtlasGlobe.jumpTo({center:[0,0],zoom:labAtlasGlobe.getMinZoom()}));
+
    }
    assert.equal(await page.locator('#prompt').textContent(),beforeModes,'Projection changes preserve the request');
    await page.locator('#labAtlasGlobe').evaluate(el=>window.scrollTo({top:scrollY+el.getBoundingClientRect().top-160,behavior:'instant'}));

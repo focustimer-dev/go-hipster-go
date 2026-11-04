@@ -42,7 +42,7 @@ function initLabGlobe(){
  });
  labGlobe.on('dragstart',()=>{atlasFocus=null;atlasUserNavigated=true;renderAtlasNavigation()});
  labGlobe.on('zoomstart',event=>{if(event.originalEvent){atlasUserNavigated=true;renderAtlasNavigation()}});
- labGlobe.on('zoomend',()=>{const visible=labGlobe.getZoom()>labGlobeHomeZoom()+.8;old._atlasSecretsSync?.(visible);for(const node of host.querySelectorAll('.lab-globe-secret'))node.hidden=!visible});
+ labGlobe.on('zoomend',()=>{labAtlasGestures();const visible=labGlobe.getZoom()>labGlobeHomeZoom()+.8;old._atlasSecretsSync?.(visible);for(const node of host.querySelectorAll('.lab-globe-secret'))node.hidden=!visible});
  new ResizeObserver(()=>{if(host.clientWidth&&host.clientHeight&&labAtlasMode==='robinson')labGlobe.setMinZoom(labRobinsonMinimumZoom());labGlobe.resize()}).observe(host);
 }
 function labGlobeUnproject([x,y]){
@@ -110,7 +110,11 @@ function labSetAtlasMode(mode){
  labGlobe.setPaintProperty('ocean','background-color',mode==='robinson'?'rgba(0,0,0,0)':'#103135');
  labGlobe.setLayoutProperty('robinson-ocean','visibility',mode==='robinson'?'visible':'none');
  for(const b of doc.querySelectorAll('[data-atlas-view]')){const active=b.dataset.atlasView===mode;b.setAttribute('aria-pressed',String(active));b.style.background=active?'#103135':'transparent';b.style.color=active?'#dfb045':'#103135'}
- labGlobe.jumpTo({center:labAtlasHome(),zoom:labGlobeHomeZoom()});
+ labGlobe.touchZoomRotate[mode==='robinson'?'disableRotation':'enableRotation']();
+ labGlobe.touchPitch.disable();
+ labGlobe.keyboard.disable();
+ labGlobe.jumpTo({center:labAtlasHome(),zoom:labGlobeHomeZoom(),bearing:0,pitch:0});
+ labAtlasGestures();
  labGlobe.once('idle',labGlobeSync);labGlobeSync();
 }
 function installLabAtlasModes(frame){
@@ -131,4 +135,14 @@ function labRobinsonMinimumZoom(){
  // Fit the bounds in both axes. A small epsilon avoids the engine's
  // simultaneous zoom-and-pan constraint branch at exactly the minimum.
  return Math.log2(Math.max((host.clientWidth||387)/(512*(359.998/360)),(host.clientHeight||200)/(512*yRange)))+.002;
+}
+
+// Let the browser own page scrolling at the flat world's resting zoom.
+// No synthetic scroll loop or per-frame camera correction is needed.
+function labAtlasGestures(){
+ const scroll=labAtlasMode==='robinson'&&labGlobe.getZoom()<=labGlobeHomeZoom()+.025;
+ if(labGlobe.dragPan.isEnabled()===scroll)labGlobe.dragPan[scroll?'disable':'enable']();
+ const action=scroll?'pan-y':'none';
+ labGlobe.getCanvas().style.touchAction=action;
+ labGlobe.getCanvasContainer().style.touchAction=action;
 }

@@ -62,15 +62,13 @@ final class SharedInspiration {
         input.setMinLines(3);input.setMaxLines(7);input.setGravity(android.view.Gravity.TOP);
         input.setFilters(new InputFilter[]{new InputFilter.LengthFilter(InspirationText.LIMIT)});
         LinearLayout content=new LinearLayout(activity);content.setOrientation(1);content.setPadding(32,16,32,0);
-        TextView explanation=new TextView(activity);
-        explanation.setText("Review or edit this reference. Keep this reference, then shape the playlist in Jukebox: choose moods, pace and places, then press GO. Your existing choices stay in place. Public HTTPS links can load a page title and description for a preview. The original reference is sent to your AI. The last three inspirations are kept on this device.");
-        content.addView(explanation);content.addView(input);
+        content.addView(input);
         AlertDialog.Builder dialog=new AlertDialog.Builder(activity).setTitle(incoming?"Shared inspiration":"Your inspiration")
             .setView(content).setPositiveButton("Use in Jukebox",(d,n)->{
                 String value=InspirationText.normalize(null,input.getText().toString());
                 if(value.isEmpty()){Toast.makeText(activity,"No inspiration added. Use Remove to clear an existing reference.",Toast.LENGTH_LONG).show();return;}
                 use(value);
-                Toast.makeText(activity,"Inspiration kept. Choose moods, pace and places, then GO.",Toast.LENGTH_LONG).show();
+                Toast.makeText(activity,"Inspiration added.",Toast.LENGTH_LONG).show();
             }).setNegativeButton("Cancel",null);
         if(!value().isEmpty())dialog.setNeutralButton("Remove",(d,n)->clear());
         dialog.show();
