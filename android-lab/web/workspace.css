@@ -179,3 +179,5 @@ body.lab-workspace .selection-ticket.is-compact details:not([open]) :is(.ticket-
 #labGuideAction{background:#103135;color:#dfb045}
 
 .lab-guide-chapters{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.lab-guide-chapters button{min-height:44px;padding:6px 10px;border:1px solid currentColor}
+
+#labManualTitle{font-size:28px;margin-bottom:6px}#labManual>.lab-intro{font-size:14px;margin-bottom:10px}
