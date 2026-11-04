@@ -17,11 +17,22 @@ export default {
     // Use a canonical directory URL; /setup/index.html is redirected back to /setup/.
     // The poster edition setup page includes the release CSS expected by live smoke.
     const response = await env.ASSETS.fetch(new Request(url, request));
+    // Browser-only workspace: leave packaged Android snapshots and the shared launcher untouched.
+    const isPwaLaunch = request.method === "GET" && (
+      path === "/" || path === "/index.html" ||
+      path === "/editions/gig-poster/" || path === "/editions/gig-poster/index.html"
+    );
+    const served = isPwaLaunch && response.ok
+      ? new HTMLRewriter()
+          .on("head", { element(el) { el.append('<link rel="stylesheet" href="/assets/pwa-workspace.css">', { html: true }); } })
+          .on("body", { element(el) { el.append('<script defer src="/assets/pwa-workspace.js"></script>', { html: true }); } })
+          .transform(response)
+      : response;
     const headers = new Headers(response.headers);
     headers.set("x-content-type-options", "nosniff");
     headers.set("referrer-policy", "no-referrer");
     headers.set("x-ghg-release", RELEASE_SHA);
     if (/\.html$|\.css$|\.js$|\/manifest\.webmanifest$/.test(url.pathname)) headers.set("cache-control", "no-store");
-    return new Response(request.method === "HEAD" ? null : response.body, { status: response.status, headers });
+    return new Response(request.method === "HEAD" ? null : served.body, { status: served.status, headers });
   }
 };

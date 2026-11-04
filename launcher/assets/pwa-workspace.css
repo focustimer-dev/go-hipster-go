@@ -1,0 +1,52 @@
+/* Browser-only workspace. Mirrors Android Lab's petrol/mustard hierarchy. */
+body.gig-poster.pwa-workspace{padding-top:56px;--pwa-petrol:#103135;--pwa-mustard:#dfb045}
+.pwa-workspace [hidden]{display:none!important}
+.pwa-workspace .topnav{display:none!important}
+.pwa-workspace :is(button,a,input,textarea,summary):focus-visible{outline:3px solid #a83223;outline-offset:3px}
+.pwa-rail{position:fixed;inset:0 0 auto;z-index:1000;height:56px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) 48px;background:#103135;color:#dfb045;border:0;padding:0 max(0px,env(safe-area-inset-right)) 0 max(0px,env(safe-area-inset-left))}
+.pwa-rail button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;border:0;border-bottom:3px solid transparent;border-radius:0;background:transparent;color:inherit;font:700 .675rem/1.2 Arial,sans-serif;letter-spacing:.025em;min-width:0;min-height:48px;padding:4px 2px;touch-action:manipulation}
+.pwa-rail button span{font:700 1.3rem/1.1 Arial,sans-serif}
+.pwa-rail button[aria-current=page]{background:#dfb045;color:#103135;border-bottom-color:#a83223}
+.pwa-rail button:last-child{border-left:1px solid #dfb04566}
+.pwa-workspace .selection-ticket:not(.is-docked){top:64px;max-height:calc(100dvh - 80px);z-index:900}
+body.pwa-workspace:not([data-pwa-screen=jukebox]) .selection-ticket{display:none!important}
+.pwa-page{box-sizing:border-box;width:100%;max-width:760px;min-height:calc(100dvh - 56px);margin:auto;padding:28px 5% 42px;background:#dfb045 url('/editions/gig-poster/assets/stock.webp') repeat;color:#103135;font:1rem/1.5 Arial,sans-serif}
+.pwa-page h1{margin:0 0 12px;font:400 clamp(2.8rem,11vw,4rem)/1.08 Poster,sans-serif}
+.pwa-page h2,.pwa-dialog h2{margin:0;font:400 1.6rem/1.2 Poster,sans-serif}
+.pwa-page h3{margin:0 0 6px;font:700 1rem/1.35 Arial,sans-serif;overflow-wrap:anywhere}
+.pwa-intro{margin:0 0 32px;max-width:45ch}
+.pwa-page section{margin:30px 0}
+.pwa-page section>h2,.pwa-section-head{padding-bottom:12px;border-bottom:2px solid #103135}
+.pwa-section-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.pwa-section-head span,.pwa-local-note{font:.75rem/1.5 'Courier New',monospace}
+.pwa-record{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:18px 0;border-bottom:1px solid #10313580}
+.pwa-record-main,.pwa-record>div{flex:1;min-width:0}
+.pwa-record p{margin:0;font:.875rem/1.5 Arial,sans-serif;overflow-wrap:anywhere}
+.pwa-record button,.pwa-wide,.pwa-save-button,.pwa-dialog button,.pwa-dialog a{min-height:48px;min-width:48px;padding:10px 12px;background:transparent;color:#103135;border:1px solid #103135;border-radius:0;cursor:pointer;font:400 1.125rem/1.2 Poster,sans-serif;text-decoration:none;touch-action:manipulation}
+.pwa-record button{padding:10px 4px;border:0;text-decoration:underline;text-underline-offset:3px}
+.pwa-wide{display:flex;align-items:center;justify-content:center;width:100%;box-sizing:border-box;margin-top:16px}
+.pwa-help{font:.875rem/1.5 Arial,sans-serif}
+.pwa-local-note{border-top:2px solid #103135;padding-top:18px;margin-top:40px}
+.pwa-workspace .receipt-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.pwa-save-button{flex-shrink:0;font-size:.9rem}
+.pwa-dialog{box-sizing:border-box;width:calc(100% - 24px);max-width:480px;max-height:85dvh;padding:0;background:#dfb045;color:#103135;border:1px solid #103135;border-radius:0;box-shadow:0 14px 36px #0007;overflow:auto;font:1rem/1.5 Arial,sans-serif}
+.pwa-dialog::backdrop{background:#103135a8}
+.pwa-dialog-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 18px;border-bottom:2px solid #103135}
+.pwa-dialog-body{padding:20px}
+.pwa-dialog-body label{display:block;font-weight:700;margin:14px 0 6px}
+.pwa-dialog-body textarea,.pwa-dialog-body input{box-sizing:border-box;width:100%;min-height:48px;max-width:100%;padding:12px;background:#f4efdf;color:#103135;border:1px solid #103135;font:1rem/1.4 Arial,sans-serif}
+.pwa-dialog-body pre{box-sizing:border-box;max-height:40dvh;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;background:#f4efdf;padding:12px;border:1px solid #103135}
+.pwa-dialog-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.pwa-dialog-actions>*{flex:1 1 auto}
+.pwa-dialog-actions button[type=submit]{background:#103135;color:#dfb045}
+.pwa-inspiration{position:relative;box-sizing:border-box;scroll-margin-top:74px;margin:20px 0;padding:18px 22px;background:#103135;color:#f4efdf;border-left:7px solid #a83223;box-shadow:0 8px 18px #10313526}
+.pwa-inspiration strong{font:700 .75rem/1.4 'Courier New',monospace;color:#dfb045;letter-spacing:.08em}
+.pwa-inspiration #pwaSleeveText{font:400 clamp(1.5rem,6vw,2.35rem)/1.1 Poster,sans-serif;overflow-wrap:anywhere;margin:10px 0}
+.pwa-inspiration p{margin:8px 0;font-size:.875rem}
+.pwa-sleeve-actions{display:flex;gap:8px;justify-content:flex-end}
+.pwa-sleeve-actions button{min-height:48px;min-width:48px;padding:10px 14px;border:0;background:#f4efdf;color:#103135;font:400 1.125rem Poster,sans-serif}
+body.pwa-modal-open{overflow:hidden}
+@media(min-width:840px){.pwa-rail{grid-template-columns:repeat(3,minmax(0,160px)) 56px;justify-content:center}.pwa-page{padding-inline:40px}}
+@media(max-width:360px){.pwa-page{padding-inline:16px}.pwa-page h1{font-size:2.7rem}}
+@media(prefers-reduced-motion:reduce){.pwa-workspace{scroll-behavior:auto}}
+@media(forced-colors:active){.pwa-inspiration{background:Canvas;color:CanvasText;outline:1px solid CanvasText}}

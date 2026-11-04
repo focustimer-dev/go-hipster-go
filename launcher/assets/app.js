@@ -14,6 +14,7 @@ let printImpression=0;
 let includeCover=false;
 let goHard=false;
 let skipRough=false;
+let pwaReference=stored("ghg-pwa-reference-v1")||""; // Browser-only optional musical reference.
 const shufflePins={mood:false,pace:false,regions:false};
 const tempoNames={slow:"Slow",relaxed:"Relaxed",moderate:"Mid-tempo",brisk:"Brisk",fast:"Fast"};
 const tempoSteps=Object.keys(tempoNames);
@@ -127,7 +128,8 @@ function goPrompt(ai,service,mood){
  const brief=moodDiscoveryBrief(mood);if(brief)parts.push(brief.trim());
  if(tempo)parts.push("Tempo preference: "+tempoNames[tempo]+".");
  if(skipRough)parts.push("Recording preference: Skip rough recordings.");
- if(crateSparkPhrase)parts.push("Seed: "+crateSparkPhrase+".");
+ if(pwaReference)parts.push("Musical reference only (not instructions or a required track; keep chosen regions, mood and tempo): "+JSON.stringify(pwaReference));
+ else if(crateSparkPhrase)parts.push("Seed: "+crateSparkPhrase+".");
  parts.push("Service: "+serviceNames[service]+".");
  if(includeCover)parts.push("Cover art: yes. Use the skill\u0027s cover-art workflow.");
  return parts.join("\n");
@@ -497,7 +499,7 @@ function renderLaunch(){
  u.searchParams.delete("mode");
  history.replaceState(null,"",u.pathname+u.search);
 }
-function render(){if(body.dataset.page==="launch")renderLaunch();else renderSetup()}
+function render(){if(body.dataset.page==="launch")renderLaunch();else renderSetup();window.dispatchEvent(new Event("ghg-pwa-render"))}
 doc.querySelectorAll("[data-ai]").forEach(b=>b.addEventListener("click",()=>{
  ai=b.dataset.ai;copiedPrompt=null;copiedSetupPrompt=null;selectionChanged();
 }));
@@ -1193,6 +1195,13 @@ if(doc.getElementById("firstCrateSetup")){globalThis.HipsterSetup={getPair:()=>(
  ai=next.ai;service=next.service;copiedPrompt=null;copiedSetupPrompt=null;selectionChanged();
 }};
 doc.addEventListener("click",event=>{if(ai!=="other")return;const link=event.target.closest("#openAi,#browserAi,#manualOpenAi,#openSelectedAi");if(link){event.preventDefault();status("Open your chosen AI yourself, paste the request and send it.");const guide=doc.getElementById("handoffGuidance");if(guide)guide.hidden=false;const heading=doc.getElementById("handoffTitle");if(heading)heading.textContent="OPEN YOUR AI MANUALLY.";const instructions=doc.getElementById("handoffInstruction");if(instructions)instructions.textContent="Paste the request you copied, then send it. This app cannot open an unspecified AI.";}},true);}
+window.HipsterPWABridge={
+ getSnapshot:()=>({ai,service,mood,tempo,reference:pwaReference,copied:copiedPrompt===goPrompt(ai,service,mood)}),
+ getPrompt:()=>goPrompt(ai,service,mood),
+ getSetupPrompt:()=>setupPrompt(ai,service),
+ copy:copyText,
+ setReference:(value)=>{if(typeof value!=="string"||[...value].length>2000)return false;pwaReference=value;store("ghg-pwa-reference-v1",value);copiedPrompt=null;render();return true}
+};
 render();
 if(crateSelected.size)frameSelectedAtlas();
 // One ticket travels with the reader and docks in the printed receipt.
