@@ -123,7 +123,7 @@ function labAtlasSwitchButtons(mode){
 }
 
 // This is deliberately a visual fold/unfold, NOT a costly per-frame GeoJSON
-// reprojection. We snapshot one rendered frame, reshape its silhouette, and
+// reprojection. We snapshot the current canvas on the button press, reshape its silhouette, and
 // allow MapLibre to rebuild the destination behind an opaque, short-lived veil.
 function labAtlasMorphTo(mode){
  const host=labGlobe.getContainer(),from=labAtlasMode;
@@ -196,16 +196,9 @@ function labAtlasMorphTo(mode){
   };
   setTimeout(settle,LAB_ATLAS_MORPH_DURATION+40);
  };
- labGlobe.once('render',begin);
- labGlobe.triggerRepaint();
- // A paused WebGL renderer must never strand the selection or map controls.
- setTimeout(()=>{
-  if(labAtlasMorph!==state||captured)return;
-  labAtlasMorph=null;
-  labAtlasCommitMode(mode);
-  const next=state.queued;
-  if(next&&next!==labAtlasMode)labSetAtlasMode(next);
- },850);
+ // The button, not a future WebGL render event, starts the transition.
+ // Idle MapLibre instances can legitimately skip an extra render callback.
+ begin();
 }
 function labSetAtlasMode(mode){
  if(mode==='mercator')mode='robinson';
