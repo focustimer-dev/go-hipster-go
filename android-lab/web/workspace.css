@@ -226,3 +226,6 @@ body.gig-poster.lab-workspace .lab-atlas-modes button:focus-visible{position:rel
 body.gig-poster.lab-workspace .lab-atlas-modes button{display:flex;align-items:center;justify-content:center;gap:7px}
 .lab-atlas-modes svg{width:20px;height:20px;flex:none}
 .lab-atlas-modes button span{min-width:0}
+
+/* The Globe uses a square Android canvas; Robinson's long chart rays are hidden only here. */
+body.gig-poster .crate-map-frame.lab-globe-frame .atlas-radial-field{display:none}
