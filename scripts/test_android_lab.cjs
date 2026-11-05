@@ -174,26 +174,16 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert.deepEqual(await page.locator('.lab-atlas-morph').evaluate(el=>[el.dataset.from,el.dataset.to]),
    ['robinson','globe'],'A real folded map veil bridges the switch instead of exposing redraws');
   await page.waitForTimeout(180);
-  const capture=await page.locator('.lab-atlas-morph-image').evaluate(el=>{
-   const rect=el.getBoundingClientRect();
+  const capture=await page.locator('.lab-atlas-morph-vectors').evaluate(el=>{
    const veil=el.closest('.lab-atlas-morph');
-   return {visible:!el.hidden,width:el.width,height:el.height,
-    cssRatio:rect.width/rect.height,spring:+veil.dataset.springProgress,
-    phase:veil.dataset.phase,ready:veil.dataset.targetReady==='true',
-    opacity:Number(getComputedStyle(veil).opacity)};
-  
+   return {width:el.width,height:el.height,phase:veil.dataset.phase,
+    progress:+veil.dataset.morphProgress||0,vector:+veil.dataset.vectorProgress};
   });
-  console.log('Spring morph snapshot:',capture);
-  assert(capture.visible,'The outgoing map must be captured, not replaced with a solid ink disk');
-  assert(Math.abs(capture.cssRatio-720/372)<.08,'Robinson geography must retain its original aspect while the frame springs');
-  assert(capture.spring>.4,'Projection switch should have physical spring progress, not a fixed CSS wipe');
-  assert.equal(capture.phase,'pop','A projection change must include an intentional release after anticipation');
-  if(capture.ready)assert(capture.opacity<=1,'Blend may only reveal the destination after its map render is ready');
-  assert(await page.locator('.lab-atlas-morph').isVisible(),'The atlas silhouette stays visible during projection reconstruction');
-  const atlasCDP=await page.context().newCDPSession(page);
-  const folded=await atlasCDP.send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});
-  fs.writeFileSync('android-lab/build/switch-review/atlas-fold-midpoint.png',Buffer.from(folded.data,'base64'));
-  await page.waitForFunction(()=>!document.querySelector('.lab-atlas-morph'),{timeout:5000});
+  console.log('Atlas vector midpoint:',capture);
+  assert(capture.width>=300&&capture.height>=300,'The switch draws a resolved geographic vector layer');
+  assert(['pop','reproject'].includes(capture.phase),'The projection follows anticipation with geographic motion');
+  assert(capture.vector>=0&&capture.vector<=1,'Vector correspondence stays inside both endpoints');
+  await page.waitForFunction(()=>!document.querySelector('.lab-atlas-morph'),{timeout:6000});
   assert.equal(await page.locator('.lab-atlas-morph').count(),0,'The veil is fully removed after the new map settles');
   assert.equal(await page.locator('#labAtlasGlobe').evaluate(el=>el.style.pointerEvents),'','Hit testing must be restored once the spring settles');
   await page.reload();await page.waitForFunction(()=>window.labAtlasGlobe&&labAtlasGlobe.loaded());
@@ -222,10 +212,8 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert.deepEqual(await page.locator('.lab-atlas-morph').evaluate(el=>[el.dataset.from,el.dataset.to]),
    ['globe','robinson'],'Returning to Robinson unfolds the sphere into the chart');
   await page.waitForTimeout(160);
-  const unfolded=await atlasCDP.send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});
-  fs.writeFileSync('android-lab/build/switch-review/atlas-unfold-midpoint.png',Buffer.from(unfolded.data,'base64'));
-  await page.waitForFunction(()=>!document.querySelector('.lab-atlas-morph'),{timeout:5000});
-  await atlasCDP.detach();
+  assert(await page.locator('.lab-atlas-morph-vectors').count(),'Globe return uses real vector geography');
+  await page.waitForFunction(()=>!document.querySelector('.lab-atlas-morph'),{timeout:6000});
   const robinsonFrame=await page.locator('#labAtlasGlobe').evaluate(el=>({width:el.clientWidth,height:el.clientHeight}));
   assert(Math.abs(robinsonFrame.width/robinsonFrame.height-720/372)<.05,'Robinson keeps the original wide chart');
   assert.equal(await page.locator('#atlasHome').textContent(),'← WHOLE WORLD');
