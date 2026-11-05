@@ -1,0 +1,1 @@
+Authorized Android Lab 0.9.39 in-place update signing. Sign only the successful CI artifact from run 42054579256 at commit b666e60622c15d901e8359f9340c957c62fb7fe7, normal package work.samelling.hipstergo.lab versionCode 48, with the preexisting Lab signing key and pinned certificate. Never include the key in artifacts. No PWA deployment or production publishing.
