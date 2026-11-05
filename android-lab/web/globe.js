@@ -207,9 +207,6 @@ function labAtlasMorphTo(mode){
  const finish=()=>{
   if(labAtlasMorph!==state||state.finishing)return;
   state.finishing=true;cancelAnimationFrame(state.raf);
-  // Finish drawing all geographic vertices BEFORE the real map switches.
-  // A slow MapLibre update now holds a correct destination vector frame,
-  // instead of freezing the app in the anticipation phase.
   labAtlasMorphVectors.paint(tween,vector.data,mode==='globe'?1:0,vector.selected);
   veil.dataset.vectorProgress=mode==='globe'?'1':'0';
   veil.dataset.phase='reproject';
@@ -218,24 +215,40 @@ function labAtlasMorphTo(mode){
   host.style.transformOrigin=state.transformOrigin;
   const commitStarted=performance.now();
   try{
+   // Do the real MapLibre projection change only AFTER geographic in-betweening.
    labAtlasCommitMode(mode,true);
    host.style.height='';
    host.style.aspectRatio=mode==='globe'?'1 / 1':'720 / 372';
    labGlobe.resize();
    labAtlasGestures();
   }catch(e){
-   // Never leave the atlas pointer-disabled if the WebGL renderer errors.
    console.warn('Atlas projection switch failed',e);
    host.style.height='';host.style.aspectRatio=mode==='globe'?'1 / 1':'720 / 372';
    cleanup();return;
   }
-  veil.dataset.commitMs=(performance.now()-commitStarted).toFixed(1);
-  window.__labAtlasLastMorph={from,to:mode,commitMs:Number(veil.dataset.commitMs)};
-  const onIdle=()=>{labGlobe.off('idle',onIdle);cleanup()};
-  labGlobe.once('idle',onIdle);
-  labGlobe.triggerRepaint();
-  // Some offline WebViews never dispatch 'idle'. Always restore gestures.
-  setTimeout(()=>{labGlobe.off('idle',onIdle);cleanup()},950);
+  const commitMs=performance.now()-commitStarted;
+  // The old vector endpoint used nominal .45 radius in normalized coordinates,
+  // while MapLibre's camera deliberately fits the real sphere with a margin.
+  // Measure the exact destination viewport and make that correction an
+  // interpolated final landing, not a shrink/pop when we remove the veil.
+  const fit=labAtlasMorphVectors.landingFit(mode,host.clientWidth,host.clientHeight,
+   point=>labGlobe.project(mode==='robinson'?labRobinsonPoint(point):point));
+  window.__labAtlasLastMorph={from,to:mode,commitMs,landingFit:fit};
+  veil.dataset.commitMs=commitMs.toFixed(1);
+  veil.dataset.phase='land';
+  const endTransform='translate('+fit.x.toFixed(2)+'px,'+fit.y.toFixed(2)+'px) scale('+
+   fit.sx.toFixed(5)+','+fit.sy.toFixed(5)+')';
+  tween.style.transformOrigin='50% 50%';
+  let docked=false,rendered=false;
+  const maybeReveal=()=>{if(docked&&rendered)cleanup()};
+  const animation=tween.animate([{transform:'translate(0px,0px) scale(1,1)'},
+   {transform:endTransform}],{duration:235,easing:'cubic-bezier(.2,.8,.22,1)',fill:'forwards'});
+  animation.finished.then(()=>{docked=true;maybeReveal()},()=>{docked=true;maybeReveal()});
+  // A second line of defense in case Web Animations is suspended.
+  setTimeout(()=>{docked=true;maybeReveal()},320);
+  const onIdle=()=>{labGlobe.off('idle',onIdle);rendered=true;maybeReveal()};
+  labGlobe.once('idle',onIdle);labGlobe.triggerRepaint();
+  setTimeout(()=>{labGlobe.off('idle',onIdle);rendered=true;maybeReveal()},950);
  };
 
  const step=now=>{
