@@ -63,11 +63,34 @@ const labAtlasMorphVectors=(()=>{
   }
   context.restore();
  }
+ // Calibrate the last vector frame against the *actual* destination camera.
+ // Both views already have known geographic anchors: no WebGL readback, no
+ // guesswork about map radius, and no extra map instances.
+ function landingFit(mode,width,height,project){
+  const w=Math.max(1,width),h=Math.max(1,height);
+  const center=project(mode==='globe'?[10,15]:[0,0]);
+  let sx=1,sy=1;
+  if(mode==='globe'){
+   // Orthographic right-hand horizon, 90 degrees east of the centered globe.
+   const east=project([100,0]);
+   sx=sy=Math.hypot(east.x-center.x,east.y-center.y)/(.45*w);
+  }else{
+   // Robinson's flattened source is expressed as geographic points in
+   // MapLibre's Mercator camera; project those same canonical anchors.
+   const east=project([170,0]),north=project([0,75]);
+   sx=(east.x-center.x)/(.45*(170/180)*w);
+   sy=(center.y-north.y)/(.44*Y[15]*h);
+  }
+  const ok=n=>Number.isFinite(n)&&n>.2&&n<2?n:1;
+  return {x:Number.isFinite(center.x)?center.x-w/2:0,
+   y:Number.isFinite(center.y)?center.y-h/2:0,
+   sx:ok(sx),sy:ok(sy)};
+ }
  function make(canvas,geojson,selected,center){
   // This is at most ~2 MiB of short-lived bitmap memory on current phones.
   const width=Math.min(720,Math.max(300,Math.round(canvas.parentElement.clientWidth*Math.min(devicePixelRatio||1,1.25))));
   canvas.width=canvas.height=width;
   return {data:prepare(geojson,center),selected:new Set(selected)};
  }
- return {make,paint,prepare};
+ return {make,paint,prepare,landingFit};
 })();
