@@ -1,18 +1,25 @@
 // Android-only adapter: MapLibre owns painting and camera; existing app owns requests.
-let labGlobe=null,labGlobeReady=false;
+let labGlobe=null,labGlobeReady=false,labGlobeResting=true;
 function labGlobeBounds(view){
  if(!labGlobeReady)return;
  let regions=crateSelected;
  if(atlasFocus)regions=new Set(crateRegions.filter(r=>r.continent===atlasFocus).map(r=>r.id));
  const points=labGlobeGeography.features.filter(f=>regions.has(f.properties.region)).flatMap(f=>f.geometry.coordinates.flat(2));
- if(!points.length||view===null){labGlobe.easeTo({center:labAtlasHome(),zoom:labGlobeHomeZoom(),duration:320});return}
+ if(!points.length||view===null){labGlobeResting=true;labGlobe.easeTo({center:labAtlasHome(),zoom:labGlobeHomeZoom(),duration:320});return}
  // Fit mainland extents; offshore fragments must not send the camera across the globe.
  const transformed=points.map(labAtlasPoint),lon=transformed.map(p=>p[0]),lat=transformed.map(p=>p[1]);
  const sorted=values=>values.slice().sort((a,b)=>a-b),xs=sorted(lon),ys=sorted(lat),n=xs.length;
  const west=xs[Math.floor(n*.02)],east=xs[Math.min(n-1,Math.floor(n*.98))],south=ys[0],north=ys[n-1];
+ labGlobeResting=false;
  labGlobe.fitBounds([[west,south],[east,north]],{padding:24,maxZoom:3.4,duration:320});
 }
-function labGlobeHomeZoom(){if(labAtlasMode==='robinson')return labRobinsonMinimumZoom();return Math.log2(Math.max(120,labGlobe.getContainer().clientHeight)*Math.PI/512)+.3}
+function labGlobeHomeZoom(){
+ if(labAtlasMode==='robinson')return labRobinsonMinimumZoom();
+ const host=labGlobe.getContainer();
+ // Fit the sphere to the shorter side, with space around the edge.
+ const shortSide=Math.max(120,Math.min(host.clientWidth||360,host.clientHeight||360));
+ return Math.log2(shortSide*Math.PI/512)-.25;
+}
 function labGlobeSync(){
  if(!labGlobeReady)return;
  for(const f of labGlobeGeography.features)labGlobe.setFeatureState({source:'land',id:f.id},{selected:crateSelected.has(f.properties.region)});
@@ -25,7 +32,7 @@ function initLabGlobe(){
  const host=doc.createElement('div');host.id='labAtlasGlobe';host.style.cssText='position:relative;width:100%;aspect-ratio:720/372;background:transparent';host.setAttribute('aria-label','Interactive regional globe');
  frame.appendChild(host);
  try{
-  labGlobe=new maplibregl.Map({container:host,style:{version:8,sources:{land:{type:'geojson',data:labGlobeGeography}},layers:[{id:'ocean',type:'background',paint:{'background-color':'#103135'}},{id:'land',type:'fill',source:'land',paint:{'fill-color':['case',['boolean',['feature-state','selected'],false],'#a83223','#dfb045']}},{id:'borders',type:'line',source:'land',paint:{'line-color':'#103135','line-width':.7}}]},center:[10,15],zoom:0,maxZoom:5.5,minZoom:-1,attributionControl:false,renderWorldCopies:false,dragRotate:false,pitchWithRotate:false,canvasContextAttributes:{antialias:true}});
+  labGlobe=new maplibregl.Map({container:host,style:{version:8,sources:{land:{type:'geojson',data:labGlobeGeography}},layers:[{id:'ocean',type:'background',paint:{'background-color':'#103135','background-color-transition':{duration:0,delay:0}}},{id:'land',type:'fill',source:'land',paint:{'fill-color':['case',['boolean',['feature-state','selected'],false],'#a83223','#dfb045']}},{id:'borders',type:'line',source:'land',paint:{'line-color':'#103135','line-width':.7}}]},center:[10,15],zoom:0,maxZoom:5.5,minZoom:-1,attributionControl:false,renderWorldCopies:false,dragRotate:false,pitchWithRotate:false,canvasContextAttributes:{antialias:true}});
  }catch(e){host.remove();labGlobe=null;status('Globe graphics unavailable. The original atlas is available.');return}
  window.labAtlasGlobe=labGlobe;
  labGlobe.on('load',()=>{
@@ -40,10 +47,17 @@ function initLabGlobe(){
   if(event.originalEvent?._atlasSecret||labGlobe.getLayer('route-targets')&&labGlobe.queryRenderedFeatures(event.point,{layers:['route-targets']}).length)return;
   const id=event.features[0].properties.region;atlasFocus=null;atlasUserNavigated=true;toggleCrateRegion(id);
  });
- labGlobe.on('dragstart',()=>{atlasFocus=null;atlasUserNavigated=true;renderAtlasNavigation()});
- labGlobe.on('zoomstart',event=>{if(event.originalEvent){atlasUserNavigated=true;renderAtlasNavigation()}});
+ labGlobe.on('dragstart',()=>{labGlobeResting=false;atlasFocus=null;atlasUserNavigated=true;renderAtlasNavigation()});
+ labGlobe.on('rotatestart',()=>{labGlobeResting=false;atlasUserNavigated=true;renderAtlasNavigation()});
+ labGlobe.on('zoomstart',event=>{if(event.originalEvent){labGlobeResting=false;atlasUserNavigated=true;renderAtlasNavigation()}});
  labGlobe.on('zoomend',()=>{labAtlasGestures();const visible=labGlobe.getZoom()>labGlobeHomeZoom()+.8;old._atlasSecretsSync?.(visible);for(const node of host.querySelectorAll('.lab-globe-secret'))node.hidden=!visible});
- new ResizeObserver(()=>{if(host.clientWidth&&host.clientHeight&&labAtlasMode==='robinson')labGlobe.setMinZoom(labRobinsonMinimumZoom());labGlobe.resize()}).observe(host);
+ new ResizeObserver(()=>{
+  if(!host.clientWidth||!host.clientHeight)return;
+  labGlobe.resize();
+  if(labAtlasMode==='robinson')labGlobe.setMinZoom(labRobinsonMinimumZoom());
+  // Refit at rest on rotation, without erasing a user's current close-up.
+  else if(labGlobeResting)labGlobe.jumpTo({center:labAtlasHome(),zoom:labGlobeHomeZoom()});
+ }).observe(host);
 }
 function labGlobeUnproject([x,y]){
  const X=[1,.9986,.9954,.99,.9822,.973,.96,.9427,.9216,.8962,.8679,.835,.7986,.7597,.7186,.6732,.6213,.5722,.5322],Y=[0,.062,.124,.186,.248,.31,.372,.434,.4958,.5571,.6176,.6769,.7346,.7903,.8435,.8936,.9394,.9761,1];
@@ -92,7 +106,13 @@ function labAtlasHome(){return labAtlasMode==='globe'?[10,15]:[0,0]}
 function labSetAtlasMode(mode){
  if(mode==='mercator')mode='robinson'; // Migrate the retired flat-view preference.
  if(!labGlobeReady||!['globe','robinson'].includes(mode))return;
- labAtlasMode=mode;labGlobe.getContainer().setAttribute('aria-label',mode==='robinson'?'Interactive regional Robinson map':'Interactive regional globe');store('ghg-atlas-view-v2',mode);
+ labAtlasMode=mode;
+ const host=labGlobe.getContainer(),frame=host.closest('.crate-map-frame');
+ frame?.classList.toggle('lab-globe-frame',mode==='globe');
+ host.style.aspectRatio=mode==='globe'?'1 / 1':'720 / 372';
+ labGlobe.resize();
+ const home=doc.getElementById('atlasHome');if(home)home.textContent=mode==='globe'?'← WHOLE GLOBE':'← WHOLE WORLD';
+ host.setAttribute('aria-label',mode==='robinson'?'Interactive regional Robinson map':'Interactive regional globe');store('ghg-atlas-view-v2',mode);
  labGlobe.stop();labGlobe.setMaxBounds(null);labGlobe.setMinZoom(-1);labGlobe.setProjection({type:mode==='globe'?'globe':'mercator'});
  if(mode==='robinson'){
   // Bounds are in the prepared planar address space, with a small paper margin.
@@ -113,6 +133,7 @@ function labSetAtlasMode(mode){
  labGlobe.touchZoomRotate[mode==='robinson'?'disableRotation':'enableRotation']();
  labGlobe.touchPitch[mode==='robinson'?'disable':'enable']();
  labGlobe.keyboard[mode==='robinson'?'disableRotation':'enableRotation']();
+ labGlobeResting=true;
  labGlobe.jumpTo({center:labAtlasHome(),zoom:labGlobeHomeZoom(),bearing:0,pitch:0});
  labAtlasGestures();
  labGlobe.once('idle',labGlobeSync);labGlobeSync();
