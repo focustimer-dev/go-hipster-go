@@ -53,10 +53,10 @@ function initLabGlobe(){
  labGlobe.on('zoomend',()=>{labAtlasGestures();const visible=labGlobe.getZoom()>labGlobeHomeZoom()+.8;old._atlasSecretsSync?.(visible);for(const node of host.querySelectorAll('.lab-globe-secret'))node.hidden=!visible});
  new ResizeObserver(()=>{
   if(!host.clientWidth||!host.clientHeight)return;
-  labGlobe.resize();
-  // During the fold, only resize the backing canvas; one final camera fit is
-  // committed when the destination frame has finished changing dimensions.
+  // Reflow the silhouette without forcing MapLibre to repaint every frame.
+  // The real map is resized once, after the spring reaches its target.
   if(labAtlasMorph)return;
+  labGlobe.resize();
   if(labAtlasMode==='robinson')labGlobe.setMinZoom(labRobinsonMinimumZoom());
   // Refit at rest on rotation, without erasing a user's current close-up.
   else if(labGlobeResting)labGlobe.jumpTo({center:labAtlasHome(),zoom:labGlobeHomeZoom()});
@@ -108,7 +108,7 @@ function labAtlasPoint(point){return labAtlasMode==='robinson'?labRobinsonPoint(
 function labAtlasHome(){return labAtlasMode==='globe'?[10,15]:[0,0]}
 
 let labAtlasModeInitialized=false,labAtlasMorph=null;
-const LAB_ATLAS_MORPH_DURATION=460;
+const LAB_ATLAS_MORPH_DURATION=570;
 
 // The projection buttons reflect the requested destination immediately; the
 // live map may need a frame to prepare its new geometry underneath the veil.
@@ -122,83 +122,107 @@ function labAtlasSwitchButtons(mode){
  store('ghg-atlas-view-v2',mode);
 }
 
-// This is deliberately a visual fold/unfold, NOT a costly per-frame GeoJSON
-// reprojection. We capture the retained canvas on the button press, reshape its silhouette, and
-// allow MapLibre to rebuild the destination behind an opaque, short-lived veil.
+// Closed-form damped harmonic spring (in the spirit of wobble). A small
+// physical overshoot is intentional; the live map itself is never distorted.
+function labAtlasSpring(t){
+ const decay=9.5,frequency=Math.sqrt(240-decay*decay);
+ return 1-Math.exp(-decay*t)*
+  (Math.cos(frequency*t)+(decay/frequency)*Math.sin(frequency*t));
+}
+
+// The animation's goal is a settled destination, not a repaint event. A single
+// preserved snapshot carries the coastline while the offline map reprojects
+// underneath. Only the mask and frame spring; no per-frame GeoJSON rebuilding.
 function labAtlasMorphTo(mode){
  const host=labGlobe.getContainer(),from=labAtlasMode;
- const state={from,to:mode,queued:null,cover:null,revealing:false,pointerEvents:host.style.pointerEvents};
+ const frame=host.getBoundingClientRect(),fromHeight=frame.height;
+ const targetHeight=frame.width*(mode==='globe'?1:372/720);
+ const state={from,to:mode,queued:null,cover:null,raf:0,
+  pointerEvents:host.style.pointerEvents,revealing:false};
  labAtlasMorph=state;
  labAtlasSwitchButtons(mode);
- let captured=false;
- const begin=()=>{
-  if(labAtlasMorph!==state||captured)return;
-  captured=true;
-  const source=labGlobe.getCanvas(),size=host.getBoundingClientRect();
-  const veil=doc.createElement('div');
-  veil.className='lab-atlas-morph';
-  veil.setAttribute('aria-hidden','true');
-  veil.dataset.from=from;veil.dataset.to=mode;
-  const ink=doc.createElement('div');ink.className='lab-atlas-morph-ink';
-  const image=doc.createElement('canvas');image.className='lab-atlas-morph-image';
-  image.width=Math.max(1,source.width);image.height=Math.max(1,source.height);
-  try{
-   const ctx=image.getContext('2d');
-   ctx.drawImage(source,0,0,image.width,image.height);
-   // WebGL can discard a frame outside render; use a solid ink silhouette if
-   // capture was transparent instead of exposing an intermediate map repaint.
-   if(!ctx.getImageData(Math.floor(image.width/2),Math.floor(image.height/2),1,1).data[3])
-    image.hidden=true;
-  }catch(e){image.hidden=true}
-  ink.appendChild(image);veil.appendChild(ink);
-  host.style.height=size.height+'px';
-  host.style.aspectRatio='auto';
-  host.style.transition='height '+LAB_ATLAS_MORPH_DURATION+'ms cubic-bezier(.22,.75,.2,1)';
-  host.style.pointerEvents='none';
-  host.appendChild(veil);
-  state.cover=veil;
-  // Reprojection is hidden behind the captured source. Only the viewport
-  // silhouette and size are animated, not thousands of geographic vertices.
-  labAtlasCommitMode(mode,true);
-  const destinationHeight=size.width*(mode==='globe'?1:372/720);
-  requestAnimationFrame(()=>{
-   if(labAtlasMorph!==state)return;
-   host.style.height=destinationHeight+'px';
-   veil.classList.add('is-unfolding');
-  });
-  const settle=()=>{
-   if(labAtlasMorph!==state)return;
-   host.style.transition='none';
-   host.style.height='';
-   host.style.aspectRatio=mode==='globe'?'1 / 1':'720 / 372';
-   labGlobe.resize();
-   if(mode==='robinson')labGlobe.setMinZoom(labRobinsonMinimumZoom());
-   labGlobe.jumpTo({center:labAtlasHome(),zoom:labGlobeHomeZoom(),bearing:0,pitch:0});
-   labAtlasGestures();
-   const reveal=()=>{
-    if(labAtlasMorph!==state||state.revealing)return;
-    state.revealing=true;
-    veil.classList.add('is-revealing');
-    setTimeout(()=>{
-     if(labAtlasMorph!==state)return;
-     veil.remove();
-     host.style.pointerEvents=state.pointerEvents;
-     labAtlasMorph=null;
-     const next=state.queued;
-     if(next&&next!==labAtlasMode)labSetAtlasMode(next);
-    },170);
-   };
-   labGlobe.once('idle',reveal);
-   labGlobe.triggerRepaint();
-   // Offline data should settle promptly; never leave an inaccessible atlas
-   // if WebView does not deliver idle after a projection swap.
-   setTimeout(reveal,900);
-  };
-  setTimeout(settle,LAB_ATLAS_MORPH_DURATION+40);
+ const veil=doc.createElement('div');
+ veil.className='lab-atlas-morph';
+ veil.setAttribute('aria-hidden','true');
+ veil.dataset.from=from;veil.dataset.to=mode;
+ const ink=doc.createElement('div');ink.className='lab-atlas-morph-ink';
+ const image=doc.createElement('canvas');image.className='lab-atlas-morph-image';
+ const source=labGlobe.getCanvas();
+ image.width=Math.max(1,source.width);image.height=Math.max(1,source.height);
+ image.style.height=fromHeight+'px';
+ try{
+  const ctx=image.getContext('2d');
+  ctx.drawImage(source,0,0,image.width,image.height);
+  // A GPU that did not retain the screenshot receives a clean ink silhouette.
+  if(!ctx.getImageData(Math.floor(image.width/2),Math.floor(image.height/2),1,1).data[3])
+   image.hidden=true;
+ }catch(e){image.hidden=true}
+ ink.appendChild(image);veil.appendChild(ink);
+ host.style.transition='none';
+ host.style.height=fromHeight+'px';
+ host.style.aspectRatio='auto';
+ host.style.pointerEvents='none';
+ host.appendChild(veil);
+ state.cover=veil;
+ // The destination is reconstructed behind opaque paper, never exposed mid-frame.
+ labAtlasCommitMode(mode,true);
+ const draw=progress=>{
+  const p=Math.max(0,Math.min(progress,1.12));
+  host.style.height=Math.max(100,fromHeight+(targetHeight-fromHeight)*p)+'px';
+  // As host height changes, an almost circular ellipse becomes a sphere and
+  // the wide Robinson chart does the reverse. Spring progress adds recoil.
+  const rx=50+(46-50)*p,ry=44+(46-44)*p;
+  ink.style.clipPath='ellipse('+rx+'% '+ry+'% at 50% 50%)';
+  // Subtle elastic squash, not the old full-height texture stretch.
+  const recoil=Math.max(0,p-1);
+  ink.style.transform='scaleX('+(1-recoil*.16)+') scaleY('+(1+recoil*.16)+')';
+  veil.dataset.springProgress=p.toFixed(3);
  };
- // The button, not a future WebGL render event, starts the transition.
- // Idle MapLibre instances can legitimately skip an extra render callback.
- begin();
+ draw(0);
+ const finish=()=>{
+  if(labAtlasMorph!==state)return;
+  draw(1);
+  host.style.height='';
+  host.style.aspectRatio=mode==='globe'?'1 / 1':'720 / 372';
+  labGlobe.resize();
+  if(mode==='robinson')labGlobe.setMinZoom(labRobinsonMinimumZoom());
+  labGlobe.jumpTo({center:labAtlasHome(),zoom:labGlobeHomeZoom(),bearing:0,pitch:0});
+  labAtlasGestures();
+  const reveal=()=>{
+   if(labAtlasMorph!==state||state.revealing)return;
+   state.revealing=true;
+   veil.classList.add('is-revealing');
+   setTimeout(()=>{
+    if(labAtlasMorph!==state)return;
+    veil.remove();
+    host.style.pointerEvents=state.pointerEvents;
+    labAtlasMorph=null;
+    const next=state.queued;
+    if(next&&next!==labAtlasMode)labSetAtlasMode(next);
+   },170);
+  };
+  labGlobe.once('idle',reveal);
+  labGlobe.triggerRepaint();
+  // A slow or paused renderer must never trap the user's map.
+  setTimeout(reveal,850);
+ };
+ let began=0;
+ const step=now=>{
+  if(labAtlasMorph!==state)return;
+  if(!began)began=now;
+  const elapsed=Math.min((now-began)/1000,LAB_ATLAS_MORPH_DURATION/1000);
+  draw(labAtlasSpring(elapsed));
+  if((now-began)<LAB_ATLAS_MORPH_DURATION)state.raf=requestAnimationFrame(step);
+  else finish();
+ };
+ state.raf=requestAnimationFrame(step);
+ // When backgrounded, rAF may pause. Restore map access on return.
+ const onVisible=()=>{
+  if(doc.visibilityState!=='visible'||labAtlasMorph!==state||state.revealing)return;
+  cancelAnimationFrame(state.raf);
+  finish();
+ };
+ doc.addEventListener('visibilitychange',onVisible,{once:true});
 }
 function labSetAtlasMode(mode){
  if(mode==='mercator')mode='robinson';
