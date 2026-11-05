@@ -112,16 +112,19 @@ assert(mFit[0]<aFit[0]&&mFit[0]>bFit[0],
  'Robinson -> Globe shrinks progressively rather than at the last frame');
 assert(fitted(1)[0]===bFit[0]&&fitted(0)[0]===aFit[0],
  'Globe -> Robinson reuses the exact same sizes in reverse');
-// Idle-prepared geographic sprite sheet: 19 poses prepared in separate tasks,
+// Idle-prepared geographic sprite sheet: 31 poses prepared in separate tasks,
 // then one drawImage per animation frame instead of 183 polygons / ~11k points.
 const selected=new Set(['europe']);
 const warming=vectors.warmFrames(geo,selected,400);
-assert.equal(warming.ready,false,'Do not synchronously paint all 19 frames on tap');
+assert.equal(warming.ready,false,'Do not synchronously paint all 31 frames on tap');
 let ticks=0;
 while(idleQueue.length&&ticks<100){idleQueue.shift()();ticks++}
 assert.equal(vectors.cacheStatus().ready,true,'Idle cache must finish before playback');
-assert.equal(vectors.cacheStatus().frames,19,'All geographic poses are available');
-assert(ticks>=19,'Prewarming is split across tasks, not one blocking batch');
+assert.equal(vectors.cacheStatus().frames,31,'All geographic poses are available');
+assert(ticks>=31,'Prewarming is split across tasks, not one blocking batch');
+const wide=vectors.warmFrames(geo,selected,800);
+assert.equal(wide.pixels,460,'Wide phones must not allocate an oversized sprite sheet');
+vectors.pauseWarm();
 const visible=fakeCanvas();visible.width=visible.height=400;
 assert.equal(vectors.paintCached(visible,projected,.5,selected,fits),true,
  'Matching selection and map scale should play a cached vector frame');
