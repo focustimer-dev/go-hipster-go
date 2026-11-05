@@ -64,6 +64,13 @@ const flatFit=vectors.landingFit('robinson',400,206,([lon,lat])=>{
 assert(Math.abs(flatFit.sx-187/(.45*170/180*400))<1e-8,'Robinson map width matches renderer');
 assert(Math.abs(flatFit.sy-84/(.44*.8936*206))<1e-8,'Robinson map height matches renderer');
 assert.equal(flatFit.x,1);assert.equal(flatFit.y,0);
+assert.equal(flatFit.sampled,true,'A settled Robinson camera must produce a valid measured endpoint');
+const unsettled=vectors.landingFit('robinson',400,206,([lon,lat])=>
+ (lon===0&&lat===0)?{x:200,y:103}:{x:200,y:103});
+assert.equal(unsettled.sampled,false,'An unsettled renderer must be explicitly flagged');
+assert.equal(unsettled.sx,vectors.estimatedFit('robinson').sx,
+ 'Never replace a calibrated endpoint with an invalid 1x camera measurement');
+
 // Every geographic midpoint also uses the same interpolation for chart size.
 // This prevents a late, separate shrink/expand at the live MapLibre handoff.
 const fits={robinson:vectors.estimatedFit('robinson'),globe:vectors.estimatedFit('globe'),width:400,height:206};
