@@ -50,14 +50,20 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    requestAnimationFrame(tick);
   }),mode);
   const out=await sample('globe');
+  const toGlobe=await page.evaluate(()=>window.__labAtlasLastMorph);
   const back=await sample('robinson');
+  const toRobinson=await page.evaluate(()=>window.__labAtlasLastMorph);
+  console.log('Projection commit timing:',{toGlobe,toRobinson});
   for(const [label,rows] of [['Globe',out],['Robinson',back]]){
    console.log(label+' tween diagnostic:',JSON.stringify(rows.map(r=>({t:Math.round(r.t),p:r.p,clickCost:Math.round(r.clickCost),w:r.w,h:r.h}))));
    const intermediate=rows.filter(r=>r.p>.05&&r.p<.95);
+   assert(rows[0].clickCost<800,label+' must not block tap for expensive MapLibre projection work');
    assert(intermediate.length>=2,label+' must show at least two real vector in-between frames');
    assert(new Set(intermediate.map(r=>r.p.toFixed(2))).size>=2,label+' vertices must move across several frames');
   }
   assert.equal(await page.locator('.lab-atlas-morph').count(),0,'No overlay after settling');
+  assert.equal(toGlobe?.to,'globe','MapLibre finishes its Globe destination');
+  assert.equal(toRobinson?.to,'robinson','MapLibre finishes its Robinson destination');
   assert.equal(await page.locator('#labAtlasGlobe').evaluate(el=>el.style.pointerEvents),'','Map gestures restored');
   await page.emulateMedia({reducedMotion:'reduce'});
   await page.locator('[data-atlas-view=globe]').click();
