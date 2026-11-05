@@ -52,6 +52,12 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    }
    requestAnimationFrame(tick);
   }),mode);
+  // Selection state is a user-facing contract across both sources and
+  // projection switches. The optimized feature-state sync must preserve it.
+  await page.evaluate(()=>document.querySelector('[data-crate-region="west-africa"]').click());
+  const featureId=await page.evaluate(()=>JSON.parse(document.querySelector('#labGlobeGeography').textContent)
+   .features.find(f=>f.properties.region==='west-africa').id);
+  await page.waitForFunction(id=>window.labAtlasGlobe.getFeatureState({source:'land',id}).selected===true,featureId);
   const out=await sample('globe');
   const toGlobe=await page.evaluate(()=>window.__labAtlasLastMorph);
   const back=await sample('robinson');
@@ -81,6 +87,8 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    else assert(moving[0].fitX<moving.at(-1).fitX,
     'Robinson scales outward while continents unfold, not after they finish');
   }
+  assert.equal(await page.evaluate(id=>window.labAtlasGlobe.getFeatureState({source:'land',id}).selected,featureId),true,
+   'Selected West Africa remains highlighted after both projection changes');
   assert.equal(await page.locator('.lab-atlas-morph').count(),0,'No overlay after settling');
   assert(out[0].p<out.at(-1).p,'Globe transition moves coastlines forwards');
   assert(back[0].p>back.at(-1).p,'Robinson transition moves coastlines backwards');
