@@ -92,7 +92,26 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
   await page.locator('[data-atlas-view=globe]').click();
   assert.equal(await page.locator('.lab-atlas-morph').count(),0,'Reduced motion skips geographic animation');
   assert.equal(await page.locator('[data-atlas-view=globe]').getAttribute('aria-pressed'),'true');
+  // Ensure endpoint dimensions are viewport-relative, not hardcoded for 412px.
+  await page.emulateMedia({reducedMotion:'no-preference'});
+  await page.setViewportSize({width:320,height:740});
+  await page.waitForTimeout(280);
+  const narrowBack=await sample('robinson');
+  const narrowToRobinson=await page.evaluate(()=>window.__labAtlasLastMorph);
+  const narrowOut=await sample('globe');
+  const narrowToGlobe=await page.evaluate(()=>window.__labAtlasLastMorph);
+  for(const [name,record] of [['robinson',narrowToRobinson],['globe',narrowToGlobe]]){
+   assert(record?.endpointResidual<.035,
+    name+' endpoint should stay aligned within 3.5% on a narrow phone');
+  }
+  assert(narrowBack.length>=2&&narrowOut.length>=2,
+   'Both narrow-phone transitions must paint multiple geographic frames');
+  assert.equal(await page.locator('#labAtlasGlobe').evaluate(el=>el.style.pointerEvents),'',
+   'Narrow-phone transition restores map hit testing');
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,
+   'Narrow-phone projection morph does not cause sideways page scrolling');
   assert.deepEqual(errors,[],'No browser script errors');
-  console.log('Vector betweening passed. Frames:',{globe:out.length,robinson:back.length});
+  console.log('Vector betweening passed. Frames:',{globe:out.length,robinson:back.length,
+   narrowGlobe:narrowOut.length,narrowRobinson:narrowBack.length});
  }finally{await browser?.close();server.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});
