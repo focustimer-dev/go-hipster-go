@@ -173,8 +173,11 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   await page.waitForTimeout(180);
   const capture=await page.locator('.lab-atlas-morph-image').evaluate(el=>({visible:!el.hidden,width:el.width,height:el.height}));
   console.log('Projection snapshot captured:',capture);
-  await page.screenshot({path:'android-lab/build/switch-review/atlas-fold-midpoint.png',animations:'allow'});
+  assert(capture.visible,'The outgoing map must be captured, not replaced with a solid ink disk');
   assert(await page.locator('.lab-atlas-morph').isVisible(),'The atlas silhouette stays visible during projection reconstruction');
+  const atlasCDP=await page.context().newCDPSession(page);
+  const folded=await atlasCDP.send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});
+  fs.writeFileSync('android-lab/build/switch-review/atlas-fold-midpoint.png',Buffer.from(folded.data,'base64'));
   await page.waitForFunction(()=>!document.querySelector('.lab-atlas-morph'),{timeout:5000});
   assert.equal(await page.locator('.lab-atlas-morph').count(),0,'The veil is fully removed after the new map settles');
   await page.reload();await page.waitForFunction(()=>window.labAtlasGlobe&&labAtlasGlobe.loaded());
@@ -203,8 +206,10 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert.deepEqual(await page.locator('.lab-atlas-morph').evaluate(el=>[el.dataset.from,el.dataset.to]),
    ['globe','robinson'],'Returning to Robinson unfolds the sphere into the chart');
   await page.waitForTimeout(160);
-  await page.screenshot({path:'android-lab/build/switch-review/atlas-unfold-midpoint.png',animations:'allow'});
+  const unfolded=await atlasCDP.send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});
+  fs.writeFileSync('android-lab/build/switch-review/atlas-unfold-midpoint.png',Buffer.from(unfolded.data,'base64'));
   await page.waitForFunction(()=>!document.querySelector('.lab-atlas-morph'),{timeout:5000});
+  await atlasCDP.detach();
   const robinsonFrame=await page.locator('#labAtlasGlobe').evaluate(el=>({width:el.clientWidth,height:el.clientHeight}));
   assert(Math.abs(robinsonFrame.width/robinsonFrame.height-720/372)<.05,'Robinson keeps the original wide chart');
   assert.equal(await page.locator('#atlasHome').textContent(),'← WHOLE WORLD');
