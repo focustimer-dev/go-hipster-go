@@ -156,6 +156,8 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   await page.locator('[data-atlas-view="globe"]').click();
   await page.reload();await page.waitForFunction(()=>window.labAtlasGlobe&&labAtlasGlobe.loaded());
   assert.equal(await page.locator('[data-atlas-view="globe"]').getAttribute('aria-pressed'),'true','An explicit Globe choice survives reload');
+  assert.deepEqual(await page.evaluate(()=>labAtlasGlobe.getPaintProperty('ocean','background-color-transition')),
+   {duration:0,delay:0},'Projection switch must not fade the ocean over the entire rectangular panel');
   const globeFrame=await page.locator('#labAtlasGlobe').evaluate(el=>{
    const rect=el.getBoundingClientRect(),m=window.labAtlasGlobe;
    const points=[[-70,15],[90,15],[10,80],[10,-65]].map(p=>m.project(p));
@@ -177,6 +179,9 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   const robinsonFrame=await page.locator('#labAtlasGlobe').evaluate(el=>({width:el.clientWidth,height:el.clientHeight}));
   assert(Math.abs(robinsonFrame.width/robinsonFrame.height-720/372)<.05,'Robinson keeps the original wide chart');
   assert.equal(await page.locator('#atlasHome').textContent(),'← WHOLE WORLD');
+  assert.equal(await page.evaluate(()=>labAtlasGlobe.getPaintProperty('ocean','background-color')),
+   'rgba(0,0,0,0)','Robinson clears the globe-wide ocean before painting the rounded map');
+  await page.locator('#labAtlasGlobe').screenshot({path:'android-lab/build/switch-review/robinson-transition-fast.png'});
 
 
   await page.evaluate(()=>{const f=labAtlasGlobe.getSource('land')._data.features.find(f=>f.properties.country==='GRL');const points=f.geometry.coordinates.flat(2);const xs=points.map(p=>p[0]),ys=points.map(p=>p[1]);labAtlasGlobe.fitBounds([[Math.min(...xs),Math.min(...ys)],[Math.max(...xs),Math.max(...ys)]],{padding:16,maxZoom:3,duration:0})});
