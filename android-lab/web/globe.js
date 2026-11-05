@@ -235,7 +235,9 @@ function labAtlasMorphTo(mode){
  };
  draw(0);
  const finish=()=>{
-  if(labAtlasMorph!==state)return;
+  if(labAtlasMorph!==state||state.finishing)return;
+  state.finishing=true;
+  cancelAnimationFrame(state.raf);
   host.style.height='';
   host.style.aspectRatio=mode==='globe'?'1 / 1':'720 / 372';
   host.style.transform=state.transform;
@@ -274,6 +276,9 @@ function labAtlasMorphTo(mode){
   else finish();
  };
  state.raf=requestAnimationFrame(step);
+ // A blocked renderer or backgrounded WebView must never strand a pointer-
+ // disabled Atlas. This watchdog also catches an abandoned rAF callback.
+ setTimeout(finish,1800);
 }
 function labSetAtlasMode(mode){
  if(mode==='mercator')mode='robinson';
