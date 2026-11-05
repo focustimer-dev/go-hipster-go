@@ -177,7 +177,10 @@ const labAtlasMorphVectors=(()=>{
     f.sx/base.sx>.70&&f.sx/base.sx<1.30&&
     f.sy/base.sy>.70&&f.sy/base.sy<1.30&&
     Number.isFinite(f.x)&&Number.isFinite(f.y)&&
-    Math.abs(f.x)<width*.2&&Math.abs(f.y)<width*.2;
+    // A focused region can pan the live map by more than a fifth of the
+    // screen. Translation is an affine camera change: reusing the same
+    // geographic poses with the measured offset is still correct.
+    Math.abs(f.x)<width*2&&Math.abs(f.y)<width*2;
   });
   if(!warm?.ready||warm.key!==key||!reasonable){
    paint(canvas,prepared,t,selected,fits);return false;
