@@ -297,7 +297,7 @@ function labAtlasMorphTo(mode){
     Math.abs(correction.x)/Math.max(1,width),
     Math.abs(correction.y)/Math.max(1,targetHeight));
    window.__labAtlasLastMorph={from,to:mode,commitMs,landingFit:actualFit,
-    predictedFit:predicted,fitSampled:measured.sampled,
+    sourceFit,predictedFit:predicted,fitSampled:measured.sampled,
     endpointResidual:residual,correction,cacheHits:state.cacheHits||0,
     cacheMisses:state.cacheMisses||0,maxPaintMs:state.maxPaintMs||0};
    veil.dataset.endpointResidual=residual.toFixed(4);
