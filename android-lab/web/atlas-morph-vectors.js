@@ -164,6 +164,10 @@ const labAtlasMorphVectors=(()=>{
  function warmFrames(geojson,selected,width){
   return createWarm(geojson,selected,width);
  }
+ function pauseWarm(){
+  // Never let an idle pre-render task compete with an active live transition.
+  if(warming){warming.cancelled=true;warming=null}
+ }
  function paintCached(canvas,prepared,t,selected,fits){
   const width=canvas.width,key=signature(width,selected);
   const baseR=estimatedFit('robinson'),baseG=estimatedFit('globe');
@@ -193,5 +197,5 @@ const labAtlasMorphVectors=(()=>{
   canvas.width=canvas.height=width;
   return {data:sourceData(geojson),selected:new Set(selected)};
  }
- return {make,paint,paintCached,warmFrames,cacheStatus,prepare,landingFit,estimatedFit};
+ return {make,paint,paintCached,warmFrames,pauseWarm,cacheStatus,prepare,landingFit,estimatedFit};
 })();
