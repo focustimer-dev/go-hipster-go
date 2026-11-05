@@ -216,13 +216,8 @@ function labAtlasMorphTo(mode){
   else finish();
  };
  state.raf=requestAnimationFrame(step);
- // When backgrounded, rAF may pause. Restore map access on return.
- const onVisible=()=>{
-  if(doc.visibilityState!=='visible'||labAtlasMorph!==state||state.revealing)return;
-  cancelAnimationFrame(state.raf);
-  finish();
- };
- doc.addEventListener('visibilitychange',onVisible,{once:true});
+ // rAF pauses in a background WebView and resumes against real elapsed time.
+ // The first resumed frame finishes the spring without stacking new listeners.
 }
 function labSetAtlasMode(mode){
  if(mode==='mercator')mode='robinson';
