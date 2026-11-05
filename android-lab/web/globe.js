@@ -88,7 +88,13 @@ function initLabGlobe(){
   labGlobe.resize();
   if(labAtlasMode==='robinson')labGlobe.setMinZoom(labRobinsonMinimumZoom());
   // Refit at rest on rotation, without erasing a user's current close-up.
-  else if(labGlobeResting)labGlobe.jumpTo({center:labAtlasHome(),zoom:labGlobeHomeZoom()});
+  else if(labGlobeResting){
+   const home=labAtlasHome(),zoom=labGlobeHomeZoom(),center=labGlobe.getCenter();
+   // A resize event after the morph must not cause a redundant camera snap.
+   if(Math.abs(labGlobe.getZoom()-zoom)>.025||
+      Math.abs(center.lng-home[0])>.1||Math.abs(center.lat-home[1])>.1)
+    labGlobe.jumpTo({center:home,zoom});
+  }
  }).observe(host);
 }
 function labGlobeUnproject([x,y]){
@@ -283,11 +289,14 @@ function labAtlasMorphTo(mode){
   veil.dataset.commitMs=commitMs.toFixed(1);
   veil.dataset.phase='dock';
   let dockStarted=false;
-  // Wait for MapLibre to settle before inspecting its camera. Measuring
-  // synchronously after setProjection can return the *previous* transform.
-  const dock=()=>{
+  const waitingSince=performance.now();
+  // A completed frame with loaded sources is enough to reveal the real map.
+  // Waiting for global 'idle' alone can hold the final pose unnecessarily.
+  const dock=(signal='timeout')=>{
    if(dockStarted||labAtlasMorph!==state)return;
    dockStarted=true;
+   labGlobe.off('render',onRender);
+   labGlobe.off('idle',onIdle);
    const measured=labAtlasMorphVectors.landingFit(mode,host.clientWidth,host.clientHeight,
     point=>labGlobe.project(mode==='robinson'?labRobinsonPoint(point):point),.03);
    const predicted=fits[mode],actualFit=measured.sampled?measured:predicted;
@@ -297,6 +306,7 @@ function labAtlasMorphTo(mode){
     Math.abs(correction.x)/Math.max(1,width),
     Math.abs(correction.y)/Math.max(1,targetHeight));
    window.__labAtlasLastMorph={from,to:mode,commitMs,landingFit:actualFit,
+    handoffSignal:signal,handoffWaitMs:performance.now()-waitingSince,
     sourceFit,predictedFit:predicted,fitSampled:measured.sampled,
     endpointResidual:residual,correction,cacheHits:state.cacheHits||0,
     cacheMisses:state.cacheMisses||0,maxPaintMs:state.maxPaintMs||0};
@@ -314,10 +324,19 @@ function labAtlasMorphTo(mode){
    }catch(e){tween.style.transform=transform;cleanup()}
    setTimeout(cleanup,170);
   };
-  const onIdle=()=>{labGlobe.off('idle',onIdle);dock()};
-  labGlobe.once('idle',onIdle);labGlobe.triggerRepaint();
-  // Offline WebViews may never send 'idle'; use calibrated geometry safely.
-  setTimeout(()=>{labGlobe.off('idle',onIdle);dock()},950);
+  const onRender=()=>{
+   const expected=mode==='globe'?'globe':'mercator';
+   if(labGlobe.getProjection()?.type!==expected||
+      !labGlobe.isStyleLoaded()||!labGlobe.isSourceLoaded('land')||
+      (labRouteGeography&&!labGlobe.isSourceLoaded('routes')))return;
+   dock('render');
+  };
+  const onIdle=()=>dock('idle');
+  labGlobe.on('render',onRender);
+  labGlobe.once('idle',onIdle);
+  labGlobe.triggerRepaint();
+  // Software WebGL can omit both callbacks: never strand the canvas/gestures.
+  setTimeout(()=>dock('timeout'),950);
  };
 
  const step=now=>{
