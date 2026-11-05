@@ -68,6 +68,10 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    assert(f.sx>.2&&f.sy>.2,name+' must land within the renderer bounds');
    assert(record.endpointResidual<.035,name+' integrated endpoint should need at most 3.5% last correction');
    assert(record.cacheHits>=2,name+' should draw multiple pre-rendered frames instead of tracing every polygon');
+   assert(['render','idle','timeout'].includes(record.handoffSignal),
+    name+' reports which MapLibre paint event allowed the reveal');
+   assert(record.handoffWaitMs>=0&&record.handoffWaitMs<1200,
+    name+' must have a bounded map-ready handoff');
    console.log(name+' cached vector playback:',{hits:record.cacheHits,misses:record.cacheMisses,maxPaintMs:record.maxPaintMs});
   }
   for(const [label,rows] of [['Globe',out],['Robinson',back]]){
@@ -139,6 +143,19 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    'Narrow-phone transition restores map hit testing');
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,
    'Narrow-phone projection morph does not cause sideways page scrolling');
+  // Rapidly reversing a projection switch must honor the last tap and
+  // return the canvas to interactive operation (not strand the veil).
+  await page.locator('[data-atlas-view=robinson]').click();
+  await page.waitForTimeout(125);
+  await page.locator('[data-atlas-view=globe]').click();
+  await page.waitForFunction(()=>{
+   const b=document.querySelector('[data-atlas-view=globe]');
+   return !document.querySelector('.lab-atlas-morph')&&
+    b?.getAttribute('aria-pressed')==='true'&&
+    window.labAtlasGlobe?.getProjection()?.type==='globe';
+  },null,{timeout:9000});
+  assert.equal(await page.locator('#labAtlasGlobe').evaluate(el=>el.style.pointerEvents),'',
+   'Last-tap reversal restores all MapLibre gesture handling');
   assert.deepEqual(errors,[],'No browser script errors');
   console.log('Vector betweening passed. Frames:',{globe:out.length,robinson:back.length,
    narrowGlobe:narrowOut.length,narrowRobinson:narrowBack.length});
