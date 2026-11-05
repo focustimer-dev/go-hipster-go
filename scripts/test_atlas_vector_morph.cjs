@@ -127,6 +127,18 @@ assert.equal(vectors.paintCached(visible,projected,.5,selected,fits),true,
  'Matching selection and map scale should play a cached vector frame');
 assert.equal(visible.getContext('2d').draws.length,1,
  'Cached playback needs only one canvas blit instead of redrawing countries');
+const adjusted=fakeCanvas();adjusted.width=adjusted.height=400;
+const shifted={...fits,robinson:{...fits.robinson,
+ sx:fits.robinson.sx*1.04,sy:fits.robinson.sy*.98,x:3,y:-2}};
+assert.equal(vectors.paintCached(adjusted,projected,.5,selected,shifted),true,
+ 'Slight live-camera differences should preserve the fast cached path');
+const correctedScale=adjusted.getContext('2d').transforms.find(([name])=>name==='scale');
+assert(correctedScale&&correctedScale[1]>1&&correctedScale[2]<1,
+ 'Cached art must honor live-camera X and Y scaling, not stretch blindly');
+const outOfBounds=fakeCanvas();outOfBounds.width=outOfBounds.height=400;
+assert.equal(vectors.paintCached(outOfBounds,projected,.5,selected,{
+ ...fits,robinson:{...fits.robinson,sx:fits.robinson.sx*1.6}}),false,
+ 'A significantly zoomed camera must use exact vector painting instead of a stale sprite');
 const uncached=fakeCanvas();uncached.width=uncached.height=400;
 assert.equal(vectors.paintCached(uncached,projected,.5,new Set(['pacific']),fits),false,
  'Changed selections must not replay stale highlighted geography');
