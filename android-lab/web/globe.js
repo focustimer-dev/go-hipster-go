@@ -182,6 +182,8 @@ function labAtlasMorphTo(mode){
   labAtlasMorphVectors.paint(tween,vector.data,geographicProgress,vector.selected,fits);
   veil.dataset.vectorProgress=geographicProgress.toFixed(3);
   veil.dataset.morphProgress=travel.toFixed(3);
+  veil.dataset.fitX=(fits.robinson.sx+(fits.globe.sx-fits.robinson.sx)*geographicProgress).toFixed(5);
+  veil.dataset.fitY=(fits.robinson.sy+(fits.globe.sy-fits.robinson.sy)*geographicProgress).toFixed(5);
   veil.dataset.phase='pop';
   host.style.height=(fromHeight+(targetHeight-fromHeight)*travel).toFixed(2)+'px';
   // A very small spring embellishment on the entire map. It decays to EXACT
