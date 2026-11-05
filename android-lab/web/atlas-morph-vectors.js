@@ -33,15 +33,35 @@ const labAtlasMorphVectors=(()=>{
   }));
   return {features,vertices:features.reduce((sum,f)=>sum+f.polygons.reduce((n,p)=>n+p.reduce((m,r)=>m+r.length,0),0),0)};
  }
- function paint(canvas,prepared,t,selected){
+ // Measured phone baseline, used only when the target renderer has not
+ // yet switched. A live source camera supplies its exact start endpoint;
+ // the destination camera supplies a tiny residual correction after commit.
+ const BASE_FIT={
+  robinson:{x:0,y:0,sx:1.118858,sy:1.110402},
+  globe:{x:0,y:0,sx:.749728,sy:.749728}
+ };
+ function estimatedFit(mode){return {...BASE_FIT[mode]}}
+ function paint(canvas,prepared,t,selected,fits=null){
   const progress=Math.max(0,Math.min(1,t)),context=canvas.getContext('2d');
   if(!context)return;
   const res=canvas.width;
   context.setTransform(res,0,0,res,0,0);
   context.clearRect(0,0,1,1);
   context.save();
+  // Use the SAME progress for geography, chart silhouette and zoom fit.
+  // The old code animated nominal geography and resized it 235ms later,
+  // visibly disrupting the final fold (especially Robinson -> Globe).
+  if(fits){
+   const a=fits.robinson,b=fits.globe;
+   const sx=a.sx+(b.sx-a.sx)*progress,sy=a.sy+(b.sy-a.sy)*progress;
+   const ox=(a.x+(b.x-a.x)*progress)/Math.max(1,fits.width);
+   const oy=(a.y+(b.y-a.y)*progress)/Math.max(1,fits.height);
+   context.translate(.5+ox,.5+oy);
+   context.scale(sx,sy);
+   context.translate(-.5,-.5);
+  }
   // Robinson is a wide paper chart; the destination is a circular sphere.
-  // The host's own height also changes, making the final equal radii round.
+  // The host's own height changes on this same normalized timeline.
   context.beginPath();
   context.ellipse(.5,.5,.48-.025*progress,.455+.005*progress,0,0,Math.PI*2);
   context.clip();
@@ -92,5 +112,5 @@ const labAtlasMorphVectors=(()=>{
   canvas.width=canvas.height=width;
   return {data:prepare(geojson,center),selected:new Set(selected)};
  }
- return {make,paint,prepare,landingFit};
+ return {make,paint,prepare,landingFit,estimatedFit};
 })();
