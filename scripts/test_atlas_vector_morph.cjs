@@ -2,7 +2,16 @@
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
 const src=fs.readFileSync(path.join(__dirname,'../android-lab/web/atlas-morph-vectors.js'),'utf8');
-const vectors=vm.runInNewContext(src+';labAtlasMorphVectors');
+const idleQueue=[];
+const fakeCanvas=()=>{
+ const ctx=context(),canvas={width:0,height:0,getContext:()=>ctx};
+ return canvas;
+};
+const vectors=vm.runInNewContext(src+';labAtlasMorphVectors',{
+ document:{createElement:()=>fakeCanvas()},
+ devicePixelRatio:1,
+ setTimeout:callback=>{idleQueue.push(callback);return idleQueue.length}
+});
 const geo={type:'FeatureCollection',features:[
  {type:'Feature',properties:{region:'europe'},geometry:{type:'MultiPolygon',
  coordinates:[[[[-10,30],[15,30],[15,60],[-10,60],[-10,30]]]]}},
@@ -23,8 +32,9 @@ assert(Math.hypot(back[2]-.5,back[3]-.5)>.45,'Far hemisphere exits the globe lim
 const first=projected.features[0].polygons[0][0][0];
 assert(Math.hypot(first[2]-first[0],first[3]-first[1])>.02,'Source vertices genuinely change geographic position');
 function context(){
- const points=[],transforms=[];let ellipseCount=0,fillCount=0;
- const c={points,transforms,get fills(){return fillCount},get ellipseCount(){return ellipseCount},
+ const points=[],transforms=[],draws=[];let ellipseCount=0,fillCount=0;
+ const c={points,transforms,draws,drawImage(...args){draws.push(args)},
+ get fills(){return fillCount},get ellipseCount(){return ellipseCount},
   setTransform(){},translate(x,y){transforms.push(['translate',x,y])},
   scale(x,y){transforms.push(['scale',x,y])},
   clearRect(){},save(){},beginPath(){},ellipse(){ellipseCount++},clip(){},
@@ -102,4 +112,29 @@ assert(mFit[0]<aFit[0]&&mFit[0]>bFit[0],
  'Robinson -> Globe shrinks progressively rather than at the last frame');
 assert(fitted(1)[0]===bFit[0]&&fitted(0)[0]===aFit[0],
  'Globe -> Robinson reuses the exact same sizes in reverse');
+// Idle-prepared geographic sprite sheet: 19 poses prepared in separate tasks,
+// then one drawImage per animation frame instead of 183 polygons / ~11k points.
+const selected=new Set(['europe']);
+const warming=vectors.warmFrames(geo,selected,400);
+assert.equal(warming.ready,false,'Do not synchronously paint all 19 frames on tap');
+let ticks=0;
+while(idleQueue.length&&ticks<100){idleQueue.shift()();ticks++}
+assert.equal(vectors.cacheStatus().ready,true,'Idle cache must finish before playback');
+assert.equal(vectors.cacheStatus().frames,19,'All geographic poses are available');
+assert(ticks>=19,'Prewarming is split across tasks, not one blocking batch');
+const visible=fakeCanvas();visible.width=visible.height=400;
+assert.equal(vectors.paintCached(visible,projected,.5,selected,fits),true,
+ 'Matching selection and map scale should play a cached vector frame');
+assert.equal(visible.getContext('2d').draws.length,1,
+ 'Cached playback needs only one canvas blit instead of redrawing countries');
+const uncached=fakeCanvas();uncached.width=uncached.height=400;
+assert.equal(vectors.paintCached(uncached,projected,.5,new Set(['pacific']),fits),false,
+ 'Changed selections must not replay stale highlighted geography');
+assert.equal(uncached.getContext('2d').draws.length,0,
+ 'Cache miss uses live vector painting, not mismatched sprite art');
+vectors.warmFrames(geo,new Set(['pacific']),400);
+vectors.pauseWarm();
+while(idleQueue.length&&ticks<120){idleQueue.shift()();ticks++}
+assert.equal(vectors.cacheStatus().ready,true,
+ 'Cancelling work in progress must preserve the last valid cached selection');
 console.log('Atlas geographic in-betweening passes:',projected.vertices,'matched vector points');
