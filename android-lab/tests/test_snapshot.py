@@ -99,3 +99,30 @@ class RuntimeAssetTests(unittest.TestCase):
             return content.replace('/* PLATFORM_COPY */','') if path.name=='app.js' else content
         with tempfile.TemporaryDirectory() as temp,patch.object(Path,'read_text',read):
             with self.assertRaisesRegex(ValueError,'COPY'):module.bundle(Path(temp)/'site')
+
+    def test_polar_coastlines_keep_high_latitudes_and_region_splits(self):
+        import json
+        spec = importlib.util.spec_from_file_location('maplibre_bundle', ROOT / 'scripts/bundle_maplibre_lab.py')
+        builder = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(builder)
+        regions = [('GRL','northern-europe'),('CAN','canada-west'),('CAN','canada-east'),('RUS','eastern-europe'),('RUS','northern-asia'),('NOR','northern-europe'),('ATA','antarctica')]
+        features = [{'id':i,'properties':{'country':country,'region':region},'geometry':{}} for i,(country,region) in enumerate(regions)]
+        restored = builder.complete_polar_coastlines(features)
+        self.assertEqual([f['id'] for f in restored], list(range(len(regions))))
+        def points(feature):
+            return [point for polygon in feature['geometry']['coordinates'] for ring in polygon for point in ring]
+        by_region = {f['properties']['region']:f for f in restored}
+        greenland = next(f for f in restored if f['properties']['country']=='GRL')
+        self.assertGreater(max(p[1] for p in points(greenland)),83.5)
+        self.assertGreater(max(p[1] for p in points(by_region['canada-east'])),82)
+        self.assertGreater(max(p[1] for p in points(by_region['northern-asia'])),80)
+        self.assertLessEqual(max(p[0] for p in points(by_region['canada-west'])),-95)
+        self.assertGreaterEqual(min(p[0] for p in points(by_region['canada-east'])),-95)
+        self.assertLessEqual(max(p[0] for p in points(by_region['eastern-europe'])),60)
+        self.assertGreaterEqual(min(p[0] for p in points(by_region['northern-asia'])),60)
+        self.assertLessEqual(min(p[1] for p in points(by_region['antarctica'])),-89.9)
+        for feature in restored:
+            for polygon in feature['geometry']['coordinates']:
+                for ring in polygon:
+                    self.assertGreaterEqual(len(ring),4)
+                    self.assertEqual(ring[0],ring[-1])
