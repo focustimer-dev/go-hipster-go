@@ -65,6 +65,15 @@ function initLabGlobe(){
  labGlobe.on('click','land',event=>{
   if(event.originalEvent?._atlasSecret||labGlobe.getLayer('route-targets')&&labGlobe.queryRenderedFeatures(event.point,{layers:['route-targets']}).length)return;
   const id=event.features[0].properties.region;atlasFocus=null;atlasUserNavigated=true;toggleCrateRegion(id);
+  setTimeout(()=>{if(!labAtlasMorph)labAtlasMorphVectors.warmFrames(
+   labGlobeGeography,crateSelected,host.clientWidth)},0);
+ });
+ // Region buttons also invalidate the geographic sprite when the user edits
+ // the crate; snapshots must never show an obsolete selected region.
+ doc.addEventListener('click',event=>{
+  if(!event.target?.closest?.('[data-crate-region]'))return;
+  setTimeout(()=>{if(!labAtlasMorph)labAtlasMorphVectors.warmFrames(
+   labGlobeGeography,crateSelected,host.clientWidth)},0);
  });
  labGlobe.on('dragstart',()=>{labGlobeResting=false;atlasFocus=null;atlasUserNavigated=true;renderAtlasNavigation()});
  labGlobe.on('rotatestart',()=>{labGlobeResting=false;atlasUserNavigated=true;renderAtlasNavigation()});
