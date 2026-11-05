@@ -171,7 +171,8 @@ function labAtlasMorphTo(mode){
   host.style.height=Math.max(100,fromHeight+(targetHeight-fromHeight)*p)+'px';
   // As host height changes, an almost circular ellipse becomes a sphere and
   // the wide Robinson chart does the reverse. Spring progress adds recoil.
-  const rx=50+(46-50)*p,ry=44+(46-44)*p;
+  const rx=(from==='globe'?46:50)+((mode==='globe'?46:50)-(from==='globe'?46:50))*p;
+  const ry=(from==='globe'?46:44)+((mode==='globe'?46:44)-(from==='globe'?46:44))*p;
   ink.style.clipPath='ellipse('+rx+'% '+ry+'% at 50% 50%)';
   // Subtle elastic squash, not the old full-height texture stretch.
   const recoil=Math.max(0,p-1);
