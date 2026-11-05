@@ -728,6 +728,7 @@ if(coverOption)coverOption.addEventListener("click",()=>{
 async function copyGo(){
  const button=doc.getElementById("goButton");
  if(button&&button.disabled)return;
+ /* PLATFORM_BEFORE_GO */
  // Each GO explores a different lane; preview and copied request stay identical.
  moodAngle=moodParts(mood).map(m=>moodInterpretations[m]?nextDiscoveryCue(moodInterpretations[m],"ghg-mood-angles-v1-"+m):"").filter(Boolean).join(" + ");freshCrateLens="";crateSparkPhrase=nextCrateSparkPhrase();/* PLATFORM_ROUTE_DRAW */renderLaunch();
  const prompt=goPrompt(ai,service,mood);

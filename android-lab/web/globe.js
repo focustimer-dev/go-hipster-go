@@ -118,9 +118,18 @@ function labSetAtlasMode(mode){
  labGlobe.once('idle',labGlobeSync);labGlobeSync();
 }
 function installLabAtlasModes(frame){
- const controls=doc.createElement('div');controls.setAttribute('role','group');controls.setAttribute('aria-label','Atlas view');controls.style.cssText='display:flex;gap:6px;flex-wrap:wrap;margin:8px 0';
- for(const [mode,label] of [['robinson','ROBINSON'],['globe','GLOBE']]){
-  const b=doc.createElement('button');b.type='button';b.dataset.atlasView=mode;b.textContent=label;b.setAttribute('aria-pressed',String(mode==='robinson'));b.style.cssText='min-height:44px;padding:8px 10px;font:bold 12px Arial,sans-serif';b.onclick=()=>labSetAtlasMode(mode);controls.appendChild(b);
+ const controls=doc.createElement('div');controls.setAttribute('role','group');controls.setAttribute('aria-label','Atlas view');controls.className='lab-atlas-modes';
+ const projections=[
+  ['robinson','ROBINSON','<path d="M5 4h14c2 2 3 5 3 8s-1 6-3 8H5c-2-2-3-5-3-8s1-6 3-8Z M2 12h20 M12 4v16 M8 4c-2 5-2 11 0 16 M16 4c2 5 2 11 0 16"/>'],
+  ['globe','GLOBE','<circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/>']
+ ];
+ for(const [mode,label,symbol] of projections){
+  const button=doc.createElement('button');
+  button.type='button';button.dataset.atlasView=mode;
+  button.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true" focusable="false">${symbol}</svg><span>${label}</span>`;
+  button.setAttribute('aria-pressed',String(mode==='robinson'));
+  button.onclick=()=>labSetAtlasMode(mode);
+  controls.appendChild(button);
  }
  frame.before(controls);
  const edge=[];for(let lat=90;lat>=-90;lat-=2)edge.push(labRobinsonPoint([-180,lat]));for(let lat=-90;lat<=90;lat+=2)edge.push(labRobinsonPoint([180,lat]));edge.push(edge[0]);

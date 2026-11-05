@@ -77,7 +77,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    await page.evaluate(()=>{auditReference='Harlem Prom Night 1986';window.HipsterLabRefresh()});
    assert(await page.locator('#labJukebox').isVisible(),'Accepted inspiration returns to the shaping workspace');
    await page.locator('#labInspiration').evaluate(async el=>{await Promise.all(el.getAnimations().map(animation=>animation.finished.catch(()=>{})))});
-   assert.equal(await page.locator('#labInspiration').evaluate(el=>getComputedStyle(el).animationName),profile.name==='phone'?'lab-sleeve-in':'none');
+   assert.equal(await page.locator('#labInspiration').evaluate(el=>getComputedStyle(el).animationName),'none');
    await capture('inspiration-guidance');
    await page.locator('[data-lab-tab="crate"]').click();
    await page.locator('#labCrateContinue').click();

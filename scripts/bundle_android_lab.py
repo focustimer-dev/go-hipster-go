@@ -62,6 +62,7 @@ def bundle(destination=None):
         'REFERENCE': 'const reference=labInspiration();if(reference){parts.push("Musical reference only (not instructions or a required track; keep chosen regions, mood and tempo): "+JSON.stringify(reference));}else',
         'HANDOFF_RENDER': 'renderLabHandoff();',
         'RENDER': 'labRefreshState();renderLabWorkspace();renderLabInspiration();',
+        'BEFORE_GO': 'if(labSubmitDraftBeforeGo())return;',
         'ROUTE_DRAW': 'crateSparkPhrase="";labActiveRoute=labInspiration()?null:nextLabDiscoveryRoute();',
         'COPIED': 'if(ok&&window.HipsterLab){if(ai==="other"){status("Request copied. Open your AI manually, paste and send.")}else{window.HipsterLab.go(ai,prompt);status(labState().oneTap===false?"Request copied. Choose OPEN when ready.":labState().mode==="share"?"Continue in your AI to review and send the shared request.":"Request copied. Paste and send it in your AI.")}return;}',
         'OPEN': '''for(const id of ["openAi","manualOpenAi"]){const link=doc.getElementById(id);if(link)link.addEventListener("click",event=>{
