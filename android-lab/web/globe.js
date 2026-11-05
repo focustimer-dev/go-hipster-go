@@ -249,6 +249,9 @@ function labAtlasMorphTo(mode){
     predictedFit:predicted,fitSampled:measured.sampled,
     endpointResidual:residual,correction};
    veil.dataset.endpointResidual=residual.toFixed(4);
+   // A calibrated endpoint should be indistinguishable from MapLibre.
+   // Skip the otherwise invisible 105ms correction when below 0.3%.
+   if(residual<.003){cleanup();return}
    const transform='translate('+correction.x.toFixed(3)+'px,'+correction.y.toFixed(3)+
     'px) scale('+correction.sx.toFixed(6)+','+correction.sy.toFixed(6)+')';
    tween.style.transformOrigin='50% 50%';
