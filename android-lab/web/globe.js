@@ -32,7 +32,7 @@ function initLabGlobe(){
  const host=doc.createElement('div');host.id='labAtlasGlobe';host.style.cssText='position:relative;width:100%;aspect-ratio:720/372;background:transparent';host.setAttribute('aria-label','Interactive regional globe');
  frame.appendChild(host);
  try{
-  labGlobe=new maplibregl.Map({container:host,style:{version:8,sources:{land:{type:'geojson',data:labGlobeGeography}},layers:[{id:'ocean',type:'background',paint:{'background-color':'#103135','background-color-transition':{duration:0,delay:0}}},{id:'land',type:'fill',source:'land',paint:{'fill-color':['case',['boolean',['feature-state','selected'],false],'#a83223','#dfb045']}},{id:'borders',type:'line',source:'land',paint:{'line-color':'#103135','line-width':.7}}]},center:[10,15],zoom:0,maxZoom:5.5,minZoom:-1,attributionControl:false,renderWorldCopies:false,dragRotate:false,pitchWithRotate:false,canvasContextAttributes:{antialias:true,preserveDrawingBuffer:true}});
+  labGlobe=new maplibregl.Map({container:host,style:{version:8,sources:{land:{type:'geojson',data:labGlobeGeography}},layers:[{id:'ocean',type:'background',paint:{'background-color':'#103135','background-color-transition':{duration:0,delay:0}}},{id:'land',type:'fill',source:'land',paint:{'fill-color':['case',['boolean',['feature-state','selected'],false],'#a83223','#dfb045']}},{id:'borders',type:'line',source:'land',paint:{'line-color':'#103135','line-width':.7}}]},center:[10,15],zoom:0,maxZoom:5.5,minZoom:-1,attributionControl:false,renderWorldCopies:false,dragRotate:false,pitchWithRotate:false,canvasContextAttributes:{antialias:true}});
  }catch(e){host.remove();labGlobe=null;status('Globe graphics unavailable. The original atlas is available.');return}
  window.labAtlasGlobe=labGlobe;
  labGlobe.on('load',()=>{
@@ -135,140 +135,110 @@ function labAtlasSpring(t){
 // underneath. Only the mask and frame spring; no per-frame GeoJSON rebuilding.
 function labAtlasMorphTo(mode){
  const host=labGlobe.getContainer(),from=labAtlasMode;
- const frame=host.getBoundingClientRect(),fromHeight=host.clientHeight||frame.height;
+ const fromHeight=host.clientHeight||host.getBoundingClientRect().height;
  const targetHeight=host.clientWidth*(mode==='globe'?1:372/720);
- const ANTICIPATION_MS=115;
- const state={from,to:mode,queued:null,raf:0,ready:false,revealing:false,
+ const ANTICIPATION_MS=110,GEOGRAPHY_MS=420;
+ const state={from,to:mode,queued:null,raf:0,finishing:false,revealing:false,
   pointerEvents:host.style.pointerEvents,transform:host.style.transform,
   transformOrigin:host.style.transformOrigin};
  labAtlasMorph=state;
  labAtlasSwitchButtons(mode);
 
- // Keep the outgoing geographic frame exactly as drawn while preparing the
- // incoming projection on the SAME MapLibre instance behind the paper veil.
- const veil=doc.createElement('div');
- veil.className='lab-atlas-morph';
+ // The vector animation must NOT depend on expensive MapLibre setData,
+ // setProjection, WebGL readback or resize. The old code performed all of
+ // those synchronously on the tap, blocking some WebViews for ~9 seconds.
+ const veil=doc.createElement('div');veil.className='lab-atlas-morph';
  veil.setAttribute('aria-hidden','true');
  veil.dataset.from=from;veil.dataset.to=mode;veil.dataset.phase='anticipate';
- const ink=doc.createElement('div');ink.className='lab-atlas-morph-ink';
- const image=doc.createElement('canvas');image.className='lab-atlas-morph-image';
- const source=labGlobe.getCanvas();
- image.width=Math.max(1,source.width);image.height=Math.max(1,source.height);
- image.style.height=fromHeight+'px';
- try{
-  const ctx=image.getContext('2d');
-  ctx.drawImage(source,0,0,image.width,image.height);
-  if(!ctx.getImageData(Math.floor(image.width/2),Math.floor(image.height/2),1,1).data[3])
-   image.hidden=true;
- }catch(e){image.hidden=true}
- ink.appendChild(image);veil.appendChild(ink);
- // Unlike the earlier snapshot-only wipe, this canvas moves each country
- // vertex between its Robinson and globe coordinates while the frame springs.
- const tween=doc.createElement('canvas');
- tween.className='lab-atlas-morph-vectors';
- tween.setAttribute('aria-hidden','true');
- veil.appendChild(tween);
+ const tween=doc.createElement('canvas');tween.className='lab-atlas-morph-vectors';
+ tween.setAttribute('aria-hidden','true');veil.appendChild(tween);
  host.style.transition='none';
  host.style.height=fromHeight+'px';host.style.aspectRatio='auto';
  host.style.transformOrigin='50% 50%';host.style.pointerEvents='none';
  host.appendChild(veil);
+
  const vector=labAtlasMorphVectors.make(tween,labGlobeGeography,crateSelected,[10,15]);
- labAtlasMorphVectors.paint(tween,vector.data,0,vector.selected);
- tween.style.opacity='0';
- veil.dataset.vectorProgress='0';
+ const initial=from==='globe'?1:0;
+ labAtlasMorphVectors.paint(tween,vector.data,initial,vector.selected);
+ veil.dataset.vectorProgress=String(initial);
+ const smooth=x=>{const t=Math.max(0,Math.min(1,x));return t*t*(3-2*t)};
+ let began=0;
 
- // Make the destination physically ready early rather than changing coasts
- // abruptly AFTER the spring stops. The map canvas is sized ONCE to the
- // destination underneath the fully opaque overlay.
- labGlobe.once('idle',()=>{
-  if(labAtlasMorph===state){state.ready=true;veil.dataset.targetReady='true'}
- });
- labAtlasCommitMode(mode,true);
- host.style.height=targetHeight+'px';
- labGlobe.resize();
- if(mode==='robinson')labGlobe.setMinZoom(labRobinsonMinimumZoom());
- labGlobe.jumpTo({center:labAtlasHome(),zoom:labGlobeHomeZoom(),bearing:0,pitch:0});
- host.style.height=fromHeight+'px';
- labGlobe.triggerRepaint();
-
- const smooth=x=>{const t=Math.max(0,Math.min(x,1));return t*t*(3-2*t)};
  const draw=elapsed=>{
   if(elapsed<ANTICIPATION_MS){
-   tween.style.opacity='0';ink.style.opacity='1';
-   // Anticipation: compress the atlas like a little spring-loaded card.
    const q=smooth(elapsed/ANTICIPATION_MS);
-   host.style.height=fromHeight+'px';
-   host.style.transform='scale('+(1-.11*q)+','+(1-.125*q)+')';
-   veil.dataset.phase='anticipate';veil.dataset.springProgress='0';
+   host.style.transform='scale('+(1-.085*q)+','+(1-.11*q)+')';
+   veil.dataset.phase='anticipate';
    return;
   }
-  const p=Math.max(0,Math.min(1.12,labAtlasSpring((elapsed-ANTICIPATION_MS)/1000)));
-  veil.dataset.phase='pop';veil.dataset.springProgress=p.toFixed(3);
-  const vectorTime=Math.max(0,Math.min(1,(elapsed-ANTICIPATION_MS)/380));
-  const vectorProgress=vectorTime*vectorTime*(3-2*vectorTime);
-  labAtlasMorphVectors.paint(tween,vector.data,vectorProgress,vector.selected);
-  veil.dataset.vectorProgress=vectorProgress.toFixed(3);
-  const imageBlend=smooth((elapsed-ANTICIPATION_MS)/100);
-  tween.style.opacity=imageBlend.toFixed(3);
-  ink.style.opacity=(1-imageBlend).toFixed(3);
-  host.style.height=Math.max(100,fromHeight+(targetHeight-fromHeight)*p)+'px';
-
-  // Spring the whole atlas, not just the silhouette. The incoming map is
-  // visible underneath once ready, so the rebound belongs to the new view.
-  const rebound=Math.max(0,p-1),travel=Math.min(1,p);
-  const sx=.89+.11*travel+.72*rebound,sy=.875+.125*travel+.72*rebound;
+  const spring=Math.max(0,Math.min(1.12,labAtlasSpring((elapsed-ANTICIPATION_MS)/1000)));
+  const traversal=smooth((elapsed-ANTICIPATION_MS)/GEOGRAPHY_MS);
+  // Return journey must actually run GLOBE -> ROBINSON, not replay the
+  // forward morph from Robinson to Globe under a reversed frame height.
+  const geographicProgress=mode==='globe'?traversal:1-traversal;
+  labAtlasMorphVectors.paint(tween,vector.data,geographicProgress,vector.selected);
+  veil.dataset.vectorProgress=geographicProgress.toFixed(3);
+  veil.dataset.morphProgress=traversal.toFixed(3);
+  veil.dataset.phase='pop';
+  host.style.height=Math.max(100,fromHeight+(targetHeight-fromHeight)*spring)+'px';
+  const recoil=Math.max(0,spring-1),travel=Math.min(1,spring);
+  const sx=.915+.085*travel+.65*recoil;
+  const sy=.89+.11*travel+.65*recoil;
   host.style.transform='scale('+sx.toFixed(4)+','+sy.toFixed(4)+')';
-  const fromRx=from==='globe'?46:50,fromRy=from==='globe'?46:44;
-  const toRx=mode==='globe'?46:50,toRy=mode==='globe'?46:44;
-  ink.style.clipPath='ellipse('+(fromRx+(toRx-fromRx)*travel)+'% '+(fromRy+(toRy-fromRy)*travel)+'% at 50% 50%)';
-
-  // Rather than a cut at the end, crossfade the physical map views during
-  // release. Never reveal an unfinished MapLibre repaint or a blank canvas.
-  // Only reveal MapLibre after the vector in-between reaches the new globe.
-  // The old reveal could finish while the geographic transformation was
-  // still halfway through and made the continents jump on real phones.
-  if(state.ready&&vectorTime>=1){
-   if(state.blendStart===undefined)state.blendStart=elapsed;
-   const blend=smooth((elapsed-state.blendStart)/155);
-   veil.style.opacity=(1-blend).toFixed(3);
-  }
  };
- draw(0);
+
+ const cleanup=()=>{
+  if(labAtlasMorph!==state||state.revealing)return;
+  state.revealing=true;
+  veil.dataset.phase='settle';veil.classList.add('is-revealing');
+  veil.style.transition='opacity 120ms ease-out';veil.style.opacity='0';
+  setTimeout(()=>{
+   if(labAtlasMorph!==state)return;
+   veil.remove();
+   host.style.pointerEvents=state.pointerEvents;
+   host.style.transform=state.transform;
+   host.style.transformOrigin=state.transformOrigin;
+   labAtlasMorph=null;
+   const next=state.queued;
+   if(next&&next!==labAtlasMode)labSetAtlasMode(next);
+  },130);
+ };
+
  const finish=()=>{
   if(labAtlasMorph!==state||state.finishing)return;
-  state.finishing=true;
-  cancelAnimationFrame(state.raf);
-  host.style.height='';
-  host.style.aspectRatio=mode==='globe'?'1 / 1':'720 / 372';
+  state.finishing=true;cancelAnimationFrame(state.raf);
+  // Finish drawing all geographic vertices BEFORE the real map switches.
+  // A slow MapLibre update now holds a correct destination vector frame,
+  // instead of freezing the app in the anticipation phase.
+  labAtlasMorphVectors.paint(tween,vector.data,mode==='globe'?1:0,vector.selected);
+  veil.dataset.vectorProgress=mode==='globe'?'1':'0';
+  veil.dataset.phase='reproject';
+  host.style.height=targetHeight+'px';
   host.style.transform=state.transform;
   host.style.transformOrigin=state.transformOrigin;
-  labGlobe.resize();
-  labGlobe.jumpTo({center:labAtlasHome(),zoom:labGlobeHomeZoom(),bearing:0,pitch:0});
-  labAtlasGestures();
-
-  const reveal=()=>{
-   if(labAtlasMorph!==state||state.revealing)return;
-   state.revealing=true;
-   veil.dataset.phase='settle';veil.classList.add('is-revealing');
-   veil.style.transition='opacity 120ms ease-out';veil.style.opacity='0';
-   setTimeout(()=>{
-    if(labAtlasMorph!==state)return;
-    veil.remove();host.style.pointerEvents=state.pointerEvents;
-    labAtlasMorph=null;
-    const next=state.queued;
-    if(next&&next!==labAtlasMode)labSetAtlasMode(next);
-   },130);
-  };
-  if(state.ready)reveal();
-  else{
-   labGlobe.once('idle',reveal);
-   labGlobe.triggerRepaint();
-   setTimeout(reveal,850);
+  const commitStarted=performance.now();
+  try{
+   labAtlasCommitMode(mode,true);
+   host.style.height='';
+   host.style.aspectRatio=mode==='globe'?'1 / 1':'720 / 372';
+   labGlobe.resize();
+   labAtlasGestures();
+  }catch(e){
+   // Never leave the atlas pointer-disabled if the WebGL renderer errors.
+   console.warn('Atlas projection switch failed',e);
+   host.style.height='';host.style.aspectRatio=mode==='globe'?'1 / 1':'720 / 372';
+   cleanup();return;
   }
+  veil.dataset.commitMs=(performance.now()-commitStarted).toFixed(1);
+  const onIdle=()=>{labGlobe.off('idle',onIdle);cleanup()};
+  labGlobe.once('idle',onIdle);
+  labGlobe.triggerRepaint();
+  // Some offline WebViews never dispatch 'idle'. Always restore gestures.
+  setTimeout(()=>{labGlobe.off('idle',onIdle);cleanup()},950);
  };
- let began=0;
+
  const step=now=>{
-  if(labAtlasMorph!==state)return;
+  if(labAtlasMorph!==state||state.finishing)return;
   if(!began)began=now;
   const elapsed=Math.max(0,now-began);
   draw(Math.min(elapsed,LAB_ATLAS_MORPH_DURATION));
@@ -276,9 +246,8 @@ function labAtlasMorphTo(mode){
   else finish();
  };
  state.raf=requestAnimationFrame(step);
- // A blocked renderer or backgrounded WebView must never strand a pointer-
- // disabled Atlas. This watchdog also catches an abandoned rAF callback.
- setTimeout(finish,1800);
+ // If rAF is suppressed in a background WebView, the map can still escape.
+ setTimeout(finish,1900);
 }
 function labSetAtlasMode(mode){
  if(mode==='mercator')mode='robinson';
