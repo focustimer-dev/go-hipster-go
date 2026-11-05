@@ -156,8 +156,11 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert.equal(await page.locator('[data-atlas-view="robinson"]').getAttribute('aria-pressed'),'true','Fresh installs default to Robinson');
   assert.match(await page.locator('#labAtlasGlobe').getAttribute('aria-label'),/Robinson/);
   assert.match(await page.locator('#atlasInstruction').textContent(),/SWIPE TO SCROLL/);
-  await page.locator('[data-atlas-view="globe"]').click();
-  await page.waitForTimeout(130);
+  const initialPhase=await page.locator('[data-atlas-view="globe"]').evaluate(el=>{
+   el.click();return document.querySelector('.lab-atlas-morph')?.dataset.phase;
+  });
+  assert.equal(initialPhase,'anticipate','Map presses first compress the old chart before the spring releases');
+  await page.waitForTimeout(160);
   const morphDebug=await page.evaluate(()=>({
    selected:document.querySelector('[data-atlas-view][aria-pressed="true"]')?.dataset.atlasView,
    renderedProjection:window.labAtlasGlobe.getProjection()?.type,
@@ -173,13 +176,19 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   await page.waitForTimeout(180);
   const capture=await page.locator('.lab-atlas-morph-image').evaluate(el=>{
    const rect=el.getBoundingClientRect();
+   const veil=el.closest('.lab-atlas-morph');
    return {visible:!el.hidden,width:el.width,height:el.height,
-    cssRatio:rect.width/rect.height,spring:+el.closest('.lab-atlas-morph').dataset.springProgress};
+    cssRatio:rect.width/rect.height,spring:+veil.dataset.springProgress,
+    phase:veil.dataset.phase,ready:veil.dataset.targetReady==='true',
+    opacity:Number(getComputedStyle(veil).opacity)};
+  
   });
   console.log('Spring morph snapshot:',capture);
   assert(capture.visible,'The outgoing map must be captured, not replaced with a solid ink disk');
   assert(Math.abs(capture.cssRatio-720/372)<.08,'Robinson geography must retain its original aspect while the frame springs');
   assert(capture.spring>.4,'Projection switch should have physical spring progress, not a fixed CSS wipe');
+  assert.equal(capture.phase,'pop','A projection change must include an intentional release after anticipation');
+  if(capture.ready)assert(capture.opacity<=1,'Blend may only reveal the destination after its map render is ready');
   assert(await page.locator('.lab-atlas-morph').isVisible(),'The atlas silhouette stays visible during projection reconstruction');
   const atlasCDP=await page.context().newCDPSession(page);
   const folded=await atlasCDP.send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});
