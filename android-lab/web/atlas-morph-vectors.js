@@ -170,23 +170,44 @@ const labAtlasMorphVectors=(()=>{
  }
  function paintCached(canvas,prepared,t,selected,fits){
   const width=canvas.width,key=signature(width,selected);
-  const baseR=estimatedFit('robinson'),baseG=estimatedFit('globe');
-  const calibrated=[['robinson',baseR],['globe',baseG]].every(([mode,base])=>
-   Math.abs((fits[mode].sx/base.sx)-1)<.025&&
-   Math.abs((fits[mode].sy/base.sy)-1)<.025&&
-   Math.abs(fits[mode].x)<4&&Math.abs(fits[mode].y)<4);
-  if(!warm?.ready||warm.key!==key||!calibrated){
+  const baselineR=estimatedFit('robinson'),baselineG=estimatedFit('globe');
+  const reasonable=[['robinson',baselineR],['globe',baselineG]].every(([mode,base])=>{
+   const f=fits[mode];
+   return Number.isFinite(f.sx)&&Number.isFinite(f.sy)&&
+    f.sx/base.sx>.70&&f.sx/base.sx<1.30&&
+    f.sy/base.sy>.70&&f.sy/base.sy<1.30&&
+    Number.isFinite(f.x)&&Number.isFinite(f.y)&&
+    Math.abs(f.x)<width*.2&&Math.abs(f.y)<width*.2;
+  });
+  if(!warm?.ready||warm.key!==key||!reasonable){
    paint(canvas,prepared,t,selected,fits);return false;
   }
   const progress=Math.max(0,Math.min(t,1));
   const index=Math.min(CACHE_FRAMES-1,Math.round(progress*(CACHE_FRAMES-1)));
   const ctx=canvas.getContext('2d'),px=warm.pixels;
   if(!ctx){return false}
+  // The atlas's *live* source can have a slightly different camera fit
+  // than the idle-time baseline. Match its exact center and scale cheaply,
+  // without retracing 183 country polygons during the motion.
+  const interpolate=(a,b)=>a+(b-a)*progress;
+  const sourceScaleX=interpolate(baselineR.sx,baselineG.sx);
+  const sourceScaleY=interpolate(baselineR.sy,baselineG.sy);
+  const targetScaleX=interpolate(fits.robinson.sx,fits.globe.sx);
+  const targetScaleY=interpolate(fits.robinson.sy,fits.globe.sy);
+  const sx=targetScaleX/sourceScaleX,sy=targetScaleY/sourceScaleY;
+  const deltaX=interpolate(fits.robinson.x,fits.globe.x)/
+   Math.max(1,fits.width)*canvas.width;
+  const deltaY=interpolate(fits.robinson.y,fits.globe.y)/
+   Math.max(1,fits.height)*canvas.height;
   ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.translate(canvas.width/2+deltaX,canvas.height/2+deltaY);
+  ctx.scale(sx,sy);ctx.translate(-canvas.width/2,-canvas.height/2);
   ctx.drawImage(warm.sheet,(index%CACHE_COLS)*px,
    Math.floor(index/CACHE_COLS)*px,px,px,0,0,canvas.width,canvas.height);
+  ctx.setTransform(1,0,0,1,0,0);
   return true;
  }
+
  function cacheStatus(selected=null,width=null){
   const pixels=width==null?null:Math.min(650,Math.max(300,
    Math.round(width*Math.min(devicePixelRatio||1,1.25))));
