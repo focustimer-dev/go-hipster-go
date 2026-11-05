@@ -113,11 +113,17 @@ const labAtlasMorphVectors=(()=>{
    sx:validX?sx:expected.sx,sy:validY?sy:expected.sy,
    sampled:validX&&validY};
  }
- // Idle-time sprite cache: a 5x4 sheet of 19 *matched* geographic poses.
+ // Idle-time sprite cache: a 8x4 sheet of 31 *matched* geographic poses.
  // Repainting 183 filled polygons and ~11k vertices each rAF can stall the
  // Android WebView. A cached frame is one drawImage and keeps animation time
  // independent of rendering cost. Each frame uses the SAME calibrated fits.
- const CACHE_FRAMES=19,CACHE_COLS=5;
+ const CACHE_FRAMES=31,CACHE_COLS=8,CACHE_MAX_PIXELS=460;
+ // Share exactly one resolution policy between preparation and playback.
+ // 32 tiles * 460px squared * 4 bytes = 25.8 MiB worst-case sheet.
+ function spritePixels(width){
+  return Math.min(CACHE_MAX_PIXELS,Math.max(300,
+   Math.round(width*Math.min(devicePixelRatio||1,1.25))));
+ }
  let warm=null,warming=null,preparedWorld=null,preparedGeo=null;
  const selectionKey=selected=>Array.from(selected).sort().join('|');
  function sourceData(geojson){
@@ -128,7 +134,7 @@ const labAtlasMorphVectors=(()=>{
   return width+'@'+selectionKey(selected);
  }
  function createWarm(geojson,selected,width){
-  const pixels=Math.min(650,Math.max(300,Math.round(width*Math.min(devicePixelRatio||1,1.25))));
+  const pixels=spritePixels(width);
   const key=signature(pixels,selected);
   if(warm?.key===key)return warm;
   if(warming?.key===key)return warming;
@@ -212,8 +218,7 @@ const labAtlasMorphVectors=(()=>{
  }
 
  function cacheStatus(selected=null,width=null){
-  const pixels=width==null?null:Math.min(650,Math.max(300,
-   Math.round(width*Math.min(devicePixelRatio||1,1.25))));
+  const pixels=width==null?null:spritePixels(width);
   const expected=(selected!=null&&pixels!=null)?signature(pixels,selected):null;
   return {ready:!!warm?.ready&&(!expected||warm.key===expected),
    frames:warm?.done||warming?.done||0,
@@ -222,7 +227,7 @@ const labAtlasMorphVectors=(()=>{
  }
  function make(canvas,geojson,selected,center){
   // This is at most ~2 MiB of short-lived bitmap memory on current phones.
-  const width=Math.min(720,Math.max(300,Math.round(canvas.parentElement.clientWidth*Math.min(devicePixelRatio||1,1.25))));
+  const width=spritePixels(canvas.parentElement.clientWidth);
   canvas.width=canvas.height=width;
   return {data:sourceData(geojson),selected:new Set(selected)};
  }
