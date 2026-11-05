@@ -226,3 +226,14 @@ body.gig-poster.lab-workspace[data-page=launch] .go-options .go-button{border-ra
 #labLatestInspiration svg{flex:none;color:#dfb045}
 #labInspirationEditor :is(button,textarea):focus-visible{outline:2px solid #f5cf64;outline-offset:2px}
 #labAddInspiration:focus-visible{outline:2px solid #103135;outline-offset:2px}
+
+/* Paired projection keys use the same flat, inverse selection as the Jukebox. */
+.lab-atlas-modes{display:inline-grid;grid-template-columns:repeat(2,minmax(0,1fr));max-width:100%;margin:8px 0;border:1px solid #103135}
+body.gig-poster.lab-workspace .lab-atlas-modes button{
+ appearance:none;min-height:44px;margin:0;padding:6px 14px;border:0;border-radius:0;
+ background:transparent;color:#103135;box-shadow:none;font:400 1.125rem/1.2 Poster,sans-serif;
+ cursor:pointer;text-align:center;overflow-wrap:anywhere;
+}
+body.gig-poster.lab-workspace .lab-atlas-modes button+button{border-inline-start:1px solid #103135}
+body.gig-poster.lab-workspace .lab-atlas-modes button[aria-pressed=true]{background:#103135;color:#dfb045}
+body.gig-poster.lab-workspace .lab-atlas-modes button:focus-visible{position:relative;outline:2px solid #103135;outline-offset:2px;z-index:1}

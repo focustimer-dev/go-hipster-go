@@ -118,9 +118,9 @@ function labSetAtlasMode(mode){
  labGlobe.once('idle',labGlobeSync);labGlobeSync();
 }
 function installLabAtlasModes(frame){
- const controls=doc.createElement('div');controls.setAttribute('role','group');controls.setAttribute('aria-label','Atlas view');controls.style.cssText='display:flex;gap:6px;flex-wrap:wrap;margin:8px 0';
+ const controls=doc.createElement('div');controls.setAttribute('role','group');controls.setAttribute('aria-label','Atlas view');controls.className='lab-atlas-modes';
  for(const [mode,label] of [['robinson','ROBINSON'],['globe','GLOBE']]){
-  const b=doc.createElement('button');b.type='button';b.dataset.atlasView=mode;b.textContent=label;b.setAttribute('aria-pressed',String(mode==='robinson'));b.style.cssText='min-height:44px;padding:8px 10px;font:bold 12px Arial,sans-serif';b.onclick=()=>labSetAtlasMode(mode);controls.appendChild(b);
+  const b=doc.createElement('button');b.type='button';b.dataset.atlasView=mode;b.textContent=label;b.setAttribute('aria-pressed',String(mode==='robinson'));b.onclick=()=>labSetAtlasMode(mode);controls.appendChild(b);
  }
  frame.before(controls);
  const edge=[];for(let lat=90;lat>=-90;lat-=2)edge.push(labRobinsonPoint([-180,lat]));for(let lat=-90;lat<=90;lat+=2)edge.push(labRobinsonPoint([180,lat]));edge.push(edge[0]);
