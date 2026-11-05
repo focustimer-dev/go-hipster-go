@@ -154,6 +154,13 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert.match(await page.locator('#labAtlasGlobe').getAttribute('aria-label'),/Robinson/);
   assert.match(await page.locator('#atlasInstruction').textContent(),/SWIPE TO SCROLL/);
   await page.locator('[data-atlas-view="globe"]').click();
+  await page.waitForFunction(()=>!!document.querySelector('.lab-atlas-morph'),{timeout:5000});
+  assert.deepEqual(await page.locator('.lab-atlas-morph').evaluate(el=>[el.dataset.from,el.dataset.to]),
+   ['robinson','globe'],'A real folded map veil bridges the switch instead of exposing redraws');
+  await page.waitForTimeout(180);
+  assert(await page.locator('.lab-atlas-morph').isVisible(),'The atlas silhouette stays visible during projection reconstruction');
+  await page.waitForFunction(()=>!labAtlasMorph,{timeout:5000});
+  assert.equal(await page.locator('.lab-atlas-morph').count(),0,'The veil is fully removed after the new map settles');
   await page.reload();await page.waitForFunction(()=>window.labAtlasGlobe&&labAtlasGlobe.loaded());
   assert.equal(await page.locator('[data-atlas-view="globe"]').getAttribute('aria-pressed'),'true','An explicit Globe choice survives reload');
   assert.deepEqual(await page.evaluate(()=>labAtlasGlobe.getPaintProperty('ocean','background-color-transition')),
@@ -176,6 +183,10 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert(await page.locator('#labAtlasGlobe').evaluate(el=>Math.abs(window.labAtlasGlobe.getZoom()-(Math.log2(Math.max(120,Math.min(el.clientWidth,el.clientHeight))*Math.PI/512)-.25))<.1),'Resting globe refits narrower phones');
   await page.setViewportSize({width:412,height:915});await page.waitForTimeout(200);
   await page.locator('[data-atlas-view="robinson"]').click();
+  await page.waitForFunction(()=>!!document.querySelector('.lab-atlas-morph'),{timeout:5000});
+  assert.deepEqual(await page.locator('.lab-atlas-morph').evaluate(el=>[el.dataset.from,el.dataset.to]),
+   ['globe','robinson'],'Returning to Robinson unfolds the sphere into the chart');
+  await page.waitForFunction(()=>!labAtlasMorph,{timeout:5000});
   const robinsonFrame=await page.locator('#labAtlasGlobe').evaluate(el=>({width:el.clientWidth,height:el.clientHeight}));
   assert(Math.abs(robinsonFrame.width/robinsonFrame.height-720/372)<.05,'Robinson keeps the original wide chart');
   assert.equal(await page.locator('#atlasHome').textContent(),'← WHOLE WORLD');
@@ -189,6 +200,20 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   const northernCrown=await page.evaluate(()=>{const f=labAtlasGlobe.getSource('land')._data.features.find(f=>f.properties.country==='GRL');const north=f.geometry.coordinates.flat(2).reduce((a,b)=>a[1]>b[1]?a:b);const p=labAtlasGlobe.project(north);return {x:p.x,y:p.y,width:labAtlasGlobe.getContainer().clientWidth,height:labAtlasGlobe.getContainer().clientHeight}});
   assert(northernCrown.y>=0&&northernCrown.y<=northernCrown.height&&northernCrown.x>=0&&northernCrown.x<=northernCrown.width,'Complete Greenland crown remains in the close-up frame');
   await page.locator('#labAtlasGlobe').screenshot({path:'android-lab/build/switch-review/northern-coastline-closeup.png'});
+  // A fast return tap keeps one queued destination, never stacks paint transitions.
+  await page.locator('[data-atlas-view="globe"]').click();
+  await page.locator('[data-atlas-view="robinson"]').click();
+  await page.waitForFunction(()=>!labAtlasMorph&&labAtlasMode==='robinson',{timeout:8000});
+  assert.equal(await page.locator('.lab-atlas-morph').count(),0,'Quick alternation cleans up every transient overlay');
+  assert.equal(await page.locator('[data-atlas-view="robinson"]').getAttribute('aria-pressed'),'true');
+  // Respect system reduced-motion: geometry still switches but no overlay animates.
+  await page.emulateMedia({reducedMotion:'reduce'});
+  await page.locator('[data-atlas-view="globe"]').click();
+  assert.equal(await page.locator('.lab-atlas-morph').count(),0,'Reduced motion skips the visual fold');
+  assert.equal(await page.evaluate(()=>labAtlasMode),'globe');
+  await page.locator('[data-atlas-view="robinson"]').click();
+  assert.equal(await page.locator('.lab-atlas-morph').count(),0);
+  await page.emulateMedia({reducedMotion:'no-preference'});
   await page.locator('#atlasHome').evaluate(el=>el.click());await page.waitForTimeout(500);
   await page.locator('[data-crate-region="west-africa"]').evaluate(el=>el.click());
   assert.match(await page.locator('#prompt').textContent(),/West Africa/);
@@ -198,7 +223,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert.equal(await page.locator('[data-atlas-view="mercator"]').count(),0,'Only Globe and Robinson are offered');
   for(const mode of ['robinson','globe']){
    await page.locator('[data-atlas-view="'+mode+'"]').click();
-   await page.waitForFunction(()=>labAtlasGlobe.loaded());
+   await page.waitForFunction(()=>!labAtlasMorph&&labAtlasGlobe.loaded(),{timeout:6000});
    assert.equal(await page.locator('[data-atlas-view="'+mode+'"]').getAttribute('aria-pressed'),'true');
    if(mode==='robinson'){
     await page.locator('#atlasHome').evaluate(el=>el.click());await page.waitForTimeout(500);
