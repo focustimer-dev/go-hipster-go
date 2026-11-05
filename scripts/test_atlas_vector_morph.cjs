@@ -70,6 +70,14 @@ const unsettled=vectors.landingFit('robinson',400,206,([lon,lat])=>
 assert.equal(unsettled.sampled,false,'An unsettled renderer must be explicitly flagged');
 assert.equal(unsettled.sx,vectors.estimatedFit('robinson').sx,
  'Never replace a calibrated endpoint with an invalid 1x camera measurement');
+const interim=vectors.landingFit('robinson',400,206,([lon,lat])=>{
+ if(lon===0&&lat===0)return{x:200,y:103};
+ if(lon===170&&lat===0)return{x:200+1.118858*1.09*(.45*170/180*400),y:103};
+ if(lon===0&&lat===75)return{x:200,y:103-1.110402*(.44*.8936*206)};
+ throw Error('Unexpected interim camera anchor');
+},.03);
+assert.equal(interim.sampled,false,'A plausible but 9%-wrong intermediate camera cannot cause a last-frame resize');
+assert.equal(interim.sx,vectors.estimatedFit('robinson').sx,'Discard invalid intermediary scale, keep calibrated endpoint');
 
 // Every geographic midpoint also uses the same interpolation for chart size.
 // This prevents a late, separate shrink/expand at the live MapLibre handoff.
