@@ -231,11 +231,11 @@ body.gig-poster.lab-workspace .lab-atlas-modes button{display:flex;align-items:c
 body.gig-poster .crate-map-frame.lab-globe-frame .atlas-radial-field{display:none}
 
 
-/* The coastlines stay in their original aspect while the silhouette springs.
-   Only a short-lived, pointer-transparent mask moves; no repaint animation. */
+/* One spring-loaded fold: anticipation, release, crossfade, settle.
+   Keep continents painted at source aspect; keep pointer overlay transient. */
 #labAtlasGlobe .lab-atlas-morph{
  position:absolute;inset:0;z-index:20;overflow:hidden;pointer-events:none;
- background:#dfb045;opacity:1;transition:opacity 160ms ease-out;
+ background:#dfb045;opacity:1;transition:none;
 }
 #labAtlasGlobe .lab-atlas-morph-ink{
  position:absolute;inset:0;background:#103135;
