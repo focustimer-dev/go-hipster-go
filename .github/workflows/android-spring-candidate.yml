@@ -1,7 +1,7 @@
 name: Android Lab 0.9.41 Spring Candidate (build only)
 on:
   push:
-    branches: [test/android-morph-apk-0-9-41]
+    branches: [test/lab-spring-phone-0-9-41]
 permissions:
   contents: read
 jobs:
