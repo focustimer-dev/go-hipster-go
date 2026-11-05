@@ -231,32 +231,18 @@ body.gig-poster.lab-workspace .lab-atlas-modes button{display:flex;align-items:c
 body.gig-poster .crate-map-frame.lab-globe-frame .atlas-radial-field{display:none}
 
 
-/* One spring-loaded fold: anticipation, release, crossfade, settle.
-   Keep continents painted at source aspect; keep pointer overlay transient. */
+/* A disposable, pointer-transparent projection layer. Its coastlines,
+   chart outline and size all share one requestAnimationFrame progress. */
 #labAtlasGlobe .lab-atlas-morph{
  position:absolute;inset:0;z-index:20;overflow:hidden;pointer-events:none;
  background:#dfb045;opacity:1;transition:none;
 }
-#labAtlasGlobe .lab-atlas-morph-ink{
- position:absolute;inset:0;background:#103135;
- clip-path:ellipse(50% 44% at 50% 50%);
- transform-origin:50% 50%;
- will-change:clip-path,transform;
-}
-#labAtlasGlobe .lab-atlas-morph-image{
- display:block;position:absolute;left:0;top:50%;
- width:100%;transform:translateY(-50%);
- /* Image height is fixed to the originating map at capture time. Never
-    stretch a Robinson coastline to fill a square Globe viewport. */
-}
-#labAtlasGlobe .lab-atlas-morph-image[hidden]{display:none}
 #labAtlasGlobe .lab-atlas-morph.is-revealing{opacity:0}
 @media(prefers-reduced-motion:reduce){
  #labAtlasGlobe .lab-atlas-morph{transition:none}
 }
 
-/* Only active during a projection change: the raster stays still while these
-   canonical country vertices travel continuously between projections. */
+/* Only present during the switch. No GPU readback or live GeoJSON redraw. */
 #labAtlasGlobe .lab-atlas-morph-vectors{
  position:absolute;inset:0;z-index:1;width:100%;height:100%;
  pointer-events:none;display:block;image-rendering:auto;
