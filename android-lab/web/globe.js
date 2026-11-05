@@ -28,7 +28,8 @@ function labGlobeSync(force=false){
  if(!labAtlasMorph&&labGlobeGeography)
   labAtlasMorphVectors.warmFrames(labGlobeGeography,crateSelected,
    labGlobe.getContainer().clientWidth);
- window.__labAtlasFrameCacheStatus=()=>labAtlasMorphVectors.cacheStatus();
+ window.__labAtlasFrameCacheStatus=()=>labAtlasMorphVectors.cacheStatus(
+  crateSelected,labGlobe.getContainer().clientWidth);
  // Feature state is sticky by source/id. Reapplying 183 unchanged features
  // twice per projection switch triggers unnecessary render/worker work,
  // particularly costly on software WebGL. Restore only selected features
