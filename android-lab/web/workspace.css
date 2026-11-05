@@ -229,3 +229,34 @@ body.gig-poster.lab-workspace .lab-atlas-modes button{display:flex;align-items:c
 
 /* The Globe uses a square Android canvas; Robinson's long chart rays are hidden only here. */
 body.gig-poster .crate-map-frame.lab-globe-frame .atlas-radial-field{display:none}
+
+
+/* Projection change: the outgoing chart holds still while the new chart paints
+   offscreen. Its wide silhouette folds into a circle, or unfolds back out. */
+#labAtlasGlobe .lab-atlas-morph{
+ position:absolute;inset:0;z-index:20;overflow:hidden;pointer-events:none;
+ background:#dfb045;opacity:1;transition:opacity 160ms linear;
+}
+#labAtlasGlobe .lab-atlas-morph-ink{
+ position:absolute;inset:0;background:#103135;
+ clip-path:ellipse(50% 44% at 50% 50%);
+ transition:clip-path 460ms cubic-bezier(.22,.75,.2,1);
+}
+#labAtlasGlobe .lab-atlas-morph[data-from=globe] .lab-atlas-morph-ink{
+ clip-path:ellipse(46% 46% at 50% 50%);
+}
+#labAtlasGlobe .lab-atlas-morph[data-to=globe].is-unfolding .lab-atlas-morph-ink{
+ clip-path:ellipse(46% 46% at 50% 50%);
+}
+#labAtlasGlobe .lab-atlas-morph[data-to=robinson].is-unfolding .lab-atlas-morph-ink{
+ clip-path:ellipse(50% 44% at 50% 50%);
+}
+#labAtlasGlobe .lab-atlas-morph-image{
+ display:block;width:100%;height:100%;object-fit:fill;
+}
+#labAtlasGlobe .lab-atlas-morph-image[hidden]{display:none}
+#labAtlasGlobe .lab-atlas-morph.is-revealing{opacity:0}
+@media(prefers-reduced-motion:reduce){
+ #labAtlasGlobe .lab-atlas-morph,
+ #labAtlasGlobe .lab-atlas-morph-ink{transition:none}
+}
