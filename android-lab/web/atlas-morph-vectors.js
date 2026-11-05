@@ -65,7 +65,7 @@ const labAtlasMorphVectors=(()=>{
  }
  function make(canvas,geojson,selected,center){
   // This is at most ~2 MiB of short-lived bitmap memory on current phones.
-  const width=Math.min(720,Math.max(300,Math.round(canvas.parentElement.clientWidth*Math.min(devicePixelRatio||1,1.5))));
+  const width=Math.min(720,Math.max(300,Math.round(canvas.parentElement.clientWidth*Math.min(devicePixelRatio||1,1.25))));
   canvas.width=canvas.height=width;
   return {data:prepare(geojson,center),selected:new Set(selected)};
  }
