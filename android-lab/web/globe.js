@@ -207,7 +207,11 @@ function labAtlasMorphTo(mode){
   // Rather than a cut at the end, crossfade the physical map views during
   // release. Never reveal an unfinished MapLibre repaint or a blank canvas.
   if(state.ready){
-   const blend=smooth((elapsed-ANTICIPATION_MS-145)/200);
+   // Never skip the fade if an older phone delivers its first idle late.
+   // Start a complete 200ms blend at the later of 'pop' or render-ready.
+   if(state.blendStart===undefined)
+    state.blendStart=Math.max(ANTICIPATION_MS+145,elapsed);
+   const blend=smooth((elapsed-state.blendStart)/200);
    veil.style.opacity=(1-blend).toFixed(3);
   }
  };
