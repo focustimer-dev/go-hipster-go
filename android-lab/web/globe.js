@@ -168,9 +168,11 @@ function labAtlasMorphTo(mode){
  const fromHeight=host.clientHeight||host.getBoundingClientRect().height;
  const targetHeight=width*(mode==='globe'?1:372/720);
  const ANTICIPATION_MS=95,GEOGRAPHY_MS=530;
+ const mapCanvas=labGlobe.getCanvas();
  const state={from,to:mode,queued:null,raf:0,finishing:false,revealing:false,
   pointerEvents:host.style.pointerEvents,transform:host.style.transform,
-  transformOrigin:host.style.transformOrigin};
+  transformOrigin:host.style.transformOrigin,
+  canvasVisibility:mapCanvas.style.visibility};
  labAtlasMorph=state;labAtlasSwitchButtons(mode);
  labAtlasMorphVectors.pauseWarm();
 
@@ -183,6 +185,11 @@ function labAtlasMorphTo(mode){
  host.style.transition='none';host.style.height=fromHeight+'px';
  host.style.aspectRatio='auto';host.style.transformOrigin='50% 50%';
  host.style.pointerEvents='none';host.appendChild(veil);
+ // The real WebGL canvas is entirely covered by the vector layer. Keeping it
+ // out of composition during the animated resize avoids repaint work on
+ // every frame, especially following regional selection/zoom.
+ labGlobe.stop();
+ mapCanvas.style.visibility='hidden';
 
  // The current live view tells us the EXACT starting scale. Calibrated
  // viewport-independent baselines predict the destination while MapLibre is
@@ -242,6 +249,7 @@ function labAtlasMorphTo(mode){
   setTimeout(()=>{
    if(labAtlasMorph!==state)return;
    veil.remove();host.style.pointerEvents=state.pointerEvents;
+   mapCanvas.style.visibility=state.canvasVisibility;
    host.style.transform=state.transform;
    host.style.transformOrigin=state.transformOrigin;
    labAtlasMorph=null;
@@ -265,6 +273,7 @@ function labAtlasMorphTo(mode){
    labAtlasCommitMode(mode,true);
    host.style.height='';host.style.aspectRatio=mode==='globe'?'1 / 1':'720 / 372';
    labGlobe.resize();labAtlasGestures();
+   mapCanvas.style.visibility=state.canvasVisibility;
   }catch(e){
    console.warn('Atlas projection switch failed',e);
    host.style.height='';host.style.aspectRatio=mode==='globe'?'1 / 1':'720 / 372';
