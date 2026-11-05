@@ -9,7 +9,11 @@ android {
         versionCode 47
         versionName '0.9.38'
     }
-    buildTypes { release { minifyEnabled false } }
+    // Debug-only sibling: never replaces or migrates the installed 0.9.38 Lab.
+    buildTypes {
+        release { minifyEnabled false }
+        debug { applicationIdSuffix '.globeqa' }
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
