@@ -31,6 +31,8 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   let calls=await page.evaluate(()=>labCalls);
   const first=calls.find(c=>c[0]==='go');assert.match(first[2],/Discovery route: v1\/R\d\d\./);assert.doesNotMatch(first[2],/Seed:/);assert.equal(first[1],'chatgpt');assert.equal(first[2],calls.find(c=>c[0]==='copy')[1]);
 
+  await page.locator('#openAi').click();
+  assert.equal((await page.evaluate(()=>labCalls)).filter(c=>c[0]==='open').length,1);
   fs.mkdirSync('android-lab/build/switch-review',{recursive:true});
   // Inspiration and GO are surface bands, not inset cards.
   await page.evaluate(()=>{labState.activeInspiration='Stress bath bummer jams';window.HipsterLabRefresh()});
@@ -46,8 +48,6 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   }
   await page.evaluate(()=>{labState.activeInspiration='';window.HipsterLabRefresh()});
   await page.setViewportSize({width:412,height:915});
-  await page.locator('#openAi').click();
-  assert.equal((await page.evaluate(()=>labCalls)).filter(c=>c[0]==='open').length,1);
   assert.equal(await page.locator('#labJukebox .service-counter').count(),0);
   assert.equal(await page.locator('.poster-go-trail-word').last().textContent(),'CONTINUE IN YOUR AI');
   await page.locator('.lab-rail [data-lab-action="preferences"]').click();
