@@ -237,3 +237,6 @@ body.gig-poster.lab-workspace .lab-atlas-modes button{
 body.gig-poster.lab-workspace .lab-atlas-modes button+button{border-inline-start:1px solid #103135}
 body.gig-poster.lab-workspace .lab-atlas-modes button[aria-pressed=true]{background:#103135;color:#dfb045}
 body.gig-poster.lab-workspace .lab-atlas-modes button:focus-visible{position:relative;outline:2px solid #103135;outline-offset:2px;z-index:1}
+body.gig-poster.lab-workspace .lab-atlas-modes button{display:flex;align-items:center;justify-content:center;gap:7px}
+.lab-atlas-modes svg{width:20px;height:20px;flex:none}
+.lab-atlas-modes button span{min-width:0}
