@@ -254,3 +254,10 @@ body.gig-poster .crate-map-frame.lab-globe-frame .atlas-radial-field{display:non
 @media(prefers-reduced-motion:reduce){
  #labAtlasGlobe .lab-atlas-morph{transition:none}
 }
+
+/* Only active during a projection change: the raster stays still while these
+   canonical country vertices travel continuously between projections. */
+#labAtlasGlobe .lab-atlas-morph-vectors{
+ position:absolute;inset:0;z-index:1;width:100%;height:100%;
+ pointer-events:none;display:block;image-rendering:auto;
+}
