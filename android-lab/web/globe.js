@@ -162,10 +162,20 @@ function labAtlasMorphTo(mode){
    image.hidden=true;
  }catch(e){image.hidden=true}
  ink.appendChild(image);veil.appendChild(ink);
+ // Unlike the earlier snapshot-only wipe, this canvas moves each country
+ // vertex between its Robinson and globe coordinates while the frame springs.
+ const tween=doc.createElement('canvas');
+ tween.className='lab-atlas-morph-vectors';
+ tween.setAttribute('aria-hidden','true');
+ veil.appendChild(tween);
  host.style.transition='none';
  host.style.height=fromHeight+'px';host.style.aspectRatio='auto';
  host.style.transformOrigin='50% 50%';host.style.pointerEvents='none';
  host.appendChild(veil);
+ const vector=labAtlasMorphVectors.make(tween,labGlobeGeography,crateSelected,[10,15]);
+ labAtlasMorphVectors.paint(tween,vector.data,0,vector.selected);
+ tween.style.opacity='0';
+ veil.dataset.vectorProgress='0';
 
  // Make the destination physically ready early rather than changing coasts
  // abruptly AFTER the spring stops. The map canvas is sized ONCE to the
@@ -184,6 +194,7 @@ function labAtlasMorphTo(mode){
  const smooth=x=>{const t=Math.max(0,Math.min(x,1));return t*t*(3-2*t)};
  const draw=elapsed=>{
   if(elapsed<ANTICIPATION_MS){
+   tween.style.opacity='0';ink.style.opacity='1';
    // Anticipation: compress the atlas like a little spring-loaded card.
    const q=smooth(elapsed/ANTICIPATION_MS);
    host.style.height=fromHeight+'px';
@@ -193,6 +204,13 @@ function labAtlasMorphTo(mode){
   }
   const p=Math.max(0,Math.min(1.12,labAtlasSpring((elapsed-ANTICIPATION_MS)/1000)));
   veil.dataset.phase='pop';veil.dataset.springProgress=p.toFixed(3);
+  const vectorTime=Math.max(0,Math.min(1,(elapsed-ANTICIPATION_MS)/380));
+  const vectorProgress=vectorTime*vectorTime*(3-2*vectorTime);
+  labAtlasMorphVectors.paint(tween,vector.data,vectorProgress,vector.selected);
+  veil.dataset.vectorProgress=vectorProgress.toFixed(3);
+  const imageBlend=smooth((elapsed-ANTICIPATION_MS)/100);
+  tween.style.opacity=imageBlend.toFixed(3);
+  ink.style.opacity=(1-imageBlend).toFixed(3);
   host.style.height=Math.max(100,fromHeight+(targetHeight-fromHeight)*p)+'px';
 
   // Spring the whole atlas, not just the silhouette. The incoming map is
@@ -206,12 +224,12 @@ function labAtlasMorphTo(mode){
 
   // Rather than a cut at the end, crossfade the physical map views during
   // release. Never reveal an unfinished MapLibre repaint or a blank canvas.
-  if(state.ready){
-   // Never skip the fade if an older phone delivers its first idle late.
-   // Start a complete 200ms blend at the later of 'pop' or render-ready.
-   if(state.blendStart===undefined)
-    state.blendStart=Math.max(ANTICIPATION_MS+145,elapsed);
-   const blend=smooth((elapsed-state.blendStart)/200);
+  // Only reveal MapLibre after the vector in-between reaches the new globe.
+  // The old reveal could finish while the geographic transformation was
+  // still halfway through and made the continents jump on real phones.
+  if(state.ready&&vectorTime>=1){
+   if(state.blendStart===undefined)state.blendStart=elapsed;
+   const blend=smooth((elapsed-state.blendStart)/155);
    veil.style.opacity=(1-blend).toFixed(3);
   }
  };
