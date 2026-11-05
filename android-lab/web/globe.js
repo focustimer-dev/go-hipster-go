@@ -84,6 +84,7 @@ function initLabGlobe(){
   // Reflow the silhouette without forcing MapLibre to repaint every frame.
   // The real map is resized once, after the spring reaches its target.
   if(labAtlasMorph)return;
+  labAtlasMorphVectors.warmFrames(labGlobeGeography,crateSelected,host.clientWidth);
   labGlobe.resize();
   if(labAtlasMode==='robinson')labGlobe.setMinZoom(labRobinsonMinimumZoom());
   // Refit at rest on rotation, without erasing a user's current close-up.
