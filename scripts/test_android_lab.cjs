@@ -34,15 +34,19 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   await page.locator('#openAi').click();
   assert.equal((await page.evaluate(()=>labCalls)).filter(c=>c[0]==='open').length,1);
   fs.mkdirSync('android-lab/build/switch-review',{recursive:true});
-  // Inspiration and GO are surface bands, not inset cards.
+  // The inspiration row stays compact while GO spans the Jukebox surface.
   await page.evaluate(()=>{labState.activeInspiration='Stress bath bummer jams';window.HipsterLabRefresh()});
   for(const width of [320,412,840]){
    await page.setViewportSize({width,height:915});await page.waitForTimeout(450);
    const geometry=await page.evaluate(()=>{
     const site=document.querySelector('.site').getBoundingClientRect();
-    return ['#labInspiration','.go-options'].map(selector=>{const el=document.querySelector(selector),r=el.getBoundingClientRect();return {selector,left:r.left,right:r.right,siteLeft:site.left,siteRight:site.right,overflow:document.documentElement.scrollWidth>innerWidth,stripe:selector==='#labInspiration'?getComputedStyle(el,'::before').content:null}})
+    return ['#labInspiration','.go-options'].map(selector=>{const el=document.querySelector(selector),r=el.getBoundingClientRect();return {selector,height:r.height,left:r.left,right:r.right,siteLeft:site.left,siteRight:site.right,overflow:document.documentElement.scrollWidth>innerWidth,stripe:selector==='#labInspiration'?getComputedStyle(el,'::before').content:null}})
    });
-   for(const r of geometry){assert(Math.abs(r.left-r.siteLeft)<1.5&&Math.abs(r.right-r.siteRight)<1.5,r.selector+' spans the Jukebox surface');assert(!r.overflow,'Full-width bands do not cause horizontal overflow');if(r.stripe!==null)assert(['none','normal'].includes(r.stripe),'No inspiration accent stripe')}
+   const [inspiration,go]=geometry;
+   assert(inspiration.left>=inspiration.siteLeft&&inspiration.right<=inspiration.siteRight&&inspiration.height<=100,'Inspiration stays a compact row inside the Jukebox');
+   assert(['none','normal'].includes(inspiration.stripe),'No inspiration accent stripe');
+   assert(Math.abs(go.left-go.siteLeft)<1.5&&Math.abs(go.right-go.siteRight)<1.5,'GO spans the Jukebox surface');
+   assert(!go.overflow,'The Jukebox does not overflow horizontally');
    await page.locator('#labInspiration').screenshot({path:'android-lab/build/switch-review/inspiration-band-'+width+'.png'});
    await page.locator('.go-options').screenshot({path:'android-lab/build/switch-review/go-band-'+width+'.png'});
   }
