@@ -32,7 +32,7 @@ function initLabGlobe(){
  const host=doc.createElement('div');host.id='labAtlasGlobe';host.style.cssText='position:relative;width:100%;aspect-ratio:720/372;background:transparent';host.setAttribute('aria-label','Interactive regional globe');
  frame.appendChild(host);
  try{
-  labGlobe=new maplibregl.Map({container:host,style:{version:8,sources:{land:{type:'geojson',data:labGlobeGeography}},layers:[{id:'ocean',type:'background',paint:{'background-color':'#103135','background-color-transition':{duration:0,delay:0}}},{id:'land',type:'fill',source:'land',paint:{'fill-color':['case',['boolean',['feature-state','selected'],false],'#a83223','#dfb045']}},{id:'borders',type:'line',source:'land',paint:{'line-color':'#103135','line-width':.7}}]},center:[10,15],zoom:0,maxZoom:5.5,minZoom:-1,attributionControl:false,renderWorldCopies:false,dragRotate:false,pitchWithRotate:false,canvasContextAttributes:{antialias:true}});
+  labGlobe=new maplibregl.Map({container:host,style:{version:8,sources:{land:{type:'geojson',data:labGlobeGeography}},layers:[{id:'ocean',type:'background',paint:{'background-color':'#103135','background-color-transition':{duration:0,delay:0}}},{id:'land',type:'fill',source:'land',paint:{'fill-color':['case',['boolean',['feature-state','selected'],false],'#a83223','#dfb045']}},{id:'borders',type:'line',source:'land',paint:{'line-color':'#103135','line-width':.7}}]},center:[10,15],zoom:0,maxZoom:5.5,minZoom:-1,attributionControl:false,renderWorldCopies:false,dragRotate:false,pitchWithRotate:false,canvasContextAttributes:{antialias:true,preserveDrawingBuffer:true}});
  }catch(e){host.remove();labGlobe=null;status('Globe graphics unavailable. The original atlas is available.');return}
  window.labAtlasGlobe=labGlobe;
  labGlobe.on('load',()=>{
@@ -123,7 +123,7 @@ function labAtlasSwitchButtons(mode){
 }
 
 // This is deliberately a visual fold/unfold, NOT a costly per-frame GeoJSON
-// reprojection. We snapshot the current canvas on the button press, reshape its silhouette, and
+// reprojection. We capture the retained canvas on the button press, reshape its silhouette, and
 // allow MapLibre to rebuild the destination behind an opaque, short-lived veil.
 function labAtlasMorphTo(mode){
  const host=labGlobe.getContainer(),from=labAtlasMode;
