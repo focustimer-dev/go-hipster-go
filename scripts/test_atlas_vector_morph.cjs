@@ -42,4 +42,24 @@ const source=drawn(0),middle=drawn(.5),target=drawn(1);
 assert(source.length===middle.length&&middle.length===target.length);
 assert(Math.abs(middle[0][0]-(source[0][0]+target[0][0])/2)<1e-9,'In-between X is the actual vertex midpoint');
 assert(Math.abs(middle[0][1]-(source[0][1]+target[0][1])/2)<1e-9,'In-between Y is the actual vertex midpoint');
+// Endpoint landing is measured from projected geographic anchors, not from
+// nominal canvas percentages. These synthetic destination cameras let us
+// verify exact pixel correspondence in both geometries.
+const globeFit=vectors.landingFit('globe',400,400,([lon,lat])=>{
+ if(lon===10&&lat===15)return{x:203,y:198};
+ if(lon===100&&lat===0)return{x:323,y:198};
+ throw Error('unexpected Globe anchor');
+});
+assert(Math.abs(globeFit.sx-120/180)<1e-8,'Globe radius lands at the actual MapLibre horizon');
+assert.equal(globeFit.sy,globeFit.sx,'Globe landing preserves circular geometry');
+assert.equal(globeFit.x,3);assert.equal(globeFit.y,-2);
+const flatFit=vectors.landingFit('robinson',400,206,([lon,lat])=>{
+ if(lon===0&&lat===0)return{x:201,y:103};
+ if(lon===170&&lat===0)return{x:388,y:103};
+ if(lon===0&&lat===75)return{x:201,y:19};
+ throw Error('unexpected Robinson anchor');
+});
+assert(Math.abs(flatFit.sx-187/(.45*170/180*400))<1e-8,'Robinson map width matches renderer');
+assert(Math.abs(flatFit.sy-84/(.44*.8936*206))<1e-8,'Robinson map height matches renderer');
+assert.equal(flatFit.x,1);assert.equal(flatFit.y,0);
 console.log('Atlas geographic in-betweening passes:',projected.vertices,'matched vector points');
