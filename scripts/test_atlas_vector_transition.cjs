@@ -100,6 +100,13 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
   const narrowToRobinson=await page.evaluate(()=>window.__labAtlasLastMorph);
   const narrowOut=await sample('globe');
   const narrowToGlobe=await page.evaluate(()=>window.__labAtlasLastMorph);
+  console.log('Narrow viewport endpoint camera:',{narrowToRobinson,narrowToGlobe,
+   camera:await page.evaluate(()=>{
+    const m=window.labAtlasGlobe;
+    return {zoom:m.getZoom(),projection:m.getProjection()?.type,
+     center:m.getCenter().toArray(),width:m.getContainer().clientWidth,
+     height:m.getContainer().clientHeight,loaded:m.loaded()};
+   })});
   for(const [name,record] of [['robinson',narrowToRobinson],['globe',narrowToGlobe]]){
    assert(record?.endpointResidual<.035,
     name+' endpoint should stay aligned within 3.5% on a narrow phone');
