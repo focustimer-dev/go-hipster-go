@@ -108,7 +108,7 @@ function labAtlasPoint(point){return labAtlasMode==='robinson'?labRobinsonPoint(
 function labAtlasHome(){return labAtlasMode==='globe'?[10,15]:[0,0]}
 
 let labAtlasModeInitialized=false,labAtlasMorph=null;
-const LAB_ATLAS_MORPH_DURATION=690;
+const LAB_ATLAS_MORPH_DURATION=650;
 
 // The projection buttons reflect the requested destination immediately; the
 // live map may need a frame to prepare its new geometry underneath the veil.
@@ -135,31 +135,36 @@ function labAtlasSpring(t){
 // underneath. Only the mask and frame spring; no per-frame GeoJSON rebuilding.
 function labAtlasMorphTo(mode){
  const host=labGlobe.getContainer(),from=labAtlasMode;
+ const width=host.clientWidth||host.getBoundingClientRect().width;
  const fromHeight=host.clientHeight||host.getBoundingClientRect().height;
- const targetHeight=host.clientWidth*(mode==='globe'?1:372/720);
- const ANTICIPATION_MS=110,GEOGRAPHY_MS=420;
+ const targetHeight=width*(mode==='globe'?1:372/720);
+ const ANTICIPATION_MS=95,GEOGRAPHY_MS=530;
  const state={from,to:mode,queued:null,raf:0,finishing:false,revealing:false,
   pointerEvents:host.style.pointerEvents,transform:host.style.transform,
   transformOrigin:host.style.transformOrigin};
- labAtlasMorph=state;
- labAtlasSwitchButtons(mode);
+ labAtlasMorph=state;labAtlasSwitchButtons(mode);
 
- // The vector animation must NOT depend on expensive MapLibre setData,
- // setProjection, WebGL readback or resize. The old code performed all of
- // those synchronously on the tap, blocking some WebViews for ~9 seconds.
+ // Start the motion before doing any MapLibre reprojection or GPU readback.
  const veil=doc.createElement('div');veil.className='lab-atlas-morph';
- veil.setAttribute('aria-hidden','true');
- veil.dataset.from=from;veil.dataset.to=mode;veil.dataset.phase='anticipate';
+ veil.setAttribute('aria-hidden','true');veil.dataset.from=from;
+ veil.dataset.to=mode;veil.dataset.phase='anticipate';
  const tween=doc.createElement('canvas');tween.className='lab-atlas-morph-vectors';
  tween.setAttribute('aria-hidden','true');veil.appendChild(tween);
- host.style.transition='none';
- host.style.height=fromHeight+'px';host.style.aspectRatio='auto';
- host.style.transformOrigin='50% 50%';host.style.pointerEvents='none';
- host.appendChild(veil);
+ host.style.transition='none';host.style.height=fromHeight+'px';
+ host.style.aspectRatio='auto';host.style.transformOrigin='50% 50%';
+ host.style.pointerEvents='none';host.appendChild(veil);
 
+ // The current live view tells us the EXACT starting scale. Calibrated
+ // viewport-independent baselines predict the destination while MapLibre is
+ // still on the old projection; the final render provides a tiny correction.
+ const sourceFit=labAtlasMorphVectors.landingFit(from,width,fromHeight,
+  point=>labGlobe.project(from==='robinson'?labRobinsonPoint(point):point));
+ const fits={robinson:labAtlasMorphVectors.estimatedFit('robinson'),
+  globe:labAtlasMorphVectors.estimatedFit('globe'),width,height:targetHeight};
+ fits[from]=sourceFit;
  const vector=labAtlasMorphVectors.make(tween,labGlobeGeography,crateSelected,[10,15]);
  const initial=from==='globe'?1:0;
- labAtlasMorphVectors.paint(tween,vector.data,initial,vector.selected);
+ labAtlasMorphVectors.paint(tween,vector.data,initial,vector.selected,fits);
  veil.dataset.vectorProgress=String(initial);
  const smooth=x=>{const t=Math.max(0,Math.min(1,x));return t*t*(3-2*t)};
  let began=0;
@@ -167,85 +172,85 @@ function labAtlasMorphTo(mode){
  const draw=elapsed=>{
   if(elapsed<ANTICIPATION_MS){
    const q=smooth(elapsed/ANTICIPATION_MS);
-   host.style.transform='scale('+(1-.085*q)+','+(1-.11*q)+')';
-   veil.dataset.phase='anticipate';
-   return;
+   host.style.transform='scale('+(1-.04*q)+','+(1-.055*q)+')';
+   veil.dataset.phase='anticipate';return;
   }
-  const spring=Math.max(0,Math.min(1.12,labAtlasSpring((elapsed-ANTICIPATION_MS)/1000)));
-  const traversal=smooth((elapsed-ANTICIPATION_MS)/GEOGRAPHY_MS);
-  // Return journey must actually run GLOBE -> ROBINSON, not replay the
-  // forward morph from Robinson to Globe under a reversed frame height.
-  const geographicProgress=mode==='globe'?traversal:1-traversal;
-  labAtlasMorphVectors.paint(tween,vector.data,geographicProgress,vector.selected);
+  const travel=smooth((elapsed-ANTICIPATION_MS)/GEOGRAPHY_MS);
+  const geographicProgress=mode==='globe'?travel:1-travel;
+  // Geography, viewport aspect and projection fit share this ONE timeline.
+  // No second 235ms resize phase after the continents have stopped.
+  labAtlasMorphVectors.paint(tween,vector.data,geographicProgress,vector.selected,fits);
   veil.dataset.vectorProgress=geographicProgress.toFixed(3);
-  veil.dataset.morphProgress=traversal.toFixed(3);
+  veil.dataset.morphProgress=travel.toFixed(3);
   veil.dataset.phase='pop';
-  host.style.height=Math.max(100,fromHeight+(targetHeight-fromHeight)*spring)+'px';
-  const recoil=Math.max(0,spring-1),travel=Math.min(1,spring);
-  const sx=.915+.085*travel+.65*recoil;
-  const sy=.89+.11*travel+.65*recoil;
-  host.style.transform='scale('+sx.toFixed(4)+','+sy.toFixed(4)+')';
+  host.style.height=(fromHeight+(targetHeight-fromHeight)*travel).toFixed(2)+'px';
+  // A very small spring embellishment on the entire map. It decays to EXACT
+  // identity at t=1, without pulling the land away from its destination.
+  const unsquash=smooth((elapsed-ANTICIPATION_MS)/135);
+  const tail=travel>.68?(travel-.68)/.32:0;
+  const recoil=tail?Math.sin(tail*Math.PI*2)*.014*(1-tail):0;
+  const sx=1-.04*(1-unsquash)+recoil,sy=1-.055*(1-unsquash)+recoil;
+  host.style.transform='scale('+sx.toFixed(5)+','+sy.toFixed(5)+')';
  };
 
  const cleanup=()=>{
   if(labAtlasMorph!==state||state.revealing)return;
-  state.revealing=true;
-  veil.dataset.phase='settle';veil.classList.add('is-revealing');
-  veil.style.transition='opacity 120ms ease-out';veil.style.opacity='0';
+  state.revealing=true;veil.dataset.phase='settle';
+  veil.classList.add('is-revealing');veil.style.transition='opacity 125ms ease-out';
+  veil.style.opacity='0';
   setTimeout(()=>{
    if(labAtlasMorph!==state)return;
-   veil.remove();
-   host.style.pointerEvents=state.pointerEvents;
+   veil.remove();host.style.pointerEvents=state.pointerEvents;
    host.style.transform=state.transform;
    host.style.transformOrigin=state.transformOrigin;
    labAtlasMorph=null;
-   const next=state.queued;
-   if(next&&next!==labAtlasMode)labSetAtlasMode(next);
-  },130);
+   const next=state.queued;if(next&&next!==labAtlasMode)labSetAtlasMode(next);
+  },135);
  };
 
  const finish=()=>{
   if(labAtlasMorph!==state||state.finishing)return;
   state.finishing=true;cancelAnimationFrame(state.raf);
-  labAtlasMorphVectors.paint(tween,vector.data,mode==='globe'?1:0,vector.selected);
+  labAtlasMorphVectors.paint(tween,vector.data,mode==='globe'?1:0,vector.selected,fits);
   veil.dataset.vectorProgress=mode==='globe'?'1':'0';
   veil.dataset.phase='reproject';
-  host.style.height=targetHeight+'px';
-  host.style.transform=state.transform;
+  host.style.height=targetHeight+'px';host.style.transform=state.transform;
   host.style.transformOrigin=state.transformOrigin;
   const commitStarted=performance.now();
   try{
-   // Do the real MapLibre projection change only AFTER geographic in-betweening.
    labAtlasCommitMode(mode,true);
-   host.style.height='';
-   host.style.aspectRatio=mode==='globe'?'1 / 1':'720 / 372';
-   labGlobe.resize();
-   labAtlasGestures();
+   host.style.height='';host.style.aspectRatio=mode==='globe'?'1 / 1':'720 / 372';
+   labGlobe.resize();labAtlasGestures();
   }catch(e){
    console.warn('Atlas projection switch failed',e);
    host.style.height='';host.style.aspectRatio=mode==='globe'?'1 / 1':'720 / 372';
    cleanup();return;
   }
   const commitMs=performance.now()-commitStarted;
-  // The old vector endpoint used nominal .45 radius in normalized coordinates,
-  // while MapLibre's camera deliberately fits the real sphere with a margin.
-  // Measure the exact destination viewport and make that correction an
-  // interpolated final landing, not a shrink/pop when we remove the veil.
-  const fit=labAtlasMorphVectors.landingFit(mode,host.clientWidth,host.clientHeight,
+  const actualFit=labAtlasMorphVectors.landingFit(mode,host.clientWidth,host.clientHeight,
    point=>labGlobe.project(mode==='robinson'?labRobinsonPoint(point):point));
-  window.__labAtlasLastMorph={from,to:mode,commitMs,landingFit:fit};
+  const predicted=fits[mode];
+  const correction={x:actualFit.x-predicted.x,y:actualFit.y-predicted.y,
+   sx:actualFit.sx/predicted.sx,sy:actualFit.sy/predicted.sy};
+  const residual=Math.max(Math.abs(correction.sx-1),Math.abs(correction.sy-1),
+   Math.abs(correction.x)/Math.max(1,width),Math.abs(correction.y)/Math.max(1,targetHeight));
+  window.__labAtlasLastMorph={from,to:mode,commitMs,landingFit:actualFit,
+   predictedFit:predicted,endpointResidual:residual,correction};
   veil.dataset.commitMs=commitMs.toFixed(1);
-  veil.dataset.phase='land';
-  const endTransform='translate('+fit.x.toFixed(2)+'px,'+fit.y.toFixed(2)+'px) scale('+
-   fit.sx.toFixed(5)+','+fit.sy.toFixed(5)+')';
-  tween.style.transformOrigin='50% 50%';
+  veil.dataset.endpointResidual=residual.toFixed(4);
+  veil.dataset.phase='dock';
   let docked=false,rendered=false;
   const maybeReveal=()=>{if(docked&&rendered)cleanup()};
-  const animation=tween.animate([{transform:'translate(0px,0px) scale(1,1)'},
-   {transform:endTransform}],{duration:235,easing:'cubic-bezier(.2,.8,.22,1)',fill:'forwards'});
-  animation.finished.then(()=>{docked=true;maybeReveal()},()=>{docked=true;maybeReveal()});
-  // A second line of defense in case Web Animations is suspended.
-  setTimeout(()=>{docked=true;maybeReveal()},320);
+  // A correction is generally below 1%, not a separate visible resize.
+  const transform='translate('+correction.x.toFixed(3)+'px,'+correction.y.toFixed(3)+
+   'px) scale('+correction.sx.toFixed(6)+','+correction.sy.toFixed(6)+')';
+  tween.style.transformOrigin='50% 50%';
+  try{
+   const animation=tween.animate([{transform:'none'},{transform}],{
+    duration:110,easing:'ease-out',fill:'forwards'});
+   animation.finished.then(()=>{docked=true;maybeReveal()},()=>{docked=true;maybeReveal()});
+  }catch(e){tween.style.transform=transform;docked=true}
+  setTimeout(()=>{docked=true;maybeReveal()},185);
   const onIdle=()=>{labGlobe.off('idle',onIdle);rendered=true;maybeReveal()};
   labGlobe.once('idle',onIdle);labGlobe.triggerRepaint();
   setTimeout(()=>{labGlobe.off('idle',onIdle);rendered=true;maybeReveal()},950);
@@ -260,8 +265,8 @@ function labAtlasMorphTo(mode){
   else finish();
  };
  state.raf=requestAnimationFrame(step);
- // If rAF is suppressed in a background WebView, the map can still escape.
- setTimeout(finish,1900);
+ // Background WebViews may suspend rAF; never strand gesture handling.
+ setTimeout(finish,1800);
 }
 function labSetAtlasMode(mode){
  if(mode==='mercator')mode='robinson';
