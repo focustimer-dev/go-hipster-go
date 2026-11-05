@@ -62,7 +62,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   const position=await page.evaluate(()=>window.scrollY);
   await page.locator('[data-lab-tab="crate"]').click();await page.locator('#labCrate').waitFor({state:'visible'});
   await page.locator('[data-lab-tab="manual"]').click();await page.locator('#labManual').waitFor({state:'visible'});
-  await page.frameLocator('#labManualFrame').locator('[data-manual-group=setup]').click();await page.frameLocator('#labManualFrame').locator('#manualTopic').selectOption('#setup');await page.frameLocator('#labManualFrame').locator('#reviewGeminiUpdates').click();await page.waitForFunction(()=>labCalls.some(c=>c[0]==='updates'));
+  await page.frameLocator('#labManualFrame').locator('#cratePicker > summary').click();await page.frameLocator('#labManualFrame').locator('[data-crate-tab=setup]').click();await page.frameLocator('#labManualFrame').locator('.crate-dividers a[href="#setup"]').click();await page.frameLocator('#labManualFrame').locator('#reviewGeminiUpdates').click();await page.waitForFunction(()=>labCalls.some(c=>c[0]==='updates'));
   await page.locator('[data-lab-tab="jukebox"]').click();assert(Math.abs((await page.evaluate(()=>window.scrollY))-position)<2);
   await page.locator('.lab-rail [data-lab-action="preferences"]').click();await page.locator('#labPreferences').waitFor({state:'visible'});
   await page.locator('[name="labHandoff"][value="share"]').check();await page.locator('[data-lab-action="close-preferences"]').click();await page.locator('#labPreferences').waitFor({state:'hidden'});
