@@ -53,7 +53,13 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
   const toGlobe=await page.evaluate(()=>window.__labAtlasLastMorph);
   const back=await sample('robinson');
   const toRobinson=await page.evaluate(()=>window.__labAtlasLastMorph);
-  console.log('Projection commit timing:',{toGlobe,toRobinson});
+  console.log('Projection commit timing and measured endpoint fit:',{toGlobe,toRobinson});
+  for(const [name,record] of [['globe',toGlobe],['robinson',toRobinson]]){
+   const f=record?.landingFit;
+   assert(f&&['x','y','sx','sy'].every(k=>Number.isFinite(f[k])),
+    name+' must have measured destination coordinates, not nominal dimensions');
+   assert(f.sx>.2&&f.sy>.2,name+' must land within the renderer bounds');
+  }
   for(const [label,rows] of [['Globe',out],['Robinson',back]]){
    console.log(label+' tween diagnostic:',JSON.stringify(rows.map(r=>({t:Math.round(r.t),p:r.p,clickCost:Math.round(r.clickCost),w:r.w,h:r.h}))));
    // Headless SwiftShader may skip late frames on a software repaint.
