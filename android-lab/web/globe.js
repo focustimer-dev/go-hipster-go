@@ -108,7 +108,7 @@ function labAtlasPoint(point){return labAtlasMode==='robinson'?labRobinsonPoint(
 function labAtlasHome(){return labAtlasMode==='globe'?[10,15]:[0,0]}
 
 let labAtlasModeInitialized=false,labAtlasMorph=null;
-const LAB_ATLAS_MORPH_DURATION=570;
+const LAB_ATLAS_MORPH_DURATION=690;
 
 // The projection buttons reflect the requested destination immediately; the
 // live map may need a frame to prepare its new geometry underneath the veil.
@@ -135,16 +135,21 @@ function labAtlasSpring(t){
 // underneath. Only the mask and frame spring; no per-frame GeoJSON rebuilding.
 function labAtlasMorphTo(mode){
  const host=labGlobe.getContainer(),from=labAtlasMode;
- const frame=host.getBoundingClientRect(),fromHeight=frame.height;
- const targetHeight=frame.width*(mode==='globe'?1:372/720);
- const state={from,to:mode,queued:null,cover:null,raf:0,
-  pointerEvents:host.style.pointerEvents,revealing:false};
+ const frame=host.getBoundingClientRect(),fromHeight=host.clientHeight||frame.height;
+ const targetHeight=host.clientWidth*(mode==='globe'?1:372/720);
+ const ANTICIPATION_MS=115;
+ const state={from,to:mode,queued:null,raf:0,ready:false,revealing:false,
+  pointerEvents:host.style.pointerEvents,transform:host.style.transform,
+  transformOrigin:host.style.transformOrigin};
  labAtlasMorph=state;
  labAtlasSwitchButtons(mode);
+
+ // Keep the outgoing geographic frame exactly as drawn while preparing the
+ // incoming projection on the SAME MapLibre instance behind the paper veil.
  const veil=doc.createElement('div');
  veil.className='lab-atlas-morph';
  veil.setAttribute('aria-hidden','true');
- veil.dataset.from=from;veil.dataset.to=mode;
+ veil.dataset.from=from;veil.dataset.to=mode;veil.dataset.phase='anticipate';
  const ink=doc.createElement('div');ink.className='lab-atlas-morph-ink';
  const image=doc.createElement('canvas');image.className='lab-atlas-morph-image';
  const source=labGlobe.getCanvas();
@@ -153,72 +158,98 @@ function labAtlasMorphTo(mode){
  try{
   const ctx=image.getContext('2d');
   ctx.drawImage(source,0,0,image.width,image.height);
-  // A GPU that did not retain the screenshot receives a clean ink silhouette.
   if(!ctx.getImageData(Math.floor(image.width/2),Math.floor(image.height/2),1,1).data[3])
    image.hidden=true;
  }catch(e){image.hidden=true}
  ink.appendChild(image);veil.appendChild(ink);
  host.style.transition='none';
- host.style.height=fromHeight+'px';
- host.style.aspectRatio='auto';
- host.style.pointerEvents='none';
+ host.style.height=fromHeight+'px';host.style.aspectRatio='auto';
+ host.style.transformOrigin='50% 50%';host.style.pointerEvents='none';
  host.appendChild(veil);
- state.cover=veil;
- // The destination is reconstructed behind opaque paper, never exposed mid-frame.
+
+ // Make the destination physically ready early rather than changing coasts
+ // abruptly AFTER the spring stops. The map canvas is sized ONCE to the
+ // destination underneath the fully opaque overlay.
+ labGlobe.once('idle',()=>{if(labAtlasMorph===state)state.ready=true});
  labAtlasCommitMode(mode,true);
- const draw=progress=>{
-  const p=Math.max(0,Math.min(progress,1.12));
+ host.style.height=targetHeight+'px';
+ labGlobe.resize();
+ if(mode==='robinson')labGlobe.setMinZoom(labRobinsonMinimumZoom());
+ labGlobe.jumpTo({center:labAtlasHome(),zoom:labGlobeHomeZoom(),bearing:0,pitch:0});
+ host.style.height=fromHeight+'px';
+ labGlobe.triggerRepaint();
+
+ const smooth=x=>{const t=Math.max(0,Math.min(x,1));return t*t*(3-2*t)};
+ const draw=elapsed=>{
+  if(elapsed<ANTICIPATION_MS){
+   // Anticipation: compress the atlas like a little spring-loaded card.
+   const q=smooth(elapsed/ANTICIPATION_MS);
+   host.style.height=fromHeight+'px';
+   host.style.transform='scale('+(1-.11*q)+','+(1-.125*q)+')';
+   veil.dataset.phase='anticipate';veil.dataset.springProgress='0';
+   return;
+  }
+  const p=Math.max(0,Math.min(1.12,labAtlasSpring((elapsed-ANTICIPATION_MS)/1000)));
+  veil.dataset.phase='pop';veil.dataset.springProgress=p.toFixed(3);
   host.style.height=Math.max(100,fromHeight+(targetHeight-fromHeight)*p)+'px';
-  // As host height changes, an almost circular ellipse becomes a sphere and
-  // the wide Robinson chart does the reverse. Spring progress adds recoil.
-  const rx=(from==='globe'?46:50)+((mode==='globe'?46:50)-(from==='globe'?46:50))*p;
-  const ry=(from==='globe'?46:44)+((mode==='globe'?46:44)-(from==='globe'?46:44))*p;
-  ink.style.clipPath='ellipse('+rx+'% '+ry+'% at 50% 50%)';
-  // Subtle elastic squash, not the old full-height texture stretch.
-  const recoil=Math.max(0,p-1);
-  ink.style.transform='scaleX('+(1-recoil*.16)+') scaleY('+(1+recoil*.16)+')';
-  veil.dataset.springProgress=p.toFixed(3);
+
+  // Spring the whole atlas, not just the silhouette. The incoming map is
+  // visible underneath once ready, so the rebound belongs to the new view.
+  const rebound=Math.max(0,p-1),travel=Math.min(1,p);
+  const sx=.89+.11*travel+.72*rebound,sy=.875+.125*travel+.72*rebound;
+  host.style.transform='scale('+sx.toFixed(4)+','+sy.toFixed(4)+')';
+  const fromRx=from==='globe'?46:50,fromRy=from==='globe'?46:44;
+  const toRx=mode==='globe'?46:50,toRy=mode==='globe'?46:44;
+  ink.style.clipPath='ellipse('+(fromRx+(toRx-fromRx)*travel)+'% '+(fromRy+(toRy-fromRy)*travel)+'% at 50% 50%)';
+
+  // Rather than a cut at the end, crossfade the physical map views during
+  // release. Never reveal an unfinished MapLibre repaint or a blank canvas.
+  if(state.ready){
+   const blend=smooth((elapsed-ANTICIPATION_MS-145)/200);
+   veil.style.opacity=(1-blend).toFixed(3);
+  }
  };
  draw(0);
  const finish=()=>{
   if(labAtlasMorph!==state)return;
-  draw(1);
   host.style.height='';
   host.style.aspectRatio=mode==='globe'?'1 / 1':'720 / 372';
+  host.style.transform=state.transform;
+  host.style.transformOrigin=state.transformOrigin;
   labGlobe.resize();
-  if(mode==='robinson')labGlobe.setMinZoom(labRobinsonMinimumZoom());
   labGlobe.jumpTo({center:labAtlasHome(),zoom:labGlobeHomeZoom(),bearing:0,pitch:0});
   labAtlasGestures();
+
   const reveal=()=>{
    if(labAtlasMorph!==state||state.revealing)return;
    state.revealing=true;
-   veil.classList.add('is-revealing');
+   veil.dataset.phase='settle';veil.classList.add('is-revealing');
+   veil.style.transition='opacity 120ms ease-out';veil.style.opacity='0';
    setTimeout(()=>{
     if(labAtlasMorph!==state)return;
-    veil.remove();
-    host.style.pointerEvents=state.pointerEvents;
+    veil.remove();host.style.pointerEvents=state.pointerEvents;
     labAtlasMorph=null;
     const next=state.queued;
     if(next&&next!==labAtlasMode)labSetAtlasMode(next);
-   },170);
+   },130);
   };
-  labGlobe.once('idle',reveal);
-  labGlobe.triggerRepaint();
-  // A slow or paused renderer must never trap the user's map.
-  setTimeout(reveal,850);
+  if(state.ready)reveal();
+  else{
+   labGlobe.once('idle',reveal);
+   labGlobe.triggerRepaint();
+   setTimeout(reveal,850);
+  }
  };
  let began=0;
  const step=now=>{
   if(labAtlasMorph!==state)return;
   if(!began)began=now;
-  const elapsed=Math.min((now-began)/1000,LAB_ATLAS_MORPH_DURATION/1000);
-  draw(labAtlasSpring(elapsed));
-  if((now-began)<LAB_ATLAS_MORPH_DURATION)state.raf=requestAnimationFrame(step);
+  const elapsed=Math.max(0,now-began);
+  draw(Math.min(elapsed,LAB_ATLAS_MORPH_DURATION));
+  if(elapsed<LAB_ATLAS_MORPH_DURATION)state.raf=requestAnimationFrame(step);
   else finish();
  };
  state.raf=requestAnimationFrame(step);
- // rAF pauses in a background WebView and resumes against real elapsed time.
- // The first resumed frame finishes the spring without stacking new listeners.
 }
 function labSetAtlasMode(mode){
  if(mode==='mercator')mode='robinson';
