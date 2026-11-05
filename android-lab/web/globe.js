@@ -229,33 +229,40 @@ function labAtlasMorphTo(mode){
    cleanup();return;
   }
   const commitMs=performance.now()-commitStarted;
-  const actualFit=labAtlasMorphVectors.landingFit(mode,host.clientWidth,host.clientHeight,
-   point=>labGlobe.project(mode==='robinson'?labRobinsonPoint(point):point));
-  const predicted=fits[mode];
-  const correction={x:actualFit.x-predicted.x,y:actualFit.y-predicted.y,
-   sx:actualFit.sx/predicted.sx,sy:actualFit.sy/predicted.sy};
-  const residual=Math.max(Math.abs(correction.sx-1),Math.abs(correction.sy-1),
-   Math.abs(correction.x)/Math.max(1,width),Math.abs(correction.y)/Math.max(1,targetHeight));
-  window.__labAtlasLastMorph={from,to:mode,commitMs,landingFit:actualFit,
-   predictedFit:predicted,endpointResidual:residual,correction};
   veil.dataset.commitMs=commitMs.toFixed(1);
-  veil.dataset.endpointResidual=residual.toFixed(4);
   veil.dataset.phase='dock';
-  let docked=false,rendered=false;
-  const maybeReveal=()=>{if(docked&&rendered)cleanup()};
-  // A correction is generally below 1%, not a separate visible resize.
-  const transform='translate('+correction.x.toFixed(3)+'px,'+correction.y.toFixed(3)+
-   'px) scale('+correction.sx.toFixed(6)+','+correction.sy.toFixed(6)+')';
-  tween.style.transformOrigin='50% 50%';
-  try{
-   const animation=tween.animate([{transform:'none'},{transform}],{
-    duration:110,easing:'ease-out',fill:'forwards'});
-   animation.finished.then(()=>{docked=true;maybeReveal()},()=>{docked=true;maybeReveal()});
-  }catch(e){tween.style.transform=transform;docked=true}
-  setTimeout(()=>{docked=true;maybeReveal()},185);
-  const onIdle=()=>{labGlobe.off('idle',onIdle);rendered=true;maybeReveal()};
+  let dockStarted=false;
+  // Wait for MapLibre to settle before inspecting its camera. Measuring
+  // synchronously after setProjection can return the *previous* transform.
+  const dock=()=>{
+   if(dockStarted||labAtlasMorph!==state)return;
+   dockStarted=true;
+   const measured=labAtlasMorphVectors.landingFit(mode,host.clientWidth,host.clientHeight,
+    point=>labGlobe.project(mode==='robinson'?labRobinsonPoint(point):point));
+   const predicted=fits[mode],actualFit=measured.sampled?measured:predicted;
+   const correction={x:actualFit.x-predicted.x,y:actualFit.y-predicted.y,
+    sx:actualFit.sx/predicted.sx,sy:actualFit.sy/predicted.sy};
+   const residual=Math.max(Math.abs(correction.sx-1),Math.abs(correction.sy-1),
+    Math.abs(correction.x)/Math.max(1,width),
+    Math.abs(correction.y)/Math.max(1,targetHeight));
+   window.__labAtlasLastMorph={from,to:mode,commitMs,landingFit:actualFit,
+    predictedFit:predicted,fitSampled:measured.sampled,
+    endpointResidual:residual,correction};
+   veil.dataset.endpointResidual=residual.toFixed(4);
+   const transform='translate('+correction.x.toFixed(3)+'px,'+correction.y.toFixed(3)+
+    'px) scale('+correction.sx.toFixed(6)+','+correction.sy.toFixed(6)+')';
+   tween.style.transformOrigin='50% 50%';
+   try{
+    const animation=tween.animate([{transform:'none'},{transform}],{
+     duration:105,easing:'ease-out',fill:'forwards'});
+    animation.finished.then(cleanup,cleanup);
+   }catch(e){tween.style.transform=transform;cleanup()}
+   setTimeout(cleanup,170);
+  };
+  const onIdle=()=>{labGlobe.off('idle',onIdle);dock()};
   labGlobe.once('idle',onIdle);labGlobe.triggerRepaint();
-  setTimeout(()=>{labGlobe.off('idle',onIdle);rendered=true;maybeReveal()},950);
+  // Offline WebViews may never send 'idle'; use calibrated geometry safely.
+  setTimeout(()=>{labGlobe.off('idle',onIdle);dock()},950);
  };
 
  const step=now=>{
