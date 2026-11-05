@@ -96,6 +96,8 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
   assert.equal(toGlobe?.to,'globe','MapLibre finishes its Globe destination');
   assert.equal(toRobinson?.to,'robinson','MapLibre finishes its Robinson destination');
   assert.equal(await page.locator('#labAtlasGlobe').evaluate(el=>el.style.pointerEvents),'','Map gestures restored');
+  assert.equal(await page.locator('#labAtlasGlobe canvas.maplibregl-canvas').evaluate(el=>el.style.visibility),'',
+   'The real MapLibre canvas is visible after geographic animation cleanup');
   // Then check the non-home / region-selected case independently. Its
   // fallback must preserve the precise region highlight through two maps.
   await page.evaluate(()=>document.querySelector('[data-crate-region="west-africa"]').click());
@@ -103,6 +105,8 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    .features.find(f=>f.properties.region==='west-africa').id);
   await page.waitForFunction(id=>window.labAtlasGlobe.getFeatureState({source:'land',id}).selected===true,featureId);
   await sample('globe');await sample('robinson');
+  assert.equal(await page.locator('#labAtlasGlobe canvas.maplibregl-canvas').evaluate(el=>el.style.visibility),'',
+   'Regional-selection fallback must restore the actual map graphics');
   assert.equal(await page.evaluate(id=>window.labAtlasGlobe.getFeatureState({source:'land',id}).selected,featureId),true,
    'Selected West Africa remains highlighted across both camera-aware transitions');
   await page.emulateMedia({reducedMotion:'reduce'});
