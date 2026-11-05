@@ -130,9 +130,9 @@ function labAtlasSpring(t){
   (Math.cos(frequency*t)+(decay/frequency)*Math.sin(frequency*t));
 }
 
-// The animation's goal is a settled destination, not a repaint event. A single
-// preserved snapshot carries the coastline while the offline map reprojects
-// underneath. Only the mask and frame spring; no per-frame GeoJSON rebuilding.
+// One reversible geographic animation: continent positions, atlas aspect,
+// projection fit and a tiny spring accent share the same timeline. The real
+// MapLibre map is only reprojected after the visible geography has finished.
 function labAtlasMorphTo(mode){
  const host=labGlobe.getContainer(),from=labAtlasMode;
  const width=host.clientWidth||host.getBoundingClientRect().width;
