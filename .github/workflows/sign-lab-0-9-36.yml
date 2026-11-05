@@ -33,6 +33,7 @@ jobs:
           test "$conclusion" = success || { echo "::error::Lab CI did not succeed"; exit 1; }
           mkdir unsigned
           gh run download "$run_id" --repo "$GITHUB_REPOSITORY" --name hipster-go-lab-unsigned-apk --dir unsigned
+          mv unsigned/app/build/outputs/apk/release/app-release-unsigned.apk unsigned/app-release-unsigned.apk
           test -s unsigned/app-release-unsigned.apk
           sha256sum unsigned/app-release-unsigned.apk
 
