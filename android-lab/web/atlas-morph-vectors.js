@@ -113,11 +113,85 @@ const labAtlasMorphVectors=(()=>{
    sx:validX?sx:expected.sx,sy:validY?sy:expected.sy,
    sampled:validX&&validY};
  }
+ // Idle-time sprite cache: a 5x4 sheet of 19 *matched* geographic poses.
+ // Repainting 183 filled polygons and ~11k vertices each rAF can stall the
+ // Android WebView. A cached frame is one drawImage and keeps animation time
+ // independent of rendering cost. Each frame uses the SAME calibrated fits.
+ const CACHE_FRAMES=19,CACHE_COLS=5;
+ let warm=null,warming=null,preparedWorld=null,preparedGeo=null;
+ const selectionKey=selected=>Array.from(selected).sort().join('|');
+ function sourceData(geojson){
+  if(preparedGeo!==geojson){preparedGeo=geojson;preparedWorld=prepare(geojson,[10,15]);warm=null;warming=null}
+  return preparedWorld;
+ }
+ function signature(width,selected){
+  return width+'@'+selectionKey(selected);
+ }
+ function createWarm(geojson,selected,width){
+  const pixels=Math.min(650,Math.max(300,Math.round(width*Math.min(devicePixelRatio||1,1.25))));
+  const key=signature(pixels,selected);
+  if(warm?.key===key)return warm;
+  if(warming?.key===key)return warming;
+  if(warming)warming.cancelled=true;
+  const selectedCopy=new Set(selected),data=sourceData(geojson);
+  const sheet=document.createElement('canvas'),scratch=document.createElement('canvas');
+  sheet.width=pixels*CACHE_COLS;
+  sheet.height=pixels*Math.ceil(CACHE_FRAMES/CACHE_COLS);
+  scratch.width=scratch.height=pixels;
+  const context=sheet.getContext('2d');
+  if(!context)return null;
+  const entry={key,pixels,sheet,ready:false,cancelled:false,done:0,
+   selected:selectedCopy};
+  warming=entry;
+  const fits={robinson:estimatedFit('robinson'),globe:estimatedFit('globe'),
+   width,height:width};
+  const next=()=>{
+   if(entry.cancelled||warming!==entry)return;
+   // Generate at most one sheet tile per task. Never create a giant
+   // synchronous 19-frame job in the middle of normal app interaction.
+   const i=entry.done,p=i/(CACHE_FRAMES-1);
+   paint(scratch,data,p,selectedCopy,fits);
+   context.drawImage(scratch,(i%CACHE_COLS)*pixels,
+    Math.floor(i/CACHE_COLS)*pixels);
+   entry.done++;
+   if(entry.done===CACHE_FRAMES){
+    entry.ready=true;warm=entry;warming=null;
+   }else setTimeout(next,12);
+  };
+  setTimeout(next,35);
+  return entry;
+ }
+ function warmFrames(geojson,selected,width){
+  return createWarm(geojson,selected,width);
+ }
+ function paintCached(canvas,prepared,t,selected,fits){
+  const width=canvas.width,key=signature(width,selected);
+  const baseR=estimatedFit('robinson'),baseG=estimatedFit('globe');
+  const calibrated=[['robinson',baseR],['globe',baseG]].every(([mode,base])=>
+   Math.abs((fits[mode].sx/base.sx)-1)<.025&&
+   Math.abs((fits[mode].sy/base.sy)-1)<.025&&
+   Math.abs(fits[mode].x)<4&&Math.abs(fits[mode].y)<4);
+  if(!warm?.ready||warm.key!==key||!calibrated){
+   paint(canvas,prepared,t,selected,fits);return false;
+  }
+  const progress=Math.max(0,Math.min(t,1));
+  const index=Math.min(CACHE_FRAMES-1,Math.round(progress*(CACHE_FRAMES-1)));
+  const ctx=canvas.getContext('2d'),px=warm.pixels;
+  if(!ctx){return false}
+  ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.drawImage(warm.sheet,(index%CACHE_COLS)*px,
+   Math.floor(index/CACHE_COLS)*px,px,px,0,0,canvas.width,canvas.height);
+  return true;
+ }
+ function cacheStatus(){
+  return {ready:!!warm?.ready,frames:warm?.done||warming?.done||0,
+   pixels:warm?.pixels||warming?.pixels||0};
+ }
  function make(canvas,geojson,selected,center){
   // This is at most ~2 MiB of short-lived bitmap memory on current phones.
   const width=Math.min(720,Math.max(300,Math.round(canvas.parentElement.clientWidth*Math.min(devicePixelRatio||1,1.25))));
   canvas.width=canvas.height=width;
-  return {data:prepare(geojson,center),selected:new Set(selected)};
+  return {data:sourceData(geojson),selected:new Set(selected)};
  }
- return {make,paint,prepare,landingFit,estimatedFit};
+ return {make,paint,paintCached,warmFrames,cacheStatus,prepare,landingFit,estimatedFit};
 })();
