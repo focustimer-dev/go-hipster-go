@@ -3,6 +3,42 @@ from pathlib import Path
 import hashlib,urllib.request,tarfile,tempfile,re,json,math
 ROOT=Path(__file__).resolve().parents[1]
 DIGEST='993200291f6d16714253c41f95138005ebbab068706f7193fea594aaf508dfc9'
+
+def _clip_longitude(ring, boundary, keep_west):
+    """Clip geographic rings at the existing app region meridians."""
+    result = []
+    for start, end in zip(ring, ring[1:] + ring[:1]):
+        inside_start = start[0] <= boundary if keep_west else start[0] >= boundary
+        inside_end = end[0] <= boundary if keep_west else end[0] >= boundary
+        if inside_start != inside_end:
+            fraction = (boundary - start[0]) / (end[0] - start[0])
+            result.append([boundary, start[1] + fraction * (end[1] - start[1])])
+        if inside_end:
+            result.append(list(end))
+    if len(result) < 3:
+        return []
+    if result[0] != result[-1]:
+        result.append(result[0])
+    return result
+
+def complete_polar_coastlines(features):
+    """Restore source coastlines before projection, retaining IDs and region splits."""
+    source = json.loads((ROOT / 'android-lab/web/polar-coastlines.geojson').read_text())
+    replacements = {f['properties']['country']: f['geometry'] for f in source['features']}
+    for feature in features:
+        country = feature['properties']['country']
+        if country not in replacements:
+            continue
+        geometry = replacements[country]
+        polygons = geometry['coordinates'] if geometry['type'] == 'MultiPolygon' else [geometry['coordinates']]
+        region = feature['properties']['region']
+        split = (-95, region == 'canada-west') if country == 'CAN' else (60, region == 'eastern-europe') if country == 'RUS' else None
+        if split:
+            polygons = [[clipped for ring in polygon if (clipped := _clip_longitude(ring, *split))] for polygon in polygons]
+            polygons = [polygon for polygon in polygons if polygon]
+        feature['geometry'] = {'type': 'MultiPolygon', 'coordinates': polygons}
+    return features
+
 def bundle_maplibre(destination):
     archive=Path(tempfile.gettempdir())/'maplibre-gl-5.6.1.tgz'
     if not archive.exists() or hashlib.sha256(archive.read_bytes()).hexdigest()!=DIGEST:
@@ -24,6 +60,7 @@ def bundle_maplibre(destination):
             if ring[0]!=ring[-1]:ring.append(ring[0])
             rings.append([ring])
         if rings:features.append({'type':'Feature','id':len(features),'properties':{'country':country,'region':region},'geometry':{'type':'MultiPolygon','coordinates':rings}})
+    features = complete_polar_coastlines(features)
     page=(ROOT/'android-lab/web/atlas-lab.html').read_text().replace('/*GEOGRAPHY*/',json.dumps({'type':'FeatureCollection','features':features},separators=(',',':')))
     (destination/'atlas-lab.html').write_text(page)
     root=destination/'index.html'
