@@ -86,7 +86,7 @@ const labAtlasMorphVectors=(()=>{
  // Calibrate the last vector frame against the *actual* destination camera.
  // Both views already have known geographic anchors: no WebGL readback, no
  // guesswork about map radius, and no extra map instances.
- function landingFit(mode,width,height,project){
+ function landingFit(mode,width,height,project,maxDeviation=.15){
   const w=Math.max(1,width),h=Math.max(1,height);
   const center=project(mode==='globe'?[10,15]:[0,0]);
   let sx=1,sy=1;
@@ -106,7 +106,7 @@ const labAtlasMorphVectors=(()=>{
   // frame. Never interpret an invalid intermediate projection as a real
   // 1.0x fit: that was causing a visible ~10% correction on the return trip.
   const valid=(raw,baseline)=>Number.isFinite(raw)&&raw>.2&&raw<2&&
-   Math.abs(raw/baseline-1)<.15;
+   Math.abs(raw/baseline-1)<maxDeviation;
   const validX=valid(sx,expected.sx),validY=valid(sy,expected.sy);
   return {x:Number.isFinite(center.x)?center.x-w/2:0,
    y:Number.isFinite(center.y)?center.y-h/2:0,
