@@ -36,7 +36,7 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
       // Reading computed styles or pixels here can stall Chromium's GPU.
       points.push({t:performance.now()-began,p:+veil.dataset.vectorProgress,
        phase:veil.dataset.phase,fitX:+veil.dataset.fitX,fitY:+veil.dataset.fitY,
-       clickCost,w:document.querySelector('#labAtlasGlobe').clientWidth,
+       cached:veil.dataset.cache,clickCost,w:document.querySelector('#labAtlasGlobe').clientWidth,
        h:document.querySelector('#labAtlasGlobe').clientHeight});
      }
     }else if(points.length){
@@ -58,6 +58,8 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
   const featureId=await page.evaluate(()=>JSON.parse(document.querySelector('#labGlobeGeography').textContent)
    .features.find(f=>f.properties.region==='west-africa').id);
   await page.waitForFunction(id=>window.labAtlasGlobe.getFeatureState({source:'land',id}).selected===true,featureId);
+  await page.waitForFunction(()=>window.__labAtlasFrameCacheStatus?.().ready,{timeout:15000});
+  console.log('Idle geographic frames ready before tap:',await page.evaluate(()=>__labAtlasFrameCacheStatus()));
   const out=await sample('globe');
   const toGlobe=await page.evaluate(()=>window.__labAtlasLastMorph);
   const back=await sample('robinson');
@@ -69,6 +71,8 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
     name+' must have measured destination coordinates, not nominal dimensions');
    assert(f.sx>.2&&f.sy>.2,name+' must land within the renderer bounds');
    assert(record.endpointResidual<.035,name+' integrated endpoint should need at most 3.5% last correction');
+   assert(record.cacheHits>=2,name+' should draw multiple pre-rendered frames instead of tracing every polygon');
+   console.log(name+' cached vector playback:',{hits:record.cacheHits,misses:record.cacheMisses,maxPaintMs:record.maxPaintMs});
   }
   for(const [label,rows] of [['Globe',out],['Robinson',back]]){
    console.log(label+' unified tween diagnostic:',JSON.stringify(rows.map(r=>({t:Math.round(r.t),p:r.p,fitX:r.fitX,fitY:r.fitY,phase:r.phase,clickCost:Math.round(r.clickCost),w:r.w,h:r.h}))));
@@ -76,6 +80,8 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    // The essential contract: at least two DISTINCT real geographic positions
    // appear before endpoint and the reverse trip traverses them backwards.
    const intermediate=rows.filter(r=>r.p>.0005&&r.p<.9995);
+   assert(rows.some(r=>r.phase==='pop'&&r.cached==='ready'),
+    label+' must use a pre-rendered frame during the geographic motion');
    assert(rows[0].clickCost<800,label+' must not block tap for expensive MapLibre projection work');
    assert(intermediate.length>=2,label+' must show at least two real vector in-between frames');
    assert(new Set(intermediate.map(r=>r.p.toFixed(2))).size>=2,label+' vertices must move across several frames');
@@ -104,6 +110,7 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
   await page.emulateMedia({reducedMotion:'no-preference'});
   await page.setViewportSize({width:320,height:740});
   await page.waitForTimeout(280);
+  await page.waitForFunction(()=>window.__labAtlasFrameCacheStatus?.().ready,{timeout:15000});
   const narrowBack=await sample('robinson');
   const narrowToRobinson=await page.evaluate(()=>window.__labAtlasLastMorph);
   const narrowOut=await sample('globe');
