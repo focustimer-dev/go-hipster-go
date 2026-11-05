@@ -18,7 +18,7 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
  try{
   browser=await chromium.launch({headless:true,args:['--use-angle=swiftshader','--enable-unsafe-swiftshader']});
   const page=await browser.newPage({viewport:{width:412,height:915},isMobile:true,hasTouch:true,reducedMotion:'no-preference'});
-  const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  const errors=[];page.on('pageerror',e=>{errors.push(e.message);console.log('Browser JS error:',e.message)});
   await page.addInitScript(()=>{window.HipsterLab={state:()=>'{"saved":[]}',inspiration:()=>'',copy:()=>true}});
   await page.goto('http://127.0.0.1:'+server.address().port+'/',{waitUntil:'domcontentloaded'});
   await page.waitForFunction(()=>window.labAtlasGlobe?.loaded()&&!!document.querySelector('[data-atlas-view=globe]'),{timeout:20000});
@@ -39,7 +39,12 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
     }else if(points.length){
      ready=true;resolve(points);return;
     }
-    if(performance.now()-began>6000){reject(new Error('Atlas did not clean up its vector overlay'));return}
+    if(performance.now()-began>6000){
+     reject(new Error('Atlas did not clean up: '+JSON.stringify({mode,clickCost,frames:points.length,
+      last:points.slice(-8),phase:veil?.dataset.phase,progress:veil?.dataset.vectorProgress,
+      ready:veil?.dataset.targetReady,opacity:veil?.style.opacity,pointerEvents:document.querySelector('#labAtlasGlobe').style.pointerEvents})));
+     return
+    }
     requestAnimationFrame(tick);
    }
    requestAnimationFrame(tick);
