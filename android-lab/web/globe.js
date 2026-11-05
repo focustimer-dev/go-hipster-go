@@ -23,6 +23,11 @@ function labGlobeHomeZoom(){
 const labGlobeAppliedSelection=new Map();
 function labGlobeSync(force=false){
  if(!labGlobeReady)return;
+ // Prewarm matched coastline images in idle slices, never during the morph.
+ // A changed region selection invalidates the cache key automatically.
+ if(!labAtlasMorph&&labGlobeGeography)
+  labAtlasMorphVectors.warmFrames(labGlobeGeography,crateSelected,
+   labGlobe.getContainer().clientWidth);
  // Feature state is sticky by source/id. Reapplying 183 unchanged features
  // twice per projection switch triggers unnecessary render/worker work,
  // particularly costly on software WebGL. Restore only selected features
@@ -175,8 +180,17 @@ function labAtlasMorphTo(mode){
   globe:labAtlasMorphVectors.estimatedFit('globe'),width,height:targetHeight};
  fits[from]=sourceFit;
  const vector=labAtlasMorphVectors.make(tween,labGlobeGeography,crateSelected,[10,15]);
+ const renderVector=progress=>{
+  const started=performance.now();
+  const cached=labAtlasMorphVectors.paintCached(tween,vector.data,progress,vector.selected,fits);
+  if(cached)state.cacheHits=(state.cacheHits||0)+1;
+  else state.cacheMisses=(state.cacheMisses||0)+1;
+  const cost=performance.now()-started;
+  state.maxPaintMs=Math.max(state.maxPaintMs||0,cost);
+  veil.dataset.cache=cached?'ready':'fallback';
+ };
  const initial=from==='globe'?1:0;
- labAtlasMorphVectors.paint(tween,vector.data,initial,vector.selected,fits);
+ renderVector(initial);
  veil.dataset.vectorProgress=String(initial);
  const smooth=x=>{const t=Math.max(0,Math.min(1,x));return t*t*(3-2*t)};
  let began=0;
@@ -191,7 +205,7 @@ function labAtlasMorphTo(mode){
   const geographicProgress=mode==='globe'?travel:1-travel;
   // Geography, viewport aspect and projection fit share this ONE timeline.
   // No second 235ms resize phase after the continents have stopped.
-  labAtlasMorphVectors.paint(tween,vector.data,geographicProgress,vector.selected,fits);
+  renderVector(geographicProgress);
   veil.dataset.vectorProgress=geographicProgress.toFixed(3);
   veil.dataset.morphProgress=travel.toFixed(3);
   veil.dataset.fitX=(fits.robinson.sx+(fits.globe.sx-fits.robinson.sx)*geographicProgress).toFixed(5);
@@ -225,7 +239,7 @@ function labAtlasMorphTo(mode){
  const finish=()=>{
   if(labAtlasMorph!==state||state.finishing)return;
   state.finishing=true;cancelAnimationFrame(state.raf);
-  labAtlasMorphVectors.paint(tween,vector.data,mode==='globe'?1:0,vector.selected,fits);
+  renderVector(mode==='globe'?1:0);
   veil.dataset.vectorProgress=mode==='globe'?'1':'0';
   veil.dataset.phase='reproject';
   host.style.height=targetHeight+'px';host.style.transform=state.transform;
@@ -259,7 +273,8 @@ function labAtlasMorphTo(mode){
     Math.abs(correction.y)/Math.max(1,targetHeight));
    window.__labAtlasLastMorph={from,to:mode,commitMs,landingFit:actualFit,
     predictedFit:predicted,fitSampled:measured.sampled,
-    endpointResidual:residual,correction};
+    endpointResidual:residual,correction,cacheHits:state.cacheHits||0,
+    cacheMisses:state.cacheMisses||0,maxPaintMs:state.maxPaintMs||0};
    veil.dataset.endpointResidual=residual.toFixed(4);
    // A calibrated endpoint should be indistinguishable from MapLibre.
    // Skip the otherwise invisible 105ms correction when below 0.3%.
