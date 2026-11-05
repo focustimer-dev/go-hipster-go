@@ -45,6 +45,7 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
   const out=await sample('globe');
   const back=await sample('robinson');
   for(const [label,rows] of [['Globe',out],['Robinson',back]]){
+   console.log(label+' tween diagnostic:',JSON.stringify(rows.map(r=>({t:Math.round(r.t),p:r.p,alpha:r.alpha,w:r.w,h:r.h}))));
    const intermediate=rows.filter(r=>r.p>.05&&r.p<.95&&r.alpha>0);
    assert(intermediate.length>=2,label+' must show at least two real vector in-between frames');
    assert(new Set(intermediate.map(r=>r.p.toFixed(2))).size>=2,label+' vertices must move across several frames');
