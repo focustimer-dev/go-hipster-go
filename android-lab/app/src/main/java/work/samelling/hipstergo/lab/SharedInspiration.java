@@ -55,6 +55,11 @@ final class SharedInspiration {
             });}catch(Exception ignored){activity.runOnUiThread(()->{if(!closed&&version==generation&&text.equals(loadingText)){previewLoading=false;changed.run();}});}
         });
     }
+    void apply(String text){
+        String normalized=InspirationText.normalize(null,text);
+        if(normalized.isEmpty()){changed.run();return;}
+        use(normalized);
+    }
     void review(){edit(value(),false);}
     void receive(String text){edit(text,true);}
     private void edit(String text,boolean incoming) {

@@ -235,6 +235,7 @@ public class LabActivity extends Activity {
             });
         }
         @JavascriptInterface public String inspiration(){return inspiration.value();}
+        @JavascriptInterface public void applyInspiration(String text){if(text!=null&&text.length()<=InspirationText.LIMIT)runOnUiThread(()->inspiration.apply(text));}
         @JavascriptInterface public void reviewInspiration(){runOnUiThread(()->inspiration.review());}
         @JavascriptInterface public void useRecentInspiration(String id){if(id!=null&&id.length()<=64)runOnUiThread(()->inspiration.reuse(id));}
         @JavascriptInterface public void clearInspiration(){runOnUiThread(()->inspiration.clear());}

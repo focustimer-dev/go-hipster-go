@@ -196,3 +196,13 @@ body.gig-poster.lab-workspace[data-page=launch] .go-options{
 body.gig-poster.lab-workspace #labInspiration{padding-inline:3cqw}
 body.gig-poster.lab-workspace[data-page=launch] .go-options{margin-bottom:0}
 body.gig-poster.lab-workspace[data-page=launch] .go-options .go-button{border-radius:0}
+#labAddInspiration{width:100%;min-height:44px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 0;border:0;border-bottom:1px solid #10313566;background:transparent;color:#103135;text-align:left;font-weight:700}
+#labAddInspiration small{font-weight:400;text-align:right}
+#labInspirationEditor{padding:16px;background:#103135;color:#f4efdf}
+#labInspirationEditor label,#labInspirationEditor textarea{display:block}
+#labInspirationEditor textarea{width:100%;margin:8px 0;padding:8px;background:#f4efdf;color:#103135;font:inherit}
+#labInspirationEditor button{min-height:44px;padding:6px 10px;border:1px solid #dfb045;background:transparent;color:inherit;font:inherit}
+#labInspirationEditor button[type=submit]{background:#dfb045;color:#103135;font-weight:700}
+#labLatestInspiration{margin-top:10px}
+#labLatestInspiration button{max-width:100%;overflow-wrap:anywhere}
+#labAddInspiration[hidden]{display:none}

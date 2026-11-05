@@ -83,7 +83,7 @@ function renderLabWorkspace(){
  doc.getElementById('labCrateHeaderSummary').textContent=reference?labSummary(state.inspirationPreview?.title||reference):'Inspiration and exact requests, saved on this device.';
  doc.getElementById('labCrateReference').textContent=reference?'Reference ready':'No reference yet';
  doc.getElementById('labCrateReferenceHelp').textContent=reference?(state.inspirationPreview?.description||'Use it in Jukebox, or review the full reference.'):'Share a song link to Lab, or add an idea.';
- doc.getElementById('labCrateReview').textContent=reference?'REVIEW':'ADD';doc.getElementById('labCrateContinue').hidden=!reference;doc.getElementById('labSavedCount').textContent=entries.length+' / 10';
+ doc.getElementById('labCrateReview').textContent=reference?'EDIT IN JUKEBOX':'ADD IN JUKEBOX';doc.getElementById('labCrateContinue').hidden=!reference;doc.getElementById('labSavedCount').textContent=entries.length+' / 10';
  const recent=Array.isArray(state.recentInspirations)?state.recentInspirations.filter(e=>e&&typeof e.id==='string'&&typeof e.text==='string').slice(0,3):[];
  const shelf=doc.getElementById('labRecentInspirations');
  if(shelf&&shelf.dataset.records!==JSON.stringify([reference,recent])){
@@ -135,7 +135,7 @@ function initLabWorkspace(){
   if(b.dataset.labTab){labNavigate(b.dataset.labTab);return}if(b.dataset.labSaved){window.HipsterLab?.savedRequest?.(b.dataset.labSaved);return}
   const action=b.dataset.labAction;
   if(action==='preferences')labPreferences();else if(action==='close-preferences')doc.getElementById('labPreferences').close();
-  else if(action==='inspiration')window.HipsterLab?.reviewInspiration?.();else if(action==='save')window.HipsterLab?.saveRequest?.(ai,goPrompt(ai,service,mood));else if(action==='updates')window.HipsterLab?.showUpdates?.();else if(action==='jukebox')labNavigate('jukebox');
+  else if(action==='inspiration')labOpenInspirationEditor();else if(action==='save')window.HipsterLab?.saveRequest?.(ai,goPrompt(ai,service,mood));else if(action==='updates')window.HipsterLab?.showUpdates?.();else if(action==='jukebox')labNavigate('jukebox');
   else if(action==='services')labPreferences();
   else if(action==='shape-inspiration')labShapeInspiration();
   else if(action==='setup')labCopySetup(b);
