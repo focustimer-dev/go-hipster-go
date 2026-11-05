@@ -9,7 +9,7 @@ function labGlobeBounds(view){
  // Fit mainland extents; offshore fragments must not send the camera across the globe.
  const transformed=points.map(labAtlasPoint),lon=transformed.map(p=>p[0]),lat=transformed.map(p=>p[1]);
  const sorted=values=>values.slice().sort((a,b)=>a-b),xs=sorted(lon),ys=sorted(lat),n=xs.length;
- const west=xs[Math.floor(n*.02)],east=xs[Math.min(n-1,Math.floor(n*.98))],south=ys[Math.floor(n*.02)],north=ys[Math.min(n-1,Math.floor(n*.98))];
+ const west=xs[Math.floor(n*.02)],east=xs[Math.min(n-1,Math.floor(n*.98))],south=ys[0],north=ys[n-1];
  labGlobe.fitBounds([[west,south],[east,north]],{padding:24,maxZoom:3.4,duration:320});
 }
 function labGlobeHomeZoom(){if(labAtlasMode==='robinson')return labRobinsonMinimumZoom();return Math.log2(Math.max(120,labGlobe.getContainer().clientHeight)*Math.PI/512)+.3}
