@@ -31,10 +31,13 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
     const veil=document.querySelector('.lab-atlas-morph');
     if(veil){
      const canvas=veil.querySelector('.lab-atlas-morph-vectors');
-     if(canvas&&veil.dataset.phase==='pop'){
-      // DO NOT getImageData here: GPU readback can stall 400+ ms on CI.
-      // Geometry/pixel validity is checked deterministically in the Node test.
-      points.push({t:performance.now()-began,p:+veil.dataset.vectorProgress,clickCost,w:document.querySelector('#labAtlasGlobe').clientWidth,h:document.querySelector('#labAtlasGlobe').clientHeight});
+     if(canvas&&['pop','land'].includes(veil.dataset.phase)){
+      // No GPU pixel readback: sample geographic progress and the final
+      // compositor transform separately without freezing headless Chromium.
+      points.push({t:performance.now()-began,p:+veil.dataset.vectorProgress,
+       phase:veil.dataset.phase,transform:getComputedStyle(canvas).transform,
+       clickCost,w:document.querySelector('#labAtlasGlobe').clientWidth,
+       h:document.querySelector('#labAtlasGlobe').clientHeight});
      }
     }else if(points.length){
      ready=true;resolve(points);return;
@@ -61,7 +64,7 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    assert(f.sx>.2&&f.sy>.2,name+' must land within the renderer bounds');
   }
   for(const [label,rows] of [['Globe',out],['Robinson',back]]){
-   console.log(label+' tween diagnostic:',JSON.stringify(rows.map(r=>({t:Math.round(r.t),p:r.p,clickCost:Math.round(r.clickCost),w:r.w,h:r.h}))));
+   console.log(label+' tween diagnostic:',JSON.stringify(rows.map(r=>({t:Math.round(r.t),p:r.p,phase:r.phase,transform:r.phase==='land'?r.transform:undefined,clickCost:Math.round(r.clickCost),w:r.w,h:r.h}))));
    // Headless SwiftShader may skip late frames on a software repaint.
    // The essential contract: at least two DISTINCT real geographic positions
    // appear before endpoint and the reverse trip traverses them backwards.
@@ -69,6 +72,9 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    assert(rows[0].clickCost<800,label+' must not block tap for expensive MapLibre projection work');
    assert(intermediate.length>=2,label+' must show at least two real vector in-between frames');
    assert(new Set(intermediate.map(r=>r.p.toFixed(2))).size>=2,label+' vertices must move across several frames');
+   const landing=rows.filter(r=>r.phase==='land');
+   assert(landing.length>=2,label+' must animate its last dimension alignment, not snap to MapLibre');
+   assert(new Set(landing.map(r=>r.transform)).size>=2,label+' endpoint size must continue changing over distinct frames');
   }
   assert.equal(await page.locator('.lab-atlas-morph').count(),0,'No overlay after settling');
   assert(out[0].p<out.at(-1).p,'Globe transition moves coastlines forwards');
