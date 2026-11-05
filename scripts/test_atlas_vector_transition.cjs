@@ -31,11 +31,11 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
     const veil=document.querySelector('.lab-atlas-morph');
     if(veil){
      const canvas=veil.querySelector('.lab-atlas-morph-vectors');
-     if(canvas&&['pop','land'].includes(veil.dataset.phase)){
-      // No GPU pixel readback: sample geographic progress and the final
-      // compositor transform separately without freezing headless Chromium.
+     if(canvas&&['pop','dock'].includes(veil.dataset.phase)){
+      // Sample geography and scale from the SAME requestAnimationFrame.
+      // Reading computed styles or pixels here can stall Chromium's GPU.
       points.push({t:performance.now()-began,p:+veil.dataset.vectorProgress,
-       phase:veil.dataset.phase,transform:getComputedStyle(canvas).transform,
+       phase:veil.dataset.phase,fitX:+veil.dataset.fitX,fitY:+veil.dataset.fitY,
        clickCost,w:document.querySelector('#labAtlasGlobe').clientWidth,
        h:document.querySelector('#labAtlasGlobe').clientHeight});
      }
@@ -62,9 +62,10 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    assert(f&&['x','y','sx','sy'].every(k=>Number.isFinite(f[k])),
     name+' must have measured destination coordinates, not nominal dimensions');
    assert(f.sx>.2&&f.sy>.2,name+' must land within the renderer bounds');
+   assert(record.endpointResidual<.035,name+' integrated endpoint should need at most 3.5% last correction');
   }
   for(const [label,rows] of [['Globe',out],['Robinson',back]]){
-   console.log(label+' tween diagnostic:',JSON.stringify(rows.map(r=>({t:Math.round(r.t),p:r.p,phase:r.phase,transform:r.phase==='land'?r.transform:undefined,clickCost:Math.round(r.clickCost),w:r.w,h:r.h}))));
+   console.log(label+' unified tween diagnostic:',JSON.stringify(rows.map(r=>({t:Math.round(r.t),p:r.p,fitX:r.fitX,fitY:r.fitY,phase:r.phase,clickCost:Math.round(r.clickCost),w:r.w,h:r.h}))));
    // Headless SwiftShader may skip late frames on a software repaint.
    // The essential contract: at least two DISTINCT real geographic positions
    // appear before endpoint and the reverse trip traverses them backwards.
@@ -72,9 +73,13 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    assert(rows[0].clickCost<800,label+' must not block tap for expensive MapLibre projection work');
    assert(intermediate.length>=2,label+' must show at least two real vector in-between frames');
    assert(new Set(intermediate.map(r=>r.p.toFixed(2))).size>=2,label+' vertices must move across several frames');
-   const landing=rows.filter(r=>r.phase==='land');
-   assert(landing.length>=2,label+' must animate its last dimension alignment, not snap to MapLibre');
-   assert(new Set(landing.map(r=>r.transform)).size>=2,label+' endpoint size must continue changing over distinct frames');
+   const moving=rows.filter(r=>r.phase==='pop'&&Number.isFinite(r.fitX)&&Number.isFinite(r.fitY));
+   assert(moving.length>=2,label+' should reveal the same continuous size motion as its land geometry');
+   assert(new Set(moving.map(r=>r.fitX.toFixed(3))).size>=2,label+' scale should evolve WITH geography');
+   if(label==='Globe')assert(moving[0].fitX>moving.at(-1).fitX,
+    'Globe scales inward while continents converge, not after they finish');
+   else assert(moving[0].fitX<moving.at(-1).fitX,
+    'Robinson scales outward while continents unfold, not after they finish');
   }
   assert.equal(await page.locator('.lab-atlas-morph').count(),0,'No overlay after settling');
   assert(out[0].p<out.at(-1).p,'Globe transition moves coastlines forwards');
