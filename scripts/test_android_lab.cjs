@@ -30,6 +30,21 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   await page.waitForFunction(()=>labCalls.some(c=>c[0]==='go'));
   let calls=await page.evaluate(()=>labCalls);
   const first=calls.find(c=>c[0]==='go');assert.match(first[2],/Discovery route: v1\/R\d\d\./);assert.doesNotMatch(first[2],/Seed:/);assert.equal(first[1],'chatgpt');assert.equal(first[2],calls.find(c=>c[0]==='copy')[1]);
+
+  // Inspiration and GO are surface bands, not inset cards.
+  await page.evaluate(()=>{labState.activeInspiration='Stress bath bummer jams';window.HipsterLabRefresh()});
+  for(const width of [320,412,840]){
+   await page.setViewportSize({width,height:915});await page.waitForTimeout(450);
+   const geometry=await page.evaluate(()=>{
+    const site=document.querySelector('.site').getBoundingClientRect();
+    return ['#labInspiration','.go-options'].map(selector=>{const el=document.querySelector(selector),r=el.getBoundingClientRect();return {selector,left:r.left,right:r.right,siteLeft:site.left,siteRight:site.right,overflow:document.documentElement.scrollWidth>innerWidth,stripe:selector==='#labInspiration'?getComputedStyle(el,'::before').content:null}})
+   });
+   for(const r of geometry){assert(Math.abs(r.left-r.siteLeft)<1.5&&Math.abs(r.right-r.siteRight)<1.5,r.selector+' spans the Jukebox surface');assert(!r.overflow,'Full-width bands do not cause horizontal overflow');if(r.stripe!==null)assert(['none','normal'].includes(r.stripe),'No inspiration accent stripe')}
+   await page.locator('#labInspiration').screenshot({path:'android-lab/build/switch-review/inspiration-band-'+width+'.png'});
+   await page.locator('.go-options').screenshot({path:'android-lab/build/switch-review/go-band-'+width+'.png'});
+  }
+  await page.evaluate(()=>{labState.activeInspiration='';window.HipsterLabRefresh()});
+  await page.setViewportSize({width:412,height:915});
   await page.locator('#openAi').click();
   assert.equal((await page.evaluate(()=>labCalls)).filter(c=>c[0]==='open').length,1);
   assert.equal(await page.locator('#labJukebox .service-counter').count(),0);
@@ -122,6 +137,13 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   await page.goto('http://127.0.0.1:'+server.address().port+'/');
   await page.waitForFunction(()=>window.labAtlasGlobe&&labAtlasGlobe.loaded());
   assert(await page.locator('#labAtlasGlobe').isVisible());
+  const polar=await page.evaluate(()=>{
+   const features=JSON.parse(document.querySelector('#labGlobeGeography').textContent).features;
+   const points=country=>features.filter(f=>f.properties.country===country).flatMap(f=>f.geometry.coordinates.flat(2));
+   return {greenland:Math.max(...points('GRL').map(p=>p[1])),canada:Math.max(...points('CAN').map(p=>p[1])),russia:Math.max(...points('RUS').map(p=>p[1]))};
+  });
+  assert(polar.greenland>83.5&&polar.canada>82&&polar.russia>80,'Bundled map retains the northern coasts beyond the old 75-degree crop');
+
   assert.deepEqual(await page.locator('[data-atlas-view]').evaluateAll(nodes=>nodes.map(n=>n.dataset.atlasView)),['robinson','globe']);
   assert.equal(await page.locator('[data-atlas-view="robinson"]').getAttribute('aria-pressed'),'true','Fresh installs default to Robinson');
   assert.match(await page.locator('#labAtlasGlobe').getAttribute('aria-label'),/Robinson/);
