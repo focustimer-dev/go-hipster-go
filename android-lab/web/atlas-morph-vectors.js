@@ -187,9 +187,14 @@ const labAtlasMorphVectors=(()=>{
    Math.floor(index/CACHE_COLS)*px,px,px,0,0,canvas.width,canvas.height);
   return true;
  }
- function cacheStatus(){
-  return {ready:!!warm?.ready,frames:warm?.done||warming?.done||0,
-   pixels:warm?.pixels||warming?.pixels||0};
+ function cacheStatus(selected=null,width=null){
+  const pixels=width==null?null:Math.min(650,Math.max(300,
+   Math.round(width*Math.min(devicePixelRatio||1,1.25))));
+  const expected=(selected!=null&&pixels!=null)?signature(pixels,selected):null;
+  return {ready:!!warm?.ready&&(!expected||warm.key===expected),
+   frames:warm?.done||warming?.done||0,
+   pixels:warm?.pixels||warming?.pixels||0,
+   preparing:!!warming};
  }
  function make(canvas,geojson,selected,center){
   // This is at most ~2 MiB of short-lived bitmap memory on current phones.
