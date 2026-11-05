@@ -54,6 +54,9 @@ function initLabGlobe(){
  new ResizeObserver(()=>{
   if(!host.clientWidth||!host.clientHeight)return;
   labGlobe.resize();
+  // During the fold, only resize the backing canvas; one final camera fit is
+  // committed when the destination frame has finished changing dimensions.
+  if(labAtlasMorph)return;
   if(labAtlasMode==='robinson')labGlobe.setMinZoom(labRobinsonMinimumZoom());
   // Refit at rest on rotation, without erasing a user's current close-up.
   else if(labGlobeResting)labGlobe.jumpTo({center:labAtlasHome(),zoom:labGlobeHomeZoom()});
@@ -103,14 +106,137 @@ function labRobinsonGeometry(data){
 }
 function labAtlasPoint(point){return labAtlasMode==='robinson'?labRobinsonPoint(point):point}
 function labAtlasHome(){return labAtlasMode==='globe'?[10,15]:[0,0]}
+
+let labAtlasModeInitialized=false,labAtlasMorph=null;
+const LAB_ATLAS_MORPH_DURATION=460;
+
+// The projection buttons reflect the requested destination immediately; the
+// live map may need a frame to prepare its new geometry underneath the veil.
+function labAtlasSwitchButtons(mode){
+ for(const b of doc.querySelectorAll('[data-atlas-view]')){
+  const active=b.dataset.atlasView===mode;
+  b.setAttribute('aria-pressed',String(active));
+  b.style.background=active?'#103135':'transparent';
+  b.style.color=active?'#dfb045':'#103135';
+ }
+ store('ghg-atlas-view-v2',mode);
+}
+
+// This is deliberately a visual fold/unfold, NOT a costly per-frame GeoJSON
+// reprojection. We snapshot one rendered frame, reshape its silhouette, and
+// allow MapLibre to rebuild the destination behind an opaque, short-lived veil.
+function labAtlasMorphTo(mode){
+ const host=labGlobe.getContainer(),from=labAtlasMode;
+ const state={from,to:mode,queued:null,cover:null,revealing:false,pointerEvents:host.style.pointerEvents};
+ labAtlasMorph=state;
+ labAtlasSwitchButtons(mode);
+ let captured=false;
+ const begin=()=>{
+  if(labAtlasMorph!==state||captured)return;
+  captured=true;
+  const source=labGlobe.getCanvas(),size=host.getBoundingClientRect();
+  const veil=doc.createElement('div');
+  veil.className='lab-atlas-morph';
+  veil.setAttribute('aria-hidden','true');
+  veil.dataset.from=from;veil.dataset.to=mode;
+  const ink=doc.createElement('div');ink.className='lab-atlas-morph-ink';
+  const image=doc.createElement('canvas');image.className='lab-atlas-morph-image';
+  image.width=Math.max(1,source.width);image.height=Math.max(1,source.height);
+  try{
+   const ctx=image.getContext('2d');
+   ctx.drawImage(source,0,0,image.width,image.height);
+   // WebGL can discard a frame outside render; use a solid ink silhouette if
+   // capture was transparent instead of exposing an intermediate map repaint.
+   if(!ctx.getImageData(Math.floor(image.width/2),Math.floor(image.height/2),1,1).data[3])
+    image.hidden=true;
+  }catch(e){image.hidden=true}
+  ink.appendChild(image);veil.appendChild(ink);
+  host.style.height=size.height+'px';
+  host.style.aspectRatio='auto';
+  host.style.transition='height '+LAB_ATLAS_MORPH_DURATION+'ms cubic-bezier(.22,.75,.2,1)';
+  host.style.pointerEvents='none';
+  host.appendChild(veil);
+  state.cover=veil;
+  // Reprojection is hidden behind the captured source. Only the viewport
+  // silhouette and size are animated, not thousands of geographic vertices.
+  labAtlasCommitMode(mode,true);
+  const destinationHeight=size.width*(mode==='globe'?1:372/720);
+  requestAnimationFrame(()=>{
+   if(labAtlasMorph!==state)return;
+   host.style.height=destinationHeight+'px';
+   veil.classList.add('is-unfolding');
+  });
+  const settle=()=>{
+   if(labAtlasMorph!==state)return;
+   host.style.transition='none';
+   host.style.height='';
+   host.style.aspectRatio=mode==='globe'?'1 / 1':'720 / 372';
+   labGlobe.resize();
+   if(mode==='robinson')labGlobe.setMinZoom(labRobinsonMinimumZoom());
+   labGlobe.jumpTo({center:labAtlasHome(),zoom:labGlobeHomeZoom(),bearing:0,pitch:0});
+   labAtlasGestures();
+   const reveal=()=>{
+    if(labAtlasMorph!==state||state.revealing)return;
+    state.revealing=true;
+    veil.classList.add('is-revealing');
+    setTimeout(()=>{
+     if(labAtlasMorph!==state)return;
+     veil.remove();
+     host.style.pointerEvents=state.pointerEvents;
+     labAtlasMorph=null;
+     const next=state.queued;
+     if(next&&next!==labAtlasMode)labSetAtlasMode(next);
+    },170);
+   };
+   labGlobe.once('idle',reveal);
+   labGlobe.triggerRepaint();
+   // Offline data should settle promptly; never leave an inaccessible atlas
+   // if WebView does not deliver idle after a projection swap.
+   setTimeout(reveal,900);
+  };
+  setTimeout(settle,LAB_ATLAS_MORPH_DURATION+40);
+ };
+ labGlobe.once('render',begin);
+ labGlobe.triggerRepaint();
+ // A paused WebGL renderer must never strand the selection or map controls.
+ setTimeout(()=>{
+  if(labAtlasMorph!==state||captured)return;
+  labAtlasMorph=null;
+  labAtlasCommitMode(mode);
+  const next=state.queued;
+  if(next&&next!==labAtlasMode)labSetAtlasMode(next);
+ },850);
+}
 function labSetAtlasMode(mode){
+ if(mode==='mercator')mode='robinson';
+ if(!labGlobeReady||!['globe','robinson'].includes(mode))return;
+ if(!labAtlasModeInitialized){
+  labAtlasModeInitialized=true;
+  labAtlasCommitMode(mode);
+  return;
+ }
+ if(labAtlasMorph){
+  // Last tap wins: once the visible transition settles, honor its destination.
+  labAtlasMorph.queued=mode;
+  labAtlasSwitchButtons(mode);
+  return;
+ }
+ if(mode===labAtlasMode||window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  labAtlasCommitMode(mode);
+  return;
+ }
+ labAtlasMorphTo(mode);
+}
+function labAtlasCommitMode(mode,keepHostSize=false){
  if(mode==='mercator')mode='robinson'; // Migrate the retired flat-view preference.
  if(!labGlobeReady||!['globe','robinson'].includes(mode))return;
  labAtlasMode=mode;
  const host=labGlobe.getContainer(),frame=host.closest('.crate-map-frame');
  frame?.classList.toggle('lab-globe-frame',mode==='globe');
- host.style.aspectRatio=mode==='globe'?'1 / 1':'720 / 372';
- labGlobe.resize();
+ if(!keepHostSize){
+  host.style.aspectRatio=mode==='globe'?'1 / 1':'720 / 372';
+  labGlobe.resize();
+ }
  const home=doc.getElementById('atlasHome');if(home)home.textContent=mode==='globe'?'← WHOLE GLOBE':'← WHOLE WORLD';
  host.setAttribute('aria-label',mode==='robinson'?'Interactive regional Robinson map':'Interactive regional globe');store('ghg-atlas-view-v2',mode);
  labGlobe.stop();labGlobe.setMaxBounds(null);labGlobe.setMinZoom(-1);labGlobe.setProjection({type:mode==='globe'?'globe':'mercator'});
@@ -129,7 +255,7 @@ function labSetAtlasMode(mode){
  for(const {marker,point} of labSecretMarkers)marker.setLngLat(labAtlasPoint(point));
  labGlobe.setPaintProperty('ocean','background-color',mode==='robinson'?'rgba(0,0,0,0)':'#103135');
  labGlobe.setLayoutProperty('robinson-ocean','visibility',mode==='robinson'?'visible':'none');
- for(const b of doc.querySelectorAll('[data-atlas-view]')){const active=b.dataset.atlasView===mode;b.setAttribute('aria-pressed',String(active));b.style.background=active?'#103135':'transparent';b.style.color=active?'#dfb045':'#103135'}
+ labAtlasSwitchButtons(mode);
  labGlobe.touchZoomRotate[mode==='robinson'?'disableRotation':'enableRotation']();
  labGlobe.touchPitch[mode==='robinson'?'disable':'enable']();
  labGlobe.keyboard[mode==='robinson'?'disableRotation':'enableRotation']();
