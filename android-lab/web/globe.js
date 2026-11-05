@@ -230,6 +230,7 @@ function labAtlasMorphTo(mode){
    cleanup();return;
   }
   veil.dataset.commitMs=(performance.now()-commitStarted).toFixed(1);
+  window.__labAtlasLastMorph={from,to:mode,commitMs:Number(veil.dataset.commitMs)};
   const onIdle=()=>{labGlobe.off('idle',onIdle);cleanup()};
   labGlobe.once('idle',onIdle);
   labGlobe.triggerRepaint();
