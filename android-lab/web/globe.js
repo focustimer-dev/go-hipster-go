@@ -170,7 +170,9 @@ function labAtlasMorphTo(mode){
  // Make the destination physically ready early rather than changing coasts
  // abruptly AFTER the spring stops. The map canvas is sized ONCE to the
  // destination underneath the fully opaque overlay.
- labGlobe.once('idle',()=>{if(labAtlasMorph===state)state.ready=true});
+ labGlobe.once('idle',()=>{
+  if(labAtlasMorph===state){state.ready=true;veil.dataset.targetReady='true'}
+ });
  labAtlasCommitMode(mode,true);
  host.style.height=targetHeight+'px';
  labGlobe.resize();
