@@ -52,13 +52,20 @@ function renderLabInspiration(){
  const anchor=doc.querySelector('.refinements');if(!anchor)return;let card=doc.getElementById('labInspiration');
  if(!card){
   const controls=doc.createElement('div');
-  controls.innerHTML=`<button type="button" id="labAddInspiration">＋ Add inspiration <small>Song, artist, album, or link</small></button>
+  controls.innerHTML=`<button type="button" id="labAddInspiration"><span class="lab-inspiration-add-label"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="M6 10h8m-4-4v8"/></svg>Add inspiration</span><small>Song, artist, album, or link</small></button>
    <form id="labInspirationEditor" hidden>
     <label for="labInspirationDraft">What’s inspiring this mix?</label>
-    <textarea id="labInspirationDraft" rows="3" maxlength="2000" placeholder="Paste a link or describe the sound" required></textarea>
-    <button type="submit">Use inspiration</button>
-    <button type="button" data-cancel>Cancel</button>
-    <div id="labLatestInspiration" hidden>Recent inspiration <button type="button"></button></div>
+    <textarea id="labInspirationDraft" rows="2" maxlength="2000" placeholder="Paste a link or describe the sound" required></textarea>
+    <div class="lab-inspiration-editor-actions">
+     <button type="submit">Use inspiration</button>
+     <button type="button" data-cancel>Cancel</button>
+    </div>
+    <div id="labLatestInspiration" hidden>
+     <button type="button">
+      <span class="lab-inspiration-recent-copy"><span>Recent inspiration</span><strong></strong></span>
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M15 5v5H5m4-4-4 4 4 4"/></svg>
+     </button>
+    </div>
    </form>`;
   anchor.before(controls);
   controls.querySelector('#labAddInspiration').onclick=labOpenInspirationEditor;
@@ -90,7 +97,7 @@ function renderLabInspiration(){
  const recent=doc.getElementById('labLatestInspiration');
  recent.hidden=!latest?.text;
  const recentButton=recent.querySelector('button');
- recentButton.textContent=labSummary(latest?.title||latest?.text);
+ recentButton.querySelector('strong').textContent=labSummary(latest?.title||latest?.text);
  recentButton.onclick=()=>{doc.getElementById('labInspirationDraft').value=latest?.text||''};
  const preview=labState().inspirationPreview||{};
  doc.getElementById('labInspirationPreview').textContent=labSummary(preview.title||value);

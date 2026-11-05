@@ -196,13 +196,33 @@ body.gig-poster.lab-workspace[data-page=launch] .go-options{
 body.gig-poster.lab-workspace #labInspiration{padding-inline:3cqw}
 body.gig-poster.lab-workspace[data-page=launch] .go-options{margin-bottom:0}
 body.gig-poster.lab-workspace[data-page=launch] .go-options .go-button{border-radius:0}
-#labAddInspiration{width:100%;min-height:44px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 0;border:0;border-bottom:1px solid #10313566;background:transparent;color:#103135;text-align:left;font-weight:700}
-#labAddInspiration small{font-weight:400;text-align:right}
-#labInspirationEditor{padding:16px;background:#103135;color:#f4efdf}
-#labInspirationEditor label,#labInspirationEditor textarea{display:block}
-#labInspirationEditor textarea{width:100%;margin:8px 0;padding:8px;background:#f4efdf;color:#103135;font:inherit}
-#labInspirationEditor button{min-height:44px;padding:6px 10px;border:1px solid #dfb045;background:transparent;color:inherit;font:inherit}
-#labInspirationEditor button[type=submit]{background:#dfb045;color:#103135;font-weight:700}
-#labLatestInspiration{margin-top:10px}
-#labLatestInspiration button{max-width:100%;overflow-wrap:anywhere}
+#labAddInspiration {
+ width:100%;min-height:44px;display:flex;align-items:center;justify-content:space-between;
+ gap:8px;padding:6px 0;border:0;border-bottom:1px solid #10313566;
+ background:transparent;color:#103135;text-align:left;
+}
 #labAddInspiration[hidden]{display:none}
+.lab-inspiration-add-label{display:flex;align-items:center;gap:8px;font:400 1.125rem/1.1 Poster,sans-serif}
+.lab-inspiration-add-label svg{flex:none}
+#labAddInspiration small{font:.75rem/1.25 Arial,sans-serif;text-align:right}
+#labInspirationEditor{padding:12px clamp(12px,3cqw,24px);background:#103135;color:#f4efdf}
+#labInspirationEditor label{display:block;color:#dfb045;font:400 1.4rem/1.15 Poster,sans-serif}
+#labInspirationEditor textarea {
+ display:block;box-sizing:border-box;width:100%;margin:8px 0;padding:9px 10px;
+ border:1px solid #dfb045;border-radius:0;background:#f4efdf;color:#103135;
+ caret-color:#103135;font:1rem/1.35 Arial,sans-serif;resize:vertical;
+}
+#labInspirationEditor textarea::placeholder{color:#52605b;opacity:1}
+.lab-inspiration-editor-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+#labInspirationEditor button{min-height:44px;border:0;border-radius:0;background:transparent;color:inherit;font:inherit}
+#labInspirationEditor button[type=submit]{padding:6px 14px;background:#dfb045;color:#103135;font:400 1.125rem/1.1 Poster,sans-serif}
+#labInspirationEditor button[type=submit]:active{background:#edc65d}
+#labInspirationEditor [data-cancel]{padding:6px 10px;text-decoration:underline;text-underline-offset:3px}
+#labLatestInspiration{margin-top:8px;border-top:1px dashed #dfb04580}
+#labLatestInspiration button{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0 0;text-align:left}
+.lab-inspiration-recent-copy{min-width:0;display:grid;gap:3px}
+.lab-inspiration-recent-copy span{color:#dfb045;font:700 .6875rem/1.25 'Courier New',monospace;text-transform:uppercase;letter-spacing:.05em}
+.lab-inspiration-recent-copy strong{font:700 .875rem/1.3 Arial,sans-serif;overflow-wrap:anywhere}
+#labLatestInspiration svg{flex:none;color:#dfb045}
+#labInspirationEditor :is(button,textarea):focus-visible{outline:2px solid #f5cf64;outline-offset:2px}
+#labAddInspiration:focus-visible{outline:2px solid #103135;outline-offset:2px}
