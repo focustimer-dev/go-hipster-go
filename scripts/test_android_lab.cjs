@@ -139,6 +139,9 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   await ticket.locator('summary').click();
   assert(await ticket.locator('.ticket-region-short').isVisible(),'Expanded ticket restores region/option details');
   assert.deepEqual(errors,[]);
+  // The morph test needs explicit normal-motion emulation; host CI defaults
+  // may advertise reduced motion, for which production correctly skips it.
+  await page.emulateMedia({reducedMotion:'no-preference'});
   await page.goto('http://127.0.0.1:'+server.address().port+'/');
   await page.waitForFunction(()=>window.labAtlasGlobe&&labAtlasGlobe.loaded());
   assert(await page.locator('#labAtlasGlobe').isVisible());
@@ -154,6 +157,15 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert.match(await page.locator('#labAtlasGlobe').getAttribute('aria-label'),/Robinson/);
   assert.match(await page.locator('#atlasInstruction').textContent(),/SWIPE TO SCROLL/);
   await page.locator('[data-atlas-view="globe"]').click();
+  await page.waitForTimeout(130);
+  const morphDebug=await page.evaluate(()=>({
+   mode:labAtlasMode,initialized:labAtlasModeInitialized,busy:!!labAtlasMorph,
+   reduced:window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+   overlay:!!document.querySelector('.lab-atlas-morph')
+  }));
+  console.log('Atlas morph check:',morphDebug,'page errors:',errors);
+  assert.equal(morphDebug.reduced,false,'Motion test must emulate no-preference');
+  assert(morphDebug.overlay,'Normal-motion Atlas switch must have a visible transition overlay');
   await page.waitForFunction(()=>!!document.querySelector('.lab-atlas-morph'),{timeout:5000});
   assert.deepEqual(await page.locator('.lab-atlas-morph').evaluate(el=>[el.dataset.from,el.dataset.to]),
    ['robinson','globe'],'A real folded map veil bridges the switch instead of exposing redraws');
