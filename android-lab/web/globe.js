@@ -20,9 +20,21 @@ function labGlobeHomeZoom(){
  const shortSide=Math.max(120,Math.min(host.clientWidth||360,host.clientHeight||360));
  return Math.log2(shortSide*Math.PI/512)-.25;
 }
-function labGlobeSync(){
+const labGlobeAppliedSelection=new Map();
+function labGlobeSync(force=false){
  if(!labGlobeReady)return;
- for(const f of labGlobeGeography.features)labGlobe.setFeatureState({source:'land',id:f.id},{selected:crateSelected.has(f.properties.region)});
+ // Feature state is sticky by source/id. Reapplying 183 unchanged features
+ // twice per projection switch triggers unnecessary render/worker work,
+ // particularly costly on software WebGL. Restore only selected features
+ // on a source reload; clear previously selected features on deselection.
+ for(const f of labGlobeGeography.features){
+  const selected=crateSelected.has(f.properties.region);
+  const previous=labGlobeAppliedSelection.get(f.id);
+  if((selected&&(force||previous!==true))||(previous===true&&!selected)){
+   labGlobe.setFeatureState({source:'land',id:f.id},{selected});
+   labGlobeAppliedSelection.set(f.id,selected);
+  }
+ }
 }
 let labGlobeGeography;
 function initLabGlobe(){
@@ -335,7 +347,7 @@ function labAtlasCommitMode(mode,keepHostSize=false){
  labGlobeResting=true;
  labGlobe.jumpTo({center:labAtlasHome(),zoom:labGlobeHomeZoom(),bearing:0,pitch:0});
  labAtlasGestures();
- labGlobe.once('idle',labGlobeSync);labGlobeSync();
+ labGlobe.once('idle',()=>labGlobeSync(true));labGlobeSync();
 }
 function installLabAtlasModes(frame){
  const controls=doc.createElement('div');controls.setAttribute('role','group');controls.setAttribute('aria-label','Atlas view');controls.className='lab-atlas-modes';
