@@ -183,3 +183,7 @@ body.lab-workspace .selection-ticket.is-compact details:not([open]) :is(.ticket-
 #labManualTitle{font-size:28px;margin-bottom:6px}#labManual>.lab-intro{font-size:14px;margin-bottom:10px}
 
 #labManual{padding-top:18px}#labManualTitle{font-size:26px}#labManual>.lab-intro{font-size:14px;margin-bottom:14px}#labManualFrame{display:block}
+
+/* The selected app tab already names this destination. */
+#labManual{padding-top:8px;padding-bottom:0;min-height:0}
+#labManualTitle.lab-visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
