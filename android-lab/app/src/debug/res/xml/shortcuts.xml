@@ -1,0 +1,9 @@
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+  <!-- Shortcuts resolve only inside Globe Test, never back into the installed Lab. -->
+  <shortcut android:shortcutId="funky" android:enabled="true" android:shortcutShortLabel="@string/funky">
+    <intent android:action="android.intent.action.VIEW" android:targetPackage="work.samelling.hipstergo.lab.globeqa" android:targetClass="work.samelling.hipstergo.lab.LabActivity" android:data="hipsterlab://jukebox?mood=funky" />
+  </shortcut>
+  <shortcut android:shortcutId="weird" android:enabled="true" android:shortcutShortLabel="@string/weird">
+    <intent android:action="android.intent.action.VIEW" android:targetPackage="work.samelling.hipstergo.lab.globeqa" android:targetClass="work.samelling.hipstergo.lab.LabActivity" android:data="hipsterlab://jukebox?mood=weird" />
+  </shortcut>
+</shortcuts>
