@@ -1,4 +1,4 @@
-name: Android Lab 0.9.43 Vector Betweening Experiment (build only)
+name: Android Lab 0.9.44 Vector Betweening Experiment (build only)
 on:
   push:
     branches: [experiment/lab-vector-betweening-0-9-43]
@@ -32,7 +32,7 @@ jobs:
           apk=android-lab/app/build/outputs/apk/release/app-release-unsigned.apk
           test -s "$apk"
           badging="$("$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$apk")"
-          [[ "$badging" == *"name='work.samelling.hipstergo.lab' versionCode='52' versionName='0.9.43'"* ]] || {
+          [[ "$badging" == *"name='work.samelling.hipstergo.lab' versionCode='53' versionName='0.9.44'"* ]] || {
             echo "::error::Wrong package ID or version"; exit 1;
           }
           sha256sum "$apk"
@@ -48,7 +48,7 @@ jobs:
         run: node scripts/test_atlas_vector_transition.cjs
       - uses: actions/upload-artifact@v4
         with:
-          name: hipster-go-lab-0.9.43-vector-betweening-unsigned
+          name: hipster-go-lab-0.9.44-vector-betweening-unsigned
           path: android-lab/app/build/outputs/apk/release/app-release-unsigned.apk
           if-no-files-found: error
           retention-days: 3
