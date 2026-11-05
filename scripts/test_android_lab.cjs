@@ -159,7 +159,8 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   await page.locator('[data-atlas-view="globe"]').click();
   await page.waitForTimeout(130);
   const morphDebug=await page.evaluate(()=>({
-   mode:labAtlasMode,initialized:labAtlasModeInitialized,busy:!!labAtlasMorph,
+   selected:document.querySelector('[data-atlas-view][aria-pressed="true"]')?.dataset.atlasView,
+   renderedProjection:window.labAtlasGlobe.getProjection()?.type,
    reduced:window.matchMedia('(prefers-reduced-motion: reduce)').matches,
    overlay:!!document.querySelector('.lab-atlas-morph')
   }));
@@ -174,7 +175,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   console.log('Projection snapshot captured:',capture);
   await page.screenshot({path:'android-lab/build/switch-review/atlas-fold-midpoint.png',animations:'allow'});
   assert(await page.locator('.lab-atlas-morph').isVisible(),'The atlas silhouette stays visible during projection reconstruction');
-  await page.waitForFunction(()=>!labAtlasMorph,{timeout:5000});
+  await page.waitForFunction(()=>!document.querySelector('.lab-atlas-morph'),{timeout:5000});
   assert.equal(await page.locator('.lab-atlas-morph').count(),0,'The veil is fully removed after the new map settles');
   await page.reload();await page.waitForFunction(()=>window.labAtlasGlobe&&labAtlasGlobe.loaded());
   assert.equal(await page.locator('[data-atlas-view="globe"]').getAttribute('aria-pressed'),'true','An explicit Globe choice survives reload');
@@ -203,7 +204,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    ['globe','robinson'],'Returning to Robinson unfolds the sphere into the chart');
   await page.waitForTimeout(160);
   await page.screenshot({path:'android-lab/build/switch-review/atlas-unfold-midpoint.png',animations:'allow'});
-  await page.waitForFunction(()=>!labAtlasMorph,{timeout:5000});
+  await page.waitForFunction(()=>!document.querySelector('.lab-atlas-morph'),{timeout:5000});
   const robinsonFrame=await page.locator('#labAtlasGlobe').evaluate(el=>({width:el.clientWidth,height:el.clientHeight}));
   assert(Math.abs(robinsonFrame.width/robinsonFrame.height-720/372)<.05,'Robinson keeps the original wide chart');
   assert.equal(await page.locator('#atlasHome').textContent(),'← WHOLE WORLD');
@@ -220,14 +221,14 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   // A fast return tap keeps one queued destination, never stacks paint transitions.
   await page.locator('[data-atlas-view="globe"]').click();
   await page.locator('[data-atlas-view="robinson"]').click();
-  await page.waitForFunction(()=>!labAtlasMorph&&labAtlasMode==='robinson',{timeout:8000});
+  await page.waitForFunction(()=>!document.querySelector('.lab-atlas-morph')&&document.querySelector('[data-atlas-view="robinson"]').getAttribute('aria-pressed')==='true',{timeout:8000});
   assert.equal(await page.locator('.lab-atlas-morph').count(),0,'Quick alternation cleans up every transient overlay');
   assert.equal(await page.locator('[data-atlas-view="robinson"]').getAttribute('aria-pressed'),'true');
   // Respect system reduced-motion: geometry still switches but no overlay animates.
   await page.emulateMedia({reducedMotion:'reduce'});
   await page.locator('[data-atlas-view="globe"]').click();
   assert.equal(await page.locator('.lab-atlas-morph').count(),0,'Reduced motion skips the visual fold');
-  assert.equal(await page.evaluate(()=>labAtlasMode),'globe');
+  assert.equal(await page.locator('[data-atlas-view="globe"]').getAttribute('aria-pressed'),'true');
   await page.locator('[data-atlas-view="robinson"]').click();
   assert.equal(await page.locator('.lab-atlas-morph').count(),0);
   await page.emulateMedia({reducedMotion:'no-preference'});
@@ -240,7 +241,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert.equal(await page.locator('[data-atlas-view="mercator"]').count(),0,'Only Globe and Robinson are offered');
   for(const mode of ['robinson','globe']){
    await page.locator('[data-atlas-view="'+mode+'"]').click();
-   await page.waitForFunction(()=>!labAtlasMorph&&labAtlasGlobe.loaded(),{timeout:6000});
+   await page.waitForFunction(()=>!document.querySelector('.lab-atlas-morph')&&labAtlasGlobe.loaded(),{timeout:6000});
    assert.equal(await page.locator('[data-atlas-view="'+mode+'"]').getAttribute('aria-pressed'),'true');
    if(mode==='robinson'){
     await page.locator('#atlasHome').evaluate(el=>el.click());await page.waitForTimeout(500);
