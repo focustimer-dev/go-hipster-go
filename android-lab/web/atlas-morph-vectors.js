@@ -101,10 +101,17 @@ const labAtlasMorphVectors=(()=>{
    sx=(east.x-center.x)/(.45*(170/180)*w);
    sy=(center.y-north.y)/(.44*Y[15]*h);
   }
-  const ok=n=>Number.isFinite(n)&&n>.2&&n<2?n:1;
+  const expected=estimatedFit(mode);
+  // During a projection change MapLibre can expose its old camera for a
+  // frame. Never interpret an invalid intermediate projection as a real
+  // 1.0x fit: that was causing a visible ~10% correction on the return trip.
+  const valid=(raw,baseline)=>Number.isFinite(raw)&&raw>.2&&raw<2&&
+   Math.abs(raw/baseline-1)<.15;
+  const validX=valid(sx,expected.sx),validY=valid(sy,expected.sy);
   return {x:Number.isFinite(center.x)?center.x-w/2:0,
    y:Number.isFinite(center.y)?center.y-h/2:0,
-   sx:ok(sx),sy:ok(sy)};
+   sx:validX?sx:expected.sx,sy:validY?sy:expected.sy,
+   sampled:validX&&validY};
  }
  function make(canvas,geojson,selected,center){
   // This is at most ~2 MiB of short-lived bitmap memory on current phones.
