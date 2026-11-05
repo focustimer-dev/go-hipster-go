@@ -188,7 +188,7 @@ function labAtlasMorphTo(mode){
  // viewport-independent baselines predict the destination while MapLibre is
  // still on the old projection; the final render provides a tiny correction.
  const sourceFit=labAtlasMorphVectors.landingFit(from,width,fromHeight,
-  point=>labGlobe.project(from==='robinson'?labRobinsonPoint(point):point));
+  point=>labGlobe.project(from==='robinson'?labRobinsonPoint(point):point),.03);
  const fits={robinson:labAtlasMorphVectors.estimatedFit('robinson'),
   globe:labAtlasMorphVectors.estimatedFit('globe'),width,height:targetHeight};
  fits[from]=sourceFit;
