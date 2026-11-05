@@ -28,6 +28,7 @@ function labGlobeSync(force=false){
  if(!labAtlasMorph&&labGlobeGeography)
   labAtlasMorphVectors.warmFrames(labGlobeGeography,crateSelected,
    labGlobe.getContainer().clientWidth);
+ window.__labAtlasFrameCacheStatus=()=>labAtlasMorphVectors.cacheStatus();
  // Feature state is sticky by source/id. Reapplying 183 unchanged features
  // twice per projection switch triggers unnecessary render/worker work,
  // particularly costly on software WebGL. Restore only selected features
@@ -160,6 +161,7 @@ function labAtlasMorphTo(mode){
   pointerEvents:host.style.pointerEvents,transform:host.style.transform,
   transformOrigin:host.style.transformOrigin};
  labAtlasMorph=state;labAtlasSwitchButtons(mode);
+ labAtlasMorphVectors.pauseWarm();
 
  // Start the motion before doing any MapLibre reprojection or GPU readback.
  const veil=doc.createElement('div');veil.className='lab-atlas-morph';
@@ -232,7 +234,10 @@ function labAtlasMorphTo(mode){
    host.style.transform=state.transform;
    host.style.transformOrigin=state.transformOrigin;
    labAtlasMorph=null;
-   const next=state.queued;if(next&&next!==labAtlasMode)labSetAtlasMode(next);
+   const next=state.queued;
+   if(next&&next!==labAtlasMode)labSetAtlasMode(next);
+   else labAtlasMorphVectors.warmFrames(labGlobeGeography,crateSelected,
+    host.clientWidth);
   },135);
  };
 
