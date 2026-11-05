@@ -31,6 +31,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   let calls=await page.evaluate(()=>labCalls);
   const first=calls.find(c=>c[0]==='go');assert.match(first[2],/Discovery route: v1\/R\d\d\./);assert.doesNotMatch(first[2],/Seed:/);assert.equal(first[1],'chatgpt');assert.equal(first[2],calls.find(c=>c[0]==='copy')[1]);
 
+  fs.mkdirSync('android-lab/build/switch-review',{recursive:true});
   // Inspiration and GO are surface bands, not inset cards.
   await page.evaluate(()=>{labState.activeInspiration='Stress bath bummer jams';window.HipsterLabRefresh()});
   for(const width of [320,412,840]){
@@ -153,6 +154,13 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert.equal(await page.locator('[data-atlas-view="globe"]').getAttribute('aria-pressed'),'true','An explicit Globe choice survives reload');
   await page.locator('[data-atlas-view="robinson"]').click();
 
+
+  await page.evaluate(()=>{const f=labAtlasGlobe.getSource('land')._data.features.find(f=>f.properties.country==='GRL');const points=f.geometry.coordinates.flat(2);const xs=points.map(p=>p[0]),ys=points.map(p=>p[1]);labAtlasGlobe.fitBounds([[Math.min(...xs),Math.min(...ys)],[Math.max(...xs),Math.max(...ys)]],{padding:16,maxZoom:3,duration:0})});
+  await page.waitForFunction(()=>!labAtlasGlobe.isMoving()&&labAtlasGlobe.loaded());
+  const northernCrown=await page.evaluate(()=>{const f=labAtlasGlobe.getSource('land')._data.features.find(f=>f.properties.country==='GRL');const north=f.geometry.coordinates.flat(2).reduce((a,b)=>a[1]>b[1]?a:b);const p=labAtlasGlobe.project(north);return {x:p.x,y:p.y,width:labAtlasGlobe.getContainer().clientWidth,height:labAtlasGlobe.getContainer().clientHeight}});
+  assert(northernCrown.y>=0&&northernCrown.y<=northernCrown.height&&northernCrown.x>=0&&northernCrown.x<=northernCrown.width,'Complete Greenland crown remains in the close-up frame');
+  await page.locator('#labAtlasGlobe').screenshot({path:'android-lab/build/switch-review/northern-coastline-closeup.png'});
+  await page.locator('#atlasHome').evaluate(el=>el.click());await page.waitForTimeout(500);
   await page.locator('[data-crate-region="west-africa"]').evaluate(el=>el.click());
   assert.match(await page.locator('#prompt').textContent(),/West Africa/);
   assert(await page.locator('[data-crate-stamp-region="west-africa"]').count());
