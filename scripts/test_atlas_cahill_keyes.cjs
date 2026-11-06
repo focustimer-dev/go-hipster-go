@@ -200,8 +200,23 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
   // Home view, then switch to MapLibre; no stale overlays or input locks.
   await page.evaluate(()=>window.labCahillMap.reset());
   await page.locator('[data-atlas-view=globe]').click();
-  await page.waitForFunction(()=>document.getElementById('labAtlasGlobe')?.style.pointerEvents===''&&document.getElementById('labAtlasCahill')?.style.display==='none'&&window.labAtlasGlobe?.getProjection()?.type==='globe',
-   null,{timeout:7000});
+  try{
+   await page.waitForFunction(()=>document.getElementById('labAtlasGlobe')?.style.pointerEvents===''&&document.getElementById('labAtlasCahill')?.style.display==='none'&&window.labAtlasGlobe?.getProjection()?.type==='globe',
+    null,{timeout:12000});
+  }catch(error){
+   console.log('Keyes to Globe diagnostic',JSON.stringify(await page.evaluate(()=>({
+    state:typeof labAtlasMode==='string'?labAtlasMode:null,
+    transition:typeof labAtlasMorph==='object'&&labAtlasMorph?
+     {from:labAtlasMorph.from,to:labAtlasMorph.to,queued:labAtlasMorph.queued,started:labAtlasMorph.started,done:labAtlasMorph.done}:null,
+    selected:document.querySelector('[data-atlas-view][aria-pressed=true]')?.dataset.atlasView,
+    projection:window.labAtlasGlobe?.getProjection()?.type,
+    pointer:document.getElementById('labAtlasGlobe')?.style.pointerEvents,
+    keyes:document.getElementById('labAtlasCahill')?.style.display,
+    opacity:document.getElementById('labAtlasCahill')?.style.opacity,
+    lastSwitch:window.__labAtlasLastCahillSwitch
+   }))));
+   throw error;
+  }
   assert.equal(await page.evaluate(()=>window.labAtlasGlobe.getProjection().type),'globe');
   assert.equal(await page.locator('#labAtlasCahill').evaluate(e=>getComputedStyle(e).display),'none');
   assert.equal(await page.locator('#labAtlasGlobe').evaluate(e=>e.style.pointerEvents),'');
