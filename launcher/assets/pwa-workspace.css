@@ -72,3 +72,36 @@ body.pwa-modal-open{overflow:hidden}
 @media(max-width:360px){.pwa-page{padding-inline:16px}.pwa-page h1{font-size:2.7rem}}
 @media(prefers-reduced-motion:reduce){.pwa-workspace{scroll-behavior:auto}}
 @media(forced-colors:active){.pwa-inspiration{background:Canvas;color:CanvasText;outline:1px solid CanvasText}}
+
+/* Android 0.9.56 controlled browser catch-up. */
+.pwa-visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+#pwaManual{padding-top:8px}
+.pwa-guide-nav{position:sticky;top:56px;z-index:50;background:var(--pwa-mustard);padding-top:2px}
+.pwa-guide-picker{position:relative;border-bottom:1px solid var(--pwa-petrol)}
+.pwa-guide-picker>summary{display:flex;align-items:center;gap:10px;min-height:58px;padding:6px 4px;list-style:none;cursor:pointer}
+.pwa-guide-picker>summary::-webkit-details-marker{display:none}
+.pwa-guide-icon{font:700 1.5rem Arial,sans-serif}
+.pwa-guide-current{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.pwa-guide-current small{font:700 .7rem/1.2 Arial,sans-serif}
+.pwa-guide-current strong{font:400 clamp(1.25rem,5vw,1.7rem)/1.15 Poster,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pwa-guide-eject{display:flex;align-items:center;justify-content:center;background:var(--pwa-petrol);color:var(--pwa-mustard);width:36px;height:36px;flex:none;font:700 1.25rem Arial,sans-serif;border-radius:4px}
+.pwa-guide-picker[open] .pwa-guide-eject{transform:rotate(180deg)}
+.pwa-guide-shelf{position:absolute;top:100%;left:0;right:0;z-index:51;max-height:min(66dvh,540px);overflow:auto;background:var(--pwa-mustard);padding:12px 8px;border-bottom:3px solid var(--pwa-petrol);box-shadow:0 8px 20px #1031353d}
+.pwa-guide-tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;border-bottom:4px solid var(--pwa-petrol)}
+.pwa-guide-tabs button{min-height:48px;min-width:0;padding:8px 5px;border:0;background:#edc65d;color:var(--pwa-petrol);font:400 clamp(1rem,4.3vw,1.3rem)/1.2 Poster,sans-serif}
+.pwa-guide-tabs button[aria-selected=true]{background:var(--pwa-petrol);color:var(--pwa-mustard)}
+.pwa-guide-links{display:grid}
+.pwa-guide-link{width:100%;min-height:46px;border:0;border-bottom:1px solid #10313566;padding:10px 12px;text-align:left;background:transparent;color:var(--pwa-petrol);font:700 1rem/1.2 Arial,sans-serif}
+.pwa-guide-link[aria-current=page]{background:var(--pwa-petrol);color:var(--pwa-mustard)}
+.pwa-guide-content{padding:22px 0 12px}
+.pwa-guide-content h2{font-size:clamp(2rem,8vw,2.8rem);line-height:1.1}
+.pwa-guide-intro{margin:14px 0 20px;font-size:1rem;line-height:1.45}
+.pwa-guide-steps{margin:0;padding-left:1.55rem;line-height:1.55}
+.pwa-guide-steps li{padding:0 0 16px 3px}
+.pwa-guide-content>.pwa-wide{margin-top:8px}
+.pwa-guide-copy-fallback{display:block;margin:10px 0;padding:12px;user-select:all;border:1px solid var(--pwa-petrol)}
+.pwa-guide-services{border-top:2px solid var(--pwa-petrol);margin-top:16px!important}
+.pwa-workspace[data-page=launch] .pwa-inspiration{border:0;border-radius:0;box-shadow:none}
+body.gig-poster.pwa-workspace[data-page=launch] .go-options{margin-inline:calc(-3cqw);border:0;border-radius:0;box-shadow:none}
+body.gig-poster.pwa-workspace[data-page=launch] .go-options .go-button{border-radius:0}
+@media(prefers-reduced-motion:reduce){.pwa-guide-picker *{scroll-behavior:auto;transition:none!important;animation:none!important}}
