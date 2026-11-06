@@ -31,12 +31,30 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    const pts=[[-100,40],[10,40],[120,25],[-60,-15],[130,-30]].map(x=>d.projection(x));
    return {regionFeatures:d.regions.length,selected:new Set(ids).size,
     points:pts,sphereMoves:(sphere.match(/M/g)||[]).length,sphereBytes:sphere.length,
-    vendorAvailable:typeof window.labCahillD3?.geoCahillKeyes==='function'};
+    vendorAvailable:typeof window.labCahillD3?.geoCahillKeyes==='function',
+     rewound:d.rewoundPolygons,
+     antarcticaPath:document.getElementById('labCahillAntarctica')?.getAttribute('d')?.length||0,
+     antarcticaOcean:document.getElementById('labCahillAntarcticOcean')?.getAttribute('fill'),
+     polarRadius:+(document.getElementById('labCahillAntarcticOcean')?.getAttribute('r')||0),
+     mapOcean:d.svg.querySelector('.lab-cahill-ocean')?.getAttribute('fill'),
+     africaWidth:(()=>{
+      const f=d.regions.find(r=>r.feature.id===22)?.feature;
+      if(!f)return -1;
+      const b=window.labCahillD3.geoPath(d.projection).bounds(f);
+      return b[1][0]-b[0][0];
+     })()};
   });
   assert(initial.vendorAvailable,'D3 geographic code must be shipped fully offline');
   assert(initial.regionFeatures>=150,'Canonical country features must be present');
   assert(initial.points.every(p=>p&&p.every(Number.isFinite)),'Every test continent has finite actual Cahill-Keyes coordinates');
   assert(initial.sphereBytes>50,'Octahedral ocean outline must be rendered');
+   assert.equal(initial.rewound,2,'Two inverted canonical rings corrected');
+   assert(initial.africaWidth>0&&initial.africaWidth<200,
+    'Corrected country polygon must not paint over the entire ocean');
+   assert(initial.antarcticaPath>1500,'Real Antarctic coastline has been reconstructed');
+   assert.equal(initial.antarcticaOcean,'#103135');
+   assert.equal(initial.mapOcean,'#103135');
+   assert(initial.polarRadius>65,'Full Antarctic polar panel must be visible');
   await page.locator('[data-atlas-view=cahill-keyes]').click();
   await page.waitForFunction(()=>document.getElementById('labAtlasGlobe')?.style.pointerEvents===''&&document.getElementById('labAtlasCahill')?.style.opacity==='1',
    null,{timeout:6500});
@@ -47,7 +65,7 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
     opaque:+svg.style.opacity,overflow:document.documentElement.scrollWidth>innerWidth,
     label:el.getAttribute('aria-label'),gesture:el.style.pointerEvents};
   });
-  assert(Math.abs(cahill.ratio-960/540)<.045,'M-shaped view has a predictable phone aspect ratio');
+  assert(Math.abs(cahill.ratio-960/505)<.045,'M-shaped view has a predictable phone aspect ratio');
   assert(cahill.visible&&cahill.opaque>=.99,'M-shaped geography is the visible map');
   assert(!cahill.overflow,'No sideways page scroll from the third selector/map');
   assert.equal(cahill.gesture,'','Gestures restored after entering Cahill');
@@ -104,7 +122,11 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,
    'Narrow screen still fits three modes and M-map');
   assert.equal(await page.locator('#labAtlasGlobe').evaluate(e=>e.style.pointerEvents),'');
-  // Screenshot is for human geometry QA, not a blocking GPU performance gate.
+  // Capture the full M-map and Antarctic extension, not a selected-region closeup.
+   await page.evaluate(()=>window.labCahillMap.reset());
+   assert.equal(await page.locator('#labAtlasCahill').getAttribute('viewBox'),
+    '0.00 65.00 960.00 505.00','Whole world includes Antarctica');
+   // Screenshot is for human geometry QA, not a blocking GPU performance gate.
   try{
    fs.mkdirSync('android-lab/build/switch-review',{recursive:true});
    await page.locator('#labAtlasGlobe').screenshot({
