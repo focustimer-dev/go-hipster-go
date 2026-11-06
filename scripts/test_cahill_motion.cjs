@@ -34,6 +34,7 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
     assert.equal(current,from,'Route starts at expected live mode');
     const started=Date.now();
     await page.locator('[data-atlas-view='+to+']').click();
+    const clickMs=Date.now()-started;
     const samples=await page.evaluate(async ({to,from})=>{
      let rows=[],began=performance.now(),first=false;
      return await new Promise((resolve,reject)=>{
@@ -56,7 +57,7 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
     if(from==='cahill-keyes'||to==='cahill-keyes'){
      const stats=await page.evaluate(()=>window.__labAtlasLastCahillSwitch);
      assert(stats?.finished&&stats?.to===to,'New geographic transition must finish');
-     console.log('Cahill motion diagnostics',JSON.stringify({from,to,width,frames:stats.frames,maxPaintMs:stats.maxPaintMs,renderSignal:stats.renderSignal,elapsedMs:elapsed,samples:samples.length,progress:samples.map(x=>x.progress).slice(0,12)}));
+     console.log('Cahill motion diagnostics',JSON.stringify({from,to,width,frames:stats.frames,maxPaintMs:stats.maxPaintMs,renderSignal:stats.renderSignal,clickMs,animationElapsedMs:stats.animationElapsedMs,elapsedMs:elapsed,samples:samples.length,progress:samples.map(x=>x.progress).slice(0,12)}));
      assert(stats.frames>=8,'Must render distinct physical in-between poses');
      assert(stats.maxPaintMs<35,'No heavy geography projection on each motion frame');
      assert(samples.length>=5,'Visible animation must generate tween frames');
