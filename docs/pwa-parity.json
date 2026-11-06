@@ -49,8 +49,10 @@
     {
       "feature": "inspiration link metadata previews",
       "category": "browser-adapter",
-      "state": "deferred",
-      "notes": "Would need server-side safe bounded fetch; never fetch arbitrary private hosts"
+      "state": "candidate",
+      "notes": "Bounded same-origin provider metadata (official oEmbed then Open Graph), strict public host allowlist, original URL retained on unavailable/unsupported metadata, local recent title cache. Pending physical Android test and public deployment approval.",
+      "source": "cloudflare/link-preview.js",
+      "target": "PWA Crate and Android SharedInspiration"
     },
     {
       "feature": "Review-only three-projection Atlas route",
@@ -79,7 +81,8 @@
     "44px minimum relevant touch targets; no horizontal overflow or nav/receipt collision",
     "never deploy production PWA without explicit approval",
     "separate map parity review before any projection switch",
-    "review canonical atlas under /pwa-atlas/ on a physical mobile browser before product-level map integration"
+    "review canonical atlas under /pwa-atlas/ on a physical mobile browser before product-level map integration",
+    "Metadata QA: official music oEmbed, safe redirects, unsupported host denial, UI title caching, missing-preview fallback, original link retained"
   ],
   "release_policy": "Never auto-merge, publish, or deploy the production PWA. Approved Android work is the product source of truth."
 }
