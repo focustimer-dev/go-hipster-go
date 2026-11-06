@@ -56,3 +56,20 @@ jobs:
           path: android-lab/build/preview-apk/Hipster-GO-Lab-0.9.55-unsigned.apk
           retention-days: 7
           if-no-files-found: error
+      - name: Export official Android SDK signing tools (no keys)
+        shell: bash
+        run: |
+          set -euo pipefail
+          source="$ANDROID_HOME/build-tools/35.0.0"
+          target=android-lab/build/preview-sign-tools
+          mkdir -p "$target"
+          cp "$source/lib/apksigner.jar" "$target/"
+          cp "$source/zipalign" "$target/"
+          cp "$source/aapt" "$target/"
+          if [ -d "$source/lib64" ]; then cp -R "$source/lib64" "$target/"; fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-lab-official-signing-tools
+          path: android-lab/build/preview-sign-tools/
+          retention-days: 2
+          if-no-files-found: error
