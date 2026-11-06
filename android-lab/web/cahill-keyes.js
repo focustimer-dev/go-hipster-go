@@ -79,7 +79,9 @@ function labCahillInit(host,geography,routes,legacy){
  // Reconstruct that missing landmass from canonical coordinates as an
  // equal-area South Polar panel joined below the M's South Atlantic.
  // Unlike a decorative inset, each Antarctic coastline is true GeoJSON.
- const polar={cx:475,cy:477,scale:145,cutLatitude:-58};
+ // Calibrated at 60°S: a 3° meridian step is 6.85px here versus
+ // 6.90px in the surrounding Cahill–Keyes octant (<1% difference).
+ const polar={cx:475,cy:477,scale:136,cutLatitude:-58};
  const polarPoint=([lon,lat])=>{
   const colatitude=(90+Math.max(-90,Math.min(0,lat)))*Math.PI/180;
   const radius=2*polar.scale*Math.sin(colatitude/2);
