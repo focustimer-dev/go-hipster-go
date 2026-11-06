@@ -8,6 +8,7 @@ on:
     paths:
       - '.github/one-shot-clean-mood-art-2026-11-01'
       - '.github/releases/mood-quality-2026-11-01'
+      - '.github/releases/pwa-0-9-56-2026-11-06'
 
 permissions:
   contents: read
@@ -38,6 +39,13 @@ jobs:
           test -n "$CF_TOKEN" || { echo "::error::Set CLOUDFLARE_API_TOKEN as a production environment secret"; exit 1; }
       - name: Set exact release commit
         run: sed -i "s/__GITHUB_SHA__/${GITHUB_SHA}/g" wrangler.toml
+      - name: Include approved 0.9.56 three-map Atlas in public assets
+        run: |
+          python scripts/build_pwa_atlas_preview.py
+          test -s launcher/pwa-atlas/index.html
+          test -s launcher/pwa-atlas/assets/maplibre/maplibre-gl.js
+          test -s launcher/pwa-atlas/assets/cahill-keyes-vendor.js
+          test -s launcher/pwa-atlas/assets/pwa-atlas-bridge.js
       - name: Deploy entire static site
         uses: cloudflare/wrangler-action@v4
         with:
@@ -53,3 +61,7 @@ jobs:
           npm install --no-save --package-lock=false playwright@1.62.1
           npx playwright install --with-deps chromium
           node scripts/smoke_live.mjs --expected-commit "$GITHUB_SHA"
+      - name: Verify public PWA Manual, Crate and all three Atlas views
+        env:
+          PWA_PREVIEW_URL: https://hipster-go.samelling.workers.dev
+        run: node scripts/pwa_preview_qa.mjs
