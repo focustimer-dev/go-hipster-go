@@ -1,0 +1,46 @@
+name: Verify approved PWA 0.9.56 public map release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-pwa-public-0-9-56.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Assert the previously deployed public release remains pinned
+        run: |
+          node --input-type=module -e '
+            const expected="e869dc478437f94def5b343cdacee89ac5482f11";
+            const r=await fetch("https://hipster-go.samelling.workers.dev/");
+            if(!r.ok||r.headers.get("x-ghg-release")!==expected){
+              console.error("Public release changed unexpectedly",r.status,r.headers.get("x-ghg-release"));
+              process.exit(1);
+            }
+            console.log("Confirmed unchanged public Worker release:",expected);
+          '
+      - name: Install isolated Chromium test runtime
+        run: |
+          npm install --no-save --package-lock=false playwright@1.62.1
+          npx playwright install --with-deps chromium
+      - name: Read-only public site, Manual, Crate and three-map Chromium QA
+        env:
+          PWA_PREVIEW_URL: https://hipster-go.samelling.workers.dev
+        run: node scripts/pwa_preview_qa.mjs --allow-production
+      - name: Save public QA screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pwa-public-0-9-56-verification
+          path: artifacts/pwa-preview
+          if-no-files-found: warn
