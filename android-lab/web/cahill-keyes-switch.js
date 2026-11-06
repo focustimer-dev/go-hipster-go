@@ -22,7 +22,9 @@ function labAtlasCahillTransition(mode,instant=false){
   if(home)home.textContent='← WHOLE WORLD';
   host.setAttribute('aria-label','Interactive Cahill–Keyes world map');
   labCahillSync();
-  if(crateSelected.size||atlasFocus)labCahillFocus('selected');else labCahill.reset();
+  // Projection switching shows the complete map, regardless of saved stamps.
+  // Only an explicit atlasFocus invokes a region close-up.
+  if(atlasFocus)labCahillFocus('selected');else labCahill.reset();
   svg.style.opacity='0';
  }else{
   // Commit the real MapLibre destination behind the opaque Cahill card.
