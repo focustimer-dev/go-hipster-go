@@ -336,7 +336,14 @@ function labCahillInit(host,geography,routes,legacy){
  };
  refresh();sync();
  labCahill={svg,focus,reset,sync,camera,navigator,projection,regions,rewoundPolygons,antarcticPanel:polar,
-  routeStats:lanes.stats,discoveryCount:lanes.pinCount,touchDebug,ready:true};
+  routeStats:lanes.stats,discoveryCount:lanes.pinCount,touchDebug,
+  // Read-only Lab QA probe of the cached geographic ink; never mutates the map.
+  polarInkSample:()=>{
+   const cached=labCahillMotion.prepare(svg,geography,crateSelected);
+   const pixels=cached.pixels,ctx=cached.images.keyes.getContext('2d');
+   const x=Math.round(543/960*pixels),y=Math.round((477-65)/505*pixels);
+   return [...ctx.getImageData(x,y,1,1).data];
+  },ready:true};
  window.labCahillMap=labCahill;
  return true;
 }
