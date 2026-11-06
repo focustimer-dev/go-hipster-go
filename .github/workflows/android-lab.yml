@@ -8,6 +8,7 @@ on:
       - 'android-lab/**'
       - 'scripts/bundle_android_lab.py'
       - 'scripts/test_android_lab.cjs'
+      - 'scripts/test_cahill_motion.cjs'
       - 'scripts/test_android_lab_dom.cjs'
       - 'scripts/test_lab_discovery_routes.cjs'
       - 'scripts/test_mood_ink.cjs'
@@ -52,6 +53,7 @@ jobs:
       - run: node scripts/test_render_efficiency.cjs
       - run: node scripts/test_atlas_boundary.cjs
       - run: npx playwright install --with-deps chromium
+      - run: node scripts/test_cahill_motion.cjs
       - run: node scripts/test_android_lab.cjs
       - run: node scripts/test_lab_tutorial.cjs
       - run: node scripts/test_mood_ink.cjs
@@ -61,6 +63,7 @@ jobs:
           path: |
             android-lab/app/build/outputs/apk/release/app-release-unsigned.apk
             android-lab/build/switch-review/*.png
+            android-lab/build/motion-review/*.png
           if-no-files-found: error
 
       - name: Prepare official Android signing tools for local release verification
