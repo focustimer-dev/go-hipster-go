@@ -80,6 +80,15 @@ if(heading){
  save.type='button';save.dataset.pwaAction='save';
  heading.appendChild(save);
 }
+const atlasFrame=doc.querySelector('.crate-map-frame');
+if(atlasFrame){
+ const previewLink=doc.createElement('a');
+ previewLink.href='/pwa-atlas/';
+ previewLink.className='pwa-atlas-preview-link';
+ previewLink.textContent='TRY ALL 3 MAPS · ROBINSON / GLOBE / CAHILL–KEYES';
+ previewLink.setAttribute('aria-label','Open the three-map Atlas preview with your current regional selections');
+ atlasFrame.insertAdjacentElement('afterend',previewLink);
+}
 const refinements=doc.querySelector('.refinements');
 let sleeve=null,addInspiration=null;
 if(refinements){
