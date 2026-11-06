@@ -38,11 +38,11 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
   assert(initial.points.every(p=>p&&p.every(Number.isFinite)),'Every test continent has finite actual Cahill-Keyes coordinates');
   assert(initial.sphereBytes>50,'Octahedral ocean outline must be rendered');
   await page.locator('[data-atlas-view=cahill-keyes]').click();
-  await page.waitForFunction(()=>!window.labAtlasMorph&&window.labAtlasMode==='cahill-keyes',
+  await page.waitForFunction(()=>document.getElementById('labAtlasGlobe')?.style.pointerEvents===''&&document.getElementById('labAtlasCahill')?.style.opacity==='1',
    null,{timeout:6500});
   const cahill=await page.evaluate(()=>{
    const el=document.getElementById('labAtlasGlobe'),svg=document.getElementById('labAtlasCahill');
-   return {ratio:el.clientWidth/el.clientHeight,mode:window.labAtlasMode,
+   return {ratio:el.clientWidth/el.clientHeight,mode:document.querySelector('[data-atlas-view][aria-pressed="true"]')?.dataset.atlasView,
     visible:getComputedStyle(svg).display!=='none',
     opaque:+svg.style.opacity,overflow:document.documentElement.scrollWidth>innerWidth,
     label:el.getAttribute('aria-label'),gesture:el.style.pointerEvents};
@@ -60,9 +60,9 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    ?.getAttribute('fill')==='#a83223');
   const selected=await page.evaluate(()=>({
    view:document.getElementById('labAtlasCahill').getAttribute('viewBox'),
-   data:[...window.crateSelected]
+   highlighted:document.querySelector('[data-cahill-region="west-africa"]')?.getAttribute('fill')
   }));
-  assert(selected.data.includes('west-africa'),'Country hit area updates the canonical region selection');
+  assert.equal(selected.highlighted,'#a83223','Country hit area updates the canonical region selection');
   const wheel=await page.evaluate(()=>{
    const svg=document.getElementById('labAtlasCahill');
    const before=+svg.getAttribute('viewBox').split(' ')[2],r=svg.getBoundingClientRect();
@@ -74,30 +74,30 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
   // Home view, then switch to MapLibre; no stale overlays or input locks.
   await page.evaluate(()=>window.labCahillMap.reset());
   await page.locator('[data-atlas-view=globe]').click();
-  await page.waitForFunction(()=>!window.labAtlasMorph&&window.labAtlasMode==='globe',
+  await page.waitForFunction(()=>document.getElementById('labAtlasGlobe')?.style.pointerEvents===''&&document.getElementById('labAtlasCahill')?.style.display==='none'&&window.labAtlasGlobe?.getProjection()?.type==='globe',
    null,{timeout:7000});
   assert.equal(await page.evaluate(()=>window.labAtlasGlobe.getProjection().type),'globe');
   assert.equal(await page.locator('#labAtlasCahill').evaluate(e=>getComputedStyle(e).display),'none');
   assert.equal(await page.locator('#labAtlasGlobe').evaluate(e=>e.style.pointerEvents),'');
   // The existing Robinson <-> Globe morph must still work untouched.
   await page.locator('[data-atlas-view=robinson]').click();
-  await page.waitForFunction(()=>!window.labAtlasMorph&&window.labAtlasMode==='robinson',
+  await page.waitForFunction(()=>document.getElementById('labAtlasGlobe')?.style.pointerEvents===''&&!document.querySelector('.lab-atlas-morph')&&document.getElementById('labAtlasCahill')?.style.display==='none'&&window.labAtlasGlobe?.getProjection()?.type==='mercator',
    null,{timeout:7000});
   await page.locator('[data-atlas-view=cahill-keyes]').click();
-  await page.waitForFunction(()=>!window.labAtlasMorph&&window.labAtlasMode==='cahill-keyes',
+  await page.waitForFunction(()=>document.getElementById('labAtlasGlobe')?.style.pointerEvents===''&&document.getElementById('labAtlasCahill')?.style.opacity==='1',
    null,{timeout:7000});
   // Last-tap wins across projection engines, even during a dissolve.
   await page.locator('[data-atlas-view=globe]').click();
   await page.locator('[data-atlas-view=cahill-keyes]').click();
-  await page.waitForFunction(()=>!window.labAtlasMorph&&window.labAtlasMode==='cahill-keyes',
+  await page.waitForFunction(()=>document.getElementById('labAtlasGlobe')?.style.pointerEvents===''&&document.getElementById('labAtlasCahill')?.style.opacity==='1',
    null,{timeout:8500});
   await page.emulateMedia({reducedMotion:'reduce'});
   await page.locator('[data-atlas-view=robinson]').click();
-  await page.waitForFunction(()=>!window.labAtlasMorph&&window.labAtlasMode==='robinson',
+  await page.waitForFunction(()=>document.getElementById('labAtlasGlobe')?.style.pointerEvents===''&&!document.querySelector('.lab-atlas-morph')&&document.getElementById('labAtlasCahill')?.style.display==='none'&&window.labAtlasGlobe?.getProjection()?.type==='mercator',
    null,{timeout:4000});
   await page.setViewportSize({width:320,height:740});
   await page.locator('[data-atlas-view=cahill-keyes]').click();
-  await page.waitForFunction(()=>!window.labAtlasMorph&&window.labAtlasMode==='cahill-keyes',
+  await page.waitForFunction(()=>document.getElementById('labAtlasGlobe')?.style.pointerEvents===''&&document.getElementById('labAtlasCahill')?.style.opacity==='1',
    null,{timeout:4000});
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,
    'Narrow screen still fits three modes and M-map');
