@@ -104,6 +104,19 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    highlighted:document.querySelector('[data-cahill-region="west-africa"]')?.getAttribute('fill')
   }));
   assert.equal(selected.highlighted,'#a83223','Country hit area updates the canonical region selection');
+  // In WebView, interactive SVG polygon bounding boxes used to flash as
+  // large gold/white rectangles instead of changing the geographic fill.
+  const focusInk=await page.evaluate(()=>{
+   const el=document.querySelector('[data-cahill-region="west-africa"]');
+   const style=getComputedStyle(el);
+   return {tap:style.webkitTapHighlightColor,outline:style.outlineStyle,
+    role:el.getAttribute('role'),tabindex:el.getAttribute('tabindex')};
+  });
+  assert.equal(focusInk.role,null,'Geographic SVG paths are not WebView button boxes');
+  assert.equal(focusInk.tabindex,null,'Country tap does not trigger rectangular focus');
+  assert.equal(focusInk.outline,'none','Country has no native rectangular outline');
+  assert.match(focusInk.tap,/rgba?\\(0, ?0, ?0, ?0\\)|transparent/,
+   'WebView native tap flash disabled for map geography');
   // True Chromium touch input (not a script-created click): a tap inside
   // Ghana must hit the painted West Africa geography at phone scale.
   const ghana=await page.evaluate(()=>{
@@ -157,27 +170,33 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
     .dispatchEvent(new MouseEvent('click',{bubbles:true})));
    assert.equal(await page.evaluate(()=>document.getElementById('atlasSecretCard')?.hidden),false,
     'Route markers open their existing discovery card');
-  // Reproduce Pixel bug: tiny jitter must not pan or discard the tap.
+  // Reproduce Pixel bug: a 1.6 CSS-pixel finger tremor, pointerup, and
+  // NO follow-up synthetic click must still stamp the correct SVG country.
+  await page.evaluate(()=>window.labCahillMap.reset());
   const jitter=await page.evaluate(()=>{
    const svg=document.getElementById('labAtlasCahill');
    const land=document.querySelector('[data-cahill-region="west-africa"]');
+   const xy=window.labCahillMap.projection([-1.2,7.8]);
+   const p=svg.createSVGPoint();p.x=xy[0];p.y=xy[1];
+   const screen=p.matrixTransform(svg.getScreenCTM());
+   const x=screen.x,y=screen.y;
    const beforeView=svg.getAttribute('viewBox'),beforeFill=land.getAttribute('fill');
-   const pointer=(type,x)=>new PointerEvent(type,{bubbles:true,
-    pointerId:987,pointerType:'touch',clientX:x,clientY:190,isPrimary:true});
-   land.dispatchEvent(pointer('pointerdown',180));
-   land.dispatchEvent(pointer('pointermove',181.6));
-   land.dispatchEvent(pointer('pointerup',181.6));
-   land.dispatchEvent(new MouseEvent('click',{bubbles:true,detail:1,
-    clientX:181.6,clientY:190}));
+   const pointer=(type,xx)=>new PointerEvent(type,{bubbles:true,
+    pointerId:987,pointerType:'touch',clientX:xx,clientY:y,isPrimary:true});
+   land.dispatchEvent(pointer('pointerdown',x));
+   land.dispatchEvent(pointer('pointermove',x+1.6));
+   land.dispatchEvent(pointer('pointerup',x+1.6));
    return {beforeView,afterView:svg.getAttribute('viewBox'),beforeFill};
   });
   assert.equal(jitter.afterView,jitter.beforeView,
    'A 1.6px finger tremor must not pan the geographic camera');
   await page.waitForFunction(fill=>document.querySelector('[data-cahill-region="west-africa"]')
-   ?.getAttribute('fill')!==fill,jitter.beforeFill,{timeout:1600});
+   ?.getAttribute('fill')!==fill,jitter.beforeFill,{timeout:1800});
   await page.waitForTimeout(120);
   assert.notEqual(await page.locator('[data-cahill-region="west-africa"]').first()
-   .getAttribute('fill'),jitter.beforeFill,'A single touch toggles exactly once');
+   .getAttribute('fill'),jitter.beforeFill,'One completed finger tap stamps exactly once');
+  assert((await page.evaluate(()=>window.labCahillMap.touchDebug.landTaps))>=2,
+   'Pointerup, not synthetic click, performs touch selection');
   // Home view, then switch to MapLibre; no stale overlays or input locks.
   await page.evaluate(()=>window.labCahillMap.reset());
   await page.locator('[data-atlas-view=globe]').click();
