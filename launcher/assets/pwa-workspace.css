@@ -105,3 +105,6 @@ body.pwa-modal-open{overflow:hidden}
 body.gig-poster.pwa-workspace[data-page=launch] .go-options{margin-inline:calc(-3cqw);border:0;border-radius:0;box-shadow:none}
 body.gig-poster.pwa-workspace[data-page=launch] .go-options .go-button{border-radius:0}
 @media(prefers-reduced-motion:reduce){.pwa-guide-picker *{scroll-behavior:auto;transition:none!important;animation:none!important}}
+
+.pwa-add-inspiration{display:flex;align-items:center;justify-content:flex-start;width:100%;min-height:48px;box-sizing:border-box;padding:8px 0;margin:12px 0 14px;border:0;border-bottom:1px solid #10313566;background:transparent;color:var(--pwa-petrol);font:400 1.125rem/1.2 Poster,sans-serif;text-align:left;cursor:pointer;touch-action:manipulation}
+.pwa-add-inspiration:focus-visible{outline:3px solid var(--pwa-petrol);outline-offset:2px}
