@@ -30,6 +30,7 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    const ids=d.regions.map(x=>x.id);
    const pts=[[-100,40],[10,40],[120,25],[-60,-15],[130,-30]].map(x=>d.projection(x));
    return {regionFeatures:d.regions.length,selected:new Set(ids).size,
+     routeStats:d.routeStats,discoveryCount:d.discoveryCount,
     points:pts,sphereMoves:(sphere.match(/M/g)||[]).length,sphereBytes:sphere.length,
     vendorAvailable:typeof window.labCahillD3?.geoCahillKeyes==='function',
      rewound:d.rewoundPolygons,
@@ -55,6 +56,13 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
   assert(initial.regionFeatures>=150,'Canonical country features must be present');
   assert(initial.points.every(p=>p&&p.every(Number.isFinite)),'Every test continent has finite actual Cahill-Keyes coordinates');
   assert(initial.sphereBytes>50,'Octahedral ocean outline must be rendered');
+   assert(initial.routeStats.length>=5,'All nautical discoveries retain named tracks');
+   assert(initial.discoveryCount>=5,'All routes have accessible touch markers');
+   for(const id of ['pacific-handoff','westbound-manifest']){
+    const route=initial.routeStats.find(x=>x.id===id);
+    assert(route?.breaks>0,id+' must split at a polyhedral interruption');
+    assert(route.fragments>1,id+' has separate land-safe polyline pieces');
+   }
    assert.equal(initial.rewound,2,'Two inverted canonical rings corrected');
    assert(initial.africaWidth>0&&initial.africaWidth<200,
     'Corrected country polygon must not paint over the entire ocean');
@@ -78,6 +86,13 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
   assert(!cahill.overflow,'No sideways page scroll from the third selector/map');
   assert.equal(cahill.gesture,'','Gestures restored after entering Cahill');
   assert.match(cahill.label,/Cahill/);
+   const atWorld=await page.evaluate(()=>({
+    targets:[...document.querySelectorAll('[data-cahill-route-target]')].map(x=>x.getAttribute('pointer-events')),
+    markers:getComputedStyle(document.querySelector('.lab-cahill-route-pins')).display
+   }));
+   assert(atWorld.targets.length>=5&&atWorld.targets.every(x=>x==='none'),
+    'Whole-world touch targets must not steal neighboring region taps');
+   assert.equal(atWorld.markers,'none','Discovery markers only appear at zoom');
   await page.evaluate(()=>{
    document.querySelector('[data-cahill-region="west-africa"]')
     .dispatchEvent(new MouseEvent('click',{bubbles:true}));
@@ -106,6 +121,27 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    return {before,after:+svg.getAttribute('viewBox').split(' ')[2]};
   });
   assert(wheel.after<wheel.before,'Cahill map supports interactive magnification');
+   const closeUp=await page.evaluate(()=>{
+    const svg=document.getElementById('labAtlasCahill'),r=svg.getBoundingClientRect();
+    svg.dispatchEvent(new WheelEvent('wheel',{deltaY:-180,clientX:r.left+r.width/2,
+     clientY:r.top+r.height/2,bubbles:true,cancelable:true}));
+    return {
+     visible:getComputedStyle(document.querySelector('.lab-cahill-route-pins')).display,
+     pins:[...document.querySelectorAll('.lab-cahill-discovery')].map(g=>({
+      id:g.dataset.cahillDiscovery,tab:g.getAttribute('tabindex'),
+      hit:+g.querySelectorAll('circle')[1]?.getAttribute('stroke-width')
+     })),
+     targets:[...document.querySelectorAll('[data-cahill-route-target]')].map(x=>x.getAttribute('pointer-events'))
+    };
+   });
+   assert.notEqual(closeUp.visible,'none','Zoomed nautical markers must become discoverable');
+   assert(closeUp.pins.length>=5&&closeUp.pins.every(x=>x.tab==='0'&&x.hit>=36),
+    'Touch markers remain finger-sized and keyboard accessible');
+   assert(closeUp.targets.every(x=>x==='stroke'),'Only close-up lanes have narrow hit strokes');
+   await page.evaluate(()=>document.querySelector('[data-cahill-discovery="pacific-handoff"]')
+    .dispatchEvent(new MouseEvent('click',{bubbles:true})));
+   assert.equal(await page.evaluate(()=>document.getElementById('atlasSecretCard')?.hidden),false,
+    'Route markers open their existing discovery card');
   // Home view, then switch to MapLibre; no stale overlays or input locks.
   await page.evaluate(()=>window.labCahillMap.reset());
   await page.locator('[data-atlas-view=globe]').click();
