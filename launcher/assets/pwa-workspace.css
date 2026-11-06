@@ -108,3 +108,7 @@ body.gig-poster.pwa-workspace[data-page=launch] .go-options .go-button{border-ra
 
 .pwa-add-inspiration{display:flex;align-items:center;justify-content:flex-start;width:100%;min-height:48px;box-sizing:border-box;padding:8px 0;margin:12px 0 14px;border:0;border-bottom:1px solid #10313566;background:transparent;color:var(--pwa-petrol);font:400 1.125rem/1.2 Poster,sans-serif;text-align:left;cursor:pointer;touch-action:manipulation}
 .pwa-add-inspiration:focus-visible{outline:3px solid var(--pwa-petrol);outline-offset:2px}
+
+/* Standalone browser Atlas is opt-in, keeping Jukebox map changes reversible. */
+.pwa-atlas-preview-link{display:flex;align-items:center;justify-content:center;box-sizing:border-box;min-height:48px;width:100%;padding:9px 12px;margin:8px 0 20px;border:2px solid #103135;background:#dfb045;color:#103135;text-decoration:none;text-align:center;font:400 clamp(.85rem,3.5vw,1.05rem)/1.2 Poster,sans-serif;letter-spacing:.02em}
+.pwa-atlas-preview-link:focus-visible{outline:3px solid #103135;outline-offset:3px}
