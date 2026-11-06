@@ -7,6 +7,13 @@ function labAtlasCahillTransition(mode,instant=false){
  const frame=host.closest('.crate-map-frame'),from=labAtlasMode;
  const valid=['cahill-keyes','globe','robinson'];
  if(!valid.includes(mode)||mode===from)return;
+ // Learn the actual resting map geometry before hiding the live renderer.
+ // The cached source/return frame then uses this same size and position.
+ if(from!=='cahill-keyes'&&labGlobeResting){
+  const measured=labAtlasMorphVectors.landingFit(from,host.clientWidth,host.clientHeight,
+   point=>labGlobe.project(from==='robinson'?labRobinsonPoint(point):point),.2);
+  labCahillMotion.rememberLiveFit(from,host.clientWidth,host.clientHeight,measured);
+ }
  const finishLayout=()=>{
   host.style.height='';host.style.aspectRatio=mode==='cahill-keyes'?'960 / 505':
    mode==='globe'?'1 / 1':'720 / 372';
@@ -60,17 +67,37 @@ function labAtlasCahillTransition(mode,instant=false){
    if(revealed)return;revealed=true;
    labGlobe.off('render',onRender);
    labGlobe.off('idle',onIdle);
+   let alignment=null,fitSampled=false;
+   if(mode!=='cahill-keyes'){
+    const width=host.clientWidth,height=host.clientHeight;
+    const measured=labAtlasMorphVectors.landingFit(mode,width,height,
+     point=>labGlobe.project(mode==='robinson'?labRobinsonPoint(point):point),.2);
+    fitSampled=measured.sampled;
+    if(measured.sampled){
+     const predicted=state.roundFits?.[mode];
+     if(predicted&&state.pixels){
+      const dx=measured.x-predicted.x*width/state.pixels;
+      const dy=measured.y-predicted.y*height/state.pixels;
+      const sx=measured.sx/predicted.sx,sy=measured.sy/predicted.sy;
+      const residual=Math.max(Math.abs(sx-1),Math.abs(sy-1),
+       Math.abs(dx)/Math.max(1,width),Math.abs(dy)/Math.max(1,height));
+      alignment={x:dx,y:dy,sx,sy,residual};
+     }
+     labCahillMotion.rememberLiveFit(mode,width,height,measured);
+    }
+   }
    window.__labAtlasLastCahillSwitch={
     from,to:mode,duration:575,animationElapsedMs:state.elapsed,
     frames:state.frames,maxPaintMs:state.maxPaintMs,
-    renderSignal:signal,finished:true,cacheSelection:crateSelected.size
+    renderSignal:signal,finished:true,cacheSelection:crateSelected.size,
+    fitSampled,endpointResidual:alignment?.residual??null
    };
    reveal(()=>{
     labAtlasMorph=null;
     const next=state.queued;
     if(next&&next!==labAtlasMode)labSetAtlasMode(next);
     else labAtlasSwitchButtons(mode);
-   });
+   },alignment);
   };
   const ready=()=>{
    if(mode==='cahill-keyes')return true;
