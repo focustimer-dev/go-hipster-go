@@ -213,11 +213,11 @@ body.gig-poster.lab-workspace[data-page=launch] .go-options .go-button{border-ra
 #labInspirationEditor :is(button,textarea):focus-visible{outline:2px solid #103135;outline-offset:2px}
 #labAddInspiration:focus-visible{outline:2px solid #103135;outline-offset:2px}
 
-/* Paired projection keys use the same flat, inverse selection as the Jukebox. */
-.lab-atlas-modes{display:inline-grid;grid-template-columns:repeat(2,minmax(0,1fr));max-width:100%;margin:8px 0;border:1px solid #103135}
+/* Three compact projection keys in the same petrol/mustard selection language. */
+.lab-atlas-modes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;max-width:100%;margin:8px 0;border:1px solid #103135}
 body.gig-poster.lab-workspace .lab-atlas-modes button{
- appearance:none;min-height:44px;margin:0;padding:6px 14px;border:0;border-radius:0;
- background:transparent;color:#103135;box-shadow:none;font:400 1.125rem/1.2 Poster,sans-serif;
+ appearance:none;min-width:0;min-height:44px;margin:0;padding:6px 4px;border:0;border-radius:0;
+ background:transparent;color:#103135;box-shadow:none;font:400 clamp(.77rem,2.9vw,1.125rem)/1.2 Poster,sans-serif;
  cursor:pointer;text-align:center;overflow-wrap:anywhere;
 }
 body.gig-poster.lab-workspace .lab-atlas-modes button+button{border-inline-start:1px solid #103135}
@@ -225,7 +225,11 @@ body.gig-poster.lab-workspace .lab-atlas-modes button[aria-pressed=true]{backgro
 body.gig-poster.lab-workspace .lab-atlas-modes button:focus-visible{position:relative;outline:2px solid #103135;outline-offset:2px;z-index:1}
 body.gig-poster.lab-workspace .lab-atlas-modes button{display:flex;align-items:center;justify-content:center;gap:7px}
 .lab-atlas-modes svg{width:20px;height:20px;flex:none}
-.lab-atlas-modes button span{min-width:0}
+.lab-atlas-modes button span{min-width:0;white-space:nowrap}
+/* The octahedral M-map uses SVG instead of unsupported MapLibre projections. */
+#labAtlasGlobe .lab-cahill-overlay{z-index:15;background:#dfb045;overflow:hidden;touch-action:pan-y}
+#labAtlasGlobe .lab-cahill-region:focus-visible{outline:2px solid #edc65d}
+body.gig-poster .crate-map-frame:has(.lab-cahill-active) .atlas-radial-field{display:none}
 
 /* The Globe uses a square Android canvas; Robinson's long chart rays are hidden only here. */
 body.gig-poster .crate-map-frame.lab-globe-frame .atlas-radial-field{display:none}
