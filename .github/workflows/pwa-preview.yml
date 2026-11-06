@@ -5,10 +5,12 @@ on:
     paths:
       - 'launcher/assets/pwa-workspace.*'
       - 'launcher/assets/pwa-guides.js'
+      - 'launcher/assets/pwa-atlas-bridge.js'
       - 'launcher/assets/app.js'
       - 'cloudflare/worker.js'
       - 'docs/pwa-*'
       - 'scripts/pwa_preview_qa.mjs'
+      - 'scripts/build_pwa_atlas_preview.py'
       - '.github/workflows/pwa-preview.yml'
 permissions:
   contents: read
@@ -34,6 +36,7 @@ jobs:
           python -m unittest discover -s tests -v
           node --check launcher/assets/pwa-workspace.js
           node --check launcher/assets/pwa-guides.js
+          node --check launcher/assets/pwa-atlas-bridge.js
           node --check launcher/assets/app.js
           node --check scripts/pwa_preview_qa.mjs
       - name: Verify preview deploy authorization
@@ -42,6 +45,13 @@ jobs:
         run: test -n "$CF_TOKEN" || { echo "::error::Missing Cloudflare deploy token"; exit 1; }
       - name: Stamp exact preview revision
         run: sed -i "s/__GITHUB_SHA__/${GITHUB_SHA}/g" wrangler.toml
+      - name: Package canonical Android 0.9.56 Atlas in an isolated browser path
+        run: |
+          python scripts/build_pwa_atlas_preview.py
+          test -s launcher/pwa-atlas/index.html
+          test -s launcher/pwa-atlas/assets/maplibre/maplibre-gl.js
+          test -s launcher/pwa-atlas/assets/cahill-keyes-vendor.js
+          test -s launcher/pwa-atlas/assets/pwa-atlas-bridge.js
       - name: Deploy the isolated preview Worker, never production
         uses: cloudflare/wrangler-action@v4
         with:
