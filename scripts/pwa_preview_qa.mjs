@@ -7,7 +7,7 @@ assert.equal(base,'https://hipster-go-pwa-preview.samelling.workers.dev','Only t
 assert.ok(!base.includes('://hipster-go.'),'Never run browser preview QA on production');
 const folder='artifacts/pwa-preview';
 await mkdir(folder,{recursive:true});
-const browser=await chromium.launch({headless:true});
+const browser=await chromium.launch({headless:true,args:['--use-angle=swiftshader','--enable-unsafe-swiftshader']});
 const profiles=[
   {name:'phone',viewport:{width:390,height:844},isMobile:true,hasTouch:true},
   {name:'desktop',viewport:{width:1280,height:900}},
@@ -119,7 +119,46 @@ try{
  await page.locator('.pwa-rail').waitFor({state:'visible'});
  report.push({profile:'routes',passed:true});
 }catch(e){failed=true;report.push({profile:'routes',passed:false,error:String(e.stack||e)})}
-await context.close();await browser.close();
+await context.close();
+// Independently exercise the actual Android 0.9.56 map bundle on the isolated PWA
+// Worker: no fake third projection or merely ornamental map screenshot.
+for (const width of [390,320]) {
+ const atlasContext=await browser.newContext({viewport:{width,height:844},isMobile:true,hasTouch:true,serviceWorkers:'block'});
+ const atlas=await atlasContext.newPage();
+ atlas.setDefaultTimeout(25000);
+ const issues=[];
+ atlas.on('pageerror',e=>issues.push(e.message));
+ try{
+  const response=await atlas.goto(base+'/pwa-atlas/',{waitUntil:'domcontentloaded',timeout:45000});
+  assert.equal(response.status(),200,'Atlas preview route must be hosted by isolated Worker');
+  await atlas.waitForFunction(()=>window.labCahillMap?.ready&&window.labAtlasGlobe?.loaded(),null,{timeout:55000});
+  assert.equal(await atlas.locator('[data-atlas-view]').count(),3,'All three Android map projections are available');
+  const before=await atlas.evaluate(()=>[...document.querySelectorAll('[data-crate-region][aria-pressed=true]')].map(el=>el.dataset.crateRegion).sort());
+  const routes=['cahill-keyes','globe','robinson'];
+  for(const mode of routes){
+   await atlas.locator('[data-atlas-view="'+mode+'"]').click({timeout:10000});
+   await atlas.waitForFunction(to=>{
+    const active=document.querySelector('[data-atlas-view="'+to+'"]');
+    return active?.getAttribute('aria-pressed')==='true' &&
+     !document.querySelector('.lab-cahill-motion,.lab-atlas-morph') &&
+     document.getElementById('labAtlasGlobe')?.style.pointerEvents==='';
+   },mode,{timeout:28000});
+   const after=await atlas.evaluate(()=>[...document.querySelectorAll('[data-crate-region][aria-pressed=true]')].map(el=>el.dataset.crateRegion).sort());
+   assert.deepEqual(after,before,'Atlas modes must not silently change selected regions');
+   assert.equal(await atlas.evaluate(()=>document.documentElement.scrollWidth>innerWidth+3),false,
+    'Atlas preview cannot make mobile page horizontally overflow');
+   await atlas.locator('#labAtlasGlobe').screenshot({path:folder+'/atlas-'+width+'-'+mode+'.png',timeout:30000});
+  }
+  const back=atlas.getByRole('link',{name:'Return to PWA Jukebox'});
+  assert.equal(await back.getAttribute('href'),'/','Preview must clearly return to the PWA');
+  assert.deepEqual(issues,[],'No Atlas browser errors');
+  report.push({profile:'atlas-'+width,passed:true,projections:routes});
+ }catch(e){
+  failed=true;report.push({profile:'atlas-'+width,passed:false,error:String(e.stack||e),browserErrors:issues});
+  try{await atlas.screenshot({path:folder+'/atlas-'+width+'-failure.png',fullPage:true})}catch(ignore){}
+ }finally{await atlasContext.close()}
+}
+await browser.close();
 await writeFile(folder+'/results.json',JSON.stringify({url:base,report},null,2));
 console.log(JSON.stringify(report,null,2));
 if(failed)process.exitCode=1;
