@@ -2,6 +2,9 @@
 let labGlobe=null,labGlobeReady=false,labGlobeResting=true;
 function labGlobeBounds(view){
  if(!labGlobeReady)return;
+ if(labAtlasMode==='cahill-keyes'){
+  labCahillFocus(view);return;
+ }
  let regions=crateSelected;
  if(atlasFocus)regions=new Set(crateRegions.filter(r=>r.continent===atlasFocus).map(r=>r.id));
  const points=labGlobeGeography.features.filter(f=>regions.has(f.properties.region)).flatMap(f=>f.geometry.coordinates.flat(2));
@@ -23,6 +26,7 @@ function labGlobeHomeZoom(){
 const labGlobeAppliedSelection=new Map();
 function labGlobeSync(force=false){
  if(!labGlobeReady)return;
+ if(labAtlasMode==='cahill-keyes')labCahillSync();
  // Prewarm matched coastline images in idle slices, never during the morph.
  // A changed region selection invalidates the cache key automatically.
  if(!labAtlasMorph&&labGlobeGeography)
@@ -60,7 +64,9 @@ function initLabGlobe(){
   labGlobe.jumpTo({center:[10,15],zoom:labGlobeHomeZoom()});labGlobeSync();if(crateSelected.size)labGlobeBounds();
   const chart=doc.createElement('canvas');chart.width=chart.height=16;const ctx=chart.getContext('2d');ctx.clearRect(0,0,16,16);ctx.strokeStyle='rgba(16,49,53,.26)';ctx.lineWidth=.7;for(let n=-16;n<32;n+=8){ctx.beginPath();ctx.moveTo(n,16);ctx.lineTo(n+16,0);ctx.stroke()}labGlobe.addImage('engraved-hatch',ctx.getImageData(0,0,16,16));
   labGlobe.addLayer({id:'hatching',type:'fill',source:'land',paint:{'fill-pattern':'engraved-hatch'}},'borders');
-  installLabGlobeSecrets(old);installLabAtlasModes(frame);
+  installLabGlobeSecrets(old);
+  labCahillInit(host,labGlobeGeography,labRouteGeography,old);
+  installLabAtlasModes(frame);
  });
  labGlobe.on('click','land',event=>{
   if(event.originalEvent?._atlasSecret||labGlobe.getLayer('route-targets')&&labGlobe.queryRenderedFeatures(event.point,{layers:['route-targets']}).length)return;
@@ -353,10 +359,12 @@ function labAtlasMorphTo(mode){
 }
 function labSetAtlasMode(mode){
  if(mode==='mercator')mode='robinson';
- if(!labGlobeReady||!['globe','robinson'].includes(mode))return;
+ if(!labGlobeReady||!['globe','robinson','cahill-keyes'].includes(mode))return;
+ if(mode==='cahill-keyes'&&!labCahill?.ready)return;
  if(!labAtlasModeInitialized){
   labAtlasModeInitialized=true;
-  labAtlasCommitMode(mode);
+  labAtlasCommitMode(mode==='cahill-keyes'?'robinson':mode);
+  if(mode==='cahill-keyes')labAtlasCahillTransition(mode,true);
   return;
  }
  if(labAtlasMorph){
@@ -365,10 +373,12 @@ function labSetAtlasMode(mode){
   labAtlasSwitchButtons(mode);
   return;
  }
- if(mode===labAtlasMode||window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-  labAtlasCommitMode(mode);
-  return;
+ if(mode===labAtlasMode)return;
+ const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ if(mode==='cahill-keyes'||labAtlasMode==='cahill-keyes'){
+  labAtlasCahillTransition(mode,reduce);return;
  }
+ if(reduce){labAtlasCommitMode(mode);return}
  labAtlasMorphTo(mode);
 }
 function labAtlasCommitMode(mode,keepHostSize=false){
@@ -412,13 +422,18 @@ function installLabAtlasModes(frame){
  const controls=doc.createElement('div');controls.setAttribute('role','group');controls.setAttribute('aria-label','Atlas view');controls.className='lab-atlas-modes';
  const projections=[
   ['robinson','ROBINSON','<path d="M5 4h14c2 2 3 5 3 8s-1 6-3 8H5c-2-2-3-5-3-8s1-6 3-8Z M2 12h20 M12 4v16 M8 4c-2 5-2 11 0 16 M16 4c2 5 2 11 0 16"/>'],
-  ['globe','GLOBE','<circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/>']
+  ['globe','GLOBE','<circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/>'],
+  ['cahill-keyes','KEYES','<path d="M2 7 7 2l5 6 5-6 5 5-5 6-5-3-5 3Z M2 17l5-4 5 4 5-4 5 4-5 5-5-3-5 3Z"/>']
  ];
  for(const [mode,label,symbol] of projections){
   const button=doc.createElement('button');
   button.type='button';button.dataset.atlasView=mode;
   button.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true" focusable="false">${symbol}</svg><span>${label}</span>`;
   button.setAttribute('aria-pressed',String(mode==='robinson'));
+  if(mode==='cahill-keyes'){
+   button.setAttribute('aria-label','Cahill–Keyes projection');
+   button.title='Cahill–Keyes (1975)';button.disabled=!labCahill?.ready;
+  }
   button.onclick=()=>labSetAtlasMode(mode);
   controls.appendChild(button);
  }
@@ -427,7 +442,7 @@ function installLabAtlasModes(frame){
  labGlobe.addSource('robinson-ocean',{type:'geojson',data:{type:'Feature',properties:{},geometry:{type:'Polygon',coordinates:[edge]}}});
  labGlobe.addLayer({id:'robinson-ocean',type:'fill',source:'robinson-ocean',layout:{visibility:'none'},paint:{'fill-color':'#103135'}},'land');
  const saved=stored('ghg-atlas-view-v2');
- labSetAtlasMode(['robinson','globe'].includes(saved)?saved:'robinson');
+ labSetAtlasMode(['robinson','globe','cahill-keyes'].includes(saved)?saved:'robinson');
 }
 
 function labRobinsonMinimumZoom(){
