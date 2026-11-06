@@ -33,6 +33,13 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
     points:pts,sphereMoves:(sphere.match(/M/g)||[]).length,sphereBytes:sphere.length,
     vendorAvailable:typeof window.labCahillD3?.geoCahillKeyes==='function',
      rewound:d.rewoundPolygons,
+     antarcticScaleError:(()=>{
+      const a=d.projection([-58,-60]),b=d.projection([-58,-57]);
+      const base=Math.hypot(b[0]-a[0],b[1]-a[1]);
+      const cap=2*d.antarcticPanel.scale*
+       (Math.sin(33*Math.PI/360)-Math.sin(30*Math.PI/360));
+      return Math.abs(cap/base-1);
+     })(),
      antarcticaPath:document.getElementById('labCahillAntarctica')?.getAttribute('d')?.length||0,
      antarcticaOcean:document.getElementById('labCahillAntarcticOcean')?.getAttribute('fill'),
      polarRadius:+(document.getElementById('labCahillAntarcticOcean')?.getAttribute('r')||0),
@@ -55,6 +62,7 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    assert.equal(initial.antarcticaOcean,'#103135');
    assert.equal(initial.mapOcean,'#103135');
    assert(initial.polarRadius>65,'Full Antarctic polar panel must be visible');
+   assert(initial.antarcticScaleError<.05,'South polar reconstruction preserves local Cahill meridional scale');
   await page.locator('[data-atlas-view=cahill-keyes]').click();
   await page.waitForFunction(()=>document.getElementById('labAtlasGlobe')?.style.pointerEvents===''&&document.getElementById('labAtlasCahill')?.style.opacity==='1',
    null,{timeout:6500});
