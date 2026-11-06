@@ -152,7 +152,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   });
   assert(polar.greenland>83.5&&polar.canada>82&&polar.russia>80,'Bundled map retains the northern coasts beyond the old 75-degree crop');
 
-  assert.deepEqual(await page.locator('[data-atlas-view]').evaluateAll(nodes=>nodes.map(n=>n.dataset.atlasView)),['robinson','globe']);
+  assert.deepEqual(await page.locator('[data-atlas-view]').evaluateAll(nodes=>nodes.map(n=>n.dataset.atlasView)),['robinson','globe','cahill-keyes']);
   assert.equal(await page.locator('[data-atlas-view="robinson"]').getAttribute('aria-pressed'),'true','Fresh installs default to Robinson');
   assert.match(await page.locator('#labAtlasGlobe').getAttribute('aria-label'),/Robinson/);
   assert.match(await page.locator('#atlasInstruction').textContent(),/SWIPE TO SCROLL/);
@@ -247,7 +247,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert(await page.locator('[data-crate-stamp-region="west-africa"]').count());
   await page.waitForTimeout(500);
   const beforeModes=await page.locator('#prompt').textContent();
-  assert.equal(await page.locator('[data-atlas-view="mercator"]').count(),0,'Only Globe and Robinson are offered');
+  assert.equal(await page.locator('[data-atlas-view="mercator"]').count(),0,'Retired Mercator is not offered');
   for(const mode of ['robinson','globe']){
    await page.locator('[data-atlas-view="'+mode+'"]').click();
    await page.waitForFunction(()=>!document.querySelector('.lab-atlas-morph')&&labAtlasGlobe.loaded(),{timeout:6000});
