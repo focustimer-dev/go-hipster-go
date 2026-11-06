@@ -1,5 +1,14 @@
 # Go, Hipster, Go! for Android
 
+> **Legacy wrapper — not the canonical Android app.** The current Android
+> development source is [Android Lab 0.9.56](../android-lab/README.md)
+> (`work.samelling.hipstergo.lab`, version code 65). This `android/` directory
+> documents the earlier Trusted Web Activity prototype (version 1.0.0).
+> Keep it in the repository: `android-lab/` reuses `android/gradlew`.
+> Do not build or distribute this wrapper when you intend the current app.
+> This documentation distinction does not change the original installed
+> package, the Android Lab signer, or the public PWA.
+
 A Trusted Web Activity wrapping https://hipster-go.samelling.workers.dev/.
 The website supplies the interface and its updates. GO still hands off to the
 selected AI service; ChatGPT's skill and Spotify connection remain in ChatGPT.
