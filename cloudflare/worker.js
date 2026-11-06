@@ -3,7 +3,7 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const path = url.pathname;
-    if (path === "/pwa-atlas" || path === "/pwa-atlas/") url.pathname = "/pwa-atlas/index.html";
+    // Static Assets owns /pwa-atlas/ clean URL canonicalization; no rewrite.
     if (path === "/setup") return Response.redirect(new URL("/setup/", url), 308);
     if (path === "/gemini" || path === "/gemini/" || path === "/gemini/index.html") {
       const target = new URL("/", url);
