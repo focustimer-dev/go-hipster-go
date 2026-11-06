@@ -181,7 +181,8 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   });
   console.log('Atlas vector midpoint:',capture);
   assert(capture.width>=300&&capture.height>=300,'The switch draws a resolved geographic vector layer');
-  assert(['pop','reproject','dock'].includes(capture.phase),'The projection follows anticipation with one unified geography and scale timeline');
+  assert(['pop','reproject','dock','settle'].includes(capture.phase),'The projection follows anticipation with one unified geography and scale timeline');
+   if(capture.phase==='settle')assert.equal(capture.vector,1,'Settled transition must reach its geographic endpoint');
   assert(capture.vector>=0&&capture.vector<=1,'Vector correspondence stays inside both endpoints');
   await page.waitForFunction(()=>!document.querySelector('.lab-atlas-morph'),{timeout:6000});
   assert.equal(await page.locator('.lab-atlas-morph').count(),0,'The veil is fully removed after the new map settles');
