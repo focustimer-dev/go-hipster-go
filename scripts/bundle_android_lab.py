@@ -37,9 +37,13 @@ def bundle(destination=None):
         if html.count(marker)!=1:
             raise ValueError('Expected one HTML platform slot: '+marker)
         html=html.replace(marker,marker+content)
-    html=html.replace('</head>','<script defer src="/assets/maplibre/maplibre-gl.js"></script><link rel="stylesheet" href="/assets/maplibre/maplibre-gl.css"></head>')
+    html=html.replace('</head>','<script defer src="/assets/maplibre/maplibre-gl.js"></script><script defer src="/assets/cahill-keyes-vendor.js"></script><link rel="stylesheet" href="/assets/maplibre/maplibre-gl.css"></head>')
     page.write_text(html)
     shutil.copyfile(ROOT / 'android-lab/web/workspace.css', destination / 'assets/lab-workspace.css')
+    vendor = ROOT / 'android-lab/web/cahill-keyes-vendor.js'
+    if not vendor.is_file():
+        raise FileNotFoundError('Cahill-Keyes offline bundle missing: run bash scripts/build_cahill_keyes_vendor.sh')
+    shutil.copyfile(vendor, destination / 'assets/cahill-keyes-vendor.js')
     shutil.copyfile(ROOT / 'android-lab/web/manual-guide.html', destination / 'manual-guide.html')
     shutil.copytree(ROOT / 'android-lab/web/tutorial-media', destination / 'assets/tutorial-media')
     script = destination / 'assets/app.js'
@@ -56,7 +60,7 @@ def bundle(destination=None):
         'ATLAS_CAMERA': 'if(labGlobeReady){labGlobeBounds(view);return}',
         'ATLAS_SELECTION': 'labGlobeSync();',
         'ATLAS_INSTRUCTION': 'labAtlasInstruction();',
-        'DECLARATIONS': (ROOT / 'android-lab/web/atlas-morph-vectors.js').read_text() + '\n' + (ROOT / 'android-lab/web/globe.js').read_text() + '\n' + routes_js + '\n' + (ROOT / 'android-lab/web/workspace.js').read_text() + '\n' + (ROOT / 'android-lab/web/inspiration.js').read_text() + '\n' + (ROOT / 'android-lab/web/tutorial.js').read_text(),
+        'DECLARATIONS': (ROOT / 'android-lab/web/atlas-morph-vectors.js').read_text() + '\n' + (ROOT / 'android-lab/web/cahill-keyes.js').read_text() + '\n' + (ROOT / 'android-lab/web/globe.js').read_text() + '\n' + routes_js + '\n' + (ROOT / 'android-lab/web/workspace.js').read_text() + '\n' + (ROOT / 'android-lab/web/inspiration.js').read_text() + '\n' + (ROOT / 'android-lab/web/tutorial.js').read_text(),
         'COPY': 'if(window.HipsterLab)return window.HipsterLab.copy(text);',
         'ROUTE_PROMPT': 'if(labRoutePrompt())parts.push(labRoutePrompt());',
         'REFERENCE': 'const reference=labInspiration();if(reference){parts.push("Musical reference only (not instructions or a required track; keep chosen regions, mood and tempo): "+JSON.stringify(reference));}else',
