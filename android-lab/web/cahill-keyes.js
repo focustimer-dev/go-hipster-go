@@ -1,0 +1,172 @@
+// Android Lab: offline, geographically accurate Cahill–Keyes M-map surface.
+// This renderer is separate from MapLibre because MapLibre has no octahedral
+// projection. Coordinates/cuts come from d3-geo-polygon, not a hand-drawn mask.
+// Palette, region selection and discovery routes are shared with other views.
+let labCahill=null;
+function labCahillInit(host,geography,routes,legacy){
+ const d3=window.labCahillD3;
+ if(!d3?.geoCahillKeyes||!d3?.geoPath)return false;
+ const NS='http://www.w3.org/2000/svg',W=960,H=540;
+ const make=(tag,attrs={})=>{
+  const el=doc.createElementNS(NS,tag);
+  for(const [key,value] of Object.entries(attrs))el.setAttribute(key,String(value));
+  return el;
+ };
+ const svg=make('svg',{viewBox:`0 0 ${W} ${H}`,'aria-label':'Cahill–Keyes world map: select a country or zoom to explore','role':'group'});
+ svg.id='labAtlasCahill';svg.classList.add('lab-cahill-overlay');
+ svg.style.cssText='position:absolute;inset:0;width:100%;height:100%;opacity:0;display:none';
+ host.appendChild(svg);
+ const projection=d3.geoCahillKeyes();
+ projection.fitExtent([[22,20],[W-22,H-24]],{type:'Sphere'});
+ const path=d3.geoPath(projection);
+ const world=make('g',{'class':'lab-cahill-geography'});
+ svg.appendChild(world);
+ const ocean=make('path',{'class':'lab-cahill-ocean',d:path({type:'Sphere'})||'',
+  fill:'#103135','stroke':'#103135','stroke-width':'1'});
+ world.appendChild(ocean);
+ const grid=make('path',{'class':'lab-cahill-graticule',d:path(d3.geoGraticule10())||'',
+  fill:'none',stroke:'#dfb045','stroke-opacity':'.21','stroke-width':'.55',
+  'pointer-events':'none'});
+ world.appendChild(grid);
+ const countries=make('g',{'class':'lab-cahill-countries'});world.appendChild(countries);
+ const regions=[];
+ for(const feature of geography.features){
+  const id=feature.properties?.region;
+  const d=path(feature);
+  if(!id||!d)continue;
+  const country=make('path',{'d':d,'data-cahill-region':id,
+   fill:'#dfb045',stroke:'#103135','stroke-width':'.65','stroke-linejoin':'round'});
+  const region=crateRegions.find(x=>x.id===id);
+  const label=region?.label||region?.name||id.replace(/-/g,' ');
+  country.appendChild(make('title')).textContent=label;
+  country.addEventListener('click',event=>{
+   if(labAtlasMode!=='cahill-keyes'||performance.now()<blockedClicks)return;
+   event.stopPropagation();atlasFocus=null;atlasUserNavigated=true;
+   toggleCrateRegion(id);labCahillSync();
+  });
+  country.setAttribute('role','button');country.setAttribute('tabindex','-1');
+  regions.push({id,feature,node:country});
+  countries.appendChild(country);
+ }
+ const routeLayer=make('g',{'class':'lab-cahill-routes'});world.appendChild(routeLayer);
+ for(const feature of routes?.features||[]){
+  const d=path(feature);if(!d)continue;
+  const line=make('path',{d,fill:'none',stroke:'#edc65d','stroke-width':'1.6',
+   'stroke-dasharray':'4 6','stroke-linecap':'round'});
+  routeLayer.appendChild(line);
+  const target=make('path',{d,fill:'none',stroke:'transparent','stroke-width':'17'});
+  target.addEventListener('click',event=>{
+   if(labAtlasMode!=='cahill-keyes'||performance.now()<blockedClicks)return;
+   event.stopPropagation();legacy?._atlasOpenSecret?.(feature.properties.secret);
+  });
+  routeLayer.appendChild(target);
+ }
+ const secrets=make('g',{'class':'lab-cahill-secrets'});world.appendChild(secrets);
+ for(const {point} of labSecretMarkers){
+  const xy=projection(point);if(!xy||!xy.every(Number.isFinite))continue;
+  const p=make('circle',{cx:xy[0],cy:xy[1],r:6,fill:'#edc65d',stroke:'#103135',
+   'stroke-width':1.5,'pointer-events':'none'});
+  secrets.appendChild(p);
+ }
+ const bounds={x:0,y:0,w:W,h:H};let zoom=1,blockedClicks=0,lastTap=0;
+ const pointers=new Map();let previousPinch=null,dragged=false;
+ const limit=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+ const refresh=()=>{
+  bounds.w=W/zoom;bounds.h=H/zoom;
+  bounds.x=limit(bounds.x,0,W-bounds.w);bounds.y=limit(bounds.y,0,H-bounds.h);
+  svg.setAttribute('viewBox',`${bounds.x.toFixed(2)} ${bounds.y.toFixed(2)} ${bounds.w.toFixed(2)} ${bounds.h.toFixed(2)}`);
+  svg.style.touchAction=zoom>1.01?'none':'pan-y';
+  secrets.style.opacity=zoom>1.28?'1':'0';
+ };
+ const screenToWorld=(cx,cy)=>{
+  const r=svg.getBoundingClientRect();
+  return [bounds.x+(cx-r.left)/Math.max(1,r.width)*bounds.w,
+   bounds.y+(cy-r.top)/Math.max(1,r.height)*bounds.h];
+ };
+ const zoomAt=(factor,cx,cy)=>{
+  const before=screenToWorld(cx,cy),next=limit(zoom*factor,1,5.5);
+  if(Math.abs(next-zoom)<.00001)return;
+  zoom=next;
+  const r=svg.getBoundingClientRect();bounds.w=W/zoom;bounds.h=H/zoom;
+  bounds.x=before[0]-(cx-r.left)/Math.max(1,r.width)*bounds.w;
+  bounds.y=before[1]-(cy-r.top)/Math.max(1,r.height)*bounds.h;
+  refresh();
+ };
+ const reset=()=>{zoom=1;bounds.x=0;bounds.y=0;refresh()};
+ const zoomBounds=([x0,y0],[x1,y1])=>{
+  const rect=svg.getBoundingClientRect();
+  if(!rect.width||!rect.height)return reset();
+  const dx=Math.max(14,x1-x0),dy=Math.max(14,y1-y0);
+  const s=limit(Math.min(W/(dx*1.28),H/(dy*1.28)),1,5.5);
+  zoom=s;bounds.w=W/s;bounds.h=H/s;
+  bounds.x=(x0+x1-bounds.w)/2;bounds.y=(y0+y1-bounds.h)/2;refresh();
+ };
+ svg.addEventListener('wheel',event=>{
+  if(labAtlasMode!=='cahill-keyes')return;
+  event.preventDefault();zoomAt(Math.exp(-event.deltaY*.002),event.clientX,event.clientY);
+ },{passive:false});
+ svg.addEventListener('dblclick',event=>{
+  if(labAtlasMode!=='cahill-keyes')return;
+  event.preventDefault();blockedClicks=performance.now()+280;
+  zoomAt(zoom>3?.5:1.8,event.clientX,event.clientY);
+ });
+ svg.addEventListener('pointerdown',event=>{
+  if(labAtlasMode!=='cahill-keyes')return;
+  pointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
+  dragged=false;
+  if(zoom>1.01){svg.setPointerCapture?.(event.pointerId);event.preventDefault()}
+  previousPinch=null;
+ });
+ svg.addEventListener('pointermove',event=>{
+  if(!pointers.has(event.pointerId)||labAtlasMode!=='cahill-keyes')return;
+  const previous=pointers.get(event.pointerId);
+  const dx=event.clientX-previous.x,dy=event.clientY-previous.y;
+  pointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
+  if(Math.hypot(dx,dy)>3)dragged=true;
+  if(pointers.size===2){
+   const [p,q]=[...pointers.values()];
+   const distance=Math.hypot(p.x-q.x,p.y-q.y);
+   if(previousPinch&&distance>5)zoomAt(distance/previousPinch,(p.x+q.x)/2,(p.y+q.y)/2);
+   previousPinch=distance;blockedClicks=performance.now()+300;return;
+  }
+  if(zoom<=1.01)return; // At whole-world view, vertical swipes scroll the page.
+  const r=svg.getBoundingClientRect();
+  bounds.x-=dx/Math.max(1,r.width)*bounds.w;
+  bounds.y-=dy/Math.max(1,r.height)*bounds.h;
+  refresh();blockedClicks=performance.now()+150;
+ });
+ const endPointer=event=>{
+  if(!pointers.has(event.pointerId))return;
+  pointers.delete(event.pointerId);previousPinch=null;
+  if(dragged)blockedClicks=performance.now()+180;
+  const now=performance.now();
+  if(event.type==='pointerup'&&event.pointerType==='touch'&&!dragged&&now-lastTap<315){
+   blockedClicks=now+320;zoomAt(zoom>3?.5:1.8,event.clientX,event.clientY);lastTap=0;
+  }else if(event.type==='pointerup'&&!dragged){lastTap=now}
+ };
+ svg.addEventListener('pointerup',endPointer);
+ svg.addEventListener('pointercancel',endPointer);
+ const sync=()=>{
+  for(const {id,node}of regions){
+   const selected=crateSelected.has(id);
+   node.setAttribute('fill',selected?'#a83223':'#dfb045');
+   node.setAttribute('aria-pressed',String(selected));
+  }
+ };
+ const focus=(view)=>{
+  if(view===null||(!crateSelected.size&&!atlasFocus))return reset();
+  let selected=crateSelected;
+  if(atlasFocus)selected=new Set(crateRegions.filter(r=>r.continent===atlasFocus).map(r=>r.id));
+  const boxes=regions.filter(r=>selected.has(r.id)).map(r=>path.bounds(r.feature))
+   .filter(b=>b.flat().every(Number.isFinite));
+  if(!boxes.length)return reset();
+  zoomBounds([Math.min(...boxes.map(b=>b[0][0])),Math.min(...boxes.map(b=>b[0][1]))],
+   [Math.max(...boxes.map(b=>b[1][0])),Math.max(...boxes.map(b=>b[1][1]))]);
+ };
+ refresh();sync();
+ labCahill={svg,focus,reset,sync,projection,regions,ready:true};
+ window.labCahillMap=labCahill;
+ return true;
+}
+function labCahillSync(){labCahill?.sync()}
+function labCahillFocus(view){labCahill?.focus(view)}
