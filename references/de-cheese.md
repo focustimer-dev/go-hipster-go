@@ -29,6 +29,12 @@ Remove the disputed detail mentally and reassess the song against the original m
 
 Audit the proposed correction by the same standard. Do not replace invented handclaps with unsupported mouth clicks, guitar-body taps or brushwork, or say “no handclaps” merely because none were verified. When evidence is thin, propose deleting or qualifying the original claim instead of supplying a more elaborate story. Do not declare whole sections “100% real” or adopt a self-accusatory confession without checking the individual claims. Show only meaningful disputed claims, not a full ledger for every adjective; retain the existing approval step before applying note or track edits.
 
+## Whole-crate thesis and credit check
+
+Audit the **entire arc against the original listener brief**, not just successive track pairs. Check whether the opening, midpoint and ending still serve the requested mood, pace, scene and sonic premise. Flag a late stretch justified only by carryover from its immediate predecessor as possible cumulative drift; a purposeful detour that returns to the thesis can be a KEEP. Do not treat Track 1 as a substitute for the brief, impose a universal genre blacklist or recommend changes solely to satisfy a numeric similarity score. Propose the smallest evidence-backed correction through the normal read-only approval process.
+
+When artist/title credits use non-Latin script, also check the **displayed** original script, Latin-script transliteration and English title meaning/official English title for fidelity. Distinguish an unsupported translation from a wrong recording; preserve canonical service metadata and propose annotations or note corrections without silently renaming provider items.
+
 ## Findings and proposed fix
 
 Lead with counts that sum to the snapshot size, then only meaningful findings: position, exact recording, classification, evidence/uncertainty and the smallest remedy. A concise “all keep; no changes needed” is a valid result. Do not fabricate defects, quotas or a repair request when the audit passes.

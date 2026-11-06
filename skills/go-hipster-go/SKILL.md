@@ -47,6 +47,14 @@ On an explicit de-cheese request, read [De-cheese audit](references/de-cheese.md
 
 ## Playlist writing: sell the music, not a spreadsheet
 
+### Universal translation and transliteration for GO credits
+
+For **every** new `go` variant (ordinary, combined moods, GO HARD, regional, text-only and any provider handoff), when an artist or recording title contains non-Latin script, **retain the verified original-script credit and add a readable Latin-script transliteration**. Also provide an English translation or established English title for the **song title**, explicitly distinguishing a literal meaning from an official translated title. For artist names, transliterate proper names; translate a descriptive artist/stage name only when its meaning is reliably established. For mixed-script credits, transliterate only the non-Latin portions. Prefer artist/label/catalog-sanctioned romanizations over improvised spellings.
+
+**Display pattern:** `Original artist (romanized artist) — Original title (romanized title; “English meaning”)`, omitting only fields that are already Latin-script or genuinely inapplicable. Verify translations and romanizations when sources are available; if the title meaning cannot be established, say **English meaning unverified** rather than inventing one. Do not infer lyrical content from a translated title. Keep this readable on mobile, with one concise credit line per track; don't repeat explanations in every note.
+
+**Publishing boundary:** Use original provider metadata, exact recording identifiers and recognized aliases to match tracks. The human-readable transliteration/translation is an annotation, **not a replacement artist/title or an instruction to rename a provider catalog entry**. Keep it visible in the curated list even if a provider card cannot display annotations. Do not translate explicitly user-supplied proper names into different artist identities.
+
 **Editorial voice is a deliverable, not a decorative intro.** For every normal `go` playlist—including in **Claude**—produce three different kinds of copy before the numbered songs. Keep the factual status of any real streaming publication unmistakable.
 
 1. **Title:** Treat it as a **deliberate mix album**. Combine a distinctive sleeve name with **scannable region and mood/sonic context in the title**: `Offbeat Correspondence — West African & Nordic Funk`. Vary phrasing; no mandatory subtitle formula. Use tempo, local musical terms, named cities or a date span only when relevant and track-supported; never invent routes or eras. Avoid generic titles, `The [thing] Has [thing]`/passport jokes, and **`pocket` in playlist titles by default**; keep `groove` and seed words in musical notes. Check visible recent titles once for repeated words; don't invent history or add research, candidate generation or scoring.
