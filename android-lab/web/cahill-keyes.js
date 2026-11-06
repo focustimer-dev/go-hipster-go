@@ -75,6 +75,51 @@ function labCahillInit(host,geography,routes,legacy){
   regions.push({id,feature,node:country});
   countries.appendChild(country);
  }
+ // The D3 Cahill–Keyes projection lacks the reunited Antarctic extension.
+ // Reconstruct that missing landmass from canonical coordinates as an
+ // equal-area South Polar panel joined below the M's South Atlantic.
+ // Unlike a decorative inset, each Antarctic coastline is true GeoJSON.
+ const polar={cx:475,cy:477,scale:145,cutLatitude:-58};
+ const polarPoint=([lon,lat])=>{
+  const colatitude=(90+Math.max(-90,Math.min(0,lat)))*Math.PI/180;
+  const radius=2*polar.scale*Math.sin(colatitude/2);
+  const angle=lon*Math.PI/180;
+  return [polar.cx+radius*Math.sin(angle),polar.cy-radius*Math.cos(angle)];
+ };
+ const polarRadius=2*polar.scale*Math.sin((90+polar.cutLatitude)*Math.PI/360);
+ const antarcticOcean=make('circle',{id:'labCahillAntarcticOcean',
+  cx:polar.cx,cy:polar.cy,r:polarRadius,fill:'#103135',
+  'pointer-events':'none'});
+ world.appendChild(antarcticOcean);
+ world.appendChild(make('circle',{cx:polar.cx,cy:polar.cy,r:polarRadius*.62,
+  fill:'none',stroke:'#dfb045','stroke-opacity':'.18','stroke-width':'.65',
+  'pointer-events':'none'}));
+ const polarPath=feature=>{
+  const polys=feature.geometry.type==='MultiPolygon'?
+   feature.geometry.coordinates:[feature.geometry.coordinates];
+  return polys.map(rings=>rings.map(ring=>ring.map((point,i)=>{
+   const [x,y]=polarPoint(point);
+   return (i?'L':'M')+x.toFixed(3)+','+y.toFixed(3);
+  }).join('')+'Z').join('')).join('');
+ };
+ for(const feature of antarcticFeatures){
+  const id='antarctica',d=polarPath(feature);
+  if(!d)continue;
+  const country=make('path',{id:'labCahillAntarctica',
+   'data-cahill-region':id,d,fill:'#dfb045',stroke:'#103135',
+   'stroke-width':'.8','stroke-linejoin':'round'});
+  country.appendChild(make('title')).textContent='Antarctica';
+  country.setAttribute('role','button');country.setAttribute('tabindex','-1');
+  country.addEventListener('click',event=>{
+   if(labAtlasMode!=='cahill-keyes'||performance.now()<blockedClicks)return;
+   event.stopPropagation();atlasFocus=null;atlasUserNavigated=true;
+   toggleCrateRegion(id);labCahillSync();
+  });
+  world.appendChild(country);
+  regions.push({id,feature,node:country,
+   bounds:[[polar.cx-polarRadius,polar.cy-polarRadius],
+    [polar.cx+polarRadius,polar.cy+polarRadius]]});
+ }
  const routeLayer=make('g',{'class':'lab-cahill-routes'});world.appendChild(routeLayer);
  for(const feature of routes?.features||[]){
   const d=path(feature);if(!d)continue;
@@ -191,7 +236,7 @@ function labCahillInit(host,geography,routes,legacy){
    [Math.max(...boxes.map(b=>b[1][0])),Math.max(...boxes.map(b=>b[1][1]))]);
  };
  refresh();sync();
- labCahill={svg,focus,reset,sync,projection,regions,rewoundPolygons,ready:true};
+ labCahill={svg,focus,reset,sync,projection,regions,rewoundPolygons,antarcticPanel:polar,ready:true};
  window.labCahillMap=labCahill;
  return true;
 }
