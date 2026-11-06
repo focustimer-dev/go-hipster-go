@@ -1,7 +1,20 @@
 # Stabilization and release acceptance
 
-The candidate version comes from `app/build.gradle`. The comparison baseline is
-`release-baseline.json` (0.9.15), shared by performance CI and this release process.
+**Current canonical Android development candidate: 0.9.56 (version code 65),**
+with source under `android-lab/` and version identity in `app/build.gradle`.
+The historical `android/` directory is a Trusted Web Activity prototype retained
+for its Gradle wrapper, not a competing application or source of truth.
+The comparison reference is `release-baseline.json` (0.9.19), shared by
+performance CI and release acceptance; this comparator is intentionally not
+moved just because a development version is consolidated.
+
+**Known before final release:** physical Pixel feedback rates the Cahill–Keyes
+fold/unfold about 9/10 and accepts 0.9.56 as the development baseline. The
+software-rendered six-direction Playwright motion test still exceeds its
+4.5s end-to-end budget in some runs; visual freeze is not a waiver of that
+performance gate. Final full-device and accessibility checks, Play Store
+preparation, and a comprehensive visual polish pass remain deferred. Production
+Android and public PWA are not deployed by this consolidation.
 The PWA and Android use the same canonical launcher sources; packaging injects
 Android extensions only through named `PLATFORM_*` slots. Missing or duplicate
 slots fail the build. Keep `web/runtime-assets.json` in sync with runtime resource

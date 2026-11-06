@@ -35,7 +35,7 @@ Prefer working directly in chat? Follow the steps below. The skill defaults to S
 
 The curation skill and portable packages are **3.11.1**. The [latest platform ZIPs](https://github.com/focustimer-dev/go-hipster-go/releases/latest) cover ChatGPT, Claude and Gemini. Existing uploaded or saved copies need an explicit update; reading a GitHub URL does not install a skill.
 
-The PWA receives web deployments. **Android Lab 0.9.5** bundles an offline snapshot with native AI handoffs and Preferences; it needs a new APK for interface updates. Keep the existing Lab installed and use an APK signed with the same key to retain its data. Lab remains on its separate experiment branch; do not merge the Android workspace into main. See the [Lab guide](https://github.com/focustimer-dev/go-hipster-go/blob/fix/android-lab-sync-0-9/android-lab/README.md).
+**Android:** The canonical Android development app is **[Android Lab 0.9.56](android-lab/README.md)** (`work.samelling.hipstergo.lab`, version code 65). Its native WebView interface, Atlas, local preferences, and AI handoffs are built from `android-lab/`; it requires an updated APK for interface changes. Install upgrades over the existing Lab with the same original signing key to retain local data. The sibling [`android/`](android/README.md) folder is a **legacy hosted Trusted Web Activity prototype**, retained because Lab reuses its Gradle wrapper—not another current app. The PWA deploys independently and is maintained as a loosely synchronized demo. This consolidation does not deploy either app or finish Google Play release QA.
 
 ## Start here — load, setup, go
 
