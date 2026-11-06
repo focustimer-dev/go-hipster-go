@@ -93,11 +93,11 @@ function labAtlasCahillTransition(mode,instant=false){
   geojson:labGlobeGeography,selected:crateSelected,
   cahillView:labCahill.camera.snapshot(),complete:finish});
  labAtlasMorph=state;
- // Render the live MapLibre destination underneath after most of the fold
- // is already on-screen. This saves a hard reproject pause at the last frame.
- if(mode!=='cahill-keyes')setTimeout(()=>{
-  if(labAtlasMorph===state&&!state.done){
-   try{precommit()}catch(error){console.warn('Cahill precommit failed',error)}
-  }
- },355);
+ // Finish the inexpensive 2D geographic fold before changing MapLibre's
+ // projection. A mid-fold setProjection/source refresh stalled rAF on
+ // software-backed WebViews, skipping key leaves and stretching ~575 ms
+ // into several seconds. The opaque terminal pose stays visible while the
+ // single live map commits its destination in finish(), then fades away
+ // once ready. No extra map instance, per-frame WebGL update or dependency.
+
 }
