@@ -9,6 +9,24 @@ const labCahillMotion=(()=>{
  const ease=v=>{const t=clamp(v);return t*t*(3-2*t)};
  const smooth=(a,b,t)=>ease((t-a)/(b-a));
  let saved=null;
+ // Store actual resting MapLibre camera fits at each flat/globe stop. The
+ // paper atlas can then paint its FINAL pose to the same measured silhouette,
+ // rather than docking a nominally sized drawing onto the live renderer.
+ const landingFits={robinson:null,globe:null};
+ function rememberLiveFit(mode,width,height,fit){
+  if(!landingFits.hasOwnProperty(mode)||!fit?.sampled||width<=0||height<=0||
+     ![fit.x,fit.y,fit.sx,fit.sy].every(Number.isFinite))return false;
+  const next={width,aspect:height/width,x:fit.x/width,y:fit.y/height,
+   sx:fit.sx,sy:fit.sy};
+  const old=landingFits[mode];landingFits[mode]=next;
+  if(!old||Object.keys(next).some(k=>Math.abs(next[k]-old[k])>.0005))saved=null;
+  return true;
+ }
+ function roundFit(mode,pixels){
+  const f=landingFits[mode],expectedAspect=mode==='globe'?1:372/720;
+  if(!f||Math.abs(f.aspect-expectedAspect)>.025)return labAtlasMorphVectors.estimatedFit(mode);
+  return {x:f.x*pixels,y:f.y*pixels,sx:f.sx,sy:f.sy};
+ }
  const selectionKey=selected=>Array.from(selected).sort().join('|');
  function keyesPicture(svg,selected,pixels){
   const target=document.createElement('canvas');target.width=target.height=pixels;
@@ -63,10 +81,9 @@ const labCahillMotion=(()=>{
   ctx.setTransform(1,0,0,1,0,0);ctx.globalAlpha=1;
   return target;
  }
- function roundPicture(prepared,selected,mode,pixels){
+ function roundPicture(prepared,selected,mode,pixels,roundFits){
   const target=document.createElement('canvas');target.width=target.height=pixels;
-  const fits={robinson:labAtlasMorphVectors.estimatedFit('robinson'),
-              globe:labAtlasMorphVectors.estimatedFit('globe'),width:pixels,height:pixels};
+  const fits={...roundFits,width:pixels,height:pixels};
   labAtlasMorphVectors.paint(target,prepared,mode==='globe'?1:0,selected,fits);
   const ctx=target.getContext('2d');
   ctx.globalCompositeOperation='destination-over';ctx.fillStyle=PAL.paper;
@@ -79,10 +96,11 @@ const labCahillMotion=(()=>{
   // Globe and Robinson share identical canonical vertices: project once,
   // then paint the two cached poses without duplicating preparation work.
   const prepared=labAtlasMorphVectors.prepare(geojson,[10,15]);
+  const fits={globe:roundFit('globe',pixels),robinson:roundFit('robinson',pixels)};
   const images={keyes:keyesPicture(svg,selected,pixels),
-   globe:roundPicture(prepared,selected,'globe',pixels),
-   robinson:roundPicture(prepared,selected,'robinson',pixels)};
-  saved={key,svg,geojson,pixels,images};return saved;
+   globe:roundPicture(prepared,selected,'globe',pixels,fits),
+   robinson:roundPicture(prepared,selected,'robinson',pixels,fits)};
+  saved={key,svg,geojson,pixels,images,fits};return saved;
  }
  function clear(){saved=null}
  let idleWarm=null,warmVersion=0;
@@ -180,6 +198,7 @@ const labCahillMotion=(()=>{
   const origin=from==='cahill-keyes'?to:from;
   const crop=from==='cahill-keyes'?cahillView:null;
   const assets=prepare(svg,geojson,selected);
+  state.roundFits=assets.fits;state.pixels=assets.pixels;
   const veil=document.createElement('div');veil.className='lab-cahill-motion';
   veil.setAttribute('aria-hidden','true');veil.dataset.from=from;veil.dataset.to=to;
   veil.style.cssText='position:absolute;inset:0;z-index:30;overflow:hidden;background:#dfb045;pointer-events:none;';
@@ -197,14 +216,22 @@ const labCahillMotion=(()=>{
    veil.dataset.progress=String(last);
    host.style.height=destinationH+'px';
    const landingStart=performance.now();
-   complete(state,onRemoved=>{
+   complete(state,(onRemoved,alignment)=>{
     if(!veil.isConnected)return;
-    // Leave an opaque final vector pose until its destination has rendered.
-    veil.style.transition='opacity 90ms ease-out';veil.style.opacity='0';
+    // Align the terminal cached image while its veil dissolves into the
+    // measured live map; avoid a separate size/position adjustment afterward.
+    if(alignment&&alignment.residual>.002&&alignment.residual<.15){
+     canvas.style.transformOrigin='50% 50%';
+     canvas.style.transition='transform 125ms ease-out';
+     canvas.style.transform='translate('+alignment.x.toFixed(2)+'px,'+
+      alignment.y.toFixed(2)+'px) scale('+alignment.sx.toFixed(5)+','+
+      alignment.sy.toFixed(5)+')';
+    }
+    veil.style.transition='opacity 125ms ease-out';veil.style.opacity='0';
     setTimeout(()=>{
      veil.remove();host.style.pointerEvents=state.pointerEvents;
      if(typeof onRemoved==='function')onRemoved();
-    },100);
+    },135);
    });
    state.landingMs=performance.now()-landingStart;
   };
@@ -246,5 +273,5 @@ const labCahillMotion=(()=>{
   setTimeout(watchdog,1600);
   return state;
  }
- return {prepare,clear,scheduleWarm,draw,run,renderFramesTo};
+ return {prepare,clear,rememberLiveFit,scheduleWarm,draw,run,renderFramesTo};
 })();
