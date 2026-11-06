@@ -36,6 +36,7 @@ for(const profile of profiles){
   await page.locator('#goButton').waitFor({state:'visible'});
   // Android 0.9.56 provides a Jukebox-level inspiration entry point.
   await page.locator('.pwa-add-inspiration').waitFor({state:'visible'});
+  assert.equal(await page.locator('.pwa-atlas-preview-link').count(),0,'Retired three-map trial link must not appear in the Jukebox');
   assert.equal(await page.locator('.pwa-add-inspiration').getAttribute('data-pwa-action'),'edit-reference');
   await page.screenshot({path:folder+'/'+profile.name+'-jukebox.png'});
   const rects=await page.locator('.pwa-rail button').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return {width:r.width,height:r.height}}));

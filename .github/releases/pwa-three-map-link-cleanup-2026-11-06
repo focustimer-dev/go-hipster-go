@@ -1,0 +1,10 @@
+# Approved PWA UI cleanup — November 6, 2026
+
+The three-map Atlas preview has been tested and accepted. Remove the
+temporary "TRY ALL 3 MAPS" promotional call-to-action from the public
+Jukebox. This does not change the existing default Jukebox map, the
+standalone /pwa-atlas/ experience, data storage, or Android code.
+
+One-time trigger for a production Cloudflare Worker deploy after this
+reviewed cleanup merges to main. Keep the standalone Atlas assets and
+continue running both public browser smoke and PWA/Atlas QA.
