@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - 'launcher/assets/pwa-workspace.*'
+      - 'launcher/assets/pwa-guides.js'
       - 'launcher/assets/app.js'
       - 'cloudflare/worker.js'
       - 'docs/pwa-*'
@@ -12,12 +13,12 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: hipster-go-pwa-preview-156
+  group: hipster-go-pwa-preview-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 jobs:
   preview-qa:
     # Only this repository's own parity branch, never external fork PRs.
-    if: github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'feat/pwa-workspace-parity'
+    if: github.event.pull_request.head.repo.full_name == github.repository && startsWith(github.head_ref, 'feat/pwa-')
     runs-on: ubuntu-latest
     environment: production
     timeout-minutes: 25
@@ -32,6 +33,7 @@ jobs:
           git diff --exit-code -- launcher/editions/gig-poster
           python -m unittest discover -s tests -v
           node --check launcher/assets/pwa-workspace.js
+          node --check launcher/assets/pwa-guides.js
           node --check launcher/assets/app.js
           node --check scripts/pwa_preview_qa.mjs
       - name: Verify preview deploy authorization
@@ -61,6 +63,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: pwa-preview-qa-156
+          name: pwa-preview-qa-${{ github.event.pull_request.number }}
           path: artifacts/pwa-preview
           if-no-files-found: warn
