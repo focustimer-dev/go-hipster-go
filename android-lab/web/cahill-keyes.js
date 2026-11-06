@@ -194,7 +194,9 @@ function labCahillInit(host,geography,routes,legacy){
   pointers.set(event.pointerId,{x:event.clientX,y:event.clientY,
    startX:event.clientX,startY:event.clientY});
   dragged=false;
-  if(zoom>1.01){svg.setPointerCapture?.(event.pointerId);event.preventDefault()}
+  // Do not capture pointerdown: capturing immediately retargets the
+  // eventual click to the SVG root, breaking country and route hit targets.
+  // Touch-action:none already prevents native page gestures when zoomed.
   previousPinch=null;
  });
  svg.addEventListener('pointermove',event=>{
@@ -203,7 +205,13 @@ function labCahillInit(host,geography,routes,legacy){
   const dx=event.clientX-previous.x,dy=event.clientY-previous.y;
   const moved=Math.hypot(event.clientX-previous.startX,event.clientY-previous.startY);
   pointers.set(event.pointerId,{...previous,x:event.clientX,y:event.clientY});
-  if(moved>7)dragged=true;
+  if(moved>7){
+   dragged=true;blockedClicks=performance.now()+180;
+   if(zoom>1.01){
+    try{if(!svg.hasPointerCapture?.(event.pointerId))svg.setPointerCapture(event.pointerId)}catch(e){}
+    event.preventDefault();
+   }
+  }
   if(pointers.size===2){
    const [p,q]=[...pointers.values()];
    const distance=Math.hypot(p.x-q.x,p.y-q.y);
