@@ -1,0 +1,108 @@
+name: Sign pinned Android Lab 0.9.55 phone-preview APK
+
+# Trusted, default-branch-only signer: never check out or run experimental code
+# with the private keystore present. A separate sentinel authorizes this
+# exact successful, unsigned native build for physical device QA.
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/releases/sign-lab-0-9-55-preview'
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: sign-pinned-lab-0955-phone-preview
+  cancel-in-progress: false
+
+jobs:
+  sign:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Verify reviewed build provenance and artifact checksum
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          run_id=42238903549
+          expected_sha=8915f8447bb184a953f4fb06ae93a9124f8fc2e8
+          details="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}")"
+          echo "$details" | jq -e --arg sha "$expected_sha" '
+            .head_sha == $sha and
+            .head_branch == "experiment/lab-0-9-55-keyes-fold-motion" and
+            .event == "push" and
+            .conclusion == "success" and
+            .path == ".github/workflows/android-lab-preview-apk.yml"' >/dev/null ||
+            { echo "::error::Unexpected unsigned build provenance"; exit 1; }
+          mkdir unsigned
+          gh run download "$run_id" --repo "$GITHUB_REPOSITORY" \
+            --name hipster-go-lab-0.9.55-preview-unsigned --dir unsigned
+          apk=unsigned/Hipster-GO-Lab-0.9.55-unsigned.apk
+          test -s "$apk"
+          printf '%s  %s\n' \
+            233e68e6efeb93f2338f9922cf85f1e29c1253add0e7f11bb4b6911e2c26e0ba "$apk" | sha256sum --check -
+          unzip -tq "$apk" >/dev/null
+
+      - name: Verify package identity and align original binary
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${ANDROID_HOME:-}"
+          build_tools="$(find "$ANDROID_HOME/build-tools" -mindepth 1 -maxdepth 1 -type d | sort -V | tail -1)"
+          test -x "$build_tools/aapt" && test -x "$build_tools/zipalign" && test -x "$build_tools/apksigner"
+          apk=unsigned/Hipster-GO-Lab-0.9.55-unsigned.apk
+          badging="$("$build_tools/aapt" dump badging "$apk")"
+          [[ "$badging" == *"name='work.samelling.hipstergo.lab' versionCode='64' versionName='0.9.55'"* ]] ||
+            { echo "::error::Wrong Lab package ID or version"; exit 1; }
+          "$build_tools/zipalign" -p -f 4 "$apk" "$RUNNER_TEMP/hipster-lab-aligned.apk"
+          "$build_tools/zipalign" -c 4 "$RUNNER_TEMP/hipster-lab-aligned.apk"
+          echo "LAB_BUILD_TOOLS=$build_tools" >> "$GITHUB_ENV"
+
+      - name: Sign with retained original Android Lab identity
+        shell: bash
+        env:
+          KEYSTORE_B64: ${{ secrets.HIPSTER_ANDROID_KEYSTORE_B64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.HIPSTER_ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.HIPSTER_ANDROID_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          test -n "$KEYSTORE_B64" && test -n "$ANDROID_KEYSTORE_PASSWORD" ||
+            { echo "::error::Original Lab signing secrets missing"; exit 1; }
+          umask 077
+          keystore="$RUNNER_TEMP/lab-preview-signing.keystore"
+          trap 'rm -f "$keystore"' EXIT
+          printf '%s' "$KEYSTORE_B64" | base64 --decode > "$keystore"
+          sign_args=(--ks "$keystore" --ks-key-alias hipster-go --ks-pass env:ANDROID_KEYSTORE_PASSWORD)
+          if [[ -n "$ANDROID_KEY_PASSWORD" ]]; then
+            sign_args+=(--key-pass env:ANDROID_KEY_PASSWORD)
+          fi
+          "$LAB_BUILD_TOOLS/apksigner" sign "${sign_args[@]}" \
+            --out Hipster-GO-Lab-0.9.55-Preview.apk "$RUNNER_TEMP/hipster-lab-aligned.apk"
+          "$LAB_BUILD_TOOLS/apksigner" verify --verbose --print-certs Hipster-GO-Lab-0.9.55-Preview.apk
+          cert_details="$("$LAB_BUILD_TOOLS/apksigner" verify --print-certs Hipster-GO-Lab-0.9.55-Preview.apk)"
+          [[ "$cert_details" == *"Signer #1 certificate SHA-256 digest: 2e1c2c7d0ae0a75daa6da443c0c3193f212a5a86e685c885c2e93400099a4af0"* ]] ||
+            { echo "::error::Signature does not match installed Android Lab"; exit 1; }
+          "$LAB_BUILD_TOOLS/zipalign" -c 4 Hipster-GO-Lab-0.9.55-Preview.apk
+          sha256sum Hipster-GO-Lab-0.9.55-Preview.apk
+
+      - name: Publish explicitly labeled prerelease for phone QA
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag=lab-phone-preview-0.9.55-8915f84
+          if gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "::error::Preview release already exists; refusing overwrite"
+            exit 1
+          fi
+          gh release create "$tag" Hipster-GO-Lab-0.9.55-Preview.apk \
+            --repo "$GITHUB_REPOSITORY" \
+            --target 8915f8447bb184a953f4fb06ae93a9124f8fc2e8 \
+            --title "Android Lab 0.9.55 — Pixel QA preview (not production)" \
+            --prerelease \
+            --notes "Experimental Android Lab phone-preview APK, package work.samelling.hipstergo.lab, versionCode 64. Signed with the retained original certificate for in-place upgrades. Built from experiment/lab-0-9-55-keyes-fold-motion at 8915f844. The three-projection animation remains draft PR #173. Software-rendered browser timing/performance checks have not fully passed; test the six transitions, touchscreen controls and installed-data retention on Pixel. Not a production Android or public PWA deployment."
