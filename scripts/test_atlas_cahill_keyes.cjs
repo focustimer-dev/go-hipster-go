@@ -115,7 +115,7 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
   assert.equal(focusInk.role,null,'Geographic SVG paths are not WebView button boxes');
   assert.equal(focusInk.tabindex,null,'Country tap does not trigger rectangular focus');
   assert.equal(focusInk.outline,'none','Country has no native rectangular outline');
-  assert.match(focusInk.tap,/rgba?\\(0, ?0, ?0, ?0\\)|transparent/,
+  assert(['rgba(0,0,0,0)','transparent'].includes(focusInk.tap.replace(/\\s/g,'')),
    'WebView native tap flash disabled for map geography');
   // True Chromium touch input (not a script-created click): a tap inside
   // Ghana must hit the painted West Africa geography at phone scale.
