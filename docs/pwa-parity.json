@@ -1,18 +1,21 @@
 {
-  "schema": 1,
+  "schema": 2,
   "product": "Go, Hipster, Go!",
   "primary_platform": "android-lab",
   "browser_platform": "pwa",
   "accepted_android": {
-    "ref": "release/lab-0-9-16",
-    "commit": "daa09f3ff5165592229f1b6740f0638dac7176e0",
-    "version": "0.9.16",
-    "phone_acceptance": "pending"
+    "ref": "main",
+    "commit": "505fcd46f8834380d5cbe86c2faeab87a895ae84",
+    "version": "0.9.56",
+    "status": "canonical development baseline, not Android production release",
+    "phone_acceptance": "approved as main development baseline; software-rendered Cahill transition timing still requires pre-release verification"
   },
   "browser": {
     "base": "main",
-    "base_commit": "5ae3614a90e39e67305107ec5c9fef227fb685a5",
-    "deployment": "manual approval only"
+    "last_verified_deployed_commit": "71db742",
+    "deployment_verified_at": "2026-11-05",
+    "deployment": "manual approval only",
+    "adaptation_branch": "feat/pwa-0-9-56-controlled-parity"
   },
   "shared": [
     "launcher/assets/app.js",
@@ -22,28 +25,61 @@
   ],
   "gaps": [
     {
-      "feature": "browser workspace and local Crate",
+      "feature": "PWA Manual taxonomy and compact guide picker",
       "category": "browser-adapter",
       "state": "candidate",
-      "notes": "Use native-inspired UI with separate localStorage; exact prompts only, no cross-device sync"
+      "source": "android-lab/web/manual-guide.html",
+      "target": "launcher/assets/pwa-guides.js",
+      "notes": "Browser-specific Setup and Using the App guides without native demo video or app-update claims"
+    },
+    {
+      "feature": "Jukebox inspiration entry and full-width GO styling",
+      "category": "browser-adapter",
+      "state": "candidate",
+      "source": "android-lab/web/workspace.css",
+      "target": "launcher/assets/pwa-workspace.js",
+      "notes": "Use existing Crate and exact-prompt APIs; no storage migration"
+    },
+    {
+      "feature": "browser workspace and local Crate",
+      "category": "browser-adapter",
+      "state": "implemented",
+      "notes": "Browser localStorage keeps its own exact requests (10) and three inspirations; no cross-device sync"
     },
     {
       "feature": "inspiration link metadata previews",
       "category": "browser-adapter",
       "state": "deferred",
-      "notes": "Requires safe server-side metadata proxy; never scrape private addresses"
+      "notes": "Would need server-side safe bounded fetch; never fetch arbitrary private hosts"
     },
     {
-      "feature": "AI handoffs, device haptics, skill APK updates",
+      "feature": "Review-only three-projection Atlas route",
+      "category": "browser-adapter",
+      "state": "candidate",
+      "source": "android-lab/web + scripts/bundle_android_lab.py",
+      "target": "/pwa-atlas/",
+      "notes": "The preview Worker packages Android 0.9.56 atlas intact at an opt-in browser route with shared region/Crate keys, isolated from the stable PWA Jukebox. This is not production-ready embedded atlas parity; use mobile/desktop QA and explicit promotion."
+    },
+    {
+      "feature": "Robinson, Globe and Cahill–Keyes projections, geographic touch and fold animation",
+      "category": "browser-adapter",
+      "state": "deferred",
+      "source": "android-lab/web",
+      "notes": "Now part of accepted 0.9.56 Android development baseline, but requires dedicated browser MapLibre/SVG adapter, independent rendering/gesture QA, reduced-motion path and performance budget; do not copy native state or ship incomplete atlas"
+    },
+    {
+      "feature": "AI handoffs, device haptics and skill APK updates",
       "category": "android-only",
       "state": "intentional"
-    },
-    {
-      "feature": "MapLibre globe and bounded Robinson atlas",
-      "category": "experimental",
-      "state": "held",
-      "source": "feat/atlas-projection-choice"
     }
+  ],
+  "quality_gates": [
+    "preview Chromium on phone, desktop and reduced-motion profile",
+    "no loss of GO state, copied prompt or browser-only saved Crate",
+    "44px minimum relevant touch targets; no horizontal overflow or nav/receipt collision",
+    "never deploy production PWA without explicit approval",
+    "separate map parity review before any projection switch",
+    "review canonical atlas under /pwa-atlas/ on a physical mobile browser before product-level map integration"
   ],
   "release_policy": "Never auto-merge, publish, or deploy the production PWA. Approved Android work is the product source of truth."
 }
