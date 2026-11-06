@@ -81,8 +81,12 @@ if(heading){
  heading.appendChild(save);
 }
 const refinements=doc.querySelector('.refinements');
-let sleeve=null;
+let sleeve=null,addInspiration=null;
 if(refinements){
+ addInspiration=node('button','pwa-add-inspiration','+ ADD AN INSPIRATION');
+ addInspiration.type='button';addInspiration.dataset.pwaAction='edit-reference';
+ addInspiration.setAttribute('aria-label','Add a musical inspiration without leaving Jukebox');
+ refinements.parentElement.insertBefore(addInspiration,refinements);
  sleeve=node('aside','pwa-inspiration');sleeve.id='pwaInspiration';sleeve.setAttribute('aria-label','Active musical inspiration');
  sleeve.innerHTML='<strong>YOUR CRATE</strong><p id="pwaSleeveText"></p><p>Choose moods, pace and places, then GO.</p><div class="pwa-sleeve-actions"><button type="button" data-pwa-action="edit-reference">REVIEW</button><button type="button" data-pwa-action="remove-reference" aria-label="Remove active inspiration">×</button></div>';
  refinements.parentElement.insertBefore(sleeve,refinements);
@@ -117,6 +121,7 @@ function paint(){
  doc.getElementById('pwaReferenceHelp').textContent=reference?'Ready for your next GO. The original text remains editable.':'Paste a song link, title or musical idea.';
  doc.getElementById('pwaUseInJukebox').hidden=!reference;
  if(sleeve){sleeve.hidden=!reference;if(reference)doc.getElementById('pwaSleeveText').textContent=cut(reference,170)}
+  if(addInspiration)addInspiration.hidden=!!reference;
  doc.getElementById('pwaSavedCount').textContent=data.saved.length+' / '+LIMIT_SAVED;
  doc.getElementById('pwaServicePair').textContent=s.ai.toUpperCase()+' → '+s.service.toUpperCase();
  const recent=doc.getElementById('pwaRecent'),saved=doc.getElementById('pwaSaved');
