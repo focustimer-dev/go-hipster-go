@@ -1,0 +1,17 @@
+# Authorized one-shot PWA production release — November 6, 2026
+
+Source: PR #175, the controlled PWA catch-up for approved Android Lab 0.9.56.
+
+User-approved scope:
+- Browser Manual and Jukebox/Crate parity.
+- Opt-in "Try all 3 maps" route using the actual offline Android Lab 0.9.56
+  Robinson, Globe, and Cahill–Keyes renderers and animation.
+- Preserve the original public Jukebox's existing atlas and storage.
+- Do not claim the Android APK itself is published or merged into Play Store.
+
+This marker authorizes one production Cloudflare Worker deploy on merging
+PR #175 into main. Deployment must use the merged main commit SHA, must
+package /pwa-atlas/ assets, and must perform public browser checks.
+
+Do not reuse this marker for later releases. Normal development merges remain
+non-deploying without a new approved marker or explicit workflow dispatch.
