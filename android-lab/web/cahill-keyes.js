@@ -315,14 +315,13 @@ function labCahillInit(host,geography,routes,legacy){
   },
   subscribe:fn=>{cameraListeners.add(fn);return ()=>cameraListeners.delete(fn)}
  };
- const navigator=labCahillInstallNavigator({host,make,world,regions,camera});
+ const navigator=labCahillInstallNavigator({host,camera});
  const sync=()=>{
   for(const {id,node}of regions){
    const selected=crateSelected.has(id);
    node.setAttribute('fill',selected?'#a83223':'#dfb045');
    node.setAttribute('aria-pressed',String(selected));
   }
-  navigator.syncSelection(crateSelected);
  };
  const focus=(view)=>{
   if(view===null||(!crateSelected.size&&!atlasFocus))return reset();
