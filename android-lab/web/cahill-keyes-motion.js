@@ -206,7 +206,13 @@ const labCahillMotion=(()=>{
   const step=now=>{
    if(state.done)return;
    if(!state.startedAt)state.startedAt=now;
-   const x=clamp((now-state.startedAt)/DURATION_MS),travel=easing(x);
+   // Keep essential fold poses visible even when a busy WebView drops rAFs.
+   // Wall-clock progress alone skips most of the octahedral opening after a
+   // long GPU pause; cap frame-to-frame travel without slowing normal 60fps.
+   const wall=clamp((now-state.startedAt)/DURATION_MS);
+   const x=Math.min(wall,(state.progress||0)+.095);
+   state.progress=x;
+   const travel=easing(x);
    const t=goingToKeyes?travel:1-travel;
    const started=performance.now();draw(canvas,assets,origin,t,crop);
    state.maxPaintMs=Math.max(state.maxPaintMs,performance.now()-started);
