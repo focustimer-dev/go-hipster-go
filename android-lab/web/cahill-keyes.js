@@ -34,20 +34,14 @@ function labCahillInit(host,geography,routes,legacy){
  const countries=make('g',{'class':'lab-cahill-countries'});world.appendChild(countries);
  const regions=[];
  let pendingTap=null,lastTouchUp=-Infinity;
+ const cancelTap=()=>{if(pendingTap){clearTimeout(pendingTap);pendingTap=null}};
+ // Android synthesizes click after pointerup, often after the map has moved.
+ // The completed touch itself chooses the country; the later click is ignored.
  const activateOnTap=(fn,event)=>{
-  if(performance.now()<blockedClicks||dragged)return;
-  if(pendingTap){clearTimeout(pendingTap);pendingTap=null}
-  // Android WebView may emit a MouseEvent for the synthetic click after a
-  // touch pointerup. Recognize that event so double-tap arbitration applies.
-  const touch=event?.pointerType==='touch'||
-   (event?.detail>0&&performance.now()-lastTouchUp<480);
-  if(touch){
-   // First finger-up is not a stamp until double-tap arbitration ends.
-   pendingTap=setTimeout(()=>{
-    pendingTap=null;
-    if(labAtlasMode==='cahill-keyes'&&performance.now()>=blockedClicks)fn();
-   },300);
-  }else fn();
+  if(labAtlasMode!=='cahill-keyes'||performance.now()<blockedClicks||dragged)return;
+  if(event?.type==='click'&&event.detail>0&&
+     performance.now()-lastTouchUp<650)return;
+  fn(); // Mouse, keyboard, and explicitly scripted clicks are immediate.
  };
  // D3 interprets two reversed polygon rings as painting the planet's
  // complement: they obliterated the ocean and concealed several continents.
@@ -90,7 +84,8 @@ function labCahillInit(host,geography,routes,legacy){
     toggleCrateRegion(id);labCahillSync();
    },event);
   });
-  country.setAttribute('role','button');country.setAttribute('tabindex','-1');
+  // SVG paths are painted geography, not focusable rectangular WebView controls.
+  // Keyboard/screen-reader region controls already exist under Choose by Name.
   regions.push({id,feature,node:country});
   countries.appendChild(country);
  }
@@ -130,7 +125,8 @@ function labCahillInit(host,geography,routes,legacy){
    'data-cahill-region':id,d,fill:'#dfb045',stroke:'#103135',
    'stroke-width':'.8','stroke-linejoin':'round'});
   country.appendChild(make('title')).textContent='Antarctica';
-  country.setAttribute('role','button');country.setAttribute('tabindex','-1');
+  // SVG paths are painted geography, not focusable rectangular WebView controls.
+  // Keyboard/screen-reader region controls already exist under Choose by Name.
   country.addEventListener('click',event=>{
    if(labAtlasMode!=='cahill-keyes'||performance.now()<blockedClicks||dragged)return;
    event.stopPropagation();
