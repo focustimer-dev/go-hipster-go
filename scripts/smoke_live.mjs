@@ -182,6 +182,14 @@ export async function checkRelease(browser, baseURL, expectedCommit, sourceCache
     await page.locator('[data-mood="desire"]').click();
     await page.locator('[data-mood="funky"]').click();
     await page.waitForFunction(() => getComputedStyle(document.querySelector('.desire-hearts')).opacity === '1');
+    // The hearts' opacity transition began with Desire, but Funk was selected
+    // a beat later and its background-color is still interpolating in OKLab.
+    // Wait for the *Funk* color transition to finish before comparing the
+    // canonical shared CSS color token. Never relax the actual color assertion.
+    await page.locator('[data-mood="funky"]').evaluate(async element => {
+      await Promise.all(element.getAnimations().map(animation =>
+        animation.finished.catch(() => {})));
+    });
     const selectedColors = await page.evaluate(() => ({
       hearts: getComputedStyle(document.querySelector('.desire-hearts')).backgroundColor,
       funk: getComputedStyle(document.querySelector('[data-mood="funky"]')).backgroundColor,
