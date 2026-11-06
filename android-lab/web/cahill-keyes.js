@@ -6,18 +6,21 @@ let labCahill=null;
 function labCahillInit(host,geography,routes,legacy){
  const d3=window.labCahillD3;
  if(!d3?.geoCahillKeyes||!d3?.geoPath)return false;
- const NS='http://www.w3.org/2000/svg',W=960,H=540;
+ const NS='http://www.w3.org/2000/svg',W=960,H=505,TOP=65;
+ // Keep geographic scale intact; crop the unused margins instead of
+ // stretching the M-shaped world to fill its phone viewport.
+ const PROJECTION_HEIGHT=540;
  const make=(tag,attrs={})=>{
   const el=doc.createElementNS(NS,tag);
   for(const [key,value] of Object.entries(attrs))el.setAttribute(key,String(value));
   return el;
  };
- const svg=make('svg',{viewBox:`0 0 ${W} ${H}`,'aria-label':'Cahill–Keyes world map: select a country or zoom to explore','role':'group'});
+ const svg=make('svg',{viewBox:`0 ${TOP} ${W} ${H}`,'aria-label':'Cahill–Keyes world map: select a country or zoom to explore','role':'group'});
  svg.id='labAtlasCahill';svg.classList.add('lab-cahill-overlay');
  svg.style.cssText='position:absolute;inset:0;width:100%;height:100%;opacity:0;display:none';
  host.appendChild(svg);
  const projection=d3.geoCahillKeyes();
- projection.fitExtent([[22,20],[W-22,H-24]],{type:'Sphere'});
+ projection.fitExtent([[22,20],[W-22,PROJECTION_HEIGHT-24]],{type:'Sphere'});
  const path=d3.geoPath(projection);
  const world=make('g',{'class':'lab-cahill-geography'});
  svg.appendChild(world);
@@ -30,7 +33,31 @@ function labCahillInit(host,geography,routes,legacy){
  world.appendChild(grid);
  const countries=make('g',{'class':'lab-cahill-countries'});world.appendChild(countries);
  const regions=[];
- for(const feature of geography.features){
+ // D3 interprets two reversed polygon rings as painting the planet's
+ // complement: they obliterated the ocean and concealed several continents.
+ // Correct just those rings for this renderer, never mutate canonical GeoJSON.
+ let rewoundPolygons=0;
+ const ringArea=ring=>ring.reduce((sum,p,i)=>{
+  const q=ring[(i+1)%ring.length];return sum+p[0]*q[1]-q[0]*p[1];
+ },0);
+ const correctWinding=feature=>{
+  const multi=feature.geometry.type==='MultiPolygon';
+  const source=multi?feature.geometry.coordinates:[feature.geometry.coordinates];
+  let changed=false;
+  const polys=source.map(rings=>{
+   if(ringArea(rings[0])<=0)return rings;
+   changed=true;rewoundPolygons++;
+   return rings.map(r=>r.slice().reverse());
+  });
+  return changed?{...feature,geometry:{...feature.geometry,
+   coordinates:multi?polys:polys[0]}}:feature;
+ };
+ const antarcticFeatures=[];
+ for(const sourceFeature of geography.features){
+  const feature=correctWinding(sourceFeature);
+  if(feature.properties?.region==='antarctica'){
+   antarcticFeatures.push(feature);continue;
+  }
   const id=feature.properties?.region;
   const d=path(feature);
   if(!id||!d)continue;
@@ -68,12 +95,12 @@ function labCahillInit(host,geography,routes,legacy){
    'stroke-width':1.5,'pointer-events':'none'});
   secrets.appendChild(p);
  }
- const bounds={x:0,y:0,w:W,h:H};let zoom=1,blockedClicks=0,lastTap=0;
+ const bounds={x:0,y:TOP,w:W,h:H};let zoom=1,blockedClicks=0,lastTap=0;
  const pointers=new Map();let previousPinch=null,dragged=false;
  const limit=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
  const refresh=()=>{
   bounds.w=W/zoom;bounds.h=H/zoom;
-  bounds.x=limit(bounds.x,0,W-bounds.w);bounds.y=limit(bounds.y,0,H-bounds.h);
+  bounds.x=limit(bounds.x,0,W-bounds.w);bounds.y=limit(bounds.y,TOP,TOP+H-bounds.h);
   svg.setAttribute('viewBox',`${bounds.x.toFixed(2)} ${bounds.y.toFixed(2)} ${bounds.w.toFixed(2)} ${bounds.h.toFixed(2)}`);
   svg.style.touchAction=zoom>1.01?'none':'pan-y';
   secrets.style.opacity=zoom>1.28?'1':'0';
@@ -92,7 +119,7 @@ function labCahillInit(host,geography,routes,legacy){
   bounds.y=before[1]-(cy-r.top)/Math.max(1,r.height)*bounds.h;
   refresh();
  };
- const reset=()=>{zoom=1;bounds.x=0;bounds.y=0;refresh()};
+ const reset=()=>{zoom=1;bounds.x=0;bounds.y=TOP;refresh()};
  const zoomBounds=([x0,y0],[x1,y1])=>{
   const rect=svg.getBoundingClientRect();
   if(!rect.width||!rect.height)return reset();
@@ -157,14 +184,14 @@ function labCahillInit(host,geography,routes,legacy){
   if(view===null||(!crateSelected.size&&!atlasFocus))return reset();
   let selected=crateSelected;
   if(atlasFocus)selected=new Set(crateRegions.filter(r=>r.continent===atlasFocus).map(r=>r.id));
-  const boxes=regions.filter(r=>selected.has(r.id)).map(r=>path.bounds(r.feature))
+  const boxes=regions.filter(r=>selected.has(r.id)).map(r=>r.bounds||path.bounds(r.feature))
    .filter(b=>b.flat().every(Number.isFinite));
   if(!boxes.length)return reset();
   zoomBounds([Math.min(...boxes.map(b=>b[0][0])),Math.min(...boxes.map(b=>b[0][1]))],
    [Math.max(...boxes.map(b=>b[1][0])),Math.max(...boxes.map(b=>b[1][1]))]);
  };
  refresh();sync();
- labCahill={svg,focus,reset,sync,projection,regions,ready:true};
+ labCahill={svg,focus,reset,sync,projection,regions,rewoundPolygons,ready:true};
  window.labCahillMap=labCahill;
  return true;
 }
