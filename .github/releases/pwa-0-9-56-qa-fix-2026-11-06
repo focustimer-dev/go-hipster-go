@@ -1,0 +1,13 @@
+# One-time PWA release verification correction — November 6, 2026
+
+Follow-up to approved production release PR #175, deployed as eb4ba478.
+
+The live browser smoke test incorrectly sampled the Funk background during
+its 160ms CSS transition, comparing an animated OKLab intermediate value to
+the final Desire hearts sRGB token. The visual CSS and artwork are unchanged.
+The updated smoke waits for the transition to finish before enforcing the same
+strict final-color equality assertion.
+
+This marker authorizes one controlled repeat deployment to obtain a clean
+production release/verification result, including the full three-map live QA.
+It must not be reused for future releases.
