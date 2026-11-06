@@ -228,7 +228,21 @@ body.gig-poster.lab-workspace .lab-atlas-modes button{display:flex;align-items:c
 .lab-atlas-modes button span{min-width:0;white-space:nowrap}
 /* The octahedral M-map uses SVG instead of unsupported MapLibre projections. */
 #labAtlasGlobe .lab-cahill-overlay{z-index:15;background:#dfb045;overflow:hidden;touch-action:pan-y}
-#labAtlasGlobe .lab-cahill-region:focus-visible{outline:2px solid #edc65d}
+/* Native WebView SVG tap/focus rectangles are NOT region selections.
+   Highlight by changing the geographic ink, never the polygon bounding box. */
+#labAtlasCahill,#labAtlasCahill *{
+ -webkit-tap-highlight-color:transparent;
+ -webkit-touch-callout:none;
+ -webkit-user-select:none;
+ user-select:none;
+}
+#labAtlasCahill [data-cahill-region]{
+ outline:none;cursor:pointer;pointer-events:visiblePainted;
+}
+#labAtlasCahill .lab-cahill-discovery:focus{outline:none}
+#labAtlasCahill .lab-cahill-discovery:focus-visible circle:first-child{
+ stroke:#edc65d;stroke-width:3;
+}
 body.gig-poster .crate-map-frame:has(.lab-cahill-active) .atlas-radial-field{display:none}
 
 /* The Globe uses a square Android canvas; Robinson's long chart rays are hidden only here. */
