@@ -18,7 +18,7 @@ function crate(){
   recent:Array.isArray(x.recent)?x.recent.filter(i=>i&&typeof i.text==='string').slice(0,3):[]
  };
 }
-function changed(){try{window.HipsterLabStateChanged?.()}catch(e){console.warn('Atlas preview state refresh failed',e)}}
+function changed(){try{(window.HipsterLabRefresh||window.HipsterLabStateChanged)?.()}catch(e){console.warn('Atlas preview state refresh failed',e)}}
 function prefs(){return read(PREF,{mode:'browser',oneTap:false,haptics:false})}
 function state(){
  const saved=crate(),p=prefs();
