@@ -1,7 +1,7 @@
 // Accessible, map-specific nautical ink for the Cahill–Keyes interruptions.
 // Coordinates are inherited from the same original Robinson/Globe route notes.
 // Route strokes never connect disconnected octahedral lobes (see projected-route helper).
-function labCahillInstallLanes({make,world,routes,projection,legacy,markers,canActivate}){
+function labCahillInstallLanes({make,world,routes,projection,legacy,markers,canActivate,activateOnTap}){
  const lines=make('g',{'class':'lab-cahill-routes','pointer-events':'none'});
  const hits=make('g',{'class':'lab-cahill-route-hits'});
  const pins=make('g',{'class':'lab-cahill-route-pins'});
@@ -27,7 +27,7 @@ function labCahillInstallLanes({make,world,routes,projection,legacy,markers,canA
    'vector-effect':'non-scaling-stroke','pointer-events':'none'});
   target.addEventListener('click',event=>{
    if(!canActivate())return;
-   event.stopPropagation();open(id);
+   event.stopPropagation();activateOnTap(()=>open(id),event);
   });
   hits.appendChild(target);hitPaths.push(target);
   const previous=bySecret.get(id);
@@ -57,7 +57,7 @@ function labCahillInstallLanes({make,world,routes,projection,legacy,markers,canA
    'vector-effect':'non-scaling-stroke','pointer-events':'all'}));
   const activate=event=>{
    if(!canActivate())return;
-   event.stopPropagation();open(id);
+   event.stopPropagation();activateOnTap(()=>open(id),event);
   };
   g.addEventListener('click',activate);
   g.addEventListener('keydown',event=>{
