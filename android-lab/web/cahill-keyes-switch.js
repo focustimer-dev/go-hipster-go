@@ -1,95 +1,102 @@
-// Isolated third-view handoff: a timed paper dissolve, not a fake
-// geographic morph. Original Robinson <-> Globe vector choreography is intact.
+// Android Lab: reversible Cahill ↔ Globe fold and Cahill ↔ Robinson arrangement.
+// The live renderers keep ownership of selection and touch gestures. The
+// temporary canvas is only a view of cached canonical geographic ink.
 function labAtlasCahillTransition(mode,instant=false){
- if(!labCahill?.ready)return;
+ if(!labCahill?.ready||!labGlobeReady)return;
  const host=labGlobe.getContainer(),svg=labCahill.svg;
  const frame=host.closest('.crate-map-frame'),from=labAtlasMode;
- const width=host.clientWidth||host.getBoundingClientRect().width||360;
- const fromHeight=host.clientHeight||host.getBoundingClientRect().height||200;
- const targetHeight=width*(mode==='cahill-keyes'?505/960:mode==='globe'?1:372/720);
- const duration=instant?0:390;
- const state={from,to:mode,queued:null,raf:0,started:false};
- const oldPointer=host.style.pointerEvents;
- labCahill.navigator?.deactivate();
- labAtlasMorph=state;host.style.pointerEvents='none';
- labAtlasSwitchButtons(mode);
- svg.style.display='block';svg.style.pointerEvents='none';
- host.style.height=fromHeight+'px';host.style.aspectRatio='auto';
- if(mode==='cahill-keyes'){
-  labAtlasMode=mode;host.classList.add('lab-cahill-active');
-  frame?.classList.add('lab-cahill-frame');
-  frame?.classList.remove('lab-globe-frame');
-  const home=doc.getElementById('atlasHome');
-  if(home)home.textContent='← WHOLE WORLD';
-  host.setAttribute('aria-label','Interactive Cahill–Keyes world map');
-  labCahillSync();
-  // Projection switching shows the complete map, regardless of saved stamps.
-  // Only an explicit atlasFocus invokes a region close-up.
-  if(atlasFocus)labCahillFocus('selected');else labCahill.reset();
-  svg.style.opacity='0';
- }else{
-  // Commit the real MapLibre destination behind the opaque Cahill card.
-  svg.style.opacity='1';
-  labAtlasCommitMode(mode,true);
-  host.style.height=targetHeight+'px';
-  labGlobe.resize();
-  host.style.height=fromHeight+'px';
- }
- let began=0;
- const smooth=t=>{const q=Math.min(1,Math.max(0,t));return q*q*(3-2*q)};
- const finish=()=>{
-  if(labAtlasMorph!==state||state.done)return;
-  state.done=true;cancelAnimationFrame(state.raf);
-  host.style.height='';
-  host.style.aspectRatio=mode==='cahill-keyes'?'960 / 505':
+ const valid=['cahill-keyes','globe','robinson'];
+ if(!valid.includes(mode)||mode===from)return;
+ const finishLayout=()=>{
+  host.style.height='';host.style.aspectRatio=mode==='cahill-keyes'?'960 / 505':
    mode==='globe'?'1 / 1':'720 / 372';
-  if(mode==='cahill-keyes')svg.style.opacity='1';
-  else{
-   svg.style.display='none';svg.style.opacity='0';
-   host.classList.remove('lab-cahill-active');
-   frame?.classList.remove('lab-cahill-frame');
+  if(mode==='cahill-keyes'){
+   labAtlasMode='cahill-keyes';
+   host.classList.add('lab-cahill-active');
+   frame?.classList.add('lab-cahill-frame');
+   frame?.classList.remove('lab-globe-frame');
+   svg.style.display='block';svg.style.opacity='1';
+   svg.style.pointerEvents='auto';
+   host.setAttribute('aria-label','Interactive Cahill–Keyes world map');
+   const home=doc.getElementById('atlasHome');if(home)home.textContent='← WHOLE WORLD';
+   labCahill.reset();labCahillSync();labCahill.navigator?.activate();
+  }else{
+   svg.style.display='none';svg.style.opacity='0';svg.style.pointerEvents='none';
+   host.classList.remove('lab-cahill-active');frame?.classList.remove('lab-cahill-frame');
   }
   labGlobe.resize();
-  if(mode!=='cahill-keyes'){
-   if(mode==='robinson')labGlobe.setMinZoom(labRobinsonMinimumZoom());
-   labGlobe.jumpTo({center:labAtlasHome(),zoom:labGlobeHomeZoom(),bearing:0,pitch:0});
+ };
+ // Prefer the no-motion path for initialization, accessibility and tests.
+ if(instant){
+  labCahill.navigator?.deactivate();
+  if(mode!=='cahill-keyes')labAtlasCommitMode(mode,true);
+  finishLayout();
+  labAtlasSwitchButtons(mode);
+  window.__labAtlasLastCahillSwitch={from,to:mode,duration:0,finished:true,reduced:true};
+  return;
+ }
+ labCahill.navigator?.deactivate();
+ labAtlasSwitchButtons(mode);
+ labAtlasMorphVectors.pauseWarm();
+ const already={value:false};
+ const precommit=()=>{
+  if(already.value||mode==='cahill-keyes')return;
+  already.value=true;
+  // Project the real MapLibre destination under the opaque animated chart.
+  // Starting early avoids a visible pause after the final keyframe.
+  labAtlasCommitMode(mode,true);
+  labGlobe.resize();labGlobe.triggerRepaint();
+ };
+ const finish=(state,reveal)=>{
+  try{
+   precommit();
+   finishLayout();
+  }catch(error){
+   console.warn('Cahill geographic transition commit failed',error);
+   try{finishLayout()}catch(_){/* release camera even if graphics fail */}
   }
-  host.style.pointerEvents=oldPointer;
-  svg.style.pointerEvents=mode==='cahill-keyes'?'auto':'none';
-  labAtlasMorph=null;
-  if(mode==='cahill-keyes')labCahill.navigator?.activate();
-  window.__labAtlasLastCahillSwitch={from,to:mode,duration,finished:true};
-  const next=state.queued;
-  if(next&&next!==labAtlasMode)labSetAtlasMode(next);
- };
- const begin=()=>{
-  if(state.started||labAtlasMorph!==state)return;
-  state.started=true;
-  if(duration===0){finish();return}
-  const tick=now=>{
-   if(labAtlasMorph!==state)return;
-   if(!began)began=now;
-   const t=smooth((now-began)/duration);
-   host.style.height=(fromHeight+(targetHeight-fromHeight)*t).toFixed(2)+'px';
-   // Hold the map opaque until the final 35% when leaving, so that
-   // a MapLibre resize cannot peek out before its new projection is painted.
-   const opacity=mode==='cahill-keyes'?t:1-smooth((t-.65)/.35);
-   svg.style.opacity=String(opacity);
-   if(t>=1)finish();else state.raf=requestAnimationFrame(tick);
+  let revealed=false;
+  const show=(signal)=>{
+   if(revealed)return;revealed=true;
+   labGlobe.off('render',onRender);
+   labGlobe.off('idle',onIdle);
+   window.__labAtlasLastCahillSwitch={
+    from,to:mode,duration:575,frames:state.frames,maxPaintMs:state.maxPaintMs,
+    renderSignal:signal,finished:true,cacheSelection:crateSelected.size
+   };
+   reveal(()=>{
+    labAtlasMorph=null;
+    const next=state.queued;
+    if(next&&next!==labAtlasMode)labSetAtlasMode(next);
+    else labAtlasSwitchButtons(mode);
+   });
   };
-  state.raf=requestAnimationFrame(tick);
-  // Background WebViews may freeze animation frames.
-  setTimeout(finish,duration+650);
+  const ready=()=>{
+   if(mode==='cahill-keyes')return true;
+   const expected=mode==='globe'?'globe':'mercator';
+   return labGlobe.getProjection()?.type===expected&&
+    labGlobe.isStyleLoaded()&&labGlobe.isSourceLoaded('land');
+  };
+  const onRender=()=>{if(ready())show('render')};
+  const onIdle=()=>{if(ready())show('idle')};
+  if(ready()){
+   // Two frames allow geometry, size and new MapLibre paint to land together.
+   requestAnimationFrame(()=>requestAnimationFrame(()=>show('frame')));
+  }else{
+   labGlobe.on('render',onRender);labGlobe.once('idle',onIdle);
+   labGlobe.triggerRepaint();
+   setTimeout(()=>show('timeout'),650);
+  }
  };
- if(mode==='cahill-keyes'){begin();return}
- const onRender=()=>{
-  const expected=mode==='globe'?'globe':'mercator';
-  if(labGlobe.getProjection()?.type!==expected||
-     !labGlobe.isStyleLoaded()||!labGlobe.isSourceLoaded('land'))return;
-  labGlobe.off('render',onRender);begin();
- };
- labGlobe.on('render',onRender);
- labGlobe.once('idle',()=>{labGlobe.off('render',onRender);begin()});
- labGlobe.triggerRepaint();
- setTimeout(()=>{labGlobe.off('render',onRender);begin()},950);
+ const state=labCahillMotion.run({host,svg,to:mode,from,
+  geojson:labGlobeGeography,selected:crateSelected,
+  cahillView:labCahill.camera.snapshot(),complete:finish});
+ labAtlasMorph=state;
+ // Render the live MapLibre destination underneath after most of the fold
+ // is already on-screen. This saves a hard reproject pause at the last frame.
+ if(mode!=='cahill-keyes')setTimeout(()=>{
+  if(labAtlasMorph===state&&!state.done){
+   try{precommit()}catch(error){console.warn('Cahill precommit failed',error)}
+  }
+ },355);
 }

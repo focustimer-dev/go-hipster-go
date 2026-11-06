@@ -322,6 +322,7 @@ function labCahillInit(host,geography,routes,legacy){
    node.setAttribute('fill',selected?'#a83223':'#dfb045');
    node.setAttribute('aria-pressed',String(selected));
   }
+  labCahillMotion.scheduleWarm(svg,geography,crateSelected);
  };
  const focus=(view)=>{
   if(view===null||(!crateSelected.size&&!atlasFocus))return reset();
