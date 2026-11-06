@@ -2,13 +2,14 @@ name: Deploy Go Hipster Go to Cloudflare
 
 on:
   workflow_dispatch:
-  # One-shot production release requested on 2026-11-01; only this sentinel path can trigger a push deploy.
+  # Production push deploys are opt-in, using explicit one-time approved release markers.
   push:
     branches: [main]
     paths:
       - '.github/one-shot-clean-mood-art-2026-11-01'
       - '.github/releases/mood-quality-2026-11-01'
       - '.github/releases/pwa-0-9-56-2026-11-06'
+      - '.github/releases/pwa-0-9-56-qa-fix-2026-11-06'
 
 permissions:
   contents: read
