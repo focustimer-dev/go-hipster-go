@@ -8,6 +8,47 @@ const STORE='ghg-pwa-crate-v1';
 const LIMIT_SAVED=10,LIMIT_RECENT=3,LIMIT_REFERENCE=2000;
 const destinations={chatgpt:'https://chatgpt.com/',gemini:'https://gemini.google.com/app',claude:'https://claude.ai/'};
 let data=load(),screen='jukebox',activeSaved=null;
+let metadataPending='',metadataRequest=null,metadataVersion=0;
+function referenceUrl(text){
+ const found=String(text||'').match(/https:\/\/[^\s<>"']+/i);if(!found)return '';
+ let url=found[0].replace(/[.,;!?]+$/,'');
+ let unbalanced=0;for(const char of url){if(char==='(')unbalanced++;if(char===')')unbalanced--}
+ while(unbalanced<0&&url.endsWith(')')){url=url.slice(0,-1);unbalanced++}
+ return url;
+}
+function referenceDisplay(text,entry){
+ const plain=String(text||'').replace(/https:\/\/[^\s<>"']+/gi,'').replace(/\s+/g,' ').trim().replace(/[—–:|,-]+$/,'').trim();
+ return cut(entry?.title||plain||(entry?.provider?entry.provider+' link':'Shared link'),130);
+}
+async function resolveReference(text,force=false){
+ if(metadataRequest)metadataRequest.abort();
+ metadataRequest=null;metadataPending='';
+ const url=referenceUrl(text),entry=data.recent.find(x=>x.text===text);
+ if(!url||(!force&&(entry?.title||entry?.metadataStatus))){paint();return}
+ const seq=++metadataVersion,controller=new AbortController();
+ metadataRequest=controller;metadataPending=text;paint();
+ try{
+  const response=await fetch('/api/inspiration-preview?url='+encodeURIComponent(url),{
+   headers:{Accept:'application/json'},signal:controller.signal,credentials:'omit',cache:'no-store'
+  });
+  if(!response.ok)throw new Error('Metadata service unavailable');
+  const meta=await response.json();
+  if(controller.signal.aborted||seq!==metadataVersion||api.getSnapshot().reference!==text)return;
+  store(state=>{
+   let item=state.recent.find(x=>x.text===text);
+   if(!item){item={id:id(),text,time:Date.now()};state.recent.unshift(item);state.recent=state.recent.slice(0,LIMIT_RECENT)}
+   item.title=typeof meta.title==='string'?cut(meta.title,140):'';
+   item.description=typeof meta.description==='string'?cut(meta.description,240):'';
+   item.provider=typeof meta.provider==='string'?cut(meta.provider,40):'';
+   item.metadataStatus=meta.status==='ok'&&item.title?'ok':meta.status==='unsupported'?'unsupported':'unavailable';
+  });
+ }catch(e){
+  if(!controller.signal.aborted&&seq===metadataVersion&&api.getSnapshot().reference===text){
+   store(state=>{const item=state.recent.find(x=>x.text===text);if(item)item.metadataStatus='unavailable'});
+  }
+ }finally{if(seq===metadataVersion){metadataPending='';metadataRequest=null;paint()}}
+}
+
 const positions={jukebox:0,crate:0,manual:0};
 function cut(value,length){const text=String(value||'').replace(/\s+/g,' ').trim();return [...text].length>length?[...text].slice(0,length-1).join('')+'…':text}
 function cleanEntry(x){return x&&typeof x.id==='string'&&typeof x.prompt==='string'&&x.prompt.length<=24000&&x.prompt.length>0}
@@ -115,19 +156,24 @@ function promptSummary(text){
 }
 function paint(){
  const s=api.getSnapshot(),reference=s.reference||'';
+ const entry=data.recent.find(x=>x.text===reference),title=referenceDisplay(reference,entry);
  const summary=doc.getElementById('pwaCrateSummary');
- summary.textContent=reference?cut(reference,130):'Inspiration and exact requests, saved in this browser.';
- doc.getElementById('pwaReferenceName').textContent=reference?cut(reference,130):'No reference yet';
- doc.getElementById('pwaReferenceHelp').textContent=reference?'Ready for your next GO. The original text remains editable.':'Paste a song link, title or musical idea.';
+ summary.textContent=reference?title:'Inspiration and exact requests, saved in this browser.';
+ doc.getElementById('pwaReferenceName').textContent=reference?title:'No reference yet';
+ const stateHint=metadataPending===reference?'Looking up link details…':
+  entry?.metadataStatus==='unavailable'?'Link details unavailable; original link saved.':
+  entry?.metadataStatus==='unsupported'?'This site does not offer a supported preview; link saved.':
+  entry?.description|| (reference?'Ready for your next GO. Original link remains editable.':'Paste a song link, title or musical idea.');
+ doc.getElementById('pwaReferenceHelp').textContent=stateHint;
  doc.getElementById('pwaUseInJukebox').hidden=!reference;
- if(sleeve){sleeve.hidden=!reference;if(reference)doc.getElementById('pwaSleeveText').textContent=cut(reference,170)}
+ if(sleeve){sleeve.hidden=!reference;if(reference)doc.getElementById('pwaSleeveText').textContent=referenceDisplay(reference,entry)}
   if(addInspiration)addInspiration.hidden=!!reference;
  doc.getElementById('pwaSavedCount').textContent=data.saved.length+' / '+LIMIT_SAVED;
  doc.getElementById('pwaServicePair').textContent=s.ai.toUpperCase()+' → '+s.service.toUpperCase();
  const recent=doc.getElementById('pwaRecent'),saved=doc.getElementById('pwaSaved');
  recent.replaceChildren();saved.replaceChildren();
  if(!data.recent.length)recent.append(node('p','pwa-help','Your last three inspirations appear here automatically.'));
- for(const entry of data.recent)row(recent,entry.text,entry.time?new Date(entry.time).toLocaleDateString():'Saved in this browser',reference===entry.text?'IN USE':'USE',()=>{api.setReference(entry.text);navigate('jukebox');});
+ for(const entry of data.recent)row(recent,referenceDisplay(entry.text,entry),entry.description|| (entry.metadataStatus==='unavailable'?'Link saved without metadata':entry.time?new Date(entry.time).toLocaleDateString():'Saved in this browser'),reference===entry.text?'IN USE':'USE',()=>{api.setReference(entry.text);navigate('jukebox');resolveReference(entry.text);});
  if(!data.saved.length)saved.append(node('p','pwa-help','Save a request beside the Jukebox receipt to keep it here.'));
  for(const entry of data.saved.slice().reverse())row(saved,entry.name||'Untitled crate',promptSummary(entry.prompt), 'OPTIONS',()=>openSaved(entry.id));
 }
@@ -170,7 +216,7 @@ doc.addEventListener('click',async event=>{
   if(data.saved.length>=LIMIT_SAVED){notice('The shelf is full. Delete a saved request first.');navigate('crate');return}
   doc.getElementById('pwaSaveName').value='';openDialog('pwaSaveDialog');break;
  case 'edit-reference':editReference();break;
- case 'remove-reference':api.setReference('');closeDialog('pwaReferenceDialog');notice('Active inspiration cleared; recent inspirations kept.');break;
+ case 'remove-reference':metadataRequest?.abort();metadataVersion++;metadataPending='';api.setReference('');closeDialog('pwaReferenceDialog');notice('Active inspiration cleared; recent inspirations kept.');break;
  case 'cancel-reference':closeDialog('pwaReferenceDialog');break;
  case 'cancel-save':closeDialog('pwaSaveDialog');break;
  case 'copy-setup':{
@@ -203,7 +249,7 @@ doc.getElementById('pwaReferenceDialog').querySelector('form').addEventListener(
  if(!value){notice('Enter a reference or use Remove to clear it.');return}
  if([...value].length>LIMIT_REFERENCE)return;
  if(store(s=>{s.recent=s.recent.filter(x=>x.text!==value);s.recent.unshift({id:id(),text:value,time:Date.now()});s.recent=s.recent.slice(0,LIMIT_RECENT)})){
-  api.setReference(value);closeDialog('pwaReferenceDialog');navigate('jukebox');
+  api.setReference(value);closeDialog('pwaReferenceDialog');navigate('jukebox');resolveReference(value,true);
   sleeve?.scrollIntoView({block:'start'});
  }
 });
@@ -227,4 +273,6 @@ doc.addEventListener('click',event=>{
 });
 window.addEventListener('ghg-pwa-render',paint);
 paint();
+const initial=api.getSnapshot().reference;
+if(initial&&referenceUrl(initial))resolveReference(initial);
 })();
