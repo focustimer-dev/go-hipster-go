@@ -104,6 +104,21 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    highlighted:document.querySelector('[data-cahill-region="west-africa"]')?.getAttribute('fill')
   }));
   assert.equal(selected.highlighted,'#a83223','Country hit area updates the canonical region selection');
+  // True Chromium touch input (not a script-created click): a tap inside
+  // Ghana must hit the painted West Africa geography at phone scale.
+  const ghana=await page.evaluate(()=>{
+   const svg=document.getElementById('labAtlasCahill');
+   const coords=window.labCahillMap.projection([-1.2,7.8]);
+   const point=svg.createSVGPoint();point.x=coords[0];point.y=coords[1];
+   const screen=point.matrixTransform(svg.getScreenCTM());
+   const hit=document.elementFromPoint(screen.x,screen.y);
+   return {x:screen.x,y:screen.y,region:hit?.closest?.('[data-cahill-region]')
+    ?.getAttribute('data-cahill-region')};
+  });
+  assert.equal(ghana.region,'west-africa','Geographic touch location matches painted land');
+  await page.touchscreen.tap(ghana.x,ghana.y);
+  await page.waitForFunction(()=>document.querySelector('[data-cahill-region="west-africa"]')
+   ?.getAttribute('fill')==='#dfb045',null,{timeout:1800});
   // Antarctic polygon remains a tappable selectable region.
    await page.evaluate(()=>document.getElementById('labCahillAntarctica')
     .dispatchEvent(new MouseEvent('click',{bubbles:true})));
