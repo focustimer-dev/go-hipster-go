@@ -39,8 +39,9 @@ function labCahillInit(host,geography,routes,legacy){
  // The completed touch itself chooses the country; the later click is ignored.
  const activateOnTap=(fn,event)=>{
   if(labAtlasMode!=='cahill-keyes'||performance.now()<blockedClicks||dragged)return;
-  if(event?.type==='click'&&event.detail>0&&
-     performance.now()-lastTouchUp<650)return;
+  if(event?.type==='click'&&
+     (event.sourceCapabilities?.firesTouchEvents||
+      (event.detail>0&&performance.now()-lastTouchUp<1200)))return;
   fn(); // Mouse, keyboard, and explicitly scripted clicks are immediate.
  };
  // D3 interprets two reversed polygon rings as painting the planet's
