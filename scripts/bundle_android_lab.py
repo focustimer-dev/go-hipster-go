@@ -44,6 +44,8 @@ def bundle(destination=None):
     if not vendor.is_file():
         raise FileNotFoundError('Cahill-Keyes offline bundle missing: run bash scripts/build_cahill_keyes_vendor.sh')
     shutil.copyfile(vendor, destination / 'assets/cahill-keyes-vendor.js')
+    shutil.copyfile(ROOT / 'android-lab/web/CAHILL-KEYES-NOTICES.txt',
+                    destination / 'assets/CAHILL-KEYES-NOTICES.txt')
     shutil.copyfile(ROOT / 'android-lab/web/manual-guide.html', destination / 'manual-guide.html')
     shutil.copytree(ROOT / 'android-lab/web/tutorial-media', destination / 'assets/tutorial-media')
     script = destination / 'assets/app.js'
