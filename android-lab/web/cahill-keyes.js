@@ -219,7 +219,10 @@ function labCahillInit(host,geography,routes,legacy){
    previousPinch=distance;dragged=true;
    blockedClicks=performance.now()+300;return;
   }
-  if(zoom<=1.01)return; // At whole-world view, vertical swipes scroll the page.
+  // IMPORTANT: browser touch pointers report sub-pixel movement while a
+  // finger rests on the glass. The old path panned and blocked ALL clicks
+  // on those tiny movements, even below our 7px drag threshold.
+  if(!dragged||zoom<=1.01)return;
   const r=svg.getBoundingClientRect();
   bounds.x-=dx/Math.max(1,r.width)*bounds.w;
   bounds.y-=dy/Math.max(1,r.height)*bounds.h;
