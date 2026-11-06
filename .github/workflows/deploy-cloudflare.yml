@@ -65,4 +65,4 @@ jobs:
       - name: Verify public PWA Manual, Crate and all three Atlas views
         env:
           PWA_PREVIEW_URL: https://hipster-go.samelling.workers.dev
-        run: node scripts/pwa_preview_qa.mjs
+        run: node scripts/pwa_preview_qa.mjs --allow-production
