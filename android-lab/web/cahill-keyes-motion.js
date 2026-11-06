@@ -228,12 +228,13 @@ const labCahillMotion=(()=>{
   // The old unconditional 1.6s watchdog jumped straight to the finished
   // map when software WebGL delayed rAF, skipping the last Cahill leaves.
   // Only force a finish when WebView truly stops delivering animation frames.
+  const submittedAt=performance.now();
   const watchdog=()=>{
    if(state.done)return;
    const now=performance.now();
-   const sinceFrame=now-(state.lastFrameAt||state.startedAt||now);
+   const sinceFrame=now-(state.lastFrameAt||submittedAt);
    if(document.visibilityState==='hidden'||sinceFrame>1500||
-      (state.startedAt&&now-state.startedAt>4800))finish();
+      now-submittedAt>4800)finish();
    else setTimeout(watchdog,300);
   };
   setTimeout(watchdog,1600);
