@@ -3,8 +3,15 @@ import assert from 'node:assert/strict';
 import { mkdir,writeFile } from 'node:fs/promises';
 import { chromium } from 'playwright';
 const base=process.env.PWA_PREVIEW_URL;
-assert.equal(base,'https://hipster-go-pwa-preview.samelling.workers.dev','Only the dedicated preview is an allowed QA target');
-assert.ok(!base.includes('://hipster-go.'),'Never run browser preview QA on production');
+const isProduction=process.argv.includes('--allow-production');
+const previewOrigin='https://hipster-go-pwa-preview.samelling.workers.dev';
+const publicOrigin='https://hipster-go.samelling.workers.dev';
+// The preview workflow must remain unable to visit production by accident.
+// Only the explicit production verification command may use the exact public
+// hostname; no arbitrary URLs, hidden redirects or write-capable sessions.
+assert.equal(base,isProduction?publicOrigin:previewOrigin,
+ isProduction?'Explicit production QA flag requires exact public origin':
+ 'Only the dedicated preview is an allowed QA target');
 const folder='artifacts/pwa-preview';
 await mkdir(folder,{recursive:true});
 const browser=await chromium.launch({headless:true,args:['--use-angle=swiftshader','--enable-unsafe-swiftshader']});
