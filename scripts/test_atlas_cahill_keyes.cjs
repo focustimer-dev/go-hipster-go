@@ -142,6 +142,27 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
     .dispatchEvent(new MouseEvent('click',{bubbles:true})));
    assert.equal(await page.evaluate(()=>document.getElementById('atlasSecretCard')?.hidden),false,
     'Route markers open their existing discovery card');
+  // Reproduce Pixel bug: tiny jitter must not pan or discard the tap.
+  const jitter=await page.evaluate(()=>{
+   const svg=document.getElementById('labAtlasCahill');
+   const land=document.querySelector('[data-cahill-region="west-africa"]');
+   const beforeView=svg.getAttribute('viewBox'),beforeFill=land.getAttribute('fill');
+   const pointer=(type,x)=>new PointerEvent(type,{bubbles:true,
+    pointerId:987,pointerType:'touch',clientX:x,clientY:190,isPrimary:true});
+   land.dispatchEvent(pointer('pointerdown',180));
+   land.dispatchEvent(pointer('pointermove',181.6));
+   land.dispatchEvent(pointer('pointerup',181.6));
+   land.dispatchEvent(new MouseEvent('click',{bubbles:true,detail:1,
+    clientX:181.6,clientY:190}));
+   return {beforeView,afterView:svg.getAttribute('viewBox'),beforeFill};
+  });
+  assert.equal(jitter.afterView,jitter.beforeView,
+   'A 1.6px finger tremor must not pan the geographic camera');
+  await page.waitForFunction(fill=>document.querySelector('[data-cahill-region="west-africa"]')
+   ?.getAttribute('fill')!==fill,jitter.beforeFill,{timeout:1600});
+  await page.waitForTimeout(120);
+  assert.notEqual(await page.locator('[data-cahill-region="west-africa"]').first()
+   .getAttribute('fill'),jitter.beforeFill,'A single touch toggles exactly once');
   // Home view, then switch to MapLibre; no stale overlays or input locks.
   await page.evaluate(()=>window.labCahillMap.reset());
   await page.locator('[data-atlas-view=globe]').click();
