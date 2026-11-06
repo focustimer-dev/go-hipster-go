@@ -1,4 +1,4 @@
-name: Android Lab 0.9.55 preview APK (unsigned, no deployment)
+name: Android Lab 0.9.56 preview APK (unsigned, no deployment)
 
 on:
   push:
@@ -14,7 +14,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: android-lab-0955-preview-${{ github.ref }}
+  group: android-lab-0956-preview-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -45,15 +45,15 @@ jobs:
           apk=android-lab/app/build/outputs/apk/release/app-release-unsigned.apk
           test -s "$apk"
           badging="$("$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$apk")"
-          [[ "$badging" == *"name='work.samelling.hipstergo.lab' versionCode='64' versionName='0.9.55'"* ]] ||
+          [[ "$badging" == *"name='work.samelling.hipstergo.lab' versionCode='65' versionName='0.9.56'"* ]] ||
             { echo "::error::Wrong Lab package or version"; exit 1; }
           sha256sum "$apk"
           mkdir -p android-lab/build/preview-apk
-          cp "$apk" android-lab/build/preview-apk/Hipster-GO-Lab-0.9.55-unsigned.apk
+          cp "$apk" android-lab/build/preview-apk/Hipster-GO-Lab-0.9.56-unsigned.apk
       - uses: actions/upload-artifact@v4
         with:
-          name: hipster-go-lab-0.9.55-preview-unsigned
-          path: android-lab/build/preview-apk/Hipster-GO-Lab-0.9.55-unsigned.apk
+          name: hipster-go-lab-0.9.56-preview-unsigned
+          path: android-lab/build/preview-apk/Hipster-GO-Lab-0.9.56-unsigned.apk
           retention-days: 7
           if-no-files-found: error
       - name: Export official Android SDK signing tools (no keys)
