@@ -61,7 +61,8 @@ function labAtlasCahillTransition(mode,instant=false){
    labGlobe.off('render',onRender);
    labGlobe.off('idle',onIdle);
    window.__labAtlasLastCahillSwitch={
-    from,to:mode,duration:575,frames:state.frames,maxPaintMs:state.maxPaintMs,
+    from,to:mode,duration:575,animationElapsedMs:state.elapsed,
+    frames:state.frames,maxPaintMs:state.maxPaintMs,
     renderSignal:signal,finished:true,cacheSelection:crateSelected.size
    };
    reveal(()=>{
