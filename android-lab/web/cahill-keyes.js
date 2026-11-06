@@ -186,7 +186,11 @@ function labCahillInit(host,geography,routes,legacy){
  },{passive:false});
  svg.addEventListener('dblclick',event=>{
   if(labAtlasMode!=='cahill-keyes')return;
-  event.preventDefault();blockedClicks=performance.now()+280;
+  event.preventDefault();
+  // The second touch pointerup already executed this zoom; suppress the
+  // later synthetic dblclick so it cannot zoom twice or disturb the target.
+  if(performance.now()-lastTouchUp<450)return;
+  blockedClicks=performance.now()+280;
   zoomAt(zoom>3?.5:1.8,event.clientX,event.clientY);
  });
  svg.addEventListener('pointerdown',event=>{
