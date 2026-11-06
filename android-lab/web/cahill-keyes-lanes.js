@@ -78,6 +78,6 @@ function labCahillInstallLanes({make,world,routes,projection,legacy,markers,canA
   for(const path of hitPaths)path.setAttribute('pointer-events',available?'stroke':'none');
  };
  setZoom(1);
- return {setZoom,stats:[...bySecret.values()].map(({id,fragments,breaks,maxJump})=>
+ return {setZoom,open,stats:[...bySecret.values()].map(({id,fragments,breaks,maxJump})=>
   ({id,fragments,breaks,maxJump})),pinCount:pinNodes.length};
 }
