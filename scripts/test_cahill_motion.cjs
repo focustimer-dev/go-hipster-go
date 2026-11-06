@@ -26,12 +26,7 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    await page.waitForFunction(()=>window.labCahillMap?.ready&&window.labAtlasGlobe?.loaded(),null,{timeout:24000});
    // Polar-ocean pigment must be fully opaque: a faint graticule previously
    // leaked its 0.21 alpha into the Antarctic circle in the cached film.
-   const polarInk=await page.evaluate(()=>{
-    const frame=labCahillMotion.prepare(labCahillMap.svg,labGlobeGeography,new Set());
-    const {pixels,images}=frame,ctx=images.keyes.getContext('2d');
-    const x=Math.round(543/960*pixels),y=Math.round((477-65)/505*pixels);
-    return [...ctx.getImageData(x,y,1,1).data];
-   });
+   const polarInk=await page.evaluate(()=>window.labCahillMap.polarInkSample());
    assert(polarInk[0]<35&&polarInk[1]<75&&polarInk[2]<75,
     'Antarctic polar ocean should retain full petrol ink, not washed-out graticule alpha');
    const selection=await page.evaluate(()=>[...document.querySelectorAll('[data-crate-region][aria-pressed=true]')].map(e=>e.dataset.crateRegion).sort());
