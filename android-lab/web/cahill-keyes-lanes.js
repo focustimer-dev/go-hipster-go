@@ -6,6 +6,11 @@ function labCahillInstallLanes({make,world,routes,projection,legacy,markers,canA
  const hits=make('g',{'class':'lab-cahill-route-hits'});
  const pins=make('g',{'class':'lab-cahill-route-pins'});
  world.append(lines,hits,pins);
+ // Countries must win the hit test when a shipping lane crosses coast/land.
+ // Keep nautical ink over the map, but place its invisible hit strokes
+ // *beneath* the land polygons. Ocean crossings remain discoverable.
+ const countries=world.querySelector('.lab-cahill-countries');
+ if(countries)world.insertBefore(hits,countries);
  const bySecret=new Map(),hitPaths=[],pinNodes=[];
  const describe=id=>legacy?.querySelector('.atlas-secret-hotspot[data-secret="'+id+'"]')
   ?.getAttribute('aria-label')||('Discover '+id.replace(/-/g,' '));
