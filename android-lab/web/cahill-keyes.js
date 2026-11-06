@@ -122,26 +122,13 @@ function labCahillInit(host,geography,routes,legacy){
    bounds:[[polar.cx-polarRadius,polar.cy-polarRadius],
     [polar.cx+polarRadius,polar.cy+polarRadius]]});
  }
- const routeLayer=make('g',{'class':'lab-cahill-routes'});world.appendChild(routeLayer);
- for(const feature of routes?.features||[]){
-  const d=path(feature);if(!d)continue;
-  const line=make('path',{d,fill:'none',stroke:'#edc65d','stroke-width':'1.6',
-   'stroke-dasharray':'4 6','stroke-linecap':'round'});
-  routeLayer.appendChild(line);
-  const target=make('path',{d,fill:'none',stroke:'transparent','stroke-width':'17'});
-  target.addEventListener('click',event=>{
-   if(labAtlasMode!=='cahill-keyes'||performance.now()<blockedClicks)return;
-   event.stopPropagation();legacy?._atlasOpenSecret?.(feature.properties.secret);
-  });
-  routeLayer.appendChild(target);
- }
- const secrets=make('g',{'class':'lab-cahill-secrets'});world.appendChild(secrets);
- for(const {point} of labSecretMarkers){
-  const xy=projection(point);if(!xy||!xy.every(Number.isFinite))continue;
-  const p=make('circle',{cx:xy[0],cy:xy[1],r:6,fill:'#edc65d',stroke:'#103135',
-   'stroke-width':1.5,'pointer-events':'none'});
-  secrets.appendChild(p);
- }
+ // Reproject the same geographic waypoints without connecting detached lobes.
+ // Dashed lane ink never catches taps; close-up targets are separate.
+ const lanes=labCahillInstallLanes({make,world,routes,projection,legacy,
+  markers:labSecretMarkers,
+  canActivate:()=>labAtlasMode==='cahill-keyes'&&
+   performance.now()>=blockedClicks&&!dragged
+ });
  const bounds={x:0,y:TOP,w:W,h:H};let zoom=1,blockedClicks=0,lastTap=0;
  const pointers=new Map();let previousPinch=null,dragged=false;
  const limit=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
@@ -150,7 +137,7 @@ function labCahillInit(host,geography,routes,legacy){
   bounds.x=limit(bounds.x,0,W-bounds.w);bounds.y=limit(bounds.y,TOP,TOP+H-bounds.h);
   svg.setAttribute('viewBox',`${bounds.x.toFixed(2)} ${bounds.y.toFixed(2)} ${bounds.w.toFixed(2)} ${bounds.h.toFixed(2)}`);
   svg.style.touchAction=zoom>1.01?'none':'pan-y';
-  secrets.style.opacity=zoom>1.28?'1':'0';
+  lanes.setZoom(zoom);
  };
  const screenToWorld=(cx,cy)=>{
   const r=svg.getBoundingClientRect();
@@ -238,7 +225,8 @@ function labCahillInit(host,geography,routes,legacy){
    [Math.max(...boxes.map(b=>b[1][0])),Math.max(...boxes.map(b=>b[1][1]))]);
  };
  refresh();sync();
- labCahill={svg,focus,reset,sync,projection,regions,rewoundPolygons,antarcticPanel:polar,ready:true};
+ labCahill={svg,focus,reset,sync,projection,regions,rewoundPolygons,antarcticPanel:polar,
+  routeStats:lanes.stats,discoveryCount:lanes.pinCount,ready:true};
  window.labCahillMap=labCahill;
  return true;
 }
