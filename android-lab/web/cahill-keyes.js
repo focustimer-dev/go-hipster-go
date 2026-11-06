@@ -33,6 +33,18 @@ function labCahillInit(host,geography,routes,legacy){
  world.appendChild(grid);
  const countries=make('g',{'class':'lab-cahill-countries'});world.appendChild(countries);
  const regions=[];
+ let pendingTap=null;
+ const activateOnTap=(fn,event)=>{
+  if(performance.now()<blockedClicks||dragged)return;
+  if(pendingTap){clearTimeout(pendingTap);pendingTap=null}
+  if(event?.pointerType==='touch'){
+   // First finger-up is not a stamp until double-tap arbitration ends.
+   pendingTap=setTimeout(()=>{
+    pendingTap=null;
+    if(labAtlasMode==='cahill-keyes'&&performance.now()>=blockedClicks)fn();
+   },300);
+  }else fn();
+ };
  // D3 interprets two reversed polygon rings as painting the planet's
  // complement: they obliterated the ocean and concealed several continents.
  // Correct just those rings for this renderer, never mutate canonical GeoJSON.
@@ -67,9 +79,12 @@ function labCahillInit(host,geography,routes,legacy){
   const label=region?.label||region?.name||id.replace(/-/g,' ');
   country.appendChild(make('title')).textContent=label;
   country.addEventListener('click',event=>{
-   if(labAtlasMode!=='cahill-keyes'||performance.now()<blockedClicks)return;
-   event.stopPropagation();atlasFocus=null;atlasUserNavigated=true;
-   toggleCrateRegion(id);labCahillSync();
+   if(labAtlasMode!=='cahill-keyes'||performance.now()<blockedClicks||dragged)return;
+   event.stopPropagation();
+   activateOnTap(()=>{
+    atlasFocus=null;atlasUserNavigated=true;
+    toggleCrateRegion(id);labCahillSync();
+   },event);
   });
   country.setAttribute('role','button');country.setAttribute('tabindex','-1');
   regions.push({id,feature,node:country});
@@ -113,9 +128,12 @@ function labCahillInit(host,geography,routes,legacy){
   country.appendChild(make('title')).textContent='Antarctica';
   country.setAttribute('role','button');country.setAttribute('tabindex','-1');
   country.addEventListener('click',event=>{
-   if(labAtlasMode!=='cahill-keyes'||performance.now()<blockedClicks)return;
-   event.stopPropagation();atlasFocus=null;atlasUserNavigated=true;
-   toggleCrateRegion(id);labCahillSync();
+   if(labAtlasMode!=='cahill-keyes'||performance.now()<blockedClicks||dragged)return;
+   event.stopPropagation();
+   activateOnTap(()=>{
+    atlasFocus=null;atlasUserNavigated=true;
+    toggleCrateRegion(id);labCahillSync();
+   },event);
   });
   world.appendChild(country);
   regions.push({id,feature,node:country,
@@ -125,7 +143,7 @@ function labCahillInit(host,geography,routes,legacy){
  // Reproject the same geographic waypoints without connecting detached lobes.
  // Dashed lane ink never catches taps; close-up targets are separate.
  const lanes=labCahillInstallLanes({make,world,routes,projection,legacy,
-  markers:labSecretMarkers,
+  markers:labSecretMarkers,activateOnTap,
   canActivate:()=>labAtlasMode==='cahill-keyes'&&
    performance.now()>=blockedClicks&&!dragged
  });
@@ -173,7 +191,8 @@ function labCahillInit(host,geography,routes,legacy){
  });
  svg.addEventListener('pointerdown',event=>{
   if(labAtlasMode!=='cahill-keyes')return;
-  pointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
+  pointers.set(event.pointerId,{x:event.clientX,y:event.clientY,
+   startX:event.clientX,startY:event.clientY});
   dragged=false;
   if(zoom>1.01){svg.setPointerCapture?.(event.pointerId);event.preventDefault()}
   previousPinch=null;
@@ -182,13 +201,15 @@ function labCahillInit(host,geography,routes,legacy){
   if(!pointers.has(event.pointerId)||labAtlasMode!=='cahill-keyes')return;
   const previous=pointers.get(event.pointerId);
   const dx=event.clientX-previous.x,dy=event.clientY-previous.y;
-  pointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
-  if(Math.hypot(dx,dy)>3)dragged=true;
+  const moved=Math.hypot(event.clientX-previous.startX,event.clientY-previous.startY);
+  pointers.set(event.pointerId,{...previous,x:event.clientX,y:event.clientY});
+  if(moved>7)dragged=true;
   if(pointers.size===2){
    const [p,q]=[...pointers.values()];
    const distance=Math.hypot(p.x-q.x,p.y-q.y);
    if(previousPinch&&distance>5)zoomAt(distance/previousPinch,(p.x+q.x)/2,(p.y+q.y)/2);
-   previousPinch=distance;blockedClicks=performance.now()+300;return;
+   previousPinch=distance;dragged=true;
+   blockedClicks=performance.now()+300;return;
   }
   if(zoom<=1.01)return; // At whole-world view, vertical swipes scroll the page.
   const r=svg.getBoundingClientRect();
@@ -202,6 +223,7 @@ function labCahillInit(host,geography,routes,legacy){
   if(dragged)blockedClicks=performance.now()+180;
   const now=performance.now();
   if(event.type==='pointerup'&&event.pointerType==='touch'&&!dragged&&now-lastTap<315){
+   if(pendingTap){clearTimeout(pendingTap);pendingTap=null}
    blockedClicks=now+320;zoomAt(zoom>3?.5:1.8,event.clientX,event.clientY);lastTap=0;
   }else if(event.type==='pointerup'&&!dragged){lastTap=now}
  };
