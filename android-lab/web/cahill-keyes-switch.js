@@ -10,6 +10,7 @@ function labAtlasCahillTransition(mode,instant=false){
  const duration=instant?0:390;
  const state={from,to:mode,queued:null,raf:0,started:false};
  const oldPointer=host.style.pointerEvents;
+ labCahill.navigator?.deactivate();
  labAtlasMorph=state;host.style.pointerEvents='none';
  labAtlasSwitchButtons(mode);
  svg.style.display='block';svg.style.pointerEvents='none';
@@ -56,6 +57,7 @@ function labAtlasCahillTransition(mode,instant=false){
   host.style.pointerEvents=oldPointer;
   svg.style.pointerEvents=mode==='cahill-keyes'?'auto':'none';
   labAtlasMorph=null;
+  if(mode==='cahill-keyes')labCahill.navigator?.activate();
   window.__labAtlasLastCahillSwitch={from,to:mode,duration,finished:true};
   const next=state.queued;
   if(next&&next!==labAtlasMode)labSetAtlasMode(next);

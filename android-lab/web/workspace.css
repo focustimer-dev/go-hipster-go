@@ -265,3 +265,63 @@ body.gig-poster .crate-map-frame.lab-globe-frame .atlas-radial-field{display:non
  position:absolute;inset:0;z-index:1;width:100%;height:100%;
  pointer-events:none;display:block;image-rendering:auto;
 }
+
+
+/* Cahill Navigator — a small, deliberate chart instrument; inert at world view. */
+#labAtlasGlobe .lab-cahill-nav{
+ position:absolute;right:6px;bottom:6px;z-index:24;width:44px;height:44px;
+ pointer-events:none;isolation:isolate;
+}
+#labAtlasGlobe .lab-cahill-nav-toggle{
+ pointer-events:auto;display:flex;align-items:center;justify-content:center;
+ width:44px;height:44px;min-width:44px;min-height:44px;margin:0;padding:0;
+ border:1px solid #dfb045;border-radius:0;background:#103135;color:#dfb045;
+ font:700 .76rem/1 'Courier New',monospace;letter-spacing:.07em;cursor:pointer;
+ box-shadow:0 2px 0 #10313588;touch-action:manipulation;
+}
+#labAtlasGlobe .lab-cahill-nav.is-open .lab-cahill-nav-toggle{
+ visibility:hidden;pointer-events:none;
+}
+#labAtlasGlobe .lab-cahill-nav-panel{
+ box-sizing:border-box;position:absolute;bottom:0;right:0;
+ width:min(198px,calc(100vw - 28px));max-width:calc(100vw - 28px);
+ padding:6px;background:#dfb045;border:2px solid #103135;
+ box-shadow:3px 4px 0 #10313565;pointer-events:auto;
+}
+#labAtlasGlobe .lab-cahill-nav-header{display:flex;align-items:center;
+ justify-content:space-between;min-height:28px;gap:6px;
+ font:700 .67rem/1.2 'Courier New',monospace;color:#103135;letter-spacing:.045em;
+}
+#labAtlasGlobe .lab-cahill-nav-close{
+ margin:0;padding:0;flex:0 0 32px;width:32px;min-width:32px;min-height:28px;
+ border:0;border-radius:0;background:transparent;color:#103135;
+ font:400 1.45rem/1 Arial,sans-serif;cursor:pointer;
+}
+#labAtlasGlobe .lab-cahill-nav-chart{
+ position:relative;width:100%;aspect-ratio:960/505;background:#103135;
+ border:1px solid #103135;overflow:hidden;touch-action:none;
+}
+#labAtlasGlobe .lab-cahill-nav-mini{display:block;width:100%;height:100%;
+ pointer-events:none;overflow:hidden;user-select:none;-webkit-user-select:none;
+}
+#labAtlasGlobe .lab-cahill-nav-mini *{pointer-events:none}
+#labAtlasGlobe .lab-cahill-nav-scrub{
+ position:absolute;inset:0;cursor:crosshair;touch-action:none;
+ -webkit-tap-highlight-color:transparent;
+}
+#labAtlasGlobe .lab-cahill-nav-hint{text-align:center;
+ padding-top:4px;font:700 .55rem/1.1 'Courier New',monospace;
+ letter-spacing:.03em;color:#103135;white-space:nowrap;
+}
+#labAtlasGlobe .lab-cahill-nav :is(button,.lab-cahill-nav-scrub):focus-visible{
+ outline:2px solid #a83223;outline-offset:1px;
+}
+@media (prefers-reduced-motion:no-preference){
+ #labAtlasGlobe .lab-cahill-nav-panel{animation:lab-nav-reveal 135ms ease-out both}
+ @keyframes lab-nav-reveal{from{opacity:.5;transform:translateY(5px)}
+ to{opacity:1;transform:translateY(0)}}
+}
+@media (forced-colors:active){
+ #labAtlasGlobe .lab-cahill-nav-panel{border-color:CanvasText}
+ #labAtlasGlobe .lab-cahill-nav-viewport{stroke:Highlight}
+}

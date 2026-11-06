@@ -133,6 +133,7 @@ function labCahillInit(host,geography,routes,legacy){
    performance.now()>=blockedClicks&&!dragged
  });
  const bounds={x:0,y:TOP,w:W,h:H};let zoom=1,blockedClicks=0,lastTap=0;
+ const cameraListeners=new Set();
  const pointers=new Map();let previousPinch=null,dragged=false;
  const limit=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
  const refresh=()=>{
@@ -141,6 +142,7 @@ function labCahillInit(host,geography,routes,legacy){
   svg.setAttribute('viewBox',`${bounds.x.toFixed(2)} ${bounds.y.toFixed(2)} ${bounds.w.toFixed(2)} ${bounds.h.toFixed(2)}`);
   svg.style.touchAction=zoom>1.01?'none':'pan-y';
   lanes.setZoom(zoom);
+  for(const listener of cameraListeners)listener({...bounds,zoom});
  };
  const screenToWorld=(cx,cy)=>{
   const r=svg.getBoundingClientRect();
@@ -300,12 +302,27 @@ function labCahillInit(host,geography,routes,legacy){
    toggleCrateRegion(id);labCahillSync();
   },event);
  });
+ // Navigator drives only this camera, not the region stamping event pipeline.
+ const camera={
+  snapshot:()=>({...bounds,zoom}),
+  centerAt:(x,y)=>{
+   bounds.x=x-bounds.w/2;bounds.y=y-bounds.h/2;
+   atlasFocus=null;atlasUserNavigated=true;refresh();
+  },
+  panBy:(dx,dy)=>{
+   bounds.x+=dx;bounds.y+=dy;
+   atlasFocus=null;atlasUserNavigated=true;refresh();
+  },
+  subscribe:fn=>{cameraListeners.add(fn);return ()=>cameraListeners.delete(fn)}
+ };
+ const navigator=labCahillInstallNavigator({host,make,world,regions,camera});
  const sync=()=>{
   for(const {id,node}of regions){
    const selected=crateSelected.has(id);
    node.setAttribute('fill',selected?'#a83223':'#dfb045');
    node.setAttribute('aria-pressed',String(selected));
   }
+  navigator.syncSelection(crateSelected);
  };
  const focus=(view)=>{
   if(view===null||(!crateSelected.size&&!atlasFocus))return reset();
@@ -318,7 +335,7 @@ function labCahillInit(host,geography,routes,legacy){
    [Math.max(...boxes.map(b=>b[1][0])),Math.max(...boxes.map(b=>b[1][1]))]);
  };
  refresh();sync();
- labCahill={svg,focus,reset,sync,projection,regions,rewoundPolygons,antarcticPanel:polar,
+ labCahill={svg,focus,reset,sync,camera,navigator,projection,regions,rewoundPolygons,antarcticPanel:polar,
   routeStats:lanes.stats,discoveryCount:lanes.pinCount,touchDebug,ready:true};
  window.labCahillMap=labCahill;
  return true;
