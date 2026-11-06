@@ -205,7 +205,7 @@ function labCahillInit(host,geography,routes,legacy){
   const dx=event.clientX-previous.x,dy=event.clientY-previous.y;
   const moved=Math.hypot(event.clientX-previous.startX,event.clientY-previous.startY);
   pointers.set(event.pointerId,{...previous,x:event.clientX,y:event.clientY});
-  if(moved>7){
+  if(moved>9){
    dragged=true;blockedClicks=performance.now()+180;
    if(zoom>1.01){
     try{if(!svg.hasPointerCapture?.(event.pointerId))svg.setPointerCapture(event.pointerId)}catch(e){}
@@ -240,6 +240,37 @@ function labCahillInit(host,geography,routes,legacy){
  };
  svg.addEventListener('pointerup',endPointer);
  svg.addEventListener('pointercancel',endPointer);
+ // A few projected islands/slivers are narrower than a finger on phones.
+ // Forgive near-coast taps ONLY if exactly one region appears in a small
+ // screen-space halo; if two countries compete, do not guess.
+ const nearbyRegion=(cx,cy)=>{
+  const frame=svg.getBoundingClientRect();
+  if(cx<frame.left||cx>frame.right||cy<frame.top||cy>frame.bottom)return null;
+  for(const radius of [4,8,12]){
+   const candidates=new Set();
+   for(let i=0;i<12;i++){
+    const a=i*Math.PI/6,x=cx+radius*Math.cos(a),y=cy+radius*Math.sin(a);
+    if(x<frame.left||x>frame.right||y<frame.top||y>frame.bottom)continue;
+    const land=doc.elementFromPoint(x,y)?.closest?.('[data-cahill-region]');
+    if(land)candidates.add(land.getAttribute('data-cahill-region'));
+   }
+   if(candidates.size>1)return null; // Ambiguous border: do not mis-stamp.
+   if(candidates.size===1)return [...candidates][0];
+  }
+  return null;
+ };
+ svg.addEventListener('click',event=>{
+  if(labAtlasMode!=='cahill-keyes'||dragged||performance.now()<blockedClicks)return;
+  // Direct land hits and route/secret pins own their own interaction.
+  if(event.target.closest?.('[data-cahill-region],[data-cahill-discovery],[data-cahill-route-target]'))return;
+  const id=nearbyRegion(event.clientX,event.clientY);
+  if(!id)return;
+  event.stopPropagation();
+  activateOnTap(()=>{
+   atlasFocus=null;atlasUserNavigated=true;
+   toggleCrateRegion(id);labCahillSync();
+  },event);
+ });
  const sync=()=>{
   for(const {id,node}of regions){
    const selected=crateSelected.has(id);
