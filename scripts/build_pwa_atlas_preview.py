@@ -8,6 +8,8 @@ The public gig-poster, native Lab files and main PWA adapter remain untouched.
 from pathlib import Path
 import re
 import shutil
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from scripts.bundle_android_lab import bundle
 
 ROOT = Path(__file__).resolve().parents[1]
