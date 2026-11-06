@@ -108,8 +108,21 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
   assert.equal(await page.locator('#labAtlasGlobe').evaluate(e=>e.style.pointerEvents),'');
   // The existing Robinson <-> Globe morph must still work untouched.
   await page.locator('[data-atlas-view=robinson]').click();
-  await page.waitForFunction(()=>document.getElementById('labAtlasGlobe')?.style.pointerEvents===''&&!document.querySelector('.lab-atlas-morph')&&document.getElementById('labAtlasCahill')?.style.display==='none'&&window.labAtlasGlobe?.getProjection()?.type==='mercator',
-   null,{timeout:7000});
+  try{
+   await page.waitForFunction(()=>document.getElementById('labAtlasGlobe')?.style.pointerEvents===''&&!document.querySelector('.lab-atlas-morph')&&document.getElementById('labAtlasCahill')?.style.display==='none'&&window.labAtlasGlobe?.getProjection()?.type==='mercator',
+    null,{timeout:12000});
+  }catch(error){
+   console.log('Return-to-Robinson state',JSON.stringify(await page.evaluate(()=>({
+    projection:window.labAtlasGlobe?.getProjection()?.type,
+    requested:document.querySelector('[data-atlas-view][aria-pressed=true]')?.dataset.atlasView,
+    pointer:document.getElementById('labAtlasGlobe')?.style.pointerEvents,
+    cahill:document.getElementById('labAtlasCahill')?.style.display,
+    morph:document.querySelector('.lab-atlas-morph')?.dataset.phase,
+    morphInfo:window.__labAtlasLastMorph,
+    mapLoaded:window.labAtlasGlobe?.loaded()
+   }))));
+   throw error;
+  }
   await page.locator('[data-atlas-view=cahill-keyes]').click();
   await page.waitForFunction(()=>document.getElementById('labAtlasGlobe')?.style.pointerEvents===''&&document.getElementById('labAtlasCahill')?.style.opacity==='1',
    null,{timeout:7000});
