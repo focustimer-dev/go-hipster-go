@@ -1,8 +1,10 @@
+import {respondMetadata} from './link-preview.js';
 // Static-asset release of Go, Hipster, Go! — preserve the PWA's existing URLs.
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const path = url.pathname;
+    if (path === '/api/inspiration-preview') return respondMetadata(request);
     // Static Assets owns /pwa-atlas/ clean URL canonicalization; no rewrite.
     if (path === "/setup") return Response.redirect(new URL("/setup/", url), 308);
     if (path === "/gemini" || path === "/gemini/" || path === "/gemini/index.html") {
