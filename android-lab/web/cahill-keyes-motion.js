@@ -29,6 +29,9 @@ const labCahillMotion=(()=>{
   for(const item of Array.from(world.children).filter(el=>el.tagName.toLowerCase()==='circle')){
    const cx=+item.getAttribute('cx'),cy=+item.getAttribute('cy'),r=+item.getAttribute('r');
    if(!Number.isFinite(cx+cy+r)||r<=0)continue;
+   // Each polar circle has its own alpha. The preceding low-opacity
+   // graticule must not wash out the Antarctic ocean fill.
+   ctx.save();ctx.globalAlpha=1;
    ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);
    const stroke=item.getAttribute('stroke');
    if(item.getAttribute('fill')&&item.getAttribute('fill')!=='none'){
@@ -38,6 +41,7 @@ const labCahillMotion=(()=>{
     ctx.lineWidth=+item.getAttribute('stroke-width')||.7;
     ctx.strokeStyle=stroke;ctx.globalAlpha=+(item.getAttribute('stroke-opacity')||1);ctx.stroke();
    }
+   ctx.restore();
   }
   ctx.globalAlpha=1;
   for(const region of world.querySelectorAll('[data-cahill-region]')){
@@ -59,9 +63,8 @@ const labCahillMotion=(()=>{
   ctx.setTransform(1,0,0,1,0,0);ctx.globalAlpha=1;
   return target;
  }
- function roundPicture(geojson,selected,mode,pixels){
+ function roundPicture(prepared,selected,mode,pixels){
   const target=document.createElement('canvas');target.width=target.height=pixels;
-  const prepared=labAtlasMorphVectors.prepare(geojson,[10,15]);
   const fits={robinson:labAtlasMorphVectors.estimatedFit('robinson'),
               globe:labAtlasMorphVectors.estimatedFit('globe'),width:pixels,height:pixels};
   labAtlasMorphVectors.paint(target,prepared,mode==='globe'?1:0,selected,fits);
@@ -73,9 +76,12 @@ const labCahillMotion=(()=>{
  function prepare(svg,geojson,selected,pixels=FRAME_PIXELS){
   const key=selectionKey(selected)+'@'+pixels;
   if(saved?.key===key&&saved.svg===svg&&saved.geojson===geojson)return saved;
+  // Globe and Robinson share identical canonical vertices: project once,
+  // then paint the two cached poses without duplicating preparation work.
+  const prepared=labAtlasMorphVectors.prepare(geojson,[10,15]);
   const images={keyes:keyesPicture(svg,selected,pixels),
-   globe:roundPicture(geojson,selected,'globe',pixels),
-   robinson:roundPicture(geojson,selected,'robinson',pixels)};
+   globe:roundPicture(prepared,selected,'globe',pixels),
+   robinson:roundPicture(prepared,selected,'robinson',pixels)};
   saved={key,svg,geojson,pixels,images};return saved;
  }
  function clear(){saved=null}
