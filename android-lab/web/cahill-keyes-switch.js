@@ -6,7 +6,7 @@ function labAtlasCahillTransition(mode,instant=false){
  const frame=host.closest('.crate-map-frame'),from=labAtlasMode;
  const width=host.clientWidth||host.getBoundingClientRect().width||360;
  const fromHeight=host.clientHeight||host.getBoundingClientRect().height||200;
- const targetHeight=width*(mode==='cahill-keyes'?540/960:mode==='globe'?1:372/720);
+ const targetHeight=width*(mode==='cahill-keyes'?505/960:mode==='globe'?1:372/720);
  const duration=instant?0:390;
  const state={from,to:mode,queued:null,raf:0,started:false};
  const oldPointer=host.style.pointerEvents;
@@ -38,7 +38,7 @@ function labAtlasCahillTransition(mode,instant=false){
   if(labAtlasMorph!==state||state.done)return;
   state.done=true;cancelAnimationFrame(state.raf);
   host.style.height='';
-  host.style.aspectRatio=mode==='cahill-keyes'?'960 / 540':
+  host.style.aspectRatio=mode==='cahill-keyes'?'960 / 505':
    mode==='globe'?'1 / 1':'720 / 372';
   if(mode==='cahill-keyes')svg.style.opacity='1';
   else{
