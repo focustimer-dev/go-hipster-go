@@ -81,7 +81,14 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    highlighted:document.querySelector('[data-cahill-region="west-africa"]')?.getAttribute('fill')
   }));
   assert.equal(selected.highlighted,'#a83223','Country hit area updates the canonical region selection');
-  // Region selection may auto-zoom to the maximum. Test wheel from the home extent.
+  // Antarctic polygon remains a tappable selectable region.
+   await page.evaluate(()=>document.getElementById('labCahillAntarctica')
+    .dispatchEvent(new MouseEvent('click',{bubbles:true})));
+   await page.waitForFunction(()=>document.querySelector('#labCahillAntarctica')
+    ?.getAttribute('fill')==='#a83223');
+   assert.equal(await page.locator('#labCahillAntarctica').getAttribute('aria-pressed'),
+    'true','Antarctica uses the canonical region-selection state');
+   // Region selection may auto-zoom to the maximum. Test wheel from the home extent.
   await page.evaluate(()=>window.labCahillMap.reset());
   const wheel=await page.evaluate(()=>{
    const svg=document.getElementById('labAtlasCahill');
