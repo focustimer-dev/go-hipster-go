@@ -1,11 +1,24 @@
 # Hipster GO Lab
 
-The canonical application baseline for Google Play release preparation is the
-**Lab 0.9.9** phone-test candidate (version code 18), built from the delivered Lab 0.9.7 baseline, package
-`work.samelling.hipstergo.lab`, Android 7+. Preserve its existing workspace and
-native handoffs while improving quality under the feature freeze. The package
-still installs alongside the older production APK and PWA; selecting this
-baseline does not publish it or settle the eventual production package name.
+**Canonical Android development baseline: Android Lab 0.9.56, version code 65**
+(`work.samelling.hipstergo.lab`, Android 7+). This is the user's physically
+reviewed three-projection Atlas candidate with the final Globe/Robinson endpoint
+alignment change. It supersedes the historical Lab 0.9.9 baseline and the
+stacked 0.9.40–0.9.55 experiment branches. It is the version to build and
+continue developing, **not** a Google Play submission or a production APK.
+
+Source of truth: `android-lab/` on `main` after consolidation, with version
+identity in `android-lab/app/build.gradle`. The sibling `android/` is a
+**legacy Trusted Web Activity wrapper**, not a second canonical Android app.
+Keep `android/gradlew`: Android Lab builds reuse its Gradle wrapper. The
+public PWA remains a separate, periodically reconciled preview and is not
+automatically updated by this Android merge.
+
+The 0.9.56 signed Lab preview was verified with the original Android Lab
+certificate and installs in place over 0.9.55 without uninstalling or clearing
+local app data. Browser software-rendering CI retains a known Cahill transition
+end-to-end timing failure; do not confuse canonical development acceptance
+with final performance, accessibility, Pixel smoke-test, or store readiness.
 
 The versioned sections below record historical iterations, not current test
 results. Check `android-lab/app/build.gradle` and the exact build's CI evidence
