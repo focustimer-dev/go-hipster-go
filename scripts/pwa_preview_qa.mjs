@@ -27,6 +27,9 @@ for(const profile of profiles){
   assert.equal(response.status(),200);
   await page.locator('.pwa-rail').waitFor({state:'visible',timeout:20000});
   await page.locator('#goButton').waitFor({state:'visible'});
+  // Android 0.9.56 provides a Jukebox-level inspiration entry point.
+  await page.locator('.pwa-add-inspiration').waitFor({state:'visible'});
+  assert.equal(await page.locator('.pwa-add-inspiration').getAttribute('data-pwa-action'),'edit-reference');
   await page.screenshot({path:folder+'/'+profile.name+'-jukebox.png'});
   const rects=await page.locator('.pwa-rail button').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return {width:r.width,height:r.height}}));
   assert.equal(rects.length,4,'four rail buttons');
@@ -80,6 +83,19 @@ for(const profile of profiles){
   await page.locator('[data-pwa-action="close-saved"]').click();
   await page.locator('[data-pwa-tab="manual"]').click();
   await page.locator('#pwaManual').waitFor({state:'visible'});
+  // The Android-aligned Manual belongs to the PWA adapter, not Android Lab.
+  await page.locator('#pwaGuidePicker').waitFor({state:'visible'});
+  assert.match(await page.locator('#pwaGuideContent h2').innerText(),/Overview/);
+  await page.locator('#pwaGuidePicker summary').click();
+  await page.locator('[data-pwa-guide-group="use"]').click();
+  await page.locator('[data-pwa-guide="inspiration"]').click();
+  assert.match(await page.locator('#pwaGuideContent').innerText(),/Your Crate/);
+  assert.equal(await page.locator('#pwaGuidePicker').evaluate(el=>el.open),false);
+  await page.locator('#pwaGuidePicker summary').click();
+  await page.locator('[data-pwa-guide-group="setup"]').click();
+  await page.locator('[data-pwa-guide="gemini"]').click();
+  assert.match(await page.locator('#pwaGuideContent').innerText(),/YouTube Music/);
+  await page.screenshot({path:folder+'/'+profile.name+'-manual.png'});
   await page.locator('[data-pwa-action="prefs"]').click();
   await page.locator('#pwaPrefs').waitFor({state:'visible'});
   await page.locator('[data-pwa-action="close"]').click();
