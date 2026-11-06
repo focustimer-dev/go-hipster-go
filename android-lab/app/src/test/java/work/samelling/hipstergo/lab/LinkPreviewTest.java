@@ -37,4 +37,22 @@ public class LinkPreviewTest {
   try{token.attach(call);fail("Cancelled preview attached");}catch(java.io.IOException expected){}
   assertTrue(call.isCanceled());
  }
+
+ @Test public void serviceResultAcceptsOnlySuccessfulTitles()throws Exception{
+  LinkPreview.Result p=LinkPreview.parseServiceResult("https://open.spotify.com/track/a",
+   "{\"status\":\"ok\",\"title\":\"A song & its artist\",\"description\":\"From a public service\"}");
+  assertEquals("A song & its artist",p.title);
+  assertEquals("https://open.spotify.com/track/a",p.url);
+  for(String json:new String[]{"{\"status\":\"unavailable\"}","{\"status\":\"ok\",\"title\":\"\"}","{broken"}){
+   try{LinkPreview.parseServiceResult("https://open.spotify.com/track/a",json);fail("Accepted unusable metadata");}
+   catch(java.io.IOException expected){}
+  }
+ }
+ @Test public void serviceCandidateIsLimitedToSupportedProviders(){
+  assertTrue(LinkPreview.serviceCandidate("https://open.spotify.com/track/a"));
+  assertTrue(LinkPreview.serviceCandidate("https://music.youtube.com/watch?v=x"));
+  assertFalse(LinkPreview.serviceCandidate("https://open.spotify.com.evil.test/track/a"));
+  assertFalse(LinkPreview.serviceCandidate("https://127.0.0.1/foo"));
+  assertFalse(LinkPreview.serviceCandidate("https://example.com/album"));
+ }
 }
