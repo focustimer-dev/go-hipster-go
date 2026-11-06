@@ -1,3 +1,12 @@
+## Universal non-Latin credits and GO HARD North Star (manual acceptance)
+
+- **All GO variants:** ordinary `go`, `go weird`, `go text only`, `go hard` and a mixed-mood GO containing verified Japanese, Arabic, Cyrillic and Chinese-script tracks should display the original script + established Romanization for each non-Latin artist/title, and a sourced or accurately qualified English title meaning. Mixed scripts preserve Latin portions; artist proper names are romanized rather than literally translated. Unknown meanings are marked unverified, never made up.
+- **Provider integrity:** transliterations and English glosses appear in curator-visible notes, not as fabricated canonical catalog titles, substituted recording IDs or proof that the service saved annotations.
+- **Cumulative drift trap:** curate a hypothetical 12-track `go funky triumphant hard` where each neighbor shifts from raw rhythm through soul-jazz, library brass and finally smooth fusion. The smooth local handoffs are not enough: each candidate must retain a traceable brief-level tether, or be a single defensible bridge followed by a return. Keep `hard` as effort, not automatic loudness.
+- **Midpoint/ending:** a 12-track set that wanders in tracks 3–6 gets a natural re-centering around 6–7 and a strong final return, without forcing #7 to sound identical to #1. For `go short hard` and `go long hard`, use proportional checkpoints. Preserve requested creative detours and explicit scene restrictions.
+- **Context and audit:** a user who explicitly requests polished fusion should not be blocked by the raw-funk example's negative boundaries. A de-cheese pass can flag whole-set drift and inaccurate transliterations, but remains read-only until the user approves particular corrections.
+- **Isolation:** default `go` still uses its existing fast pass; no new numeric scoring, lookup loops, provider claims or DeBarge roll/repetition changes. Evaluate with the same verified candidate access before claiming musical improvement.
+
 ## Pre-publication artist diversity and spacing regression (2026-10-25)
 
 - Reproduce the failure with the 12-track *Mountains Have Had Enough* sequence: repeated Lalalar, Omar Souleyman and three consecutive 47SOUL tracks. The standard-sequence lint must flag the adjacent runs, seven distinct artists and the three-track concentration.
