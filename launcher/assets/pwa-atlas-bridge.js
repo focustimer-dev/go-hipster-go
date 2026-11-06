@@ -22,8 +22,11 @@ function changed(){try{window.HipsterLabStateChanged?.()}catch(e){console.warn('
 function prefs(){return read(PREF,{mode:'browser',oneTap:false,haptics:false})}
 function state(){
  const saved=crate(),p=prefs();
+ const active=reference(),found=saved.recent.find(x=>x.text===active);
+ const preview=found?{title:found.title||'',description:found.description||'',metadataStatus:found.metadataStatus||'',loading:active===loadingReference}:{};
+
  return JSON.stringify({
-  saved:saved.saved,recentInspirations:saved.recent,activeInspiration:reference(),
+  saved:saved.saved,recentInspirations:saved.recent,activeInspiration:active,inspirationPreview:preview,
   mode:p.mode||'browser',oneTap:false,haptics:false,updateAvailable:false
  });
 }
@@ -37,14 +40,51 @@ async function copy(value){
   const ok=document.execCommand('copy');area.remove();return !!ok;
  }catch(_){return false}
 }
+let loadingReference='',previewSeq=0,previewController=null;
+function urlIn(text){
+ const match=String(text||'').match(/https:\/\/[^\s<>"']+/i);
+ if(!match)return '';
+ let link=match[0].replace(/[.,;!?]+$/,'');
+ let depth=0;for(const char of link){if(char==='(')depth++;if(char===')')depth--}
+ while(depth<0&&link.endsWith(')')){link=link.slice(0,-1);depth++}
+ return link;
+}
+async function refreshPreview(value){
+ previewController?.abort();const original=urlIn(value);
+ loadingReference=original?value:'';changed();
+ if(!original)return;
+ const seq=++previewSeq,controller=new AbortController();previewController=controller;
+ try{
+  const response=await fetch('/api/inspiration-preview?url='+encodeURIComponent(original),
+   {headers:{Accept:'application/json'},signal:controller.signal,credentials:'omit',cache:'no-store'});
+  if(!response.ok)throw new Error('Preview unavailable');
+  const info=await response.json();
+  if(controller.signal.aborted||seq!==previewSeq||reference()!==value)return;
+  const data=crate(),entry=data.recent.find(x=>x.text===value);
+  if(!entry)return;
+  entry.title=typeof info.title==='string'?info.title.slice(0,140):'';
+  entry.description=typeof info.description==='string'?info.description.slice(0,240):'';
+  entry.provider=typeof info.provider==='string'?info.provider.slice(0,40):'';
+  entry.metadataStatus=info.status==='ok'&&entry.title?'ok':info.status==='unsupported'?'unsupported':'unavailable';
+  save(KEY,data);
+ }catch(_){
+  if(!controller.signal.aborted&&seq===previewSeq&&reference()===value){
+   const data=crate(),entry=data.recent.find(x=>x.text===value);
+   if(entry){entry.metadataStatus='unavailable';save(KEY,data)}
+  }
+ }finally{if(seq===previewSeq){loadingReference='';previewController=null;changed()}}
+}
 function useInspiration(value){
  if(typeof value!=='string'||![...value].length||[...value].length>2000)return false;
  if(!storeReference(value))return false;
  const x=crate();
+ const previous=x.recent.find(i=>i.text===value);
  x.recent=x.recent.filter(i=>i.text!==value);
- x.recent.unshift({id:String(Date.now()),text:value,time:Date.now()});
+ x.recent.unshift({...previous,id:previous?.id||String(Date.now()),text:value,time:Date.now()});
  x.recent=x.recent.slice(0,3);
- save(KEY,x);changed();return true;
+ save(KEY,x);changed();
+ if(!previous?.title)refreshPreview(value);
+ return true;
 }
 function showSaved(id){
  const selected=crate().saved.find(x=>x.id===id);
@@ -68,7 +108,7 @@ window.HipsterLab=Object.freeze({
  open:(ai)=>{const url=services[ai];if(url)location.assign(url)},
  share:async text=>{try{if(navigator.share)await navigator.share({text:String(text)});else await copy(text)}catch(e){}},
  applyInspiration:useInspiration,
- clearInspiration:()=>{if(storeReference(''))changed()},
+ clearInspiration:()=>{previewController?.abort();previewSeq++;loadingReference='';if(storeReference(''))changed()},
  useRecentInspiration:id=>{const found=crate().recent.find(x=>x.id===id);if(found)useInspiration(found.text)},
  saveRequest:(ai,prompt)=>{
   const name=window.prompt('Name this saved request');
@@ -82,6 +122,7 @@ window.HipsterLab=Object.freeze({
  offerSetupShare:()=>{}
 });
 window.addEventListener('DOMContentLoaded',()=>{
+ const active=reference();if(active&&urlIn(active)&&!crate().recent.find(x=>x.text===active)?.metadataStatus&&!crate().recent.find(x=>x.text===active)?.title)refreshPreview(active);
  const brand=document.querySelector('.brandrow');
  if(!brand)return;
  const back=document.createElement('a');back.href='/';
