@@ -63,6 +63,8 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    highlighted:document.querySelector('[data-cahill-region="west-africa"]')?.getAttribute('fill')
   }));
   assert.equal(selected.highlighted,'#a83223','Country hit area updates the canonical region selection');
+  // Region selection may auto-zoom to the maximum. Test wheel from the home extent.
+  await page.evaluate(()=>window.labCahillMap.reset());
   const wheel=await page.evaluate(()=>{
    const svg=document.getElementById('labAtlasCahill');
    const before=+svg.getAttribute('viewBox').split(' ')[2],r=svg.getBoundingClientRect();
