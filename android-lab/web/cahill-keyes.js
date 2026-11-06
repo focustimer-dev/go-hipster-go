@@ -76,14 +76,6 @@ function labCahillInit(host,geography,routes,legacy){
   const region=crateRegions.find(x=>x.id===id);
   const label=region?.label||region?.name||id.replace(/-/g,' ');
   country.appendChild(make('title')).textContent=label;
-  country.addEventListener('click',event=>{
-   if(labAtlasMode!=='cahill-keyes'||performance.now()<blockedClicks||dragged)return;
-   event.stopPropagation();
-   activateOnTap(()=>{
-    atlasFocus=null;atlasUserNavigated=true;
-    toggleCrateRegion(id);labCahillSync();
-   },event);
-  });
   // SVG paths are painted geography, not focusable rectangular WebView controls.
   // Keyboard/screen-reader region controls already exist under Choose by Name.
   regions.push({id,feature,node:country});
@@ -127,14 +119,6 @@ function labCahillInit(host,geography,routes,legacy){
   country.appendChild(make('title')).textContent='Antarctica';
   // SVG paths are painted geography, not focusable rectangular WebView controls.
   // Keyboard/screen-reader region controls already exist under Choose by Name.
-  country.addEventListener('click',event=>{
-   if(labAtlasMode!=='cahill-keyes'||performance.now()<blockedClicks||dragged)return;
-   event.stopPropagation();
-   activateOnTap(()=>{
-    atlasFocus=null;atlasUserNavigated=true;
-    toggleCrateRegion(id);labCahillSync();
-   },event);
-  });
   world.appendChild(country);
   regions.push({id,feature,node:country,
    bounds:[[polar.cx-polarRadius,polar.cy-polarRadius],
@@ -302,9 +286,12 @@ function labCahillInit(host,geography,routes,legacy){
  };
  svg.addEventListener('click',event=>{
   if(labAtlasMode!=='cahill-keyes'||dragged||performance.now()<blockedClicks)return;
-  // Direct land hits and route/secret pins own their own interaction.
-  if(event.target.closest?.('[data-cahill-region],[data-cahill-discovery],[data-cahill-route-target]'))return;
-  const id=nearbyRegion(event.clientX,event.clientY);
+  // Delegate mouse/keyboard clicks at map level instead of registering
+  // 183+ clickable SVG polygons that Android WebView outlines as boxes.
+  if(event.target.closest?.('[data-cahill-discovery],[data-cahill-route-target]'))return;
+  const direct=event.target.closest?.('[data-cahill-region]');
+  const id=direct?.getAttribute('data-cahill-region')||
+   nearbyRegion(event.clientX,event.clientY);
   if(!id)return;
   event.stopPropagation();
   activateOnTap(()=>{
