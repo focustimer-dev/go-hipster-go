@@ -33,11 +33,15 @@ function labCahillInit(host,geography,routes,legacy){
  world.appendChild(grid);
  const countries=make('g',{'class':'lab-cahill-countries'});world.appendChild(countries);
  const regions=[];
- let pendingTap=null;
+ let pendingTap=null,lastTouchUp=-Infinity;
  const activateOnTap=(fn,event)=>{
   if(performance.now()<blockedClicks||dragged)return;
   if(pendingTap){clearTimeout(pendingTap);pendingTap=null}
-  if(event?.pointerType==='touch'){
+  // Android WebView may emit a MouseEvent for the synthetic click after a
+  // touch pointerup. Recognize that event so double-tap arbitration applies.
+  const touch=event?.pointerType==='touch'||
+   (event?.detail>0&&performance.now()-lastTouchUp<480);
+  if(touch){
    // First finger-up is not a stamp until double-tap arbitration ends.
    pendingTap=setTimeout(()=>{
     pendingTap=null;
@@ -233,6 +237,7 @@ function labCahillInit(host,geography,routes,legacy){
   pointers.delete(event.pointerId);previousPinch=null;
   if(dragged)blockedClicks=performance.now()+180;
   const now=performance.now();
+  if(event.pointerType==='touch')lastTouchUp=now;
   if(event.type==='pointerup'&&event.pointerType==='touch'&&!dragged&&now-lastTap<315){
    if(pendingTap){clearTimeout(pendingTap);pendingTap=null}
    blockedClicks=now+320;zoomAt(zoom>3?.5:1.8,event.clientX,event.clientY);lastTap=0;
