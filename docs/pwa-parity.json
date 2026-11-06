@@ -53,6 +53,14 @@
       "notes": "Would need server-side safe bounded fetch; never fetch arbitrary private hosts"
     },
     {
+      "feature": "Review-only three-projection Atlas route",
+      "category": "browser-adapter",
+      "state": "candidate",
+      "source": "android-lab/web + scripts/bundle_android_lab.py",
+      "target": "/pwa-atlas/",
+      "notes": "The preview Worker packages Android 0.9.56 atlas intact at an opt-in browser route with shared region/Crate keys, isolated from the stable PWA Jukebox. This is not production-ready embedded atlas parity; use mobile/desktop QA and explicit promotion."
+    },
+    {
       "feature": "Robinson, Globe and Cahill–Keyes projections, geographic touch and fold animation",
       "category": "browser-adapter",
       "state": "deferred",
@@ -70,7 +78,8 @@
     "no loss of GO state, copied prompt or browser-only saved Crate",
     "44px minimum relevant touch targets; no horizontal overflow or nav/receipt collision",
     "never deploy production PWA without explicit approval",
-    "separate map parity review before any projection switch"
+    "separate map parity review before any projection switch",
+    "review canonical atlas under /pwa-atlas/ on a physical mobile browser before product-level map integration"
   ],
   "release_policy": "Never auto-merge, publish, or deploy the production PWA. Approved Android work is the product source of truth."
 }
