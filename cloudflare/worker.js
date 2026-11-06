@@ -25,7 +25,7 @@ export default {
     const served = isPwaLaunch && response.ok
       ? new HTMLRewriter()
           .on("head", { element(el) { el.append('<link rel="stylesheet" href="/assets/pwa-workspace.css">', { html: true }); } })
-          .on("body", { element(el) { el.append('<script defer src="/assets/pwa-workspace.js"></script>', { html: true }); } })
+          .on("body", { element(el) { el.append('<script defer src="/assets/pwa-workspace.js"></script><script defer src="/assets/pwa-guides.js"></script>', { html: true }); } })
           .transform(response)
       : response;
     const headers = new Headers(served.headers);
