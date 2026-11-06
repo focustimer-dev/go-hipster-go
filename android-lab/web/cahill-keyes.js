@@ -191,9 +191,11 @@ function labCahillInit(host,geography,routes,legacy){
  });
  svg.addEventListener('pointerdown',event=>{
   if(labAtlasMode!=='cahill-keyes')return;
+  const first=pointers.size===0;
   pointers.set(event.pointerId,{x:event.clientX,y:event.clientY,
-   startX:event.clientX,startY:event.clientY});
-  dragged=false;
+   startX:event.clientX,startY:event.clientY,startTarget:event.target});
+  if(first)dragged=false;
+  else{dragged=true;cancelTap()} // A second finger means pinch, never tap.
   // Do not capture pointerdown: capturing immediately retargets the
   // eventual click to the SVG root, breaking country and route hit targets.
   // Touch-action:none already prevents native page gestures when zoomed.
@@ -206,7 +208,7 @@ function labCahillInit(host,geography,routes,legacy){
   const moved=Math.hypot(event.clientX-previous.startX,event.clientY-previous.startY);
   pointers.set(event.pointerId,{...previous,x:event.clientX,y:event.clientY});
   if(moved>9){
-   dragged=true;blockedClicks=performance.now()+180;
+   dragged=true;cancelTap();blockedClicks=performance.now()+180;
    if(zoom>1.01){
     try{if(!svg.hasPointerCapture?.(event.pointerId))svg.setPointerCapture(event.pointerId)}catch(e){}
     event.preventDefault();
@@ -216,7 +218,7 @@ function labCahillInit(host,geography,routes,legacy){
    const [p,q]=[...pointers.values()];
    const distance=Math.hypot(p.x-q.x,p.y-q.y);
    if(previousPinch&&distance>5)zoomAt(distance/previousPinch,(p.x+q.x)/2,(p.y+q.y)/2);
-   previousPinch=distance;dragged=true;
+   previousPinch=distance;dragged=true;cancelTap();
    blockedClicks=performance.now()+300;return;
   }
   // IMPORTANT: browser touch pointers report sub-pixel movement while a
@@ -228,16 +230,50 @@ function labCahillInit(host,geography,routes,legacy){
   bounds.y-=dy/Math.max(1,r.height)*bounds.h;
   refresh();blockedClicks=performance.now()+150;
  });
+ // Android WebView SVG clicks can be focus/selection events instead of
+ // geographic taps. Handle the completed finger directly.
+ const touchDebug={landTaps:0,routeTaps:0,misses:0,last:null};
+ const resolveTouchTarget=(cx,cy,original)=>{
+  const candidates=[doc.elementFromPoint(cx,cy),original];
+  for(const node of candidates){
+   const pin=node?.closest?.('[data-cahill-discovery]');
+   if(pin&&zoom>=1.55)return {type:'route',id:pin.dataset.cahillDiscovery};
+   const line=node?.closest?.('[data-cahill-route-target]');
+   if(line&&zoom>=1.55)return {type:'route',id:line.dataset.cahillRouteTarget};
+   const land=node?.closest?.('[data-cahill-region]');
+   if(land)return {type:'land',id:land.getAttribute('data-cahill-region')};
+  }
+  const region=nearbyRegion(cx,cy);
+  return region?{type:'land',id:region}:null;
+ };
  const endPointer=event=>{
-  if(!pointers.has(event.pointerId))return;
+  const pointer=pointers.get(event.pointerId);
+  if(!pointer)return;
   pointers.delete(event.pointerId);previousPinch=null;
-  if(dragged)blockedClicks=performance.now()+180;
   const now=performance.now();
-  if(event.pointerType==='touch')lastTouchUp=now;
-  if(event.type==='pointerup'&&event.pointerType==='touch'&&!dragged&&now-lastTap<315){
-   if(pendingTap){clearTimeout(pendingTap);pendingTap=null}
-   blockedClicks=now+320;zoomAt(zoom>3?.5:1.8,event.clientX,event.clientY);lastTap=0;
-  }else if(event.type==='pointerup'&&!dragged){lastTap=now}
+  if(dragged){cancelTap();blockedClicks=now+180;return}
+  if(event.type!=='pointerup'||event.pointerType!=='touch')return;
+  lastTouchUp=now;
+  if(now-lastTap<315){
+   cancelTap();blockedClicks=now+320;lastTap=0;
+   zoomAt(zoom>3?.5:1.8,event.clientX,event.clientY);
+   return;
+  }
+  lastTap=now;
+  if(now<blockedClicks)return;
+  const choice=resolveTouchTarget(event.clientX,event.clientY,pointer.startTarget);
+  if(!choice){touchDebug.misses++;return}
+  cancelTap();
+  pendingTap=setTimeout(()=>{
+   pendingTap=null;
+   if(labAtlasMode!=='cahill-keyes'||performance.now()<blockedClicks)return;
+   touchDebug.last=choice;
+   if(choice.type==='route'){touchDebug.routeTaps++;lanes.open(choice.id)}
+   else if(validCrateRegions.has(choice.id)){
+    touchDebug.landTaps++;atlasFocus=null;atlasUserNavigated=true;
+    toggleCrateRegion(choice.id);labCahillSync();
+   }
+  },315);
  };
  svg.addEventListener('pointerup',endPointer);
  svg.addEventListener('pointercancel',endPointer);
@@ -291,7 +327,7 @@ function labCahillInit(host,geography,routes,legacy){
  };
  refresh();sync();
  labCahill={svg,focus,reset,sync,projection,regions,rewoundPolygons,antarcticPanel:polar,
-  routeStats:lanes.stats,discoveryCount:lanes.pinCount,ready:true};
+  routeStats:lanes.stats,discoveryCount:lanes.pinCount,touchDebug,ready:true};
  window.labCahillMap=labCahill;
  return true;
 }
