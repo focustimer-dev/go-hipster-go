@@ -1,4 +1,4 @@
-// Cahill chart rail: horizontal focus+context without a second map or overlay panel.
+// Cahill navigation: a small horizontal slider with a large invisible touch area.
 // Its own surface handles navigation, leaving the repaired country pointerup path intact.
 function labCahillInstallNavigator({host,camera}){
  const W=960;
@@ -8,14 +8,6 @@ function labCahillInstallNavigator({host,camera}){
  root.hidden=true;
  root.setAttribute('role','group');
  root.setAttribute('aria-label','Cahill map horizontal navigation');
- const left=doc.createElement('span');
- left.className='lab-cahill-pan-end';
- left.textContent='W';
- left.setAttribute('aria-hidden','true');
- const right=doc.createElement('span');
- right.className='lab-cahill-pan-end';
- right.textContent='E';
- right.setAttribute('aria-hidden','true');
  const rail=doc.createElement('div');
  rail.className='lab-cahill-pan-rail';
  rail.tabIndex=0;
@@ -33,7 +25,7 @@ function labCahillInstallNavigator({host,camera}){
  thumb.className='lab-cahill-pan-window';
  track.appendChild(thumb);
  rail.appendChild(track);
- root.append(left,rail,right);
+ root.appendChild(rail);
  host.appendChild(root);
  // The rail is a sibling of the map SVG, not a nested map gesture handler.
  for(const name of ['click','dblclick','pointerdown','pointermove','pointerup'])
@@ -44,11 +36,10 @@ function labCahillInstallNavigator({host,camera}){
   if(!nextView)return;
   const b=nextView;nextView=null;
   // Horizontal span is truthful: width=visible world / complete world.
-  const width=b.w/W*100,position=b.x/W*100;
-  thumb.style.width=width.toFixed(4)+'%';
-  thumb.style.left=position.toFixed(4)+'%';
   const available=Math.max(0,W-b.w);
-  const progress=available<.0001?0:Math.round(b.x/available*100);
+  const fraction=available<.0001?.5:b.x/available;
+  thumb.style.left=(fraction*100).toFixed(3)+'%';
+  const progress=available<.0001?0:Math.round(fraction*100);
   rail.setAttribute('aria-valuenow',String(progress));
   rail.setAttribute('aria-valuetext',
     'World view '+progress+' percent toward east. Use arrow keys to pan.');
@@ -62,7 +53,7 @@ function labCahillInstallNavigator({host,camera}){
   if(!paintFrame)paintFrame=requestAnimationFrame(render);
  };
  const getTrackPoint=e=>{
-  const box=rail.getBoundingClientRect();
+  const box=track.getBoundingClientRect();
   if(!box.width)return null;
   return {x:Math.max(0,Math.min(box.width,e.clientX-box.left)),width:box.width};
  };
@@ -70,18 +61,19 @@ function labCahillInstallNavigator({host,camera}){
   if(!drag||drag.id!==e.pointerId)return;
   const p=getTrackPoint(e);if(!p)return;
   const b=camera.snapshot();
-  const centerX=(p.x-drag.offsetPx)/p.width*W;
-  camera.centerAt(centerX,b.y+b.h/2);
+  const available=Math.max(0,W-b.w);
+  const fraction=Math.max(0,Math.min(1,(p.x-drag.offsetPx)/p.width));
+  camera.centerAt(b.w/2+fraction*available,b.y+b.h/2);
  };
  rail.addEventListener('pointerdown',e=>{
   if(!active||root.hidden||drag||e.button>0)return;
   const p=getTrackPoint(e);if(!p)return;
   e.preventDefault();e.stopPropagation();
   const b=camera.snapshot();
-  const start=b.x/W*p.width,end=(b.x+b.w)/W*p.width;
-  const inside=p.x>=start&&p.x<=end;
-  const center=(start+end)/2;
-  drag={id:e.pointerId,offsetPx:inside?p.x-center:0};
+  const available=Math.max(0,W-b.w);
+  const center=available<.0001?p.width/2:(b.x/available)*p.width;
+  // Finger-sized invisible hit radius preserves the grabbed knob offset.
+  drag={id:e.pointerId,offsetPx:Math.abs(p.x-center)<=20?p.x-center:0};
   try{rail.setPointerCapture(e.pointerId)}catch(_){}
   move(e);
  });

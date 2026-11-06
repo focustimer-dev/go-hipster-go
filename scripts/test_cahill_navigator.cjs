@@ -36,10 +36,13 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    await page.waitForFunction(()=>!window.labCahillMap.navigator.root.hidden);
    const rail=page.locator('#labCahillNavigator .lab-cahill-pan-rail');
    const box=await rail.boundingBox();
-   assert(box&&box.height>=44&&box.width>180,'Accessible strip must remain narrow and finger-sized');
+   assert(box&&box.height>=44&&box.width>=120,'Small visual rail keeps a 44px high hit area');
    const host=await page.locator('#labAtlasGlobe').boundingBox();
    assert(host&&box.y>=host.y+host.height-50,'Strip must hug bottom of atlas');
    assert.equal(await page.locator('#labCahillNavigator svg').count(),0,'No second miniature map');
+   assert.equal(await page.locator('#labCahillNavigator .lab-cahill-pan-end').count(),0,'No W/E labels');
+   const visual=await page.locator('#labCahillNavigator .lab-cahill-pan-track').boundingBox();
+   assert(visual&&visual.height<=7&&visual.width<=204,'Strip visual remains minimal');
    const view=()=>page.evaluate(()=>window.labCahillMap.camera.snapshot());
    const initial=await view();
    await page.mouse.click(box.x+12,box.y+box.height/2);
