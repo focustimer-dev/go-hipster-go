@@ -206,6 +206,7 @@ const labCahillMotion=(()=>{
   const step=now=>{
    if(state.done)return;
    if(!state.startedAt)state.startedAt=now;
+   state.lastFrameAt=performance.now();
    // Keep essential fold poses visible even when a busy WebView drops rAFs.
    // Wall-clock progress alone skips most of the octahedral opening after a
    // long GPU pause; cap frame-to-frame travel without slowing normal 60fps.
@@ -224,7 +225,18 @@ const labCahillMotion=(()=>{
    if(x>=1)finish();else state.raf=requestAnimationFrame(step);
   };
   state.raf=requestAnimationFrame(step);
-  setTimeout(finish,1600); // Suspended WebViews must never strand interactions.
+  // The old unconditional 1.6s watchdog jumped straight to the finished
+  // map when software WebGL delayed rAF, skipping the last Cahill leaves.
+  // Only force a finish when WebView truly stops delivering animation frames.
+  const watchdog=()=>{
+   if(state.done)return;
+   const now=performance.now();
+   const sinceFrame=now-(state.lastFrameAt||state.startedAt||now);
+   if(document.visibilityState==='hidden'||sinceFrame>1500||
+      (state.startedAt&&now-state.startedAt>4800))finish();
+   else setTimeout(watchdog,300);
+  };
+  setTimeout(watchdog,1600);
   return state;
  }
  return {prepare,clear,scheduleWarm,draw,run,renderFramesTo};
