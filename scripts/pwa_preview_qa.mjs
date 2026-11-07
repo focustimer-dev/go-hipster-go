@@ -173,7 +173,15 @@ for(const profile of profiles){
     await page.screenshot({path:folder+'/'+profile.name+'-theme-'+name+'-top.png'});
     await page.locator('.mood-grid').scrollIntoViewIfNeeded();
     await page.screenshot({path:folder+'/'+profile.name+'-theme-'+name+'-portraits.png'});
-    await page.locator('#crateAtlasMap').scrollIntoViewIfNeeded();
+    // PR #195 replaces the old Robinson SVG once its real MapLibre widget is
+    // ready. Never require a deliberately hidden fallback element to scroll.
+    if(await page.locator('#pwaInlineAtlas').count()){
+     await page.locator('#crateGeo').scrollIntoViewIfNeeded();
+     await page.waitForFunction(()=>window.GHGInlineAtlas?.ready?.()===true,null,{timeout:30000});
+     await page.locator('#pwaInlineAtlas iframe').scrollIntoViewIfNeeded();
+    }else{
+     await page.locator('#crateAtlasMap').scrollIntoViewIfNeeded();
+    }
     await page.screenshot({path:folder+'/'+profile.name+'-theme-'+name+'-atlas.png'});
     await page.locator('#goButton').scrollIntoViewIfNeeded();
     await page.screenshot({path:folder+'/'+profile.name+'-theme-'+name+'-go.png'});
