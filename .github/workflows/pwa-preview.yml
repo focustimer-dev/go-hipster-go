@@ -24,7 +24,7 @@ concurrency:
 jobs:
   preview-qa:
     # Only this repository's own parity branch, never external fork PRs.
-    if: github.event.pull_request.head.repo.full_name == github.repository && ((startsWith(github.head_ref, 'feat/pwa-') || startsWith(github.head_ref, 'feature/pwa-') || startsWith(github.head_ref, 'fix/pwa-') || startsWith(github.head_ref, 'feat/android-theme-parity-')) || startsWith(github.head_ref, 'fix/inspiration-metadata-') || startsWith(github.head_ref, 'feat/compact-skill-first-'))
+    if: github.event.pull_request.head.repo.full_name == github.repository && ((startsWith(github.head_ref, 'feat/pwa-') || startsWith(github.head_ref, 'feature/pwa-') || startsWith(github.head_ref, 'fix/pwa-')) || startsWith(github.head_ref, 'fix/inspiration-metadata-') || startsWith(github.head_ref, 'feat/compact-skill-first-'))
     runs-on: ubuntu-latest
     environment: production
     timeout-minutes: 25
@@ -65,21 +65,28 @@ jobs:
           wranglerVersion: '4.156.0'
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: 47b318c510ebbdc3a45ddeafeda4a18f
-          command: deploy --name hipster-go-android-theme-preview
+          command: deploy --name hipster-go-pwa-inline-preview
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Test deployed preview in Chromium
-        env:
-          PWA_PREVIEW_URL: https://hipster-go-android-theme-preview.samelling.workers.dev
+      - name: Install isolated Playwright QA runtime
         run: |
           npm install --no-save --package-lock=false playwright@1.62.1
           npx playwright install --with-deps chromium
-          node scripts/pwa_preview_qa.mjs
+      - name: Check true inline Atlas against PWA Jukebox at 320px and 390px
+        env:
+          PWA_PREVIEW_URL: https://hipster-go-pwa-inline-preview.samelling.workers.dev
+        run: node scripts/pwa_inline_atlas_qa.mjs
+      - name: Test deployed preview in Chromium
+        env:
+          PWA_PREVIEW_URL: https://hipster-go-pwa-inline-preview.samelling.workers.dev
+        run: node scripts/pwa_preview_qa.mjs
       - name: Keep preview QA screenshots
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: pwa-preview-qa-${{ github.event.pull_request.number }}
-          path: artifacts/pwa-preview
+          path: |
+            artifacts/pwa-preview
+            artifacts/pwa-inline-atlas
           if-no-files-found: warn
