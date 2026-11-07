@@ -170,7 +170,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   console.log('Atlas morph check:',morphDebug,'page errors:',errors);
   assert.equal(morphDebug.reduced,false,'Motion test must emulate no-preference');
   assert(morphDebug.overlay,'Normal-motion Atlas switch must have a visible transition overlay');
-  await page.waitForFunction(()=>!!document.querySelector('.lab-atlas-morph'),{timeout:5000});
+  await page.waitForFunction(()=>!!document.querySelector('.lab-atlas-morph'),null,{timeout:6000});
   assert.deepEqual(await page.locator('.lab-atlas-morph').evaluate(el=>[el.dataset.from,el.dataset.to]),
    ['robinson','globe'],'A real folded map veil bridges the switch instead of exposing redraws');
   await page.waitForTimeout(180);
@@ -184,7 +184,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert(['pop','reproject','dock','settle'].includes(capture.phase),'The projection follows anticipation with one unified geography and scale timeline');
    if(capture.phase==='settle')assert.equal(capture.vector,1,'Settled transition must reach its geographic endpoint');
   assert(capture.vector>=0&&capture.vector<=1,'Vector correspondence stays inside both endpoints');
-  await page.waitForFunction(()=>!document.querySelector('.lab-atlas-morph'),{timeout:6000});
+  await page.waitForFunction(()=>!document.querySelector('.lab-atlas-morph'),null,{timeout:12000});
   const outward=await page.evaluate(()=>window.__labAtlasLastMorph);
   assert(outward&&outward.to==='globe'&&Number.isFinite(outward.endpointResidual),
    'Globe handoff must report its measured endpoint');
@@ -215,12 +215,12 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert(await page.locator('#labAtlasGlobe').evaluate(el=>Math.abs(window.labAtlasGlobe.getZoom()-(Math.log2(Math.max(120,Math.min(el.clientWidth,el.clientHeight))*Math.PI/512)-.25))<.1),'Resting globe refits narrower phones');
   await page.setViewportSize({width:412,height:915});await page.waitForTimeout(200);
   await page.locator('[data-atlas-view="robinson"]').click();
-  await page.waitForFunction(()=>!!document.querySelector('.lab-atlas-morph'),{timeout:5000});
+  await page.waitForFunction(()=>!!document.querySelector('.lab-atlas-morph'),null,{timeout:6000});
   assert.deepEqual(await page.locator('.lab-atlas-morph').evaluate(el=>[el.dataset.from,el.dataset.to]),
    ['globe','robinson'],'Returning to Robinson unfolds the sphere into the chart');
   await page.waitForTimeout(160);
   assert(await page.locator('.lab-atlas-morph-vectors').count(),'Globe return uses real vector geography');
-  await page.waitForFunction(()=>!document.querySelector('.lab-atlas-morph'),{timeout:6000});
+  await page.waitForFunction(()=>!document.querySelector('.lab-atlas-morph'),null,{timeout:12000});
   const inward=await page.evaluate(()=>window.__labAtlasLastMorph);
   assert(inward&&inward.to==='robinson'&&Number.isFinite(inward.endpointResidual),
    'Robinson handoff must report its measured endpoint');
