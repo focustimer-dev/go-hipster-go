@@ -66,7 +66,7 @@ function store(mutator){
  mutator(next);
  try{localStorage.setItem(STORE,JSON.stringify(next));}
  catch(e){notice('Browser storage unavailable or full. Nothing was saved.');return false}
- data=next;paint();return true;
+ data=next;paint();window.dispatchEvent(new Event('ghg-pwa-inspiration-metadata'));return true;
 }
 function id(){return typeof crypto!=='undefined'&&crypto.randomUUID?crypto.randomUUID():String(Date.now())+'-'+String(Math.random()).slice(2)}
 function notice(message){const el=doc.getElementById('pwaNotice');if(el)el.textContent=message}
