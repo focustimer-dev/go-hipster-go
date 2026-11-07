@@ -312,7 +312,7 @@ function labAtlasMorphTo(mode){
    labGlobe.off('render',onRender);
    labGlobe.off('idle',onIdle);
    const measured=labAtlasMorphVectors.landingFit(mode,host.clientWidth,host.clientHeight,
-    point=>labGlobe.project(mode==='robinson'?labRobinsonPoint(point):point),.03);
+    point=>labGlobe.project(mode==='robinson'?labRobinsonPoint(point):point),.2);
    const predicted=fits[mode],actualFit=measured.sampled?measured:predicted;
    const correction={x:actualFit.x-predicted.x,y:actualFit.y-predicted.y,
     sx:actualFit.sx/predicted.sx,sy:actualFit.sy/predicted.sy};
