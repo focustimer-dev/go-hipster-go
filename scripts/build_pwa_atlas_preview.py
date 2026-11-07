@@ -46,7 +46,7 @@ def theme_browser_tween_assets():
         ("const palette={paper:'#dfb045',ocean:'#103135',selected:'#a83223'};",
          "const paletteDefaults={paper:'#dfb045',ocean:'#103135',selected:'#a83223'};"),
         ("function paint(canvas,prepared,t,selected,fits=null){",
-         "function paint(canvas,prepared,t,selected,fits=null){\\n  const palette=window.GHGAtlasPaintColors?.()||paletteDefaults;"),
+         "function paint(canvas,prepared,t,selected,fits=null){ const palette=window.GHGAtlasPaintColors?.()||paletteDefaults;"),
         ("return width+'@'+selectionKey(selected);",
          "return width+'@'+selectionKey(selected)+'@'+(window.GHGAtlasPaintColors?.().theme||'liberi');"),
         ("const PAL={paper:'#dfb045',ocean:'#103135',selected:'#a83223',ink:'#103135'};",
