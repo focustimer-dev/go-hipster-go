@@ -398,3 +398,67 @@ html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=desire][ar
 html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=triumphant][aria-pressed=false] .face::before{
  filter:url(#alphaInk)!important;
 }
+
+/* IMPECCABLE / Usiku cohesion pass.
+   Saddle is MATERIAL (rims, chart mat, counter), not a second selection color.
+   Racing yellow still means selected; forest green still owns the GO action;
+   the original atlas SVG and The Funk's independent pressing are untouched. */
+html[data-pwa-theme=usiku] body.gig-poster{
+ --usiku-leather:#b77b4d;
+ --usiku-leather-shadow:#7e4c30;
+ --usiku-leather-edge:#b77b4d9e;
+ --usiku-leather-ink:#082516;
+}
+
+/* A restrained leather chart mat around the night-ocean plate.
+   The geography and map SVG continue to use their existing fills/gestures. */
+html[data-pwa-theme=usiku] body.gig-poster .crate-map-frame{
+ background:radial-gradient(ellipse at 50% 45%,#003018 24%,#162e22 66%,#432b20 100%);
+ border-top:1px solid var(--usiku-leather-edge);
+ border-bottom:1px solid var(--usiku-leather-edge);
+}
+html[data-pwa-theme=usiku] body.gig-poster .chart-rose-field{
+ fill:var(--usiku-leather-shadow);
+ stroke:var(--usiku-leather);
+}
+html[data-pwa-theme=usiku] body.gig-poster .chart-rose-ring,
+html[data-pwa-theme=usiku] body.gig-poster .chart-rose-ring-fine{
+ stroke:#f5f0e6;
+}
+
+/* The shop's counter gains a cognac lower lip, not a cognac GO button.
+   Cream lettering and green background keep the primary action clear. */
+html[data-pwa-theme=usiku] body.gig-poster .go-options .go-button{
+ background:#004225;
+ box-shadow:inset 0 -3px 0 var(--usiku-leather);
+}
+html[data-pwa-theme=usiku] body.gig-poster .go-options .go-extras{
+ border-bottom-color:var(--usiku-leather-edge);
+}
+html[data-pwa-theme=usiku] body.gig-poster .go-options .go-extras .cover-toggle + .cover-toggle{
+ border-left-color:var(--usiku-leather-edge);
+}
+
+/* The same material reappears in the PWA chrome and the record-sleeve crate.
+   Thin trim, not another broad slab of cognac. */
+html[data-pwa-theme=usiku] body.gig-poster.pwa-workspace[data-page=launch] .selection-ticket{
+ border-color:var(--usiku-leather);
+}
+html[data-pwa-theme=usiku] body.gig-poster.pwa-workspace[data-page=launch] .selection-ticket .ticket-detail{
+ border-top-color:var(--usiku-leather-edge);
+}
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-rail button[aria-current=page]{
+ border-bottom-color:var(--usiku-leather);
+}
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-inspiration{
+ border-color:var(--usiku-leather-edge);
+}
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-guide-picker,
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-dialog-head{
+ border-bottom-color:var(--usiku-leather-edge);
+}
+/* The Appearance sample now previews Usiku's distinctive material rather than
+   showing a third cream-only swatch that no longer represents its mood cards. */
+.pwa-theme-choice[data-pwa-theme=usiku] .pwa-theme-sample i:nth-child(3){
+ background:#b77b4d;
+}
