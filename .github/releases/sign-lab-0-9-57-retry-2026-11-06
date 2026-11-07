@@ -1,0 +1,9 @@
+# One-shot Android 0.9.57 build retry
+
+User approved the inspiration metadata repair and an Android app update.
+The initial signing workflow failed before the native build because the
+release runner was missing Pillow (required by portrait verification tests).
+This marker reruns the unchanged Android 0.9.57 source with Pillow 12.0.0
+installed, and the original-keystore certificate check intact.
+
+Do not change the app's package identity, signing key, or PWA production.
