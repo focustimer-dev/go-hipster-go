@@ -111,6 +111,7 @@ const labAtlasMorphVectors=(()=>{
   return {x:Number.isFinite(center.x)?center.x-w/2:0,
    y:Number.isFinite(center.y)?center.y-h/2:0,
    sx:validX?sx:expected.sx,sy:validY?sy:expected.sy,
+   rawSx:sx,rawSy:sy,validX,validY,
    sampled:validX&&validY};
  }
  // Idle-time sprite cache: a 8x4 sheet of 31 *matched* geographic poses.
