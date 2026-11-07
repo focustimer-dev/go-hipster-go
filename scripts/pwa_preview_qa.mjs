@@ -362,7 +362,7 @@ for (const width of [390,320]) {
   assert.equal(tweenPalette.backdrop,colors.ocean,'Atlas tween backdrop matches the selected theme ocean');
   assert.equal(tweenPalette.selected,colors.selected,'Tween and live selected land share ink');
   const tweenBundle=(await (await atlasContext.request.get(base+'/pwa-atlas/assets/app.js')).text());
-  assert.match(tweenBundle,/const palette=window\\.GHGAtlasPaintColors/,'Browser-only tween renderer reads palette per frame');
+  assert.match(tweenBundle,/const palette=window\.GHGAtlasPaintColors/,'Browser-only tween renderer reads palette per frame');
   assert.match(tweenBundle,/const PAL=new Proxy/,'Cahill tween colors are browser-theme aware');
   assert.ok(!tweenBundle.includes("const PAL={paper:'#dfb045'"),'Do not ship Liberi-only Cahill tween palette');
 
