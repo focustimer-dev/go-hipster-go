@@ -12,8 +12,9 @@ if(valid.size<20)return;
 const host=document.createElement('div');
 host.className='pwa-inline-atlas';host.id='pwaInlineAtlas';
 host.setAttribute('aria-label','Three-projection listening Atlas');
+host.hidden=true; // Keep the original Robinson visible until the real map is ready.
 const frame=document.createElement('iframe');frame.title='Interactive listening Atlas — Robinson, Keyes and Globe';
-frame.setAttribute('aria-label','Interactive regional Atlas');frame.setAttribute('loading','lazy');
+frame.setAttribute('aria-label','Interactive regional Atlas');frame.setAttribute('loading','eager');
 frame.setAttribute('referrerpolicy','same-origin');
 frame.setAttribute('allow','fullscreen');frame.style.height='265px';
 host.appendChild(frame);original.after(host);
