@@ -1,0 +1,9 @@
+# Approved PWA inspiration metadata repair — November 6, 2026
+
+One-time authorization to deploy PR #179 after merging to main.
+The repair covers the same-origin, provider-restricted metadata resolver,
+readable cached titles and descriptions, and fallback for blocked providers.
+The original inspiration text and link are preserved in GO.
+
+This does not authorize unrelated visual or map changes. Run the live release
+smoke and public Chromium PWA/Atlas QA after deploying. Do not reuse this marker.
