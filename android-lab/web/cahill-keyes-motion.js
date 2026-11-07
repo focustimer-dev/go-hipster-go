@@ -245,7 +245,10 @@ const labCahillMotion=(()=>{
    // starves the frame queue, allow larger progress steps instead of turning
    // a 575ms animation into a five-second forced slideshow.
    const wall=clamp((now-state.startedAt)/DURATION_MS);
-   const budget=Math.min(.4,.095+Math.max(0,frameGap-50)/DURATION_MS);
+   const adaptiveBudget=Math.min(.4,.095+Math.max(0,frameGap-50)/DURATION_MS);
+   // Keep at least eight real tween poses even on a starved renderer; after
+   // the seventh paint catch up to wall time rather than stretching to 5s.
+   const budget=state.frames<7?Math.min(.125,adaptiveBudget):adaptiveBudget;
    const x=Math.min(wall,(state.progress||0)+budget);
    state.progress=x;
    const travel=easing(x);
