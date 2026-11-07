@@ -389,6 +389,22 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.doesNotMatch(geminiPrompt,/Stage 1|TWO-STAGE|YouTube Music PLAYLIST generation action|CURATED — NOT PUBLISHED/,'Repeated policy stays in installed Skill');
  assert.match(geminiPrompt,/@YouTube Music/,'Gemini uses its service mention spelling; text alone does not prove activation');
  assert.ok(geminiPrompt.split(/\\s+/).length<85,'Gemini prompt stays concise');
+ const referenceUrl='https://youtu.be/OMaycNcPsHI?is=12EKA3QNVlegPKpV';
+ const title='Placebo — Every You Every Me (Official Music Video)';
+ const metaStorage=new Map([
+  ['ghg-pwa-reference-v1',referenceUrl],
+  ['ghg-pwa-crate-v1',JSON.stringify({recent:[{text:referenceUrl,title,description:'Long promotional page summary that does not belong in the brief.',metadataStatus:'ok'}]})]
+ ]);
+ const compact=harness(async()=>{},'?ai=gemini&service=youtube&mood=desire&tempo=brisk&hard=1&cover=1','launch',metaStorage);
+ const brief=compact.elements.prompt.textContent;
+ assert.match(brief,/^@go-hipster-go @YouTube Music go desire hard/m);
+ assert.match(brief,/Inspiration: "Placebo — Every You Every Me \(Official Music Video\)" · https:\/\/youtu\.be\/OMaycNcPsHI\?is=12EKA3QNVlegPKpV/,'Title and original source remain together');
+ assert.match(brief,/Tempo preference: Brisk/);
+ assert.match(brief,/Cover art: yes/);
+ assert.ok(brief.split('\n').length<=6,'The app sends a compact brief; the skill handles workflow');
+ assert.doesNotMatch(brief,/untrusted|page description|Original shared inspiration|Deep Crate Protocol|Curation mode|Source:|Service:/i,'No implementation jargon, descriptions, duplicated provider or procedural policy');
+ const fallbackStorage=new Map([['ghg-pwa-reference-v1',referenceUrl]]);
+ assert.match(harness(async()=>{},'?ai=gemini&service=youtube','launch',fallbackStorage).elements.prompt.textContent,/Inspiration: "https:\/\/youtu\.be\/OMaycNcPsHI\?is=12EKA3QNVlegPKpV"/,'Without metadata preserve the exact link and invent no title');
  const geminiSetup=harness(async()=>{},'?ai=gemini&service=youtube','setup').elements.setupPromptText.textContent;
  assert.ok(geminiSetup.includes(JSON.parse(fs.readFileSync('plugin.json','utf8')).version),'Setup verifies the current release version');
  assert.match(geminiSetup,/persistent Skill/,'Setup distinguishes reading a repo from installation');
