@@ -34,20 +34,33 @@ function prefs(){return read(PREF,{mode:'browser',oneTap:false,haptics:false})}
 /* Browser-only MapLibre paint adapter. The canonical Android style and
    projection transition code stay untouched. An expression maintains native
    feature-state selection, including region changes and projection switches. */
-let atlasThemeMap=null,atlasThemeFrame=0;
+let atlasThemeMap=null,atlasThemeFrame=0,atlasThemeDefaults=null;
 function paintAtlasTheme(){
  const map=atlasThemeMap,theme=atlasTheme(),palette=ATLAS_PALETTES[theme];
  document.documentElement.dataset.pwaTheme=theme;
- if(!map||!palette||!map.getLayer?.('land'))return;
+ if(!map||!map.getLayer?.('land'))return;
  try{
-  const desired={
+  // Capture the unmodified Android MapLibre paints once, before applying a
+  // browser palette. A cross-tab switch back to Liberi must restore them.
+  if(!atlasThemeDefaults){
+   atlasThemeDefaults={};
+   const properties={land:['fill-color'],borders:['line-color'],
+    ocean:['background-color'],'robinson-ocean':['fill-color'],routes:['line-color']};
+   for(const [layer,props] of Object.entries(properties)){
+    if(!map.getLayer(layer))continue;
+    atlasThemeDefaults[layer]={};
+    for(const prop of props)
+     atlasThemeDefaults[layer][prop]=map.getPaintProperty(layer,prop);
+   }
+  }
+  const desired=palette?{
    land:{'fill-color':['case',['boolean',['feature-state','selected'],false],
      palette.selected,palette.land]},
    borders:{'line-color':palette.ink},
    ocean:{'background-color':map.getProjection()?.type==='mercator'?'rgba(0,0,0,0)':palette.ocean},
    'robinson-ocean':{'fill-color':palette.ocean},
    routes:{'line-color':palette.route}
-  };
+  }:atlasThemeDefaults;
   for(const [layer,paints] of Object.entries(desired)){
    if(!map.getLayer(layer))continue;
    for(const [prop,value] of Object.entries(paints)){
@@ -65,6 +78,7 @@ function attachAtlasTheme(){
  const map=window.labAtlasGlobe;
  if(!map||map===atlasThemeMap)return !!map;
  atlasThemeMap=map;
+ atlasThemeDefaults=null;
  map.on('load',requestAtlasThemePaint);
  map.on('styledata',requestAtlasThemePaint);
  map.on('idle',requestAtlasThemePaint);
