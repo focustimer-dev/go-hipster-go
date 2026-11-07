@@ -76,6 +76,8 @@ for(const profile of profiles){
     desire:getComputedStyle(document.querySelector('.mood[data-mood="desire"]')).backgroundColor,
     funky:getComputedStyle(document.querySelector('.mood[data-mood="funky"]')).backgroundColor,
     neutral:getComputedStyle(document.querySelector('.mood[data-mood="sad"]')).backgroundColor,
+    neutralPortraitFilter:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .face')).filter,
+    neutralInkFilter:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .face'),'::before').filter,
     sea:getComputedStyle(document.querySelector('.crate-map-ocean')).fill,
     land:getComputedStyle(document.querySelector('#posterLandEngraving rect')).fill,
     selectInk:getComputedStyle(document.querySelector('.mood[data-mood="funky"] .face'),'::after').filter,
@@ -99,6 +101,8 @@ for(const profile of profiles){
    }
    if(name==='usiku'){
     assert.equal(observedThemes.usiku.neutral,'rgb(17, 17, 17)','Usiku neutral keys must be near-black');
+    assert.equal(observedThemes.usiku.neutralPortraitFilter,'none','Do not invert the entire Usiku neutral face');
+    assert.match(observedThemes.usiku.neutralInkFilter,/hue-rotate/,'Muted sage is applied to engraving ink only');
     assert.equal(observedThemes.usiku.sea,'rgb(17, 17, 17)','Usiku atlas ocean must be near-black');
     assert.equal(observedThemes.usiku.land,'rgb(245, 240, 230)','Usiku land engraving must be cream');
    }
