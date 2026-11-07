@@ -188,8 +188,41 @@ function labCahillInit(host,geography,routes,legacy){
   bounds.y=before[1]-(cy-r.top)/Math.max(1,r.height)*bounds.h;
   refresh();
  };
- const reset=()=>{zoom=1;bounds.x=0;bounds.y=TOP;refresh()};
+ // MapLibre eases double-tap zoom rather than jumping a full level.
+ // Keep direct pinch and drag strictly finger-anchored; only discrete tap
+ // zoom is tweened, and a fresh gesture cancels it immediately.
+ let zoomTweenFrame=0;
+ const cancelZoomTween=()=>{
+  if(zoomTweenFrame)cancelAnimationFrame(zoomTweenFrame);
+  zoomTweenFrame=0;
+ };
+ const animateZoomAt=(factor,cx,cy)=>{
+  cancelZoomTween();
+  const start=zoom,target=limit(start*factor,1,5.5);
+  if(Math.abs(target-start)<.00001)return;
+  if(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches){
+   zoomAt(factor,cx,cy);return;
+  }
+  const [anchorX,anchorY]=screenToWorld(cx,cy);
+  const r=viewport.getBoundingClientRect();
+  const fx=(cx-r.left)/Math.max(1,r.width),fy=(cy-r.top)/Math.max(1,r.height);
+  let began=null;
+  const step=now=>{
+   if(began===null)began=now;
+   const t=limit((now-began)/220,0,1),e=1-Math.pow(1-t,3);
+   zoom=start+(target-start)*e;
+   bounds.w=W/zoom;bounds.h=H/zoom;
+   bounds.x=anchorX-fx*bounds.w;
+   bounds.y=anchorY-fy*bounds.h;
+   refresh();
+   if(t<1)zoomTweenFrame=requestAnimationFrame(step);
+   else zoomTweenFrame=0;
+  };
+  zoomTweenFrame=requestAnimationFrame(step);
+ };
+ const reset=()=>{cancelZoomTween();zoom=1;bounds.x=0;bounds.y=TOP;refresh()};
  const zoomBounds=([x0,y0],[x1,y1])=>{
+  cancelZoomTween();
   const rect=viewport.getBoundingClientRect();
   if(!rect.width||!rect.height)return reset();
   const dx=Math.max(14,x1-x0),dy=Math.max(14,y1-y0);
@@ -199,7 +232,7 @@ function labCahillInit(host,geography,routes,legacy){
  };
  svg.addEventListener('wheel',event=>{
   if(labAtlasMode!=='cahill-keyes')return;
-  event.preventDefault();zoomAt(Math.exp(-event.deltaY*.002),event.clientX,event.clientY);
+  event.preventDefault();cancelZoomTween();zoomAt(Math.exp(-event.deltaY*.002),event.clientX,event.clientY);
  },{passive:false});
  svg.addEventListener('dblclick',event=>{
   if(labAtlasMode!=='cahill-keyes')return;
@@ -208,10 +241,11 @@ function labCahillInit(host,geography,routes,legacy){
   // later synthetic dblclick so it cannot zoom twice or disturb the target.
   if(performance.now()-lastTouchUp<450)return;
   blockedClicks=performance.now()+280;
-  zoomAt(zoom>3?.5:1.8,event.clientX,event.clientY);
+  animateZoomAt(zoom>3?.5:1.8,event.clientX,event.clientY);
  });
  svg.addEventListener('pointerdown',event=>{
   if(labAtlasMode!=='cahill-keyes')return;
+  cancelZoomTween();
   const first=pointers.size===0;
   pointers.set(event.pointerId,{x:event.clientX,y:event.clientY,
    startX:event.clientX,startY:event.clientY,startTarget:event.target});
@@ -288,7 +322,7 @@ function labCahillInit(host,geography,routes,legacy){
   lastTouchUp=now;
   if(now-lastTap<315){
    cancelTap();blockedClicks=now+320;lastTap=0;
-   zoomAt(zoom>3?.5:1.8,event.clientX,event.clientY);
+   animateZoomAt(zoom>3?.5:1.8,event.clientX,event.clientY);
    return;
   }
   lastTap=now;
@@ -347,10 +381,12 @@ function labCahillInit(host,geography,routes,legacy){
  const camera={
   snapshot:()=>({...bounds,zoom}),
   centerAt:(x,y)=>{
+   cancelZoomTween();
    bounds.x=x-bounds.w/2;bounds.y=y-bounds.h/2;
    atlasFocus=null;atlasUserNavigated=true;refresh();
   },
   panBy:(dx,dy)=>{
+   cancelZoomTween();
    bounds.x+=dx;bounds.y+=dy;
    atlasFocus=null;atlasUserNavigated=true;refresh();
   },
