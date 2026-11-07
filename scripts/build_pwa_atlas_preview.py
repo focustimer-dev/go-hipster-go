@@ -53,6 +53,12 @@ def main():
                 file.write_text(updated, encoding="utf-8")
     page = DEST / "index.html"
     html = page.read_text(encoding="utf-8")
+    # The PWA has its own palette owner (pwa-atlas-bridge.js). Strip the
+    # native Lab appearance controller here to avoid fighting MapLibre
+    # setPaintProperty loops and an Atlas that never reaches loaded()/idle.
+    native_theme='<script src="/pwa-atlas/assets/lab-themes.js"></script>'
+    assert html.count(native_theme)==1,"Android theme boot script path changed"
+    html=html.replace(native_theme,"")
     injection = ('<link rel="stylesheet" href="/assets/pwa-themes.css">'
                  '<link rel="stylesheet" href="/pwa-atlas/assets/pwa-atlas-themes.css">'
                  '<script src="/pwa-atlas/assets/pwa-atlas-bridge.js"></script>')
