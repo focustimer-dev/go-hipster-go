@@ -63,7 +63,7 @@ for(const profile of profiles){
    await page.waitForFunction(expected=>{
     const key=document.querySelector('.mood[data-mood="desire"]');
     return key && getComputedStyle(key).backgroundColor===expected;
-   },name==='liberi'?'rgb(214, 75, 48)':'rgb(0, 66, 37)',{timeout:5000});
+   },name==='liberi'?'rgb(214, 75, 48)':'rgb(229, 207, 66)',{timeout:5000});
    if(name==='usiku'){
     await page.waitForFunction(()=>
      getComputedStyle(document.querySelector('.mood[data-mood="sad"]')).backgroundColor==='rgb(17, 17, 17)'
@@ -79,13 +79,23 @@ for(const profile of profiles){
     sea:getComputedStyle(document.querySelector('.crate-map-ocean')).fill,
     land:getComputedStyle(document.querySelector('#posterLandEngraving rect')).fill,
     selectInk:getComputedStyle(document.querySelector('.mood[data-mood="funky"] .face'),'::after').filter,
-    desireInk:getComputedStyle(document.querySelector('.mood[data-mood="desire"] .face'),'::after').filter
+    funkGradient:getComputedStyle(document.querySelector('.mood[data-mood="funky"]')).backgroundImage,
+    desireNeutralInk:getComputedStyle(document.querySelector('.mood[data-mood="desire"] .face'),'::before').filter,
+    desireNeutralOpacity:getComputedStyle(document.querySelector('.mood[data-mood="desire"] .face'),'::before').opacity,
+    desireSelectedOpacity:getComputedStyle(document.querySelector('.mood[data-mood="desire"] .face'),'::after').opacity,
+    desireHearts:getComputedStyle(document.querySelector('.mood[data-mood="desire"] .desire-hearts')).backgroundColor,
+    selectedMapInk:getComputedStyle(document.querySelector('#posterSelectedHalftone rect')).fill
    }));
    if(name==='bosque'||name==='usiku'){
-    assert.equal(observedThemes[name].desire,'rgb(0, 66, 37)','Desire selection must use rich green');
-    assert.equal(observedThemes[name].funky,'rgb(0, 66, 37)','Funk pink stock must become rich green');
-    assert.notEqual(observedThemes[name].selectInk,'none','selected portrait must be recolored');
-    assert.match(observedThemes[name].desireInk,/referenceInk/,'Desire must retain its detail-bearing engraving filter');
+    assert.equal(observedThemes[name].desire,'rgb(229, 207, 66)','Desire uses racing-yellow selection');
+    assert.equal(observedThemes[name].funky,'rgb(110, 34, 92)','The Funk has its own violet base');
+    assert.match(observedThemes[name].funkGradient,/linear-gradient/,'Funk uses a violet to magenta pressing');
+    assert.notEqual(observedThemes[name].selectInk,'none','Funk portrait retains its vivid ink treatment');
+    assert.match(observedThemes[name].desireNeutralInk,/referenceInk/,'Desire reuses the natural detailed portrait');
+    assert.equal(observedThemes[name].desireNeutralOpacity,'1','Desire neutral portrait remains visible on selection');
+    assert.equal(observedThemes[name].desireSelectedOpacity,'0','Desire negative-looking selection plate stays hidden');
+    assert.equal(observedThemes[name].desireHearts,'rgb(142, 48, 105)','Desire keeps its magenta heart eyes');
+    assert.equal(observedThemes[name].selectedMapInk,'rgb(229, 207, 66)','Selected regions use visible yellow');
    }
    if(name==='usiku'){
     assert.equal(observedThemes.usiku.neutral,'rgb(17, 17, 17)','Usiku neutral keys must be near-black');
