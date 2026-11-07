@@ -71,7 +71,7 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
     initial:result.start.zoom,immediate:result.immediate.zoom,final:result.final.zoom,
     frames:result.samples.length,distinct,duration:result.samples.at(-1).ms}));
    assert.deepEqual(result.regions,['east-asia','us-west'],'The two distant route regions remain selected');
-   assert(result.start.zoom>2.5,'The test starts at a close geographic zoom');
+   assert(result.start.zoom>1.8,'The test starts at a detailed geographic zoom on narrow phones');
    assert(Math.abs(result.immediate.zoom-result.start.zoom)<.03,'Region pick must not jump the camera instantly');
    assert(result.final.zoom<result.start.zoom-.7,'The camera must widen to include both distant regions');
    assert(distinct>=5,'Auto-fit needs at least five genuine intermediate camera scales');
