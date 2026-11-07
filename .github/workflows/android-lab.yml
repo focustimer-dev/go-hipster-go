@@ -76,6 +76,13 @@ jobs:
       - run: node scripts/test_atlas_boundary.cjs
       - run: npx playwright install --with-deps chromium
       - run: node scripts/test_android_lab_themes.cjs
+      - name: Save native theme phone screenshots independently of unrelated Atlas motion checks
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-theme-phone-review
+          path: android-lab/build/theme-review/*.png
+          if-no-files-found: warn
       - run: node scripts/test_cahill_region_fit.cjs
       - run: node scripts/test_cahill_motion.cjs
       - run: node scripts/test_android_lab.cjs
