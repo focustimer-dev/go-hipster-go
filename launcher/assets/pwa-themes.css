@@ -353,41 +353,42 @@ html[data-pwa-theme=usiku] body.gig-poster .chart-rose-letters{fill:#f5f0e6}
 html[data-pwa-theme=bosque] body.gig-poster .chart-rose-north,
 html[data-pwa-theme=usiku] body.gig-poster .chart-rose-north{fill:#e5cf42}
 
-/* USIKU / legible original engravings on a rich racing-green pressing.
-   The active Jukebox tab supplies the green. The portrait plate stays intact;
-   only the ink of the transparent sprite is lifted to warm paper. Keep the
-   approved bright yellow selected cards and The Funk's violet exception. */
+/* USIKU / light-catching green portrait stock, dark original engravings.
+   Preserve the painstaking reverse vignette: LIGHTER at the face center,
+   DARKER at its distal edges. Change neither the portraits themselves nor
+   the bright-yellow selected / violet Funk treatments. */
 html[data-pwa-theme=usiku] body.gig-poster{
- --usiku-neutral-stock:#004225;
- --usiku-neutral-edge:#002c1a;
- --usiku-neutral-ink:#f5f0e6;
+ --usiku-neutral-stock:#27794f;
+ --usiku-neutral-edge:#003823;
+ --usiku-neutral-ink:#001f14;
 }
 html[data-pwa-theme=usiku] body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[data-mood][aria-pressed=false]{
  background:radial-gradient(ellipse farthest-corner at 50% 36%,
-  #0c5835 0%,var(--usiku-neutral-stock) 43%,#00371e 77%,var(--usiku-neutral-edge) 100%);
+  #34885e 0%,var(--usiku-neutral-stock) 34%,#145c3b 68%,var(--usiku-neutral-edge) 100%);
  color:var(--usiku-neutral-ink);
  box-shadow:none;
 }
 html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=false] .word{
- color:var(--usiku-neutral-ink);background:transparent;
+ /* Cream caption on dark lower edge; never invert the portrait art itself. */
+ color:#f5f0e6;background:transparent;
 }
 html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood]:nth-child(n){
  border-color:#f5f0e650;
 }
-html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=false] .face{
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=false] .face,
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=false] .face::before{
  filter:none!important;
 }
 html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=false] .face::before{
- filter:brightness(0) saturate(100%) invert(95%) sepia(6%) saturate(161%) hue-rotate(327deg)!important;
  opacity:1;
 }
-/* Desire and Triumph have separate original alpha-ink filters. Keep those
-   extraction paths before tinting to paper, without swapping their artwork. */
+/* Desire and Triumph are separate alpha-extraction engravings. Keep their
+   native dark green ink-flood SVG filters, never brighten/invert them. */
 html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=false] .face::before{
- filter:url(#referenceInk) brightness(0) invert(95%)!important;
+ filter:url(#referenceInk)!important;
 }
 html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=triumphant][aria-pressed=false] .face::before{
- filter:url(#alphaInk) brightness(0) invert(95%)!important;
+ filter:url(#alphaInk)!important;
 }
 html[data-pwa-theme=usiku] body.gig-poster :is(.mood-hint,#moodHelp){
  color:#f5f0e6;
