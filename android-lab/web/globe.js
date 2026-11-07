@@ -149,6 +149,11 @@ function labAtlasPoint(point){return labAtlasMode==='robinson'?labRobinsonPoint(
 function labAtlasHome(){return labAtlasMode==='globe'?[10,15]:[0,0]}
 
 let labAtlasModeInitialized=false,labAtlasMorph=null;
+/* Read-only atlas state for native/PWA integration and finished-frame QA.
+   Never changes the map, its camera, or the motion choreography. */
+window.HipsterAtlasState=()=>({
+ projection:labAtlasMode,transitioning:!!labAtlasMorph
+});
 const LAB_ATLAS_MORPH_DURATION=650;
 // Measured endpoint fits from completed MapLibre renders, keyed by viewport.
 // Avoid using stale calibration after rotation or layout changes.
