@@ -39,6 +39,13 @@ for(const profile of profiles){
   assert.equal(await page.locator('.pwa-atlas-preview-link').count(),0,'Retired three-map trial link must not appear in the Jukebox');
   assert.equal(await page.locator('.pwa-add-inspiration').getAttribute('data-pwa-action'),'edit-reference');
   await page.screenshot({path:folder+'/'+profile.name+'-jukebox.png'});
+  // Test the actual two-mood combination from the phone review: Desire + Funk.
+  // A theme must recolor both independent portrait systems without rewriting them.
+  await page.locator('[data-mood="happy"]').click();
+  await page.locator('[data-mood="desire"]').click();
+  await page.locator('[data-mood="funky"]').click();
+  assert.equal(await page.locator('[data-mood="desire"]').getAttribute('aria-pressed'),'true');
+  assert.equal(await page.locator('[data-mood="funky"]').getAttribute('aria-pressed'),'true');
   // Three poster-colorways must be visual-only and persist across browser reload.
   // Capture the real production PWA DOM, controls, original clerk portraits, and map.
   const promptBeforeColorChange=await page.locator('#prompt').textContent();
@@ -54,10 +61,28 @@ for(const profile of profiles){
    observedThemes[name]=await page.locator('#pwaJukebox').evaluate(el=>({
     background:getComputedStyle(el).backgroundColor,
     paper:getComputedStyle(document.body).getPropertyValue('--paper').trim(),
-    ink:getComputedStyle(document.body).getPropertyValue('--ink').trim()
+    ink:getComputedStyle(document.body).getPropertyValue('--ink').trim(),
+    desire:getComputedStyle(document.querySelector('.mood[data-mood="desire"]')).backgroundColor,
+    funky:getComputedStyle(document.querySelector('.mood[data-mood="funky"]')).backgroundColor,
+    neutral:getComputedStyle(document.querySelector('.mood[data-mood="sad"]')).backgroundColor,
+    sea:getComputedStyle(document.querySelector('.crate-map-ocean')).fill,
+    land:getComputedStyle(document.querySelector('#posterLandEngraving rect')).fill,
+    selectInk:getComputedStyle(document.querySelector('.mood[data-mood="funky"] .face'),'::after').filter
    }));
+   if(name==='bosque'||name==='usiku'){
+    assert.equal(observedThemes[name].desire,'rgb(0, 66, 37)','Desire selection must use rich green');
+    assert.equal(observedThemes[name].funky,'rgb(0, 66, 37)','Funk pink stock must become rich green');
+    assert.notEqual(observedThemes[name].selectInk,'none','selected portrait must be recolored');
+   }
+   if(name==='usiku'){
+    assert.equal(observedThemes.usiku.neutral,'rgb(17, 17, 17)','Usiku neutral keys must be near-black');
+    assert.equal(observedThemes.usiku.sea,'rgb(17, 17, 17)','Usiku atlas ocean must be near-black');
+    assert.equal(observedThemes.usiku.land,'rgb(245, 240, 230)','Usiku land engraving must be cream');
+   }
    if(profile.name==='phone'||profile.name==='phone-reduced-motion'){
     await page.screenshot({path:folder+'/'+profile.name+'-theme-'+name+'-top.png'});
+    await page.locator('.mood-grid').scrollIntoViewIfNeeded();
+    await page.screenshot({path:folder+'/'+profile.name+'-theme-'+name+'-portraits.png'});
     await page.locator('#crateAtlasMap').scrollIntoViewIfNeeded();
     await page.screenshot({path:folder+'/'+profile.name+'-theme-'+name+'-atlas.png'});
     await page.locator('#goButton').scrollIntoViewIfNeeded();
