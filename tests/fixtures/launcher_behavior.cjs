@@ -69,7 +69,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
   await h.elements.goButton.click();
   assert.match(result,/Mood angle:/);
   assert.match(result,/Tempo preference: Slow/);
-  assert.match(result,/Service:/);
+  assert.match(result,/^@go-hipster-go @/,'Connector in command replaces duplicate Service line');
   assert.ok(result.split(/\s+/).length<65,'Normal GO remains compact for every pairing');
   assert.doesNotMatch(result,/Curate 12 verified|Choose distinctive|Keep discovery|Fresh-crate discovery lens:|Resolve exact Spotify|playlist widget/);
   assert.doesNotMatch(result,/Mood range:|do not claim history access when unavailable/);
