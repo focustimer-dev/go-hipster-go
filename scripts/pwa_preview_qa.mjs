@@ -157,7 +157,7 @@ for(const profile of profiles){
     assert.match(observedThemes.usiku.neutralInkMask,/moods-neutral-ink-v2\.webp/,'Neutral portraits reuse the exact canonical sprite as a mask');
     assert.equal(observedThemes.usiku.neutralInkColor,'rgb(6, 56, 33)','Dark forest-green ink keeps each approved engraved line visible');
     assert.match(observedThemes.usiku.neutralFaceUnderprint,/radial-gradient/,'Warm portrait highlights live only inside the neutral face area');
-    assert.match(observedThemes.usiku.neutralFaceUnderprint,/rgba\\(240, 200, 161, 0\\.76\\)/,'Warm face underprint is calibrated, not green');
+    assert.match(observedThemes.usiku.neutralFaceUnderprint,/rgba\(240, 200, 161, 0\.76\)/,'Warm face underprint is calibrated, not green');
     assert.equal(observedThemes.usiku.desireSelectedUnderprint,'none','Selected Desire gains no new portrait underprint');
     assert.equal(observedThemes.usiku.funkSelectedUnderprint,'none','Selected Funk gains no new portrait underprint');
     assert.match(observedThemes.usiku.neutralDesireInk,/referenceInk/,'Selected Desire keeps the approved ink-extraction geometry');
