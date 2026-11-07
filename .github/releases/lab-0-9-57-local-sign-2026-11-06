@@ -1,0 +1,14 @@
+# Approved Android 0.9.57 local signing preparation
+
+The signed APK job verified all native code and the app's package identity,
+but GitHub signing secrets were never configured for this project. The
+established previous release process uses the original private signing backup
+stored in ChatGPT Library to sign locally.
+
+This one-time trigger builds and uploads only a verified unsigned Lab 0.9.57
+APK and official Android SDK signing tools. The original private keystore
+must not be copied to GitHub or included in any artifact.
+
+The resulting APK will be signed outside GitHub, verified against the
+unchanged original Lab signing certificate and delivered as an installable
+update. This does not deploy the PWA.
