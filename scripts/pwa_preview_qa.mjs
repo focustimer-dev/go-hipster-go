@@ -66,7 +66,7 @@ for(const profile of profiles){
    },name==='liberi'?'rgb(214, 75, 48)':'rgb(229, 207, 66)',{timeout:5000});
    if(name==='usiku'){
     await page.waitForFunction(()=>
-     getComputedStyle(document.querySelector('.mood[data-mood="sad"]')).backgroundColor==='rgb(183, 123, 77)'
+     getComputedStyle(document.querySelector('.mood[data-mood="sad"]')).backgroundImage.includes('radial-gradient')
     ,null,{timeout:5000});
    }
    observedThemes[name]=await page.locator('#pwaJukebox').evaluate(el=>({
@@ -75,7 +75,7 @@ for(const profile of profiles){
     ink:getComputedStyle(document.body).getPropertyValue('--ink').trim(),
     desire:getComputedStyle(document.querySelector('.mood[data-mood="desire"]')).backgroundColor,
     funky:getComputedStyle(document.querySelector('.mood[data-mood="funky"]')).backgroundColor,
-    neutral:getComputedStyle(document.querySelector('.mood[data-mood="sad"]')).backgroundColor,
+    neutral:getComputedStyle(document.querySelector('.mood[data-mood="sad"]')).backgroundImage,
     neutralPortraitFilter:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .face')).filter,
     neutralInkFilter:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .face'),'::before').filter,
     neutralLabel:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .word')).color,
@@ -102,7 +102,9 @@ for(const profile of profiles){
     assert.equal(observedThemes[name].selectedMapInk,'rgb(229, 207, 66)','Selected regions use visible yellow');
    }
    if(name==='usiku'){
-    assert.equal(observedThemes.usiku.neutral,'rgb(183, 123, 77)','Usiku neutral cards are saddle cognac');
+    assert.match(observedThemes.usiku.neutral,/radial-gradient/,'Usiku unselected cards have a vignette');
+    assert.match(observedThemes.usiku.neutral,/rgb\(126, 76, 48\)/,'Deep cognac at center');
+    assert.match(observedThemes.usiku.neutral,/rgb\(183, 123, 77\)/,'Saddle highlights at corners');
     assert.equal(observedThemes.usiku.neutralLabel,'rgb(8, 37, 22)','Neutral card lettering uses legible deep forest green');
     assert.equal(observedThemes.usiku.neutralPortraitFilter,'none','Do not invert the Usiku neutral face');
     assert.equal(observedThemes.usiku.neutralInkFilter,'none','Original engraved ink is preserved without negative filters');
