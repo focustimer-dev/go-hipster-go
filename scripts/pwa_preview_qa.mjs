@@ -324,8 +324,15 @@ await context.close();
 // Independently exercise the actual Android 0.9.56 map bundle on the isolated PWA
 // Worker: no fake third projection or merely ornamental map screenshot.
 for (const width of [390,320]) {
+ const theme=width===390?'usiku':'bosque';
+ const colors=theme==='usiku'?
+  {ocean:'#111111',land:'#f5f0e6',selected:'#e5cf42'}:
+  {ocean:'#f5f0e6',land:'#004225',selected:'#e5cf42'};
  const atlasContext=await browser.newContext({viewport:{width,height:844},isMobile:true,hasTouch:true,serviceWorkers:'block'});
  const atlas=await atlasContext.newPage();
+ await atlas.addInitScript(theme=>{
+  try{localStorage.setItem('ghg-pwa-theme-v1',theme)}catch(_){}
+ },theme);
  atlas.setDefaultTimeout(25000);
  const issues=[];
  atlas.on('pageerror',e=>issues.push(e.message));
@@ -334,6 +341,22 @@ for (const width of [390,320]) {
   assert.equal(response.status(),200,'Atlas preview route must be hosted by isolated Worker');
   await atlas.waitForFunction(()=>window.labCahillMap?.ready&&window.labAtlasGlobe?.loaded(),null,{timeout:55000});
   assert.equal(await atlas.locator('[data-atlas-view]').count(),3,'All three Android map projections are available');
+  assert.equal(await atlas.evaluate(()=>document.documentElement.dataset.pwaTheme),theme,'Atlas inherited chosen PWA theme');
+  assert.equal(await atlas.locator('link[href="/pwa-atlas/assets/pwa-atlas-themes.css"]').count(),1,
+   'Atlas loads its browser-only palette stylesheet');
+  await atlas.waitForFunction(colors=>{
+   const land=window.labAtlasGlobe?.getPaintProperty?.('land','fill-color');
+   return land?.[2]===colors.selected&&land?.[3]===colors.land;
+  },colors,{timeout:15000});
+  const tabs=await atlas.evaluate(()=>({
+   rail:getComputedStyle(document.querySelector('.lab-rail')).backgroundColor,
+   page:getComputedStyle(document.querySelector('.lab-page')).backgroundColor
+  }));
+  assert.equal(tabs.rail,theme==='usiku'?'rgb(17, 17, 17)':'rgb(0, 48, 24)','Atlas navigation theme');
+  assert.equal(tabs.page,theme==='usiku'?'rgb(0, 48, 24)':'rgb(245, 240, 230)','Atlas Crate/Manual theme');
+  await atlas.locator('[data-crate-region]').first().evaluate(el=>el.click());
+  await atlas.waitForFunction(()=>!!document.querySelector('[data-crate-region][aria-pressed=true]'),
+   null,{timeout:5000});
   const before=await atlas.evaluate(()=>[...document.querySelectorAll('[data-crate-region][aria-pressed=true]')].map(el=>el.dataset.crateRegion).sort());
   const routes=['cahill-keyes','globe','robinson'];
   for(const mode of routes){
@@ -346,6 +369,27 @@ for (const width of [390,320]) {
    },mode,{timeout:28000});
    const after=await atlas.evaluate(()=>[...document.querySelectorAll('[data-crate-region][aria-pressed=true]')].map(el=>el.dataset.crateRegion).sort());
    assert.deepEqual(after,before,'Atlas modes must not silently change selected regions');
+   await atlas.waitForFunction(colors=>{
+    const land=window.labAtlasGlobe?.getPaintProperty?.('land','fill-color');
+    return land?.[2]===colors.selected&&land?.[3]===colors.land;
+   },colors,{timeout:10000});
+   const ink=await atlas.evaluate(()=>{
+    const m=window.labAtlasGlobe;return {
+     land:m.getPaintProperty('land','fill-color'),
+     water:m.getPaintProperty('ocean','background-color'),
+     robinson:m.getPaintProperty('robinson-ocean','fill-color')
+    };
+   });
+   assert.equal(ink.land[2],colors.selected,'Selected region paint is yellow');
+   assert.equal(ink.land[3],colors.land,'Unselected MapLibre land is themed');
+   assert.equal(ink.robinson,colors.ocean,'Robinson ocean plate is themed');
+   assert.equal(ink.water,mode==='robinson'?'rgba(0,0,0,0)':colors.ocean,
+    'Globe and Robinson maintain ocean colors on switches');
+   if(mode==='cahill-keyes'){
+    const fill=await atlas.locator('#labAtlasCahill [data-cahill-region][aria-pressed=true]').first()
+     .evaluate(el=>getComputedStyle(el).fill);
+    assert.equal(fill,'rgb(229, 207, 66)','Cahill country selected color is yellow');
+   }
    assert.equal(await atlas.evaluate(()=>document.documentElement.scrollWidth>innerWidth+3),false,
     'Atlas preview cannot make mobile page horizontally overflow');
    await atlas.locator('#labAtlasGlobe').screenshot({path:folder+'/atlas-'+width+'-'+mode+'.png',timeout:30000});
