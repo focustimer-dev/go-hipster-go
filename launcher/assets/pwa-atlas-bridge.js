@@ -15,6 +15,11 @@ function atlasTheme(){
 }
 /* Dynamic browser-only paints for native projection tween canvases.
    The isolated PWA build opts in. Android's exact bundles stay untouched. */
+// Legible on small phones while keeping the original dotted nautical feel.
+// The original Liberi treatment is restored byte-for-byte on theme switch.
+const LIBERI_ROUTE_PAINT={'line-color':'#edc65d','line-opacity':.65,
+ 'line-width':1,'line-dasharray':[3,5]};
+const THEMED_ROUTE_PAINT={opacity:.88,width:1.7,dash:[3,2.6]};
 const TWEEN_PALETTES={
  liberi:{paper:'#dfb045',ocean:'#103135',selected:'#a83223',ink:'#103135',backdrop:'#dfb045'},
  bosque:{paper:'#004225',ocean:'#f5f0e6',selected:'#e5cf42',ink:'#003018',backdrop:'#f5f0e6'},
@@ -67,8 +72,11 @@ function paintAtlasTheme(){
    borders:{'line-color':palette.ink},
    ocean:{'background-color':map.getProjection()?.type==='mercator'?'rgba(0,0,0,0)':palette.ocean},
    'robinson-ocean':{'fill-color':palette.ocean},
-   routes:{'line-color':palette.route}
-  }:atlasThemeDefaults;
+   routes:{'line-color':palette.route,
+    'line-opacity':THEMED_ROUTE_PAINT.opacity,
+    'line-width':THEMED_ROUTE_PAINT.width,
+    'line-dasharray':THEMED_ROUTE_PAINT.dash}
+  }:{...atlasThemeDefaults,routes:LIBERI_ROUTE_PAINT};
   for(const [layer,paints] of Object.entries(desired)){
    if(!map.getLayer(layer))continue;
    for(const [prop,value] of Object.entries(paints)){
