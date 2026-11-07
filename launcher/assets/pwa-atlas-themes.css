@@ -1,0 +1,135 @@
+/* The browser-only 3-projection Atlas shares Liberi / Bosque / Usiku with
+   the PWA Jukebox. This file is copied into /pwa-atlas/ at build time;
+   never load it in the canonical Android WebView bundle. Liberi inherits
+   the original locked printed Atlas untouched. */
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace{
+ --ink:#003018;--ink2:#004225;--paper:#f5f0e6;--bone:#f5f0e6;
+ --yellow:#f5f0e6;--red:#8c6239;--red2:#8c6239;--line:#8c623999;
+ --atlas-paper:#f5f0e6;--atlas-paper-light:#eee4d3;--atlas-paper-hover:#e7d7bd;
+ --atlas-ink:#003018;--atlas-accent:#8c6239;--atlas-border:#8c6239;
+ --atlas-land:#004225;--atlas-water:#f5f0e6;--atlas-boundary:#003018;
+ --atlas-selected:#e5cf42;background:#f5f0e6;color:#003018;color-scheme:light;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace{
+ --ink:#f5f0e6;--ink2:#f5f0e6;--paper:#003018;--bone:#f5f0e6;
+ --yellow:#004225;--red:#8c6239;--red2:#8c6239;--line:#f5f0e655;
+ --atlas-paper:#003018;--atlas-paper-light:#004225;--atlas-paper-hover:#004225;
+ --atlas-ink:#f5f0e6;--atlas-accent:#8c6239;--atlas-border:#8c6239;
+ --atlas-land:#f5f0e6;--atlas-water:#111111;--atlas-boundary:#003018;
+ --atlas-selected:#e5cf42;background:#111111;color:#f5f0e6;color-scheme:dark;
+}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .site{
+ background:#f5f0e6;color:#003018;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .site{
+ background:#003018;color:#f5f0e6;
+}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .lab-page,
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .lab-dialog{
+ background-color:#f5f0e6;color:#003018;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .lab-page{
+ background-color:#003018;color:#f5f0e6;background-blend-mode:soft-light;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .lab-dialog{
+ background:#111111;color:#f5f0e6;border-color:#b77b4d;
+}
+/* One coherent chrome across Jukebox / Your Crate / Manual / Preferences. */
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .lab-rail{
+ background:#003018;color:#f5f0e6;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .lab-rail{
+ background:#111111;color:#f5f0e6;border-bottom:1px solid #b77b4d;
+}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .lab-rail button[aria-current=page],
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .lab-rail button[aria-current=page]{
+ background:#004225;color:#f5f0e6;border-bottom-color:#b77b4d;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .lab-rail button:last-child{
+ border-left-color:#b77b4d66;
+}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace :is(.lab-wide-button,.lab-text-button,.lab-dialog button,.lab-dialog a,.lab-guide-chapters button){
+ border-color:#003018;color:#003018;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace :is(.lab-wide-button,.lab-text-button,.lab-dialog button,.lab-dialog a,.lab-guide-chapters button){
+ border-color:#b77b4d;color:#f5f0e6;
+}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace :is(.lab-dialog-head,.lab-section-head,.lab-page section>h2,.lab-record,.lab-local-note){
+ border-color:#8c6239;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace :is(.lab-dialog-head,.lab-section-head,.lab-page section>h2,.lab-record,.lab-local-note){
+ border-color:#b77b4d;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .lab-guide-frame{
+ color:#f5f0e6;border-color:#b77b4d;
+}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labGuideAction,
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labGuideAction{
+ background:#004225;color:#f5f0e6;
+}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labSetupText,
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labInspirationEditor textarea{
+ background:#f5f0e6;color:#003018;border-color:#003018;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labSetupText,
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labInspirationEditor textarea{
+ background:#111111;color:#f5f0e6;border-color:#b77b4d;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace :is(#labAddInspiration,#labInspirationEditor,#labInspirationEditor label,#labInspirationEditor textarea::placeholder,.lab-inspiration-recent-copy span){
+ color:#f5f0e6;border-color:#b77b4d;
+}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labInspirationEditor button[type=submit],
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labInspirationEditor button[type=submit]{
+ background:#004225;color:#f5f0e6;
+}
+/* Projection controls are explicit selected states, never mere hue shifts. */
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .lab-atlas-modes,
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .lab-atlas-modes{
+ border-color:#b77b4d;
+}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .lab-atlas-modes button,
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .lab-atlas-modes button{
+ color:inherit;
+}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .lab-atlas-modes button+button,
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .lab-atlas-modes button+button{
+ border-inline-start-color:#b77b4d;
+}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .lab-atlas-modes button[aria-pressed=true],
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .lab-atlas-modes button[aria-pressed=true]{
+ background:#004225;color:#f5f0e6;text-decoration:underline;text-underline-offset:3px;
+}
+:root[data-pwa-theme=bosque] #labAtlasGlobe .lab-cahill-overlay{
+ background:#f5f0e6;
+}
+:root[data-pwa-theme=usiku] #labAtlasGlobe .lab-cahill-overlay{
+ background:#111111;
+}
+/* Cahill: paint only the existing geographic paths. Never alter their
+   geometry, camera transform, pointer-events, discovery lanes or Antarctica. */
+:root[data-pwa-theme=bosque] #labAtlasCahill .lab-cahill-ocean,
+:root[data-pwa-theme=bosque] #labCahillAntarcticOcean{
+ fill:#f5f0e6;stroke:#003018;
+}
+:root[data-pwa-theme=usiku] #labAtlasCahill .lab-cahill-ocean,
+:root[data-pwa-theme=usiku] #labCahillAntarcticOcean{
+ fill:#111111;stroke:#111111;
+}
+:root[data-pwa-theme=bosque] #labAtlasCahill .lab-cahill-graticule{
+ stroke:#8c6239;stroke-opacity:.24;
+}
+:root[data-pwa-theme=usiku] #labAtlasCahill .lab-cahill-graticule{
+ stroke:#b77b4d;stroke-opacity:.2;
+}
+:root[data-pwa-theme=bosque] #labAtlasCahill [data-cahill-region][aria-pressed=false]{
+ fill:#004225;stroke:#003018;
+}
+:root[data-pwa-theme=usiku] #labAtlasCahill [data-cahill-region][aria-pressed=false]{
+ fill:#f5f0e6;stroke:#003018;
+}
+:root[data-pwa-theme=bosque] #labAtlasCahill [data-cahill-region][aria-pressed=true],
+:root[data-pwa-theme=usiku] #labAtlasCahill [data-cahill-region][aria-pressed=true]{
+ fill:#e5cf42;stroke:#003018;stroke-width:1.35;
+}
+/* Mode-specific ocean/land colors for Globe and Robinson are painted with
+   MapLibre expressions in the browser bridge, not an invert() bitmap hack. */

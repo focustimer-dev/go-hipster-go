@@ -57,7 +57,34 @@ for(const profile of profiles){
    assert.equal(await page.locator('button[data-pwa-theme="'+name+'"]').getAttribute('aria-pressed'),'true');
    assert.equal(await page.locator('button[data-pwa-theme][aria-pressed=true]').count(),1,'One theme only');
    assert.equal(await page.evaluate(()=>document.documentElement.dataset.pwaTheme),name);
+   // Audit every PWA surface, not just the Jukebox. Preferences is in a real
+   // dialog; Crate and Manual are persistent destinations with their own ink.
+   const surfaces=await page.evaluate(()=>({
+    prefs:getComputedStyle(document.querySelector('#pwaPrefs')).backgroundColor,
+    crate:getComputedStyle(document.querySelector('#pwaCrate')).backgroundColor,
+    manual:getComputedStyle(document.querySelector('#pwaManual')).backgroundColor
+   }));
+   if(name==='bosque')for(const key of ['prefs','crate','manual'])
+    assert.equal(surfaces[key],'rgb(245, 240, 230)','Bosque '+key+' uses warm paper');
+   if(name==='usiku'){
+    assert.equal(surfaces.prefs,'rgb(17, 17, 17)','Usiku preferences use night ink');
+    for(const key of ['crate','manual'])
+     assert.equal(surfaces[key],'rgb(0, 48, 24)','Usiku '+key+' uses forest ground');
+   }
+   if(profile.name==='phone')
+    await page.screenshot({path:folder+'/phone-theme-'+name+'-preferences.png'});
    await page.locator('[data-pwa-action="close"]').click();
+   for(const tab of ['crate','manual']){
+    await page.locator('[data-pwa-tab="'+tab+'"]').click();
+    await page.locator('#pwa'+tab.charAt(0).toUpperCase()+tab.slice(1)).waitFor({state:'visible'});
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2),false,
+     name+' '+tab+' overflow');
+    if(tab==='manual')assert.equal(await page.locator('#pwaGuidePicker').isVisible(),true,
+     'Guide picker is available in '+name);
+    if(profile.name==='phone')
+     await page.screenshot({path:folder+'/phone-theme-'+name+'-'+tab+'.png'});
+   }
+   await page.locator('[data-pwa-tab="jukebox"]').click();
    // Theme color transitions last 160ms; sample fully settled pixels, never
    // intermediate animated colors. Reduced-motion users already see the final state.
    await page.waitForFunction(expected=>{
@@ -288,6 +315,17 @@ const context=await browser.newContext({serviceWorkers:'block'});const page=awai
 try{
  const manual=await page.goto(base+'/setup/',{waitUntil:'domcontentloaded'});assert.equal(manual.status(),200);
  assert.equal(await page.locator('.pwa-rail').count(),0,'manual remains a standalone route');
+ // The full Manual is a separate Worker route: it must inherit the appearance
+ // chosen in Preferences, not silently fall back to Liberi.
+ for(const theme of ['bosque','usiku']){
+  await page.goto(base+'/',{waitUntil:'domcontentloaded'});
+  await page.evaluate(t=>localStorage.setItem('ghg-pwa-theme-v1',t),theme);
+  await page.goto(base+'/setup/',{waitUntil:'domcontentloaded'});
+  assert.equal(await page.evaluate(()=>document.documentElement.dataset.pwaTheme),theme,
+   'Full Manual inherited selected appearance');
+  const paper=await page.locator('body').evaluate(el=>getComputedStyle(el).getPropertyValue('--paper').trim());
+  assert.equal(paper,theme==='bosque'?'#f5f0e6':'#003018','Full Manual has correct paper token');
+ }
  const gemini=await page.goto(base+'/gemini/',{waitUntil:'domcontentloaded'});assert.equal(gemini.status(),200);
  assert.match(page.url(),/ai=gemini/);assert.match(page.url(),/service=youtube/);
  await page.locator('.pwa-rail').waitFor({state:'visible'});
@@ -297,16 +335,48 @@ await context.close();
 // Independently exercise the actual Android 0.9.56 map bundle on the isolated PWA
 // Worker: no fake third projection or merely ornamental map screenshot.
 for (const width of [390,320]) {
+ const theme=width===390?'usiku':'bosque';
+ const colors=theme==='usiku'?
+  {ocean:'#111111',land:'#f5f0e6',selected:'#e5cf42'}:
+  {ocean:'#f5f0e6',land:'#004225',selected:'#e5cf42'};
  const atlasContext=await browser.newContext({viewport:{width,height:844},isMobile:true,hasTouch:true,serviceWorkers:'block'});
  const atlas=await atlasContext.newPage();
+ await atlas.addInitScript(theme=>{
+  try{localStorage.setItem('ghg-pwa-theme-v1',theme)}catch(_){}
+ },theme);
  atlas.setDefaultTimeout(25000);
  const issues=[];
  atlas.on('pageerror',e=>issues.push(e.message));
  try{
+  await atlas.goto(base+'/',{waitUntil:'domcontentloaded',timeout:45000});
+  await atlas.locator('.pwa-rail').waitFor({state:'visible'});
+  await atlas.locator('[data-crate-region]').first().evaluate(el=>el.click());
+  const fromJukebox=await atlas.evaluate(()=>[...document.querySelectorAll('[data-crate-region][aria-pressed=true]')]
+   .map(el=>el.dataset.crateRegion).sort());
+  assert.equal(fromJukebox.length,1,'One real PWA region selected');
   const response=await atlas.goto(base+'/pwa-atlas/',{waitUntil:'domcontentloaded',timeout:45000});
   assert.equal(response.status(),200,'Atlas preview route must be hosted by isolated Worker');
   await atlas.waitForFunction(()=>window.labCahillMap?.ready&&window.labAtlasGlobe?.loaded(),null,{timeout:55000});
   assert.equal(await atlas.locator('[data-atlas-view]').count(),3,'All three Android map projections are available');
+  assert.equal(await atlas.evaluate(()=>document.documentElement.dataset.pwaTheme),theme,'Atlas inherited chosen PWA theme');
+  assert.equal(await atlas.locator('link[href="/pwa-atlas/assets/pwa-atlas-themes.css"]').count(),1,
+   'Atlas loads its browser-only palette stylesheet');
+  await atlas.waitForFunction(colors=>{
+   const land=window.labAtlasGlobe?.getPaintProperty?.('land','fill-color');
+   return land?.[2]===colors.selected&&land?.[3]===colors.land;
+  },colors,{timeout:15000});
+  const tabs=await atlas.evaluate(()=>({
+   rail:getComputedStyle(document.querySelector('.lab-rail')).backgroundColor,
+   page:getComputedStyle(document.querySelector('.lab-page')).backgroundColor
+  }));
+  assert.equal(tabs.rail,theme==='usiku'?'rgb(17, 17, 17)':'rgb(0, 48, 24)','Atlas navigation theme');
+  assert.equal(tabs.page,theme==='usiku'?'rgb(0, 48, 24)':'rgb(245, 240, 230)','Atlas Crate/Manual theme');
+  const inherited=await atlas.evaluate(()=>[...document.querySelectorAll('[data-crate-region][aria-pressed=true]')]
+   .map(el=>el.dataset.crateRegion).sort());
+  assert.deepEqual(inherited,fromJukebox,'Atlas inherits same-origin Jukebox selections');
+  await atlas.locator('[data-crate-region]').nth(1).evaluate(el=>el.click());
+  await atlas.waitForFunction(()=>document.querySelectorAll('[data-crate-region][aria-pressed=true]').length>=2,
+   null,{timeout:5000});
   const before=await atlas.evaluate(()=>[...document.querySelectorAll('[data-crate-region][aria-pressed=true]')].map(el=>el.dataset.crateRegion).sort());
   const routes=['cahill-keyes','globe','robinson'];
   for(const mode of routes){
@@ -319,12 +389,46 @@ for (const width of [390,320]) {
    },mode,{timeout:28000});
    const after=await atlas.evaluate(()=>[...document.querySelectorAll('[data-crate-region][aria-pressed=true]')].map(el=>el.dataset.crateRegion).sort());
    assert.deepEqual(after,before,'Atlas modes must not silently change selected regions');
+   await atlas.waitForFunction(colors=>{
+    const land=window.labAtlasGlobe?.getPaintProperty?.('land','fill-color');
+    return land?.[2]===colors.selected&&land?.[3]===colors.land;
+   },colors,{timeout:10000});
+   const ink=await atlas.evaluate(()=>{
+    const m=window.labAtlasGlobe;return {
+     land:m.getPaintProperty('land','fill-color'),
+     water:m.getPaintProperty('ocean','background-color'),
+     projection:m.getProjection()?.type,
+     robinson:m.getPaintProperty('robinson-ocean','fill-color')
+    };
+   });
+   assert.equal(ink.land[2],colors.selected,'Selected region paint is yellow');
+   assert.equal(ink.land[3],colors.land,'Unselected MapLibre land is themed');
+   assert.equal(ink.robinson,colors.ocean,'Robinson ocean plate is themed');
+   assert.equal(ink.water,ink.projection==='mercator'?'rgba(0,0,0,0)':colors.ocean,
+    'Visible globe ocean stays themed while Robinson engine keeps transparent backdrop');
+   if(mode==='cahill-keyes'){
+    const fill=await atlas.locator('#labAtlasCahill [data-cahill-region][aria-pressed=true]').first()
+     .evaluate(el=>getComputedStyle(el).fill);
+    assert.equal(fill,'rgb(229, 207, 66)','Cahill country selected color is yellow');
+   }
    assert.equal(await atlas.evaluate(()=>document.documentElement.scrollWidth>innerWidth+3),false,
     'Atlas preview cannot make mobile page horizontally overflow');
    await atlas.locator('#labAtlasGlobe').screenshot({path:folder+'/atlas-'+width+'-'+mode+'.png',timeout:30000});
   }
   const back=atlas.getByRole('link',{name:'Return to PWA Jukebox'});
   assert.equal(await back.getAttribute('href'),'/','Preview must clearly return to the PWA');
+  const atlasSelections=await atlas.evaluate(()=>[...document.querySelectorAll('[data-crate-region][aria-pressed=true]')]
+   .map(el=>el.dataset.crateRegion).sort());
+  await back.click();
+  // The canonical Jukebox restores its AI/service preferences into the
+  // edition URL after navigation; both paths serve the same browser PWA.
+  await atlas.waitForURL(url=>
+   url.pathname==='/'||url.pathname==='/editions/gig-poster/'||
+   url.pathname==='/editions/gig-poster/index.html',{timeout:10000});
+  await atlas.locator('.pwa-rail').waitFor({state:'visible'});
+  const returned=await atlas.evaluate(()=>[...document.querySelectorAll('[data-crate-region][aria-pressed=true]')]
+   .map(el=>el.dataset.crateRegion).sort());
+  assert.deepEqual(returned,atlasSelections,'Three-map selection survives return to PWA Jukebox');
   assert.deepEqual(issues,[],'No Atlas browser errors');
   report.push({profile:'atlas-'+width,passed:true,projections:routes});
  }catch(e){

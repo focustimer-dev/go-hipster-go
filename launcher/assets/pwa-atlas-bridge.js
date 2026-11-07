@@ -4,6 +4,17 @@
 (function(){
 'use strict';
 const KEY='ghg-pwa-crate-v1', REF='ghg-pwa-reference-v1', PREF='ghg-pwa-atlas-prefs-v1';
+const THEME_KEY='ghg-pwa-theme-v1', THEMES=['liberi','bosque','usiku'];
+const ATLAS_PALETTES={
+ bosque:{ocean:'#f5f0e6',land:'#004225',ink:'#003018',selected:'#e5cf42',route:'#8c6239'},
+ usiku:{ocean:'#111111',land:'#f5f0e6',ink:'#003018',selected:'#e5cf42',route:'#b77b4d'}
+};
+function atlasTheme(){
+ try{const v=localStorage.getItem(THEME_KEY);return THEMES.includes(v)?v:'liberi'}
+ catch(_){return 'liberi'}
+}
+// Applied before Android bundle DOM is parsed: no first-paint theme flash.
+document.documentElement.dataset.pwaTheme=atlasTheme();
 const services={chatgpt:'https://chatgpt.com/',gemini:'https://gemini.google.com/app',
  claude:'https://claude.ai/'};
 function read(key,fallback){
@@ -20,6 +31,55 @@ function crate(){
 }
 function changed(){try{(window.HipsterLabRefresh||window.HipsterLabStateChanged)?.()}catch(e){console.warn('Atlas preview state refresh failed',e)}}
 function prefs(){return read(PREF,{mode:'browser',oneTap:false,haptics:false})}
+/* Browser-only MapLibre paint adapter. The canonical Android style and
+   projection transition code stay untouched. An expression maintains native
+   feature-state selection, including region changes and projection switches. */
+let atlasThemeMap=null,atlasThemeFrame=0;
+function paintAtlasTheme(){
+ const map=atlasThemeMap,theme=atlasTheme(),palette=ATLAS_PALETTES[theme];
+ document.documentElement.dataset.pwaTheme=theme;
+ if(!map||!palette||!map.getLayer?.('land'))return;
+ try{
+  const desired={
+   land:{'fill-color':['case',['boolean',['feature-state','selected'],false],
+     palette.selected,palette.land]},
+   borders:{'line-color':palette.ink},
+   ocean:{'background-color':map.getProjection()?.type==='mercator'?'rgba(0,0,0,0)':palette.ocean},
+   'robinson-ocean':{'fill-color':palette.ocean},
+   routes:{'line-color':palette.route}
+  };
+  for(const [layer,paints] of Object.entries(desired)){
+   if(!map.getLayer(layer))continue;
+   for(const [prop,value] of Object.entries(paints)){
+    if(JSON.stringify(map.getPaintProperty(layer,prop))!==JSON.stringify(value))
+     map.setPaintProperty(layer,prop,value);
+   }
+  }
+ }catch(e){console.warn('Atlas palette could not be applied',e)}
+}
+function requestAtlasThemePaint(){
+ if(atlasThemeFrame)return;
+ atlasThemeFrame=requestAnimationFrame(()=>{atlasThemeFrame=0;paintAtlasTheme()});
+}
+function attachAtlasTheme(){
+ const map=window.labAtlasGlobe;
+ if(!map||map===atlasThemeMap)return !!map;
+ atlasThemeMap=map;
+ map.on('load',requestAtlasThemePaint);
+ map.on('styledata',requestAtlasThemePaint);
+ map.on('idle',requestAtlasThemePaint);
+ requestAtlasThemePaint();
+ return true;
+}
+window.addEventListener('storage',event=>{
+ if(event.key===THEME_KEY||event.key===null)requestAtlasThemePaint();
+});
+window.addEventListener('DOMContentLoaded',()=>{
+ const observe=new MutationObserver(()=>{if(attachAtlasTheme())observe.disconnect()});
+ observe.observe(document.body,{childList:true,subtree:true});
+ if(attachAtlasTheme())observe.disconnect();
+});
+window.GHGAtlasTheme=Object.freeze({current:atlasTheme,apply:paintAtlasTheme});
 function state(){
  const saved=crate(),p=prefs();
  const active=reference(),found=saved.recent.find(x=>x.text===active);
@@ -125,9 +185,15 @@ window.addEventListener('DOMContentLoaded',()=>{
  const active=reference();if(active&&urlIn(active)&&!crate().recent.find(x=>x.text===active)?.metadataStatus&&!crate().recent.find(x=>x.text===active)?.title)refreshPreview(active);
  const brand=document.querySelector('.brandrow');
  if(!brand)return;
- const back=document.createElement('a');back.href='/';
+ const back=document.createElement('a');back.href='/';back.id='pwaAtlasReturn';
  back.textContent='← PWA JUKEBOX';back.setAttribute('aria-label','Return to PWA Jukebox');
  back.style.cssText='display:inline-flex;align-items:center;min-height:44px;margin:6px 0;padding:6px 10px;border:1px solid #103135;background:#dfb045;color:#103135;text-decoration:none;font:700 .76rem/1 Arial,sans-serif';
+ // The Android snapshot owns most of this document's click handling.
+ // Do not let its in-app navigation handler swallow the browser return.
+ back.addEventListener('click',event=>{
+  event.preventDefault();event.stopImmediatePropagation();
+  window.location.assign('/');
+ });
  brand.append(back);
 });
 })();

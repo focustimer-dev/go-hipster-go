@@ -7,6 +7,7 @@ on:
       - 'launcher/assets/pwa-themes.css'
       - 'launcher/assets/pwa-guides.js'
       - 'launcher/assets/pwa-atlas-bridge.js'
+      - 'launcher/assets/pwa-atlas-themes.css'
       - 'launcher/assets/app.js'
       - 'cloudflare/worker.js'
       - 'cloudflare/link-preview.js'
@@ -57,6 +58,7 @@ jobs:
           test -s launcher/pwa-atlas/assets/maplibre/maplibre-gl.js
           test -s launcher/pwa-atlas/assets/cahill-keyes-vendor.js
           test -s launcher/pwa-atlas/assets/pwa-atlas-bridge.js
+          test -s launcher/pwa-atlas/assets/pwa-atlas-themes.css
       - name: Deploy the isolated preview Worker, never production
         uses: cloudflare/wrangler-action@v4
         with:
