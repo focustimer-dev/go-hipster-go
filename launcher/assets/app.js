@@ -630,6 +630,13 @@ function renderLaunch(regionsOnly=false){
  history.replaceState(null,"",u.pathname+u.search);
 }
 function render(){/* PLATFORM_RENDER */if(body.dataset.page==="launch")renderLaunch();else renderSetup()}
+window.addEventListener("ghg-pwa-inspiration-metadata",()=>{
+ // A title can resolve after a GO was copied. Never claim the old clipboard
+ // contains the newly enriched prompt or enable a stale AI handoff.
+ if(window.HipsterLab)return;
+ if(copiedPrompt&&copiedPrompt!==goPrompt(ai,service,mood))copiedPrompt=null;
+ render();
+});
 doc.querySelectorAll("[data-ai]").forEach(b=>b.addEventListener("click",()=>{
  ai=b.dataset.ai;copiedPrompt=null;copiedSetupPrompt=null;selectionChanged();
 }));
