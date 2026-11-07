@@ -32,7 +32,7 @@ const palettes={
    await page.waitForFunction(()=>window.labAtlasGlobe?.loaded()&&window.labCahillMap?.ready,null,{timeout:30000});
    await page.emulateMedia({reducedMotion:'reduce'});
    for(const name of Object.keys(palettes)){
-    await page.locator('[data-lab-action=preferences]').click();
+    await page.locator('.lab-rail [data-lab-action=preferences]').click();
     await page.locator('[data-lab-theme='+name+']').click();
     assert.equal(await page.locator('[data-lab-theme][aria-pressed=true]').count(),1);
     assert.equal(await page.evaluate(()=>document.documentElement.dataset.pwaTheme),name);
