@@ -64,6 +64,11 @@ for(const profile of profiles){
     const key=document.querySelector('.mood[data-mood="desire"]');
     return key && getComputedStyle(key).backgroundColor===expected;
    },name==='liberi'?'rgb(214, 75, 48)':'rgb(0, 66, 37)',{timeout:5000});
+   if(name==='usiku'){
+    await page.waitForFunction(()=>
+     getComputedStyle(document.querySelector('.mood[data-mood="sad"]')).backgroundColor==='rgb(17, 17, 17)'
+    ,null,{timeout:5000});
+   }
    observedThemes[name]=await page.locator('#pwaJukebox').evaluate(el=>({
     background:getComputedStyle(el).backgroundColor,
     paper:getComputedStyle(document.body).getPropertyValue('--paper').trim(),
