@@ -1,0 +1,12 @@
+# Approved Android Lab 0.9.57 update — November 6, 2026
+
+User-approved metadata repair in PR #179. On merge to main this marker
+authorizes one build and signature of the native Android Lab 0.9.57 APK.
+Keep package ID work.samelling.hipstergo.lab, increase versionCode to 66,
+and verify the certificate SHA-256 digest matches the already-installed Lab.
+
+Native unit tests, lint, package identity and certificate verification must
+succeed. Distribute the signed APK as a GitHub Actions artifact for manual
+installation; this does not deploy or publish to Google Play.
+Known unrelated full Android Lab CI has screenshot timeouts and Atlas performance
+variance, so signing job validates the native build independently.

@@ -11,6 +11,7 @@ on:
       - '.github/releases/pwa-0-9-56-2026-11-06'
       - '.github/releases/pwa-0-9-56-qa-fix-2026-11-06'
       - '.github/releases/pwa-three-map-link-cleanup-2026-11-06'
+      - '.github/releases/inspiration-metadata-2026-11-06'
 
 permissions:
   contents: read

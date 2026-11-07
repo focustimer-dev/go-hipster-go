@@ -45,6 +45,60 @@ final class LinkPreview {
   void cancel(){cancelled=true;okhttp3.Call active=call;if(active!=null)active.cancel();}
   void attach(okhttp3.Call next)throws IOException{call=next;if(cancelled){next.cancel();throw new IOException("Preview cancelled");}}
  }
+
+ // Android is offline-first for the app itself, but public metadata is opt-in.
+ // Prefer our first-party, provider-bounded oEmbed resolver for music services:
+ // many music pages block generic HTML scrapers. Fall back to local HTML/OG
+ // parsing for unsupported sites and when the service is unavailable.
+ static boolean serviceCandidate(String value){
+  try{String host=allowedUrl(value).getHost().toLowerCase(Locale.ROOT);
+   for(String domain:new String[]{"spotify.com","spotify.link","youtube.com","youtu.be",
+    "soundcloud.com","bandcamp.com","music.apple.com","tidal.com","deezer.com",
+    "mixcloud.com","audiomack.com","vimeo.com","instagram.com","tiktok.com","discogs.com"})
+    if(host.equals(domain)||host.endsWith("."+domain))return true;
+  }catch(IOException ignored){}
+  return false;
+ }
+ static Result parseServiceResult(String original,String json)throws IOException{
+  try{
+   org.json.JSONObject result=new org.json.JSONObject(json);
+   if(!"ok".equals(result.optString("status")))throw new IOException("Metadata not available");
+   String title=truncate(result.optString("title"),140);
+   if(title.isEmpty())throw new IOException("Missing link title");
+   return new Result(original,title,truncate(result.optString("description"),240));
+  }catch(org.json.JSONException bad){throw new IOException("Malformed preview response",bad);}
+ }
+ static Result fetchWithFallback(String value,Request token)throws IOException{
+  if(serviceCandidate(value)){
+   try{return fetchViaService(value,token);}catch(IOException failure){
+    if(Thread.currentThread().isInterrupted())throw failure;
+   }
+  }
+  return fetch(value,token);
+ }
+ static Result fetchViaService(String value,Request request)throws IOException{
+  allowedUrl(value);
+  String endpoint="https://hipster-go.samelling.workers.dev/api/inspiration-preview?url="+
+    java.net.URLEncoder.encode(value,"UTF-8");
+  okhttp3.Call call=client.newCall(new okhttp3.Request.Builder()
+   .url(endpoint).header("Accept","application/json").build());
+  call.timeout().timeout(6500,java.util.concurrent.TimeUnit.MILLISECONDS);
+  request.attach(call);
+  try(okhttp3.Response response=call.execute()){
+   if(response.code()!=200||response.body()==null)throw new IOException("Preview endpoint unavailable");
+   String type=String.valueOf(response.header("Content-Type")).toLowerCase(Locale.ROOT);
+   if(!type.contains("application/json"))throw new IOException("Invalid preview type");
+   try(InputStream input=response.body().byteStream()){
+    ByteArrayOutputStream output=new ByteArrayOutputStream();
+    byte[] buffer=new byte[2048];int n;
+    while(output.size()<16384&&(n=input.read(buffer,0,Math.min(buffer.length,16384-output.size())))!=-1)
+     output.write(buffer,0,n);
+    if(output.size()==16384)throw new IOException("Oversized preview response");
+    return parseServiceResult(value,output.toString("UTF-8"));
+   }
+  }
+ }
+
  static Result fetch(String value)throws IOException{return fetch(value,new Request());}
  static Result fetch(String value,Request request)throws IOException {
   URL u=allowedUrl(value);long deadline=System.nanoTime()+java.util.concurrent.TimeUnit.SECONDS.toNanos(12);

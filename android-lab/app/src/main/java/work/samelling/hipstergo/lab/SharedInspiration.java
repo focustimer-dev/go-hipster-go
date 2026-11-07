@@ -48,11 +48,23 @@ final class SharedInspiration {
         if(!previewLoading)return;
         final long version=generation;final LinkPreview.Request request=new LinkPreview.Request();previewRequest=request;
         pending=worker.submit(()->{
-            try{LinkPreview.Result result=LinkPreview.fetch(url,request);activity.runOnUiThread(()->{
+            try{LinkPreview.Result result=LinkPreview.fetchWithFallback(url,request);if(result.title.isEmpty())throw new java.io.IOException("No page title");activity.runOnUiThread(()->{
                 if(closed||version!=generation)return;if(text.equals(loadingText))previewLoading=false;JSONArray entries=recent();boolean found=false;
-                for(int i=0;i<entries.length();i++){JSONObject entry=entries.optJSONObject(i);if(entry!=null&&text.equals(entry.optString("text"))){try{entry.put("title",result.title).put("description",result.description).put("url",result.url);found=true;}catch(JSONException ignored){}}}
+                for(int i=0;i<entries.length();i++){JSONObject entry=entries.optJSONObject(i);if(entry!=null&&text.equals(entry.optString("text"))){try{entry.put("title",result.title).put("description",result.description).put("url",result.url).put("metadataStatus","ok");found=true;}catch(JSONException ignored){}}}
                 if(found){prefs.edit().putString("recentInspirationsV1",entries.toString()).apply();changed.run();}
-            });}catch(Exception ignored){activity.runOnUiThread(()->{if(!closed&&version==generation&&text.equals(loadingText)){previewLoading=false;changed.run();}});}
+            });}catch(Exception failure){activity.runOnUiThread(()->{
+                if(closed||version!=generation||!text.equals(loadingText))return;
+                previewLoading=false;
+                JSONArray entries=recent();
+                for(int i=0;i<entries.length();i++){
+                    JSONObject entry=entries.optJSONObject(i);
+                    if(entry!=null&&text.equals(entry.optString("text"))){
+                        try{entry.put("metadataStatus","unavailable");}catch(JSONException ignored){}
+                    }
+                }
+                prefs.edit().putString("recentInspirationsV1",entries.toString()).apply();
+                changed.run();
+            });}
         });
     }
     void apply(String text){

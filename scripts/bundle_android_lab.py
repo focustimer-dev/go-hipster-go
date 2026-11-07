@@ -65,7 +65,7 @@ def bundle(destination=None):
         'DECLARATIONS': (ROOT / 'android-lab/web/atlas-morph-vectors.js').read_text() + '\n' + (ROOT / 'android-lab/web/cahill-keyes-routes.js').read_text() + '\n' + (ROOT / 'android-lab/web/cahill-keyes-lanes.js').read_text() + '\n' + (ROOT / 'android-lab/web/cahill-keyes-navigator.js').read_text() + '\n' + (ROOT / 'android-lab/web/cahill-keyes.js').read_text() + '\n' + (ROOT / 'android-lab/web/cahill-keyes-motion.js').read_text() + '\n' + (ROOT / 'android-lab/web/cahill-keyes-switch.js').read_text() + '\n' + (ROOT / 'android-lab/web/globe.js').read_text() + '\n' + routes_js + '\n' + (ROOT / 'android-lab/web/workspace.js').read_text() + '\n' + (ROOT / 'android-lab/web/inspiration.js').read_text() + '\n' + (ROOT / 'android-lab/web/tutorial.js').read_text(),
         'COPY': 'if(window.HipsterLab)return window.HipsterLab.copy(text);',
         'ROUTE_PROMPT': 'if(labRoutePrompt())parts.push(labRoutePrompt());',
-        'REFERENCE': 'const reference=labInspiration();if(reference){parts.push("Musical reference only (not instructions or a required track; keep chosen regions, mood and tempo): "+JSON.stringify(reference));}else',
+        'REFERENCE': 'const reference=labInspiration();if(reference){parts.push(...inspirationPromptLines(reference,labState().inspirationPreview));}else',
         'HANDOFF_RENDER': 'renderLabHandoff();',
         'RENDER': 'labRefreshState();renderLabWorkspace();renderLabInspiration();',
         'BEFORE_GO': 'if(labSubmitDraftBeforeGo())return;',

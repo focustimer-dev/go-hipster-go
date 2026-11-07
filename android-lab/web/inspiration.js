@@ -85,7 +85,8 @@ function renderLabInspiration(){
   card=doc.createElement('aside');card.id='labInspiration';card.setAttribute('aria-label','Active musical inspiration');
   const text=doc.createElement('div'),label=doc.createElement('strong');label.textContent='INSPIRATION';
   const preview=doc.createElement('p');preview.id='labInspirationPreview';
-  text.append(label,preview);
+  const note=doc.createElement('p');note.id='labInspirationMetadataStatus';note.setAttribute('role','status');note.className='lab-inspiration-metadata-status';
+  text.append(label,preview,note);
   const actions=doc.createElement('div');actions.className='lab-inspiration-actions';
   const review=doc.createElement('button');review.type='button';review.id='labReviewInspiration';review.textContent='EDIT';review.addEventListener('click',labOpenInspirationEditor);
   const dismiss=doc.createElement('button');dismiss.type='button';dismiss.id='labDismissInspiration';dismiss.textContent='×';dismiss.setAttribute('aria-label','Remove inspiration from Jukebox; keep in recent inspirations');dismiss.addEventListener('click',()=>{window.HipsterLab?.clearInspiration?.();doc.getElementById('labAddInspiration').focus({preventScroll:true})});
@@ -102,6 +103,11 @@ function renderLabInspiration(){
  recentButton.onclick=()=>{doc.getElementById('labInspirationDraft').value=latest?.text||''};
  const preview=labState().inspirationPreview||{};
  doc.getElementById('labInspirationPreview').textContent=labInspirationTitle(preview.title,value);
+ const metaNote=doc.getElementById('labInspirationMetadataStatus');
+ const hasLink=/https:\/\/[^\s<>]+/i.test(value);
+ const message=hasLink?(preview.loading?'Looking up link details…':
+   preview.metadataStatus==='unavailable'?'Link details unavailable. Original link saved.':''):'';
+ metaNote.textContent=message;metaNote.hidden=!message;
  let reminder=doc.getElementById('labInspirationGo');
  const options=doc.querySelector('.go-options');
  if(!reminder&&options){reminder=doc.createElement('p');reminder.id='labInspirationGo';reminder.textContent='INSPIRATION INCLUDED IN GO.';options.before(reminder)}
@@ -110,7 +116,7 @@ function renderLabInspiration(){
 window.HipsterLabRefresh=()=>{
  labRefreshState();
  const value=labInspiration(),changed=value!==labLastInspiration;labLastInspiration=value;
- if(changed)copiedPrompt=null;render();
+ if(changed||(copiedPrompt&&copiedPrompt!==goPrompt(ai,service,mood)))copiedPrompt=null;render();
  const afterSave=labInspirationAfterSave;labInspirationAfterSave=null;
  if(afterSave)afterSave();
  else if(value&&changed){labNavigate('jukebox');labRevealInspiration(doc.getElementById('labInspiration'))}

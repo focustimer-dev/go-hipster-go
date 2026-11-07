@@ -8,6 +8,8 @@ on:
       - 'launcher/assets/pwa-atlas-bridge.js'
       - 'launcher/assets/app.js'
       - 'cloudflare/worker.js'
+      - 'cloudflare/link-preview.js'
+      - 'tests/link_preview_worker.test.mjs'
       - 'docs/pwa-*'
       - 'scripts/pwa_preview_qa.mjs'
       - 'scripts/build_pwa_atlas_preview.py'
@@ -20,7 +22,7 @@ concurrency:
 jobs:
   preview-qa:
     # Only this repository's own parity branch, never external fork PRs.
-    if: github.event.pull_request.head.repo.full_name == github.repository && startsWith(github.head_ref, 'feat/pwa-')
+    if: github.event.pull_request.head.repo.full_name == github.repository && (startsWith(github.head_ref, 'feat/pwa-') || startsWith(github.head_ref, 'fix/inspiration-metadata-'))
     runs-on: ubuntu-latest
     environment: production
     timeout-minutes: 25
@@ -38,6 +40,8 @@ jobs:
           node --check launcher/assets/pwa-guides.js
           node --check launcher/assets/pwa-atlas-bridge.js
           node --check launcher/assets/app.js
+          node --check cloudflare/link-preview.js
+          node --test tests/link_preview_worker.test.mjs
           node --check scripts/pwa_preview_qa.mjs
       - name: Verify preview deploy authorization
         env:
