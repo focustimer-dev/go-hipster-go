@@ -57,7 +57,34 @@ for(const profile of profiles){
    assert.equal(await page.locator('button[data-pwa-theme="'+name+'"]').getAttribute('aria-pressed'),'true');
    assert.equal(await page.locator('button[data-pwa-theme][aria-pressed=true]').count(),1,'One theme only');
    assert.equal(await page.evaluate(()=>document.documentElement.dataset.pwaTheme),name);
+   // Audit every PWA surface, not just the Jukebox. Preferences is in a real
+   // dialog; Crate and Manual are persistent destinations with their own ink.
+   const surfaces=await page.evaluate(()=>({
+    prefs:getComputedStyle(document.querySelector('#pwaPrefs')).backgroundColor,
+    crate:getComputedStyle(document.querySelector('#pwaCrate')).backgroundColor,
+    manual:getComputedStyle(document.querySelector('#pwaManual')).backgroundColor
+   }));
+   if(name==='bosque')for(const key of ['prefs','crate','manual'])
+    assert.equal(surfaces[key],'rgb(245, 240, 230)','Bosque '+key+' uses warm paper');
+   if(name==='usiku'){
+    assert.equal(surfaces.prefs,'rgb(17, 17, 17)','Usiku preferences use night ink');
+    for(const key of ['crate','manual'])
+     assert.equal(surfaces[key],'rgb(0, 48, 24)','Usiku '+key+' uses forest ground');
+   }
+   if(profile.name==='phone')
+    await page.screenshot({path:folder+'/phone-theme-'+name+'-preferences.png'});
    await page.locator('[data-pwa-action="close"]').click();
+   for(const tab of ['crate','manual']){
+    await page.locator('[data-pwa-tab="'+tab+'"]').click();
+    await page.locator('#pwa'+tab.charAt(0).toUpperCase()+tab.slice(1)).waitFor({state:'visible'});
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2),false,
+     name+' '+tab+' overflow');
+    if(tab==='manual')assert.equal(await page.locator('#pwaGuidePicker').isVisible(),true,
+     'Guide picker is available in '+name);
+    if(profile.name==='phone')
+     await page.screenshot({path:folder+'/phone-theme-'+name+'-'+tab+'.png'});
+   }
+   await page.locator('[data-pwa-tab="jukebox"]').click();
    // Theme color transitions last 160ms; sample fully settled pixels, never
    // intermediate animated colors. Reduced-motion users already see the final state.
    await page.waitForFunction(expected=>{
