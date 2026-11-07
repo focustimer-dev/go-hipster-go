@@ -189,6 +189,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert(outward&&outward.to==='globe'&&Number.isFinite(outward.endpointResidual),
    'Globe handoff must report its measured endpoint');
   console.log('Globe endpoint',{sampled:outward.fitSampled,residual:outward.endpointResidual});
+  assert(outward.fitSampled,'Globe destination fit should be measured from live geometry');
   assert.equal(await page.locator('.lab-atlas-morph').count(),0,'The veil is fully removed after the new map settles');
   assert.equal(await page.locator('#labAtlasGlobe').evaluate(el=>el.style.pointerEvents),'','Hit testing must be restored once the spring settles');
   await page.reload();await page.waitForFunction(()=>window.labAtlasGlobe&&labAtlasGlobe.loaded());
@@ -223,6 +224,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert(inward&&inward.to==='robinson'&&Number.isFinite(inward.endpointResidual),
    'Robinson handoff must report its measured endpoint');
   console.log('Robinson endpoint',{sampled:inward.fitSampled,residual:inward.endpointResidual});
+  assert(inward.fitSampled,'Robinson destination fit should be measured from live geometry');
   const robinsonFrame=await page.locator('#labAtlasGlobe').evaluate(el=>({width:el.clientWidth,height:el.clientHeight}));
   assert(Math.abs(robinsonFrame.width/robinsonFrame.height-720/372)<.05,'Robinson keeps the original wide chart');
   assert.equal(await page.locator('#atlasHome').textContent(),'← WHOLE WORLD');
@@ -329,7 +331,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   const selected=await page.locator('[data-crate-stamp-region]').evaluateAll(nodes=>nodes.map(n=>n.dataset.crateStampRegion));
   assert.deepEqual(selected.sort(),['atlantic-europe','canada-east','caribbean'].sort(),'Route picks replace previous selections');
   const cdp=await page.context().newCDPSession(page);await cdp.send('Emulation.setCPUThrottlingRate',{rate:8});
-  await page.locator('#labAtlasGlobe').scrollIntoViewIfNeeded();
+  await page.locator('#labAtlasGlobe').evaluate(el=>el.scrollIntoView({block:'center',behavior:'instant'}));
   await page.evaluate(()=>{window.globeFrames=[];window.globeMeasuring=true;let last=performance.now();function frame(t){globeFrames.push(t-last);last=t;if(globeMeasuring)requestAnimationFrame(frame)}requestAnimationFrame(frame)});
   const b=await page.locator('#labAtlasGlobe').boundingBox(),cx=b.x+b.width/2,cy=b.y+b.height/2;
   await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:cx,y:cy}]});
@@ -344,13 +346,15 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   await page.waitForFunction(()=>window.atlasTestReady,{timeout:30000});
   await page.waitForFunction(()=>atlasTestMap.loaded());
   assert.equal(await page.evaluate(()=>atlasTestMap.getProjection().type),'globe');
-  await page.screenshot({path:'android-lab/build/switch-review/maplibre-globe.png'});
+  try{await page.screenshot({path:'android-lab/build/switch-review/maplibre-globe.png',timeout:10000})}
+  catch(err){console.warn('Optional MapLibre globe screenshot skipped:',err.message)}
   await page.locator('#map').click({position:{x:206,y:290}});
   await page.locator('#flat').click();
   await page.evaluate(()=>atlasTestMap.jumpTo({zoom:3,center:[10,20]}));
   await page.waitForTimeout(300);
   assert.equal(await page.evaluate(()=>atlasTestMap.getPaintProperty('borders','line-width')),.7,'Border thickness stays screen-relative');
-  await page.screenshot({path:'android-lab/build/switch-review/maplibre-flat.png'});
+  try{await page.screenshot({path:'android-lab/build/switch-review/maplibre-flat.png',timeout:10000})}
+  catch(err){console.warn('Optional MapLibre flat screenshot skipped:',err.message)}
   assert(requests.every(url=>url.startsWith('http://127.0.0.1:')||url.startsWith('blob:')||url.startsWith('data:')),'Prototype runs without remote map requests');
   assert.deepEqual(errors,[]);
 
