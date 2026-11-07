@@ -185,6 +185,10 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    if(capture.phase==='settle')assert.equal(capture.vector,1,'Settled transition must reach its geographic endpoint');
   assert(capture.vector>=0&&capture.vector<=1,'Vector correspondence stays inside both endpoints');
   await page.waitForFunction(()=>!document.querySelector('.lab-atlas-morph'),{timeout:6000});
+  const outward=await page.evaluate(()=>window.__labAtlasLastMorph);
+  assert(outward&&outward.to==='globe'&&Number.isFinite(outward.endpointResidual),
+   'Globe handoff must report its measured endpoint');
+  console.log('Globe endpoint',{sampled:outward.fitSampled,residual:outward.endpointResidual});
   assert.equal(await page.locator('.lab-atlas-morph').count(),0,'The veil is fully removed after the new map settles');
   assert.equal(await page.locator('#labAtlasGlobe').evaluate(el=>el.style.pointerEvents),'','Hit testing must be restored once the spring settles');
   await page.reload();await page.waitForFunction(()=>window.labAtlasGlobe&&labAtlasGlobe.loaded());
@@ -215,6 +219,10 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   await page.waitForTimeout(160);
   assert(await page.locator('.lab-atlas-morph-vectors').count(),'Globe return uses real vector geography');
   await page.waitForFunction(()=>!document.querySelector('.lab-atlas-morph'),{timeout:6000});
+  const inward=await page.evaluate(()=>window.__labAtlasLastMorph);
+  assert(inward&&inward.to==='robinson'&&Number.isFinite(inward.endpointResidual),
+   'Robinson handoff must report its measured endpoint');
+  console.log('Robinson endpoint',{sampled:inward.fitSampled,residual:inward.endpointResidual});
   const robinsonFrame=await page.locator('#labAtlasGlobe').evaluate(el=>({width:el.clientWidth,height:el.clientHeight}));
   assert(Math.abs(robinsonFrame.width/robinsonFrame.height-720/372)<.05,'Robinson keeps the original wide chart');
   assert.equal(await page.locator('#atlasHome').textContent(),'← WHOLE WORLD');
@@ -295,9 +303,13 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    const positions=await page.locator('#labAtlasGlobe').evaluate(el=>new Promise(resolve=>{const samples=[];let count=0;function frame(){const r=el.getBoundingClientRect();samples.push({x:r.x,y:r.y,width:r.width,height:r.height});if(++count<8)requestAnimationFrame(frame);else resolve(samples)}requestAnimationFrame(frame)}));
    console.log('Atlas mode bounds',mode,positions);
    const last=positions.at(-1);assert(positions.slice(-3).every(p=>Math.abs(p.width-last.width)<.5&&Math.abs(p.height-last.height)<.5),'Projection switch settles viewport dimensions');
-   await page.screenshot({path:'android-lab/build/switch-review/atlas-'+mode+'.png',clip:last});
+   try{
+    await page.screenshot({path:'android-lab/build/switch-review/atlas-'+mode+'.png',
+     clip:last,animations:'disabled',timeout:12000});
+   }catch(err){console.warn('Optional atlas review screenshot skipped:',mode,err.message)}
   }
-  await page.locator('#labAtlasGlobe').screenshot({path:'android-lab/build/switch-review/integrated-globe.png'});
+  try{await page.locator('#labAtlasGlobe').screenshot({path:'android-lab/build/switch-review/integrated-globe.png',timeout:12000})}
+  catch(err){console.warn('Optional integrated-globe screenshot skipped:',err.message)}
   await page.locator('#atlasHome').evaluate(el=>el.click());await page.waitForTimeout(500);
   assert.equal(await page.evaluate(()=>labAtlasGlobe.getCenter().lng),10,'Whole World resets camera while preserving stamps');
   assert.equal(await page.getByText('SHIPS, ROUTES & MARGINALIA',{exact:true}).count(),0,'Discoveries are not exposed as a list');
@@ -324,7 +336,8 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   for(let i=1;i<=24;i++){await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:cx+Math.sin(i/24*Math.PI*2)*40,y:cy+Math.cos(i/24*Math.PI*2)*15}]});await page.waitForTimeout(16)}
   await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await cdp.send('Emulation.setCPUThrottlingRate',{rate:1});
   console.log('Globe 8xCPU drag frames:',await page.evaluate(()=>{globeMeasuring=false;globeFrames.sort((a,b)=>a-b);return {frames:globeFrames.length,p95:globeFrames[Math.floor(globeFrames.length*.95)]}}));
-  await page.locator('#labAtlasGlobe').screenshot({path:'android-lab/build/switch-review/integrated-globe-after-drag.png'});
+  try{await page.locator('#labAtlasGlobe').screenshot({path:'android-lab/build/switch-review/integrated-globe-after-drag.png',timeout:12000})}
+  catch(err){console.warn('Optional integrated-globe-after-drag screenshot skipped:',err.message)}
   assert.deepEqual(errors,[]);
   const requests=[];page.on('request',r=>requests.push(r.url()));
   await page.goto('http://127.0.0.1:'+server.address().port+'/atlas-lab.html');
