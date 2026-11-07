@@ -430,7 +430,7 @@ html[data-pwa-theme=usiku] body.gig-poster .chart-rose-ring-fine{
    Cream lettering and green background keep the primary action clear. */
 html[data-pwa-theme=usiku] body.gig-poster .go-options .go-button{
  background:#004225;
- box-shadow:inset 0 -3px 0 var(--usiku-leather);
+ border-bottom:3px solid var(--usiku-leather);
 }
 html[data-pwa-theme=usiku] body.gig-poster .go-options .go-extras{
  border-bottom-color:var(--usiku-leather-edge);
