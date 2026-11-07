@@ -61,17 +61,14 @@ try{
     await frame.locator('body').evaluate(async (_,target)=>{
      const deadline=performance.now()+20000;
      while(performance.now()<deadline){
-      if(typeof labAtlasMode!=='undefined'&&labAtlasMode===target&&
-         typeof labAtlasMorph!=='undefined'&&labAtlasMorph===null)return;
+      const state=window.HipsterAtlasState?.();
+      if(state?.projection===target&&!state.transitioning)return;
       await new Promise(resolve=>requestAnimationFrame(resolve));
      }
      const state={
       requested:target,
-      actual:typeof labAtlasMode==='undefined'?'undefined':labAtlasMode,
-      morph:typeof labAtlasMorph==='undefined'?'undefined':
-       labAtlasMorph?{from:labAtlasMorph.from,to:labAtlasMorph.to,
-        queued:labAtlasMorph.queued,finishing:labAtlasMorph.finishing,
-        revealing:labAtlasMorph.revealing}:null,
+      actual:window.HipsterAtlasState?.()||'unavailable',
+
       pressed:[...document.querySelectorAll('[data-atlas-view][aria-pressed=true]')]
         .map(el=>el.dataset.atlasView),
       overlays:document.querySelectorAll('.lab-atlas-morph,.lab-cahill-motion').length,
