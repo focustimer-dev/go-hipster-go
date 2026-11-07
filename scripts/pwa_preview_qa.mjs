@@ -58,6 +58,8 @@ for(const profile of profiles){
    }));
    if(profile.name==='phone'||profile.name==='phone-reduced-motion'){
     await page.screenshot({path:folder+'/'+profile.name+'-theme-'+name+'-top.png'});
+    await page.locator('#crateAtlasMap').scrollIntoViewIfNeeded();
+    await page.screenshot({path:folder+'/'+profile.name+'-theme-'+name+'-atlas.png'});
     await page.locator('#goButton').scrollIntoViewIfNeeded();
     await page.screenshot({path:folder+'/'+profile.name+'-theme-'+name+'-go.png'});
     await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
