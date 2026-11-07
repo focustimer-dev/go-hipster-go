@@ -156,9 +156,13 @@
 :root[data-pwa-theme=usiku] #labAtlasGlobe :is(.lab-atlas-morph,.lab-cahill-motion){
  background-color:#111111!important;
 }
+/* The original route paths remain untouched. Give their nautical ink
+   enough weight to read at 320–390px without making them new highways. */
 :root[data-pwa-theme=bosque] #labAtlasCahill .lab-cahill-routes path{
- stroke:#8c6239;
+ stroke:#8c6239;stroke-width:1.8;stroke-opacity:.9;
+ stroke-dasharray:4 4;
 }
 :root[data-pwa-theme=usiku] #labAtlasCahill .lab-cahill-routes path{
- stroke:#b77b4d;
+ stroke:#b77b4d;stroke-width:1.8;stroke-opacity:.9;
+ stroke-dasharray:4 4;
 }
