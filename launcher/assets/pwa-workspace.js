@@ -228,7 +228,7 @@ function recordingChoices(){
  doc.getElementById('listeningPreferences')?.scrollIntoView({behavior:'smooth',block:'start'});
 }
 doc.addEventListener('click',async event=>{
- const target=event.target.closest('[data-pwa-tab],[data-pwa-action],[data-pwa-theme]');if(!target)return;
+ const target=event.target.closest('[data-pwa-tab],[data-pwa-action],button[data-pwa-theme]');if(!target)return;
  if(target.dataset.pwaTheme){selectTheme(target.dataset.pwaTheme,true);return}
  if(target.dataset.pwaTab){navigate(target.dataset.pwaTab);return}
  switch(target.dataset.pwaAction){
@@ -291,7 +291,7 @@ doc.getElementById('pwaSaveDialog').querySelector('form').addEventListener('subm
 doc.querySelectorAll('.pwa-dialog').forEach(d=>d.addEventListener('close',()=>doc.body.classList.remove('pwa-modal-open')));
 doc.querySelectorAll('.pwa-dialog').forEach(d=>d.addEventListener('cancel',()=>doc.body.classList.remove('pwa-modal-open')));
 doc.addEventListener('click',event=>{
- if(event.target.closest('[data-pwa-tab],[data-pwa-action],[data-pwa-theme]'))return;
+ if(event.target.closest('[data-pwa-tab],[data-pwa-action],button[data-pwa-theme]'))return;
  const a=event.target.closest('a[href]');if(!a||event.defaultPrevented)return;
  const path=new URL(a.href,location.href).pathname;
  if(path==='/setup/'&&screen==='jukebox'){/* Full browser Manual remains available. */return}
