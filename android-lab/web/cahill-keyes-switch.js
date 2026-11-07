@@ -45,6 +45,12 @@ function labAtlasCahillTransition(mode,instant=false){
  labCahill.navigator?.deactivate();
  labAtlasSwitchButtons(mode);
  labAtlasMorphVectors.pauseWarm();
+ // An opaque geographic film is already covering the map. Stop the
+ // live WebGL canvas from competing for compositor frames during the fold.
+ // Restore its visibility before revealing the destination renderer.
+ const mapCanvas=labGlobe.getCanvas(),canvasVisibility=mapCanvas.style.visibility;
+ labGlobe.stop();
+ mapCanvas.style.visibility='hidden';
  const already={value:false};
  const precommit=()=>{
   if(already.value||mode==='cahill-keyes')return;
@@ -65,6 +71,7 @@ function labAtlasCahillTransition(mode,instant=false){
   let revealed=false;
   const show=(signal)=>{
    if(revealed)return;revealed=true;
+   mapCanvas.style.visibility=canvasVisibility;
    labGlobe.off('render',onRender);
    labGlobe.off('idle',onIdle);
    let alignment=null,fitSampled=false;
