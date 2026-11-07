@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Build a review-only browser route from the canonical Android Lab atlas.
 
-The Android bundle is the single source of geometry, projection transitions and
-shipping lanes. Build exclusively into launcher/pwa-atlas for the isolated Worker.
+The Android bundle is the single source of geography, projection transitions,
+theme-compatible paint hooks and shipping lanes. Build only into launcher/pwa-atlas.
 The public gig-poster, native Lab files and main PWA adapter remain untouched.
 """
 from pathlib import Path
@@ -32,45 +32,9 @@ def rewrite_absolute_assets(value):
                 value = value.replace(needle, start + "pwa-atlas/" + root)
     return value
 
-def theme_browser_tween_assets():
-    """Replace only the *generated PWA copy* of the Android transition paints.
-
-    A CSS filter cannot faithfully turn Liberi's yellow/red raster frames into
-    Bosque/Usiku geography. Keep the same geographic paths, render curves,
-    timing and the Android source, but read actual browser theme paint values.
-    Exact-match replacements fail closed if canonical engine code changes.
-    """
-    app = DEST / "assets" / "app.js"
-    source = app.read_text(encoding="utf-8")
-    changes = (
-        ("const palette={paper:'#dfb045',ocean:'#103135',selected:'#a83223'};",
-         "const paletteDefaults={paper:'#dfb045',ocean:'#103135',selected:'#a83223'};"),
-        ("function paint(canvas,prepared,t,selected,fits=null){",
-         "function paint(canvas,prepared,t,selected,fits=null){ const palette=window.GHGAtlasPaintColors?.()||paletteDefaults;"),
-        ("return width+'@'+selectionKey(selected);",
-         "return width+'@'+selectionKey(selected)+'@'+(window.GHGAtlasPaintColors?.().theme||'liberi');"),
-        ("const PAL={paper:'#dfb045',ocean:'#103135',selected:'#a83223',ink:'#103135'};",
-         "const PAL=new Proxy({paper:'#dfb045',ocean:'#103135',selected:'#a83223',ink:'#103135',backdrop:'#dfb045'},"
-         "{get(base,key){return window.GHGAtlasPaintColors?.()?.[key]||base[key]}});"),
-        ("const key=selectionKey(selected)+'@'+pixels;",
-         "const key=selectionKey(selected)+'@'+pixels+'@'+(window.GHGAtlasPaintColors?.().theme||'liberi');"),
-        ("ctx.fillStyle=PAL.paper;ctx.fillRect(0,0,pixels,pixels);",
-         "ctx.fillStyle=PAL.backdrop;ctx.fillRect(0,0,pixels,pixels);"),
-        ("ctx.globalCompositeOperation='destination-over';ctx.fillStyle=PAL.paper;",
-         "ctx.globalCompositeOperation='destination-over';ctx.fillStyle=PAL.backdrop;"),
-        ("ctx.fillStyle=PAL.paper;ctx.fillRect(0,0,size,size);",
-         "ctx.fillStyle=PAL.backdrop;ctx.fillRect(0,0,size,size);"),
-        ("ctx.fillStyle=item.getAttribute('fill');ctx.fill();",
-         "ctx.fillStyle=window.GHGAtlasPaintColors?getComputedStyle(item).fill:item.getAttribute('fill');ctx.fill();"),
-        ("veil.style.cssText='position:absolute;inset:0;z-index:30;overflow:hidden;background:#dfb045;pointer-events:none;';",
-         "veil.style.cssText='position:absolute;inset:0;z-index:30;overflow:hidden;background:'+PAL.backdrop+';pointer-events:none;';"),
-    )
-    for original, replacement in changes:
-        if source.count(original) != 1:
-            raise AssertionError(f"Atlas PWA tween anchor changed: {original[:75]}")
-        source = source.replace(original, replacement)
-    app.write_text(source, encoding="utf-8")
-
+# The canonical Android atlas now reads optional theme paints directly.
+# The PWA injects GHGAtlasPaintColors before the generated app script; no
+# brittle production JS source rewriting or second renderer is necessary.
 
 def main():
     bundle(DEST)
@@ -87,7 +51,6 @@ def main():
             updated = rewrite_absolute_assets(original)
             if updated != original:
                 file.write_text(updated, encoding="utf-8")
-    theme_browser_tween_assets()
     page = DEST / "index.html"
     html = page.read_text(encoding="utf-8")
     injection = ('<link rel="stylesheet" href="/assets/pwa-themes.css">'
