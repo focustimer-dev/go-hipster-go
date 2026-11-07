@@ -12,7 +12,7 @@ if(valid.size<20)return;
 const host=document.createElement('div');
 host.className='pwa-inline-atlas';host.id='pwaInlineAtlas';
 host.setAttribute('aria-label','Three-projection listening Atlas');
-host.hidden=true; // Keep the original Robinson visible until the real map is ready.
+host.classList.add('is-loading'); // Prepare the live map invisibly at real width.
 const frame=document.createElement('iframe');frame.title='Interactive listening Atlas — Robinson, Keyes and Globe';
 frame.setAttribute('aria-label','Interactive regional Atlas');frame.setAttribute('loading','eager');
 frame.setAttribute('referrerpolicy','same-origin');
@@ -36,7 +36,7 @@ function queueSync(){
 function mount(){
  if(mounted||failed)return;mounted=true;
  // One WebGL Atlas instance, initialized only when the Jukebox map is near view.
- frame.src='/pwa-atlas/inline.html';
+ frame.src='/pwa-atlas/inline';
  const fallback=setTimeout(()=>{
   if(ready||failed)return;failed=true;section.classList.remove('pwa-atlas-native-active');host.hidden=true;
  },20000);
@@ -50,7 +50,7 @@ window.addEventListener('message',event=>{
  if(event.origin!==location.origin||event.source!==frame.contentWindow)return;
  const msg=event.data;if(!msg||typeof msg!=='object')return;
  if(msg.type===type+'-ready'){
-  ready=true;section.classList.add('pwa-atlas-native-active');host.hidden=false;send();return;
+  ready=true;section.classList.add('pwa-atlas-native-active');host.classList.remove('is-loading');host.hidden=false;send();return;
  }
  if(msg.type===type+'-height'){
   const height=Number(msg.height);
