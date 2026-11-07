@@ -1,0 +1,6 @@
+Go, Hipster, Go! PWA theme + Atlas integration production release
+Approved by user on 2026-11-07.
+Approved source baseline: aca47cd08920196e2552df5bc651b4a3da77341f
+Includes: PR #188 (three-projection theme integration, browser tabs), PR #189 (Liberi paint restoration and isolated preview regression).
+Scope: public Cloudflare PWA only. No Android app changes or APK deployment.
+Gate: GitHub Actions Cloudflare one-shot deployment, exact Git commit verification, then live Chromium smoke and PWA QA.
