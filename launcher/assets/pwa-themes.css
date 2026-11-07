@@ -426,12 +426,8 @@ html[data-pwa-theme=usiku] body.gig-poster .chart-rose-ring-fine{
  stroke:#f5f0e6;
 }
 
-/* The shop's counter gains a cognac lower lip, not a cognac GO button.
-   Cream lettering and green background keep the primary action clear. */
-html[data-pwa-theme=usiku] body.gig-poster .go-options .go-button{
- background:#004225;
- border-bottom:3px solid var(--usiku-leather);
-}
+/* Keep GO as the flat, unframed green action from the poster design.
+   The neighboring options and crate carry the saddle material instead. */
 html[data-pwa-theme=usiku] body.gig-poster .go-options .go-extras{
  border-bottom-color:var(--usiku-leather-edge);
 }
@@ -441,8 +437,13 @@ html[data-pwa-theme=usiku] body.gig-poster .go-options .go-extras .cover-toggle 
 
 /* The same material reappears in the PWA chrome and the record-sleeve crate.
    Thin trim, not another broad slab of cognac. */
-html[data-pwa-theme=usiku] body.gig-poster.pwa-workspace[data-page=launch] .selection-ticket{
- border-color:var(--usiku-leather);
+/* One consistent one-pixel keyline around both the floating and filed
+   ticket. Its original offset shadow remains, but is true night ink rather
+   than the cream shadow that looked like a second thick border. */
+html[data-pwa-theme=usiku] body.gig-poster.pwa-workspace[data-page=launch] .selection-ticket,
+html[data-pwa-theme=usiku] body.gig-poster.pwa-workspace[data-page=launch] .receipt-ticket-dock .selection-ticket.is-docked{
+ border:1px solid var(--usiku-leather);
+ box-shadow:3px 4px 0 #111111;
 }
 html[data-pwa-theme=usiku] body.gig-poster.pwa-workspace[data-page=launch] .selection-ticket .ticket-detail{
  border-top-color:var(--usiku-leather-edge);
