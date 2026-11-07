@@ -1,0 +1,464 @@
+/* PWA-only theme skins. No Android build or map geometry changes.
+   Liberi deliberately inherits the shipped poster stylesheet unchanged. */
+
+/* Preferences control is neutral and usable in all three themes. */
+.pwa-theme-section{margin:20px 0 6px;padding:18px 0 0;border-top:1px solid currentColor}
+.pwa-theme-section h3{margin:0 0 4px;font:400 1.45rem/1.2 Poster,Arial,sans-serif}
+.pwa-theme-section p{margin:0 0 12px;font:.875rem/1.45 Arial,sans-serif}
+.pwa-theme-choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.pwa-dialog .pwa-theme-choice{display:flex;flex-direction:column;align-items:stretch;gap:5px;min-width:0;min-height:104px;padding:8px;border:1px solid currentColor;border-radius:2px;background:transparent;color:inherit;text-align:left;font:700 .875rem/1.2 Arial,sans-serif}
+.pwa-theme-choice strong{font:400 clamp(1.15rem,4vw,1.5rem)/1.1 Poster,Arial,sans-serif}
+.pwa-theme-choice small{font:400 .68rem/1.3 Arial,sans-serif}
+.pwa-theme-sample{display:flex;height:31px;overflow:hidden;border:1px solid #11111145;border-radius:1px}
+.pwa-theme-sample i{display:block;flex:1}
+.pwa-theme-choice[data-pwa-theme=liberi] .pwa-theme-sample i:nth-child(1){background:#103135}
+.pwa-theme-choice[data-pwa-theme=liberi] .pwa-theme-sample i:nth-child(2){background:#dfb045}
+.pwa-theme-choice[data-pwa-theme=liberi] .pwa-theme-sample i:nth-child(3){background:#a83223}
+.pwa-theme-choice[data-pwa-theme=bosque] .pwa-theme-sample i:nth-child(1){background:#003018}
+.pwa-theme-choice[data-pwa-theme=bosque] .pwa-theme-sample i:nth-child(2){background:#f5f0e6}
+.pwa-theme-choice[data-pwa-theme=bosque] .pwa-theme-sample i:nth-child(3){background:#8c6239}
+.pwa-theme-choice[data-pwa-theme=usiku] .pwa-theme-sample i:nth-child(1){background:#111111}
+.pwa-theme-choice[data-pwa-theme=usiku] .pwa-theme-sample i:nth-child(2){background:#003018}
+.pwa-theme-choice[data-pwa-theme=usiku] .pwa-theme-sample i:nth-child(3){background:#f5f0e6}
+.pwa-dialog .pwa-theme-choice[aria-pressed=true]{outline:2px solid currentColor;outline-offset:2px;background:var(--ghg-theme-active,#103135);color:var(--ghg-theme-active-text,#dfb045)}
+.pwa-theme-choice:focus-visible{outline:3px solid currentColor;outline-offset:3px}
+.pwa-theme-status{min-height:1.4em;margin:10px 0 0!important;font:.76rem/1.4 Arial,sans-serif}
+@media(max-width:340px){.pwa-theme-choices{gap:5px}.pwa-dialog .pwa-theme-choice{padding:6px}.pwa-theme-choice strong{font-size:1rem}}
+@media(forced-colors:active){.pwa-dialog .pwa-theme-choice[aria-pressed=true]{outline:3px solid Highlight}}
+
+/* Two colorways override inks and paper only. The poster's original typography,
+   portraits, atlas camera, hit targets, and animations remain authoritative. */
+html[data-pwa-theme=bosque] body.gig-poster:is([data-page=launch],[data-page=setup]){
+ --ink:#003018;--ink2:#004225;--paper:#f5f0e6;--bone:#f5f0e6;
+ --red:#8c6239;--red2:#8c6239;--yellow:#f5f0e6;--line:#8c623999;
+ --focus-ink:#8c6239;--focus-paper:#f5f0e6;
+ --control-metal:#f5f0e6;--control-track:#003018;
+ --atlas-paper:#f5f0e6;--atlas-paper-light:#eee4d3;--atlas-paper-hover:#e7d7bd;
+ --atlas-ink:#003018;--atlas-accent:#8c6239;--atlas-border:#8c6239;
+ --atlas-land:#004225;--atlas-water:#f5f0e6;--atlas-boundary:#f5f0e6;--atlas-selected:#8c6239;
+ --selection-vermilion:#8c6239;
+ --pwa-petrol:#003018;--pwa-mustard:#f5f0e6;
+ --ghg-theme-active:#004225;--ghg-theme-active-text:#f5f0e6;
+ background:#003018;color:#003018;
+}
+html[data-pwa-theme=usiku] body.gig-poster:is([data-page=launch],[data-page=setup]){
+ --ink:#f5f0e6;--ink2:#f5f0e6;--paper:#003018;--bone:#f5f0e6;
+ --red:#8c6239;--red2:#8c6239;--yellow:#004225;--line:#f5f0e655;
+ --focus-ink:#f5f0e6;--focus-paper:#004225;
+ --control-metal:#003018;--control-track:#f5f0e6;
+ --atlas-paper:#003018;--atlas-paper-light:#004225;--atlas-paper-hover:#004225;
+ --atlas-ink:#f5f0e6;--atlas-accent:#8c6239;--atlas-border:#8c6239;
+ --atlas-land:#f5f0e6;--atlas-water:transparent;--atlas-boundary:#003018;--atlas-selected:#8c6239;
+ --selection-vermilion:#8c6239;
+ --pwa-petrol:#f5f0e6;--pwa-mustard:#003018;
+ --ghg-theme-active:#004225;--ghg-theme-active-text:#f5f0e6;
+ background:#111111;color:#f5f0e6;color-scheme:dark;
+}
+html[data-pwa-theme=bosque] body.gig-poster .site{background:#f5f0e6}
+html[data-pwa-theme=usiku] body.gig-poster .site{
+ background:#003018;
+ background-image:repeating-radial-gradient(circle at 92% -12%,#f5f0e60a 0 1px,transparent 2px 18px);
+}
+/* The masthead and Jukebox are still the same layout; only ink and accent change. */
+html[data-pwa-theme=bosque] body.gig-poster .panel-head,
+html[data-pwa-theme=bosque] body.gig-poster .counter-label,
+html[data-pwa-theme=bosque] body.gig-poster .receipt-heading{color:#8c6239}
+html[data-pwa-theme=bosque] body.gig-poster .tempo-control::before{color:#8c6239}
+html[data-pwa-theme=usiku] body.gig-poster .panel-head,
+html[data-pwa-theme=usiku] body.gig-poster .counter-label,
+html[data-pwa-theme=usiku] body.gig-poster .receipt-heading,
+html[data-pwa-theme=usiku] body.gig-poster .tempo-control::before{color:#f5f0e6}
+html[data-pwa-theme=bosque] body.gig-poster :is(.go-options,.go-button){background:#004225;color:#f5f0e6}
+html[data-pwa-theme=usiku] body.gig-poster :is(.go-options,.go-button){background:#004225;color:#f5f0e6}
+html[data-pwa-theme=bosque] body.gig-poster .go-options .go-extras,
+html[data-pwa-theme=usiku] body.gig-poster .go-options .go-extras{border-color:#f5f0e6}
+html[data-pwa-theme=bosque] body.gig-poster .go-options .go-extras .cover-toggle,
+html[data-pwa-theme=usiku] body.gig-poster .go-options .go-extras .cover-toggle{color:#f5f0e6}
+html[data-pwa-theme=bosque] body.gig-poster .go-options .go-extras .cover-toggle+.cover-toggle,
+html[data-pwa-theme=usiku] body.gig-poster .go-options .go-extras .cover-toggle+.cover-toggle{border-left-color:#f5f0e6}
+html[data-pwa-theme=bosque] body.gig-poster .go-button .go-copy b,
+html[data-pwa-theme=bosque] body.gig-poster .go-button .go-copy>span:not(.go-stamp),
+html[data-pwa-theme=usiku] body.gig-poster .go-button .go-copy b,
+html[data-pwa-theme=usiku] body.gig-poster .go-button .go-copy>span:not(.go-stamp){color:#f5f0e6}
+html[data-pwa-theme=bosque] body.gig-poster .go-button .go-stamp,
+html[data-pwa-theme=usiku] body.gig-poster .go-button .go-stamp{background:#f5f0e6;color:#003018;border-color:#f5f0e6}
+html[data-pwa-theme=bosque] body.gig-poster .go-options .option-state,
+html[data-pwa-theme=usiku] body.gig-poster .go-options .option-state{border-color:#f5f0e6}
+html[data-pwa-theme=bosque] body.gig-poster .go-options .cover-toggle[aria-pressed=true] .option-state,
+html[data-pwa-theme=usiku] body.gig-poster .go-options .cover-toggle[aria-pressed=true] .option-state{background:#f5f0e6;border-color:#f5f0e6}
+/* Usiku keeps the established portraits, but lifts their ink from the dark paper. */
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[aria-pressed=true]{background:#004225;color:#f5f0e6;border-color:#f5f0e6}
+html[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[aria-pressed=true]{background:#004225;color:#f5f0e6;border-color:#003018}
+html[data-pwa-theme=usiku] body.gig-poster .mood .face,
+html[data-pwa-theme=usiku] body.gig-poster .mood[aria-pressed=true] .face{filter:brightness(0) invert(94%) sepia(14%) saturate(225%) hue-rotate(340deg)}
+html[data-pwa-theme=bosque] body.gig-poster .mood[aria-pressed=true] .face{filter:brightness(0) invert(93%) sepia(10%) saturate(120%)}
+html[data-pwa-theme=usiku] body.gig-poster .crate-map-grid{stroke:#f5f0e6;opacity:.17}
+html[data-pwa-theme=bosque] body.gig-poster .crate-map-grid{stroke:#003018;opacity:.15}
+html[data-pwa-theme=usiku] body.gig-poster .crate-map-zone[data-selected=true] path{fill:#8c6239;stroke:#f5f0e6}
+html[data-pwa-theme=bosque] body.gig-poster .crate-map-zone[data-selected=true] path{fill:#8c6239;stroke:#003018}
+/* A cream paper receipt is legible in both themes; the underlying request and
+   clipboard success logic are entirely unchanged. */
+html[data-pwa-theme=usiku] body.gig-poster .receipt,
+html[data-pwa-theme=usiku] body.gig-poster .receipt-fold,
+html[data-pwa-theme=usiku] body.gig-poster .receipt pre{color:#f5f0e6}
+html[data-pwa-theme=usiku] body.gig-poster .receipt-copy{border-color:#f5f0e6;color:#f5f0e6}
+/* Browser-only rail, Crate, Manual, dialogs and guide picker. */
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-rail{background:#003018;color:#f5f0e6}
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-rail{background:#111111;color:#f5f0e6;border-bottom:1px solid #8c6239}
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-rail button[aria-current=page],
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-rail button[aria-current=page]{background:#004225;color:#f5f0e6;border-bottom-color:#8c6239}
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-rail button:last-child,
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-rail button:last-child{border-left-color:#f5f0e655}
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-page,
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-dialog{background:#f5f0e6;color:#003018}
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-page{background:#003018;color:#f5f0e6}
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-dialog{background:#111111;color:#f5f0e6;border-color:#8c6239}
+html[data-pwa-theme=bosque] body.pwa-workspace :is(.pwa-dialog-head,.pwa-page section>h2,.pwa-section-head,.pwa-local-note){border-color:#8c6239}
+html[data-pwa-theme=usiku] body.pwa-workspace :is(.pwa-dialog-head,.pwa-page section>h2,.pwa-section-head,.pwa-local-note){border-color:#8c6239}
+html[data-pwa-theme=bosque] body.pwa-workspace :is(.pwa-record,.pwa-guide-picker,.pwa-guide-links button){border-color:#8c6239}
+html[data-pwa-theme=usiku] body.pwa-workspace :is(.pwa-record,.pwa-guide-picker,.pwa-guide-links button){border-color:#8c6239}
+html[data-pwa-theme=bosque] body.pwa-workspace :is(.pwa-record button,.pwa-wide,.pwa-save-button,.pwa-dialog button,.pwa-dialog a){color:#003018;border-color:#003018}
+html[data-pwa-theme=usiku] body.pwa-workspace :is(.pwa-record button,.pwa-wide,.pwa-save-button,.pwa-dialog button,.pwa-dialog a){color:#f5f0e6;border-color:#f5f0e6}
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-dialog-actions button[type=submit]{background:#004225;color:#f5f0e6}
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-dialog-actions button[type=submit]{background:#004225;color:#f5f0e6}
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-dialog-body :is(textarea,input,pre){background:#f5f0e6;color:#003018;border-color:#003018}
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-dialog-body :is(textarea,input,pre){background:#003018;color:#f5f0e6;border-color:#8c6239}
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-inspiration{background:#004225;color:#f5f0e6}
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-inspiration{background:#111111;color:#f5f0e6;border:1px solid #8c6239}
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-inspiration strong,
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-inspiration strong{color:#f5f0e6}
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-sleeve-actions button{background:#f5f0e6;color:#003018}
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-sleeve-actions button{background:#004225;color:#f5f0e6}
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-guide-nav,
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-guide-shelf{background:#f5f0e6;color:#003018}
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-guide-nav,
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-guide-shelf{background:#003018;color:#f5f0e6}
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-guide-tabs button{background:#eee4d3;color:#003018}
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-guide-tabs button{background:#111111;color:#f5f0e6}
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-guide-tabs button[aria-selected=true],
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-guide-link[aria-current=page],
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-guide-tabs button[aria-selected=true],
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-guide-link[aria-current=page]{background:#004225;color:#f5f0e6}
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-guide-eject,
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-guide-eject{background:#004225;color:#f5f0e6}
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-guide-link{color:#003018}
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-guide-link{color:#f5f0e6}
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-add-inspiration{color:#003018;border-color:#8c6239}
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-add-inspiration{color:#f5f0e6;border-color:#8c6239}
+/* Selected theme stays visible, never relies on color alone. */
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-dialog .pwa-theme-choice[aria-pressed=true],
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-dialog .pwa-theme-choice[aria-pressed=true]{background:#004225;color:#f5f0e6;border-color:#f5f0e6}
+
+/* The option buttons retain their own base background and lettering rules. */
+html[data-pwa-theme=bosque] body.gig-poster .go-options .go-extras .cover-toggle,
+html[data-pwa-theme=usiku] body.gig-poster .go-options .go-extras .cover-toggle{background:#004225;color:#f5f0e6}
+html[data-pwa-theme=bosque] body.gig-poster .go-options .option-label,
+html[data-pwa-theme=usiku] body.gig-poster .go-options .option-label,
+html[data-pwa-theme=bosque] body.gig-poster .go-options #goHard .option-label,
+html[data-pwa-theme=usiku] body.gig-poster .go-options #goHard .option-label{color:#f5f0e6}
+html[data-pwa-theme=bosque] body.gig-poster .go-options .option-copy small,
+html[data-pwa-theme=usiku] body.gig-poster .go-options .option-copy small{color:#f5f0e6}
+html[data-pwa-theme=bosque] body.gig-poster .go-options #includeCover .art-sleeve,
+html[data-pwa-theme=usiku] body.gig-poster .go-options #includeCover .art-sleeve{fill:#f5f0e6}
+/* Re-ink existing decorative star assets without replacing the locked artwork. */
+html[data-pwa-theme=bosque] body.gig-poster .brand-star svg,
+html[data-pwa-theme=usiku] body.gig-poster .brand-star svg,
+html[data-pwa-theme=bosque] body.gig-poster .go-button .star-glyph,
+html[data-pwa-theme=usiku] body.gig-poster .go-button .star-glyph{
+ filter:grayscale(1) brightness(0) saturate(100%) invert(39%) sepia(17%) saturate(1296%) hue-rotate(346deg) brightness(93%) contrast(86%);
+}
+
+/* First visual-QA corrections: baked petrol engravings need readable contrast
+   on inverse stock. Recolor only the rendered ink; preserve exact image assets. */
+html[data-pwa-theme=usiku] body.gig-poster .poster-bird{
+ filter:grayscale(1) brightness(0) invert(94%);
+}
+html[data-pwa-theme=usiku] body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood .face{
+ filter:grayscale(1) brightness(0) invert(94%);
+}
+html[data-pwa-theme=bosque] body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[aria-pressed=true] .face{
+ filter:grayscale(1) brightness(0) invert(94%);
+}
+html[data-pwa-theme=bosque] body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[aria-pressed=true] .word,
+html[data-pwa-theme=usiku] body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[aria-pressed=true] .word{
+ color:#f5f0e6;background:transparent;text-decoration:underline;
+}
+
+/* Preserve original SVG engraving geometry and two-ink hatching. The poster
+   builder bakes mustard into <pattern> presentation attributes, so restyle
+   their paints instead of replacing the atlas artwork with flat fills. */
+html[data-pwa-theme=bosque] body.gig-poster #posterLandEngraving rect{fill:#f5f0e6}
+html[data-pwa-theme=bosque] body.gig-poster #posterLandEngraving path{stroke:#003018}
+html[data-pwa-theme=usiku] body.gig-poster #posterLandEngraving rect{fill:#8c6239}
+html[data-pwa-theme=usiku] body.gig-poster #posterLandEngraving path{stroke:#003018;stroke-opacity:.55}
+html[data-pwa-theme=bosque] body.gig-poster #posterSelectedHalftone rect,
+html[data-pwa-theme=usiku] body.gig-poster #posterSelectedHalftone rect{fill:#004225}
+html[data-pwa-theme=bosque] body.gig-poster #posterSelectedHalftone path,
+html[data-pwa-theme=usiku] body.gig-poster #posterSelectedHalftone path{stroke:#f5f0e6}
+/* The selected-expression rule is stronger than the neutral sprite rule. Both
+   colorways need an inverse-ink filter on selected clerks specifically. */
+html[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[aria-pressed=true] .face,
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[aria-pressed=true] .face{
+ filter:grayscale(1) brightness(0) invert(94%) !important;
+}
+
+/* PASS 3 — British Racing Green ink; golden selection and a Funk exception.
+   Never modify the approved portrait plates, SVG geometry or map interactions.
+   Liberi has no selectors in this file and remains exactly as shipped. */
+
+html[data-pwa-theme=bosque] body.gig-poster,
+html[data-pwa-theme=usiku] body.gig-poster{
+ --racing-yellow:#e5cf42;
+ --racing-ink:#003018;
+ --funk-violet:#311333;
+ --funk-magenta:#a52d78;
+ --funk-orange:#efa063;
+ --funk-gold:#f2c84e;
+ --funk-selected-paper:#311333;
+}
+
+/* Selection means colored stock BEHIND the original engraving, not a
+   photographic-negative filter over the clerk. */
+html[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=true],
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=true]{
+ background:#e5cf42;
+ color:#003018;
+ box-shadow:inset 0 0 0 2px #003018;
+}
+html[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=true] .word,
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=true] .word{
+ color:#003018;
+ background:transparent;
+ text-decoration:underline;
+ text-decoration-color:#003018;
+}
+/* Reset earlier high-contrast whole-element filters that made faces ghostly. */
+html[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[aria-pressed=true] .face,
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[aria-pressed=true] .face{
+ filter:none!important;
+}
+/* Regular selected sprite plates already use a dark printed ink. Retain
+   their actual engraved pixel values and alpha instead of flattening them. */
+html[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=true] .face::after,
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=true] .face::after{
+ filter:none!important;
+}
+/* Desire's selected plate is a purpose-built effect. Keep the ORIGINAL
+   neutral plate (normal facial shading) and draw its heart-eye mask atop it.
+   No new image, character, or modified portrait asset is introduced. */
+html[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=true] .face::before,
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=true] .face::before{
+ opacity:1;
+ filter:url(#referenceInk)!important;
+}
+html[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=true] .face::after,
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=true] .face::after{
+ opacity:0;
+}
+html[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=true] .desire-hearts,
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=true] .desire-hearts{
+ background:#8e3069;
+}
+/* Triumph's artwork also has a special alpha ink, so preserve it rather
+   than flattening it with brightness(0). */
+html[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[data-mood=triumphant][aria-pressed=true] .face::after,
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=triumphant][aria-pressed=true] .face::after{
+ filter:url(#alphaInk)!important;
+}
+
+/* The Funk alone gets a separate pressing: electric violet, hot magenta,
+   orange engraving, and star-gold typography. The approved Funk portrait
+   and preexisting laser geometry are untouched. */
+html[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[data-mood=funky][aria-pressed=true],
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=funky][aria-pressed=true]{
+ --funk-selected-paper:#311333;
+ background-color:#6e225c;
+ background-image:radial-gradient(circle at 83% 13%,#efa06344,transparent 41%),linear-gradient(145deg,#311333,#722269 66%,#a52d78);
+ box-shadow:inset 0 0 0 2px #f2c84e;
+ color:#f2c84e;
+}
+html[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[data-mood=funky][aria-pressed=true] .word,
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=funky][aria-pressed=true] .word{
+ background:transparent;
+ color:#f2c84e;
+ text-decoration:underline;
+ text-decoration-color:#f2c84e;
+}
+html[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[data-mood=funky][aria-pressed=true] .face::after,
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=funky][aria-pressed=true] .face::after{
+ /* Colorize alpha of the EXISTING selected Funk sprite, not the character. */
+ filter:brightness(0) saturate(100%) invert(71%) sepia(46%) saturate(643%) hue-rotate(324deg) brightness(108%) contrast(94%)!important;
+}
+html[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[data-mood=funky][aria-pressed=true] .funk-rays,
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=funky][aria-pressed=true] .funk-rays{
+ opacity:.82;
+ filter:hue-rotate(23deg) saturate(1.24);
+}
+
+/* Usiku neutral portrait ink: muted sage rather than white on black.
+   Preserve alpha transparency of the original locked plates. */
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=false]{
+ background:#111111;
+ color:#a6b3a3;
+}
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood]:nth-child(n){
+ border-color:#8c623977;
+}
+/* Earlier Usiku parent filter inverted the entire engraving back to white.
+   Disable that filter and tint only the transparent sprite itself. */
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=false] .face{
+ filter:none!important;
+}
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=false] .face::before{
+ filter:brightness(0) saturate(100%) invert(61%) sepia(14%) saturate(470%) hue-rotate(78deg) brightness(91%);
+ opacity:.95;
+}
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=false] .face::before{
+ filter:url(#referenceInk) brightness(0) saturate(100%) invert(61%) sepia(14%) saturate(470%) hue-rotate(78deg)!important;
+}
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=triumphant][aria-pressed=false] .face::before{
+ filter:url(#alphaInk) brightness(0) saturate(100%) invert(61%) sepia(14%) saturate(470%) hue-rotate(78deg)!important;
+}
+
+/* Racing-yellow map stamps are unambiguously active in BOTH colorways.
+   Recolor the existing halftone pattern; keep Robinson geometry, boundaries,
+   pan/zoom and original map engraving intact. */
+html[data-pwa-theme=bosque] body.gig-poster #posterSelectedHalftone rect,
+html[data-pwa-theme=usiku] body.gig-poster #posterSelectedHalftone rect{
+ fill:#e5cf42;
+}
+html[data-pwa-theme=bosque] body.gig-poster #posterSelectedHalftone path,
+html[data-pwa-theme=usiku] body.gig-poster #posterSelectedHalftone path{
+ stroke:#003018;
+ stroke-opacity:.65;
+}
+html[data-pwa-theme=bosque] body.gig-poster .crate-map-zone[data-selected=true] path,
+html[data-pwa-theme=bosque] body.gig-poster .crate-map-zone[data-selected=true]:hover path,
+html[data-pwa-theme=usiku] body.gig-poster .crate-map-zone[data-selected=true] path,
+html[data-pwa-theme=usiku] body.gig-poster .crate-map-zone[data-selected=true]:hover path{
+ fill:url(#posterSelectedHalftone);
+ stroke:#003018;
+ stroke-width:1.8;
+}
+html[data-pwa-theme=usiku] body.gig-poster .crate-map-ocean{fill:#111111}
+html[data-pwa-theme=usiku] body.gig-poster #posterLandEngraving rect{fill:#f5f0e6}
+html[data-pwa-theme=usiku] body.gig-poster #posterLandEngraving path{stroke:#8c6239;stroke-opacity:.48}
+html[data-pwa-theme=usiku] body.gig-poster .crate-map-zone[data-selected=false] path{
+ fill:url(#posterLandEngraving);stroke:#003018;stroke-width:1.05;
+}
+html[data-pwa-theme=usiku] body.gig-poster .crate-map-grid{stroke:#8c6239;opacity:.20}
+html[data-pwa-theme=usiku] body.gig-poster .chart-rose-field{fill:#111111;stroke:#8c6239}
+html[data-pwa-theme=usiku] body.gig-poster .chart-rose-ring{stroke:#f5f0e6}
+html[data-pwa-theme=usiku] body.gig-poster .chart-rose-letters{fill:#f5f0e6}
+html[data-pwa-theme=bosque] body.gig-poster .chart-rose-north,
+html[data-pwa-theme=usiku] body.gig-poster .chart-rose-north{fill:#e5cf42}
+
+/* USIKU / Saddle-cognac pressing — neutral mood cards.
+   Approved neutral artwork is already dark engraved ink on transparent plates.
+   Stop color-inverting it: display the ORIGINAL ink against a warm material.
+   #082516 is deep BRG ink, chosen over lighter green for small-label contrast
+   against #B77B4D (about 4.6:1). Selected yellow and Funk are unchanged. */
+html[data-pwa-theme=usiku] body.gig-poster{
+ --usiku-neutral-stock:#b77b4d;
+ --usiku-neutral-ink:#082516;
+}
+html[data-pwa-theme=usiku] body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[data-mood][aria-pressed=false]{
+ /* Reverse vignette: saddle catches the light around each face, with
+    darker cognac at the distal edges. Keep the original engraved portrait. */
+ background:radial-gradient(
+  ellipse farthest-corner at 50% 36%,
+  var(--usiku-neutral-stock) 0%,
+  #a86c43 30%,
+  #925b39 65%,
+  #7e4c30 100%
+ );
+ color:var(--usiku-neutral-ink);
+ box-shadow:none;
+}
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=false] .word{
+ color:var(--usiku-neutral-ink);
+ background:transparent;
+}
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood]:nth-child(n){
+ border-color:#003018;
+}
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=false] .face{
+ filter:none!important;
+}
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=false] .face::before{
+ filter:none!important;
+ opacity:1;
+}
+/* Desire and Triumph use alpha-extraction SVG ink filters rather than the
+   common six-portrait sprite. Keep those filters (and their facial detail);
+   both use the existing British-racing-green flood color. */
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=false] .face::before{
+ filter:url(#referenceInk)!important;
+}
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=triumphant][aria-pressed=false] .face::before{
+ filter:url(#alphaInk)!important;
+}
+
+/* IMPECCABLE / Usiku cohesion pass.
+   Saddle is MATERIAL (rims, chart mat, counter), not a second selection color.
+   Racing yellow still means selected; forest green still owns the GO action;
+   the original atlas SVG and The Funk's independent pressing are untouched. */
+html[data-pwa-theme=usiku] body.gig-poster{
+ --usiku-leather:#b77b4d;
+ --usiku-leather-shadow:#7e4c30;
+ --usiku-leather-edge:#b77b4d9e;
+ --usiku-leather-ink:#082516;
+}
+
+/* A restrained leather chart mat around the night-ocean plate.
+   The geography and map SVG continue to use their existing fills/gestures. */
+html[data-pwa-theme=usiku] body.gig-poster .crate-map-frame{
+ background:radial-gradient(ellipse at 50% 45%,#003018 24%,#162e22 66%,#432b20 100%);
+ border-top:1px solid var(--usiku-leather-edge);
+ border-bottom:1px solid var(--usiku-leather-edge);
+}
+html[data-pwa-theme=usiku] body.gig-poster .chart-rose-field{
+ fill:var(--usiku-leather-shadow);
+ stroke:var(--usiku-leather);
+}
+html[data-pwa-theme=usiku] body.gig-poster .chart-rose-ring,
+html[data-pwa-theme=usiku] body.gig-poster .chart-rose-ring-fine{
+ stroke:#f5f0e6;
+}
+
+/* The shop's counter gains a cognac lower lip, not a cognac GO button.
+   Cream lettering and green background keep the primary action clear. */
+html[data-pwa-theme=usiku] body.gig-poster .go-options .go-button{
+ background:#004225;
+ border-bottom:3px solid var(--usiku-leather);
+}
+html[data-pwa-theme=usiku] body.gig-poster .go-options .go-extras{
+ border-bottom-color:var(--usiku-leather-edge);
+}
+html[data-pwa-theme=usiku] body.gig-poster .go-options .go-extras .cover-toggle + .cover-toggle{
+ border-left-color:var(--usiku-leather-edge);
+}
+
+/* The same material reappears in the PWA chrome and the record-sleeve crate.
+   Thin trim, not another broad slab of cognac. */
+html[data-pwa-theme=usiku] body.gig-poster.pwa-workspace[data-page=launch] .selection-ticket{
+ border-color:var(--usiku-leather);
+}
+html[data-pwa-theme=usiku] body.gig-poster.pwa-workspace[data-page=launch] .selection-ticket .ticket-detail{
+ border-top-color:var(--usiku-leather-edge);
+}
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-rail button[aria-current=page]{
+ border-bottom-color:var(--usiku-leather);
+}
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-inspiration{
+ border-color:var(--usiku-leather-edge);
+}
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-guide-picker,
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-dialog-head{
+ border-bottom-color:var(--usiku-leather-edge);
+}
+/* The Appearance sample now previews Usiku's distinctive material rather than
+   showing a third cream-only swatch that no longer represents its mood cards. */
+.pwa-theme-choice[data-pwa-theme=usiku] .pwa-theme-sample i:nth-child(3){
+ background:#b77b4d;
+}

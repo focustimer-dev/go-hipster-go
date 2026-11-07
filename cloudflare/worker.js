@@ -25,10 +25,23 @@ export default {
       path === "/" || path === "/index.html" ||
       path === "/editions/gig-poster/" || path === "/editions/gig-poster/index.html"
     );
-    const served = isPwaLaunch && response.ok
+    // Theme assets are injected only into the public PWA's Jukebox and full Manual.
+    // The Android WebView bundle keeps its exact existing styles and storage.
+    const isPwaManual = request.method === "GET" && (
+      path === "/setup/" || path === "/editions/gig-poster/setup/" ||
+      path === "/editions/gig-poster/setup/index.html"
+    );
+    // Node smoke harnesses lack Cloudflare HTMLRewriter; keep the response usable.
+    const served = (isPwaLaunch || isPwaManual) && response.ok && typeof HTMLRewriter !== "undefined"
       ? new HTMLRewriter()
-          .on("head", { element(el) { el.append('<link rel="stylesheet" href="/assets/pwa-workspace.css">', { html: true }); } })
-          .on("body", { element(el) { el.append('<script defer src="/assets/pwa-workspace.js"></script><script defer src="/assets/pwa-guides.js"></script>', { html: true }); } })
+          .on("head", { element(el) {
+            if (isPwaLaunch) el.append('<link rel="stylesheet" href="/assets/pwa-workspace.css">', { html: true });
+            // Apply persisted theme before the theme CSS to prevent a first-paint flash.
+            el.append('<script>try{var t=localStorage.getItem("ghg-pwa-theme-v1");document.documentElement.dataset.pwaTheme=/^(liberi|bosque|usiku)$/.test(t)?t:"liberi"}catch(e){document.documentElement.dataset.pwaTheme="liberi"}</script><link rel="stylesheet" href="/assets/pwa-themes.css">', { html: true });
+          } })
+          .on("body", { element(el) {
+            if (isPwaLaunch) el.append('<script defer src="/assets/pwa-workspace.js"></script><script defer src="/assets/pwa-guides.js"></script>', { html: true });
+          } })
           .transform(response)
       : response;
     const headers = new Headers(served.headers);

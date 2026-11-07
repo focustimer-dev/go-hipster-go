@@ -39,6 +39,122 @@ for(const profile of profiles){
   assert.equal(await page.locator('.pwa-atlas-preview-link').count(),0,'Retired three-map trial link must not appear in the Jukebox');
   assert.equal(await page.locator('.pwa-add-inspiration').getAttribute('data-pwa-action'),'edit-reference');
   await page.screenshot({path:folder+'/'+profile.name+'-jukebox.png'});
+  // Test the actual two-mood combination from the phone review: Desire + Funk.
+  // A theme must recolor both independent portrait systems without rewriting them.
+  await page.locator('[data-mood="happy"]').click();
+  await page.locator('[data-mood="desire"]').click();
+  await page.locator('[data-mood="funky"]').click();
+  assert.equal(await page.locator('[data-mood="desire"]').getAttribute('aria-pressed'),'true');
+  assert.equal(await page.locator('[data-mood="funky"]').getAttribute('aria-pressed'),'true');
+  // Three poster-colorways must be visual-only and persist across browser reload.
+  // Capture the real production PWA DOM, controls, original clerk portraits, and map.
+  const promptBeforeColorChange=await page.locator('#prompt').textContent();
+  const observedThemes={};
+  for(const name of ['liberi','bosque','usiku']){
+   await page.locator('[data-pwa-action="prefs"]').click();
+   await page.locator('#pwaPrefs').waitFor({state:'visible'});
+   await page.locator('button[data-pwa-theme="'+name+'"]').click();
+   assert.equal(await page.locator('button[data-pwa-theme="'+name+'"]').getAttribute('aria-pressed'),'true');
+   assert.equal(await page.locator('button[data-pwa-theme][aria-pressed=true]').count(),1,'One theme only');
+   assert.equal(await page.evaluate(()=>document.documentElement.dataset.pwaTheme),name);
+   await page.locator('[data-pwa-action="close"]').click();
+   // Theme color transitions last 160ms; sample fully settled pixels, never
+   // intermediate animated colors. Reduced-motion users already see the final state.
+   await page.waitForFunction(expected=>{
+    const key=document.querySelector('.mood[data-mood="desire"]');
+    return key && getComputedStyle(key).backgroundColor===expected;
+   },name==='liberi'?'rgb(214, 75, 48)':'rgb(229, 207, 66)',{timeout:5000});
+   if(name==='usiku'){
+    await page.waitForFunction(()=>
+     getComputedStyle(document.querySelector('.mood[data-mood="sad"]')).backgroundImage.includes('radial-gradient')
+    ,null,{timeout:5000});
+   }
+   observedThemes[name]=await page.locator('#pwaJukebox').evaluate(el=>({
+    background:getComputedStyle(el).backgroundColor,
+    paper:getComputedStyle(document.body).getPropertyValue('--paper').trim(),
+    ink:getComputedStyle(document.body).getPropertyValue('--ink').trim(),
+    desire:getComputedStyle(document.querySelector('.mood[data-mood="desire"]')).backgroundColor,
+    funky:getComputedStyle(document.querySelector('.mood[data-mood="funky"]')).backgroundColor,
+    neutral:getComputedStyle(document.querySelector('.mood[data-mood="sad"]')).backgroundImage,
+    neutralPortraitFilter:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .face')).filter,
+    neutralInkFilter:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .face'),'::before').filter,
+    neutralLabel:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .word')).color,
+    neutralDesireInk:getComputedStyle(document.querySelector('.mood[data-mood="desire"] .face'),'::before').filter,
+    sea:getComputedStyle(document.querySelector('.crate-map-ocean')).fill,
+    land:getComputedStyle(document.querySelector('#posterLandEngraving rect')).fill,
+    selectInk:getComputedStyle(document.querySelector('.mood[data-mood="funky"] .face'),'::after').filter,
+    funkGradient:getComputedStyle(document.querySelector('.mood[data-mood="funky"]')).backgroundImage,
+    desireNeutralInk:getComputedStyle(document.querySelector('.mood[data-mood="desire"] .face'),'::before').filter,
+    desireNeutralOpacity:getComputedStyle(document.querySelector('.mood[data-mood="desire"] .face'),'::before').opacity,
+    desireSelectedOpacity:getComputedStyle(document.querySelector('.mood[data-mood="desire"] .face'),'::after').opacity,
+    desireHearts:getComputedStyle(document.querySelector('.mood[data-mood="desire"] .desire-hearts')).backgroundColor,
+    selectedMapInk:getComputedStyle(document.querySelector('#posterSelectedHalftone rect')).fill,
+    atlasMat:getComputedStyle(document.querySelector('.crate-map-frame')).backgroundImage,
+    atlasTrim:getComputedStyle(document.querySelector('.crate-map-frame')).borderTopColor,
+    compassLeather:getComputedStyle(document.querySelector('.chart-rose-field')).fill,
+    goCounterEdge:getComputedStyle(document.querySelector('#goButton')).borderBottomColor,
+    goCounterThickness:getComputedStyle(document.querySelector('#goButton')).borderBottomWidth,
+    goCounterGreen:getComputedStyle(document.querySelector('#goButton')).backgroundColor,
+    ticketTrim:getComputedStyle(document.querySelector('#selectionTicket')).borderTopColor,
+    navTrim:getComputedStyle(document.querySelector('.pwa-rail button[aria-current="page"]')).borderBottomColor,
+    appearanceSwatch:getComputedStyle(document.querySelector('.pwa-theme-choice[data-pwa-theme="usiku"] .pwa-theme-sample i:nth-child(3)')).backgroundColor
+   }));
+   if(name==='bosque'||name==='usiku'){
+    assert.equal(observedThemes[name].desire,'rgb(229, 207, 66)','Desire uses racing-yellow selection');
+    assert.equal(observedThemes[name].funky,'rgb(110, 34, 92)','The Funk has its own violet base');
+    assert.match(observedThemes[name].funkGradient,/linear-gradient/,'Funk uses a violet to magenta pressing');
+    assert.notEqual(observedThemes[name].selectInk,'none','Funk portrait retains its vivid ink treatment');
+    assert.match(observedThemes[name].desireNeutralInk,/referenceInk/,'Desire reuses the natural detailed portrait');
+    assert.equal(observedThemes[name].desireNeutralOpacity,'1','Desire neutral portrait remains visible on selection');
+    assert.equal(observedThemes[name].desireSelectedOpacity,'0','Desire negative-looking selection plate stays hidden');
+    assert.equal(observedThemes[name].desireHearts,'rgb(142, 48, 105)','Desire keeps its magenta heart eyes');
+    assert.equal(observedThemes[name].selectedMapInk,'rgb(229, 207, 66)','Selected regions use visible yellow');
+   }
+   if(name==='usiku'){
+    assert.match(observedThemes.usiku.neutral,/radial-gradient/,'Usiku unselected cards have a vignette');
+    assert.match(observedThemes.usiku.neutral,/rgb\(183, 123, 77\) 0%/,'Saddle light at the center');
+    assert.match(observedThemes.usiku.neutral,/rgb\(126, 76, 48\) 100%/,'Deep cognac at outer corners');
+    assert.ok(observedThemes.usiku.neutral.indexOf('rgb(183, 123, 77)') <
+      observedThemes.usiku.neutral.indexOf('rgb(126, 76, 48)'),'Vignette runs light center to dark edges');
+    assert.equal(observedThemes.usiku.neutralLabel,'rgb(8, 37, 22)','Neutral card lettering uses legible deep forest green');
+    assert.equal(observedThemes.usiku.neutralPortraitFilter,'none','Do not invert the Usiku neutral face');
+    assert.equal(observedThemes.usiku.neutralInkFilter,'none','Original engraved ink is preserved without negative filters');
+    assert.match(observedThemes.usiku.neutralDesireInk,/referenceInk/,'Desire retains alpha-detail ink filter on cognac');
+    assert.equal(observedThemes.usiku.sea,'rgb(17, 17, 17)','Usiku atlas ocean must be near-black');
+    assert.equal(observedThemes.usiku.land,'rgb(245, 240, 230)','Usiku land engraving must be cream');
+    assert.match(observedThemes.usiku.atlasMat,/radial-gradient/,'Atlas mat carries quiet leather tint');
+    assert.match(observedThemes.usiku.atlasTrim,/rgba?\(183, 123, 77/,'Atlas border has saddle trim');
+    assert.equal(observedThemes.usiku.compassLeather,'rgb(126, 76, 48)','Compass is an engraved leather accent');
+    assert.equal(observedThemes.usiku.goCounterEdge,'rgb(183, 123, 77)','GO counter gets saddle trim');
+    assert.equal(observedThemes.usiku.goCounterThickness,'3px','GO edge is a visible flat rule');
+    assert.equal(observedThemes.usiku.goCounterGreen,'rgb(0, 66, 37)','GO remains green, not leather');
+    assert.equal(observedThemes.usiku.ticketTrim,'rgb(183, 123, 77)','Floating crate ticket has leather edge');
+    assert.equal(observedThemes.usiku.navTrim,'rgb(183, 123, 77)','Selected navigation carries leather trim');
+    assert.equal(observedThemes.usiku.appearanceSwatch,'rgb(183, 123, 77)','Usiku theme swatch reflects the leather');
+   }
+   if(profile.name==='phone'||profile.name==='phone-reduced-motion'){
+    await page.screenshot({path:folder+'/'+profile.name+'-theme-'+name+'-top.png'});
+    await page.locator('.mood-grid').scrollIntoViewIfNeeded();
+    await page.screenshot({path:folder+'/'+profile.name+'-theme-'+name+'-portraits.png'});
+    await page.locator('#crateAtlasMap').scrollIntoViewIfNeeded();
+    await page.screenshot({path:folder+'/'+profile.name+'-theme-'+name+'-atlas.png'});
+    await page.locator('#goButton').scrollIntoViewIfNeeded();
+    await page.screenshot({path:folder+'/'+profile.name+'-theme-'+name+'-go.png'});
+    await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
+   }
+   const dims=await page.evaluate(()=>[document.documentElement.scrollWidth,document.documentElement.clientWidth]);
+   assert.ok(dims[0]<=dims[1]+2,'Theme '+name+' horizontal overflow '+dims.join('/'));
+  }
+  assert.equal(await page.locator('#prompt').textContent(),promptBeforeColorChange,'Themes must never change the GO prompt');
+  assert.notEqual(observedThemes.liberi.ink,observedThemes.bosque.ink);
+  assert.notEqual(observedThemes.bosque.ink,observedThemes.usiku.ink);
+  await page.reload({waitUntil:'domcontentloaded'});
+  await page.locator('.pwa-rail').waitFor({state:'visible'});
+  assert.equal(await page.evaluate(()=>document.documentElement.dataset.pwaTheme),'usiku','Theme must survive reload');
+  await page.locator('[data-pwa-action="prefs"]').click();
+  await page.locator('button[data-pwa-theme="liberi"]').click();
+  await page.locator('[data-pwa-action="close"]').click();
+  await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
   const rects=await page.locator('.pwa-rail button').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return {width:r.width,height:r.height}}));
   assert.equal(rects.length,4,'four rail buttons');
   assert.ok(rects.every(r=>r.width>=44&&r.height>=44),'rail touch targets');
