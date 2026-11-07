@@ -6,7 +6,7 @@ const labAtlasMorphVectors=(()=>{
  const X=[1,.9986,.9954,.99,.9822,.973,.96,.9427,.9216,.8962,.8679,.835,.7986,.7597,.7186,.6732,.6213,.5722,.5322];
  const Y=[0,.062,.124,.186,.248,.31,.372,.434,.4958,.5571,.6176,.6769,.7346,.7903,.8435,.8936,.9394,.9761,1];
  const DEG=Math.PI/180;
- const palette={paper:'#dfb045',ocean:'#103135',selected:'#a83223'};
+ const paletteDefaults={paper:'#dfb045',ocean:'#103135',selected:'#a83223'};
  // Precompute correspondence ONCE per tap; a feature's source and destination
  // always use the same canonical vertices. Spring frames only interpolate XY.
  function prepare(geojson,center=[10,15]){
@@ -42,6 +42,7 @@ const labAtlasMorphVectors=(()=>{
  };
  function estimatedFit(mode){return {...BASE_FIT[mode]}}
  function paint(canvas,prepared,t,selected,fits=null){
+  const palette=window.GHGAtlasPaintColors?.()||paletteDefaults;
   const progress=Math.max(0,Math.min(1,t)),context=canvas.getContext('2d');
   if(!context)return;
   const res=canvas.width;
@@ -132,7 +133,7 @@ const labAtlasMorphVectors=(()=>{
   return preparedWorld;
  }
  function signature(width,selected){
-  return width+'@'+selectionKey(selected);
+  return width+'@'+selectionKey(selected)+'@'+(window.GHGAtlasPaintColors?.().theme||'liberi');
  }
  function createWarm(geojson,selected,width){
   const pixels=spritePixels(width);
