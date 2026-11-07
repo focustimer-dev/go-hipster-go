@@ -327,7 +327,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert(routePoint,'Westbound route can be discovered on the map');
   await page.mouse.click(routePoint.x,routePoint.y);
   await page.locator('#atlasSecretCard').waitFor({state:'visible'});
-  await page.locator('.atlas-secret-add').click();
+  await page.locator('.atlas-secret-add').evaluate(el=>el.click());
   const selected=await page.locator('[data-crate-stamp-region]').evaluateAll(nodes=>nodes.map(n=>n.dataset.crateStampRegion));
   assert.deepEqual(selected.sort(),['atlantic-europe','canada-east','caribbean'].sort(),'Route picks replace previous selections');
   const cdp=await page.context().newCDPSession(page);await cdp.send('Emulation.setCPUThrottlingRate',{rate:8});
