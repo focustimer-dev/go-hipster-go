@@ -109,6 +109,7 @@ for(const profile of profiles){
     neutralInkColor:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .face'),'::before').backgroundColor,
     neutralLabel:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .word')).color,
     neutralDesireInk:getComputedStyle(document.querySelector('.mood[data-mood="desire"] .face'),'::before').filter,
+    neutralTriumphInk:getComputedStyle(document.querySelector('.mood[data-mood="triumphant"] .face'),'::before').filter,
     sea:getComputedStyle(document.querySelector('.crate-map-ocean')).fill,
     land:getComputedStyle(document.querySelector('#posterLandEngraving rect')).fill,
     selectInk:getComputedStyle(document.querySelector('.mood[data-mood="funky"] .face'),'::after').filter,
@@ -150,8 +151,10 @@ for(const profile of profiles){
     assert.equal(observedThemes.usiku.neutralInkFilter,'none','Use an alpha-mask ink fill rather than a negative-image filter');
     assert.match(observedThemes.usiku.neutralInkMask,/moods-neutral-ink-v2\.webp/,'Neutral portraits reuse the exact canonical sprite as a mask');
     assert.equal(observedThemes.usiku.neutralInkColor,'rgb(117, 174, 133)','Medium green ink is painted on the portrait pixels themselves');
-    assert.match(observedThemes.usiku.neutralDesireInk,/referenceInk/,'Desire keeps the approved ink-extraction geometry');
-    assert.match(observedThemes.usiku.neutralDesireInk,/brightness\(0\)/,'Desire re-inks the extracted engraving, not its background');
+    assert.match(observedThemes.usiku.neutralDesireInk,/referenceInk/,'Selected Desire keeps the approved ink-extraction geometry');
+    assert.doesNotMatch(observedThemes.usiku.neutralDesireInk,/brightness\(0\)/,'Selected Desire keeps its original vivid treatment');
+    assert.match(observedThemes.usiku.neutralTriumphInk,/alphaInk/,'Neutral Triumph keeps its separate alpha extraction');
+    assert.match(observedThemes.usiku.neutralTriumphInk,/brightness\(0\)/,'Neutral Triumph re-inks the extracted engraving');
     assert.equal(observedThemes.usiku.sea,'rgb(17, 17, 17)','Usiku atlas ocean must be near-black');
     assert.equal(observedThemes.usiku.land,'rgb(245, 240, 230)','Usiku land engraving must be cream');
     assert.match(observedThemes.usiku.atlasMat,/radial-gradient/,'Atlas mat carries quiet leather tint');
