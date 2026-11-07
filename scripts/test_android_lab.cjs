@@ -350,8 +350,9 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert.equal(await page.evaluate(()=>atlasTestMap.getProjection().type),'globe');
   try{await page.screenshot({path:'android-lab/build/switch-review/maplibre-globe.png',timeout:10000})}
   catch(err){console.warn('Optional MapLibre globe screenshot skipped:',err.message)}
-  await page.locator('#map').click({position:{x:206,y:290}});
-  await page.locator('#flat').click();
+  const mapBox=await page.locator('#map').boundingBox();
+   await page.mouse.click(mapBox.x+206,mapBox.y+290);
+  await page.locator('#flat').evaluate(el=>el.click());
   await page.evaluate(()=>atlasTestMap.jumpTo({zoom:3,center:[10,20]}));
   await page.waitForTimeout(300);
   assert.equal(await page.evaluate(()=>atlasTestMap.getPaintProperty('borders','line-width')),.7,'Border thickness stays screen-relative');
