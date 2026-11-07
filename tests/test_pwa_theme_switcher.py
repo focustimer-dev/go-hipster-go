@@ -40,7 +40,11 @@ class PWAThemeTests(unittest.TestCase):
         self.assertIn("var(--usiku-neutral-mid) 68%,var(--usiku-neutral-edge) 100%", css)
         self.assertNotIn("#34885e 0%", css, "Do not reintroduce the all-green vignette")
         # Only real portrait ink pixels receive a restrained deep-green fill.
-        self.assertIn("--usiku-neutral-ink:#0f5638", css)
+        self.assertIn("--usiku-neutral-ink:#063821", css)
+        self.assertIn("html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=false] .face{", css)
+        self.assertIn("rgba(240,200,161,.76) 0%", css)
+        self.assertIn("rgba(235,189,146,.55) 33%", css)
+        self.assertIn("transparent 84%)!important;", css)
         self.assertIn("mask-image:url('/editions/gig-poster/assets/moods-neutral-ink-v2.webp')", css)
         self.assertIn("mask-position:var(--mood-position)", css)
         self.assertIn("filter:url(#referenceInk) brightness(0)", css)
