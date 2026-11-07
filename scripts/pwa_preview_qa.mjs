@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import assert from 'node:assert/strict';
-import { mkdir,writeFile } from 'node:fs/promises';
+import { mkdir,writeFile,copyFile } from 'node:fs/promises';
 import { chromium } from 'playwright';
 const base=process.env.PWA_PREVIEW_URL;
 const isProduction=process.argv.includes('--allow-production');
@@ -14,6 +14,12 @@ assert.equal(base,isProduction?publicOrigin:previewOrigin,
  'Only the dedicated preview is an allowed QA target');
 const folder='artifacts/pwa-preview';
 await mkdir(folder,{recursive:true});
+/* PR #193 portrait-fidelity experiment: preserve source assets as CI review
+   artifacts. Neither runtime sprite nor public pages are mutated. */
+if(process.env.GHG_PORTRAIT_FIDELITY_PROBE==='1'){
+ await copyFile('launcher/editions/gig-poster/assets/moods-neutral-approved-v1.webp',folder+'/portrait-source-approved.webp');
+ await copyFile('launcher/editions/gig-poster/assets/moods-neutral-ink-v2.webp',folder+'/portrait-source-alpha.webp');
+}
 const browser=await chromium.launch({headless:true,args:['--use-angle=swiftshader','--enable-unsafe-swiftshader']});
 const profiles=[
   {name:'phone',viewport:{width:390,height:844},isMobile:true,hasTouch:true},
