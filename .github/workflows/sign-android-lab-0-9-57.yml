@@ -1,0 +1,85 @@
+name: Build and sign approved Android Lab 0.9.57 metadata repair
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/releases/sign-lab-0-9-57'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-lab-metadata-release-0957
+  cancel-in-progress: false
+
+jobs:
+  build-sign:
+    runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools'
+          log-accepted-android-sdk-licenses: false
+      - name: Install exact Android SDK and verify metadata safety tests
+        run: |
+          sdkmanager 'platforms;android-36' 'build-tools;35.0.0'
+          python -m unittest discover -s android-lab/tests -v
+          node --test tests/link_preview_worker.test.mjs
+      - name: Native Java metadata tests, lint and unsigned release APK
+        run: bash android/gradlew -p android-lab testReleaseUnitTest assembleRelease lintVitalRelease --no-daemon
+      - name: Verify package identity and align
+        shell: bash
+        run: |
+          set -euo pipefail
+          tools="$ANDROID_HOME/build-tools/35.0.0"
+          apk="android-lab/app/build/outputs/apk/release/app-release-unsigned.apk"
+          test -s "$apk"
+          badging="$("$tools/aapt" dump badging "$apk")"
+          [[ "$badging" == *"name='work.samelling.hipstergo.lab' versionCode='66' versionName='0.9.57'"* ]] ||
+            { echo "::error::Unexpected application ID or version; refusing to sign"; exit 1; }
+          "$tools/zipalign" -p -f 4 "$apk" "$RUNNER_TEMP/lab-aligned.apk"
+          "$tools/zipalign" -c 4 "$RUNNER_TEMP/lab-aligned.apk"
+          sha256sum "$RUNNER_TEMP/lab-aligned.apk"
+      - name: Sign verified update with the existing Android Lab identity
+        shell: bash
+        env:
+          KEYSTORE_B64: ${{ secrets.HIPSTER_ANDROID_KEYSTORE_B64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.HIPSTER_ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.HIPSTER_ANDROID_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          test -n "$KEYSTORE_B64" && test -n "$ANDROID_KEYSTORE_PASSWORD" ||
+            { echo "::error::Missing original Android Lab signing secrets"; exit 1; }
+          umask 077
+          keystore="$RUNNER_TEMP/hipster-go-release.keystore"
+          trap 'rm -f "$keystore"' EXIT
+          printf '%s' "$KEYSTORE_B64" | base64 --decode > "$keystore"
+          test -s "$keystore"
+          args=(--ks "$keystore" --ks-key-alias hipster-go --ks-pass env:ANDROID_KEYSTORE_PASSWORD)
+          if [[ -n "$ANDROID_KEY_PASSWORD" ]]; then args+=(--key-pass env:ANDROID_KEY_PASSWORD); fi
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" sign "${args[@]}" \
+            --out Hipster-GO-Lab-0.9.57.apk "$RUNNER_TEMP/lab-aligned.apk"
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose --print-certs Hipster-GO-Lab-0.9.57.apk
+          cert="$("$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --print-certs Hipster-GO-Lab-0.9.57.apk)"
+          [[ "$cert" == *"Signer #1 certificate SHA-256 digest: 2e1c2c7d0ae0a75daa6da443c0c3193f212a5a86e685c885c2e93400099a4af0"* ]] ||
+            { echo "::error::Different APK signer; this would not upgrade the installed app"; exit 1; }
+          sha256sum Hipster-GO-Lab-0.9.57.apk
+      - name: Provide signed phone-installable APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: hipster-go-lab-0.9.57-signed-apk
+          path: Hipster-GO-Lab-0.9.57.apk
+          retention-days: 7
+          if-no-files-found: error
