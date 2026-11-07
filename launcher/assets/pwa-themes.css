@@ -304,6 +304,11 @@ html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pres
 html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood]:nth-child(n){
  border-color:#8c623977;
 }
+/* Earlier Usiku parent filter inverted the entire engraving back to white.
+   Disable that filter and tint only the transparent sprite itself. */
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=false] .face{
+ filter:none!important;
+}
 html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=false] .face::before{
  filter:brightness(0) saturate(100%) invert(61%) sepia(14%) saturate(470%) hue-rotate(78deg) brightness(91%);
  opacity:.95;
