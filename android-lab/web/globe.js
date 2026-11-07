@@ -150,6 +150,12 @@ function labAtlasHome(){return labAtlasMode==='globe'?[10,15]:[0,0]}
 
 let labAtlasModeInitialized=false,labAtlasMorph=null;
 const LAB_ATLAS_MORPH_DURATION=650;
+// Measured endpoint fits from completed MapLibre renders, keyed by viewport.
+// Avoid using stale calibration after rotation or layout changes.
+const labAtlasEndpointFits=new Map();
+function labAtlasFitKey(mode,width,height){
+ return `${mode}:${Math.round(width)}:${Math.round(height)}`;
+}
 
 // The projection buttons reflect the requested destination immediately; the
 // live map may need a frame to prepare its new geometry underneath the veil.
@@ -208,8 +214,10 @@ function labAtlasMorphTo(mode){
  // still on the old projection; the final render provides a tiny correction.
  const sourceFit=labAtlasMorphVectors.landingFit(from,width,fromHeight,
   point=>labGlobe.project(from==='robinson'?labRobinsonPoint(point):point),.03);
+ const destinationFit=labAtlasEndpointFits.get(labAtlasFitKey(mode,width,targetHeight));
  const fits={robinson:labAtlasMorphVectors.estimatedFit('robinson'),
   globe:labAtlasMorphVectors.estimatedFit('globe'),width,height:targetHeight};
+ if(destinationFit)fits[mode]={...destinationFit};
  fits[from]=sourceFit;
  const vector=labAtlasMorphVectors.make(tween,labGlobeGeography,crateSelected,[10,15]);
  const renderVector=progress=>{
@@ -284,7 +292,13 @@ function labAtlasMorphTo(mode){
   try{
    labAtlasCommitMode(mode,true);
    host.style.height='';host.style.aspectRatio=mode==='globe'?'1 / 1':'720 / 372';
-   labGlobe.resize();labAtlasGestures();
+   labGlobe.resize();
+   // The renderer must use its final viewport before camera constraints are
+   // applied. During Globe→Robinson, the first jumpTo above can be clamped
+   // against the old square WebGL size; this final home jump uses 720/372.
+   // Do not issue another resize during the projection/source swap.
+   labGlobe.jumpTo({center:labAtlasHome(),zoom:labGlobeHomeZoom(),bearing:0,pitch:0});
+   labAtlasGestures();
    mapCanvas.style.visibility=state.canvasVisibility;
   }catch(e){
    console.warn('Atlas projection switch failed',e);
@@ -304,7 +318,7 @@ function labAtlasMorphTo(mode){
    labGlobe.off('render',onRender);
    labGlobe.off('idle',onIdle);
    const measured=labAtlasMorphVectors.landingFit(mode,host.clientWidth,host.clientHeight,
-    point=>labGlobe.project(mode==='robinson'?labRobinsonPoint(point):point),.03);
+    point=>labGlobe.project(mode==='robinson'?labRobinsonPoint(point):point),.2);
    const predicted=fits[mode],actualFit=measured.sampled?measured:predicted;
    const correction={x:actualFit.x-predicted.x,y:actualFit.y-predicted.y,
     sx:actualFit.sx/predicted.sx,sy:actualFit.sy/predicted.sy};
@@ -314,21 +328,22 @@ function labAtlasMorphTo(mode){
    window.__labAtlasLastMorph={from,to:mode,commitMs,landingFit:actualFit,
     handoffSignal:signal,handoffWaitMs:performance.now()-waitingSince,
     sourceFit,predictedFit:predicted,fitSampled:measured.sampled,
+    rawFit:{sx:measured.rawSx,sy:measured.rawSy,validX:measured.validX,validY:measured.validY,
+     zoom:labGlobe.getZoom(),homeZoom:labGlobeHomeZoom(),projection:labGlobe.getProjection()?.type},
     endpointResidual:residual,correction,cacheHits:state.cacheHits||0,
     cacheMisses:state.cacheMisses||0,maxPaintMs:state.maxPaintMs||0};
    veil.dataset.endpointResidual=residual.toFixed(4);
-   // A calibrated endpoint should be indistinguishable from MapLibre.
-   // Skip the otherwise invisible 105ms correction when below 0.3%.
-   if(residual<.003){cleanup();return}
-   const transform='translate('+correction.x.toFixed(3)+'px,'+correction.y.toFixed(3)+
-    'px) scale('+correction.sx.toFixed(6)+','+correction.sy.toFixed(6)+')';
-   tween.style.transformOrigin='50% 50%';
-   try{
-    const animation=tween.animate([{transform:'none'},{transform}],{
-     duration:105,easing:'ease-out',fill:'forwards'});
-    animation.finished.then(cleanup,cleanup);
-   }catch(e){tween.style.transform=transform;cleanup()}
-   setTimeout(cleanup,170);
+   // The measured live renderer is authoritative. Redraw the terminal
+   // vector pose under the opaque veil before revealing it; a CSS transform
+   // on the canvas would also move its paper background and cause a snap.
+   if(measured.sampled){
+    labAtlasEndpointFits.set(labAtlasFitKey(mode,host.clientWidth,host.clientHeight),
+     {x:measured.x,y:measured.y,sx:measured.sx,sy:measured.sy,sampled:true});
+    fits[mode]=measured;
+    renderVector(mode==='globe'?1:0);
+   }
+   // Fade only after the destination has produced a real frame.
+   cleanup();
   };
   const onRender=()=>{
    const expected=mode==='globe'?'globe':'mercator';

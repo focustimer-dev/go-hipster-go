@@ -22,6 +22,7 @@ function labAtlasCahillTransition(mode,instant=false){
    host.classList.add('lab-cahill-active');
    frame?.classList.add('lab-cahill-frame');
    frame?.classList.remove('lab-globe-frame');
+   svg.parentElement.style.display='block';
    svg.style.display='block';svg.style.opacity='1';
    svg.style.pointerEvents='auto';
    host.setAttribute('aria-label','Interactive Cahill–Keyes world map');
@@ -29,6 +30,7 @@ function labAtlasCahillTransition(mode,instant=false){
    labCahill.reset();labCahillSync();labCahill.navigator?.activate();
   }else{
    svg.style.display='none';svg.style.opacity='0';svg.style.pointerEvents='none';
+   svg.parentElement.style.display='none';
    host.classList.remove('lab-cahill-active');frame?.classList.remove('lab-cahill-frame');
   }
   labGlobe.resize();
@@ -45,6 +47,12 @@ function labAtlasCahillTransition(mode,instant=false){
  labCahill.navigator?.deactivate();
  labAtlasSwitchButtons(mode);
  labAtlasMorphVectors.pauseWarm();
+ // An opaque geographic film is already covering the map. Stop the
+ // live WebGL canvas from competing for compositor frames during the fold.
+ // Restore its visibility before revealing the destination renderer.
+ const mapCanvas=labGlobe.getCanvas(),canvasVisibility=mapCanvas.style.visibility;
+ labGlobe.stop();
+ mapCanvas.style.visibility='hidden';
  const already={value:false};
  const precommit=()=>{
   if(already.value||mode==='cahill-keyes')return;
@@ -65,6 +73,7 @@ function labAtlasCahillTransition(mode,instant=false){
   let revealed=false;
   const show=(signal)=>{
    if(revealed)return;revealed=true;
+   mapCanvas.style.visibility=canvasVisibility;
    labGlobe.off('render',onRender);
    labGlobe.off('idle',onIdle);
    let alignment=null,fitSampled=false;

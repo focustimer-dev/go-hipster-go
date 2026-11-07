@@ -239,12 +239,17 @@ const labCahillMotion=(()=>{
   const step=now=>{
    if(state.done)return;
    if(!state.startedAt)state.startedAt=now;
-   state.lastFrameAt=performance.now();
-   // Keep essential fold poses visible even when a busy WebView drops rAFs.
-   // Wall-clock progress alone skips most of the octahedral opening after a
-   // long GPU pause; cap frame-to-frame travel without slowing normal 60fps.
+   const frameGap=state.lastFrameAt?Math.max(0,now-state.lastFrameAt):16;
+   state.lastFrameAt=now;
+   // Preserve fine-grained fold poses at normal FPS. When software WebGL
+   // starves the frame queue, allow larger progress steps instead of turning
+   // a 575ms animation into a five-second forced slideshow.
    const wall=clamp((now-state.startedAt)/DURATION_MS);
-   const x=Math.min(wall,(state.progress||0)+.095);
+   const adaptiveBudget=Math.min(.4,.095+Math.max(0,frameGap-50)/DURATION_MS);
+   // Keep at least eight real tween poses even on a starved renderer; after
+   // the seventh paint catch up to wall time rather than stretching to 5s.
+   const budget=state.frames<7?Math.min(.125,adaptiveBudget):adaptiveBudget;
+   const x=Math.min(wall,(state.progress||0)+budget);
    state.progress=x;
    const travel=easing(x);
    const t=goingToKeyes?travel:1-travel;
@@ -267,7 +272,7 @@ const labCahillMotion=(()=>{
    const now=performance.now();
    const sinceFrame=now-(state.lastFrameAt||submittedAt);
    if(document.visibilityState==='hidden'||sinceFrame>1500||
-      now-submittedAt>4800)finish();
+      now-submittedAt>3200)finish();
    else setTimeout(watchdog,300);
   };
   setTimeout(watchdog,1600);

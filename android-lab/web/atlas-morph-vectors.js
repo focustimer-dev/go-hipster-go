@@ -37,7 +37,7 @@ const labAtlasMorphVectors=(()=>{
  // yet switched. A live source camera supplies its exact start endpoint;
  // the destination camera supplies a tiny residual correction after commit.
  const BASE_FIT={
-  robinson:{x:0,y:0,sx:1.118858,sy:1.110402},
+  robinson:{x:0,y:0,sx:1.114836,sy:1.106410},
   globe:{x:0,y:0,sx:.749728,sy:.749728}
  };
  function estimatedFit(mode){return {...BASE_FIT[mode]}}
@@ -111,6 +111,7 @@ const labAtlasMorphVectors=(()=>{
   return {x:Number.isFinite(center.x)?center.x-w/2:0,
    y:Number.isFinite(center.y)?center.y-h/2:0,
    sx:validX?sx:expected.sx,sy:validY?sy:expected.sy,
+   rawSx:sx,rawSy:sy,validX,validY,
    sampled:validX&&validY};
  }
  // Idle-time sprite cache: a 8x4 sheet of 31 *matched* geographic poses.
