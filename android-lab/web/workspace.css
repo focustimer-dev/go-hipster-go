@@ -325,6 +325,7 @@ body.gig-poster .crate-map-frame.lab-globe-frame .atlas-radial-field{display:non
 :root{--lab-theme-selected-bg:#103135;--lab-theme-selected-ink:#dfb045}
 :root[data-pwa-theme=bosque],:root[data-pwa-theme=usiku]{--lab-theme-selected-bg:#004225;--lab-theme-selected-ink:#f5f0e6}
 .lab-dialog .lab-theme-choice[aria-pressed=true]{background:var(--lab-theme-selected-bg);color:var(--lab-theme-selected-ink);outline:2px solid currentColor;outline-offset:1px}
+:root[data-pwa-theme] body.gig-poster.lab-workspace .lab-dialog .lab-theme-choice[aria-pressed=true]{background:var(--lab-theme-selected-bg)!important;color:var(--lab-theme-selected-ink)!important;border-color:currentColor}
 .lab-theme-choice:focus-visible{outline:3px solid currentColor;outline-offset:3px}
 .lab-theme-status{min-height:1.4em;margin:10px 0 0;font:.76rem/1.4 Arial,sans-serif}
 @media(max-width:340px){.lab-theme-choices{gap:5px}.lab-dialog .lab-theme-choice{padding:6px}.lab-theme-choice strong{font-size:1rem}}
