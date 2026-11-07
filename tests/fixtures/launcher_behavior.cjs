@@ -381,7 +381,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.doesNotMatch(repeatCopies[0],/Fresh-crate discovery lens:/,'The skill selects its research route');
  assert.match(repeatCopies[0],/Seed:/,'GO adds an independently combined random phrase');
  const geminiPrompt=harness(async()=>{},'?ai=gemini&service=youtube').elements.prompt.textContent;
- assert.match(geminiPrompt,/^@go-hipster-go @YouTube Music go\n/,'Gemini GO explicitly names the skill and service');
+ assert.match(geminiPrompt,/^@go-hipster-go @YouTube Music go(?:\n|$)/,'A bare GO is a valid one-line skill invocation');
  assert.doesNotMatch(geminiPrompt,/^Service:/m,'Do not repeat the destination already in the GO command');
  assert.doesNotMatch(geminiPrompt,/go live|curate-only/,'GO has no internal mode jargon');
  const geminiPage=fs.readFileSync('launcher/index.html','utf8');
