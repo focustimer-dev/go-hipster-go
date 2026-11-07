@@ -26,6 +26,19 @@ class AndroidThemeParity(unittest.TestCase):
         self.assertIn('<script src="/assets/lab-themes.js"></script>',build)
         self.assertIn('<link rel="stylesheet" href="/assets/pwa-themes.css">',build)
 
+    def test_native_manual_reuses_palettes_in_embedded_guide(self):
+        manual=(ROOT/'android-lab/web/manual-guide.html').read_text()
+        css=(ROOT/'android-lab/web/manual-guide-theme.css').read_text()
+        build=(ROOT/'scripts/bundle_android_lab.py').read_text()
+        js=(ROOT/'android-lab/web/theme.js').read_text()
+        self.assertIn('lab-manual-themes.css',manual)
+        self.assertIn('parent.documentElement.dataset.pwaTheme',manual)
+        self.assertIn("manual-guide-theme.css",build)
+        for name in ('bosque','usiku'):
+            self.assertIn('data-pwa-theme='+name,css)
+        self.assertIn('syncManualTheme',js)
+        self.assertIn("addEventListener('load',syncManualTheme)",js)
+
     def test_three_projections_tween_without_liberi_color_flash(self):
         globe=(ROOT/'android-lab/web/atlas-morph-vectors.js').read_text()
         keyes=(ROOT/'android-lab/web/cahill-keyes-motion.js').read_text()
