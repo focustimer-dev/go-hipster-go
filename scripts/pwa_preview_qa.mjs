@@ -73,12 +73,14 @@ for(const profile of profiles){
     neutral:getComputedStyle(document.querySelector('.mood[data-mood="sad"]')).backgroundColor,
     sea:getComputedStyle(document.querySelector('.crate-map-ocean')).fill,
     land:getComputedStyle(document.querySelector('#posterLandEngraving rect')).fill,
-    selectInk:getComputedStyle(document.querySelector('.mood[data-mood="funky"] .face'),'::after').filter
+    selectInk:getComputedStyle(document.querySelector('.mood[data-mood="funky"] .face'),'::after').filter,
+    desireInk:getComputedStyle(document.querySelector('.mood[data-mood="desire"] .face'),'::after').filter
    }));
    if(name==='bosque'||name==='usiku'){
     assert.equal(observedThemes[name].desire,'rgb(0, 66, 37)','Desire selection must use rich green');
     assert.equal(observedThemes[name].funky,'rgb(0, 66, 37)','Funk pink stock must become rich green');
     assert.notEqual(observedThemes[name].selectInk,'none','selected portrait must be recolored');
+    assert.match(observedThemes[name].desireInk,/referenceInk/,'Desire must retain its detail-bearing engraving filter');
    }
    if(name==='usiku'){
     assert.equal(observedThemes.usiku.neutral,'rgb(17, 17, 17)','Usiku neutral keys must be near-black');
