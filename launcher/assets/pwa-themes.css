@@ -280,3 +280,22 @@ html[data-pwa-theme=usiku] body.gig-poster .crate-map-grid{stroke:#8c6239;opacit
 html[data-pwa-theme=usiku] body.gig-poster .chart-rose-field{fill:#111111;stroke:#8c6239}
 html[data-pwa-theme=usiku] body.gig-poster .chart-rose-ring{stroke:#f5f0e6}
 html[data-pwa-theme=usiku] body.gig-poster .chart-rose-letters{fill:#f5f0e6}
+
+/* Special alpha engravings (Desire and Triumph) are NOT ordinary transparent
+   sprite plates: referenceInk/alphaInk construct detail-bearing transparency.
+   Retain their SVG filter FIRST, then recolor the preserved engraving ink.
+   A brightness-only filter would turn the entire portrait into a silhouette. */
+html[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=true] .face::after,
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=true] .face::after{
+ filter:url(#referenceInk) brightness(0) invert(95%) !important;
+}
+html[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[data-mood=triumphant][aria-pressed=true] .face::after,
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=triumphant][aria-pressed=true] .face::after{
+ filter:url(#alphaInk) brightness(0) invert(95%) !important;
+}
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=false] .face::before{
+ filter:url(#referenceInk) brightness(0) invert(90%) !important;
+}
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=triumphant][aria-pressed=false] .face::before{
+ filter:url(#alphaInk) brightness(0) invert(90%) !important;
+}
