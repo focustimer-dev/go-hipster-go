@@ -105,7 +105,7 @@ def main():
     code = app.read_text(encoding="utf-8")
     expose = 'if(typeof window!=="undefined")window.HipsterPWABridge={'
     assert code.count(expose) == 1, "Canonical map-state export location changed"
-    bridge = '''if(location.pathname==='/pwa-atlas/inline.html'){
+    bridge = '''if(location.pathname==='/pwa-atlas/inline'||location.pathname==='/pwa-atlas/inline.html'){
  window.HipsterInlineAtlas=Object.freeze({
   getRegions:()=>[...crateSelected],
   setRegions:ids=>{
