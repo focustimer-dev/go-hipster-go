@@ -23,6 +23,13 @@ class LabSnapshotTests(unittest.TestCase):
             self.assertIn('<span id="labAppVersion">'+version+'</span>',page)
             self.assertNotIn('<!--LAB_APP_VERSION-->',page)
             stripped=page.replace('<link rel="stylesheet" href="/assets/lab-workspace.css">','')
+            for theme_asset in (
+                '<script src="/assets/lab-themes.js"></script>',
+                '<link rel="stylesheet" href="/assets/pwa-themes.css">',
+                '<link rel="stylesheet" href="/assets/pwa-atlas-themes.css">'
+            ):
+                self.assertIn(theme_asset,stripped)
+                stripped=stripped.replace(theme_asset,'')
             stripped=stripped.replace('<p><a href="/atlas-lab.html">TRY MAPLIBRE GLOBE</a></p>','')
             stripped=re.sub(r'<script type="application/json" id="labGlobeGeography">.*?</script>','',stripped,flags=re.S)
             stripped=stripped.replace('<script defer src="/assets/maplibre/maplibre-gl.js"></script><script defer src="/assets/cahill-keyes-vendor.js"></script><link rel="stylesheet" href="/assets/maplibre/maplibre-gl.css">','')
