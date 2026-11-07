@@ -99,6 +99,44 @@ def main():
     assert html.count("</head>") == 1
     html = html.replace("</head>", injection + "</head>")
     page.write_text(html, encoding="utf-8")
+    # Build one Atlas-only UI surface from the SAME native-engine bundle.
+    # Source app/region data remain canonical, but only map+mode nodes render.
+    app = DEST / "assets/app.js"
+    code = app.read_text(encoding="utf-8")
+    expose = 'if(typeof window!=="undefined")window.HipsterPWABridge={'
+    assert code.count(expose) == 1, "Canonical map-state export location changed"
+    bridge = '''if(location.pathname==='/pwa-atlas/inline.html'){
+ window.HipsterInlineAtlas=Object.freeze({
+  getRegions:()=>[...crateSelected],
+  setRegions:ids=>{
+   if(!Array.isArray(ids)||ids.length>30||ids.some(id=>!validCrateRegions.has(id)))return false;
+   const next=new Set(ids);
+   if(next.size===crateSelected.size&&[...next].every(id=>crateSelected.has(id)))return false;
+   crateSelected.clear();for(const id of next)crateSelected.add(id);
+   lastCrateStamp=null;updateCrateMap(false);return true;
+  }
+ });
+}
+'''
+    code = code.replace(expose, bridge + expose)
+    change = 'store(crateStorageKey,JSON.stringify([...crateSelected]));\\n copiedPrompt=null;selectionChanged(false,true);if(reframe)frameSelectedAtlas();'
+    assert code.count(change)==1, "Canonical region-pick synchronization anchor changed"
+    code=code.replace(change,change+'''
+ if(window.HipsterInlineAtlas&&window.parent!==window){
+  window.parent.postMessage({type:'ghg-inline-atlas-regions',
+   regions:[...crateSelected]},location.origin);
+ }''')
+    app.write_text(code,encoding="utf-8")
+    for source,target in (("pwa-inline-child.js","pwa-inline-child.js"),
+                          ("pwa-inline-child.css","pwa-inline-child.css")):
+        shutil.copyfile(ROOT/"launcher/assets"/source,DEST/"assets"/target)
+    inline=html.replace('</head>',
+        '<link rel="stylesheet" href="/pwa-atlas/assets/pwa-inline-child.css"></head>')
+    assert inline.count('</body>')==1
+    inline=inline.replace('</body>',
+        '<div id="pwaInlineAtlasRoot" aria-label="Live listening Atlas"></div>'
+        '<script src="/pwa-atlas/assets/pwa-inline-child.js"></script></body>')
+    (DEST/"inline.html").write_text(inline,encoding="utf-8")
     print(f"Built canonical Android atlas browser route: {DEST}")
 
 if __name__ == "__main__":
