@@ -148,10 +148,10 @@ for(const profile of profiles){
     assert.equal(observedThemes.usiku.neutralLabel,'rgb(245, 240, 230)','Usiku captions remain readable cream');
     assert.equal(observedThemes.usiku.neutralPortraitFilter,'none','Never invert the complete portrait or background');
     assert.equal(observedThemes.usiku.neutralInkFilter,'none','Use an alpha-mask ink fill rather than a negative-image filter');
-    assert.match(observedThemes.usiku.neutralInkMask,/moods-neutral-ink-v2\\.webp/,'Neutral portraits reuse the exact canonical sprite as a mask');
+    assert.match(observedThemes.usiku.neutralInkMask,/moods-neutral-ink-v2\.webp/,'Neutral portraits reuse the exact canonical sprite as a mask');
     assert.equal(observedThemes.usiku.neutralInkColor,'rgb(117, 174, 133)','Medium green ink is painted on the portrait pixels themselves');
     assert.match(observedThemes.usiku.neutralDesireInk,/referenceInk/,'Desire keeps the approved ink-extraction geometry');
-    assert.match(observedThemes.usiku.neutralDesireInk,/brightness\\(0\\)/,'Desire re-inks the extracted engraving, not its background');
+    assert.match(observedThemes.usiku.neutralDesireInk,/brightness\(0\)/,'Desire re-inks the extracted engraving, not its background');
     assert.equal(observedThemes.usiku.sea,'rgb(17, 17, 17)','Usiku atlas ocean must be near-black');
     assert.equal(observedThemes.usiku.land,'rgb(245, 240, 230)','Usiku land engraving must be cream');
     assert.match(observedThemes.usiku.atlasMat,/radial-gradient/,'Atlas mat carries quiet leather tint');
