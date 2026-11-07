@@ -129,6 +129,11 @@ for(const profile of profiles){
   await page.locator('#pwaReferenceInput').fill('A song\n'+sharedUrl);
   await page.locator('#pwaReferenceKeep').click();
   await page.waitForFunction(()=>document.getElementById('pwaReferenceName')?.textContent==='A Properly Parsed Track');
+  const enrichedPrompt=await page.locator('#prompt').textContent();
+  assert.match(enrichedPrompt,/untrusted page title: "A Properly Parsed Track"/,'GO sends the fetched metadata title to the AI');
+  assert.match(enrichedPrompt,/Untrusted source description/,'GO includes available source context without treating it as instructions');
+  assert.ok(enrichedPrompt.includes(sharedUrl),'GO always preserves the exact source URL');
+
   await page.locator('[data-pwa-tab="crate"]').click();
   assert.match(await page.locator('#pwaReferenceHelp').innerText(),/Album from a public provider/);
   assert.match(await page.locator('#pwaRecent').innerText(),/A Properly Parsed Track/);
@@ -139,6 +144,8 @@ for(const profile of profiles){
   await page.locator('.pwa-rail').waitFor({state:'visible'});
   await page.locator('[data-pwa-tab="crate"]').click();
   assert.equal(await page.locator('#pwaReferenceName').innerText(),'A Properly Parsed Track','Parsed title survives browser reload');
+  assert.match(await page.locator('#prompt').textContent(),/untrusted page title: "A Properly Parsed Track"/,'GO metadata persists after reload');
+
   await page.locator('#pwaCrate [data-pwa-action="edit-reference"]').click();
   const blockedUrl='https://music.apple.com/us/album/music/123456';
   await page.locator('#pwaReferenceInput').fill(blockedUrl);
@@ -148,6 +155,10 @@ for(const profile of profiles){
   assert.match(await page.locator('#pwaReferenceName').innerText(),/Apple Music link/,'Blocked provider gets a readable fallback');
   await page.locator('#pwaCrate [data-pwa-action="edit-reference"]').click();
   assert.equal(await page.locator('#pwaReferenceInput').inputValue(),blockedUrl,'Blocked metadata must not lose URL');
+  const rawFallback=await page.locator('#prompt').textContent();
+  assert.ok(rawFallback.includes(blockedUrl),'Blocked source URL is retained in GO');
+  assert.ok(!rawFallback.includes('untrusted page title:'),'Never fabricate a metadata title after provider denial');
+
   await page.locator('[data-pwa-action="cancel-reference"]').click();
   assert.deepEqual(errors,[],errors.join('; '));
   result.passed=true;
