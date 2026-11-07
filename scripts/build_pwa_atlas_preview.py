@@ -49,7 +49,8 @@ def main():
                 file.write_text(updated, encoding="utf-8")
     page = DEST / "index.html"
     html = page.read_text(encoding="utf-8")
-    injection = ('<link rel="stylesheet" href="/pwa-atlas/assets/pwa-atlas-themes.css">'
+    injection = ('<link rel="stylesheet" href="/assets/pwa-themes.css">'
+                 '<link rel="stylesheet" href="/pwa-atlas/assets/pwa-atlas-themes.css">'
                  '<script src="/pwa-atlas/assets/pwa-atlas-bridge.js"></script>')
     assert "id=\"labGlobeGeography\"" in html, "Canonical geographic data missing"
     assert 'src="/pwa-atlas/assets/app.js"' in html, "Atlas app URL did not rewrite"
