@@ -330,3 +330,41 @@ body.gig-poster .crate-map-frame.lab-globe-frame .atlas-radial-field{display:non
 .lab-theme-status{min-height:1.4em;margin:10px 0 0;font:.76rem/1.4 Arial,sans-serif}
 @media(max-width:340px){.lab-theme-choices{gap:5px}.lab-dialog .lab-theme-choice{padding:6px}.lab-theme-choice strong{font-size:1rem}}
 @media(forced-colors:active){.lab-dialog .lab-theme-choice[aria-pressed=true]{outline:3px solid Highlight}}
+
+/* Final phone QA: Preferences inherited the original Liberi mustard header,
+   near-black unselected service text and faint recording toggle captions.
+   Limit repairs to the Android modal; the source palette stays unchanged. */
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .lab-dialog-head{
+ background:#f5f0e6!important;color:#003018!important;border-bottom-color:#8c6239!important;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .lab-dialog-head{
+ background:#111111!important;color:#f5f0e6!important;border-bottom-color:#b77b4d!important;
+}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .lab-dialog-head button{
+ color:#003018!important;border-color:#003018!important;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .lab-dialog-head button{
+ color:#f5f0e6!important;border-color:#b77b4d!important;
+}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labServicePreferences .switch button[aria-pressed=true],
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labServicePreferences .switch button[aria-pressed=true]{
+ background:#004225!important;color:#f5f0e6!important;border-color:#003018!important;
+}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labServicePreferences .switch button[aria-pressed=false]{
+ color:#003018!important;border-color:#8c6239!important;background:transparent!important;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labServicePreferences .switch button[aria-pressed=false]{
+ color:#f5f0e6!important;border-color:#b77b4d!important;background:transparent!important;
+}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labRecordingPreferences :is(.recording-on,.recording-off){
+ color:#003018;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labRecordingPreferences :is(.recording-on,.recording-off){
+ color:#f5f0e6;
+}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labRecordingPreferences :not(:checked)+.recording-rocker .recording-off,
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labRecordingPreferences :checked+.recording-rocker .recording-on,
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labRecordingPreferences :not(:checked)+.recording-rocker .recording-off,
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labRecordingPreferences :checked+.recording-rocker .recording-on{
+ background:#004225!important;color:#f5f0e6!important;
+}
