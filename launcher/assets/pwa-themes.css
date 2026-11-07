@@ -328,18 +328,21 @@ html[data-pwa-theme=usiku] body.gig-poster .chart-rose-letters{fill:#f5f0e6}
 html[data-pwa-theme=bosque] body.gig-poster .chart-rose-north,
 html[data-pwa-theme=usiku] body.gig-poster .chart-rose-north{fill:#e5cf42}
 
-/* USIKU / preserve the approved lighter-center, darker-edge vignette.
-   Re-ink ONLY the neutral character pixels, never the card background or
-   character geometry. The original transparent sprite is an alpha mask:
-   no image inversion, no replacement portraits, no selected-state changes. */
+/* USIKU / warm cognac-and-saddle vignette: LIGHTER at portrait center,
+   DARKER at the distal edges. Never paint the tile gradient green.
+   The approved neutral engraving stays forest-green, applied only to the
+   original character alpha; no new faces, photo-negatives, or selected edits. */
 html[data-pwa-theme=usiku] body.gig-poster{
- --usiku-neutral-stock:#27794f;
- --usiku-neutral-edge:#003823;
+ --usiku-neutral-center:#b77b4d;
+ --usiku-neutral-stock:#a86c43;
+ --usiku-neutral-mid:#925b39;
+ --usiku-neutral-edge:#7e4c30;
  --usiku-neutral-ink:#0f5638;
 }
 html[data-pwa-theme=usiku] body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[data-mood][aria-pressed=false]{
  background:radial-gradient(ellipse farthest-corner at 50% 36%,
-  #34885e 0%,var(--usiku-neutral-stock) 34%,#145c3b 68%,var(--usiku-neutral-edge) 100%);
+  var(--usiku-neutral-center) 0%,var(--usiku-neutral-stock) 34%,
+  var(--usiku-neutral-mid) 68%,var(--usiku-neutral-edge) 100%);
  color:var(--usiku-neutral-ink);
  box-shadow:none;
 }
