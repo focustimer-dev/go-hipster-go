@@ -363,14 +363,14 @@ html[data-pwa-theme=usiku] body.gig-poster{
  --usiku-neutral-ink:#082516;
 }
 html[data-pwa-theme=usiku] body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[data-mood][aria-pressed=false]{
- /* Stronger leather vignette: a rich cognac center radiating to saddle corners.
-    No mask or image filter is applied to the original character engraving. */
+ /* Reverse vignette: saddle catches the light around each face, with
+    darker cognac at the distal edges. Keep the original engraved portrait. */
  background:radial-gradient(
   ellipse farthest-corner at 50% 36%,
-  #7e4c30 0%,
-  #925b39 28%,
-  #a86c43 58%,
-  var(--usiku-neutral-stock) 100%
+  var(--usiku-neutral-stock) 0%,
+  #a86c43 30%,
+  #925b39 65%,
+  #7e4c30 100%
  );
  color:var(--usiku-neutral-ink);
  box-shadow:none;
