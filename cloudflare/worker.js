@@ -31,7 +31,8 @@ export default {
       path === "/setup/" || path === "/editions/gig-poster/setup/" ||
       path === "/editions/gig-poster/setup/index.html"
     );
-    const served = (isPwaLaunch || isPwaManual) && response.ok
+    // Node smoke harnesses lack Cloudflare HTMLRewriter; keep the response usable.
+    const served = (isPwaLaunch || isPwaManual) && response.ok && typeof HTMLRewriter !== "undefined"
       ? new HTMLRewriter()
           .on("head", { element(el) {
             if (isPwaLaunch) el.append('<link rel="stylesheet" href="/assets/pwa-workspace.css">', { html: true });
