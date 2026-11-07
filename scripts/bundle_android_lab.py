@@ -37,9 +37,18 @@ def bundle(destination=None):
         if html.count(marker)!=1:
             raise ValueError('Expected one HTML platform slot: '+marker)
         html=html.replace(marker,marker+content)
-    html=html.replace('</head>','<script defer src="/assets/maplibre/maplibre-gl.js"></script><script defer src="/assets/cahill-keyes-vendor.js"></script><link rel="stylesheet" href="/assets/maplibre/maplibre-gl.css"></head>')
+    # Palette is applied before first paint. The existing Android renderer
+    # receives only color values; no geographic geometry or state is replaced.
+    theme_head=('<script src="/assets/lab-themes.js"></script>'
+                '<link rel="stylesheet" href="/assets/pwa-themes.css">'
+                '<link rel="stylesheet" href="/assets/pwa-atlas-themes.css">')
+    html=html.replace('</head>',theme_head+'<script defer src="/assets/maplibre/maplibre-gl.js"></script><script defer src="/assets/cahill-keyes-vendor.js"></script><link rel="stylesheet" href="/assets/maplibre/maplibre-gl.css"></head>')
     page.write_text(html)
     shutil.copyfile(ROOT / 'android-lab/web/workspace.css', destination / 'assets/lab-workspace.css')
+    shutil.copyfile(ROOT / 'android-lab/web/theme.js', destination / 'assets/lab-themes.js')
+    # One shared color system for the Android app and browser companion.
+    shutil.copyfile(ROOT / 'launcher/assets/pwa-themes.css', destination / 'assets/pwa-themes.css')
+    shutil.copyfile(ROOT / 'launcher/assets/pwa-atlas-themes.css', destination / 'assets/pwa-atlas-themes.css')
     vendor = ROOT / 'android-lab/web/cahill-keyes-vendor.js'
     if not vendor.is_file():
         raise FileNotFoundError('Cahill-Keyes offline bundle missing: run bash scripts/build_cahill_keyes_vendor.sh')
