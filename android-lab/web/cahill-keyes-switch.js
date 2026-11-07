@@ -30,6 +30,7 @@ function labAtlasCahillTransition(mode,instant=false){
    labCahill.reset();labCahillSync();labCahill.navigator?.activate();
   }else{
    svg.style.display='none';svg.style.opacity='0';svg.style.pointerEvents='none';
+   svg.parentElement.style.display='none';
    host.classList.remove('lab-cahill-active');frame?.classList.remove('lab-cahill-frame');
   }
   labGlobe.resize();
