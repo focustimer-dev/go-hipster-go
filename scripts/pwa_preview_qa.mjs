@@ -315,6 +315,17 @@ const context=await browser.newContext({serviceWorkers:'block'});const page=awai
 try{
  const manual=await page.goto(base+'/setup/',{waitUntil:'domcontentloaded'});assert.equal(manual.status(),200);
  assert.equal(await page.locator('.pwa-rail').count(),0,'manual remains a standalone route');
+ // The full Manual is a separate Worker route: it must inherit the appearance
+ // chosen in Preferences, not silently fall back to Liberi.
+ for(const theme of ['bosque','usiku']){
+  await page.goto(base+'/',{waitUntil:'domcontentloaded'});
+  await page.evaluate(t=>localStorage.setItem('ghg-pwa-theme-v1',t),theme);
+  await page.goto(base+'/setup/',{waitUntil:'domcontentloaded'});
+  assert.equal(await page.evaluate(()=>document.documentElement.dataset.pwaTheme),theme,
+   'Full Manual inherited selected appearance');
+  const paper=await page.locator('body').evaluate(el=>getComputedStyle(el).getPropertyValue('--paper').trim());
+  assert.equal(paper,theme==='bosque'?'#f5f0e6':'#003018','Full Manual has correct paper token');
+ }
  const gemini=await page.goto(base+'/gemini/',{waitUntil:'domcontentloaded'});assert.equal(gemini.status(),200);
  assert.match(page.url(),/ai=gemini/);assert.match(page.url(),/service=youtube/);
  await page.locator('.pwa-rail').waitFor({state:'visible'});
