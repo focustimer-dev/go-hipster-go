@@ -59,7 +59,12 @@ window.addEventListener('message',event=>{
  }
  if(msg.type===type+'-regions'){
   if(!ready||!Array.isArray(msg.regions)||msg.regions.length>30||msg.regions.some(x=>!valid.has(x)))return;
-  const wanted=new Set(msg.regions),have=new Set(current());
+  // The child and parent share localStorage. The child may already have
+  // written its regions there, while the Jukebox's live closure still has
+  // old selections. Compare the parent's actual pressed DOM, NOT storage.
+  const wanted=new Set(msg.regions);
+  const have=new Set([...document.querySelectorAll('[data-crate-region][aria-pressed=true]')]
+   .map(el=>el.dataset.crateRegion).filter(id=>valid.has(id)));
   if(wanted.size===have.size&&[...wanted].every(x=>have.has(x)))return;
   // Dispatch real existing region handlers, not a parallel prompt/GO model.
   for(const id of new Set([...wanted,...have])){
