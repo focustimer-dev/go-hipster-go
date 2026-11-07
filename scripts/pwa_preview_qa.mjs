@@ -348,6 +348,12 @@ for (const width of [390,320]) {
  const issues=[];
  atlas.on('pageerror',e=>issues.push(e.message));
  try{
+  await atlas.goto(base+'/',{waitUntil:'domcontentloaded',timeout:45000});
+  await atlas.locator('.pwa-rail').waitFor({state:'visible'});
+  await atlas.locator('[data-crate-region]').first().evaluate(el=>el.click());
+  const fromJukebox=await atlas.evaluate(()=>[...document.querySelectorAll('[data-crate-region][aria-pressed=true]')]
+   .map(el=>el.dataset.crateRegion).sort());
+  assert.equal(fromJukebox.length,1,'One real PWA region selected');
   const response=await atlas.goto(base+'/pwa-atlas/',{waitUntil:'domcontentloaded',timeout:45000});
   assert.equal(response.status(),200,'Atlas preview route must be hosted by isolated Worker');
   await atlas.waitForFunction(()=>window.labCahillMap?.ready&&window.labAtlasGlobe?.loaded(),null,{timeout:55000});
@@ -365,8 +371,11 @@ for (const width of [390,320]) {
   }));
   assert.equal(tabs.rail,theme==='usiku'?'rgb(17, 17, 17)':'rgb(0, 48, 24)','Atlas navigation theme');
   assert.equal(tabs.page,theme==='usiku'?'rgb(0, 48, 24)':'rgb(245, 240, 230)','Atlas Crate/Manual theme');
-  await atlas.locator('[data-crate-region]').first().evaluate(el=>el.click());
-  await atlas.waitForFunction(()=>!!document.querySelector('[data-crate-region][aria-pressed=true]'),
+  const inherited=await atlas.evaluate(()=>[...document.querySelectorAll('[data-crate-region][aria-pressed=true]')]
+   .map(el=>el.dataset.crateRegion).sort());
+  assert.deepEqual(inherited,fromJukebox,'Atlas inherits same-origin Jukebox selections');
+  await atlas.locator('[data-crate-region]').nth(1).evaluate(el=>el.click());
+  await atlas.waitForFunction(()=>document.querySelectorAll('[data-crate-region][aria-pressed=true]').length>=2,
    null,{timeout:5000});
   const before=await atlas.evaluate(()=>[...document.querySelectorAll('[data-crate-region][aria-pressed=true]')].map(el=>el.dataset.crateRegion).sort());
   const routes=['cahill-keyes','globe','robinson'];
@@ -408,6 +417,13 @@ for (const width of [390,320]) {
   }
   const back=atlas.getByRole('link',{name:'Return to PWA Jukebox'});
   assert.equal(await back.getAttribute('href'),'/','Preview must clearly return to the PWA');
+  const atlasSelections=await atlas.evaluate(()=>[...document.querySelectorAll('[data-crate-region][aria-pressed=true]')]
+   .map(el=>el.dataset.crateRegion).sort());
+  await back.click();
+  await atlas.locator('.pwa-rail').waitFor({state:'visible'});
+  const returned=await atlas.evaluate(()=>[...document.querySelectorAll('[data-crate-region][aria-pressed=true]')]
+   .map(el=>el.dataset.crateRegion).sort());
+  assert.deepEqual(returned,atlasSelections,'Three-map selection survives return to PWA Jukebox');
   assert.deepEqual(issues,[],'No Atlas browser errors');
   report.push({profile:'atlas-'+width,passed:true,projections:routes});
  }catch(e){
