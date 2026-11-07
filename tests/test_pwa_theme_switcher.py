@@ -34,8 +34,8 @@ class PWAThemeTests(unittest.TestCase):
         css = (ROOT / "launcher/assets/pwa-themes.css").read_text()
         # The radial stock is the approved light-center/dark-edge vignette.
         self.assertIn("#34885e 0%,var(--usiku-neutral-stock) 34%,#145c3b 68%,var(--usiku-neutral-edge) 100%", css)
-        # Only real portrait ink pixels receive a restrained mid-green fill.
-        self.assertIn("--usiku-neutral-ink:#75ae85", css)
+        # Only real portrait ink pixels receive a restrained deep-green fill.
+        self.assertIn("--usiku-neutral-ink:#216a47", css)
         self.assertIn("mask-image:url('/editions/gig-poster/assets/moods-neutral-ink-v2.webp')", css)
         self.assertIn("mask-position:var(--mood-position)", css)
         self.assertIn("filter:url(#referenceInk) brightness(0)", css)
