@@ -15,10 +15,18 @@ function labCahillInit(host,geography,routes,legacy){
   for(const [key,value] of Object.entries(attrs))el.setAttribute(key,String(value));
   return el;
  };
+ // Keep the detailed SVG's viewport fixed. Moving the SVG viewBox on
+ // every touch frame repaints all countries, graticules and route shapes.
+ // Clip a composited, transformed layer instead. Hit testing stays native:
+ // transformed country paths are still the real SVG DOM.
+ const viewport=doc.createElement('div');
+ viewport.className='lab-cahill-camera-viewport';
+ viewport.style.cssText='position:absolute;inset:0;overflow:hidden;pointer-events:none;contain:paint;';
+ host.appendChild(viewport);
  const svg=make('svg',{viewBox:`0 ${TOP} ${W} ${H}`,'aria-label':'Cahill–Keyes world map: select a country or zoom to explore','role':'group'});
  svg.id='labAtlasCahill';svg.classList.add('lab-cahill-overlay');
- svg.style.cssText='position:absolute;inset:0;width:100%;height:100%;opacity:0;display:none';
- host.appendChild(svg);
+ svg.style.cssText='position:absolute;inset:0;width:100%;height:100%;opacity:0;display:none;transform-origin:0 0;transform-box:border-box;will-change:transform;';
+ viewport.appendChild(svg);
  const projection=d3.geoCahillKeyes();
  projection.fitExtent([[22,20],[W-22,PROJECTION_HEIGHT-24]],{type:'Sphere'});
  const path=d3.geoPath(projection);
@@ -134,13 +142,25 @@ function labCahillInit(host,geography,routes,legacy){
  });
  const bounds={x:0,y:TOP,w:W,h:H};let zoom=1,blockedClicks=0,lastTap=0;
  const cameraListeners=new Set();
- // Coalesce high-frequency touch samples into one camera paint per display frame.
- let cameraFrame=0, cameraDirty=false;
+ // Coalesce pointer samples into one GPU/compositor transform per display
+ // frame, not one complete SVG re-raster per event.
+ let cameraFrame=0,cameraDirty=false,activeTouchAction='',routeZoomActive=null;
  const paintCamera=()=>{
   cameraFrame=0;if(!cameraDirty)return;cameraDirty=false;
-  svg.setAttribute('viewBox',`${bounds.x.toFixed(3)} ${bounds.y.toFixed(3)} ${bounds.w.toFixed(3)} ${bounds.h.toFixed(3)}`);
+  const r=viewport.getBoundingClientRect();
+  const tx=-bounds.x/W*zoom*r.width;
+  const ty=(TOP-bounds.y)/H*zoom*r.height;
+  svg.style.transform=`translate3d(${tx.toFixed(3)}px,${ty.toFixed(3)}px,0) scale(${zoom.toFixed(6)})`;
+  const action=zoom>1.01?'none':'pan-y';
+  if(activeTouchAction!==action){activeTouchAction=action;svg.style.touchAction=action}
+  const routesVisible=zoom>=1.55;
+  if(routeZoomActive!==routesVisible){routeZoomActive=routesVisible;lanes.setZoom(zoom)}
   for(const listener of cameraListeners)listener({...bounds,zoom});
  };
+ // A responsive viewport or projection switch never reuses old pixel offsets.
+ if(typeof ResizeObserver!=='undefined')new ResizeObserver(()=>{
+  cameraDirty=true;if(!cameraFrame)cameraFrame=requestAnimationFrame(paintCamera);
+ }).observe(viewport);
  const pointers=new Map();let previousPinch=null,dragged=false;
  let pinchMidpoint=null;
  const limit=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
@@ -149,11 +169,10 @@ function labCahillInit(host,geography,routes,legacy){
   bounds.x=limit(bounds.x,0,W-bounds.w);bounds.y=limit(bounds.y,TOP,TOP+H-bounds.h);
   cameraDirty=true;
   if(!cameraFrame)cameraFrame=requestAnimationFrame(paintCamera);
-  svg.style.touchAction=zoom>1.01?'none':'pan-y';
-  lanes.setZoom(zoom);
+  // Presentation and route visibility update once in paintCamera().
  };
  const screenToWorld=(cx,cy)=>{
-  const r=svg.getBoundingClientRect();
+  const r=viewport.getBoundingClientRect();
   return [bounds.x+(cx-r.left)/Math.max(1,r.width)*bounds.w,
    bounds.y+(cy-r.top)/Math.max(1,r.height)*bounds.h];
  };
@@ -161,14 +180,14 @@ function labCahillInit(host,geography,routes,legacy){
   const before=screenToWorld(cx,cy),next=limit(zoom*factor,1,5.5);
   if(Math.abs(next-zoom)<.00001)return;
   zoom=next;
-  const r=svg.getBoundingClientRect();bounds.w=W/zoom;bounds.h=H/zoom;
+  const r=viewport.getBoundingClientRect();bounds.w=W/zoom;bounds.h=H/zoom;
   bounds.x=before[0]-(cx-r.left)/Math.max(1,r.width)*bounds.w;
   bounds.y=before[1]-(cy-r.top)/Math.max(1,r.height)*bounds.h;
   refresh();
  };
  const reset=()=>{zoom=1;bounds.x=0;bounds.y=TOP;refresh()};
  const zoomBounds=([x0,y0],[x1,y1])=>{
-  const rect=svg.getBoundingClientRect();
+  const rect=viewport.getBoundingClientRect();
   if(!rect.width||!rect.height)return reset();
   const dx=Math.max(14,x1-x0),dy=Math.max(14,y1-y0);
   const s=limit(Math.min(W/(dx*1.28),H/(dy*1.28)),1,5.5);
@@ -221,7 +240,7 @@ function labCahillInit(host,geography,routes,legacy){
     // Track midpoint translation as well as scale: otherwise a moving
     // two-finger gesture jumps when its center shifts across the screen.
     if(pinchMidpoint){
-     const r=svg.getBoundingClientRect();
+     const r=viewport.getBoundingClientRect();
      bounds.x-=(mx-pinchMidpoint.x)/Math.max(1,r.width)*bounds.w;
      bounds.y-=(my-pinchMidpoint.y)/Math.max(1,r.height)*bounds.h;
      refresh();
@@ -235,7 +254,7 @@ function labCahillInit(host,geography,routes,legacy){
   // finger rests on the glass. The old path panned and blocked ALL clicks
   // on those tiny movements, even below our 7px drag threshold.
   if(!dragged||zoom<=1.01)return;
-  const r=svg.getBoundingClientRect();
+  const r=viewport.getBoundingClientRect();
   bounds.x-=dx/Math.max(1,r.width)*bounds.w;
   bounds.y-=dy/Math.max(1,r.height)*bounds.h;
   refresh();blockedClicks=performance.now()+150;
@@ -291,7 +310,7 @@ function labCahillInit(host,geography,routes,legacy){
  // Forgive near-coast taps ONLY if exactly one region appears in a small
  // screen-space halo; if two countries compete, do not guess.
  const nearbyRegion=(cx,cy)=>{
-  const frame=svg.getBoundingClientRect();
+  const frame=viewport.getBoundingClientRect();
   if(cx<frame.left||cx>frame.right||cy<frame.top||cy>frame.bottom)return null;
   for(const radius of [4,8,12]){
    const candidates=new Set();
