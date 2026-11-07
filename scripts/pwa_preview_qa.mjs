@@ -7,7 +7,8 @@ const isProduction=process.argv.includes('--allow-production');
 const previewOrigins=new Set([
  'https://hipster-go-pwa-preview.samelling.workers.dev',
  'https://hipster-go-android-theme-preview.samelling.workers.dev',
- 'https://hipster-go-pwa-inline-preview.samelling.workers.dev'
+ 'https://hipster-go-pwa-inline-preview.samelling.workers.dev',
+ 'https://hipster-go-pwa-theme-atlas-rc.samelling.workers.dev'
 ]);
 const publicOrigin='https://hipster-go.samelling.workers.dev';
 // The preview workflow must remain unable to visit production by accident.
