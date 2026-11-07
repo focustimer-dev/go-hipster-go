@@ -134,15 +134,23 @@ function labCahillInit(host,geography,routes,legacy){
  });
  const bounds={x:0,y:TOP,w:W,h:H};let zoom=1,blockedClicks=0,lastTap=0;
  const cameraListeners=new Set();
+ // Coalesce high-frequency touch samples into one camera paint per display frame.
+ let cameraFrame=0, cameraDirty=false;
+ const paintCamera=()=>{
+  cameraFrame=0;if(!cameraDirty)return;cameraDirty=false;
+  svg.setAttribute('viewBox',`${bounds.x.toFixed(3)} ${bounds.y.toFixed(3)} ${bounds.w.toFixed(3)} ${bounds.h.toFixed(3)}`);
+  for(const listener of cameraListeners)listener({...bounds,zoom});
+ };
  const pointers=new Map();let previousPinch=null,dragged=false;
+ let pinchMidpoint=null;
  const limit=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
  const refresh=()=>{
   bounds.w=W/zoom;bounds.h=H/zoom;
   bounds.x=limit(bounds.x,0,W-bounds.w);bounds.y=limit(bounds.y,TOP,TOP+H-bounds.h);
-  svg.setAttribute('viewBox',`${bounds.x.toFixed(2)} ${bounds.y.toFixed(2)} ${bounds.w.toFixed(2)} ${bounds.h.toFixed(2)}`);
+  cameraDirty=true;
+  if(!cameraFrame)cameraFrame=requestAnimationFrame(paintCamera);
   svg.style.touchAction=zoom>1.01?'none':'pan-y';
   lanes.setZoom(zoom);
-  for(const listener of cameraListeners)listener({...bounds,zoom});
  };
  const screenToWorld=(cx,cy)=>{
   const r=svg.getBoundingClientRect();
@@ -190,7 +198,7 @@ function labCahillInit(host,geography,routes,legacy){
   // Do not capture pointerdown: capturing immediately retargets the
   // eventual click to the SVG root, breaking country and route hit targets.
   // Touch-action:none already prevents native page gestures when zoomed.
-  previousPinch=null;
+  previousPinch=null;pinchMidpoint=null;
  });
  svg.addEventListener('pointermove',event=>{
   if(!pointers.has(event.pointerId)||labAtlasMode!=='cahill-keyes')return;
@@ -208,8 +216,19 @@ function labCahillInit(host,geography,routes,legacy){
   if(pointers.size===2){
    const [p,q]=[...pointers.values()];
    const distance=Math.hypot(p.x-q.x,p.y-q.y);
-   if(previousPinch&&distance>5)zoomAt(distance/previousPinch,(p.x+q.x)/2,(p.y+q.y)/2);
-   previousPinch=distance;dragged=true;cancelTap();
+   const mx=(p.x+q.x)/2,my=(p.y+q.y)/2;
+   if(previousPinch&&distance>5){
+    // Track midpoint translation as well as scale: otherwise a moving
+    // two-finger gesture jumps when its center shifts across the screen.
+    if(pinchMidpoint){
+     const r=svg.getBoundingClientRect();
+     bounds.x-=(mx-pinchMidpoint.x)/Math.max(1,r.width)*bounds.w;
+     bounds.y-=(my-pinchMidpoint.y)/Math.max(1,r.height)*bounds.h;
+     refresh();
+    }
+    zoomAt(distance/previousPinch,mx,my);
+   }
+   previousPinch=distance;pinchMidpoint={x:mx,y:my};dragged=true;cancelTap();
    blockedClicks=performance.now()+300;return;
   }
   // IMPORTANT: browser touch pointers report sub-pixel movement while a
@@ -240,7 +259,7 @@ function labCahillInit(host,geography,routes,legacy){
  const endPointer=event=>{
   const pointer=pointers.get(event.pointerId);
   if(!pointer)return;
-  pointers.delete(event.pointerId);previousPinch=null;
+  pointers.delete(event.pointerId);previousPinch=null;pinchMidpoint=null;
   const now=performance.now();
   if(dragged){cancelTap();blockedClicks=now+180;return}
   if(event.type!=='pointerup'||event.pointerType!=='touch')return;
