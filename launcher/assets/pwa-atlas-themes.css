@@ -133,3 +133,30 @@
 }
 /* Mode-specific ocean/land colors for Globe and Robinson are painted with
    MapLibre expressions in the browser bridge, not an invert() bitmap hack. */
+
+/* Native projection controls carry Liberi inline colors. Browser theme
+   selectors must win without rewriting Android's button logic. */
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .lab-atlas-modes button[aria-pressed=false]{
+ color:#003018!important;background:transparent!important;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .lab-atlas-modes button[aria-pressed=false]{
+ color:#f5f0e6!important;background:transparent!important;
+}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .lab-atlas-modes button[aria-pressed=true],
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .lab-atlas-modes button[aria-pressed=true]{
+ background:#004225!important;color:#f5f0e6!important;
+}
+/* Canvas tween frames use the exact browser-only color adapter; the veil
+   around the vector canvas must match its ocean/backdrop throughout the fold. */
+:root[data-pwa-theme=bosque] #labAtlasGlobe :is(.lab-atlas-morph,.lab-cahill-motion){
+ background-color:#f5f0e6!important;
+}
+:root[data-pwa-theme=usiku] #labAtlasGlobe :is(.lab-atlas-morph,.lab-cahill-motion){
+ background-color:#111111!important;
+}
+:root[data-pwa-theme=bosque] #labAtlasCahill .lab-cahill-routes path{
+ stroke:#8c6239;
+}
+:root[data-pwa-theme=usiku] #labAtlasCahill .lab-cahill-routes path{
+ stroke:#b77b4d;
+}

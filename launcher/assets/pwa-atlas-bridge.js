@@ -13,6 +13,14 @@ function atlasTheme(){
  try{const v=localStorage.getItem(THEME_KEY);return THEMES.includes(v)?v:'liberi'}
  catch(_){return 'liberi'}
 }
+/* Dynamic browser-only paints for native projection tween canvases.
+   The isolated PWA build opts in. Android's exact bundles stay untouched. */
+const TWEEN_PALETTES={
+ liberi:{paper:'#dfb045',ocean:'#103135',selected:'#a83223',ink:'#103135',backdrop:'#dfb045'},
+ bosque:{paper:'#004225',ocean:'#f5f0e6',selected:'#e5cf42',ink:'#003018',backdrop:'#f5f0e6'},
+ usiku:{paper:'#f5f0e6',ocean:'#111111',selected:'#e5cf42',ink:'#003018',backdrop:'#111111'}
+};
+window.GHGAtlasPaintColors=()=>({theme:atlasTheme(),...TWEEN_PALETTES[atlasTheme()]});
 // Applied before Android bundle DOM is parsed: no first-paint theme flash.
 document.documentElement.dataset.pwaTheme=atlasTheme();
 const services={chatgpt:'https://chatgpt.com/',gemini:'https://gemini.google.com/app',
