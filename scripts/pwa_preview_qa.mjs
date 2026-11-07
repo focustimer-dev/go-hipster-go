@@ -92,10 +92,11 @@ for(const profile of profiles){
     atlasMat:getComputedStyle(document.querySelector('.crate-map-frame')).backgroundImage,
     atlasTrim:getComputedStyle(document.querySelector('.crate-map-frame')).borderTopColor,
     compassLeather:getComputedStyle(document.querySelector('.chart-rose-field')).fill,
-    goCounterEdge:getComputedStyle(document.querySelector('#goButton')).borderBottomColor,
     goCounterThickness:getComputedStyle(document.querySelector('#goButton')).borderBottomWidth,
     goCounterGreen:getComputedStyle(document.querySelector('#goButton')).backgroundColor,
     ticketTrim:getComputedStyle(document.querySelector('#selectionTicket')).borderTopColor,
+    ticketOutline:getComputedStyle(document.querySelector('#selectionTicket')).borderTopWidth,
+    ticketShadow:getComputedStyle(document.querySelector('#selectionTicket')).boxShadow,
     navTrim:getComputedStyle(document.querySelector('.pwa-rail button[aria-current="page"]')).borderBottomColor,
     appearanceSwatch:getComputedStyle(document.querySelector('.pwa-theme-choice[data-pwa-theme="usiku"] .pwa-theme-sample i:nth-child(3)')).backgroundColor
    }));
@@ -125,10 +126,11 @@ for(const profile of profiles){
     assert.match(observedThemes.usiku.atlasMat,/radial-gradient/,'Atlas mat carries quiet leather tint');
     assert.match(observedThemes.usiku.atlasTrim,/rgba?\(183, 123, 77/,'Atlas border has saddle trim');
     assert.equal(observedThemes.usiku.compassLeather,'rgb(126, 76, 48)','Compass is an engraved leather accent');
-    assert.equal(observedThemes.usiku.goCounterEdge,'rgb(183, 123, 77)','GO counter gets saddle trim');
-    assert.equal(observedThemes.usiku.goCounterThickness,'3px','GO edge is a visible flat rule');
+    assert.equal(observedThemes.usiku.goCounterThickness,'0px','GO has no unnecessary leather underline');
     assert.equal(observedThemes.usiku.goCounterGreen,'rgb(0, 66, 37)','GO remains green, not leather');
-    assert.equal(observedThemes.usiku.ticketTrim,'rgb(183, 123, 77)','Floating crate ticket has leather edge');
+    assert.equal(observedThemes.usiku.ticketTrim,'rgb(183, 123, 77)','Crate ticket has a saddle outline');
+    assert.equal(observedThemes.usiku.ticketOutline,'1px','Crate border is uniformly thin');
+    assert.match(observedThemes.usiku.ticketShadow,/rgb\(17, 17, 17\)/,'Ticket offset shadow stays dark');
     assert.equal(observedThemes.usiku.navTrim,'rgb(183, 123, 77)','Selected navigation carries leather trim');
     assert.equal(observedThemes.usiku.appearanceSwatch,'rgb(183, 123, 77)','Usiku theme swatch reflects the leather');
    }
