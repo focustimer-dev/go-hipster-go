@@ -2,7 +2,8 @@
 // Geographically exact endpoints; in-between states are eased octahedral leaves.
 // Uses a temporary 2D canvas, no per-frame reprojecting of 183 countries.
 const labCahillMotion=(()=>{
- const PAL={paper:'#dfb045',ocean:'#103135',selected:'#a83223',ink:'#103135'};
+ const PAL=new Proxy({paper:'#dfb045',ocean:'#103135',selected:'#a83223',ink:'#103135',backdrop:'#dfb045'},
+  {get(base,key){return window.GHGAtlasPaintColors?.()?.[key]||base[key]}});
  const W=960,H=505,TOP=65;
  const FRAME_PIXELS=460;
  const clamp=v=>Math.max(0,Math.min(1,v));
@@ -31,7 +32,7 @@ const labCahillMotion=(()=>{
  function keyesPicture(svg,selected,pixels){
   const target=document.createElement('canvas');target.width=target.height=pixels;
   const ctx=target.getContext('2d',{alpha:false});
-  ctx.fillStyle=PAL.paper;ctx.fillRect(0,0,pixels,pixels);
+  ctx.fillStyle=PAL.backdrop;ctx.fillRect(0,0,pixels,pixels);
   ctx.setTransform(pixels/W,0,0,pixels/H,0,-TOP*pixels/H);
   const world=svg.querySelector('.lab-cahill-geography');
   if(!world)return target;
@@ -53,7 +54,7 @@ const labCahillMotion=(()=>{
    ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);
    const stroke=item.getAttribute('stroke');
    if(item.getAttribute('fill')&&item.getAttribute('fill')!=='none'){
-    ctx.fillStyle=item.getAttribute('fill');ctx.fill();
+    ctx.fillStyle=window.GHGAtlasPaintColors?getComputedStyle(item).fill:item.getAttribute('fill');ctx.fill();
    }
    if(stroke&&stroke!=='none'){
     ctx.lineWidth=+item.getAttribute('stroke-width')||.7;
@@ -86,12 +87,12 @@ const labCahillMotion=(()=>{
   const fits={...roundFits,width:pixels,height:pixels};
   labAtlasMorphVectors.paint(target,prepared,mode==='globe'?1:0,selected,fits);
   const ctx=target.getContext('2d');
-  ctx.globalCompositeOperation='destination-over';ctx.fillStyle=PAL.paper;
+  ctx.globalCompositeOperation='destination-over';ctx.fillStyle=PAL.backdrop;
   ctx.fillRect(0,0,pixels,pixels);ctx.globalCompositeOperation='source-over';
   return target;
  }
  function prepare(svg,geojson,selected,pixels=FRAME_PIXELS){
-  const key=selectionKey(selected)+'@'+pixels;
+  const key=selectionKey(selected)+'@'+pixels+'@'+(window.GHGAtlasPaintColors?.().theme||'liberi');
   if(saved?.key===key&&saved.svg===svg&&saved.geojson===geojson)return saved;
   // Globe and Robinson share identical canonical vertices: project once,
   // then paint the two cached poses without duplicating preparation work.
@@ -125,7 +126,7 @@ const labCahillMotion=(()=>{
   const ctx=canvas.getContext('2d',{alpha:false});if(!ctx)return;
   const size=canvas.width;const t=clamp(p),from=assets.images[origin],keyes=assets.images.keyes;
   ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,size,size);
-  ctx.fillStyle=PAL.paper;ctx.fillRect(0,0,size,size);
+  ctx.fillStyle=PAL.backdrop;ctx.fillRect(0,0,size,size);
   const cropped=zoomFrom?.zoom>1.03;
   const crop=()=>{
    const q=smooth(.83,1,t),b=zoomFrom;
@@ -201,7 +202,7 @@ const labCahillMotion=(()=>{
   state.roundFits=assets.fits;state.pixels=assets.pixels;
   const veil=document.createElement('div');veil.className='lab-cahill-motion';
   veil.setAttribute('aria-hidden','true');veil.dataset.from=from;veil.dataset.to=to;
-  veil.style.cssText='position:absolute;inset:0;z-index:30;overflow:hidden;background:#dfb045;pointer-events:none;';
+  veil.style.cssText='position:absolute;inset:0;z-index:30;overflow:hidden;background:'+PAL.backdrop+';pointer-events:none;';
   const canvas=document.createElement('canvas');canvas.className='lab-cahill-motion-canvas';
   canvas.width=canvas.height=assets.pixels;
   canvas.style.cssText='display:block;width:100%;height:100%;pointer-events:none;';
