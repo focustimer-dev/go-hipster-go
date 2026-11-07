@@ -58,6 +58,12 @@ for(const profile of profiles){
    assert.equal(await page.locator('button[data-pwa-theme][aria-pressed=true]').count(),1,'One theme only');
    assert.equal(await page.evaluate(()=>document.documentElement.dataset.pwaTheme),name);
    await page.locator('[data-pwa-action="close"]').click();
+   // Theme color transitions last 160ms; sample fully settled pixels, never
+   // intermediate animated colors. Reduced-motion users already see the final state.
+   await page.waitForFunction(expected=>{
+    const key=document.querySelector('.mood[data-mood="desire"]');
+    return key && getComputedStyle(key).backgroundColor===expected;
+   },name==='liberi'?'rgb(214, 75, 48)':'rgb(0, 66, 37)',{timeout:5000});
    observedThemes[name]=await page.locator('#pwaJukebox').evaluate(el=>({
     background:getComputedStyle(el).backgroundColor,
     paper:getComputedStyle(document.body).getPropertyValue('--paper').trim(),
