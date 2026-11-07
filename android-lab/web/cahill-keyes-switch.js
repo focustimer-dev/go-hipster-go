@@ -22,6 +22,7 @@ function labAtlasCahillTransition(mode,instant=false){
    host.classList.add('lab-cahill-active');
    frame?.classList.add('lab-cahill-frame');
    frame?.classList.remove('lab-globe-frame');
+   svg.parentElement.style.display='block';
    svg.style.display='block';svg.style.opacity='1';
    svg.style.pointerEvents='auto';
    host.setAttribute('aria-label','Interactive Cahill–Keyes world map');
