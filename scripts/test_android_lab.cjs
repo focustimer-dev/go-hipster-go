@@ -223,7 +223,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   const inward=await page.evaluate(()=>window.__labAtlasLastMorph);
   assert(inward&&inward.to==='robinson'&&Number.isFinite(inward.endpointResidual),
    'Robinson handoff must report its measured endpoint');
-  console.log('Robinson endpoint',{sampled:inward.fitSampled,residual:inward.endpointResidual});
+  console.log('Robinson endpoint',{sampled:inward.fitSampled,residual:inward.endpointResidual,rawFit:inward.rawFit,predicted:inward.predictedFit});
   assert(inward.fitSampled,'Robinson destination fit should be measured from live geometry');
   const robinsonFrame=await page.locator('#labAtlasGlobe').evaluate(el=>({width:el.clientWidth,height:el.clientHeight}));
   assert(Math.abs(robinsonFrame.width/robinsonFrame.height-720/372)<.05,'Robinson keeps the original wide chart');
