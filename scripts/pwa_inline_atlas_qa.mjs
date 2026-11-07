@@ -67,7 +67,7 @@ try{
   assert.equal(await page.locator('[data-crate-stamp-region="us-west"]').count(),1,'Real Jukebox stamp reflects nested Atlas selection');
   // Jukebox region buttons must also update the native Atlas instantly.
   await page.locator('[data-crate-region="us-east"]').evaluate(el=>el.click());
-  await frame.locator('[data-crate-region="us-east"][aria-pressed=true]').waitFor({timeout:8000});
+  await frame.locator('[data-crate-region="us-east"][aria-pressed=true]').waitFor({state:'attached',timeout:8000});
   const widthOk=await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2);
   assert(widthOk,'Integrated Atlas must not introduce horizontal page scroll on '+width+'px');
   await page.close();
