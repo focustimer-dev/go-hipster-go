@@ -183,3 +183,21 @@ html[data-pwa-theme=bosque] body.gig-poster:is([data-page=launch],[data-page=set
 html[data-pwa-theme=usiku] body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[aria-pressed=true] .word{
  color:#f5f0e6;background:transparent;text-decoration:underline;
 }
+
+/* Preserve original SVG engraving geometry and two-ink hatching. The poster
+   builder bakes mustard into <pattern> presentation attributes, so restyle
+   their paints instead of replacing the atlas artwork with flat fills. */
+html[data-pwa-theme=bosque] body.gig-poster #posterLandEngraving rect{fill:#f5f0e6}
+html[data-pwa-theme=bosque] body.gig-poster #posterLandEngraving path{stroke:#003018}
+html[data-pwa-theme=usiku] body.gig-poster #posterLandEngraving rect{fill:#8c6239}
+html[data-pwa-theme=usiku] body.gig-poster #posterLandEngraving path{stroke:#003018;stroke-opacity:.55}
+html[data-pwa-theme=bosque] body.gig-poster #posterSelectedHalftone rect,
+html[data-pwa-theme=usiku] body.gig-poster #posterSelectedHalftone rect{fill:#004225}
+html[data-pwa-theme=bosque] body.gig-poster #posterSelectedHalftone path,
+html[data-pwa-theme=usiku] body.gig-poster #posterSelectedHalftone path{stroke:#f5f0e6}
+/* The selected-expression rule is stronger than the neutral sprite rule. Both
+   colorways need an inverse-ink filter on selected clerks specifically. */
+html[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[aria-pressed=true] .face,
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[aria-pressed=true] .face{
+ filter:grayscale(1) brightness(0) invert(94%) !important;
+}
