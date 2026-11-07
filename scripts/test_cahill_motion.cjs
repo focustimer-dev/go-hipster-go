@@ -96,6 +96,41 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
       '../android-lab/build/motion-review/keyes-'+width+'-'+(++i)+'.png'),animations:'disabled',timeout:30000});
     }
    }
+   // Real two-pointer pinch: midpoint translation and scaling must remain
+   // anchored, and a pinch must never stamp a country accidentally.
+   await page.locator('[data-atlas-view=cahill-keyes]').click();
+   await page.waitForFunction(()=>labAtlasMode==='cahill-keyes'&&
+    !document.querySelector('.lab-cahill-motion,.lab-atlas-morph'));
+   await page.locator('#labAtlasCahill').scrollIntoViewIfNeeded();
+   const rect=await page.locator('#labAtlasCahill').boundingBox();
+   const cx=rect.x+rect.width/2,cy=rect.y+rect.height/2;
+   const initial=await page.evaluate(()=>labCahillMap.camera.snapshot());
+   const cdp=await page.context().newCDPSession(page);
+   await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[
+    {x:cx-25,y:cy,id:1},{x:cx+25,y:cy,id:2}]});
+   for(let step=1;step<=10;step++){
+    await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[
+     {x:cx-25-step*4+step,y:cy+step*.4,id:1},
+     {x:cx+25+step*4+step,y:cy+step*.4,id:2}]});
+    await page.waitForTimeout(20);
+   }
+   await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+   await cdp.detach();await page.waitForTimeout(60);
+   const afterPinch=await page.evaluate(()=>labCahillMap.camera.snapshot());
+   assert(afterPinch.zoom>1.2,'Cahill two-finger pinch must zoom, not scroll the page');
+   assert([afterPinch.x,afterPinch.y,afterPinch.w,afterPinch.h].every(Number.isFinite),
+    'Cahill pinch camera must remain finite');
+   const anchoredX=afterPinch.x+(rect.width/2+10)/rect.width*afterPinch.w;
+   const anchoredY=afterPinch.y+(rect.height/2+4)/rect.height*afterPinch.h;
+   assert(Math.abs(anchoredX-(initial.x+initial.w/2))<25&&
+    Math.abs(anchoredY-(initial.y+initial.h/2))<25,
+    'Cahill pinch midpoint must keep its geographic anchor under moving fingers');
+   const postPinchSelection=await page.evaluate(()=>[...document.querySelectorAll('[data-crate-region][aria-pressed=true]')]
+    .map(el=>el.dataset.crateRegion).sort());
+   assert.deepEqual(postPinchSelection,selection,'Pinch must not stamp countries');
+   console.log('Cahill pinch QA',JSON.stringify({width,zoom:afterPinch.zoom,
+    anchorErrorX:anchoredX-(initial.x+initial.w/2),
+    anchorErrorY:anchoredY-(initial.y+initial.h/2)}));
    await page.emulateMedia({reducedMotion:'reduce'});
    await page.locator('[data-atlas-view=cahill-keyes]').click();
    assert.equal(await page.locator('.lab-cahill-motion').count(),0,
