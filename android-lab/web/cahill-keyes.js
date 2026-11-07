@@ -21,7 +21,7 @@ function labCahillInit(host,geography,routes,legacy){
  // transformed country paths are still the real SVG DOM.
  const viewport=doc.createElement('div');
  viewport.className='lab-cahill-camera-viewport';
- viewport.style.cssText='position:absolute;inset:0;overflow:hidden;pointer-events:none;contain:paint;';
+ viewport.style.cssText='position:absolute;inset:0;overflow:hidden;pointer-events:none;contain:paint;display:none;';
  host.appendChild(viewport);
  const svg=make('svg',{viewBox:`0 ${TOP} ${W} ${H}`,'aria-label':'Cahill–Keyes world map: select a country or zoom to explore','role':'group'});
  svg.id='labAtlasCahill';svg.classList.add('lab-cahill-overlay');
