@@ -45,7 +45,7 @@ try{
   await page.evaluate(()=>localStorage.removeItem('ghg-crate-map-regions-v1'));
   for(const theme of ['liberi','bosque','usiku']){
    await page.locator('[data-pwa-action=prefs]').first().click();
-   await page.locator('[data-pwa-theme='+theme+']').click();
+   await page.locator('.pwa-theme-choice[data-pwa-theme='+theme+']').click();
    await page.locator('[data-pwa-action=close]').first().click();
    await page.waitForFunction(name=>{
     const doc=document.querySelector('#pwaInlineAtlas iframe')?.contentDocument;
