@@ -363,7 +363,15 @@ html[data-pwa-theme=usiku] body.gig-poster{
  --usiku-neutral-ink:#082516;
 }
 html[data-pwa-theme=usiku] body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[data-mood][aria-pressed=false]{
- background:var(--usiku-neutral-stock);
+ /* Stronger leather vignette: a rich cognac center radiating to saddle corners.
+    No mask or image filter is applied to the original character engraving. */
+ background:radial-gradient(
+  ellipse farthest-corner at 50% 36%,
+  #7e4c30 0%,
+  #925b39 28%,
+  #a86c43 58%,
+  var(--usiku-neutral-stock) 100%
+ );
  color:var(--usiku-neutral-ink);
  box-shadow:none;
 }
