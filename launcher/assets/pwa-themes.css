@@ -54,7 +54,7 @@ html[data-pwa-theme=usiku] body.gig-poster:is([data-page=launch],[data-page=setu
  --ghg-theme-active:#004225;--ghg-theme-active-text:#f5f0e6;
  background:#111111;color:#f5f0e6;color-scheme:dark;
 }
-html[data-pwa-theme=bosque] body.gig-poster .site{background-color:#f5f0e6}
+html[data-pwa-theme=bosque] body.gig-poster .site{background:#f5f0e6}
 html[data-pwa-theme=usiku] body.gig-poster .site{
  background:#003018;
  background-image:repeating-radial-gradient(circle at 92% -12%,#f5f0e60a 0 1px,transparent 2px 18px);
@@ -166,4 +166,30 @@ html[data-pwa-theme=usiku] body.gig-poster .brand-star svg,
 html[data-pwa-theme=bosque] body.gig-poster .go-button .star-glyph,
 html[data-pwa-theme=usiku] body.gig-poster .go-button .star-glyph{
  filter:grayscale(1) brightness(0) saturate(100%) invert(39%) sepia(17%) saturate(1296%) hue-rotate(346deg) brightness(93%) contrast(86%);
+}
+
+/* First visual-QA corrections: baked petrol engravings need readable contrast
+   on inverse stock. Recolor only the rendered ink; preserve exact image assets. */
+html[data-pwa-theme=usiku] body.gig-poster .poster-bird{
+ filter:grayscale(1) brightness(0) invert(94%);
+}
+html[data-pwa-theme=usiku] body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood .face{
+ filter:grayscale(1) brightness(0) invert(94%);
+}
+html[data-pwa-theme=bosque] body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[aria-pressed=true] .face{
+ filter:grayscale(1) brightness(0) invert(94%);
+}
+html[data-pwa-theme=bosque] body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[aria-pressed=true] .word,
+html[data-pwa-theme=usiku] body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[aria-pressed=true] .word{
+ color:#f5f0e6;background:transparent;text-decoration:underline;
+}
+/* Usiku atlas uses cream over forest; selected regions get tobacco fill. */
+html[data-pwa-theme=usiku] body.gig-poster .crate-map-zone:not([data-selected=true]) path{
+ fill:#f5f0e6;stroke:#003018;
+}
+html[data-pwa-theme=usiku] body.gig-poster .crate-map-zone[data-selected=true] path{
+ fill:#8c6239;stroke:#f5f0e6;
+}
+html[data-pwa-theme=bosque] body.gig-poster .crate-map-zone:not([data-selected=true]) path{
+ fill:#004225;stroke:#f5f0e6;
 }
