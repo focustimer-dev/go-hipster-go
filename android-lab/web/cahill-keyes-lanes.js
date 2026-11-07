@@ -75,8 +75,11 @@ function labCahillInstallLanes({make,world,routes,projection,legacy,markers,canA
   const p=projection(item.point);
   if(item.secret)pin(item.secret,p,item.label||describe(item.secret));
  }
+ let lastZoomVisibility=null;
  const setZoom=zoom=>{
   const available=zoom>=1.55;
+  if(lastZoomVisibility===available)return;
+  lastZoomVisibility=available;
   pins.style.display=available?'':'none';
   hits.setAttribute('aria-hidden',String(!available));
   for(const g of pinNodes)g.setAttribute('tabindex',available?'0':'-1');
