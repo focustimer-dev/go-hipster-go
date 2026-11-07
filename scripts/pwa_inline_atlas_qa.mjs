@@ -51,6 +51,31 @@ try{
     const doc=document.querySelector('#pwaInlineAtlas iframe')?.contentDocument;
     return doc?.documentElement.dataset.pwaTheme===name;
    },theme,{timeout:8000});
+   // Shipping routes are real canonical map geometry, not a decorative
+   // screenshot. Themed route strokes must be legible at phone scale.
+   const routeInk=await frame.locator('body').evaluate(()=>{
+    const map=window.labAtlasGlobe;
+    const features=map.getSource('routes')?.serialize?.().data?.features||[];
+    const path=document.querySelector('#labAtlasCahill .lab-cahill-routes path');
+    const keyes=path?getComputedStyle(path):null;
+    return {count:features.length,
+     paint:map.getPaintProperty('routes','line-color'),
+     width:map.getPaintProperty('routes','line-width'),
+     opacity:map.getPaintProperty('routes','line-opacity'),
+     paths:document.querySelectorAll('#labAtlasCahill .lab-cahill-routes path').length,
+     keyesWidth:keyes?parseFloat(keyes.strokeWidth):0,
+     keyesOpacity:keyes?parseFloat(keyes.strokeOpacity):0,
+     keyesColor:keyes?.stroke||''};
+   });
+   assert(routeInk.count>0&&routeInk.paths>0,'Sailing routes must remain on both map renderers');
+   const routeColors={liberi:'#edc65d',bosque:'#8c6239',usiku:'#b77b4d'};
+   assert.equal(routeInk.paint,routeColors[theme],theme+' route ink palette');
+   assert.equal(routeInk.width,theme==='liberi'?1:1.7,theme+' route width');
+   assert.equal(routeInk.opacity,theme==='liberi'?.65:.88,theme+' route opacity');
+   if(theme!=='liberi'){
+    assert(routeInk.keyesWidth>=1.8,theme+' Keyes route width must be readable');
+    assert(routeInk.keyesOpacity>=.85,theme+' Keyes routes need sufficient opacity');
+   }
    const selected=await page.evaluate(()=>JSON.parse(localStorage.getItem('ghg-crate-map-regions-v1')||'[]').sort());
    for(const mode of ['robinson','cahill-keyes','globe']){
     await frame.locator('[data-atlas-view='+mode+']').click();
