@@ -116,7 +116,7 @@ function renderLabInspiration(){
 window.HipsterLabRefresh=()=>{
  labRefreshState();
  const value=labInspiration(),changed=value!==labLastInspiration;labLastInspiration=value;
- if(changed)copiedPrompt=null;render();
+ if(changed||(copiedPrompt&&copiedPrompt!==goPrompt(ai,service,mood)))copiedPrompt=null;render();
  const afterSave=labInspirationAfterSave;labInspirationAfterSave=null;
  if(afterSave)afterSave();
  else if(value&&changed){labNavigate('jukebox');labRevealInspiration(doc.getElementById('labInspiration'))}
