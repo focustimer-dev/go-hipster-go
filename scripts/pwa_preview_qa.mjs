@@ -105,6 +105,8 @@ for(const profile of profiles){
     neutral:getComputedStyle(document.querySelector('.mood[data-mood="sad"]')).backgroundImage,
     neutralPortraitFilter:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .face')).filter,
     neutralInkFilter:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .face'),'::before').filter,
+    neutralInkMask:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .face'),'::before').maskImage,
+    neutralInkColor:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .face'),'::before').backgroundColor,
     neutralLabel:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .word')).color,
     neutralDesireInk:getComputedStyle(document.querySelector('.mood[data-mood="desire"] .face'),'::before').filter,
     sea:getComputedStyle(document.querySelector('.crate-map-ocean')).fill,
@@ -144,10 +146,12 @@ for(const profile of profiles){
     assert.match(observedThemes.usiku.neutral,/rgb\(39, 121, 79\) 34%/,'Middle uses slightly lighter-than-tab forest green');
     assert.match(observedThemes.usiku.neutral,/rgb\(0, 56, 35\) 100%/,'The outer card edge fades back into deep green');
     assert.equal(observedThemes.usiku.neutralLabel,'rgb(245, 240, 230)','Usiku captions remain readable cream');
-    assert.equal(observedThemes.usiku.neutralPortraitFilter,'none','Keep full original dark engraved portrait');
-    assert.equal(observedThemes.usiku.neutralInkFilter,'none','No photo-negative or brightened portrait ink');
-    assert.match(observedThemes.usiku.neutralDesireInk,/referenceInk/,'Desire keeps dark SVG alpha extraction, not cream inversion');
-    assert.doesNotMatch(observedThemes.usiku.neutralDesireInk,/invert/,'Desire must never become a photo-negative');
+    assert.equal(observedThemes.usiku.neutralPortraitFilter,'none','Never invert the complete portrait or background');
+    assert.equal(observedThemes.usiku.neutralInkFilter,'none','Use an alpha-mask ink fill rather than a negative-image filter');
+    assert.match(observedThemes.usiku.neutralInkMask,/moods-neutral-ink-v2\\.webp/,'Neutral portraits reuse the exact canonical sprite as a mask');
+    assert.equal(observedThemes.usiku.neutralInkColor,'rgb(117, 174, 133)','Medium green ink is painted on the portrait pixels themselves');
+    assert.match(observedThemes.usiku.neutralDesireInk,/referenceInk/,'Desire keeps the approved ink-extraction geometry');
+    assert.match(observedThemes.usiku.neutralDesireInk,/brightness\\(0\\)/,'Desire re-inks the extracted engraving, not its background');
     assert.equal(observedThemes.usiku.sea,'rgb(17, 17, 17)','Usiku atlas ocean must be near-black');
     assert.equal(observedThemes.usiku.land,'rgb(245, 240, 230)','Usiku land engraving must be cream');
     assert.match(observedThemes.usiku.atlasMat,/radial-gradient/,'Atlas mat carries quiet leather tint');
