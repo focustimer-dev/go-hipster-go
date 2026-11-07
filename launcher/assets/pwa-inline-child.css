@@ -1,0 +1,17 @@
+/* Dedicated Atlas-only runtime: hide the copied app shell, not its engine.
+   Do not create a second Jukebox, duplicate mood grid, or extra world map. */
+html,body{margin:0!important;padding:0!important;min-height:0!important;overflow-x:hidden!important;background:transparent!important}
+body.gig-poster.lab-workspace.pwa-atlas-only{padding:0!important;min-height:0!important}
+body.pwa-atlas-only .site,
+body.pwa-atlas-only .lab-rail,
+body.pwa-atlas-only .lab-page,
+body.pwa-atlas-only .selection-ticket,
+body.pwa-atlas-only #firstCrateSetup{display:none!important}
+#pwaInlineAtlasRoot{display:block;width:100%;min-width:0;padding:0;margin:0;background:transparent;overflow:hidden;box-sizing:border-box}
+#pwaInlineAtlasRoot .lab-atlas-modes{display:grid;box-sizing:border-box;width:100%;min-height:48px;margin:0 0 6px;border:1px solid currentColor}
+#pwaInlineAtlasRoot .lab-atlas-modes button{min-height:48px;touch-action:manipulation}
+#pwaInlineAtlasRoot .crate-map-frame{display:block!important;box-sizing:border-box;margin:0!important;width:100%;overflow:hidden}
+#pwaInlineAtlasRoot #labAtlasGlobe{display:block!important;position:relative;min-width:0;width:100%;overflow:hidden}
+#pwaInlineAtlasRoot .atlas-camera-viewport{display:none!important}
+#pwaInlineAtlasRoot .crate-map-frame #crateAtlasMap{display:none!important}
+@media(forced-colors:active){#pwaInlineAtlasRoot .lab-atlas-modes button[aria-pressed=true]{outline:2px solid Highlight}}
