@@ -337,7 +337,7 @@ html[data-pwa-theme=usiku] body.gig-poster{
  --usiku-neutral-stock:#a86c43;
  --usiku-neutral-mid:#925b39;
  --usiku-neutral-edge:#7e4c30;
- --usiku-neutral-ink:#0f5638;
+ --usiku-neutral-ink:#063821;
 }
 html[data-pwa-theme=usiku] body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[data-mood][aria-pressed=false]{
  background:radial-gradient(ellipse farthest-corner at 50% 36%,
@@ -352,7 +352,14 @@ html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pres
 html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood]:nth-child(n){
  border-color:#f5f0e650;
 }
+/* Warm highlights sit BEHIND the approved portrait's linework, inside
+   the face square. Do not brighten the card stock, page, or selected moods.
+   This restores the source artwork's warm-paper read without changing pixels,
+   sprite geometry, character identity, or expression state. */
 html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=false] .face{
+ background:radial-gradient(ellipse 52% 68% at 50% 51%,
+  rgba(240,200,161,.76) 0%,rgba(235,189,146,.55) 33%,
+  rgba(220,154,100,.20) 60%,transparent 84%)!important;
  filter:none!important;
 }
 /* Reuse each original pixel's alpha and exact sprite registration. Applying
