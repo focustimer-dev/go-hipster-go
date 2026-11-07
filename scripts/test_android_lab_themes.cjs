@@ -56,19 +56,19 @@ const palettes={
      await page.locator('#labAtlasGlobe').scrollIntoViewIfNeeded();
      await page.screenshot({path:path.join(output,`${name}-robinson.png`)});
      await page.locator('[data-atlas-view=cahill-keyes]').click();
-     await page.waitForFunction(()=>typeof labAtlasMode!=='undefined'&&
-      labAtlasMode==='cahill-keyes'&&typeof labAtlasMorph!=='undefined'&&labAtlasMorph===null,
-      null,{timeout:20000});
+     await page.waitForFunction(()=>{const state=window.HipsterAtlasState?.();
+      return state?.projection==='cahill-keyes'&&!state.transitioning;
+     },null,{timeout:20000});
      await page.screenshot({path:path.join(output,`${name}-keyes.png`)});
      await page.locator('[data-atlas-view=globe]').click();
-     await page.waitForFunction(()=>typeof labAtlasMode!=='undefined'&&
-      labAtlasMode==='globe'&&typeof labAtlasMorph!=='undefined'&&labAtlasMorph===null,
-      null,{timeout:20000});
+     await page.waitForFunction(()=>{const state=window.HipsterAtlasState?.();
+      return state?.projection==='globe'&&!state.transitioning;
+     },null,{timeout:20000});
      await page.screenshot({path:path.join(output,`${name}-globe.png`)});
      await page.locator('[data-atlas-view=robinson]').click();
-     await page.waitForFunction(()=>typeof labAtlasMode!=='undefined'&&
-      labAtlasMode==='robinson'&&typeof labAtlasMorph!=='undefined'&&labAtlasMorph===null,
-      null,{timeout:20000});
+     await page.waitForFunction(()=>{const state=window.HipsterAtlasState?.();
+      return state?.projection==='robinson'&&!state.transitioning;
+     },null,{timeout:20000});
      // Theme review is not complete until Crate AND native Manual agree.
      await page.locator('[data-lab-tab=crate]').click();
      await page.locator('#labCrate').waitFor({state:'visible'});
