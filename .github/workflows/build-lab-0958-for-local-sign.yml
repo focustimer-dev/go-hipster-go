@@ -1,0 +1,72 @@
+name: Prepare Android Lab 0.9.58 for original-key private local signing
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/releases/lab-0-9-58-local-sign-2026-11-06'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lab-0958-private-local-sign
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools'
+          log-accepted-android-sdk-licenses: false
+      - name: Verify native and music-link tests
+        run: |
+          sdkmanager 'platforms;android-36' 'build-tools;35.0.0'
+          python -m pip install Pillow==12.0.0
+          python -m unittest discover -s android-lab/tests -v
+          node --test tests/link_preview_worker.test.mjs
+      - name: Build and test Android release APK
+        run: bash android/gradlew -p android-lab testReleaseUnitTest assembleRelease lintVitalRelease --no-daemon
+      - name: Verify package and stage unsigned APK and official signing tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          tools="$ANDROID_HOME/build-tools/35.0.0"
+          source="android-lab/app/build/outputs/apk/release/app-release-unsigned.apk"
+          test -s "$source"
+          badging="$("$tools/aapt" dump badging "$source")"
+          [[ "$badging" == *"name='work.samelling.hipstergo.lab' versionCode='67' versionName='0.9.58'"* ]] ||
+            { echo "::error::Wrong package version or identity"; exit 1; }
+          mkdir -p output/unsigned output/signing-tools
+          cp "$source" output/unsigned/Hipster-GO-Lab-0.9.58-unsigned.apk
+          cp "$tools/lib/apksigner.jar" output/signing-tools/
+          cp "$tools/zipalign" output/signing-tools/
+          cp "$tools/aapt" output/signing-tools/
+          if [ -d "$tools/lib64" ]; then cp -R "$tools/lib64" output/signing-tools/; fi
+          sha256sum output/unsigned/*.apk
+          find output/signing-tools -maxdepth 1 -type f -printf '%f\n'
+      - name: Upload verified unsigned APK (no keystore)
+        uses: actions/upload-artifact@v4
+        with:
+          name: hipster-go-lab-0.9.58-verified-unsigned
+          path: output/unsigned/
+          retention-days: 7
+          if-no-files-found: error
+      - name: Upload official Android signing tools (no keystore)
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-sdk-35-private-local-sign-tools
+          path: output/signing-tools/
+          retention-days: 2
+          if-no-files-found: error
