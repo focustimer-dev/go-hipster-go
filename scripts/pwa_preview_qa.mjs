@@ -377,14 +377,15 @@ for (const width of [390,320]) {
     const m=window.labAtlasGlobe;return {
      land:m.getPaintProperty('land','fill-color'),
      water:m.getPaintProperty('ocean','background-color'),
+     projection:m.getProjection()?.type,
      robinson:m.getPaintProperty('robinson-ocean','fill-color')
     };
    });
    assert.equal(ink.land[2],colors.selected,'Selected region paint is yellow');
    assert.equal(ink.land[3],colors.land,'Unselected MapLibre land is themed');
    assert.equal(ink.robinson,colors.ocean,'Robinson ocean plate is themed');
-   assert.equal(ink.water,mode==='robinson'?'rgba(0,0,0,0)':colors.ocean,
-    'Globe and Robinson maintain ocean colors on switches');
+   assert.equal(ink.water,ink.projection==='mercator'?'rgba(0,0,0,0)':colors.ocean,
+    'Visible globe ocean stays themed while Robinson engine keeps transparent backdrop');
    if(mode==='cahill-keyes'){
     const fill=await atlas.locator('#labAtlasCahill [data-cahill-region][aria-pressed=true]').first()
      .evaluate(el=>getComputedStyle(el).fill);
