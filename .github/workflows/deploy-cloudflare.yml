@@ -13,6 +13,7 @@ on:
       - '.github/releases/pwa-three-map-link-cleanup-2026-11-06'
       - '.github/releases/inspiration-metadata-2026-11-06'
       - '.github/releases/pwa-skill-3-11-2-2026-11-06'
+      - '.github/releases/pwa-theme-atlas-integration-2026-11-07'
 
 permissions:
   contents: read
@@ -50,6 +51,8 @@ jobs:
           test -s launcher/pwa-atlas/assets/maplibre/maplibre-gl.js
           test -s launcher/pwa-atlas/assets/cahill-keyes-vendor.js
           test -s launcher/pwa-atlas/assets/pwa-atlas-bridge.js
+          test -s launcher/pwa-atlas/assets/pwa-atlas-themes.css
+          test -s launcher/assets/pwa-themes.css
       - name: Deploy entire static site
         uses: cloudflare/wrangler-action@v4
         with:
