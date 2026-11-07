@@ -32,8 +32,13 @@ class PWAThemeTests(unittest.TestCase):
 
     def test_usiku_recolors_original_portrait_alpha_without_washing_out_cards(self):
         css = (ROOT / "launcher/assets/pwa-themes.css").read_text()
-        # The radial stock is the approved light-center/dark-edge vignette.
-        self.assertIn("#34885e 0%,var(--usiku-neutral-stock) 34%,#145c3b 68%,var(--usiku-neutral-edge) 100%", css)
+        # Warm saddle/cognac, LIGHTER at center and DARKER at corners.
+        for ink in ("--usiku-neutral-center:#b77b4d", "--usiku-neutral-stock:#a86c43",
+                    "--usiku-neutral-mid:#925b39", "--usiku-neutral-edge:#7e4c30"):
+            self.assertIn(ink, css)
+        self.assertIn("var(--usiku-neutral-center) 0%,var(--usiku-neutral-stock) 34%", css)
+        self.assertIn("var(--usiku-neutral-mid) 68%,var(--usiku-neutral-edge) 100%", css)
+        self.assertNotIn("#34885e 0%", css, "Do not reintroduce the all-green vignette")
         # Only real portrait ink pixels receive a restrained deep-green fill.
         self.assertIn("--usiku-neutral-ink:#0f5638", css)
         self.assertIn("mask-image:url('/editions/gig-poster/assets/moods-neutral-ink-v2.webp')", css)
