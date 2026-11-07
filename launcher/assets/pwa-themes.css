@@ -352,41 +352,32 @@ html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pres
 html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood]:nth-child(n){
  border-color:#f5f0e650;
 }
-/* Warm highlights sit BEHIND the approved portrait's linework, inside
-   the face square. Do not brighten the card stock, page, or selected moods.
-   This restores the source artwork's warm-paper read without changing pixels,
-   sprite geometry, character identity, or expression state. */
+/* The neutral Usiku portraits are printed from the original approved alpha
+   in two inks: forest-green existing engraved strokes, with cream placed only
+   in supported face/neck interiors. No freehand cutout, background wash,
+   rebuilt character, new expression, or selected-state changes. */
 html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=false] .face{
- background:radial-gradient(ellipse 52% 68% at 50% 51%,
-  rgba(240,200,161,.76) 0%,rgba(235,189,146,.55) 33%,
-  rgba(220,154,100,.20) 60%,transparent 84%)!important;
+ background:none!important;
  filter:none!important;
 }
-/* Reuse each original pixel's alpha and exact sprite registration. Applying
-   the green as an ink fill (rather than inverting the whole face) keeps all
-   engraved line weights, hair, glasses and facial expressions intact. */
+/* The original six share their locked 3x2 sprite geometry. */
 html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood]:not([data-mood=desire]):not([data-mood=triumphant])[aria-pressed=false] .face::before{
- background-image:none!important;
- background-color:var(--usiku-neutral-ink);
- -webkit-mask-image:url('/editions/gig-poster/assets/moods-neutral-ink-v2.webp');
- mask-image:url('/editions/gig-poster/assets/moods-neutral-ink-v2.webp');
- -webkit-mask-position:var(--mood-position);
- mask-position:var(--mood-position);
- -webkit-mask-size:300% 200%;
- mask-size:300% 200%;
- -webkit-mask-repeat:no-repeat;
- mask-repeat:no-repeat;
+ background-image:url('/editions/gig-poster/assets/usiku-neutral-two-ink-v1.webp')!important;
+ background-color:transparent!important;
+ -webkit-mask:none!important;
+ mask:none!important;
  filter:none!important;
  opacity:1;
 }
-/* These two added portraits have distinct alpha-extraction pipelines.
-   Tint the extracted engraving only; never tint their image backgrounds. */
+/* Added characters have their own existing contain/translate registration. */
 html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=false] .face::before{
- filter:url(#referenceInk) brightness(0) saturate(100%) invert(24%) sepia(92%) saturate(721%) hue-rotate(103deg) brightness(62%) contrast(71%)!important;
+ background-image:url('/editions/gig-poster/assets/usiku-desire-neutral-two-ink-v1.webp')!important;
+ filter:none!important;
  opacity:1;
 }
 html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=triumphant][aria-pressed=false] .face::before{
- filter:url(#alphaInk) brightness(0) saturate(100%) invert(24%) sepia(92%) saturate(721%) hue-rotate(103deg) brightness(62%) contrast(71%)!important;
+ background-image:url('/editions/gig-poster/assets/usiku-triumph-neutral-two-ink-v1.webp')!important;
+ filter:none!important;
  opacity:1;
 }
 html[data-pwa-theme=usiku] body.gig-poster :is(.mood-hint,#moodHelp){
