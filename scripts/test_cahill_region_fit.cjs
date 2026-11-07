@@ -43,8 +43,10 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
     const camera=window.labCahillMap.camera,start=camera.snapshot(),samples=[];
     // This follows exactly the toggleCrateRegion -> updateCrateMap ->
     // frameSelectedAtlas -> labCahillFocus route used by route picks.
-    crateSelected.clear();crateSelected.add('east-asia');
-    toggleCrateRegion('us-west');
+    const map=document.querySelector('#crateAtlasMap');
+    if(!map?._atlasOpenSecret)throw new Error('Missing installed route discovery');
+    map._atlasOpenSecret('pacific-handoff');
+    document.querySelector('.atlas-secret-add').click();
     const immediate=camera.snapshot(),began=performance.now();
     return await new Promise((resolve,reject)=>{
      let stable=0,prev=NaN;
@@ -54,7 +56,9 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
       stable=Math.abs(state.zoom-prev)<.0001?stable+1:0;
       prev=state.zoom;
       if(stable>=4&&performance.now()-began>180){
-       resolve({start,immediate,final:state,samples,regions:[...crateSelected].sort()});return;
+       resolve({start,immediate,final:state,samples,
+        regions:[...document.querySelectorAll('[data-crate-stamp-region]')]
+         .map(el=>el.dataset.crateStampRegion).sort()});return;
       }
       if(performance.now()-began>5000){reject(new Error('Cahill selection fit never settled'));return}
       requestAnimationFrame(poll);
