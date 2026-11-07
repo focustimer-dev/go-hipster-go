@@ -415,6 +415,24 @@ for (const width of [390,320]) {
     'Atlas preview cannot make mobile page horizontally overflow');
    await atlas.locator('#labAtlasGlobe').screenshot({path:folder+'/atlas-'+width+'-'+mode+'.png',timeout:30000});
   }
+  // Changing appearance in another PWA tab must restore the genuine Liberi
+  // MapLibre style, not leave the last Bosque/Usiku palette painted behind.
+  const themedPaint=await atlas.evaluate(()=>window.labAtlasGlobe.getPaintProperty('land','fill-color'));
+  await atlas.evaluate(()=>{
+   localStorage.setItem('ghg-pwa-theme-v1','liberi');
+   window.dispatchEvent(new StorageEvent('storage',{key:'ghg-pwa-theme-v1'}));
+  });
+  await atlas.waitForFunction(previous=>{
+   const actual=window.labAtlasGlobe?.getPaintProperty?.('land','fill-color');
+   return document.documentElement.dataset.pwaTheme==='liberi' &&
+    JSON.stringify(actual)!==JSON.stringify(previous);
+  },themedPaint,{timeout:6000});
+  await atlas.evaluate(theme=>{
+   localStorage.setItem('ghg-pwa-theme-v1',theme);
+   window.GHGAtlasTheme.apply();
+  },theme);
+  assert.deepEqual(await atlas.evaluate(()=>window.labAtlasGlobe.getPaintProperty('land','fill-color')),
+   themedPaint,'Restoring Bosque/Usiku after Liberi preserves selected feature-state paint');
   const back=atlas.getByRole('link',{name:'Return to PWA Jukebox'});
   assert.equal(await back.getAttribute('href'),'/','Preview must clearly return to the PWA');
   const atlasSelections=await atlas.evaluate(()=>[...document.querySelectorAll('[data-crate-region][aria-pressed=true]')]
