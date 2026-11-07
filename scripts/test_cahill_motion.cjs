@@ -118,6 +118,21 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    await cdp.detach();await page.waitForTimeout(60);
    const afterPinch=await page.evaluate(()=>window.labCahillMap.camera.snapshot());
    assert(afterPinch.zoom>1.2,'Cahill two-finger pinch must zoom, not scroll the page');
+   const drawn=await page.evaluate(()=>{
+    const svg=window.labCahillMap.svg,viewport=svg.parentElement;
+    const b=window.labCahillMap.camera.snapshot();
+    const r=svg.getBoundingClientRect(),v=viewport.getBoundingClientRect();
+    return {viewBox:svg.getAttribute('viewBox'),transform:svg.style.transform,
+     xError:r.left-(v.left-b.x/960*b.zoom*v.width),
+     yError:r.top-(v.top+(65-b.y)/505*b.zoom*v.height),
+     widthError:r.width-v.width*b.zoom,heightError:r.height-v.height*b.zoom};
+   });
+   assert.equal(drawn.viewBox,'0 65 960 505','Cahill zoom keeps immutable SVG viewport');
+   assert(drawn.transform.includes('translate3d'),'Cahill zoom uses GPU-composited camera');
+   assert(Math.max(Math.abs(drawn.xError),Math.abs(drawn.yError),
+    Math.abs(drawn.widthError),Math.abs(drawn.heightError))<1.5,
+    'Cahill visual transform follows its model camera without scale jumps');
+
    assert([afterPinch.x,afterPinch.y,afterPinch.w,afterPinch.h].every(Number.isFinite),
     'Cahill pinch camera must remain finite');
    const anchoredX=afterPinch.x+(rect.width/2+10)/rect.width*afterPinch.w;
