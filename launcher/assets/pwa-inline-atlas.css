@@ -2,6 +2,8 @@
    The printed Robinson map remains a functional fallback if WebGL fails. */
 .pwa-inline-atlas{display:block;width:100%;min-width:0;margin:0;background:transparent;contain:layout style}
 .pwa-inline-atlas[hidden]{display:none!important}
+.crate-geo-body{position:relative}
+.pwa-inline-atlas.is-loading{position:absolute;inset:0 auto auto 0;width:100%;z-index:-1;visibility:hidden;pointer-events:none}
 .pwa-inline-atlas iframe{display:block;box-sizing:border-box;width:100%;height:265px;border:0;background:transparent;overflow:hidden;max-width:100%;color-scheme:normal}
 body.pwa-workspace .crate-geo.pwa-atlas-native-active>.crate-geo-body>.crate-map-frame{display:none!important}
 body.pwa-workspace .crate-geo.pwa-atlas-native-active .crate-atlas-heading{margin-bottom:4px}
