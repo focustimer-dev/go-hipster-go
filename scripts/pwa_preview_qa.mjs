@@ -107,6 +107,9 @@ for(const profile of profiles){
     neutralInkFilter:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .face'),'::before').filter,
     neutralInkMask:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .face'),'::before').maskImage,
     neutralInkColor:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .face'),'::before').backgroundColor,
+    neutralFaceUnderprint:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .face')).backgroundImage,
+    desireSelectedUnderprint:getComputedStyle(document.querySelector('.mood[data-mood="desire"] .face')).backgroundImage,
+    funkSelectedUnderprint:getComputedStyle(document.querySelector('.mood[data-mood="funky"] .face')).backgroundImage,
     neutralLabel:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .word')).color,
     neutralDesireInk:getComputedStyle(document.querySelector('.mood[data-mood="desire"] .face'),'::before').filter,
     neutralTriumphInk:getComputedStyle(document.querySelector('.mood[data-mood="triumphant"] .face'),'::before').filter,
@@ -152,7 +155,11 @@ for(const profile of profiles){
     assert.equal(observedThemes.usiku.neutralPortraitFilter,'none','Never invert the complete portrait or background');
     assert.equal(observedThemes.usiku.neutralInkFilter,'none','Use an alpha-mask ink fill rather than a negative-image filter');
     assert.match(observedThemes.usiku.neutralInkMask,/moods-neutral-ink-v2\.webp/,'Neutral portraits reuse the exact canonical sprite as a mask');
-    assert.equal(observedThemes.usiku.neutralInkColor,'rgb(15, 86, 56)','Deep-forest ink remains visible on warm saddle stock');
+    assert.equal(observedThemes.usiku.neutralInkColor,'rgb(6, 56, 33)','Dark forest-green ink keeps each approved engraved line visible');
+    assert.match(observedThemes.usiku.neutralFaceUnderprint,/radial-gradient/,'Warm portrait highlights live only inside the neutral face area');
+    assert.match(observedThemes.usiku.neutralFaceUnderprint,/rgba\\(240, 200, 161, 0\\.76\\)/,'Warm face underprint is calibrated, not green');
+    assert.equal(observedThemes.usiku.desireSelectedUnderprint,'none','Selected Desire gains no new portrait underprint');
+    assert.equal(observedThemes.usiku.funkSelectedUnderprint,'none','Selected Funk gains no new portrait underprint');
     assert.match(observedThemes.usiku.neutralDesireInk,/referenceInk/,'Selected Desire keeps the approved ink-extraction geometry');
     assert.doesNotMatch(observedThemes.usiku.neutralDesireInk,/brightness\(0\)/,'Selected Desire keeps its original vivid treatment');
     assert.match(observedThemes.usiku.neutralTriumphInk,/alphaInk/,'Neutral Triumph keeps its separate alpha extraction');
