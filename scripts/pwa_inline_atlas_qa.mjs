@@ -16,7 +16,27 @@ try{
   const response=await page.goto(base+'/?ai=chatgpt&service=spotify',{waitUntil:'domcontentloaded',timeout:45000});
   assert.equal(response.status(),200);
   await page.locator('#crateGeo').scrollIntoViewIfNeeded();
-  await page.waitForFunction(()=>window.GHGInlineAtlas?.ready?.()===true,null,{timeout:30000});
+  try{
+   await page.waitForFunction(()=>window.GHGInlineAtlas?.ready?.()===true,null,{timeout:15000});
+  }catch(error){
+   const state=await page.evaluate(()=>{
+    const host=document.getElementById('pwaInlineAtlas'),frame=host?.querySelector('iframe');
+    let child=null;
+    try{
+     const w=frame?.contentWindow,doc=w?.document;
+     child={url:doc?.location.href,ready:!!w?.labAtlasGlobe?.loaded?.(),
+      root:!!doc?.getElementById('pwaInlineAtlasRoot'),
+      map:!!doc?.getElementById('labAtlasGlobe'),
+      mapStyles:!!doc?.querySelector('.lab-atlas-modes'),
+      bridge:!!w?.HipsterInlineAtlas,css:doc?.body?.className};
+    }catch(e){child={error:e.message}}
+    return {parent:document.body.className,atlasHook:!!window.GHGInlineAtlas,
+     host:!!host,hidden:host?.hidden,iframeUrl:frame?.getAttribute('src'),child};
+   });
+   console.error('INLINE_ATLAS_DIAGNOSTIC',JSON.stringify(state),JSON.stringify(errors));
+   await page.screenshot({path:path.join(out,'not-ready-'+width+'.png'),fullPage:true});
+   throw error;
+  }
   const frame=page.frameLocator('#pwaInlineAtlas iframe');
   await frame.locator('#labAtlasGlobe').waitFor();
   assert.equal(await frame.locator('body.pwa-atlas-only').count(),1,'Atlas-only surface hides duplicate Android app');
