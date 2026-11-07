@@ -162,13 +162,13 @@ for(const profile of profiles){
     assert.equal(observedThemes.usiku.neutralPortraitFilter,'none','Do not invert full portrait');
     assert.equal(observedThemes.usiku.neutralInkFilter,'none','Two-ink source image must retain natural alpha');
     assert.equal(observedThemes.usiku.neutralInkMask,'none','Remove legacy flat-color alpha masking');
-    assert.match(observedThemes.usiku.neutralInkAsset,/usiku-neutral-two-ink-v1\\.webp/,'Six neutral original sprites receive the two-ink pressing');
-    assert.match(observedThemes.usiku.neutralTriumphAsset,/usiku-triumph-neutral-two-ink-v1\\.webp/,'Neutral Triumph uses its own two-ink art');
+    assert.match(observedThemes.usiku.neutralInkAsset,/usiku-neutral-two-ink-v1\.webp/,'Six neutral original sprites receive the two-ink pressing');
+    assert.match(observedThemes.usiku.neutralTriumphAsset,/usiku-triumph-neutral-two-ink-v1\.webp/,'Neutral Triumph uses its own two-ink art');
     assert.equal(observedThemes.usiku.neutralFaceUnderprint,'none','No oval CSS cream wash may extend outside artwork');
     assert.equal(observedThemes.usiku.desireSelectedUnderprint,'none','Selected Desire remains untouched');
     assert.equal(observedThemes.usiku.funkSelectedUnderprint,'none','Selected Funk remains untouched');
     assert.match(observedThemes.usiku.neutralDesireInk,/referenceInk/,'Selected Desire keeps its original filtered portrait');
-    assert.doesNotMatch(observedThemes.usiku.neutralDesireInk,/brightness\\(0\\)/,'Selected Desire is never photo-negative');
+    assert.doesNotMatch(observedThemes.usiku.neutralDesireInk,/brightness\(0\)/,'Selected Desire is never photo-negative');
     assert.equal(observedThemes.usiku.neutralTriumphInk,'none','Neutral Triumph two-ink pixels need no SVG filter');
     assert.equal(observedThemes.usiku.sea,'rgb(17, 17, 17)','Usiku atlas ocean must be near-black');
     assert.equal(observedThemes.usiku.land,'rgb(245, 240, 230)','Usiku land engraving must be cream');
