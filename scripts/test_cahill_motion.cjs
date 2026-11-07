@@ -99,12 +99,12 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    // Real two-pointer pinch: midpoint translation and scaling must remain
    // anchored, and a pinch must never stamp a country accidentally.
    await page.locator('[data-atlas-view=cahill-keyes]').click();
-   await page.waitForFunction(()=>labAtlasMode==='cahill-keyes'&&
+   await page.waitForFunction(()=>document.querySelector('[data-atlas-view="cahill-keyes"]')?.getAttribute('aria-pressed')==='true'&&
     !document.querySelector('.lab-cahill-motion,.lab-atlas-morph'));
    await page.locator('#labAtlasCahill').scrollIntoViewIfNeeded();
    const rect=await page.locator('#labAtlasCahill').boundingBox();
    const cx=rect.x+rect.width/2,cy=rect.y+rect.height/2;
-   const initial=await page.evaluate(()=>labCahillMap.camera.snapshot());
+   const initial=await page.evaluate(()=>window.labCahillMap.camera.snapshot());
    const cdp=await page.context().newCDPSession(page);
    await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[
     {x:cx-25,y:cy,id:1},{x:cx+25,y:cy,id:2}]});
@@ -116,7 +116,7 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    }
    await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
    await cdp.detach();await page.waitForTimeout(60);
-   const afterPinch=await page.evaluate(()=>labCahillMap.camera.snapshot());
+   const afterPinch=await page.evaluate(()=>window.labCahillMap.camera.snapshot());
    assert(afterPinch.zoom>1.2,'Cahill two-finger pinch must zoom, not scroll the page');
    assert([afterPinch.x,afterPinch.y,afterPinch.w,afterPinch.h].every(Number.isFinite),
     'Cahill pinch camera must remain finite');
