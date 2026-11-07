@@ -113,7 +113,9 @@
 }
 :root[data-pwa-theme=usiku] #labAtlasCahill .lab-cahill-ocean,
 :root[data-pwa-theme=usiku] #labCahillAntarcticOcean{
- fill:#111111;stroke:#111111;
+ /* Preserve the near-black ocean, but separate Keyes lobes from the black mat:
+    otherwise the recognisable Cahill silhouette disappears in Usiku. */
+ fill:#18271f;stroke:#8c6239;stroke-opacity:.55;stroke-width:.8;
 }
 :root[data-pwa-theme=bosque] #labAtlasCahill .lab-cahill-graticule{
  stroke:#8c6239;stroke-opacity:.24;
