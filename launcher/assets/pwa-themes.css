@@ -1,0 +1,150 @@
+/* PWA-only theme skins. No Android build or map geometry changes.
+   Liberi deliberately inherits the shipped poster stylesheet unchanged. */
+
+/* Preferences control is neutral and usable in all three themes. */
+.pwa-theme-section{margin:20px 0 6px;padding:18px 0 0;border-top:1px solid currentColor}
+.pwa-theme-section h3{margin:0 0 4px;font:400 1.45rem/1.2 Poster,Arial,sans-serif}
+.pwa-theme-section p{margin:0 0 12px;font:.875rem/1.45 Arial,sans-serif}
+.pwa-theme-choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.pwa-dialog .pwa-theme-choice{display:flex;flex-direction:column;align-items:stretch;gap:5px;min-width:0;min-height:104px;padding:8px;border:1px solid currentColor;border-radius:2px;background:transparent;color:inherit;text-align:left;font:700 .875rem/1.2 Arial,sans-serif}
+.pwa-theme-choice strong{font:400 clamp(1.15rem,4vw,1.5rem)/1.1 Poster,Arial,sans-serif}
+.pwa-theme-choice small{font:400 .68rem/1.3 Arial,sans-serif}
+.pwa-theme-sample{display:flex;height:31px;overflow:hidden;border:1px solid #11111145;border-radius:1px}
+.pwa-theme-sample i{display:block;flex:1}
+.pwa-theme-choice[data-pwa-theme=liberi] .pwa-theme-sample i:nth-child(1){background:#103135}
+.pwa-theme-choice[data-pwa-theme=liberi] .pwa-theme-sample i:nth-child(2){background:#dfb045}
+.pwa-theme-choice[data-pwa-theme=liberi] .pwa-theme-sample i:nth-child(3){background:#a83223}
+.pwa-theme-choice[data-pwa-theme=bosque] .pwa-theme-sample i:nth-child(1){background:#003018}
+.pwa-theme-choice[data-pwa-theme=bosque] .pwa-theme-sample i:nth-child(2){background:#f5f0e6}
+.pwa-theme-choice[data-pwa-theme=bosque] .pwa-theme-sample i:nth-child(3){background:#8c6239}
+.pwa-theme-choice[data-pwa-theme=usiku] .pwa-theme-sample i:nth-child(1){background:#111111}
+.pwa-theme-choice[data-pwa-theme=usiku] .pwa-theme-sample i:nth-child(2){background:#003018}
+.pwa-theme-choice[data-pwa-theme=usiku] .pwa-theme-sample i:nth-child(3){background:#f5f0e6}
+.pwa-dialog .pwa-theme-choice[aria-pressed=true]{outline:2px solid currentColor;outline-offset:2px;background:var(--ghg-theme-active,#103135);color:var(--ghg-theme-active-text,#dfb045)}
+.pwa-theme-choice:focus-visible{outline:3px solid currentColor;outline-offset:3px}
+.pwa-theme-status{min-height:1.4em;margin:10px 0 0!important;font:.76rem/1.4 Arial,sans-serif}
+@media(max-width:340px){.pwa-theme-choices{gap:5px}.pwa-dialog .pwa-theme-choice{padding:6px}.pwa-theme-choice strong{font-size:1rem}}
+@media(forced-colors:active){.pwa-dialog .pwa-theme-choice[aria-pressed=true]{outline:3px solid Highlight}}
+
+/* Two colorways override inks and paper only. The poster's original typography,
+   portraits, atlas camera, hit targets, and animations remain authoritative. */
+html[data-pwa-theme=bosque] body.gig-poster:is([data-page=launch],[data-page=setup]){
+ --ink:#003018;--ink2:#004225;--paper:#f5f0e6;--bone:#f5f0e6;
+ --red:#8c6239;--red2:#8c6239;--yellow:#f5f0e6;--line:#8c623999;
+ --focus-ink:#8c6239;--focus-paper:#f5f0e6;
+ --control-metal:#f5f0e6;--control-track:#003018;
+ --atlas-paper:#f5f0e6;--atlas-paper-light:#eee4d3;--atlas-paper-hover:#e7d7bd;
+ --atlas-ink:#003018;--atlas-accent:#8c6239;--atlas-border:#8c6239;
+ --atlas-land:#004225;--atlas-water:#f5f0e6;--atlas-boundary:#f5f0e6;--atlas-selected:#8c6239;
+ --selection-vermilion:#8c6239;
+ --pwa-petrol:#003018;--pwa-mustard:#f5f0e6;
+ --ghg-theme-active:#004225;--ghg-theme-active-text:#f5f0e6;
+ background:#003018;color:#003018;
+}
+html[data-pwa-theme=usiku] body.gig-poster:is([data-page=launch],[data-page=setup]){
+ --ink:#f5f0e6;--ink2:#f5f0e6;--paper:#003018;--bone:#f5f0e6;
+ --red:#8c6239;--red2:#8c6239;--yellow:#004225;--line:#f5f0e655;
+ --focus-ink:#f5f0e6;--focus-paper:#004225;
+ --control-metal:#003018;--control-track:#f5f0e6;
+ --atlas-paper:#003018;--atlas-paper-light:#004225;--atlas-paper-hover:#004225;
+ --atlas-ink:#f5f0e6;--atlas-accent:#8c6239;--atlas-border:#8c6239;
+ --atlas-land:#f5f0e6;--atlas-water:transparent;--atlas-boundary:#003018;--atlas-selected:#8c6239;
+ --selection-vermilion:#8c6239;
+ --pwa-petrol:#f5f0e6;--pwa-mustard:#003018;
+ --ghg-theme-active:#004225;--ghg-theme-active-text:#f5f0e6;
+ background:#111111;color:#f5f0e6;color-scheme:dark;
+}
+html[data-pwa-theme=bosque] body.gig-poster .site{background-color:#f5f0e6}
+html[data-pwa-theme=usiku] body.gig-poster .site{
+ background:#003018;
+ background-image:repeating-radial-gradient(circle at 92% -12%,#f5f0e60a 0 1px,transparent 2px 18px);
+}
+/* The masthead and Jukebox are still the same layout; only ink and accent change. */
+html[data-pwa-theme=bosque] body.gig-poster .panel-head,
+html[data-pwa-theme=bosque] body.gig-poster .counter-label,
+html[data-pwa-theme=bosque] body.gig-poster .receipt-heading{color:#8c6239}
+html[data-pwa-theme=bosque] body.gig-poster .tempo-control::before{color:#8c6239}
+html[data-pwa-theme=usiku] body.gig-poster .panel-head,
+html[data-pwa-theme=usiku] body.gig-poster .counter-label,
+html[data-pwa-theme=usiku] body.gig-poster .receipt-heading,
+html[data-pwa-theme=usiku] body.gig-poster .tempo-control::before{color:#f5f0e6}
+html[data-pwa-theme=bosque] body.gig-poster :is(.go-options,.go-button){background:#004225;color:#f5f0e6}
+html[data-pwa-theme=usiku] body.gig-poster :is(.go-options,.go-button){background:#004225;color:#f5f0e6}
+html[data-pwa-theme=bosque] body.gig-poster .go-options .go-extras,
+html[data-pwa-theme=usiku] body.gig-poster .go-options .go-extras{border-color:#f5f0e6}
+html[data-pwa-theme=bosque] body.gig-poster .go-options .go-extras .cover-toggle,
+html[data-pwa-theme=usiku] body.gig-poster .go-options .go-extras .cover-toggle{color:#f5f0e6}
+html[data-pwa-theme=bosque] body.gig-poster .go-options .go-extras .cover-toggle+.cover-toggle,
+html[data-pwa-theme=usiku] body.gig-poster .go-options .go-extras .cover-toggle+.cover-toggle{border-left-color:#f5f0e6}
+html[data-pwa-theme=bosque] body.gig-poster .go-button .go-copy b,
+html[data-pwa-theme=bosque] body.gig-poster .go-button .go-copy>span:not(.go-stamp),
+html[data-pwa-theme=usiku] body.gig-poster .go-button .go-copy b,
+html[data-pwa-theme=usiku] body.gig-poster .go-button .go-copy>span:not(.go-stamp){color:#f5f0e6}
+html[data-pwa-theme=bosque] body.gig-poster .go-button .go-stamp,
+html[data-pwa-theme=usiku] body.gig-poster .go-button .go-stamp{background:#f5f0e6;color:#003018;border-color:#f5f0e6}
+html[data-pwa-theme=bosque] body.gig-poster .go-options .option-state,
+html[data-pwa-theme=usiku] body.gig-poster .go-options .option-state{border-color:#f5f0e6}
+html[data-pwa-theme=bosque] body.gig-poster .go-options .cover-toggle[aria-pressed=true] .option-state,
+html[data-pwa-theme=usiku] body.gig-poster .go-options .cover-toggle[aria-pressed=true] .option-state{background:#f5f0e6;border-color:#f5f0e6}
+/* Usiku keeps the established portraits, but lifts their ink from the dark paper. */
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[aria-pressed=true]{background:#004225;color:#f5f0e6;border-color:#f5f0e6}
+html[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[aria-pressed=true]{background:#004225;color:#f5f0e6;border-color:#003018}
+html[data-pwa-theme=usiku] body.gig-poster .mood .face,
+html[data-pwa-theme=usiku] body.gig-poster .mood[aria-pressed=true] .face{filter:brightness(0) invert(94%) sepia(14%) saturate(225%) hue-rotate(340deg)}
+html[data-pwa-theme=bosque] body.gig-poster .mood[aria-pressed=true] .face{filter:brightness(0) invert(93%) sepia(10%) saturate(120%)}
+html[data-pwa-theme=usiku] body.gig-poster .crate-map-grid{stroke:#f5f0e6;opacity:.17}
+html[data-pwa-theme=bosque] body.gig-poster .crate-map-grid{stroke:#003018;opacity:.15}
+html[data-pwa-theme=usiku] body.gig-poster .crate-map-zone[data-selected=true] path{fill:#8c6239;stroke:#f5f0e6}
+html[data-pwa-theme=bosque] body.gig-poster .crate-map-zone[data-selected=true] path{fill:#8c6239;stroke:#003018}
+/* A cream paper receipt is legible in both themes; the underlying request and
+   clipboard success logic are entirely unchanged. */
+html[data-pwa-theme=usiku] body.gig-poster .receipt,
+html[data-pwa-theme=usiku] body.gig-poster .receipt-fold,
+html[data-pwa-theme=usiku] body.gig-poster .receipt pre{color:#f5f0e6}
+html[data-pwa-theme=usiku] body.gig-poster .receipt-copy{border-color:#f5f0e6;color:#f5f0e6}
+/* Browser-only rail, Crate, Manual, dialogs and guide picker. */
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-rail{background:#003018;color:#f5f0e6}
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-rail{background:#111111;color:#f5f0e6;border-bottom:1px solid #8c6239}
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-rail button[aria-current=page],
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-rail button[aria-current=page]{background:#004225;color:#f5f0e6;border-bottom-color:#8c6239}
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-rail button:last-child,
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-rail button:last-child{border-left-color:#f5f0e655}
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-page,
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-dialog{background:#f5f0e6;color:#003018}
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-page{background:#003018;color:#f5f0e6}
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-dialog{background:#111111;color:#f5f0e6;border-color:#8c6239}
+html[data-pwa-theme=bosque] body.pwa-workspace :is(.pwa-dialog-head,.pwa-page section>h2,.pwa-section-head,.pwa-local-note){border-color:#8c6239}
+html[data-pwa-theme=usiku] body.pwa-workspace :is(.pwa-dialog-head,.pwa-page section>h2,.pwa-section-head,.pwa-local-note){border-color:#8c6239}
+html[data-pwa-theme=bosque] body.pwa-workspace :is(.pwa-record,.pwa-guide-picker,.pwa-guide-links button){border-color:#8c6239}
+html[data-pwa-theme=usiku] body.pwa-workspace :is(.pwa-record,.pwa-guide-picker,.pwa-guide-links button){border-color:#8c6239}
+html[data-pwa-theme=bosque] body.pwa-workspace :is(.pwa-record button,.pwa-wide,.pwa-save-button,.pwa-dialog button,.pwa-dialog a){color:#003018;border-color:#003018}
+html[data-pwa-theme=usiku] body.pwa-workspace :is(.pwa-record button,.pwa-wide,.pwa-save-button,.pwa-dialog button,.pwa-dialog a){color:#f5f0e6;border-color:#f5f0e6}
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-dialog-actions button[type=submit]{background:#004225;color:#f5f0e6}
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-dialog-actions button[type=submit]{background:#004225;color:#f5f0e6}
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-dialog-body :is(textarea,input,pre){background:#f5f0e6;color:#003018;border-color:#003018}
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-dialog-body :is(textarea,input,pre){background:#003018;color:#f5f0e6;border-color:#8c6239}
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-inspiration{background:#004225;color:#f5f0e6}
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-inspiration{background:#111111;color:#f5f0e6;border:1px solid #8c6239}
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-inspiration strong,
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-inspiration strong{color:#f5f0e6}
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-sleeve-actions button{background:#f5f0e6;color:#003018}
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-sleeve-actions button{background:#004225;color:#f5f0e6}
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-guide-nav,
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-guide-shelf{background:#f5f0e6;color:#003018}
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-guide-nav,
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-guide-shelf{background:#003018;color:#f5f0e6}
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-guide-tabs button{background:#eee4d3;color:#003018}
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-guide-tabs button{background:#111111;color:#f5f0e6}
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-guide-tabs button[aria-selected=true],
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-guide-link[aria-current=page],
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-guide-tabs button[aria-selected=true],
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-guide-link[aria-current=page]{background:#004225;color:#f5f0e6}
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-guide-eject,
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-guide-eject{background:#004225;color:#f5f0e6}
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-guide-link{color:#003018}
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-guide-link{color:#f5f0e6}
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-add-inspiration{color:#003018;border-color:#8c6239}
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-add-inspiration{color:#f5f0e6;border-color:#8c6239}
+/* Selected theme stays visible, never relies on color alone. */
+html[data-pwa-theme=bosque] body.pwa-workspace .pwa-dialog .pwa-theme-choice[aria-pressed=true],
+html[data-pwa-theme=usiku] body.pwa-workspace .pwa-dialog .pwa-theme-choice[aria-pressed=true]{background:#004225;color:#f5f0e6;border-color:#f5f0e6}
