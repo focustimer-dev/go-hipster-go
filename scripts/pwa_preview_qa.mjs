@@ -66,7 +66,7 @@ for(const profile of profiles){
    },name==='liberi'?'rgb(214, 75, 48)':'rgb(229, 207, 66)',{timeout:5000});
    if(name==='usiku'){
     await page.waitForFunction(()=>
-     getComputedStyle(document.querySelector('.mood[data-mood="sad"]')).backgroundColor==='rgb(17, 17, 17)'
+     getComputedStyle(document.querySelector('.mood[data-mood="sad"]')).backgroundColor==='rgb(183, 123, 77)'
     ,null,{timeout:5000});
    }
    observedThemes[name]=await page.locator('#pwaJukebox').evaluate(el=>({
@@ -78,6 +78,8 @@ for(const profile of profiles){
     neutral:getComputedStyle(document.querySelector('.mood[data-mood="sad"]')).backgroundColor,
     neutralPortraitFilter:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .face')).filter,
     neutralInkFilter:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .face'),'::before').filter,
+    neutralLabel:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .word')).color,
+    neutralDesireInk:getComputedStyle(document.querySelector('.mood[data-mood="desire"] .face'),'::before').filter,
     sea:getComputedStyle(document.querySelector('.crate-map-ocean')).fill,
     land:getComputedStyle(document.querySelector('#posterLandEngraving rect')).fill,
     selectInk:getComputedStyle(document.querySelector('.mood[data-mood="funky"] .face'),'::after').filter,
@@ -100,9 +102,11 @@ for(const profile of profiles){
     assert.equal(observedThemes[name].selectedMapInk,'rgb(229, 207, 66)','Selected regions use visible yellow');
    }
    if(name==='usiku'){
-    assert.equal(observedThemes.usiku.neutral,'rgb(17, 17, 17)','Usiku neutral keys must be near-black');
-    assert.equal(observedThemes.usiku.neutralPortraitFilter,'none','Do not invert the entire Usiku neutral face');
-    assert.match(observedThemes.usiku.neutralInkFilter,/hue-rotate/,'Muted sage is applied to engraving ink only');
+    assert.equal(observedThemes.usiku.neutral,'rgb(183, 123, 77)','Usiku neutral cards are saddle cognac');
+    assert.equal(observedThemes.usiku.neutralLabel,'rgb(8, 37, 22)','Neutral card lettering uses legible deep forest green');
+    assert.equal(observedThemes.usiku.neutralPortraitFilter,'none','Do not invert the Usiku neutral face');
+    assert.equal(observedThemes.usiku.neutralInkFilter,'none','Original engraved ink is preserved without negative filters');
+    assert.match(observedThemes.usiku.neutralDesireInk,/referenceInk/,'Desire retains alpha-detail ink filter on cognac');
     assert.equal(observedThemes.usiku.sea,'rgb(17, 17, 17)','Usiku atlas ocean must be near-black');
     assert.equal(observedThemes.usiku.land,'rgb(245, 240, 230)','Usiku land engraving must be cream');
    }
