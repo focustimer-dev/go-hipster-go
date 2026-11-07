@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import {chromium} from 'playwright';
 import {mkdir} from 'node:fs/promises';
 import path from 'node:path';
-const base=(process.env.PWA_PREVIEW_URL||'https://hipster-go-pwa-inline-preview.samelling.workers.dev').replace(/\/$/,'');
+const base=(process.env.PWA_PREVIEW_URL||'https://hipster-go-pwa-theme-atlas-rc.samelling.workers.dev').replace(/\/$/,'');
 const out='artifacts/pwa-inline-atlas';
 const errors=[];
 const browser=await chromium.launch({headless:true});
