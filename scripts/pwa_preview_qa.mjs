@@ -4,14 +4,18 @@ import { mkdir,writeFile } from 'node:fs/promises';
 import { chromium } from 'playwright';
 const base=process.env.PWA_PREVIEW_URL;
 const isProduction=process.argv.includes('--allow-production');
-const previewOrigin='https://hipster-go-pwa-preview.samelling.workers.dev';
+const previewOrigins=new Set([
+ 'https://hipster-go-pwa-preview.samelling.workers.dev',
+ 'https://hipster-go-android-theme-preview.samelling.workers.dev',
+ 'https://hipster-go-pwa-inline-preview.samelling.workers.dev'
+]);
 const publicOrigin='https://hipster-go.samelling.workers.dev';
 // The preview workflow must remain unable to visit production by accident.
 // Only the explicit production verification command may use the exact public
 // hostname; no arbitrary URLs, hidden redirects or write-capable sessions.
-assert.equal(base,isProduction?publicOrigin:previewOrigin,
+assert.ok(isProduction?base===publicOrigin:previewOrigins.has(base),
  isProduction?'Explicit production QA flag requires exact public origin':
- 'Only the dedicated preview is an allowed QA target');
+ 'Only explicitly named isolated preview Workers are allowed QA targets');
 const folder='artifacts/pwa-preview';
 await mkdir(folder,{recursive:true});
 const browser=await chromium.launch({headless:true,args:['--use-angle=swiftshader','--enable-unsafe-swiftshader']});
