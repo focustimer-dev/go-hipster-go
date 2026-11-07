@@ -37,7 +37,7 @@ const labAtlasMorphVectors=(()=>{
  // yet switched. A live source camera supplies its exact start endpoint;
  // the destination camera supplies a tiny residual correction after commit.
  const BASE_FIT={
-  robinson:{x:0,y:0,sx:1.118858,sy:1.110402},
+  robinson:{x:0,y:0,sx:1.114836,sy:1.106410},
   globe:{x:0,y:0,sx:.749728,sy:.749728}
  };
  function estimatedFit(mode){return {...BASE_FIT[mode]}}
