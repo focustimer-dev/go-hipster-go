@@ -103,8 +103,10 @@ for(const profile of profiles){
    }
    if(name==='usiku'){
     assert.match(observedThemes.usiku.neutral,/radial-gradient/,'Usiku unselected cards have a vignette');
-    assert.match(observedThemes.usiku.neutral,/rgb\(126, 76, 48\)/,'Deep cognac at center');
-    assert.match(observedThemes.usiku.neutral,/rgb\(183, 123, 77\)/,'Saddle highlights at corners');
+    assert.match(observedThemes.usiku.neutral,/rgb\(183, 123, 77\) 0%/,'Saddle light at the center');
+    assert.match(observedThemes.usiku.neutral,/rgb\(126, 76, 48\) 100%/,'Deep cognac at outer corners');
+    assert.ok(observedThemes.usiku.neutral.indexOf('rgb(183, 123, 77)') <
+      observedThemes.usiku.neutral.indexOf('rgb(126, 76, 48)'),'Vignette runs light center to dark edges');
     assert.equal(observedThemes.usiku.neutralLabel,'rgb(8, 37, 22)','Neutral card lettering uses legible deep forest green');
     assert.equal(observedThemes.usiku.neutralPortraitFilter,'none','Do not invert the Usiku neutral face');
     assert.equal(observedThemes.usiku.neutralInkFilter,'none','Original engraved ink is preserved without negative filters');
