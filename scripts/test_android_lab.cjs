@@ -190,6 +190,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    'Globe handoff must report its measured endpoint');
   console.log('Globe endpoint',{sampled:outward.fitSampled,residual:outward.endpointResidual});
   assert(outward.fitSampled,'Globe destination fit should be measured from live geometry');
+  assert(outward.endpointResidual<.003,'Globe landing must match calibrated live geometry within 0.3%');
   assert.equal(await page.locator('.lab-atlas-morph').count(),0,'The veil is fully removed after the new map settles');
   assert.equal(await page.locator('#labAtlasGlobe').evaluate(el=>el.style.pointerEvents),'','Hit testing must be restored once the spring settles');
   await page.reload();await page.waitForFunction(()=>window.labAtlasGlobe&&labAtlasGlobe.loaded());
@@ -225,6 +226,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    'Robinson handoff must report its measured endpoint');
   console.log('Robinson endpoint',{sampled:inward.fitSampled,residual:inward.endpointResidual,rawFit:inward.rawFit,predicted:inward.predictedFit});
   assert(inward.fitSampled,'Robinson destination fit should be measured from live geometry');
+  assert(inward.endpointResidual<.003,'Robinson landing must match calibrated live geometry within 0.3%');
   const robinsonFrame=await page.locator('#labAtlasGlobe').evaluate(el=>({width:el.clientWidth,height:el.clientHeight}));
   assert(Math.abs(robinsonFrame.width/robinsonFrame.height-720/372)<.05,'Robinson keeps the original wide chart');
   assert.equal(await page.locator('#atlasHome').textContent(),'← WHOLE WORLD');
