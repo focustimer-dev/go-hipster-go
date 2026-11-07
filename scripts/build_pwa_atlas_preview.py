@@ -59,9 +59,13 @@ def main():
     native_theme='<script src="/pwa-atlas/assets/lab-themes.js"></script>'
     assert html.count(native_theme)==1,"Android theme boot script path changed"
     html=html.replace(native_theme,"")
-    injection = ('<link rel="stylesheet" href="/assets/pwa-themes.css">'
-                 '<link rel="stylesheet" href="/pwa-atlas/assets/pwa-atlas-themes.css">'
-                 '<script src="/pwa-atlas/assets/pwa-atlas-bridge.js"></script>')
+    # The canonical Android bundle already carries the *same* two shared CSS
+    # links. Duplicate injection produces redundant styles and fails palette
+    # contract checks; keep a single stylesheet instance per source.
+    for css in ("pwa-themes.css", "pwa-atlas-themes.css"):
+        link=f'<link rel="stylesheet" href="/pwa-atlas/assets/{css}">'
+        assert html.count(link)==1, f"Expected one shared theme link for {css}"
+    injection = '<script src="/pwa-atlas/assets/pwa-atlas-bridge.js"></script>'
     assert "id=\"labGlobeGeography\"" in html, "Canonical geographic data missing"
     assert 'src="/pwa-atlas/assets/app.js"' in html, "Atlas app URL did not rewrite"
     assert "data-atlas-view" not in html or "robinson" in html
