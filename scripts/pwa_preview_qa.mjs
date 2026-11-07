@@ -143,14 +143,16 @@ for(const profile of profiles){
    }
    if(name==='usiku'){
     assert.match(observedThemes.usiku.neutral,/radial-gradient/,'Usiku neutral cards retain their reverse vignette');
-    assert.match(observedThemes.usiku.neutral,/rgb\(52, 136, 94\) 0%/,'Center catches light on mid-dark green stock');
-    assert.match(observedThemes.usiku.neutral,/rgb\(39, 121, 79\) 34%/,'Middle uses slightly lighter-than-tab forest green');
-    assert.match(observedThemes.usiku.neutral,/rgb\(0, 56, 35\) 100%/,'The outer card edge fades back into deep green');
+    assert.match(observedThemes.usiku.neutral,/rgb\(183, 123, 77\) 0%/,'Light saddle highlight belongs at portrait center');
+    assert.match(observedThemes.usiku.neutral,/rgb\(168, 108, 67\) 34%/,'Mid stock is warm saddle, never green');
+    assert.match(observedThemes.usiku.neutral,/rgb\(146, 91, 57\) 68%/,'Outer midtone is cognac');
+    assert.match(observedThemes.usiku.neutral,/rgb\(126, 76, 48\) 100%/,'Distal vignette corners darken to rich cognac');
+    assert.doesNotMatch(observedThemes.usiku.neutral,/rgb\(52, 136, 94\)|rgb\(39, 121, 79\)/,'Old all-green vignette must not return');
     assert.equal(observedThemes.usiku.neutralLabel,'rgb(245, 240, 230)','Usiku captions remain readable cream');
     assert.equal(observedThemes.usiku.neutralPortraitFilter,'none','Never invert the complete portrait or background');
     assert.equal(observedThemes.usiku.neutralInkFilter,'none','Use an alpha-mask ink fill rather than a negative-image filter');
     assert.match(observedThemes.usiku.neutralInkMask,/moods-neutral-ink-v2\.webp/,'Neutral portraits reuse the exact canonical sprite as a mask');
-    assert.equal(observedThemes.usiku.neutralInkColor,'rgb(15, 86, 56)','Deep-forest ink remains visible on the green stock');
+    assert.equal(observedThemes.usiku.neutralInkColor,'rgb(15, 86, 56)','Deep-forest ink remains visible on warm saddle stock');
     assert.match(observedThemes.usiku.neutralDesireInk,/referenceInk/,'Selected Desire keeps the approved ink-extraction geometry');
     assert.doesNotMatch(observedThemes.usiku.neutralDesireInk,/brightness\(0\)/,'Selected Desire keeps its original vivid treatment');
     assert.match(observedThemes.usiku.neutralTriumphInk,/alphaInk/,'Neutral Triumph keeps its separate alpha extraction');
