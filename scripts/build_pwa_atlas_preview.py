@@ -36,6 +36,8 @@ def main():
     bundle(DEST)
     shutil.copyfile(ROOT / "launcher/assets/pwa-atlas-bridge.js",
                     DEST / "assets/pwa-atlas-bridge.js")
+    shutil.copyfile(ROOT / "launcher/assets/pwa-atlas-themes.css",
+                    DEST / "assets/pwa-atlas-themes.css")
     for file in DEST.rglob("*"):
         if file.is_file() and file.suffix.lower() in {".html", ".css", ".js", ".json", ".webmanifest"}:
             # MapLibre's compiled JS is copied byte-for-byte, not rewritten.
@@ -47,7 +49,8 @@ def main():
                 file.write_text(updated, encoding="utf-8")
     page = DEST / "index.html"
     html = page.read_text(encoding="utf-8")
-    injection = '<script src="/pwa-atlas/assets/pwa-atlas-bridge.js"></script>'
+    injection = ('<link rel="stylesheet" href="/pwa-atlas/assets/pwa-atlas-themes.css">'
+                 '<script src="/pwa-atlas/assets/pwa-atlas-bridge.js"></script>')
     assert "id=\"labGlobeGeography\"" in html, "Canonical geographic data missing"
     assert 'src="/pwa-atlas/assets/app.js"' in html, "Atlas app URL did not rewrite"
     assert "data-atlas-view" not in html or "robinson" in html
