@@ -357,6 +357,15 @@ for (const width of [390,320]) {
   await atlas.waitForFunction(()=>window.labCahillMap?.ready&&window.labAtlasGlobe?.loaded(),null,{timeout:55000});
   assert.equal(await atlas.locator('[data-atlas-view]').count(),3,'All three Android map projections are available');
   assert.equal(await atlas.evaluate(()=>document.documentElement.dataset.pwaTheme),theme,'Atlas inherited chosen PWA theme');
+  const tweenPalette=await atlas.evaluate(()=>window.GHGAtlasPaintColors?.());
+  assert.equal(tweenPalette?.theme,theme,'Tween frames inherit the current theme');
+  assert.equal(tweenPalette.backdrop,colors.ocean,'Atlas tween backdrop matches the selected theme ocean');
+  assert.equal(tweenPalette.selected,colors.selected,'Tween and live selected land share ink');
+  const tweenBundle=(await (await atlasContext.request.get(base+'/pwa-atlas/assets/app.js')).text());
+  assert.match(tweenBundle,/const palette=window\\.GHGAtlasPaintColors/,'Browser-only tween renderer reads palette per frame');
+  assert.match(tweenBundle,/const PAL=new Proxy/,'Cahill tween colors are browser-theme aware');
+  assert.ok(!tweenBundle.includes("const PAL={paper:'#dfb045'"),'Do not ship Liberi-only Cahill tween palette');
+
   assert.equal(await atlas.locator('link[href="/pwa-atlas/assets/pwa-atlas-themes.css"]').count(),1,
    'Atlas loads its browser-only palette stylesheet');
   await atlas.waitForFunction(colors=>{
