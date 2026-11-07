@@ -63,6 +63,18 @@ const palettes={
      await page.screenshot({path:path.join(output,`${name}-globe.png`)});
      await page.locator('[data-atlas-view=robinson]').click();
      await page.waitForFunction(()=>document.querySelector('[data-atlas-view=robinson]')?.getAttribute('aria-pressed')==='true',null,{timeout:15000});
+     // Theme review is not complete until Crate AND native Manual agree.
+     await page.locator('[data-lab-tab=crate]').click();
+     await page.locator('#labCrate').waitFor({state:'visible'});
+     await page.screenshot({path:path.join(output,`${name}-crate.png`)});
+     await page.locator('[data-lab-tab=manual]').click();
+     await page.frameLocator('#labManualFrame').locator('#manualNavigation').waitFor({state:'visible',timeout:15000});
+     await page.waitForFunction(name=>{
+      const doc=document.getElementById('labManualFrame')?.contentDocument;
+      return doc?.documentElement.dataset.pwaTheme===name;
+     },name,{timeout:8000});
+     await page.screenshot({path:path.join(output,`${name}-manual.png`)});
+     await page.locator('[data-lab-tab=jukebox]').click();
     }
    }
    await page.reload({waitUntil:'domcontentloaded'});
