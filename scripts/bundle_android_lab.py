@@ -56,6 +56,7 @@ def bundle(destination=None):
     shutil.copyfile(ROOT / 'android-lab/web/CAHILL-KEYES-NOTICES.txt',
                     destination / 'assets/CAHILL-KEYES-NOTICES.txt')
     shutil.copyfile(ROOT / 'android-lab/web/manual-guide.html', destination / 'manual-guide.html')
+    shutil.copyfile(ROOT / 'android-lab/web/manual-guide-theme.css', destination / 'assets/lab-manual-themes.css')
     shutil.copytree(ROOT / 'android-lab/web/tutorial-media', destination / 'assets/tutorial-media')
     script = destination / 'assets/app.js'
     text = script.read_text()
