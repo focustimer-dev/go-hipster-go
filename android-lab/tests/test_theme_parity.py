@@ -39,6 +39,24 @@ class AndroidThemeParity(unittest.TestCase):
         self.assertIn('syncManualTheme',js)
         self.assertIn("addEventListener('load',syncManualTheme)",js)
 
+    def test_navigable_routes_and_stable_animated_border_ink(self):
+        tween=(ROOT/'android-lab/web/atlas-morph-vectors.js').read_text()
+        fold=(ROOT/'android-lab/web/cahill-keyes-motion.js').read_text()
+        native=(ROOT/'android-lab/web/theme.js').read_text()
+        browser=(ROOT/'launcher/assets/pwa-atlas-bridge.js').read_text()
+        css=(ROOT/'launcher/assets/pwa-atlas-themes.css').read_text()
+        self.assertIn('context.strokeStyle=palette.ink',tween)
+        self.assertNotIn('context.strokeStyle=palette.ocean',tween)
+        self.assertIn('getComputedStyle(ocean)',fold)
+        self.assertIn('getComputedStyle(path)',fold)
+        self.assertIn("'line-width':1.7",native)
+        self.assertIn("'line-opacity':.88",native)
+        self.assertIn("'line-dasharray':[3,2.6]",native)
+        self.assertIn('opacity:.88,width:1.7,dash:[3,2.6]',browser)
+        self.assertIn("'line-width':THEMED_ROUTE_PAINT.width",browser)
+        self.assertIn('stroke-width:1.8;stroke-opacity:.9;',css)
+        self.assertIn('stroke-dasharray:4 4;',css)
+
     def test_three_projections_tween_without_liberi_color_flash(self):
         globe=(ROOT/'android-lab/web/atlas-morph-vectors.js').read_text()
         keyes=(ROOT/'android-lab/web/cahill-keyes-motion.js').read_text()
