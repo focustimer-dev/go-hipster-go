@@ -65,7 +65,7 @@ jobs:
           wranglerVersion: '4.156.0'
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: 47b318c510ebbdc3a45ddeafeda4a18f
-          command: deploy --name hipster-go-pwa-preview
+          command: deploy --name hipster-go-pwa-inline-preview
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -75,11 +75,11 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Check true inline Atlas against PWA Jukebox at 320px and 390px
         env:
-          PWA_PREVIEW_URL: https://hipster-go-pwa-preview.samelling.workers.dev
+          PWA_PREVIEW_URL: https://hipster-go-pwa-inline-preview.samelling.workers.dev
         run: node scripts/pwa_inline_atlas_qa.mjs
       - name: Test deployed preview in Chromium
         env:
-          PWA_PREVIEW_URL: https://hipster-go-pwa-preview.samelling.workers.dev
+          PWA_PREVIEW_URL: https://hipster-go-pwa-inline-preview.samelling.workers.dev
         run: node scripts/pwa_preview_qa.mjs
       - name: Keep preview QA screenshots
         if: always()
