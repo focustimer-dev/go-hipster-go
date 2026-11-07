@@ -183,13 +183,3 @@ html[data-pwa-theme=bosque] body.gig-poster:is([data-page=launch],[data-page=set
 html[data-pwa-theme=usiku] body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[aria-pressed=true] .word{
  color:#f5f0e6;background:transparent;text-decoration:underline;
 }
-/* Usiku atlas uses cream over forest; selected regions get tobacco fill. */
-html[data-pwa-theme=usiku] body.gig-poster .crate-map-zone:not([data-selected=true]) path{
- fill:#f5f0e6;stroke:#003018;
-}
-html[data-pwa-theme=usiku] body.gig-poster .crate-map-zone[data-selected=true] path{
- fill:#8c6239;stroke:#f5f0e6;
-}
-html[data-pwa-theme=bosque] body.gig-poster .crate-map-zone:not([data-selected=true]) path{
- fill:#004225;stroke:#f5f0e6;
-}
