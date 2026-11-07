@@ -14,12 +14,10 @@ assert.equal(base,isProduction?publicOrigin:previewOrigin,
  'Only the dedicated preview is an allowed QA target');
 const folder='artifacts/pwa-preview';
 await mkdir(folder,{recursive:true});
-/* PR #193 portrait-fidelity experiment: preserve source assets as CI review
-   artifacts. Neither runtime sprite nor public pages are mutated. */
-if(process.env.GHG_PORTRAIT_FIDELITY_PROBE==='1'){
- await copyFile('launcher/editions/gig-poster/assets/moods-neutral-approved-v1.webp',folder+'/portrait-source-approved.webp');
- await copyFile('launcher/editions/gig-poster/assets/moods-neutral-ink-v2.webp',folder+'/portrait-source-alpha.webp');
-}
+/* PR #193 QA-only source fidelity probe. These files are copied into the
+   isolated preview's review artifact, never into the runtime or public site. */
+await copyFile('launcher/editions/gig-poster/assets/moods-neutral-approved-v1.webp',folder+'/portrait-source-approved.webp');
+await copyFile('launcher/editions/gig-poster/assets/moods-neutral-ink-v2.webp',folder+'/portrait-source-alpha.webp');
 const browser=await chromium.launch({headless:true,args:['--use-angle=swiftshader','--enable-unsafe-swiftshader']});
 const profiles=[
   {name:'phone',viewport:{width:390,height:844},isMobile:true,hasTouch:true},
