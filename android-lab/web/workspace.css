@@ -368,3 +368,17 @@ body.gig-poster .crate-map-frame.lab-globe-frame .atlas-radial-field{display:non
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labRecordingPreferences :checked+.recording-rocker .recording-on{
  background:#004225!important;color:#f5f0e6!important;
 }
+
+/* Final Crate/Manual screen review: the legacy luminance stock made Usiku
+   fluoresce green on Crate. Keep texture subtle and align night surfaces. */
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labCrate{
+ background-color:#003018!important;
+ background-image:linear-gradient(rgba(0,48,24,.91),rgba(0,48,24,.91)),
+  url('/editions/gig-poster/assets/stock.webp')!important;
+ background-size:auto,460px!important;
+ background-blend-mode:normal,multiply!important;
+ color:#f5f0e6!important;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labManual{
+ background:#111111!important;color:#f5f0e6!important;
+}
