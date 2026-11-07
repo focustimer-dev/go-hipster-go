@@ -55,7 +55,18 @@ try{
    for(const mode of ['robinson','cahill-keyes','globe']){
     await frame.locator('[data-atlas-view='+mode+']').click();
     await frame.locator('[data-atlas-view='+mode+'][aria-pressed=true]').waitFor({timeout:18000});
-    await frame.locator('.lab-cahill-motion,.lab-atlas-morph').first().waitFor({state:'hidden',timeout:20000});
+    // The pressed button updates at animation START. Verify the actual
+    // canonical projection committed and its veil was removed before
+    // capturing any frame as a final visual quality reference.
+    await frame.locator('body').evaluate(async (_,target)=>{
+     const deadline=performance.now()+20000;
+     while(performance.now()<deadline){
+      if(typeof labAtlasMode!=='undefined'&&labAtlasMode===target&&
+         typeof labAtlasMorph!=='undefined'&&labAtlasMorph===null)return;
+      await new Promise(resolve=>requestAnimationFrame(resolve));
+     }
+     throw new Error('Projection did not settle: '+target);
+    },mode);
     if(width===390)await page.screenshot({path:path.join(out,theme+'-'+mode+'.png')});
     const state=await page.evaluate(()=>JSON.parse(localStorage.getItem('ghg-crate-map-regions-v1')||'[]').sort());
     assert.deepEqual(state,selected,'Projection mode must never rewrite selected Jukebox regions');
