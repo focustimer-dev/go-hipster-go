@@ -37,6 +37,14 @@ jobs:
           python scripts/build_gig_poster.py
           git diff --exit-code -- launcher/editions/gig-poster
           python -m unittest discover -s tests
+      - name: Generate Usiku-only two-ink neutral portraits
+        run: |
+          python -m pip install --disable-pip-version-check pillow numpy scipy
+          python scripts/build_usiku_two_ink.py
+          python scripts/build_usiku_two_ink.py --check
+          test -s launcher/editions/gig-poster/assets/usiku-neutral-two-ink-v1.webp
+          test -s launcher/editions/gig-poster/assets/usiku-desire-neutral-two-ink-v1.webp
+          test -s launcher/editions/gig-poster/assets/usiku-triumph-neutral-two-ink-v1.webp
       - name: Confirm release credentials
         env:
           CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
