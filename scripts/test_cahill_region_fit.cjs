@@ -30,15 +30,16 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    await page.waitForFunction(()=>document.querySelector('[data-atlas-view=cahill-keyes]')?.getAttribute('aria-pressed')==='true',null,{timeout:7000});
    await page.emulateMedia({reducedMotion:'no-preference'});
    const svg=page.locator('#labAtlasCahill');
-   // Two discrete zooms recreate the user's detailed Pacific-route view.
-   for(let i=0;i<2;i++){
-    await svg.evaluate(el=>{
-     const r=el.parentElement.getBoundingClientRect();
-     el.dispatchEvent(new MouseEvent('dblclick',{bubbles:true,cancelable:true,
-      clientX:r.left+r.width/2,clientY:r.top+r.height/2}));
-    });
-    await page.waitForTimeout(300);
-   }
+   // Set an unambiguous close-up starting camera with the real wheel
+   // handler. Synthetic double-taps have their own separate easing tests
+   // and can be coalesced on a saturated software WebGL test runner.
+   await svg.evaluate(el=>{
+    const r=el.parentElement.getBoundingClientRect();
+    el.dispatchEvent(new WheelEvent('wheel',{bubbles:true,cancelable:true,
+     deltaY:-600,clientX:r.left+r.width/2,clientY:r.top+r.height/2}));
+   });
+   await page.waitForFunction(()=>window.labCahillMap.camera.snapshot().zoom>3,
+    null,{timeout:6000});
    const result=await page.evaluate(async ()=>{
     const camera=window.labCahillMap.camera,start=camera.snapshot(),samples=[];
     // This follows exactly the toggleCrateRegion -> updateCrateMap ->
