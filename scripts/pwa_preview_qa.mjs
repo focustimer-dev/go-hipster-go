@@ -420,7 +420,11 @@ for (const width of [390,320]) {
   const atlasSelections=await atlas.evaluate(()=>[...document.querySelectorAll('[data-crate-region][aria-pressed=true]')]
    .map(el=>el.dataset.crateRegion).sort());
   await back.click();
-  await atlas.waitForURL(url=>url.pathname==='/',{timeout:10000});
+  // The canonical Jukebox restores its AI/service preferences into the
+  // edition URL after navigation; both paths serve the same browser PWA.
+  await atlas.waitForURL(url=>
+   url.pathname==='/'||url.pathname==='/editions/gig-poster/'||
+   url.pathname==='/editions/gig-poster/index.html',{timeout:10000});
   await atlas.locator('.pwa-rail').waitFor({state:'visible'});
   const returned=await atlas.evaluate(()=>[...document.querySelectorAll('[data-crate-region][aria-pressed=true]')]
    .map(el=>el.dataset.crateRegion).sort());
