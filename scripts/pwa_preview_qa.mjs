@@ -39,6 +39,42 @@ for(const profile of profiles){
   assert.equal(await page.locator('.pwa-atlas-preview-link').count(),0,'Retired three-map trial link must not appear in the Jukebox');
   assert.equal(await page.locator('.pwa-add-inspiration').getAttribute('data-pwa-action'),'edit-reference');
   await page.screenshot({path:folder+'/'+profile.name+'-jukebox.png'});
+  // Three poster-colorways must be visual-only and persist across browser reload.
+  // Capture the real production PWA DOM, controls, original clerk portraits, and map.
+  const promptBeforeColorChange=await page.locator('#prompt').textContent();
+  const observedThemes={};
+  for(const name of ['liberi','bosque','usiku']){
+   await page.locator('[data-pwa-action="prefs"]').click();
+   await page.locator('#pwaPrefs').waitFor({state:'visible'});
+   await page.locator('[data-pwa-theme="'+name+'"]').click();
+   assert.equal(await page.locator('[data-pwa-theme="'+name+'"]').getAttribute('aria-pressed'),'true');
+   assert.equal(await page.locator('[data-pwa-theme][aria-pressed=true]').count(),1,'One theme only');
+   assert.equal(await page.evaluate(()=>document.documentElement.dataset.pwaTheme),name);
+   await page.locator('[data-pwa-action="close"]').click();
+   observedThemes[name]=await page.locator('#pwaJukebox').evaluate(el=>({
+    background:getComputedStyle(el).backgroundColor,
+    paper:getComputedStyle(document.body).getPropertyValue('--paper').trim(),
+    ink:getComputedStyle(document.body).getPropertyValue('--ink').trim()
+   }));
+   if(profile.name==='phone'||profile.name==='phone-reduced-motion'){
+    await page.screenshot({path:folder+'/'+profile.name+'-theme-'+name+'-top.png'});
+    await page.locator('#goButton').scrollIntoViewIfNeeded();
+    await page.screenshot({path:folder+'/'+profile.name+'-theme-'+name+'-go.png'});
+    await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
+   }
+   const dims=await page.evaluate(()=>[document.documentElement.scrollWidth,document.documentElement.clientWidth]);
+   assert.ok(dims[0]<=dims[1]+2,'Theme '+name+' horizontal overflow '+dims.join('/'));
+  }
+  assert.equal(await page.locator('#prompt').textContent(),promptBeforeColorChange,'Themes must never change the GO prompt');
+  assert.notEqual(observedThemes.liberi.ink,observedThemes.bosque.ink);
+  assert.notEqual(observedThemes.bosque.ink,observedThemes.usiku.ink);
+  await page.reload({waitUntil:'domcontentloaded'});
+  await page.locator('.pwa-rail').waitFor({state:'visible'});
+  assert.equal(await page.evaluate(()=>document.documentElement.dataset.pwaTheme),'usiku','Theme must survive reload');
+  await page.locator('[data-pwa-action="prefs"]').click();
+  await page.locator('[data-pwa-theme="liberi"]').click();
+  await page.locator('[data-pwa-action="close"]').click();
+  await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
   const rects=await page.locator('.pwa-rail button').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return {width:r.width,height:r.height}}));
   assert.equal(rects.length,4,'four rail buttons');
   assert.ok(rects.every(r=>r.width>=44&&r.height>=44),'rail touch targets');
