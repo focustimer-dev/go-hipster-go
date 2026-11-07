@@ -88,7 +88,15 @@ for(const profile of profiles){
     desireNeutralOpacity:getComputedStyle(document.querySelector('.mood[data-mood="desire"] .face'),'::before').opacity,
     desireSelectedOpacity:getComputedStyle(document.querySelector('.mood[data-mood="desire"] .face'),'::after').opacity,
     desireHearts:getComputedStyle(document.querySelector('.mood[data-mood="desire"] .desire-hearts')).backgroundColor,
-    selectedMapInk:getComputedStyle(document.querySelector('#posterSelectedHalftone rect')).fill
+    selectedMapInk:getComputedStyle(document.querySelector('#posterSelectedHalftone rect')).fill,
+    atlasMat:getComputedStyle(document.querySelector('.crate-map-frame')).backgroundImage,
+    atlasTrim:getComputedStyle(document.querySelector('.crate-map-frame')).borderTopColor,
+    compassLeather:getComputedStyle(document.querySelector('.chart-rose-field')).fill,
+    goCounterEdge:getComputedStyle(document.querySelector('#goButton')).boxShadow,
+    goCounterGreen:getComputedStyle(document.querySelector('#goButton')).backgroundColor,
+    ticketTrim:getComputedStyle(document.querySelector('#selectionTicket')).borderTopColor,
+    navTrim:getComputedStyle(document.querySelector('.pwa-rail button[aria-current="page"]')).borderBottomColor,
+    appearanceSwatch:getComputedStyle(document.querySelector('.pwa-theme-choice[data-pwa-theme="usiku"] .pwa-theme-sample i:nth-child(3)')).backgroundColor
    }));
    if(name==='bosque'||name==='usiku'){
     assert.equal(observedThemes[name].desire,'rgb(229, 207, 66)','Desire uses racing-yellow selection');
@@ -113,6 +121,14 @@ for(const profile of profiles){
     assert.match(observedThemes.usiku.neutralDesireInk,/referenceInk/,'Desire retains alpha-detail ink filter on cognac');
     assert.equal(observedThemes.usiku.sea,'rgb(17, 17, 17)','Usiku atlas ocean must be near-black');
     assert.equal(observedThemes.usiku.land,'rgb(245, 240, 230)','Usiku land engraving must be cream');
+    assert.match(observedThemes.usiku.atlasMat,/radial-gradient/,'Atlas mat carries quiet leather tint');
+    assert.match(observedThemes.usiku.atlasTrim,/rgba?\(183, 123, 77/,'Atlas border has saddle trim');
+    assert.equal(observedThemes.usiku.compassLeather,'rgb(126, 76, 48)','Compass is an engraved leather accent');
+    assert.match(observedThemes.usiku.goCounterEdge,/rgb\(183, 123, 77\)/,'GO counter gets saddle lip');
+    assert.equal(observedThemes.usiku.goCounterGreen,'rgb(0, 66, 37)','GO remains green, not leather');
+    assert.equal(observedThemes.usiku.ticketTrim,'rgb(183, 123, 77)','Floating crate ticket has leather edge');
+    assert.equal(observedThemes.usiku.navTrim,'rgb(183, 123, 77)','Selected navigation carries leather trim');
+    assert.equal(observedThemes.usiku.appearanceSwatch,'rgb(183, 123, 77)','Usiku theme swatch reflects the leather');
    }
    if(profile.name==='phone'||profile.name==='phone-reduced-motion'){
     await page.screenshot({path:folder+'/'+profile.name+'-theme-'+name+'-top.png'});
