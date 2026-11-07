@@ -137,7 +137,7 @@ def render_reference(relative: str, content: str) -> str:
 def render(canonical: str) -> str:
     preface = """---
 name: go-hipster-go
-version: 3.11.1
+version: 3.11.2
 description: Go, Hipster, Go! moods, discovery routes, de-cheese and setup; verified global playlists with authorized YouTube Music publishing.
 ---
 
