@@ -146,6 +146,24 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    console.log('Cahill pinch QA',JSON.stringify({width,zoom:afterPinch.zoom,
     anchorErrorX:anchoredX-(initial.x+initial.w/2),
     anchorErrorY:anchoredY-(initial.y+initial.h/2)}));
+   // Double-tap must ease like MapLibre, never teleport between zoom levels.
+   // A continuous pinch above still tracks fingers without interpolation.
+   const doubleStart=afterPinch.zoom;
+   await page.locator('#labAtlasCahill').evaluate(el=>{
+    const r=el.parentElement.getBoundingClientRect();
+    el.dispatchEvent(new MouseEvent('dblclick',{bubbles:true,cancelable:true,
+     clientX:r.left+r.width*.5,clientY:r.top+r.height*.5}));
+   });
+   await page.waitForTimeout(80);
+   const middle=await page.evaluate(()=>window.labCahillMap.camera.snapshot().zoom);
+   await page.waitForTimeout(260);
+   const finished=await page.evaluate(()=>window.labCahillMap.camera.snapshot().zoom);
+   assert(middle>doubleStart+.05&&middle<finished-.05,
+    'Cahill double-tap zoom must have intermediate easing frames');
+   assert(Math.abs(finished-doubleStart*1.8)<.03,
+    'Cahill double-tap must land at the geographic target without overshoot');
+   console.log('Cahill tap easing QA',JSON.stringify({width,doubleStart,middle,finished}));
+
    await page.emulateMedia({reducedMotion:'reduce'});
    await page.locator('[data-atlas-view=cahill-keyes]').click();
    assert.equal(await page.locator('.lab-cahill-motion').count(),0,
