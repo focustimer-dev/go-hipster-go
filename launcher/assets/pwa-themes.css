@@ -201,3 +201,82 @@ html[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[aria-pressed=true] 
 html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[aria-pressed=true] .face{
  filter:grayscale(1) brightness(0) invert(94%) !important;
 }
+
+/* Review pass 2 — deliberately limited to color roles.
+   The eight original sprites, hit areas, map shape, and transitions stay intact. */
+
+/* BOSQUE / Selected clerks: one green key, tobacco outline, cream ink.
+   Funk's independent pink stock and Desire's pink heart masks are recolored
+   through CSS; their original portrait assets and expressions are unchanged. */
+html[data-pwa-theme=bosque] body.gig-poster{--funk-selected-paper:#004225}
+html[data-pwa-theme=bosque] body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[data-mood][aria-pressed=true]{
+ background:#004225;color:#f5f0e6;box-shadow:inset 0 0 0 2px #8c6239;
+}
+html[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=true] .word{
+ background:transparent;color:#f5f0e6;text-decoration:underline;text-decoration-color:#f5f0e6;
+}
+html[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=true] .face::after{
+ filter:brightness(0) saturate(100%) invert(95%) sepia(4%) saturate(150%) !important;
+}
+html[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=true] .desire-hearts{
+ background:#8c6239;
+}
+html[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[data-mood=funky][aria-pressed=true] .funk-rays{
+ filter:grayscale(1) sepia(1) saturate(.8) brightness(.82);
+ opacity:.55;
+}
+
+/* USIKU / Inactive clerks settle into near-black rather than looking like
+   bright inverted Liberi tiles. Selected keys use green + tobacco trim. */
+html[data-pwa-theme=usiku] body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[data-mood][aria-pressed=false]{
+ background:#111111;color:#f5f0e6;
+}
+html[data-pwa-theme=usiku] body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[data-mood]:nth-child(n){
+ border-color:#8c623999;
+}
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=false] .face::before{
+ filter:brightness(0) saturate(100%) invert(91%) sepia(5%) saturate(220%);
+ opacity:.86;
+}
+html[data-pwa-theme=usiku] body.gig-poster{--funk-selected-paper:#004225}
+html[data-pwa-theme=usiku] body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[data-mood][aria-pressed=true]{
+ background:#004225;color:#f5f0e6;box-shadow:inset 0 0 0 2px #8c6239;
+}
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=true] .word{
+ background:transparent;color:#f5f0e6;text-decoration:underline;
+}
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=true] .face::after{
+ filter:brightness(0) saturate(100%) invert(95%) sepia(4%) saturate(150%) !important;
+}
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=true] .desire-hearts{
+ background:#8c6239;
+}
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=funky][aria-pressed=true] .funk-rays{
+ filter:grayscale(1) sepia(1) saturate(.8) brightness(.82);
+ opacity:.55;
+}
+
+/* USIKU / Midnight cartography, not an inverted paper globe.
+   Ocean is near-black, hatch-engraved land is cream/tobacco, and regions
+   selected by the existing logic receive a tobacco + cream patterned stamp.
+   This changes paint on the original SVG nodes, never shapes or gestures. */
+html[data-pwa-theme=usiku] body.gig-poster .crate-map-ocean{fill:#111111}
+html[data-pwa-theme=usiku] body.gig-poster #posterLandEngraving rect{fill:#f5f0e6}
+html[data-pwa-theme=usiku] body.gig-poster #posterLandEngraving path{stroke:#8c6239;stroke-opacity:.48}
+html[data-pwa-theme=usiku] body.gig-poster .crate-map-zone path,
+html[data-pwa-theme=usiku] body.gig-poster .crate-map-zone[data-selected=false] path{
+ fill:url(#posterLandEngraving);stroke:#003018;stroke-width:1.05;
+}
+html[data-pwa-theme=usiku] body.gig-poster #posterSelectedHalftone rect{fill:#8c6239}
+html[data-pwa-theme=usiku] body.gig-poster #posterSelectedHalftone path{stroke:#f5f0e6;stroke-opacity:.8}
+html[data-pwa-theme=usiku] body.gig-poster .crate-map-zone[data-selected=true] path,
+html[data-pwa-theme=usiku] body.gig-poster .crate-map-zone[data-selected=true]:hover path{
+ fill:url(#posterSelectedHalftone);stroke:#f5f0e6;stroke-width:1.85;
+}
+html[data-pwa-theme=usiku] body.gig-poster .crate-map-zone[data-selected=false]:hover path{
+ fill:url(#posterLandEngraving);stroke:#8c6239;stroke-width:1.55;
+}
+html[data-pwa-theme=usiku] body.gig-poster .crate-map-grid{stroke:#8c6239;opacity:.20}
+html[data-pwa-theme=usiku] body.gig-poster .chart-rose-field{fill:#111111;stroke:#8c6239}
+html[data-pwa-theme=usiku] body.gig-poster .chart-rose-ring{stroke:#f5f0e6}
+html[data-pwa-theme=usiku] body.gig-poster .chart-rose-letters{fill:#f5f0e6}
