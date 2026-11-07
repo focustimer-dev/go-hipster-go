@@ -221,14 +221,49 @@ function labCahillInit(host,geography,routes,legacy){
   zoomTweenFrame=requestAnimationFrame(step);
  };
  const reset=()=>{cancelZoomTween();zoom=1;bounds.x=0;bounds.y=TOP;refresh()};
- const zoomBounds=([x0,y0],[x1,y1])=>{
+ // Selecting distant regions must expand the same camera smoothly, just as
+ // MapLibre fitBounds does. Keep geographic center and zoom coupled on every
+ // frame so a new stamp never teleports the viewport to its wider bounds.
+ const animateCameraFit=(targetZoom,targetCenterX,targetCenterY)=>{
   cancelZoomTween();
+  const finalZoom=limit(targetZoom,1,5.5);
+  const cx=limit(targetCenterX,W/(2*finalZoom),W-W/(2*finalZoom));
+  const cy=limit(targetCenterY,TOP+H/(2*finalZoom),TOP+H-H/(2*finalZoom));
+  const startZoom=zoom,startX=bounds.x+bounds.w/2,startY=bounds.y+bounds.h/2;
+  const apply=(value,zx,zy)=>{
+   zoom=value;bounds.w=W/zoom;bounds.h=H/zoom;
+   bounds.x=zx-bounds.w/2;bounds.y=zy-bounds.h/2;refresh();
+  };
+  const changed=Math.abs(Math.log(finalZoom/startZoom))>0.001||
+   Math.hypot(cx-startX,cy-startY)>.3;
+  if(!changed)return;
+  // During a projection morph or with reduced motion, don't animate an
+  // invisible map. The user-initiated selection path gets the ease.
+  if(labAtlasMode!=='cahill-keyes'||labAtlasMorph||
+     window.matchMedia?.('(prefers-reduced-motion: reduce)').matches){
+   apply(finalZoom,cx,cy);return;
+  }
+  const logA=Math.log(startZoom),logB=Math.log(finalZoom);
+  const distance=Math.hypot((cx-startX)/W,(cy-startY)/H);
+  const duration=limit(300+120*Math.abs(logB-logA)+110*distance,300,520);
+  let started=null;
+  const step=now=>{
+   if(started===null)started=now;
+   const t=limit((now-started)/duration,0,1);
+   const eased=t*t*(3-2*t);
+   apply(Math.exp(logA+(logB-logA)*eased),
+    startX+(cx-startX)*eased,startY+(cy-startY)*eased);
+   if(t<1)zoomTweenFrame=requestAnimationFrame(step);
+   else{zoomTweenFrame=0;apply(finalZoom,cx,cy)}
+  };
+  zoomTweenFrame=requestAnimationFrame(step);
+ };
+ const zoomBounds=([x0,y0],[x1,y1])=>{
   const rect=viewport.getBoundingClientRect();
   if(!rect.width||!rect.height)return reset();
   const dx=Math.max(14,x1-x0),dy=Math.max(14,y1-y0);
   const s=limit(Math.min(W/(dx*1.28),H/(dy*1.28)),1,5.5);
-  zoom=s;bounds.w=W/s;bounds.h=H/s;
-  bounds.x=(x0+x1-bounds.w)/2;bounds.y=(y0+y1-bounds.h)/2;refresh();
+  animateCameraFit(s,(x0+x1)/2,(y0+y1)/2);
  };
  svg.addEventListener('wheel',event=>{
   if(labAtlasMode!=='cahill-keyes')return;
@@ -402,7 +437,8 @@ function labCahillInit(host,geography,routes,legacy){
   labCahillMotion.scheduleWarm(svg,geography,crateSelected);
  };
  const focus=(view)=>{
-  if(view===null||(!crateSelected.size&&!atlasFocus))return reset();
+  if(view===null||(!crateSelected.size&&!atlasFocus))
+   return animateCameraFit(1,W/2,TOP+H/2);
   let selected=crateSelected;
   if(atlasFocus)selected=new Set(crateRegions.filter(r=>r.continent===atlasFocus).map(r=>r.id));
   const boxes=regions.filter(r=>selected.has(r.id)).map(r=>r.bounds||path.bounds(r.feature))
