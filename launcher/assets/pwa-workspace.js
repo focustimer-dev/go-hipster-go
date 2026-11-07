@@ -5,6 +5,8 @@ if(window.HipsterLab || document.body.dataset.page!=='launch' || !document.body.
 const doc=document,api=window.HipsterPWABridge;
 if(!api || !doc.querySelector('.site'))return;
 const STORE='ghg-pwa-crate-v1';
+const THEME_STORE='ghg-pwa-theme-v1';
+const THEMES=['liberi','bosque','usiku'];
 const LIMIT_SAVED=10,LIMIT_RECENT=3,LIMIT_REFERENCE=2000;
 const destinations={chatgpt:'https://chatgpt.com/',gemini:'https://gemini.google.com/app',claude:'https://claude.ai/'};
 let data=load(),screen='jukebox',activeSaved=null;
@@ -70,6 +72,21 @@ function store(mutator){
 }
 function id(){return typeof crypto!=='undefined'&&crypto.randomUUID?crypto.randomUUID():String(Date.now())+'-'+String(Math.random()).slice(2)}
 function notice(message){const el=doc.getElementById('pwaNotice');if(el)el.textContent=message}
+function selectTheme(theme,persist=false){
+ if(!THEMES.includes(theme))return;
+ doc.documentElement.dataset.pwaTheme=theme;
+ doc.querySelectorAll('.pwa-theme-choice').forEach(button=>{
+  button.setAttribute('aria-pressed',String(button.dataset.pwaTheme===theme));
+ });
+ if(!persist)return;
+ const status=doc.getElementById('pwaThemeStatus');
+ try{
+  localStorage.setItem(THEME_STORE,theme);
+  if(status)status.textContent='Theme saved on this device.';
+ }catch(e){
+  if(status)status.textContent='Theme applied for this visit. Browser storage is unavailable.';
+ }
+}
 function node(tag,cls,value){const el=doc.createElement(tag);if(cls)el.className=cls;if(value!==undefined)el.textContent=value;return el}
 const shell=node('div','pwa-shell');
 shell.innerHTML=[
@@ -94,7 +111,13 @@ shell.innerHTML=[
  '<section><h2>INSTALLATION &amp; HELP</h2><p>Browser settings and Android app settings are separate. The AI must still have the appropriate skill and music tools.</p>',
  '<a class="pwa-wide" href="/setup/">OPEN THE FULL MANUAL</a></section></main>',
  '<dialog class="pwa-dialog" id="pwaPrefs" aria-labelledby="pwaPrefsTitle"><div class="pwa-dialog-head"><h2 id="pwaPrefsTitle">PREFERENCES</h2><button type="button" data-pwa-action="close">CLOSE</button></div>',
- '<div class="pwa-dialog-body"><p>AI and music choices stay on the Jukebox for the browser edition.</p><button type="button" class="pwa-wide" data-pwa-action="services">CHANGE AI &amp; MUSIC</button>',
+ '<div class="pwa-dialog-body"><section class="pwa-theme-section" aria-labelledby="pwaThemeHeading"><h3 id="pwaThemeHeading">APPEARANCE</h3><p>Choose your record shop. The music stays the same.</p>',
+ '<div class="pwa-theme-choices" role="group" aria-label="PWA color theme">',
+ '<button class="pwa-theme-choice" type="button" data-pwa-theme="liberi" aria-pressed="true"><span class="pwa-theme-sample" aria-hidden="true"><i></i><i></i><i></i></span><strong>Liberi</strong><small>Original</small></button>',
+ '<button class="pwa-theme-choice" type="button" data-pwa-theme="bosque" aria-pressed="false"><span class="pwa-theme-sample" aria-hidden="true"><i></i><i></i><i></i></span><strong>Bosque</strong><small>Forest &amp; tobacco</small></button>',
+ '<button class="pwa-theme-choice" type="button" data-pwa-theme="usiku" aria-pressed="false"><span class="pwa-theme-sample" aria-hidden="true"><i></i><i></i><i></i></span><strong>Usiku</strong><small>After dark</small></button>',
+ '</div><p id="pwaThemeStatus" class="pwa-theme-status" role="status" aria-live="polite">Saved on this device when browser storage is available.</p></section>',
+ '<p>AI and music choices stay on the Jukebox for the browser edition.</p><button type="button" class="pwa-wide" data-pwa-action="services">CHANGE AI &amp; MUSIC</button>',
  '<button type="button" class="pwa-wide" data-pwa-action="recording">LISTENING PREFERENCES</button><p>GO copies your request. Open your chosen AI, paste and send; the browser does not automatically submit it.</p></div></dialog>',
  '<dialog class="pwa-dialog" id="pwaReferenceDialog" aria-labelledby="pwaReferenceTitle"><form method="dialog" class="pwa-dialog-body"><h2 id="pwaReferenceTitle">YOUR INSPIRATION</h2>',
  '<p>Use a song link, title or musical idea. This is a reference, not an instruction to your AI.</p><label for="pwaReferenceInput">Reference</label>',
@@ -113,6 +136,7 @@ site.id='pwaJukebox';
 doc.body.insertBefore(shell,site);
 doc.body.classList.add('pwa-workspace');
 doc.body.dataset.pwaScreen='jukebox';
+selectTheme(THEMES.includes(doc.documentElement.dataset.pwaTheme)?doc.documentElement.dataset.pwaTheme:'liberi');
 const pwaNotice=node('p','pwa-notice');pwaNotice.id='pwaNotice';pwaNotice.setAttribute('role','status');pwaNotice.setAttribute('aria-live','polite');shell.append(pwaNotice);
 doc.querySelectorAll('.topnav').forEach(el=>el.hidden=true);
 const heading=doc.querySelector('.receipt-heading');
@@ -204,7 +228,8 @@ function recordingChoices(){
  doc.getElementById('listeningPreferences')?.scrollIntoView({behavior:'smooth',block:'start'});
 }
 doc.addEventListener('click',async event=>{
- const target=event.target.closest('[data-pwa-tab],[data-pwa-action]');if(!target)return;
+ const target=event.target.closest('[data-pwa-tab],[data-pwa-action],[data-pwa-theme]');if(!target)return;
+ if(target.dataset.pwaTheme){selectTheme(target.dataset.pwaTheme,true);return}
  if(target.dataset.pwaTab){navigate(target.dataset.pwaTab);return}
  switch(target.dataset.pwaAction){
  case 'prefs':openDialog('pwaPrefs');break;
@@ -266,7 +291,7 @@ doc.getElementById('pwaSaveDialog').querySelector('form').addEventListener('subm
 doc.querySelectorAll('.pwa-dialog').forEach(d=>d.addEventListener('close',()=>doc.body.classList.remove('pwa-modal-open')));
 doc.querySelectorAll('.pwa-dialog').forEach(d=>d.addEventListener('cancel',()=>doc.body.classList.remove('pwa-modal-open')));
 doc.addEventListener('click',event=>{
- if(event.target.closest('[data-pwa-tab],[data-pwa-action]'))return;
+ if(event.target.closest('[data-pwa-tab],[data-pwa-action],[data-pwa-theme]'))return;
  const a=event.target.closest('a[href]');if(!a||event.defaultPrevented)return;
  const path=new URL(a.href,location.href).pathname;
  if(path==='/setup/'&&screen==='jukebox'){/* Full browser Manual remains available. */return}
