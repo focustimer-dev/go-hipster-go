@@ -42,9 +42,9 @@ class GoHardContract(unittest.TestCase):
         script = read("launcher/assets/app.js")
         self.assertIn("let goHard=false;", script)
         self.assertIn('+(goHard?" hard":"")', script)
-        self.assertIn('if(goHard)parts.push("Curation mode: GO HARD.', script)
-        self.assertIn("Deep Crate Protocol.", script)
-        self.assertIn("Cover art: yes. Use the skill\\u0027s cover-art workflow.", script)
+        self.assertNotIn('if(goHard)parts.push("Curation mode:', script)  # Flag stays in GO command.
+        self.assertIn("Deep Crate Protocol", read("SKILL.md"))  # Execution policy lives in the installed skill.
+        self.assertIn('if(includeCover)parts.push("Cover art: yes.");', script)
         self.assertNotIn("multiple competing sequences, critical worst-handoff", script)
         self.assertNotIn("Later reissue date", script)
         self.assertIn('goHard=params.get("hard")==="1"', script)

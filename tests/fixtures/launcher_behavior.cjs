@@ -69,7 +69,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
   await h.elements.goButton.click();
   assert.match(result,/Mood angle:/);
   assert.match(result,/Tempo preference: Slow/);
-  assert.match(result,/Service:/);
+  assert.match(result,/^@go-hipster-go @/,'Connector in command replaces duplicate Service line');
   assert.ok(result.split(/\s+/).length<65,'Normal GO remains compact for every pairing');
   assert.doesNotMatch(result,/Curate 12 verified|Choose distinctive|Keep discovery|Fresh-crate discovery lens:|Resolve exact Spotify|playlist widget/);
   assert.doesNotMatch(result,/Mood range:|do not claim history access when unavailable/);
@@ -323,7 +323,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.equal(batchedMap.getAttribute('viewBox'),pressedView,'Stopping a zoom preserves the visible hit geometry');
  const apple=harness(async()=>{},"?ai=chatgpt&service=apple");
  assert.match(apple.elements.prompt.textContent,/@go-hipster-go @Apple Music go/);
- assert.match(apple.elements.prompt.textContent,/Service: Apple Music/);
+ assert.doesNotMatch(apple.elements.prompt.textContent,/^Service:/m,'Connector mention is sufficient; no duplicate service line');
  assert.doesNotMatch(apple.elements.prompt.textContent,/distinguish ready to save from saved/);
  assert.doesNotMatch(apple.elements.prompt.textContent,/subscription/);
  assert.match(apple.elements.setupPromptText.textContent,/do not require an Apple Music subscription/);
@@ -381,14 +381,30 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.doesNotMatch(repeatCopies[0],/Fresh-crate discovery lens:/,'The skill selects its research route');
  assert.match(repeatCopies[0],/Seed:/,'GO adds an independently combined random phrase');
  const geminiPrompt=harness(async()=>{},'?ai=gemini&service=youtube').elements.prompt.textContent;
- assert.match(geminiPrompt,/^@go-hipster-go @YouTube Music go\n/,'Gemini GO explicitly names the skill and service');
- assert.match(geminiPrompt,/Service: YouTube Music\./,'Destination is run-specific; publication policy lives in the skill');
+ assert.match(geminiPrompt,/^@go-hipster-go @YouTube Music go(?:\n|$)/,'A bare GO is a valid one-line skill invocation');
+ assert.doesNotMatch(geminiPrompt,/^Service:/m,'Do not repeat the destination already in the GO command');
  assert.doesNotMatch(geminiPrompt,/go live|curate-only/,'GO has no internal mode jargon');
  const geminiPage=fs.readFileSync('launcher/index.html','utf8');
  assert.doesNotMatch(geminiPage,/geminiCurateOnly|geminiCurateOption/,'No curate-only widget on the Jukebox');
  assert.doesNotMatch(geminiPrompt,/Stage 1|TWO-STAGE|YouTube Music PLAYLIST generation action|CURATED — NOT PUBLISHED/,'Repeated policy stays in installed Skill');
  assert.match(geminiPrompt,/@YouTube Music/,'Gemini uses its service mention spelling; text alone does not prove activation');
  assert.ok(geminiPrompt.split(/\\s+/).length<85,'Gemini prompt stays concise');
+ const referenceUrl='https://youtu.be/OMaycNcPsHI?is=12EKA3QNVlegPKpV';
+ const title='Placebo — Every You Every Me (Official Music Video)';
+ const metaStorage=new Map([
+  ['ghg-pwa-reference-v1',referenceUrl],
+  ['ghg-pwa-crate-v1',JSON.stringify({recent:[{text:referenceUrl,title,description:'Long promotional page summary that does not belong in the brief.',metadataStatus:'ok'}]})]
+ ]);
+ const compact=harness(async()=>{},'?ai=gemini&service=youtube&mood=desire&tempo=brisk&hard=1&cover=1','launch',metaStorage);
+ const brief=compact.elements.prompt.textContent;
+ assert.match(brief,/^@go-hipster-go @YouTube Music go desire hard/m);
+ assert.match(brief,/Inspiration: "Placebo — Every You Every Me \(Official Music Video\)" · https:\/\/youtu\.be\/OMaycNcPsHI\?is=12EKA3QNVlegPKpV/,'Title and original source remain together');
+ assert.match(brief,/Tempo preference: Brisk/);
+ assert.match(brief,/Cover art: yes/);
+ assert.ok(brief.split('\n').length<=6,'The app sends a compact brief; the skill handles workflow');
+ assert.doesNotMatch(brief,/untrusted|page description|Original shared inspiration|Deep Crate Protocol|Curation mode|Source:|Service:/i,'No implementation jargon, descriptions, duplicated provider or procedural policy');
+ const fallbackStorage=new Map([['ghg-pwa-reference-v1',referenceUrl]]);
+ assert.match(harness(async()=>{},'?ai=gemini&service=youtube','launch',fallbackStorage).elements.prompt.textContent,/Inspiration: "https:\/\/youtu\.be\/OMaycNcPsHI\?is=12EKA3QNVlegPKpV"/,'Without metadata preserve the exact link and invent no title');
  const geminiSetup=harness(async()=>{},'?ai=gemini&service=youtube','setup').elements.setupPromptText.textContent;
  assert.ok(geminiSetup.includes(JSON.parse(fs.readFileSync('plugin.json','utf8')).version),'Setup verifies the current release version');
  assert.match(geminiSetup,/persistent Skill/,'Setup distinguishes reading a repo from installation');
@@ -493,7 +509,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
   await pinned.elements.shuffleCrate.click();
   const after=pinned.elements.prompt.textContent;
   assert.equal(pinCopies.length,0,'Pins and shuffle never copy');
-  assert.match(after,/Service: YouTube Music/);
+  assert.match(after,/^@go-hipster-go @YouTube Music /,'Shuffle preserves the selected service');
   if(mask&1)assert.match(after,/go angry/);else assert.doesNotMatch(after,/go angry/);
   if(mask&2)assert.match(after,/Tempo preference: Slow/);else assert.doesNotMatch(after,/Tempo preference: Slow/);
   if(mask&4)assert.match(after,/Regional exploration: North Africa\./);
@@ -513,7 +529,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  await dealing.elements.shuffleCrate.click();
  assert.equal(shuffleCopies.length,0,'Shuffle never touches the clipboard');
  assert.notEqual(dealing.elements.prompt.textContent,originalBrief);
- assert.match(dealing.elements.prompt.textContent,/Service: YouTube Music/,'Shuffle preserves provider');
+ assert.match(dealing.elements.prompt.textContent,/^@go-hipster-go @YouTube Music /,'Shuffle preserves provider');
  assert.doesNotMatch(dealing.elements.prompt.textContent,/go sad|Tempo preference: Slow/,'Shuffle changes the selected mood and pace');
  assert.ok([1,2].includes(dealing.elements.atlasStamps.children.length));
  assert.equal(dealing.elements.undoShuffle.hidden,false);
@@ -595,7 +611,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  await art.elements.includeCover.click();
  assert.equal(art.elements.prompt.textContent.match(/Seed: ([^\n]+)/)[1],seedBefore,'Artwork toggling preserves the current music brief');
  assert.equal(art.elements.openAi.attrs['aria-disabled'],'true','Cover change invalidates copied handoff');
- assert.match(art.elements.prompt.textContent,/Cover art: yes\. Use the skill's cover-art workflow\./);
+ assert.match(art.elements.prompt.textContent,/Cover art: yes\./);
  assert.doesNotMatch(art.elements.prompt.textContent,/verified original release year|exact playlist title|music-service upload/,'Art policy stays in skill');
  await art.elements.goButton.click();assert.equal(artCopies.at(-1),art.elements.prompt.textContent);
  await art.elements.includeCover.click();
@@ -609,13 +625,13 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  await hardRun.elements.goHard.click();
  assert.equal(hardRun.elements.goHard.attrs['aria-pressed'],'true');
  assert.match(hardRun.elements.prompt.textContent,/go funky hard/);
- assert.match(hardRun.elements.prompt.textContent,/Curation mode: GO HARD\. Use the skill's Deep Crate Protocol\./);
+ assert.doesNotMatch(hardRun.elements.prompt.textContent,/Curation mode:/,'The skill owns the hard-mode workflow');
  assert.doesNotMatch(hardRun.elements.prompt.textContent,/expanded verified candidate discovery|multiple competing sequences|critical worst-handoff/);
 
  assert.equal(hardRun.elements.receiptCopy.textContent,'','Hard toggle invalidates previous clipboard stamp');
  assert.equal(hardRun.elements.openAi.attrs['aria-disabled'],'true','Hard toggle needs a fresh GO copy');
  await hardRun.elements.includeCover.click();
- assert.match(hardRun.elements.prompt.textContent,/Cover art: yes\. Use the skill's cover-art workflow\./,'Deep mode combines with cover art');
+ assert.match(hardRun.elements.prompt.textContent,/Cover art: yes\./,'Deep mode combines with cover art');
  assert.doesNotMatch(hardRun.elements.prompt.textContent,/printing techniques|verified original release year|generic regional stereotypes/,'Policy stays in skill, not prompt');
  await hardRun.elements.goButton.click();
  assert.equal(hardRun.elements.prompt.textContent,hardCopies.at(-1),'Hard receipt and copied prompt must match');
@@ -656,7 +672,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.equal(pair.moods.filter(m=>m.attrs['aria-pressed']==='true').length,2);
  await pair.elements.goButton.click();
  assert.match(pairCopies.at(-1),/go desire triumphant/);
- assert.match(pairCopies.at(-1),/Combine both moods throughout one coherent playlist/);
+ assert.doesNotMatch(pairCopies.at(-1),/Combine both moods throughout one coherent playlist/,'The installed skill blends both requested moods');
  assert.doesNotMatch(pairCopies.at(-1),/undefined/);
  await pair.moods[0].click();assert.equal(pair.elements.moodName.textContent,'DESIRE + HAPPY','Third tap replaces the most recently selected mood');
  assert.equal(pair.moods[7].attrs['aria-pressed'],'false','Replaced mood clears its selected state');

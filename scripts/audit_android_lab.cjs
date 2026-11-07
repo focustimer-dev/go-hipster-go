@@ -87,7 +87,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    await page.locator('#goButton').click();
    await page.waitForFunction(()=>auditCalls.some(c=>c[0]==='go'));
    assert.equal(await page.evaluate(()=>auditCalls.filter(c=>c[0]==='copy').at(-1)[1]===auditCalls.filter(c=>c[0]==='go').at(-1)[2]),true,'Exact prompt reaches native handoff');
-   assert((await page.locator('#prompt').textContent()).includes('Musical reference only'),'GO retains inspiration');
+   assert((await page.locator('#prompt').textContent()).includes('Inspiration:'),'GO retains inspiration in its compact brief');
    await capture('receipt');
    await page.locator('[data-lab-action="save"]').click();
    await page.locator('[data-lab-tab="crate"]').click();await capture('saved-crate');

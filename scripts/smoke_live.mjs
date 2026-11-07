@@ -159,13 +159,13 @@ export async function checkRelease(browser, baseURL, expectedCommit, sourceCache
     await checkGeometry(page, `${profile.name}: receipt`, mainTargets);
     await page.locator('#goHard').click();
     assert.equal(await page.locator('#goHard').getAttribute('aria-pressed'), 'true', 'TRY HARD must be pressed');
-    assert.match(await page.locator('#prompt').textContent(), /Curation mode: GO HARD/);
+    assert.match(await page.locator('#prompt').textContent(), /\bgo[^\n]* hard(?:\n|$)/,'Hard mode is encoded in the skill invocation');
     await verifyIdleReceipt('TRY HARD must invalidate an old copy');
     await page.locator('#goButton').click();
     await page.waitForFunction(() => document.querySelector('#receiptCopy')?.textContent === 'COPIED TO CLIPBOARD');
     assert.equal(await page.evaluate(() => navigator.clipboard.readText()), await page.locator('#prompt').textContent(), 'Hard receipt differs from clipboard');
     await page.locator('#goHard').click();
-    assert.doesNotMatch(await page.locator('#prompt').textContent(), /Curation mode: GO HARD/);
+    assert.doesNotMatch(await page.locator('#prompt').textContent(), /\bgo[^\n]* hard(?:\n|$)/,'Turning hard off removes the trigger');
     await verifyIdleReceipt('Turning TRY HARD off invalidates an old copy');
     await checkGeometry(page, `${profile.name}: hard toggled`, mainTargets);
 
