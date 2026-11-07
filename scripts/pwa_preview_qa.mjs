@@ -420,6 +420,7 @@ for (const width of [390,320]) {
   const atlasSelections=await atlas.evaluate(()=>[...document.querySelectorAll('[data-crate-region][aria-pressed=true]')]
    .map(el=>el.dataset.crateRegion).sort());
   await back.click();
+  await atlas.waitForURL(url=>url.pathname==='/',{timeout:10000});
   await atlas.locator('.pwa-rail').waitFor({state:'visible'});
   const returned=await atlas.evaluate(()=>[...document.querySelectorAll('[data-crate-region][aria-pressed=true]')]
    .map(el=>el.dataset.crateRegion).sort());
