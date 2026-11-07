@@ -185,9 +185,15 @@ window.addEventListener('DOMContentLoaded',()=>{
  const active=reference();if(active&&urlIn(active)&&!crate().recent.find(x=>x.text===active)?.metadataStatus&&!crate().recent.find(x=>x.text===active)?.title)refreshPreview(active);
  const brand=document.querySelector('.brandrow');
  if(!brand)return;
- const back=document.createElement('a');back.href='/';
+ const back=document.createElement('a');back.href='/';back.id='pwaAtlasReturn';
  back.textContent='← PWA JUKEBOX';back.setAttribute('aria-label','Return to PWA Jukebox');
  back.style.cssText='display:inline-flex;align-items:center;min-height:44px;margin:6px 0;padding:6px 10px;border:1px solid #103135;background:#dfb045;color:#103135;text-decoration:none;font:700 .76rem/1 Arial,sans-serif';
+ // The Android snapshot owns most of this document's click handling.
+ // Do not let its in-app navigation handler swallow the browser return.
+ back.addEventListener('click',event=>{
+  event.preventDefault();event.stopImmediatePropagation();
+  window.location.assign('/');
+ });
  brand.append(back);
 });
 })();
