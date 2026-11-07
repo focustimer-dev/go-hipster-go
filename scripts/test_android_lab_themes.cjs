@@ -50,6 +50,24 @@ const palettes={
     }));
     assert(paint.land.includes(palettes[name].land),'Missing '+name+' MapLibre land fill: '+paint.land);
     assert(!paint.isWide,'Horizontal scroll/zoom introduced for '+name+' on '+width+'px');
+    const routes=await page.evaluate(()=>{
+     const m=window.labAtlasGlobe;
+     const source=m.getSource('routes')?.serialize?.().data?.features||[];
+     const stroke=document.querySelector('#labAtlasCahill .lab-cahill-routes path');
+     const ink=stroke?getComputedStyle(stroke):null;
+     return {count:source.length,color:m.getPaintProperty('routes','line-color'),
+      opacity:m.getPaintProperty('routes','line-opacity'),
+      width:m.getPaintProperty('routes','line-width'),
+      keyesCount:document.querySelectorAll('#labAtlasCahill .lab-cahill-routes path').length,
+      keyesWidth:ink?parseFloat(ink.strokeWidth):0,
+      keyesColor:ink?.stroke||''};
+    });
+    assert(routes.count>0&&routes.keyesCount>0,'Original shipping lanes must remain in both atlas engines');
+    const expected=name==='liberi'?'#edc65d':name==='bosque'?'#8c6239':'#b77b4d';
+    assert.equal(routes.color,expected,'Route ink '+name+' must match original/theme palette');
+    assert.equal(routes.width,name==='liberi'?1:1.7,'Routes must read at phone size for '+name);
+    assert.equal(routes.opacity,name==='liberi'?.65:.88,'Routes must not fade away in '+name);
+    if(name!=='liberi')assert(routes.keyesWidth>=1.8,'Keyes dashed route ink must be visible on '+width+'px');
     if(width===390){
      await page.locator('.mood-grid').scrollIntoViewIfNeeded();
      await page.screenshot({path:path.join(output,`${name}-portraits.png`)});
