@@ -163,6 +163,48 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    assert(Math.abs(finished-doubleStart*1.8)<.03,
     'Cahill double-tap must land at the geographic target without overshoot');
    console.log('Cahill tap easing QA',JSON.stringify({width,doubleStart,middle,finished}));
+   // Real selection auto-fit: adding East Asia and US West from a detailed
+   // zoom must widen the atlas with intermediate geographic camera frames.
+   // This is the "PICK THESE REGIONS" behavior seen in the phone recording.
+   const selectionFit=await page.evaluate(async ()=>{
+    const initial=window.labCahillMap.camera.snapshot();
+    const started=performance.now(),samples=[{ms:0,...initial}];
+    if(!crateSelected.has('east-asia'))toggleCrateRegion('east-asia');
+    if(!crateSelected.has('us-west'))toggleCrateRegion('us-west');
+    const immediate=window.labCahillMap.camera.snapshot();
+    await new Promise((resolve,reject)=>{
+     let stable=0,previousZoom=NaN;
+     const poll=()=>{
+      const next=window.labCahillMap.camera.snapshot();
+      samples.push({ms:performance.now()-started,...next});
+      stable=Math.abs(next.zoom-previousZoom)<.0001?stable+1:0;
+      previousZoom=next.zoom;
+      if(stable>=4&&performance.now()-started>150){resolve();return}
+      if(performance.now()-started>3500){reject(new Error('Region-fit camera did not settle'));return}
+      requestAnimationFrame(poll);
+     };requestAnimationFrame(poll);
+    });
+    return {initial,immediate,final:window.labCahillMap.camera.snapshot(),
+     samples,regions:[...crateSelected].sort()};
+   });
+   assert.deepEqual(selectionFit.regions,['east-asia','us-west'],
+    'Picking distant regions keeps both geographic selections');
+   assert(selectionFit.initial.zoom>2,'Region fit starts at a close geographic zoom');
+   assert(Math.abs(selectionFit.immediate.zoom-selectionFit.initial.zoom)<.03,
+    'Picking regions must not instantly jump to a wide camera');
+   assert(selectionFit.final.zoom<selectionFit.initial.zoom-.7,
+    'Distant regions must widen the camera enough to show the selection');
+   const fits=selectionFit.samples.map(x=>x.zoom);
+   assert(new Set(fits.map(x=>x.toFixed(2))).size>=5,
+    'Selection zoom-out must show at least five distinct intermediate camera scales');
+   assert(fits.every(x=>Number.isFinite(x)&&x>=1&&x<=5.5),
+    'Region-fit camera scales stay bounded and finite');
+   console.log('Cahill selected-region easing QA',JSON.stringify({
+    width,initial:selectionFit.initial.zoom,final:selectionFit.final.zoom,
+    frames:selectionFit.samples.length,distinct:new Set(fits.map(x=>x.toFixed(2))).size,
+    elapsed:selectionFit.samples.at(-1).ms
+   }));
+
 
    await page.emulateMedia({reducedMotion:'reduce'});
    await page.locator('[data-atlas-view=cahill-keyes]').click();
