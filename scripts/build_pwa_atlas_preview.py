@@ -119,7 +119,7 @@ def main():
 }
 '''
     code = code.replace(expose, bridge + expose)
-    change = 'store(crateStorageKey,JSON.stringify([...crateSelected]));\\n copiedPrompt=null;selectionChanged(false,true);if(reframe)frameSelectedAtlas();'
+    change = 'store(crateStorageKey,JSON.stringify([...crateSelected]));' + chr(10) + ' copiedPrompt=null;selectionChanged(false,true);if(reframe)frameSelectedAtlas();'
     assert code.count(change)==1, "Canonical region-pick synchronization anchor changed"
     code=code.replace(change,change+'''
  if(window.HipsterInlineAtlas&&window.parent!==window){
