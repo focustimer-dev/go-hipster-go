@@ -139,15 +139,13 @@ for(const profile of profiles){
     assert.equal(observedThemes[name].selectedMapInk,'rgb(229, 207, 66)','Selected regions use visible yellow');
    }
    if(name==='usiku'){
-    assert.match(observedThemes.usiku.neutral,/radial-gradient/,'Usiku unselected cards have a vignette');
-    assert.match(observedThemes.usiku.neutral,/rgb\(183, 123, 77\) 0%/,'Saddle light at the center');
-    assert.match(observedThemes.usiku.neutral,/rgb\(126, 76, 48\) 100%/,'Deep cognac at outer corners');
-    assert.ok(observedThemes.usiku.neutral.indexOf('rgb(183, 123, 77)') <
-      observedThemes.usiku.neutral.indexOf('rgb(126, 76, 48)'),'Vignette runs light center to dark edges');
-    assert.equal(observedThemes.usiku.neutralLabel,'rgb(8, 37, 22)','Neutral card lettering uses legible deep forest green');
-    assert.equal(observedThemes.usiku.neutralPortraitFilter,'none','Do not invert the Usiku neutral face');
-    assert.equal(observedThemes.usiku.neutralInkFilter,'none','Original engraved ink is preserved without negative filters');
-    assert.match(observedThemes.usiku.neutralDesireInk,/referenceInk/,'Desire retains alpha-detail ink filter on cognac');
+    assert.match(observedThemes.usiku.neutral,/radial-gradient/,'Usiku unselected cards retain the soft central vignette');
+    assert.match(observedThemes.usiku.neutral,/rgb\\(12, 88, 53\\) 0%/,'Green portrait stock is brighter at the center');
+    assert.match(observedThemes.usiku.neutral,/rgb\\(0, 44, 26\\) 100%/,'Dark racing-green vignette reaches the corners');
+    assert.equal(observedThemes.usiku.neutralLabel,'rgb(245, 240, 230)','Usiku neutral labels use warm cream');
+    assert.equal(observedThemes.usiku.neutralPortraitFilter,'none','Keep original transparent portrait plates');
+    assert.notEqual(observedThemes.usiku.neutralInkFilter,'none','Re-ink the actual portraits for green stock');
+    assert.match(observedThemes.usiku.neutralDesireInk,/referenceInk/,'Desire preserves alpha-detail ink extraction on green');
     assert.equal(observedThemes.usiku.sea,'rgb(17, 17, 17)','Usiku atlas ocean must be near-black');
     assert.equal(observedThemes.usiku.land,'rgb(245, 240, 230)','Usiku land engraving must be cream');
     assert.match(observedThemes.usiku.atlasMat,/radial-gradient/,'Atlas mat carries quiet leather tint');
@@ -159,7 +157,7 @@ for(const profile of profiles){
     assert.equal(observedThemes.usiku.ticketOutline,'1px','Crate border is uniformly thin');
     assert.match(observedThemes.usiku.ticketShadow,/rgb\(17, 17, 17\)/,'Ticket offset shadow stays dark');
     assert.equal(observedThemes.usiku.navTrim,'rgb(183, 123, 77)','Selected navigation carries leather trim');
-    assert.equal(observedThemes.usiku.appearanceSwatch,'rgb(183, 123, 77)','Usiku theme swatch reflects the leather');
+    assert.equal(observedThemes.usiku.appearanceSwatch,'rgb(0, 66, 37)','Usiku theme swatch reflects the green portrait pressing');
    }
    if(profile.name==='phone'||profile.name==='phone-reduced-motion'){
     await page.screenshot({path:folder+'/'+profile.name+'-theme-'+name+'-top.png'});
