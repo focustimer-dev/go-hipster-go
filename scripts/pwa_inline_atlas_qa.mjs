@@ -65,7 +65,19 @@ try{
          typeof labAtlasMorph!=='undefined'&&labAtlasMorph===null)return;
       await new Promise(resolve=>requestAnimationFrame(resolve));
      }
-     throw new Error('Projection did not settle: '+target);
+     const state={
+      requested:target,
+      actual:typeof labAtlasMode==='undefined'?'undefined':labAtlasMode,
+      morph:typeof labAtlasMorph==='undefined'?'undefined':
+       labAtlasMorph?{from:labAtlasMorph.from,to:labAtlasMorph.to,
+        queued:labAtlasMorph.queued,finishing:labAtlasMorph.finishing,
+        revealing:labAtlasMorph.revealing}:null,
+      pressed:[...document.querySelectorAll('[data-atlas-view][aria-pressed=true]')]
+        .map(el=>el.dataset.atlasView),
+      overlays:document.querySelectorAll('.lab-atlas-morph,.lab-cahill-motion').length,
+      lastCahill:window.__labAtlasLastCahillSwitch||null
+     };
+     throw new Error('Projection did not settle: '+JSON.stringify(state));
     },mode);
     if(width===390)await page.screenshot({path:path.join(out,theme+'-'+mode+'.png')});
     const state=await page.evaluate(()=>JSON.parse(localStorage.getItem('ghg-crate-map-regions-v1')||'[]').sort());
