@@ -116,6 +116,9 @@ def main():
    lastCrateStamp=null;updateCrateMap(false);return true;
   }
  });
+ // Read-only projection status: button pressed means requested, not settled.
+ window.HipsterAtlasState=()=>({projection:labAtlasMode,
+   transitioning:!!labAtlasMorph});
 }
 '''
     code = code.replace(expose, bridge + expose)
