@@ -76,6 +76,14 @@ function attach(){
  requestPaint();
  return true;
 }
+function syncManualTheme(){
+ const frame=document.getElementById('labManualFrame');
+ try{
+  const guide=frame?.contentDocument;
+  if(guide&&guide.documentElement.dataset.pwaTheme!==theme)
+   guide.documentElement.dataset.pwaTheme=theme;
+ }catch(e){console.warn('Manual theme synchronization unavailable',e)}
+}
 function setTheme(next,persist){
  if(!THEMES.includes(next))return false;
  if(persist){
@@ -85,7 +93,7 @@ function setTheme(next,persist){
   }
  }
  if(theme!==next){theme=next;document.documentElement.dataset.pwaTheme=theme;
-  requestPaint();window.dispatchEvent(new Event('ghg-lab-theme-change'))}
+  requestPaint();syncManualTheme();window.dispatchEvent(new Event('ghg-lab-theme-change'))}
  refreshButtons();
  if(persist){
   const status=document.getElementById('labThemeStatus');
@@ -99,6 +107,9 @@ document.addEventListener('click',event=>{
 });
 document.addEventListener('DOMContentLoaded',()=>{
  refreshButtons();
+ const guide=document.getElementById('labManualFrame');
+ guide?.addEventListener('load',syncManualTheme);
+ syncManualTheme();
  // The canonical Android map initializes asynchronously, only once.
  const observer=new MutationObserver(()=>{if(attach())observer.disconnect()});
  observer.observe(document.body,{childList:true,subtree:true});
