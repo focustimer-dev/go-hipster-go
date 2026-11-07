@@ -148,3 +148,22 @@ html[data-pwa-theme=usiku] body.pwa-workspace .pwa-add-inspiration{color:#f5f0e6
 /* Selected theme stays visible, never relies on color alone. */
 html[data-pwa-theme=bosque] body.pwa-workspace .pwa-dialog .pwa-theme-choice[aria-pressed=true],
 html[data-pwa-theme=usiku] body.pwa-workspace .pwa-dialog .pwa-theme-choice[aria-pressed=true]{background:#004225;color:#f5f0e6;border-color:#f5f0e6}
+
+/* The option buttons retain their own base background and lettering rules. */
+html[data-pwa-theme=bosque] body.gig-poster .go-options .go-extras .cover-toggle,
+html[data-pwa-theme=usiku] body.gig-poster .go-options .go-extras .cover-toggle{background:#004225;color:#f5f0e6}
+html[data-pwa-theme=bosque] body.gig-poster .go-options .option-label,
+html[data-pwa-theme=usiku] body.gig-poster .go-options .option-label,
+html[data-pwa-theme=bosque] body.gig-poster .go-options #goHard .option-label,
+html[data-pwa-theme=usiku] body.gig-poster .go-options #goHard .option-label{color:#f5f0e6}
+html[data-pwa-theme=bosque] body.gig-poster .go-options .option-copy small,
+html[data-pwa-theme=usiku] body.gig-poster .go-options .option-copy small{color:#f5f0e6}
+html[data-pwa-theme=bosque] body.gig-poster .go-options #includeCover .art-sleeve,
+html[data-pwa-theme=usiku] body.gig-poster .go-options #includeCover .art-sleeve{fill:#f5f0e6}
+/* Re-ink existing decorative star assets without replacing the locked artwork. */
+html[data-pwa-theme=bosque] body.gig-poster .brand-star svg,
+html[data-pwa-theme=usiku] body.gig-poster .brand-star svg,
+html[data-pwa-theme=bosque] body.gig-poster .go-button .star-glyph,
+html[data-pwa-theme=usiku] body.gig-poster .go-button .star-glyph{
+ filter:grayscale(1) brightness(0) saturate(100%) invert(39%) sepia(17%) saturate(1296%) hue-rotate(346deg) brightness(93%) contrast(86%);
+}
