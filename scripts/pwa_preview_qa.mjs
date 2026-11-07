@@ -139,13 +139,15 @@ for(const profile of profiles){
     assert.equal(observedThemes[name].selectedMapInk,'rgb(229, 207, 66)','Selected regions use visible yellow');
    }
    if(name==='usiku'){
-    assert.match(observedThemes.usiku.neutral,/radial-gradient/,'Usiku unselected cards retain the soft central vignette');
-    assert.match(observedThemes.usiku.neutral,/rgb\(12, 88, 53\) 0%/,'Green portrait stock is brighter at the center');
-    assert.match(observedThemes.usiku.neutral,/rgb\(0, 44, 26\) 100%/,'Dark racing-green vignette reaches the corners');
-    assert.equal(observedThemes.usiku.neutralLabel,'rgb(245, 240, 230)','Usiku neutral labels use warm cream');
-    assert.equal(observedThemes.usiku.neutralPortraitFilter,'none','Keep original transparent portrait plates');
-    assert.notEqual(observedThemes.usiku.neutralInkFilter,'none','Re-ink the actual portraits for green stock');
-    assert.match(observedThemes.usiku.neutralDesireInk,/referenceInk/,'Desire preserves alpha-detail ink extraction on green');
+    assert.match(observedThemes.usiku.neutral,/radial-gradient/,'Usiku neutral cards retain their reverse vignette');
+    assert.match(observedThemes.usiku.neutral,/rgb\(52, 136, 94\) 0%/,'Center catches light on mid-dark green stock');
+    assert.match(observedThemes.usiku.neutral,/rgb\(39, 121, 79\) 34%/,'Middle uses slightly lighter-than-tab forest green');
+    assert.match(observedThemes.usiku.neutral,/rgb\(0, 56, 35\) 100%/,'The outer card edge fades back into deep green');
+    assert.equal(observedThemes.usiku.neutralLabel,'rgb(245, 240, 230)','Usiku captions remain readable cream');
+    assert.equal(observedThemes.usiku.neutralPortraitFilter,'none','Keep full original dark engraved portrait');
+    assert.equal(observedThemes.usiku.neutralInkFilter,'none','No photo-negative or brightened portrait ink');
+    assert.match(observedThemes.usiku.neutralDesireInk,/referenceInk/,'Desire keeps dark SVG alpha extraction, not cream inversion');
+    assert.doesNotMatch(observedThemes.usiku.neutralDesireInk,/invert/,'Desire must never become a photo-negative');
     assert.equal(observedThemes.usiku.sea,'rgb(17, 17, 17)','Usiku atlas ocean must be near-black');
     assert.equal(observedThemes.usiku.land,'rgb(245, 240, 230)','Usiku land engraving must be cream');
     assert.match(observedThemes.usiku.atlasMat,/radial-gradient/,'Atlas mat carries quiet leather tint');
