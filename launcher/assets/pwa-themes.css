@@ -352,3 +352,41 @@ html[data-pwa-theme=usiku] body.gig-poster .chart-rose-ring{stroke:#f5f0e6}
 html[data-pwa-theme=usiku] body.gig-poster .chart-rose-letters{fill:#f5f0e6}
 html[data-pwa-theme=bosque] body.gig-poster .chart-rose-north,
 html[data-pwa-theme=usiku] body.gig-poster .chart-rose-north{fill:#e5cf42}
+
+/* USIKU / Saddle-cognac pressing — neutral mood cards.
+   Approved neutral artwork is already dark engraved ink on transparent plates.
+   Stop color-inverting it: display the ORIGINAL ink against a warm material.
+   #082516 is deep BRG ink, chosen over lighter green for small-label contrast
+   against #B77B4D (about 4.6:1). Selected yellow and Funk are unchanged. */
+html[data-pwa-theme=usiku] body.gig-poster{
+ --usiku-neutral-stock:#b77b4d;
+ --usiku-neutral-ink:#082516;
+}
+html[data-pwa-theme=usiku] body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[data-mood][aria-pressed=false]{
+ background:var(--usiku-neutral-stock);
+ color:var(--usiku-neutral-ink);
+ box-shadow:none;
+}
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=false] .word{
+ color:var(--usiku-neutral-ink);
+ background:transparent;
+}
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood]:nth-child(n){
+ border-color:#003018;
+}
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=false] .face{
+ filter:none!important;
+}
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=false] .face::before{
+ filter:none!important;
+ opacity:1;
+}
+/* Desire and Triumph use alpha-extraction SVG ink filters rather than the
+   common six-portrait sprite. Keep those filters (and their facial detail);
+   both use the existing British-racing-green flood color. */
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=false] .face::before{
+ filter:url(#referenceInk)!important;
+}
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=triumphant][aria-pressed=false] .face::before{
+ filter:url(#alphaInk)!important;
+}
