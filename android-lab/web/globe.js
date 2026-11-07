@@ -322,6 +322,8 @@ function labAtlasMorphTo(mode){
    window.__labAtlasLastMorph={from,to:mode,commitMs,landingFit:actualFit,
     handoffSignal:signal,handoffWaitMs:performance.now()-waitingSince,
     sourceFit,predictedFit:predicted,fitSampled:measured.sampled,
+    rawFit:{sx:measured.rawSx,sy:measured.rawSy,validX:measured.validX,validY:measured.validY,
+     zoom:labGlobe.getZoom(),homeZoom:labGlobeHomeZoom(),projection:labGlobe.getProjection()?.type},
     endpointResidual:residual,correction,cacheHits:state.cacheHits||0,
     cacheMisses:state.cacheMisses||0,maxPaintMs:state.maxPaintMs||0};
    veil.dataset.endpointResidual=residual.toFixed(4);
