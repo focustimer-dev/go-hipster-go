@@ -140,8 +140,8 @@ for(const profile of profiles){
    }
    if(name==='usiku'){
     assert.match(observedThemes.usiku.neutral,/radial-gradient/,'Usiku unselected cards retain the soft central vignette');
-    assert.match(observedThemes.usiku.neutral,/rgb\\(12, 88, 53\\) 0%/,'Green portrait stock is brighter at the center');
-    assert.match(observedThemes.usiku.neutral,/rgb\\(0, 44, 26\\) 100%/,'Dark racing-green vignette reaches the corners');
+    assert.match(observedThemes.usiku.neutral,/rgb\(12, 88, 53\) 0%/,'Green portrait stock is brighter at the center');
+    assert.match(observedThemes.usiku.neutral,/rgb\(0, 44, 26\) 100%/,'Dark racing-green vignette reaches the corners');
     assert.equal(observedThemes.usiku.neutralLabel,'rgb(245, 240, 230)','Usiku neutral labels use warm cream');
     assert.equal(observedThemes.usiku.neutralPortraitFilter,'none','Keep original transparent portrait plates');
     assert.notEqual(observedThemes.usiku.neutralInkFilter,'none','Re-ink the actual portraits for green stock');
