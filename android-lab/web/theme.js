@@ -44,14 +44,20 @@ function paint(){
    borders:{'line-color':'#103135'},
    ocean:{'background-color':map.getProjection()?.type==='mercator'?'rgba(0,0,0,0)':'#103135'},
    'robinson-ocean':{'fill-color':'#103135'},
-   routes:{'line-color':defaults.routes?.['line-color']||'#a83223'}
+   // Keep the original ink and dash rhythm in Liberi, even when the
+   // map's routes layer was added after the first palette snapshot.
+   routes:{'line-color':'#edc65d','line-opacity':.65,
+    'line-width':1,'line-dasharray':[3,5]}
   }:{
    land:{'fill-color':['case',['boolean',['feature-state','selected'],false],
      palette.selected,palette.land]},
    borders:{'line-color':palette.ink},
    ocean:{'background-color':map.getProjection()?.type==='mercator'?'rgba(0,0,0,0)':palette.ocean},
    'robinson-ocean':{'fill-color':palette.ocean},
-   routes:{'line-color':palette.route}
+   // At 390px the original 1px/.65-alpha dashes nearly vanish against
+   // Bosque's cream ocean and Usiku's night sea; keep routes discoverable.
+   routes:{'line-color':palette.route,'line-opacity':.88,
+    'line-width':1.7,'line-dasharray':[3,2.6]}
   };
   for(const [layer,paints] of Object.entries(desired)){
    if(!map.getLayer(layer))continue;
