@@ -1,0 +1,1 @@
+Approved one-time build-only Android Lab 0.9.58 artifact for private local signing. Required because GitHub production environment has no Android keystore secrets. Verify package ID work.samelling.hipstergo.lab, versionCode 67, versionName 0.9.58; original signing key remains off GitHub. No source change.
