@@ -76,10 +76,16 @@ jobs:
           npm install --no-save --package-lock=false playwright@1.62.1
           npx playwright install --with-deps chromium
           node scripts/pwa_preview_qa.mjs
+      - name: Check true inline Atlas against PWA Jukebox at 320px and 390px
+        env:
+          PWA_PREVIEW_URL: https://hipster-go-pwa-preview.samelling.workers.dev
+        run: node scripts/pwa_inline_atlas_qa.mjs
       - name: Keep preview QA screenshots
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: pwa-preview-qa-${{ github.event.pull_request.number }}
-          path: artifacts/pwa-preview
+          path: |
+            artifacts/pwa-preview
+            artifacts/pwa-inline-atlas
           if-no-files-found: warn
