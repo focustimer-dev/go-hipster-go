@@ -43,7 +43,15 @@ const labCahillMotion=(()=>{
    if(fill){ctx.fillStyle=fill;ctx.fill(path)}
    if(stroke){ctx.lineWidth=lineWidth||.65;ctx.strokeStyle=stroke;ctx.stroke(path)}
   };
-  put(world.querySelector('.lab-cahill-ocean'),{fill:PAL.ocean,stroke:PAL.ocean,lineWidth:1});
+  // Render the SAME computed ocean fill and saddle/ink outlines as the live
+  // Cahill SVG. Bosque previously painted border strokes cream on the tween
+  // canvas, then snapped to dark green at the end of the fold.
+  const ocean=world.querySelector('.lab-cahill-ocean');
+  const oceanInk=ocean?getComputedStyle(ocean):null;
+  put(ocean,{fill:oceanInk?.fill||PAL.ocean});
+  put(ocean,{stroke:oceanInk?.stroke||PAL.ink,
+   lineWidth:parseFloat(oceanInk?.strokeWidth)||1,
+   alpha:Number.isFinite(parseFloat(oceanInk?.strokeOpacity))?parseFloat(oceanInk.strokeOpacity):1});
   put(world.querySelector('.lab-cahill-graticule'),{stroke:PAL.paper,lineWidth:.55,alpha:.21});
   for(const item of Array.from(world.children).filter(el=>el.tagName.toLowerCase()==='circle')){
    const cx=+item.getAttribute('cx'),cy=+item.getAttribute('cy'),r=+item.getAttribute('r');
@@ -70,12 +78,18 @@ const labCahillMotion=(()=>{
   // Decorative nautical ink is part of the printed chart, but invisible
   // route hit targets and interactive markers never enter animation frames.
   for(const path of world.querySelectorAll('.lab-cahill-routes path')){
-   const d=path.getAttribute('d'),stroke=path.getAttribute('stroke');
+   const d=path.getAttribute('d'),ink=getComputedStyle(path);
+   const stroke=ink.stroke||path.getAttribute('stroke');
    if(!d||!stroke||stroke==='none')continue;
-   ctx.save();ctx.globalAlpha=+(path.getAttribute('stroke-opacity')||1);
-   ctx.strokeStyle=stroke;ctx.lineWidth=+(path.getAttribute('stroke-width')||.75);
-   const dash=(path.getAttribute('stroke-dasharray')||'').split(/[ ,]+/).map(Number)
-     .filter(n=>Number.isFinite(n)&&n>0);
+   ctx.save();
+   // Computed style includes the Bosque/Usiku route accents. Reading only
+   // original SVG attributes made the routes flash yellow mid-transition.
+   ctx.globalAlpha=Number.isFinite(parseFloat(ink.strokeOpacity))?
+     parseFloat(ink.strokeOpacity):+(path.getAttribute('stroke-opacity')||1);
+   ctx.strokeStyle=stroke;
+   ctx.lineWidth=parseFloat(ink.strokeWidth)||+(path.getAttribute('stroke-width')||.75);
+   const dash=(ink.strokeDasharray||path.getAttribute('stroke-dasharray')||'')
+     .split(/[ ,]+/).map(parseFloat).filter(n=>Number.isFinite(n)&&n>0);
    if(dash.length)ctx.setLineDash(dash);
    ctx.stroke(new Path2D(d));ctx.restore();
   }
