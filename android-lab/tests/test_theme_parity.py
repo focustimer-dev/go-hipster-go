@@ -32,7 +32,7 @@ class AndroidThemeParity(unittest.TestCase):
         build=(ROOT/'scripts/bundle_android_lab.py').read_text()
         js=(ROOT/'android-lab/web/theme.js').read_text()
         self.assertIn('lab-manual-themes.css',manual)
-        self.assertIn('parent.documentElement.dataset.pwaTheme',manual)
+        self.assertIn('parent.document.documentElement.dataset.pwaTheme',manual)
         self.assertIn("manual-guide-theme.css",build)
         for name in ('bosque','usiku'):
             self.assertIn('data-pwa-theme='+name,css)
