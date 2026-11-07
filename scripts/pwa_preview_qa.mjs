@@ -388,6 +388,24 @@ for (const width of [390,320]) {
   const routes=['cahill-keyes','globe','robinson'];
   for(const mode of routes){
    await atlas.locator('[data-atlas-view="'+mode+'"]').click({timeout:10000});
+   if(mode==='cahill-keyes'){
+    const veil=atlas.locator('#labAtlasGlobe .lab-cahill-motion');
+    await veil.waitFor({state:'attached',timeout:7500});
+    const proof=await veil.evaluate(el=>{
+     const canvas=el.querySelector('.lab-cahill-motion-canvas');
+     const pixel=canvas?.getContext('2d')?.getImageData(1,1,1,1).data;
+     return {backdrop:getComputedStyle(el).backgroundColor,
+      pixel:pixel?[...pixel]:null};
+    });
+    const backdrop=theme==='usiku'?'rgb(17, 17, 17)':'rgb(245, 240, 230)';
+    assert.equal(proof.backdrop,backdrop,'Cahill animated veil does not flash Liberi paper');
+    assert.deepEqual(proof.pixel?.slice(0,3),
+     theme==='usiku'?[17,17,17]:[245,240,230],
+     'Real Cahill tween canvas has themed pixels, not Liberi yellow');
+    await atlas.locator('#labAtlasGlobe').screenshot({
+     path:folder+'/atlas-'+width+'-'+mode+'-inbetween.png',timeout:30000
+    });
+   }
    await atlas.waitForFunction(to=>{
     const active=document.querySelector('[data-atlas-view="'+to+'"]');
     return active?.getAttribute('aria-pressed')==='true' &&
