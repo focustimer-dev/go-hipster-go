@@ -69,17 +69,18 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Test deployed preview in Chromium
-        env:
-          PWA_PREVIEW_URL: https://hipster-go-pwa-preview.samelling.workers.dev
+      - name: Install isolated Playwright QA runtime
         run: |
           npm install --no-save --package-lock=false playwright@1.62.1
           npx playwright install --with-deps chromium
-          node scripts/pwa_preview_qa.mjs
       - name: Check true inline Atlas against PWA Jukebox at 320px and 390px
         env:
           PWA_PREVIEW_URL: https://hipster-go-pwa-preview.samelling.workers.dev
         run: node scripts/pwa_inline_atlas_qa.mjs
+      - name: Test deployed preview in Chromium
+        env:
+          PWA_PREVIEW_URL: https://hipster-go-pwa-preview.samelling.workers.dev
+        run: node scripts/pwa_preview_qa.mjs
       - name: Keep preview QA screenshots
         if: always()
         uses: actions/upload-artifact@v4
