@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - '.github/releases/sign-lab-0-9-57'
+      - '.github/releases/sign-lab-0-9-57-retry-2026-11-06'
 
 permissions:
   contents: read
@@ -35,6 +36,7 @@ jobs:
       - name: Install exact Android SDK and verify metadata safety tests
         run: |
           sdkmanager 'platforms;android-36' 'build-tools;35.0.0'
+          python -m pip install Pillow==12.0.0
           python -m unittest discover -s android-lab/tests -v
           node --test tests/link_preview_worker.test.mjs
       - name: Native Java metadata tests, lint and unsigned release APK
