@@ -159,6 +159,9 @@ function labCahillInit(host,geography,routes,legacy){
  };
  // A responsive viewport or projection switch never reuses old pixel offsets.
  if(typeof ResizeObserver!=='undefined')new ResizeObserver(()=>{
+  // Globe/Robinson morphs resize the shared host dozens of times. Never
+  // compete with their geographic frames when Keyes is hidden/transitioning.
+  if(labAtlasMode!=='cahill-keyes'||labAtlasMorph)return;
   cameraDirty=true;if(!cameraFrame)cameraFrame=requestAnimationFrame(paintCamera);
  }).observe(viewport);
  const pointers=new Map();let previousPinch=null,dragged=false;
