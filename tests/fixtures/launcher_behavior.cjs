@@ -672,7 +672,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.equal(pair.moods.filter(m=>m.attrs['aria-pressed']==='true').length,2);
  await pair.elements.goButton.click();
  assert.match(pairCopies.at(-1),/go desire triumphant/);
- assert.match(pairCopies.at(-1),/Combine both moods throughout one coherent playlist/);
+ assert.doesNotMatch(pairCopies.at(-1),/Combine both moods throughout one coherent playlist/,'The installed skill blends both requested moods');
  assert.doesNotMatch(pairCopies.at(-1),/undefined/);
  await pair.moods[0].click();assert.equal(pair.elements.moodName.textContent,'DESIRE + HAPPY','Third tap replaces the most recently selected mood');
  assert.equal(pair.moods[7].attrs['aria-pressed'],'false','Replaced mood clears its selected state');
