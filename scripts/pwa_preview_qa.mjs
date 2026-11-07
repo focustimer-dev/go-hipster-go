@@ -150,7 +150,7 @@ for(const profile of profiles){
     assert.equal(observedThemes.usiku.neutralPortraitFilter,'none','Never invert the complete portrait or background');
     assert.equal(observedThemes.usiku.neutralInkFilter,'none','Use an alpha-mask ink fill rather than a negative-image filter');
     assert.match(observedThemes.usiku.neutralInkMask,/moods-neutral-ink-v2\.webp/,'Neutral portraits reuse the exact canonical sprite as a mask');
-    assert.equal(observedThemes.usiku.neutralInkColor,'rgb(117, 174, 133)','Medium green ink is painted on the portrait pixels themselves');
+    assert.equal(observedThemes.usiku.neutralInkColor,'rgb(33, 106, 71)','Deep-green ink recolors only the portrait pixels, not the stock');
     assert.match(observedThemes.usiku.neutralDesireInk,/referenceInk/,'Selected Desire keeps the approved ink-extraction geometry');
     assert.doesNotMatch(observedThemes.usiku.neutralDesireInk,/brightness\(0\)/,'Selected Desire keeps its original vivid treatment');
     assert.match(observedThemes.usiku.neutralTriumphInk,/alphaInk/,'Neutral Triumph keeps its separate alpha extraction');
