@@ -169,8 +169,10 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    const selectionFit=await page.evaluate(async ()=>{
     const initial=window.labCahillMap.camera.snapshot();
     const started=performance.now(),samples=[{ms:0,...initial}];
-    if(!crateSelected.has('east-asia'))toggleCrateRegion('east-asia');
-    if(!crateSelected.has('us-west'))toggleCrateRegion('us-west');
+    const map=document.querySelector('#crateAtlasMap');
+    if(!map?._atlasOpenSecret)throw new Error('Pacific route discovery missing');
+    map._atlasOpenSecret('pacific-handoff');
+    document.querySelector('.atlas-secret-add').click();
     const immediate=window.labCahillMap.camera.snapshot();
     await new Promise((resolve,reject)=>{
      let stable=0,previousZoom=NaN;
@@ -185,7 +187,8 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
      };requestAnimationFrame(poll);
     });
     return {initial,immediate,final:window.labCahillMap.camera.snapshot(),
-     samples,regions:[...crateSelected].sort()};
+     samples,regions:[...document.querySelectorAll('[data-crate-stamp-region]')]
+      .map(el=>el.dataset.crateStampRegion).sort()};
    });
    assert.deepEqual(selectionFit.regions,['east-asia','us-west'],
     'Picking distant regions keeps both geographic selections');
