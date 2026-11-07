@@ -398,8 +398,13 @@ function labAtlasCommitMode(mode,keepHostSize=false){
  frame?.classList.toggle('lab-globe-frame',mode==='globe');
  if(!keepHostSize){
   host.style.aspectRatio=mode==='globe'?'1 / 1':'720 / 372';
-  labGlobe.resize();
  }
+ // Critical: MapLibre's camera bounds are calculated from its *canvas* size,
+ // not the CSS host dimensions. On Globe→Robinson the host is already wide
+ // but the WebGL canvas may still be square. If jumpTo runs before resize,
+ // setMaxBounds forces a ~0.95-zoom extra crop and the morph endpoint cannot
+ // match the geographic frame.
+ labGlobe.resize();
  const home=doc.getElementById('atlasHome');if(home)home.textContent=mode==='globe'?'← WHOLE GLOBE':'← WHOLE WORLD';
  host.setAttribute('aria-label',mode==='robinson'?'Interactive regional Robinson map':'Interactive regional globe');store('ghg-atlas-view-v2',mode);
  labGlobe.stop();labGlobe.setMaxBounds(null);labGlobe.setMinZoom(-1);labGlobe.setProjection({type:mode==='globe'?'globe':'mercator'});
