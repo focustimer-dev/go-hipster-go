@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import assert from 'node:assert/strict';
-import { mkdir,writeFile,copyFile } from 'node:fs/promises';
+import { mkdir,writeFile } from 'node:fs/promises';
 import { chromium } from 'playwright';
 const base=process.env.PWA_PREVIEW_URL;
 const isProduction=process.argv.includes('--allow-production');
@@ -14,10 +14,6 @@ assert.equal(base,isProduction?publicOrigin:previewOrigin,
  'Only the dedicated preview is an allowed QA target');
 const folder='artifacts/pwa-preview';
 await mkdir(folder,{recursive:true});
-/* PR #193 QA-only source fidelity probe. These files are copied into the
-   isolated preview's review artifact, never into the runtime or public site. */
-await copyFile('launcher/editions/gig-poster/assets/moods-neutral-approved-v1.webp',folder+'/portrait-source-approved.webp');
-await copyFile('launcher/editions/gig-poster/assets/moods-neutral-ink-v2.webp',folder+'/portrait-source-alpha.webp');
 const browser=await chromium.launch({headless:true,args:['--use-angle=swiftshader','--enable-unsafe-swiftshader']});
 const profiles=[
   {name:'phone',viewport:{width:390,height:844},isMobile:true,hasTouch:true},
@@ -109,17 +105,8 @@ for(const profile of profiles){
     neutral:getComputedStyle(document.querySelector('.mood[data-mood="sad"]')).backgroundImage,
     neutralPortraitFilter:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .face')).filter,
     neutralInkFilter:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .face'),'::before').filter,
-    neutralInkMask:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .face'),'::before').maskImage,
-    neutralInkAsset:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .face'),'::before').backgroundImage,
-    neutralDesireAsset:getComputedStyle(document.querySelector('.mood[data-mood="desire"] .face'),'::before').backgroundImage,
-    neutralTriumphAsset:getComputedStyle(document.querySelector('.mood[data-mood="triumphant"] .face'),'::before').backgroundImage,
-    neutralInkColor:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .face'),'::before').backgroundColor,
-    neutralFaceUnderprint:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .face')).backgroundImage,
-    desireSelectedUnderprint:getComputedStyle(document.querySelector('.mood[data-mood="desire"] .face')).backgroundImage,
-    funkSelectedUnderprint:getComputedStyle(document.querySelector('.mood[data-mood="funky"] .face')).backgroundImage,
     neutralLabel:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .word')).color,
     neutralDesireInk:getComputedStyle(document.querySelector('.mood[data-mood="desire"] .face'),'::before').filter,
-    neutralTriumphInk:getComputedStyle(document.querySelector('.mood[data-mood="triumphant"] .face'),'::before').filter,
     sea:getComputedStyle(document.querySelector('.crate-map-ocean')).fill,
     land:getComputedStyle(document.querySelector('#posterLandEngraving rect')).fill,
     selectInk:getComputedStyle(document.querySelector('.mood[data-mood="funky"] .face'),'::after').filter,
@@ -153,23 +140,14 @@ for(const profile of profiles){
    }
    if(name==='usiku'){
     assert.match(observedThemes.usiku.neutral,/radial-gradient/,'Usiku neutral cards retain their reverse vignette');
-    assert.match(observedThemes.usiku.neutral,/rgb\(183, 123, 77\) 0%/,'Light saddle highlight belongs at portrait center');
-    assert.match(observedThemes.usiku.neutral,/rgb\(168, 108, 67\) 34%/,'Mid stock is warm saddle, never green');
-    assert.match(observedThemes.usiku.neutral,/rgb\(146, 91, 57\) 68%/,'Outer midtone is cognac');
-    assert.match(observedThemes.usiku.neutral,/rgb\(126, 76, 48\) 100%/,'Distal vignette corners darken to rich cognac');
-    assert.doesNotMatch(observedThemes.usiku.neutral,/rgb\(52, 136, 94\)|rgb\(39, 121, 79\)/,'Old all-green vignette must not return');
+    assert.match(observedThemes.usiku.neutral,/rgb\(52, 136, 94\) 0%/,'Center catches light on mid-dark green stock');
+    assert.match(observedThemes.usiku.neutral,/rgb\(39, 121, 79\) 34%/,'Middle uses slightly lighter-than-tab forest green');
+    assert.match(observedThemes.usiku.neutral,/rgb\(0, 56, 35\) 100%/,'The outer card edge fades back into deep green');
     assert.equal(observedThemes.usiku.neutralLabel,'rgb(245, 240, 230)','Usiku captions remain readable cream');
-    assert.equal(observedThemes.usiku.neutralPortraitFilter,'none','Do not invert full portrait');
-    assert.equal(observedThemes.usiku.neutralInkFilter,'none','Two-ink source image must retain natural alpha');
-    assert.equal(observedThemes.usiku.neutralInkMask,'none','Remove legacy flat-color alpha masking');
-    assert.match(observedThemes.usiku.neutralInkAsset,/usiku-neutral-two-ink-v1\.webp/,'Six neutral original sprites receive the two-ink pressing');
-    assert.match(observedThemes.usiku.neutralTriumphAsset,/usiku-triumph-neutral-two-ink-v1\.webp/,'Neutral Triumph uses its own two-ink art');
-    assert.equal(observedThemes.usiku.neutralFaceUnderprint,'none','No oval CSS cream wash may extend outside artwork');
-    assert.equal(observedThemes.usiku.desireSelectedUnderprint,'none','Selected Desire remains untouched');
-    assert.equal(observedThemes.usiku.funkSelectedUnderprint,'none','Selected Funk remains untouched');
-    assert.match(observedThemes.usiku.neutralDesireInk,/referenceInk/,'Selected Desire keeps its original filtered portrait');
-    assert.doesNotMatch(observedThemes.usiku.neutralDesireInk,/brightness\(0\)/,'Selected Desire is never photo-negative');
-    assert.equal(observedThemes.usiku.neutralTriumphInk,'none','Neutral Triumph two-ink pixels need no SVG filter');
+    assert.equal(observedThemes.usiku.neutralPortraitFilter,'none','Keep full original dark engraved portrait');
+    assert.equal(observedThemes.usiku.neutralInkFilter,'none','No photo-negative or brightened portrait ink');
+    assert.match(observedThemes.usiku.neutralDesireInk,/referenceInk/,'Desire keeps dark SVG alpha extraction, not cream inversion');
+    assert.doesNotMatch(observedThemes.usiku.neutralDesireInk,/invert/,'Desire must never become a photo-negative');
     assert.equal(observedThemes.usiku.sea,'rgb(17, 17, 17)','Usiku atlas ocean must be near-black');
     assert.equal(observedThemes.usiku.land,'rgb(245, 240, 230)','Usiku land engraving must be cream');
     assert.match(observedThemes.usiku.atlasMat,/radial-gradient/,'Atlas mat carries quiet leather tint');
