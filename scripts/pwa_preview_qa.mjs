@@ -46,9 +46,9 @@ for(const profile of profiles){
   for(const name of ['liberi','bosque','usiku']){
    await page.locator('[data-pwa-action="prefs"]').click();
    await page.locator('#pwaPrefs').waitFor({state:'visible'});
-   await page.locator('[data-pwa-theme="'+name+'"]').click();
-   assert.equal(await page.locator('[data-pwa-theme="'+name+'"]').getAttribute('aria-pressed'),'true');
-   assert.equal(await page.locator('[data-pwa-theme][aria-pressed=true]').count(),1,'One theme only');
+   await page.locator('button[data-pwa-theme="'+name+'"]').click();
+   assert.equal(await page.locator('button[data-pwa-theme="'+name+'"]').getAttribute('aria-pressed'),'true');
+   assert.equal(await page.locator('button[data-pwa-theme][aria-pressed=true]').count(),1,'One theme only');
    assert.equal(await page.evaluate(()=>document.documentElement.dataset.pwaTheme),name);
    await page.locator('[data-pwa-action="close"]').click();
    observedThemes[name]=await page.locator('#pwaJukebox').evaluate(el=>({
@@ -72,7 +72,7 @@ for(const profile of profiles){
   await page.locator('.pwa-rail').waitFor({state:'visible'});
   assert.equal(await page.evaluate(()=>document.documentElement.dataset.pwaTheme),'usiku','Theme must survive reload');
   await page.locator('[data-pwa-action="prefs"]').click();
-  await page.locator('[data-pwa-theme="liberi"]').click();
+  await page.locator('button[data-pwa-theme="liberi"]').click();
   await page.locator('[data-pwa-action="close"]').click();
   await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
   const rects=await page.locator('.pwa-rail button').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return {width:r.width,height:r.height}}));
