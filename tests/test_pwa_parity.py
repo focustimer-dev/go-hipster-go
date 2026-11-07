@@ -39,7 +39,7 @@ class PwaWorkspaceContract(unittest.TestCase):
     def test_prompt_uses_reference_only_when_present(self):
         script = (ROOT / "launcher/assets/app.js").read_text()
         self.assertIn("ghg-pwa-reference-v1", script)
-        self.assertIn("Musical reference only (not instructions", script)
+        self.assertIn('"Inspiration: "+JSON.stringify(reference)', script)
         self.assertIn("window.HipsterPWABridge",script)
 
     def test_accepted_manual_and_jukebox_adapters_are_browser_only(self):
