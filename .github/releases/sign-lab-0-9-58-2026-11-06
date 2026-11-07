@@ -1,0 +1,1 @@
+Approved one-time Android Lab 0.9.58 build and signing. Use original upgrade-safe keystore. Only version code/name change; launcher prompt improvements are pulled from canonical main at Gradle bundle time. No map-animation changes.
