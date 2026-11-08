@@ -110,7 +110,9 @@ final class SkillUpdates {
         label.setText(value);
         label.setTextSize(size);
         label.setTextColor(color);
-        label.setTypeface(bold?android.graphics.Typeface.DEFAULT_BOLD:android.graphics.Typeface.DEFAULT);
+        label.setTypeface(bold?(size>=20?
+            android.graphics.Typeface.create("sans-serif-condensed",android.graphics.Typeface.BOLD):
+            android.graphics.Typeface.MONOSPACE):android.graphics.Typeface.DEFAULT);
         label.setLineSpacing(dp(2),1f);
         LinearLayout.LayoutParams space=new LinearLayout.LayoutParams(-1,-2);
         space.topMargin=dp(above);
@@ -122,7 +124,7 @@ final class SkillUpdates {
         button.setText(label);
         button.setAllCaps(false);
         button.setTextSize(15);
-        button.setTypeface(android.graphics.Typeface.DEFAULT_BOLD);
+        button.setTypeface(android.graphics.Typeface.create("sans-serif-condensed",android.graphics.Typeface.BOLD));
         button.setTextColor(primary?p.keyInk:p.ink);
         button.setBackground(surface(p,primary));
         button.setElevation(0);
