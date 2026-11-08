@@ -76,7 +76,12 @@ function paintAtlasTheme(){
     'line-opacity':THEMED_ROUTE_PAINT.opacity,
     'line-width':THEMED_ROUTE_PAINT.width,
     'line-dasharray':THEMED_ROUTE_PAINT.dash}
-  }:{...atlasThemeDefaults,routes:LIBERI_ROUTE_PAINT};
+  }:{...atlasThemeDefaults,
+   // Restoring original Liberi must also restore the projection-dependent
+   // exterior: yellow paper outside Robinson, petrol in the actual sea.
+   ocean:{'background-color':map.getProjection()?.type==='mercator'?'rgba(0,0,0,0)':'#103135'},
+   'robinson-ocean':{'fill-color':'#103135'},
+   routes:LIBERI_ROUTE_PAINT};
   for(const [layer,paints] of Object.entries(desired)){
    if(!map.getLayer(layer))continue;
    for(const [prop,value] of Object.entries(paints)){
