@@ -33,7 +33,7 @@
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .lab-rail button[aria-current=page]{
   background:var(--lab-ui-action);color:var(--lab-ui-on-action);
-  border-bottom-color:var(--lab-ui-highlight);
+  border-bottom-color:var(--lab-print-active-ink);
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .lab-rail button:last-child{
   border-inline-start-color:var(--lab-ui-on-rail);
@@ -110,7 +110,7 @@
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .lab-atlas-modes button[aria-pressed=true]{
   background:transparent;color:var(--lab-ui-ink);
-  border-bottom-color:var(--lab-ui-highlight);
+  border-bottom-color:var(--lab-print-active-ink);
   text-decoration:underline;text-underline-offset:4px;
 }
 /* One coherent ocean/land palette for all three projections AND their veil. */
@@ -162,14 +162,14 @@
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=funky])[aria-pressed=true]{
   background:var(--lab-mood-selected-paper);color:var(--lab-mood-selected-ink);
-  box-shadow:inset 0 0 0 1px var(--lab-print-stamp),inset 0 -3px 0 var(--lab-print-stamp);
+  box-shadow:inset 0 0 0 1px var(--lab-print-active-ink),inset 0 -3px 0 var(--lab-print-active-ink);
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=funky]) .word{
   color:var(--lab-mood-neutral-ink);
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=funky])[aria-pressed=true] .word{
   color:var(--lab-mood-selected-ink);background:transparent;
-  text-decoration:underline;text-decoration-color:var(--lab-print-stamp);
+  text-decoration:underline;text-decoration-color:var(--lab-print-active-ink);
 }
 /* Keep original ::before and ::after image backgrounds, selected sprite
    expressions, alpha gradients, and Desire/Triumph artwork. Do not mask
@@ -230,4 +230,23 @@
 :root[data-ghg-theme-profile=print] :is(#referenceInk,#alphaInk) feFlood{
  flood-color:var(--lab-mood-neutral-ink);
 }
+/* Accent choreography for EVERY future print profile. The theme supplies
+   --lab-print-stamp (decorative plate) and --lab-print-active-ink (interactive
+   ink). No selector here names a theme or hardcodes its colors.
+   Active ink marks selection with a thin underprint, never a flood. */
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #labServicePreferences .switch button[aria-pressed=true]{
+  border-bottom:3px solid var(--lab-print-active-ink);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .shuffle-pins .shuffle-pin[aria-pressed=true],
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .tempo-heading #anyTempo[aria-pressed=true],
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .go-options .go-extras .cover-toggle[aria-pressed=true]{
+  border-bottom-color:var(--lab-print-active-ink);
+  text-decoration-color:var(--lab-print-active-ink);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .go-options .go-extras .cover-toggle[aria-pressed=true] .option-state{
+  background:var(--lab-print-active-ink);
+  border-color:var(--lab-print-active-ink);
+}
+/* The expressive GO printing, cartography and receipt use the quieter
+   registration ink; only user-driven states get the stronger hit. */
 /* Do not alter layout widths, touch geometry, map projection math or font. */
