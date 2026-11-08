@@ -65,6 +65,38 @@ class AndroidThemeParity(unittest.TestCase):
         # PWA remains on its twice-weekly cycle, not an accidental CSS edit.
         self.assertIn('body.gig-poster.lab-workspace[data-page=launch]',css)
 
+    def test_gemini_update_checkin_is_visible_and_theme_matched(self):
+        guide=(ROOT/'android-lab/web/manual-guide.html').read_text()
+        style=(ROOT/'android-lab/web/manual-guide-theme.css').read_text()
+        workspace=(ROOT/'android-lab/web/workspace.js').read_text()
+        activity=(ROOT/'android-lab/app/src/main/java/work/samelling/hipstergo/lab/LabActivity.java').read_text()
+        updates=(ROOT/'android-lab/app/src/main/java/work/samelling/hipstergo/lab/SkillUpdates.java').read_text()
+        theme=(ROOT/'android-lab/web/theme.js').read_text()
+        # A visible, direct action exists in the setup walkthrough, not just
+        # a generic dialog reachable from the last item in More Resources.
+        self.assertIn('FINISH SETUP · RECORD INSTALLATION',guide)
+        self.assertIn('data-review-skill-updates',guide)
+        self.assertIn('Both confirmed? One final check-in.',guide)
+        self.assertIn("type:'lab-gemini-updates'",guide)
+        self.assertIn("type:'lab-skill-status'",workspace)
+        self.assertIn("event.data?.type!=='lab-skill-status'",guide)
+        self.assertIn('geminiSkillCheckStatus',guide)
+        self.assertIn('skill-checkin button',style)
+        self.assertIn('background:#004225;color:#e5cf42;',style)
+        # The original one-sided native checkbox confirmation must remain:
+        # viewing/downloading cannot silently assert Gemini is updated.
+        self.assertIn('YES, RECORD ',updates)
+        self.assertIn('release.identity()',updates)
+        self.assertIn('I INSTALLED THIS VERSION',updates)
+        self.assertIn('Downloading does not record an installation.',updates)
+        self.assertIn('window.HipsterLab?.setTheme?.(theme)',theme)
+        self.assertIn('void setTheme(String theme)',activity)
+        self.assertIn('putString("labAppearance",theme)',activity)
+        for ink in ('#dfb045','#f5f0e6','#111111','#e5cf42'):
+            self.assertIn(ink,updates)
+        self.assertIn('.put("updateConfirmed",updates.recordedVersion())',activity)
+        self.assertIn('.put("updateLatest",updates.latestVersion())',activity)
+
     def test_navigable_routes_and_stable_animated_border_ink(self):
         tween=(ROOT/'android-lab/web/atlas-morph-vectors.js').read_text()
         fold=(ROOT/'android-lab/web/cahill-keyes-motion.js').read_text()
