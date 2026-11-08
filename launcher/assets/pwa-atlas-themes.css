@@ -98,7 +98,7 @@
 }
 :root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .lab-atlas-modes button[aria-pressed=true],
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .lab-atlas-modes button[aria-pressed=true]{
- background:#004225;color:#f5f0e6;text-decoration:underline;text-underline-offset:3px;
+ background:transparent;color:var(--lab-ui-ink);text-decoration:underline;text-underline-offset:4px;
 }
 :root[data-pwa-theme=bosque] #labAtlasGlobe .lab-cahill-overlay{
  background:#f5f0e6;
@@ -147,7 +147,7 @@
 }
 :root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .lab-atlas-modes button[aria-pressed=true],
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .lab-atlas-modes button[aria-pressed=true]{
- background:#004225!important;color:#f5f0e6!important;
+ background:transparent!important;color:var(--lab-ui-ink)!important;
 }
 /* Canvas tween frames use the exact browser-only color adapter; the veil
    around the vector canvas must match its ocean/backdrop throughout the fold. */

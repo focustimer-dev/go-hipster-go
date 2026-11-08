@@ -29,3 +29,34 @@ the shared role set and text-contrast pairings.
 
 **Release scope:** Android only. This consolidation does not publish the PWA,
 alter playlist construction, change projections or replace the original artwork.
+
+
+## Jukebox control hierarchy (Bosque + Usiku)
+
+This Android-only refinement lives together in the final **Jukebox quiet pass**
+block of `android-lab/web/workspace.css`. It does not affect Libéri or the
+public PWA.
+
+- **Poster is the founding visual identity**: use it for the brand, mood names,
+  headings, GO, and action labels (including +ART, TRY HARD, Shuffle, Atlas,
+  tempo choices and inspiration controls). Quieter means reducing their
+  ornamentation, not replacing that typeface.
+- **Arial** is reserved for sentences, descriptive help and secondary status.
+  **Courier** stays where it conveys a genuine printed artifact, such as a
+  receipt serial number. Avoid adding a fourth type family.
+- The illustrated moods and three geographic projections remain immediately
+  accessible. Projection choices, Shuffle locks, the **Any** bypass, and the
+  **+ART / TRY HARD** checkboxes use a quiet printed-strip language instead of
+  nested card outlines. Pressed states use a visible underline plus their
+  pre-existing state cues; keyboard focus is a separate theme-colored outline.
+- Every flattened button keeps a minimum **44 CSS px** hit area. Long labels
+  may wrap; no new hidden submenus or taps are introduced.
+- The **GO** button remains the only large color-filled action. Preserve
+  its selected-yellow lettering, the original faceted star, all copy/handoff
+  behavior, the paper receipt, and the recording lever.
+- Leave Atlas size, projection geometry, panning, region touch boundaries,
+  mood artwork and theme surface colors unchanged. If tests show accidental
+  clipping at 320px/390px, fix only the affected control composition.
+
+The browser regression in `scripts/test_android_lab_themes.cjs` checks the
+font roles, touch target sizes, flat selected states, and two phone widths.

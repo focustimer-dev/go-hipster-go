@@ -11,6 +11,97 @@ const palettes={
  bosque:{page:'rgb(245, 240, 230)',ink:'rgb(0, 48, 24)',land:'#004225'},
  usiku:{page:'rgb(17, 17, 17)',ink:'rgb(245, 240, 230)',land:'#f5f0e6'}
 };
+async function verifyQuietJukebox(page,name,width){
+ if(name==='liberi')return;
+ const report=await page.evaluate(()=>{
+  const el=s=>document.querySelector(s),style=s=>getComputedStyle(el(s));
+  const bounds=s=>el(s).getBoundingClientRect();
+  const family=s=>style(s).fontFamily;
+  const selected=(selector)=>{
+   const b=el(selector),old=b.getAttribute('aria-pressed');
+   b.setAttribute('aria-pressed','true');
+   const selected={background:getComputedStyle(b).backgroundColor,
+    border:getComputedStyle(b).borderBottomColor,
+    borderSize:parseFloat(getComputedStyle(b).borderBottomWidth)};
+   b.setAttribute('aria-pressed',old);
+   return selected;
+  };
+  const section=style('.refinements>.counter-label');
+  const pace=getComputedStyle(el('.tempo-control'),'::before');
+  return {
+   headingFont:section.fontFamily,
+   paceFont:pace.fontFamily,
+   noteFont:family('#labInspiration strong'),
+   shuffleFont:family('#shuffleCrate'),
+   paceStopsFont:family('.fader-stops span'),
+   trailFont:family('.poster-go-trail-word'),
+   atlasFont:family('.lab-atlas-modes button'),
+   anyFont:family('#anyTempo'),
+   pinFont:family('#pinMood'),
+   inspirationNameFont:family('#labInspirationPreview'),
+   helpFont:family('.mood-hint'),
+   optionHelpFont:family('#includeCover .option-copy small'),
+   artFont:family('#includeCover .option-label'),
+   hardFont:family('#goHard .option-label'),
+   artTypography:['fontSize','fontWeight','lineHeight','letterSpacing'].map(k=>style('#includeCover .option-label')[k]),
+   hardTypography:['fontSize','fontWeight','lineHeight','letterSpacing'].map(k=>style('#goHard .option-label')[k]),
+   artInk:style('#includeCover .option-label').color,
+   hardInk:style('#goHard .option-label').color,
+   artIconStroke:style('#includeCover .extra-mark').stroke,
+   hardIconStroke:style('#goHard .extra-mark').stroke,
+   artSleeveFill:style('#includeCover .art-sleeve').fill,
+   receiptFont:family('.receipt-top'),
+   atlasBox:style('.lab-atlas-modes').borderLeftWidth,
+   atlasSelected:selected('.lab-atlas-modes [data-atlas-view=robinson]'),
+   atlasButtonDivider:style('.lab-atlas-modes button+button').borderLeftWidth,
+   shuffleBorder:style('#shuffleCrate').borderLeftWidth,
+   pinBorder:style('#pinMood').borderLeftWidth,
+   pinSelected:selected('#pinMood'),
+   extraSurface:style('.go-extras').backgroundColor,
+   coverSurface:style('#includeCover').backgroundColor,
+   coverBorder:style('#includeCover').borderLeftWidth,
+   coverSelected:selected('#includeCover'),
+   anyBorder:style('#anyTempo').borderLeftWidth,
+   anySelected:selected('#anyTempo'),
+   heights:['#shuffleCrate','#pinMood','#pinPace','#pinRegions',
+    '#anyTempo','#includeCover','#goHard','.lab-atlas-modes button'].map(s=>[s,bounds(s).height]),
+   copiedFont:family('.go-button .go-copy b')
+  };
+ });
+ const rgb=name==='bosque'?'rgb(245, 240, 230)':'rgb(0, 48, 24)';
+ for(const key of ['headingFont','paceFont','copiedFont'])
+  assert.match(report[key],/Poster/,name+' preserves Poster display voice: '+key);
+ for(const key of ['noteFont','shuffleFont','paceStopsFont','trailFont',
+  'atlasFont','anyFont','pinFont','inspirationNameFont','artFont','hardFont'])
+  assert.match(report[key],/Poster/,name+' keeps branded Poster control typography: '+key);
+ for(const key of ['helpFont','optionHelpFont'])
+  assert.match(report[key],/Arial/,name+' readable description remains a simple sans: '+key);
+ assert.equal(report.hardFont,report.artFont,name+' +ART / TRY HARD have the same font family');
+ assert.deepEqual(report.hardTypography,report.artTypography,
+  name+' +ART / TRY HARD have identical size, weight, leading and spacing');
+ assert.match(report.receiptFont,/Courier/,name+' literal receipt serial retains typewriter face');
+ for(const key of ['atlasBox','atlasButtonDivider','shuffleBorder','pinBorder','coverBorder','anyBorder'])
+  assert.equal(report[key],'0px',name+' '+key+' is no longer an outlined card');
+ assert.equal(report.extraSurface,rgb,name+' option toolbar sits on the theme paper');
+ assert.equal(report.coverSurface,'rgba(0, 0, 0, 0)',name+' +ART is a flat option');
+ const actualInk=name==='bosque'?'rgb(0, 48, 24)':'rgb(245, 240, 230)';
+ for(const key of ['artInk','hardInk','artIconStroke','hardIconStroke','artSleeveFill'])
+  assert.equal(report[key],actualInk,name+' '+key+' is readable on theme paper');
+ for(const key of ['pinSelected','atlasSelected','coverSelected','anySelected']){
+  assert(report[key].borderSize>=2,name+' '+key+' has a clear non-color-only selection underline');
+  assert.equal(report[key].background,'rgba(0, 0, 0, 0)',
+   name+' '+key+' stays flat when selected');
+ }
+ for(const [label,height] of report.heights)
+  assert(height>=44,name+' '+label+' touch target is at least 44 CSS px ('+height+')');
+ if(width===390){
+  await page.locator('.poster-go-trail').screenshot({path:path.join(output,name+'-quiet-trail.png')});
+  await page.locator('.go-options').screenshot({path:path.join(output,name+'-quiet-options.png')});
+  await page.locator('.crate-shuffle').screenshot({path:path.join(output,name+'-quiet-shuffle.png')});
+  await page.locator('.lab-atlas-modes').screenshot({path:path.join(output,name+'-quiet-atlas-tabs.png')});
+  await page.locator('.mood-grid').screenshot({path:path.join(output,name+'-quiet-moods.png')});
+ }
+}
 async function verifyCrateHierarchy(page,name,width){
  const read=()=>page.evaluate(()=>{
   const visible=id=>!document.getElementById(id).hidden;
@@ -164,6 +255,7 @@ async function verifyManualHierarchy(page,name,width){
     if(width===390)await page.screenshot({path:path.join(output,`${name}-preferences.png`)});
     await page.locator('[data-lab-action=close-preferences]').click();
     await page.waitForTimeout(150);
+    await verifyQuietJukebox(page,name,width);
     if(name==='usiku'&&width===390){
      // Any intentionally hides its slider thumb. Select Mid to inspect the
      // actual saddle-painted circle, then restore the user's Any state.
