@@ -155,6 +155,20 @@ class AndroidThemeRoles(unittest.TestCase):
                           ("#efe4cb","#385e5a"),("#efe4cb","#304743"),
                           ("#eee4cf","#263f3e")):
             self.assertGreaterEqual(contrast(paper,ink),4.5)
+        # Two ink jobs must be separately authored for EVERY print palette.
+        # Active brick is allowed for small marks but also meets AA if used
+        # as printed type on our current cream substrate.
+        self.assertIn("--lab-print-stamp:#59817c",roles)
+        self.assertIn("--lab-print-active-ink:#9b3a2b",roles)
+        self.assertGreaterEqual(contrast("#9b3a2b","#e3d9c2"),4.5)
+        for token in ("--lab-print-stamp","--lab-print-active-ink"):
+            self.assertIn("var("+token,css)
+        for intent in ("mood:not([data-mood=funky])[aria-pressed=true]",
+                       ".lab-atlas-modes button[aria-pressed=true]",
+                       ".shuffle-pins .shuffle-pin[aria-pressed=true]",
+                       ".go-options .go-extras .cover-toggle[aria-pressed=true]"):
+            self.assertIn(intent,css)
+        self.assertNotIn("data-pwa-theme=kingston",css)
         # Print themes must never flatten the Funk selected portrait or
         # repaint its original lasers. Other cast preserves sprite shading.
         self.assertIn("mood:not([data-mood=funky])[aria-pressed=true]",css)
