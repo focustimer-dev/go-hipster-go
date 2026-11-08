@@ -18,6 +18,9 @@ function labAtlasCahillTransition(mode,instant=false){
   host.style.height='';host.style.aspectRatio=mode==='cahill-keyes'?'960 / 505':
    mode==='globe'?'1 / 1':'720 / 372';
   if(mode==='cahill-keyes'){
+   // Only Robinson owns the geographic outline. Do not leave its styled
+   // layer active underneath Keyes's transparent octant gaps.
+   labGlobe.setLayoutProperty('robinson-outline','visibility','none');
    labAtlasMode='cahill-keyes';
    host.classList.add('lab-cahill-active');
    frame?.classList.add('lab-cahill-frame');
