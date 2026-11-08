@@ -326,12 +326,29 @@ async function verifyManualHierarchy(page,name,width){
       const stamp=getComputedStyle(el.querySelector('.go-stamp'));
       const headline=getComputedStyle(el.querySelector('.go-copy b'));
       const caption=getComputedStyle(el.querySelector('.go-copy>span:not(.go-stamp)'));
-      return {background:style.backgroundColor,topBorder:style.borderTopColor,
-       headline:headline.color,caption:caption.color,
+      return {background:style.backgroundColor,gradient:style.backgroundImage,
+       topBorder:style.borderTopColor,headline:headline.color,caption:caption.color,
        height:parseFloat(style.minHeight),stampBackground:stamp.backgroundColor,
        stampInk:stamp.color,stampSize:parseFloat(stamp.fontSize)};
      });
-     assert.equal(go.background,name==='bosque'?'rgb(0, 66, 37)':'rgb(0, 97, 59)',name+' GO uses the approved action green');
+     assert.equal(go.background,name==='bosque'?'rgb(0, 66, 37)':'rgb(126, 76, 48)',
+      name+' GO uses the approved theme action material');
+     if(name==='bosque')assert.equal(go.gradient,'none','Bosque stays flat forest ink');
+     if(name==='usiku'){
+      assert.match(go.gradient,/radial-gradient/,'Usiku GO uses the saddle vignette');
+      for(const tone of ['rgb(146, 91, 57)','rgb(126, 76, 48)','rgb(56, 38, 28)'])
+       assert(go.gradient.includes(tone),'Usiku GO reuses existing saddle tone '+tone);
+      // Poster-scale yellow has >=3:1 contrast on the lightest saddle stop;
+      // the smaller cream handoff label clears 4.5:1 on the same stop.
+      const l=hex=>{
+       const srgb=hex.match(/[0-9a-f]{2}/gi).map(x=>parseInt(x,16)/255);
+       const linear=srgb.map(x=>x<=.04045?x/12.92:((x+.055)/1.055)**2.4);
+       return linear[0]*.2126+linear[1]*.7152+linear[2]*.0722;
+      };
+      const ratio=(x,y)=>{const a=l(x),b=l(y);return (Math.max(a,b)+.05)/(Math.min(a,b)+.05)};
+      assert(ratio('925b39','e5cf42')>=3,'GO yellow on the brightest saddle has display-text contrast');
+      assert(ratio('925b39','f5f0e6')>=4.5,'GO handoff cream on the brightest saddle has body-text contrast');
+     }
      assert.equal(go.headline,'rgb(229, 207, 66)',name+' GO label uses selected yellow');
      assert.equal(go.topBorder,'rgb(229, 207, 66)',name+' GO has a slim selected-yellow crown');
      assert.equal(go.caption,'rgb(245, 240, 230)',name+' secondary action label stays readable');
@@ -342,14 +359,20 @@ async function verifyManualHierarchy(page,name,width){
      if(name==='usiku'){
       const receipt=await page.locator('.receipt-heading').evaluate(el=>({
        gradient:getComputedStyle(el).backgroundImage,
+       background:getComputedStyle(el).backgroundColor,
+       border:getComputedStyle(el).borderBottomColor,
+       ink:getComputedStyle(el).color,
        saveBackground:getComputedStyle(el.querySelector('.lab-save-button')).backgroundColor,
-       saveInk:getComputedStyle(el.querySelector('.lab-save-button')).color
+       saveInk:getComputedStyle(el.querySelector('.lab-save-button')).color,
+       saveHeight:el.querySelector('.lab-save-button').getBoundingClientRect().height
       }));
-      assert.match(receipt.gradient,/radial-gradient/,'Usiku receipt repeats the portrait vignette');
-      for(const shade of ['rgb(183, 123, 77)','rgb(168, 108, 67)','rgb(146, 91, 57)','rgb(126, 76, 48)'])
-       assert(receipt.gradient.includes(shade),'Missing Usiku vignette step '+shade);
-      assert.equal(receipt.saveBackground,'rgb(0, 48, 24)','Save Request stays readable on saddle');
-      assert.equal(receipt.saveInk,'rgb(245, 240, 230)','Save Request has cream lettering');
+      assert.equal(receipt.gradient,'none','Usiku receipt is no longer a second saddle hero');
+      assert.equal(receipt.background,'rgba(0, 0, 0, 0)','Usiku receipt header stays on native green paper');
+      assert.equal(receipt.border,'rgb(183, 123, 77)','Receipt uses existing saddle trim');
+      assert.equal(receipt.ink,'rgb(245, 240, 230)','Receipt heading stays readable');
+      assert.equal(receipt.saveBackground,'rgba(0, 0, 0, 0)','Save Request is a quiet outlined action');
+      assert.equal(receipt.saveInk,'rgb(245, 240, 230)','Save Request keeps cream ink');
+      assert(receipt.saveHeight>=44,'Save Request touch target remains at least 44px');
      }
      if(width===390){
       await page.locator('.go-options').screenshot({path:path.join(output,`${name}-go-action.png`)});
@@ -357,7 +380,7 @@ async function verifyManualHierarchy(page,name,width){
       await page.locator('#goButton').screenshot({path:path.join(output,`${name}-copied-stamp.png`)});
       await page.locator('#goButton').evaluate(el=>el.dataset.copyState='idle');
       if(name==='usiku')
-       await page.locator('.receipt-heading').screenshot({path:path.join(output,'usiku-receipt-vignette.png')});
+       await page.locator('.receipt-heading').screenshot({path:path.join(output,'usiku-receipt-restored.png')});
      }
     }
     const routes=await page.evaluate(()=>{

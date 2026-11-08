@@ -60,3 +60,21 @@ public PWA.
 
 The browser regression in `scripts/test_android_lab_themes.cjs` checks the
 font roles, touch target sizes, flat selected states, and two phone widths.
+
+
+## Usiku material hierarchy (Android)
+
+**GO owns the saddle material.** The old isolated GO green (`#00613b`)
+is retired; `--lab-ui-go` is the existing vignette edge tone
+(`#7e4c30`). The hero key uses its dark saddle ink stack: `#925b39`,
+`#7e4c30`, then the already-used recessed keycap `#38261c`. This makes
+the yellow Poster headline and cream handoff label readable without an
+invented accent. The original faceted star and COPIED impression stay.
+
+**The receipt is information, not a second hero.** Its masthead sits
+directly on Usiku's dark-green paper, separated with a fine saddle rule,
+and Save Request remains an outlined control. Keep the rich brown vignette
+on the portrait fields and GO; avoid repeating it as large banners.
+
+All of this is Android-only. Bosque's forest GO and Libéri's original
+poster treatment are unaffected. Do not change the public PWA in this pass.
