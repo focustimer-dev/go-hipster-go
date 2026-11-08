@@ -57,17 +57,22 @@ class AndroidThemeParity(unittest.TestCase):
         self.assertIn('stroke-width:1.8;stroke-opacity:.9;',css)
         self.assertIn('stroke-dasharray:4 4;',css)
 
-    def test_keyes_underlay_and_robinson_perimeter(self):
+    def test_keyes_underlay_and_soft_bosque_water_edge(self):
         css=(ROOT/'android-lab/web/workspace.css').read_text()
         globe=(ROOT/'android-lab/web/globe.js').read_text()
         native=(ROOT/'android-lab/web/theme.js').read_text()
         browser=(ROOT/'launcher/assets/pwa-atlas-bridge.js').read_text()
+        themes=(ROOT/'launcher/assets/pwa-atlas-themes.css').read_text()
         self.assertIn('#labAtlasGlobe.lab-cahill-active > .maplibregl-canvas-container',css)
         self.assertIn('visibility:hidden!important',css)
-        self.assertIn("id:'robinson-outline'",globe)
-        self.assertIn("setLayoutProperty('robinson-outline'",globe)
-        self.assertIn("'robinson-outline':{'line-color':",native)
-        self.assertIn("'robinson-outline':{'line-color':",browser)
+        self.assertNotIn("id:'robinson-outline'",globe)
+        self.assertNotIn("setLayoutProperty('robinson-outline'",globe)
+        for code in (native,browser):
+            self.assertIn("bosque:{ocean:'#e8e9df'",code)
+            self.assertIn("bosque:{paper:'#004225',ocean:'#e8e9df'",code)
+            self.assertNotIn("'robinson-outline'",code)
+        self.assertIn('--atlas-water:#e8e9df',themes)
+        self.assertIn('fill:#e8e9df;stroke:#003018;',themes)
 
     def test_three_projections_tween_without_liberi_color_flash(self):
         globe=(ROOT/'android-lab/web/atlas-morph-vectors.js').read_text()
