@@ -106,7 +106,7 @@ class AndroidThemeRoles(unittest.TestCase):
         pattern=r"\b([a-z]+):Object\.freeze\(\{(.*?)\n \}\)"
         atlas_def=dict(re.findall(pattern,atlas,re.S))
         mood_def=dict(re.findall(pattern,moods,re.S))
-        self.assertEqual(set(atlas_def),{"liberi","bosque","usiku"})
+        self.assertEqual(set(atlas_def),{"liberi","bosque","usiku","kingston"})
         self.assertEqual(set(mood_def),set(atlas_def))
         atlas_required={
             "paper","land","ocean","ink","selected","route",
@@ -130,6 +130,29 @@ class AndroidThemeRoles(unittest.TestCase):
         self.assertGreaterEqual(contrast("#e5cf42","#003018"),4.5)
         self.assertIn("function applyThemeTokens()",js)
         self.assertIn("applyThemeTokens();requestPaint()",js)
+
+    def test_kingston_preview_only_and_contrast_safe(self):
+        js=source("android-lab/web/theme.js")
+        roles=source("android-lab/web/theme-tokens.css")
+        css=source("android-lab/web/theme-print.css")
+        bundle=source("scripts/bundle_android_lab.py")
+        self.assertIn("const PILOTS=['kingston']",js)
+        self.assertIn("PILOTS.includes(next)&&persist",js)
+        self.assertIn("PILOTS.includes(preview)?preview:saved()",js)
+        self.assertIn("data-lab-print-style",bundle)
+        self.assertIn("android-lab/web/theme-print.css",bundle)
+        self.assertNotIn('data-lab-theme="kingston"',source("android-lab/web/workspace.html"))
+        self.assertIn(":root[data-pwa-theme=kingston]",roles)
+        self.assertIn(":root[data-ghg-theme-profile=print]",css)
+        for role in ("--lab-ui-surface:#d5cec2", "--lab-ui-action:#18151e",
+                     "--lab-ui-highlight:#008fa3", "--lab-ui-on-highlight:#18151e"):
+            self.assertIn(role,roles)
+        for role in ("--lab-atlas-ocean","--lab-atlas-land","--lab-atlas-field",
+                     "--lab-mood-selected-paper","--lab-mood-neutral-ink"):
+            self.assertIn("var("+role,css)
+        for paper,ink in (("#d5cec2","#18151e"),("#008fa3","#18151e"),
+                          ("#eee5d4","#18151e")):
+            self.assertGreaterEqual(contrast(paper,ink),4.5)
 
     def test_app_and_iframe_load_the_same_source(self):
         bundle = source("scripts/bundle_android_lab.py")
