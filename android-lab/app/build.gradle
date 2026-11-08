@@ -8,8 +8,20 @@ android {
         targetSdkVersion 36
         versionCode 75
         versionName '0.9.66'
+        manifestPlaceholders = [appLabel: 'Hipster GO Lab']
     }
-    buildTypes { release { minifyEnabled false } }
+    buildTypes {
+        release { minifyEnabled false }
+        // Install separately; never overwrite the canonical Android app.
+        review {
+            initWith release
+            applicationIdSuffix '.themepreview'
+            versionNameSuffix '-theme-review'
+            signingConfig signingConfigs.debug
+            manifestPlaceholders = [appLabel: 'Hipster Theme Review']
+            matchingFallbacks = ['release']
+        }
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
