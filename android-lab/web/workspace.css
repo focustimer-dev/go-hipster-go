@@ -410,3 +410,20 @@ body.gig-poster .crate-map-frame.lab-globe-frame .atlas-radial-field{display:non
 :root[data-pwa-theme=usiku] #labAtlasGlobe :is(.lab-atlas-morph,.lab-cahill-motion){
  background:radial-gradient(ellipse at 50% 38%,#004225 0%,#003018 78%)!important;
 }
+
+/* Android-only nautical ink: the shared browser stylesheet keeps its own
+   weights. Match the slimmer MapLibre routes on the Cahill–Keyes SVG without
+   changing its path geometry, dash rhythm or touch-target overlays. */
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labAtlasCahill .lab-cahill-routes path,
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labAtlasCahill .lab-cahill-routes path{
+ stroke-width:1.2;
+}
+
+/* Usiku's warm portrait material recurs as a quiet single-pixel ticket rim.
+   Don't turn the receipt or GO into another brown slab. */
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .selection-ticket{
+ border:1px solid var(--usiku-leather,#b77b4d);
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .selection-ticket .ticket-detail{
+ border-top-color:var(--usiku-leather-edge,#b77b4d9e);
+}
