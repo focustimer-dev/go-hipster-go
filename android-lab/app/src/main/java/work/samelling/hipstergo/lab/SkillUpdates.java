@@ -139,19 +139,13 @@ final class SkillUpdates {
         ScrollView scroll=new ScrollView(activity);
         scroll.setFillViewport(false);
         scroll.addView(panel);
-        AlertDialog dialog=new AlertDialog.Builder(activity)
-            .setView(scroll).setNegativeButton("CLOSE",null).create();
+        AlertDialog dialog=new AlertDialog.Builder(activity).setView(scroll).create();
         dialog.setOnShowListener(ignored->{
             android.view.Window window=dialog.getWindow();
             if(window!=null) {
                 window.setBackgroundDrawable(surface(p,false));
                 int width=activity.getResources().getDisplayMetrics().widthPixels;
                 window.setLayout(Math.min(width-dp(32),dp(460)),-2);
-            }
-            Button close=dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-            if(close!=null) {
-                close.setTextColor(p.ink);
-                close.setAllCaps(false);
             }
         });
         return dialog;
@@ -191,6 +185,7 @@ final class SkillUpdates {
             prefs.edit().putBoolean("skillAuto",!prefs.getBoolean("skillAuto",true)).apply();
             dialog.dismiss();show();
         });
+        add(panel,p,"CLOSE",false,dialog::dismiss);
         dialog.show();
     }
     private void confirm(ReleasePolicy.Release release,String channel,AlertDialog original) {
@@ -207,6 +202,7 @@ final class SkillUpdates {
             changed.run();
             dialog.dismiss();original.dismiss();show();
         });
+        add(panel,p,"CANCEL",false,dialog::dismiss);
         dialog.show();
     }
     private void instructions(ReleasePolicy.Release release) {
@@ -224,6 +220,7 @@ final class SkillUpdates {
         AlertDialog dialog=sheet(p,panel);
         add(panel,p,"DOWNLOAD SKILL ZIP",true,()->opener.open(release.download));
         add(panel,p,"OPEN GEMINI WEB",false,()->opener.open("https://gemini.google.com/app"));
+        add(panel,p,"BACK",false,()->{dialog.dismiss();show();});
         dialog.show();
     }
     private void chooseChannel() {
@@ -239,6 +236,7 @@ final class SkillUpdates {
                 status="";dialog.dismiss();changed.run();show();
             });
         }
+        add(panel,p,"CANCEL",false,dialog::dismiss);
         dialog.show();
     }
     private void check(boolean display) {
