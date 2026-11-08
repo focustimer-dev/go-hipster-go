@@ -43,7 +43,7 @@ const palettes={
     assert.equal(await page.evaluate(()=>localStorage.getItem('ghg-lab-theme-v1')),name);
     assert.equal(await page.evaluate(()=>window.GHGAtlasPaintColors?.().theme),name);
     assert.deepEqual(await page.locator('link[data-lab-palette-style]').evaluateAll(els=>els.map(e=>e.media)),
-     [name==='liberi'?'not all':'all',name==='liberi'?'not all':'all'],
+     [name==='liberi'?'not all':'all',name==='liberi'?'not all':'all',name==='liberi'?'not all':'all'],
      'Inactive Libéri palette styles must not slow down the base map');
     if(width===390)await page.screenshot({path:path.join(output,`${name}-preferences.png`)});
     await page.locator('[data-lab-action=close-preferences]').click();
