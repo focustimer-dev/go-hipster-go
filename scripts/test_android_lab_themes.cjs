@@ -659,6 +659,16 @@ async function verifyManualHierarchy(page,name,width){
    assert.equal(pilotInk.atlasCssLand,'#c7beaf','Pilot CSS land from registry');
    assert.equal(pilotInk.ocean,'#18151e','Real Robinson ocean is print ink');
    assert.equal(pilotInk.canvas,'rgb(213, 206, 194)','Map exterior is chipboard, not sea');
+   const selectorPaint=await pilot.locator('[data-atlas-view=robinson]').evaluate(el=>{
+    const st=getComputedStyle(el);
+    return {background:st.backgroundColor,ink:st.color,
+     accent:st.borderBottomColor,style:el.getAttribute('style')||''};
+   });
+   assert.equal(selectorPaint.background,'rgba(0, 0, 0, 0)','Atlas selector remains quiet paper');
+   assert.equal(selectorPaint.ink,'rgb(24, 21, 30)','Atlas selector label uses shared print ink');
+   assert.equal(selectorPaint.accent,'rgb(0, 143, 163)','Atlas selected underline uses stamp ink');
+   assert(!selectorPaint.style.includes('#103135')&&!selectorPaint.style.includes('#dfb045'),
+    'Atlas button no longer writes Libéri paint inline');
    assert.equal(pilotInk.page,'rgb(213, 206, 194)','Jukebox is chipboard');
    assert.equal(pilotInk.go,'rgb(24, 21, 30)','GO uses dark ink');
    assert.equal(pilotInk.goHeadline,'rgb(0, 143, 163)','GO uses cyan stamped type');
