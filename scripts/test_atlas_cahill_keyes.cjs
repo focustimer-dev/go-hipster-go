@@ -86,6 +86,29 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
   assert(!cahill.overflow,'No sideways page scroll from the third selector/map');
   assert.equal(cahill.gesture,'','Gestures restored after entering Cahill');
   assert.match(cahill.label,/Cahill/);
+  // A change of ink/selection should not force 183 SVG path reparses or
+  // rewrite 183 unchanged paint attributes. This checks actual browser work,
+  // not a source-text pattern.
+  const reuse=await page.evaluate(()=>{
+   const svg=window.labCahillMap.svg,geo=labGlobeGeography;
+   labCahillMotion.prepare(svg,geo,new Set(['west-africa']));
+   const OriginalPath2D=window.Path2D;
+   let pathBuilds=0;
+   try{
+    window.Path2D=class extends OriginalPath2D{
+     constructor(...args){super(...args);pathBuilds++}
+    };
+    labCahillMotion.prepare(svg,geo,new Set(['west-africa','east-africa']));
+   }finally{window.Path2D=OriginalPath2D}
+   const observer=new MutationObserver(()=>{});
+   observer.observe(svg,{subtree:true,attributes:true,attributeFilter:['fill','aria-pressed']});
+   window.labCahillMap.sync();
+   window.labCahillMap.sync();
+   const unchangedWrites=observer.takeRecords().length;observer.disconnect();
+   return {pathBuilds,unchangedWrites};
+  });
+  assert.equal(reuse.pathBuilds,0,'Unchanged SVG geometry must reuse parsed Path2D objects');
+  assert.equal(reuse.unchangedWrites,0,'Repeated syncs must not rewrite unchanged country attributes');
    const atWorld=await page.evaluate(()=>({
     targets:[...document.querySelectorAll('[data-cahill-route-target]')].map(x=>x.getAttribute('pointer-events')),
     markers:getComputedStyle(document.querySelector('.lab-cahill-route-pins')).display
