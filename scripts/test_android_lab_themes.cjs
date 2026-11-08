@@ -632,11 +632,11 @@ async function verifyManualHierarchy(page,name,width){
     const tile=face.closest('.mood'),old=tile.getAttribute('aria-pressed');
     tile.setAttribute('aria-pressed','false');
     const neutral={tile:el('.mood[data-mood=happy]').backgroundColor,
-     ink:getComputedStyle(face,'::before').backgroundColor,
+     image:getComputedStyle(face,'::before').backgroundImage,
      mask:getComputedStyle(face,'::before').maskImage};
     tile.setAttribute('aria-pressed','true');
     const selected={tile:el('.mood[data-mood=happy]').backgroundColor,
-     ink:getComputedStyle(face,'::after').backgroundColor,
+     image:getComputedStyle(face,'::after').backgroundImage,
      mask:getComputedStyle(face,'::after').maskImage,
      word:el('.mood[data-mood=happy] .word').color};
     tile.setAttribute('aria-pressed',old);
@@ -652,34 +652,34 @@ async function verifyManualHierarchy(page,name,width){
      neutral,selected
     };
    });
-   assert.equal(pilotInk.theme.ocean,'#18151e','Pilot Atlas ocean contract');
-   assert.equal(pilotInk.theme.land,'#c7beaf','Pilot Atlas land contract');
-   assert.equal(pilotInk.theme.selected,'#008fa3','Pilot Atlas selection contract');
-   assert.equal(pilotInk.atlasCssOcean,'#18151e','Pilot CSS ocean from registry');
-   assert.equal(pilotInk.atlasCssLand,'#c7beaf','Pilot CSS land from registry');
-   assert.equal(pilotInk.ocean,'#18151e','Real Robinson ocean is print ink');
-   assert.equal(pilotInk.canvas,'rgb(213, 206, 194)','Map exterior is chipboard, not sea');
+   assert.equal(pilotInk.theme.ocean,'#273d3b','Pilot ocean uses dark teal vinyl ink');
+   assert.equal(pilotInk.theme.land,'#d3c4a8','Pilot map land uses aged label paper');
+   assert.equal(pilotInk.theme.selected,'#6d9991','Pilot map selected ink');
+   assert.equal(pilotInk.atlasCssOcean,'#273d3b','One ocean role across renderers');
+   assert.equal(pilotInk.atlasCssLand,'#d3c4a8','One land role across renderers');
+   assert.equal(pilotInk.ocean,'#273d3b','Real Robinson ocean uses palette ink');
+   assert.equal(pilotInk.canvas,'rgb(227, 217, 194)','Map exterior uses warm paper, not sea');
    const selectorPaint=await pilot.locator('[data-atlas-view=robinson]').evaluate(el=>{
     const st=getComputedStyle(el);
     return {background:st.backgroundColor,ink:st.color,
      accent:st.borderBottomColor,style:el.getAttribute('style')||''};
    });
-   assert.equal(selectorPaint.background,'rgba(0, 0, 0, 0)','Atlas selector remains quiet paper');
-   assert.equal(selectorPaint.ink,'rgb(24, 21, 30)','Atlas selector label uses shared print ink');
-   assert.equal(selectorPaint.accent,'rgb(0, 143, 163)','Atlas selected underline uses stamp ink');
+   assert.equal(selectorPaint.background,'rgba(0, 0, 0, 0)','Atlas selector remains unboxed');
+   assert.equal(selectorPaint.ink,'rgb(38, 63, 62)','Atlas selector uses dark stamp ink');
+   assert.equal(selectorPaint.accent,'rgb(123, 176, 170)','Selected tab uses muted teal');
    assert(!selectorPaint.style.includes('#103135')&&!selectorPaint.style.includes('#dfb045'),
-    'Atlas button no longer writes Libéri paint inline');
-   assert.equal(pilotInk.page,'rgb(213, 206, 194)','Jukebox is chipboard');
-   assert.equal(pilotInk.go,'rgb(24, 21, 30)','GO uses dark ink');
-   assert.equal(pilotInk.goHeadline,'rgb(0, 143, 163)','GO uses cyan stamped type');
-   assert.equal(pilotInk.goCaption,'rgb(213, 206, 194)','GO supporting type has high contrast');
-   assert.equal(pilotInk.neutral.tile,'rgb(213, 206, 194)','Neutral portrait stock');
-   assert.equal(pilotInk.neutral.ink,'rgb(24, 21, 30)','Neutral portrait engraving ink');
-   assert.match(pilotInk.neutral.mask,/moods-neutral-ink-v2.webp/,'Original neutral plate alpha');
-   assert.equal(pilotInk.selected.tile,'rgb(0, 143, 163)','Selected portrait cyan ink');
-   assert.equal(pilotInk.selected.ink,'rgb(24, 21, 30)','Selected engraving remains dark');
-   assert.equal(pilotInk.selected.word,'rgb(24, 21, 30)','Selected portrait label legible');
-   assert.match(pilotInk.selected.mask,/moods-selected-ink-v2.webp/,'Original selected plate alpha');
+    'Atlas buttons never inject Libéri inline paint');
+   assert.equal(pilotInk.page,'rgb(227, 217, 194)','Jukebox uses aged record-label paper');
+   assert.equal(pilotInk.go,'rgb(56, 94, 90)','GO uses dark teal instead of black');
+   assert.equal(pilotInk.goHeadline,'rgb(239, 228, 203)','GO display type stays readable');
+   assert.equal(pilotInk.goCaption,'rgb(239, 228, 203)','GO supporting type stays readable');
+   assert.equal(pilotInk.neutral.tile,'rgb(227, 217, 194)','Neutral portrait stock');
+   assert.match(pilotInk.neutral.image,/moods-neutral-ink-v2.webp/,'Original neutral engraved artwork');
+   assert.equal(pilotInk.neutral.mask,'none','Neutral engraving keeps original shading');
+   assert.equal(pilotInk.selected.tile,'rgb(210, 195, 166)','Selected portrait uses warm paper, not full cyan');
+   assert.equal(pilotInk.selected.word,'rgb(36, 70, 67)','Selected label ink is readable');
+   assert.match(pilotInk.selected.image,/moods-selected-ink-v2.webp/,'Selected expression is original artwork');
+   assert.equal(pilotInk.selected.mask,'none','Selected engraving keeps its full original shading');
    const printedExtra=await pilot.evaluate(()=>{
     const tile=document.querySelector('#firstCrateSetup');
     const style=getComputedStyle(tile);
@@ -687,9 +687,12 @@ async function verifyManualHierarchy(page,name,width){
     const cta=getComputedStyle(document.querySelector('#labCrateEmpty .lab-wide-button'));
     const funk=document.querySelector('.mood[data-mood=funky]'),old=funk.getAttribute('aria-pressed');
     funk.setAttribute('aria-pressed','true');
-    const src=getComputedStyle(funk.querySelector('.face'),'::before');
-    const selectedFunk={opacity:src.opacity,ink:src.backgroundColor,
-     mask:src.maskImage};
+    const figure=funk.querySelector('.face');
+    const before=getComputedStyle(figure,'::before'),after=getComputedStyle(figure,'::after');
+    const rays=getComputedStyle(funk.querySelector('.funk-rays'));
+    const selectedFunk={beforeOpacity:before.opacity,afterOpacity:after.opacity,
+     image:after.backgroundImage,mask:after.maskImage,
+     raysFilter:rays.filter,raysOpacity:rays.opacity,stock:getComputedStyle(funk).backgroundColor};
     funk.setAttribute('aria-pressed',old);
     const flood=getComputedStyle(document.querySelector('#referenceInk feFlood'));
     return {ticketRule:style.getPropertyValue('--setup-rule').trim(),
@@ -697,15 +700,19 @@ async function verifyManualHierarchy(page,name,width){
      crateAction:cta.backgroundColor,crateLabel:cta.color,
      selectedFunk,desireInk:flood.floodColor};
    });
-   assert.equal(printedExtra.ticketRule,'#008fa3','Setup keeps stamp accent, not Libéri red');
-   assert.equal(printedExtra.receiptInk,'#18151e','Small ticket print remains readable');
-   assert.notEqual(printedExtra.starFilter,'none','GO star printed using palette accent');
-   assert.equal(printedExtra.crateAction,'rgb(24, 21, 30)','Crate CTA shares action ink');
-   assert.equal(printedExtra.crateLabel,'rgb(213, 206, 194)','Crate CTA shares paper lettering');
-   assert.equal(printedExtra.selectedFunk.opacity,'1','Selected Funk keeps the approved figure visible');
-   assert.equal(printedExtra.selectedFunk.ink,'rgb(0, 143, 163)','Funk portrait has cyan ink');
-   assert.match(printedExtra.selectedFunk.mask,/moods-selected-ink-v2.webp/,'Funk retains approved selected star-glasses engraving');
-   assert.equal(printedExtra.desireInk,'rgb(24, 21, 30)','Desire/Triumph filter flood shares ink role');
+   assert.equal(printedExtra.ticketRule,'#7bb0aa','Setup ticket uses muted stamp accent');
+   assert.equal(printedExtra.receiptInk,'#263f3e','Small ticket print remains legible');
+   assert.notEqual(printedExtra.starFilter,'none','GO stamp uses the subdued profile ink');
+   assert.equal(printedExtra.crateAction,'rgb(48, 71, 67)','Crate CTA shares teal action');
+   assert.equal(printedExtra.crateLabel,'rgb(239, 228, 203)','Crate CTA text has cream contrast');
+   assert.equal(printedExtra.selectedFunk.beforeOpacity,'0','Funk selected hides the neutral pose');
+   assert.equal(printedExtra.selectedFunk.afterOpacity,'1','Funk selected shows the approved star-glasses pose');
+   assert.match(printedExtra.selectedFunk.image,/moods-selected-ink-v2.webp/,'Funk uses the original selected artwork');
+   assert.equal(printedExtra.selectedFunk.mask,'none','Funk is never flattened into an ink mask');
+   assert.equal(printedExtra.selectedFunk.raysFilter,'none','Funk lasers are not hue-rotated');
+   assert.equal(printedExtra.selectedFunk.raysOpacity,'0.8','Funk retains original laser strength');
+   assert.notEqual(printedExtra.selectedFunk.stock,'rgb(210, 195, 166)','Funk selected pink pressing stays distinct');
+   assert.equal(printedExtra.desireInk,'rgb(38, 63, 62)','Desire and Triumph use shared engraving ink');
    // Exercise every approved character in its selected pose. Do not mutate
    // the underlying artwork or depend on only one easy-to-color portrait.
    const selectedCast=await pilot.locator('.mood-grid .mood[data-mood]').evaluateAll(tiles=>
@@ -722,11 +729,12 @@ async function verifyManualHierarchy(page,name,width){
    assert.equal(selectedCast.length,8,'All eight original characters render in pilot');
    for(const portrait of selectedCast){
     const special=portrait.mood==='funky';
-    assert.equal(portrait.paper,special?'rgb(24, 21, 30)':'rgb(0, 143, 163)',
-     portrait.mood+' selected stock');
-    assert.equal(portrait.label,special?'rgb(0, 143, 163)':'rgb(24, 21, 30)',
+    if(!special)assert.equal(portrait.paper,'rgb(210, 195, 166)',
+     portrait.mood+' selected paper');
+    else assert.notEqual(portrait.paper,'rgb(210, 195, 166)','Funk retains its own pink paper');
+    assert.equal(portrait.label,special?'rgb(8, 37, 42)':'rgb(36, 70, 67)',
      portrait.mood+' selected label');
-    assert.equal(portrait.selectedPlateOpacity,['desire','funky'].includes(portrait.mood)?'0':'1',
+    assert.equal(portrait.selectedPlateOpacity,portrait.mood==='desire'?'0':'1',
      portrait.mood+' approved expression visibility');
    }
    if(width===390){
@@ -753,9 +761,9 @@ async function verifyManualHierarchy(page,name,width){
     return {ocean:getComputedStyle(ocean).fill,grid:getComputedStyle(grid).stroke,
      field:getComputedStyle(document.getElementById('labAtlasGlobe')).backgroundColor}
    });
-   assert.equal(octant.ocean,'rgb(24, 21, 30)','Keyes sea matches Robinson');
-   assert.equal(octant.grid,'rgb(0, 143, 163)','Cahill grid uses stamp ink');
-   assert.equal(octant.field,'rgb(213, 206, 194)','Keyes stage is chipboard');
+   assert.equal(octant.ocean,'rgb(39, 61, 59)','Keyes sea matches Robinson');
+   assert.equal(octant.grid,'rgb(109, 153, 145)','Cahill grid uses desaturated stamp ink');
+   assert.equal(octant.field,'rgb(227, 217, 194)','Keyes stage uses aged paper');
    await pilot.screenshot({path:path.join(output,'kingston-'+width+'-keyes.png')});
    await pilot.locator('[data-atlas-view=globe]').click();
    await pilot.waitForFunction(()=>{const s=window.HipsterAtlasState?.();return s?.projection==='globe'&&!s.transitioning},
@@ -773,8 +781,8 @@ async function verifyManualHierarchy(page,name,width){
    }));
    assert.equal(manual.theme,'kingston','Manual inherits pilot');
    assert.equal(manual.profile,'print','Manual inherits print profile');
-   assert.equal(manual.ink,'rgb(24, 21, 30)','Manual ink');
-   assert.equal(manual.stock,'rgb(213, 206, 194)','Manual uses Jukebox chipboard');
+   assert.equal(manual.ink,'rgb(38, 63, 62)','Manual ink');
+   assert.equal(manual.stock,'rgb(227, 217, 194)','Manual matches Jukebox paper');
    await pilot.screenshot({path:path.join(output,'kingston-'+width+'-manual.png')});
    await pilot.locator('[data-lab-tab=crate]').click();
    await pilot.screenshot({path:path.join(output,'kingston-'+width+'-crate.png')});
