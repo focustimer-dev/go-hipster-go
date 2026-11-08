@@ -336,56 +336,54 @@ body.gig-poster .crate-map-frame.lab-globe-frame .atlas-radial-field{display:non
 @media(max-width:340px){.lab-theme-choices{gap:5px}.lab-dialog .lab-theme-choice{padding:6px}.lab-theme-choice strong{font-size:1rem}}
 @media(forced-colors:active){.lab-dialog .lab-theme-choice[aria-pressed=true]{outline:3px solid Highlight}}
 
-/* Final phone QA: Preferences inherited the original Liberi mustard header,
-   near-black unselected service text and faint recording toggle captions.
-   Limit repairs to the Android modal; the source palette stays unchanged. */
-:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .lab-dialog-head{
- background:#f5f0e6!important;color:#003018!important;border-bottom-color:#8c6239!important;
-}
+/* Theme roles are defined once with the Bosque/Usiku palettes in
+   pwa-atlas-themes.css. These Android selectors bind those roles to controls,
+   instead of repeating historical Libéri colors in each screen. */
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .lab-dialog-head,
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .lab-dialog-head{
- background:#111111!important;color:#f5f0e6!important;border-bottom-color:#b77b4d!important;
+ background:var(--lab-ui-panel)!important;
+ color:var(--lab-ui-on-panel)!important;
+ border-bottom-color:var(--lab-ui-rule)!important;
 }
-:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .lab-dialog-head button{
- color:#003018!important;border-color:#003018!important;
-}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .lab-dialog-head button,
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .lab-dialog-head button{
- color:#f5f0e6!important;border-color:#b77b4d!important;
+ color:var(--lab-ui-on-panel)!important;
+ border-color:var(--lab-ui-rule)!important;
 }
 :root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labServicePreferences .switch button[aria-pressed=true],
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labServicePreferences .switch button[aria-pressed=true]{
- background:#004225!important;color:#f5f0e6!important;border-color:#003018!important;
+ background:var(--lab-ui-action)!important;
+ color:var(--lab-ui-on-action)!important;
+ border-color:var(--lab-ui-action)!important;
 }
-:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labServicePreferences .switch button[aria-pressed=false]{
- color:#003018!important;border-color:#8c6239!important;background:transparent!important;
-}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labServicePreferences .switch button[aria-pressed=false],
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labServicePreferences .switch button[aria-pressed=false]{
- color:#f5f0e6!important;border-color:#b77b4d!important;background:transparent!important;
+ color:var(--lab-ui-ink)!important;
+ border-color:var(--lab-ui-rule)!important;
+ background:transparent!important;
 }
-:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labRecordingPreferences :is(.recording-on,.recording-off){
- color:#003018;
-}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labRecordingPreferences :is(.recording-on,.recording-off),
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labRecordingPreferences :is(.recording-on,.recording-off){
- color:#f5f0e6;
+ color:var(--lab-ui-ink);
 }
 :root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labRecordingPreferences :not(:checked)+.recording-rocker .recording-off,
 :root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labRecordingPreferences :checked+.recording-rocker .recording-on,
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labRecordingPreferences :not(:checked)+.recording-rocker .recording-off,
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labRecordingPreferences :checked+.recording-rocker .recording-on{
- background:#004225!important;color:#f5f0e6!important;
+ background:var(--lab-ui-action)!important;color:var(--lab-ui-on-action)!important;
 }
-
-/* Final Crate/Manual screen review: the legacy luminance stock made Usiku
-   fluoresce green on Crate. Keep texture subtle and align night surfaces. */
+/* Crate and Manual are separate surfaces. Retain Usiku's subtle night
+   paper texture; never tint the land/ocean geometry as a side effect. */
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labCrate{
- background-color:#003018!important;
+ background-color:var(--lab-ui-surface)!important;
  background-image:linear-gradient(rgba(0,48,24,.91),rgba(0,48,24,.91)),
   url('/editions/gig-poster/assets/stock.webp')!important;
  background-size:auto,460px!important;
  background-blend-mode:normal,multiply!important;
- color:#f5f0e6!important;
+ color:var(--lab-ui-ink)!important;
 }
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labManual{
- background:#111111!important;color:#f5f0e6!important;
+ background:var(--lab-ui-panel)!important;color:var(--lab-ui-on-panel)!important;
 }
 
 /* Canonical Atlas field vs ocean separation. Preserve the live map geometry:
