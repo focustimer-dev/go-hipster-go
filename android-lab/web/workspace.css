@@ -228,6 +228,11 @@ body.gig-poster.lab-workspace .lab-atlas-modes button{display:flex;align-items:c
 .lab-atlas-modes button span{min-width:0;white-space:nowrap}
 /* The octahedral M-map uses SVG instead of unsupported MapLibre projections. */
 #labAtlasGlobe .lab-cahill-overlay{z-index:15;background:#dfb045;overflow:hidden;touch-action:pan-y}
+/* Keyes's transparent octant gaps show the paper/vignette, never the inactive
+   Robinson/Globe WebGL renderer. The fold veil covers the handoff. */
+#labAtlasGlobe.lab-cahill-active > .maplibregl-canvas-container{
+ visibility:hidden!important;pointer-events:none;
+}
 /* Native WebView SVG tap/focus rectangles are NOT region selections.
    Highlight by changing the geographic ink, never the polygon bounding box. */
 #labAtlasCahill,#labAtlasCahill *{
