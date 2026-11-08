@@ -159,20 +159,20 @@
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood .face{
   filter:none!important;
 }
-:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood]:not([data-mood=desire]):not([data-mood=triumphant]) .face::before,
-:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood]:not([data-mood=desire]):not([data-mood=triumphant]) .face::after{
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood]:where(:not([data-mood=desire]):not([data-mood=triumphant])) .face::before,
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood]:where(:not([data-mood=desire]):not([data-mood=triumphant])) .face::after{
   background-image:none!important;
   -webkit-mask-size:300% 200%;mask-size:300% 200%;
   -webkit-mask-position:var(--mood-position);mask-position:var(--mood-position);
   -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
   filter:none!important;
 }
-:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood]:not([data-mood=desire]):not([data-mood=triumphant]) .face::before{
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood]:where(:not([data-mood=desire]):not([data-mood=triumphant])) .face::before{
   background-color:var(--lab-mood-neutral-ink);
   -webkit-mask-image:url('/editions/gig-poster/assets/moods-neutral-ink-v2.webp');
   mask-image:url('/editions/gig-poster/assets/moods-neutral-ink-v2.webp');
 }
-:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood]:not([data-mood=desire]):not([data-mood=triumphant]) .face::after{
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood]:where(:not([data-mood=desire]):not([data-mood=triumphant])) .face::after{
   background-color:var(--lab-mood-selected-ink);
   -webkit-mask-image:url('/editions/gig-poster/assets/moods-selected-ink-v2.webp');
   mask-image:url('/editions/gig-poster/assets/moods-selected-ink-v2.webp');
