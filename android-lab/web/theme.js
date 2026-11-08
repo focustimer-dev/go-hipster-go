@@ -2,7 +2,7 @@
    This early document script leaves native app state and map geometry alone. */
 (function(){
 'use strict';
-const KEY='ghg-lab-theme-v1',THEMES=['liberi','bosque','usiku','kingston'];
+const KEY='ghg-lab-theme-v1',THEMES=['liberi','bosque','usiku'];
 /* Single paint contract for the three REAL projections and their cached
    animation frames. Geometry, sprites, camera and transitions are unchanged.
    CSS receives identical roles via --lab-atlas-*; no per-projection palette. */
