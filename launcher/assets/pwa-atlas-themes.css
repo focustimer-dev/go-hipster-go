@@ -5,6 +5,16 @@
 :root[data-pwa-theme=bosque] body.gig-poster.lab-workspace{
  --ink:#003018;--ink2:#004225;--paper:#f5f0e6;--bone:#f5f0e6;
  --yellow:#f5f0e6;--red:#8c6239;--red2:#8c6239;--line:#8c623999;
+ /* Semantic Android UI roles: use on Jukebox, Setup, Receipt, Crate and Manual.
+    Geographic/animation paint stays in its existing atlas-* roles below. */
+ --lab-ui-surface:#f5f0e6;--lab-ui-ink:#003018;
+ --lab-ui-panel:#f5f0e6;--lab-ui-rail:#003018;
+ --lab-ui-on-panel:#003018;--lab-ui-on-rail:#f5f0e6;
+ --lab-ui-action:#004225;--lab-ui-on-action:#f5f0e6;
+ --lab-ui-rule:#8c6239;--lab-ui-field:#f5f0e6;--lab-ui-on-field:#003018;
+ --lab-ui-focus:#8c6239;
+ --lab-ui-ticket-stock:#f4efdf;--lab-ui-ticket-ink:#003018;
+ --lab-ui-go:#00613b;--lab-ui-highlight:#e5cf42;--lab-ui-on-highlight:#003018;
  --atlas-paper:#f5f0e6;--atlas-paper-light:#eee4d3;--atlas-paper-hover:#e7d7bd;
  --atlas-ink:#003018;--atlas-accent:#8c6239;--atlas-border:#8c6239;
  --atlas-land:#004225;--atlas-water:#e8e9df;--atlas-boundary:#003018;
@@ -13,75 +23,82 @@
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace{
  --ink:#f5f0e6;--ink2:#f5f0e6;--paper:#003018;--bone:#f5f0e6;
  --yellow:#004225;--red:#8c6239;--red2:#8c6239;--line:#f5f0e655;
+ /* Semantic Android UI roles: use on Jukebox, Setup, Receipt, Crate and Manual.
+    Geographic/animation paint stays in its existing atlas-* roles below. */
+ --lab-ui-surface:#003018;--lab-ui-ink:#f5f0e6;
+ --lab-ui-panel:#111111;--lab-ui-rail:#111111;
+ --lab-ui-on-panel:#f5f0e6;--lab-ui-on-rail:#f5f0e6;
+ --lab-ui-action:#004225;--lab-ui-on-action:#f5f0e6;
+ --lab-ui-rule:#b77b4d;--lab-ui-field:#111111;--lab-ui-on-field:#f5f0e6;
+ --lab-ui-focus:#e5cf42;
+ --lab-ui-ticket-stock:#f4efdf;--lab-ui-ticket-ink:#003018;
+ --lab-ui-go:#00613b;--lab-ui-highlight:#e5cf42;--lab-ui-on-highlight:#003018;
  --atlas-paper:#003018;--atlas-paper-light:#004225;--atlas-paper-hover:#004225;
  --atlas-ink:#f5f0e6;--atlas-accent:#8c6239;--atlas-border:#8c6239;
  --atlas-land:#f5f0e6;--atlas-water:#111111;--atlas-boundary:#003018;
  --atlas-selected:#e5cf42;background:#111111;color:#f5f0e6;color-scheme:dark;
 }
-:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .site{
- background:#f5f0e6;color:#003018;
-}
+
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .site,
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .site{
- background:#003018;color:#f5f0e6;
+ background:var(--lab-ui-surface);color:var(--lab-ui-ink);
 }
-:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .lab-page,
-:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .lab-dialog{
- background-color:#f5f0e6;color:#003018;
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace :is(.lab-page,.lab-dialog),
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .lab-page{
+ background-color:var(--lab-ui-surface);color:var(--lab-ui-ink);
 }
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .lab-page{
- background-color:#003018;color:#f5f0e6;background-blend-mode:soft-light;
+ background-blend-mode:soft-light;
 }
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .lab-dialog{
- background:#111111;color:#f5f0e6;border-color:#b77b4d;
+ background:var(--lab-ui-panel);color:var(--lab-ui-on-panel);border-color:var(--lab-ui-rule);
 }
-/* One coherent chrome across Jukebox / Your Crate / Manual / Preferences. */
-:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .lab-rail{
- background:#003018;color:#f5f0e6;
+/* Shared UI role rules never change the palette of Atlas geometry or the PWA. */
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .lab-rail,
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .lab-rail{
+ background:var(--lab-ui-rail);color:var(--lab-ui-on-rail);
 }
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .lab-rail{
- background:#111111;color:#f5f0e6;border-bottom:1px solid #b77b4d;
+ border-bottom:1px solid var(--lab-ui-rule);
 }
 :root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .lab-rail button[aria-current=page],
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .lab-rail button[aria-current=page]{
- background:#004225;color:#f5f0e6;border-bottom-color:#b77b4d;
+ background:var(--lab-ui-action);color:var(--lab-ui-on-action);
+ border-bottom-color:var(--lab-ui-rule);
 }
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .lab-rail button:last-child{
  border-left-color:#b77b4d66;
 }
-:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace :is(.lab-wide-button,.lab-text-button,.lab-dialog button,.lab-dialog a,.lab-guide-chapters button){
- border-color:#003018;color:#003018;
-}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace :is(.lab-wide-button,.lab-text-button,.lab-dialog button,.lab-dialog a,.lab-guide-chapters button),
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace :is(.lab-wide-button,.lab-text-button,.lab-dialog button,.lab-dialog a,.lab-guide-chapters button){
- border-color:#b77b4d;color:#f5f0e6;
+ border-color:var(--lab-ui-rule);color:var(--lab-ui-ink);
 }
-:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace :is(.lab-dialog-head,.lab-section-head,.lab-page section>h2,.lab-record,.lab-local-note){
- border-color:#8c6239;
-}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace :is(.lab-dialog-head,.lab-section-head,.lab-page section>h2,.lab-record,.lab-local-note),
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace :is(.lab-dialog-head,.lab-section-head,.lab-page section>h2,.lab-record,.lab-local-note){
- border-color:#b77b4d;
+ border-color:var(--lab-ui-rule);
 }
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .lab-guide-frame{
- color:#f5f0e6;border-color:#b77b4d;
+ color:var(--lab-ui-on-panel);border-color:var(--lab-ui-rule);
 }
 :root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labGuideAction,
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labGuideAction{
- background:#004225;color:#f5f0e6;
+ background:var(--lab-ui-action);color:var(--lab-ui-on-action);
 }
-:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labSetupText,
-:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labInspirationEditor textarea{
- background:#f5f0e6;color:#003018;border-color:#003018;
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace :is(#labSetupText,#labInspirationEditor textarea),
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace :is(#labSetupText,#labInspirationEditor textarea){
+ background:var(--lab-ui-field);color:var(--lab-ui-on-field);
+ border-color:var(--lab-ui-rule);
+ caret-color:var(--lab-ui-on-field);
 }
-:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labSetupText,
-:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labInspirationEditor textarea{
- background:#111111;color:#f5f0e6;border-color:#b77b4d;
-}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace :is(#labAddInspiration,#labInspirationEditor,#labInspirationEditor label,#labInspirationEditor textarea::placeholder,.lab-inspiration-recent-copy span),
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace :is(#labAddInspiration,#labInspirationEditor,#labInspirationEditor label,#labInspirationEditor textarea::placeholder,.lab-inspiration-recent-copy span){
- color:#f5f0e6;border-color:#b77b4d;
+ color:var(--lab-ui-ink);border-color:var(--lab-ui-rule);
 }
 :root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labInspirationEditor button[type=submit],
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labInspirationEditor button[type=submit]{
- background:#004225;color:#f5f0e6;
+ background:var(--lab-ui-action);color:var(--lab-ui-on-action);
 }
+
 /* Projection controls are explicit selected states, never mere hue shifts. */
 :root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .lab-atlas-modes,
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .lab-atlas-modes{
