@@ -73,6 +73,18 @@ class AndroidThemeRoles(unittest.TestCase):
         self.assertIn("background-image:none!important", app)
         self.assertIn(":root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .lab-page", app)
 
+    def test_usiku_go_uses_existing_saddle_material_not_new_green(self):
+        usiku = self.tokens["usiku"]
+        self.assertEqual(usiku["--lab-ui-go"], "#7e4c30")
+        app = source("android-lab/web/workspace.css")
+        self.assertIn("background-color:var(--lab-ui-go)", app)
+        self.assertIn("var(--usiku-neutral-mid,#925b39)", app)
+        self.assertIn("var(--usiku-neutral-edge,#7e4c30)", app)
+        self.assertIn("#38261c 100%", app)
+        self.assertIn("receipt is no longer", source("scripts/test_android_lab_themes.cjs"))
+        self.assertGreaterEqual(contrast("#925b39", "#e5cf42"), 3)
+        self.assertGreaterEqual(contrast("#925b39", "#f5f0e6"), 4.5)
+
     def test_usiku_manual_setup_print_and_tempo_vignette(self):
         manual = source("android-lab/web/manual-guide-theme.css")
         self.assertIn(":is(#setupSend,#setupSendChat) .receipt", manual)
