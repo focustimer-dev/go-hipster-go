@@ -172,8 +172,8 @@ function labAtlasSwitchButtons(mode){
  for(const b of doc.querySelectorAll('[data-atlas-view]')){
   const active=b.dataset.atlasView===mode;
   b.setAttribute('aria-pressed',String(active));
-  b.style.background=active?'#103135':'transparent';
-  b.style.color=active?'#dfb045':'#103135';
+  // Visual selection belongs to CSS theme roles, not Libéri-colored
+  // inline styles that override the print profile at every map switch.
  }
  store('ghg-atlas-view-v2',mode);
 }
