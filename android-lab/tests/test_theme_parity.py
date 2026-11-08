@@ -57,7 +57,7 @@ class AndroidThemeParity(unittest.TestCase):
         self.assertIn("--racing-yellow:#e5cf42",palette)
         roles=(ROOT/'android-lab/web/theme-tokens.css').read_text()
         self.assertIn('--lab-ui-highlight:#e5cf42',roles)
-        self.assertIn('--lab-ui-go:#00613b',roles)
+        self.assertIn('--lab-ui-go:#7e4c30',roles)
         self.assertIn('--lab-action-yellow:var(--lab-ui-highlight)',css)
         self.assertIn('background:var(--lab-ui-go);',css)
         self.assertIn('border-top:2px solid var(--lab-action-yellow);',css)
@@ -66,7 +66,11 @@ class AndroidThemeParity(unittest.TestCase):
         self.assertIn('color:var(--lab-action-ink);',css)
         for shade in ('--usiku-neutral-center','--usiku-neutral-stock',
                       '--usiku-neutral-mid','--usiku-neutral-edge'):
+            self.assertIn(shade+':',palette)
+        for shade in ('--usiku-neutral-mid','--usiku-neutral-edge'):
             self.assertIn('var('+shade+',',css)
+        self.assertIn('background-image:radial-gradient(ellipse farthest-corner',css)
+        self.assertIn('Receipt returns to the quiet',css)
         self.assertIn('body.gig-poster.lab-workspace[data-page=launch] .receipt-heading',css)
         self.assertIn('.receipt-heading .lab-save-button',css)
         # PWA remains on its twice-weekly cycle, not an accidental CSS edit.
