@@ -12,7 +12,7 @@
  --lab-ui-on-panel:#003018;--lab-ui-on-rail:#f5f0e6;
  --lab-ui-action:#004225;--lab-ui-on-action:#f5f0e6;
  --lab-ui-rule:#8c6239;--lab-ui-field:#f5f0e6;--lab-ui-on-field:#003018;
- --lab-ui-focus:#8c6239;
+ --lab-ui-focus:#8c6239;--lab-ui-control-outline:#003018;
  --lab-ui-ticket-stock:#f4efdf;--lab-ui-ticket-ink:#003018;
  --lab-ui-go:#00613b;--lab-ui-highlight:#e5cf42;--lab-ui-on-highlight:#003018;
  --atlas-paper:#f5f0e6;--atlas-paper-light:#eee4d3;--atlas-paper-hover:#e7d7bd;
@@ -30,7 +30,7 @@
  --lab-ui-on-panel:#f5f0e6;--lab-ui-on-rail:#f5f0e6;
  --lab-ui-action:#004225;--lab-ui-on-action:#f5f0e6;
  --lab-ui-rule:#b77b4d;--lab-ui-field:#111111;--lab-ui-on-field:#f5f0e6;
- --lab-ui-focus:#e5cf42;
+ --lab-ui-focus:#e5cf42;--lab-ui-control-outline:#b77b4d;
  --lab-ui-ticket-stock:#f4efdf;--lab-ui-ticket-ink:#003018;
  --lab-ui-go:#00613b;--lab-ui-highlight:#e5cf42;--lab-ui-on-highlight:#003018;
  --atlas-paper:#003018;--atlas-paper-light:#004225;--atlas-paper-hover:#004225;
@@ -71,7 +71,7 @@
 }
 :root[data-pwa-theme=bosque] body.gig-poster.lab-workspace :is(.lab-wide-button,.lab-text-button,.lab-dialog button,.lab-dialog a,.lab-guide-chapters button),
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace :is(.lab-wide-button,.lab-text-button,.lab-dialog button,.lab-dialog a,.lab-guide-chapters button){
- border-color:var(--lab-ui-rule);color:var(--lab-ui-ink);
+ border-color:var(--lab-ui-control-outline);color:var(--lab-ui-ink);
 }
 :root[data-pwa-theme=bosque] body.gig-poster.lab-workspace :is(.lab-dialog-head,.lab-section-head,.lab-page section>h2,.lab-record,.lab-local-note),
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace :is(.lab-dialog-head,.lab-section-head,.lab-page section>h2,.lab-record,.lab-local-note){
@@ -87,12 +87,16 @@
 :root[data-pwa-theme=bosque] body.gig-poster.lab-workspace :is(#labSetupText,#labInspirationEditor textarea),
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace :is(#labSetupText,#labInspirationEditor textarea){
  background:var(--lab-ui-field);color:var(--lab-ui-on-field);
- border-color:var(--lab-ui-rule);
+ border-color:var(--lab-ui-control-outline);
  caret-color:var(--lab-ui-on-field);
 }
-:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace :is(#labAddInspiration,#labInspirationEditor,#labInspirationEditor label,#labInspirationEditor textarea::placeholder,.lab-inspiration-recent-copy span),
-:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace :is(#labAddInspiration,#labInspirationEditor,#labInspirationEditor label,#labInspirationEditor textarea::placeholder,.lab-inspiration-recent-copy span){
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace :is(#labAddInspiration,#labInspirationEditor,#labInspirationEditor label,.lab-inspiration-recent-copy span),
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace :is(#labAddInspiration,#labInspirationEditor,#labInspirationEditor label,.lab-inspiration-recent-copy span){
  color:var(--lab-ui-ink);border-color:var(--lab-ui-rule);
+}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labInspirationEditor textarea::placeholder,
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labInspirationEditor textarea::placeholder{
+ color:var(--lab-ui-on-field);opacity:1;
 }
 :root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labInspirationEditor button[type=submit],
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labInspirationEditor button[type=submit]{
