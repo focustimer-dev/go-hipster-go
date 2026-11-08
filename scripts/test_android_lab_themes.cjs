@@ -670,6 +670,36 @@ async function verifyManualHierarchy(page,name,width){
    assert.equal(pilotInk.selected.ink,'rgb(24, 21, 30)','Selected engraving remains dark');
    assert.equal(pilotInk.selected.word,'rgb(24, 21, 30)','Selected portrait label legible');
    assert.match(pilotInk.selected.mask,/moods-selected-ink-v2.webp/,'Original selected plate alpha');
+   // Exercise every approved character in its selected pose. Do not mutate
+   // the underlying artwork or depend on only one easy-to-color portrait.
+   const selectedCast=await pilot.locator('.mood-grid .mood[data-mood]').evaluateAll(tiles=>
+    tiles.map(tile=>{
+     const prior=tile.getAttribute('aria-pressed');
+     tile.setAttribute('aria-pressed','true');
+     const style=getComputedStyle(tile),word=getComputedStyle(tile.querySelector('.word'));
+     const face=tile.querySelector('.face'),after=getComputedStyle(face,'::after');
+     const result={mood:tile.dataset.mood,paper:style.backgroundColor,
+      label:word.color,selectedPlateOpacity:after.opacity};
+     tile.setAttribute('aria-pressed',prior);
+     return result;
+    }));
+   assert.equal(selectedCast.length,8,'All eight original characters render in pilot');
+   for(const portrait of selectedCast){
+    const special=portrait.mood==='funky';
+    assert.equal(portrait.paper,special?'rgb(24, 21, 30)':'rgb(0, 143, 163)',
+     portrait.mood+' selected stock');
+    assert.equal(portrait.label,special?'rgb(0, 143, 163)':'rgb(24, 21, 30)',
+     portrait.mood+' selected label');
+    assert.equal(portrait.selectedPlateOpacity,portrait.mood==='desire'?'0':'1',
+     portrait.mood+' approved expression visibility');
+   }
+   if(width===390){
+    await pilot.locator('.mood-grid .mood[data-mood]').evaluateAll(tiles=>
+     tiles.forEach(tile=>tile.setAttribute('aria-pressed','true')));
+    await pilot.locator('.mood-grid').screenshot({path:path.join(output,'kingston-390-all-selected.png')});
+    await pilot.locator('.mood-grid .mood[data-mood]').evaluateAll(tiles=>
+     tiles.forEach(tile=>tile.setAttribute('aria-pressed','false')));
+   }
    if(width===390){
     await pilot.locator('.mood[data-mood=happy]').click();
     await pilot.locator('.mood[data-mood=funky]').click();
