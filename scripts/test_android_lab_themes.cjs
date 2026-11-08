@@ -670,6 +670,32 @@ async function verifyManualHierarchy(page,name,width){
    assert.equal(pilotInk.selected.ink,'rgb(24, 21, 30)','Selected engraving remains dark');
    assert.equal(pilotInk.selected.word,'rgb(24, 21, 30)','Selected portrait label legible');
    assert.match(pilotInk.selected.mask,/moods-selected-ink-v2.webp/,'Original selected plate alpha');
+   const printedExtra=await pilot.evaluate(()=>{
+    const tile=document.querySelector('#firstCrateSetup');
+    const style=getComputedStyle(tile);
+    const star=getComputedStyle(document.querySelector('#goButton .star-glyph'));
+    const cta=getComputedStyle(document.querySelector('#labCrateEmpty .lab-wide-button'));
+    const funk=document.querySelector('.mood[data-mood=funky]'),old=funk.getAttribute('aria-pressed');
+    funk.setAttribute('aria-pressed','true');
+    const src=getComputedStyle(funk.querySelector('.face'),'::before');
+    const selectedFunk={opacity:src.opacity,ink:src.backgroundColor,
+     mask:src.maskImage};
+    funk.setAttribute('aria-pressed',old);
+    const flood=getComputedStyle(document.querySelector('#referenceInk feFlood'));
+    return {ticketRule:style.getPropertyValue('--setup-rule').trim(),
+     receiptInk:style.getPropertyValue('--receipt-red').trim(),starFilter:star.filter,
+     crateAction:cta.backgroundColor,crateLabel:cta.color,
+     selectedFunk,desireInk:flood.floodColor};
+   });
+   assert.equal(printedExtra.ticketRule,'#008fa3','Setup keeps stamp accent, not Libéri red');
+   assert.equal(printedExtra.receiptInk,'#18151e','Small ticket print remains readable');
+   assert.notEqual(printedExtra.starFilter,'none','GO star printed using palette accent');
+   assert.equal(printedExtra.crateAction,'rgb(24, 21, 30)','Crate CTA shares action ink');
+   assert.equal(printedExtra.crateLabel,'rgb(213, 206, 194)','Crate CTA shares paper lettering');
+   assert.equal(printedExtra.selectedFunk.opacity,'1','Selected Funk keeps the approved figure visible');
+   assert.equal(printedExtra.selectedFunk.ink,'rgb(0, 143, 163)','Funk portrait has cyan ink');
+   assert.match(printedExtra.selectedFunk.mask,/moods-neutral-ink-v2.webp/,'Funk retains source engraving');
+   assert.equal(printedExtra.desireInk,'rgb(24, 21, 30)','Desire/Triumph filter flood shares ink role');
    // Exercise every approved character in its selected pose. Do not mutate
    // the underlying artwork or depend on only one easy-to-color portrait.
    const selectedCast=await pilot.locator('.mood-grid .mood[data-mood]').evaluateAll(tiles=>
@@ -690,7 +716,7 @@ async function verifyManualHierarchy(page,name,width){
      portrait.mood+' selected stock');
     assert.equal(portrait.label,special?'rgb(0, 143, 163)':'rgb(24, 21, 30)',
      portrait.mood+' selected label');
-    assert.equal(portrait.selectedPlateOpacity,portrait.mood==='desire'?'0':'1',
+    assert.equal(portrait.selectedPlateOpacity,['desire','funky'].includes(portrait.mood)?'0':'1',
      portrait.mood+' approved expression visibility');
    }
    if(width===390){
