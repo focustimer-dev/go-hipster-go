@@ -27,7 +27,7 @@ async function verifyQuietJukebox(page,name,width){
    return selected;
   };
   const section=style('.refinements>.counter-label');
-  const pace=style('.tempo-control','::before');
+  const pace=getComputedStyle(el('.tempo-control'),'::before');
   return {
    headingFont:section.fontFamily,
    paceFont:pace.fontFamily,
