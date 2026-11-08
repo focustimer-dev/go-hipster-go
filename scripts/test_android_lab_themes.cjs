@@ -74,6 +74,15 @@ const palettes={
     assert.equal(plate,({liberi:'#103135',bosque:'#f5f0e6',usiku:'#111111'})[name],
      'Robinson ocean polygon must preserve '+name+' actual sea ink');
     if(name!=='liberi')assert(routes.keyesWidth>=1.8,'Keyes dashed route ink must be visible on '+width+'px');
+    const boundary=await page.evaluate(()=>{
+     const m=window.labAtlasGlobe;
+     return {visible:m.getLayoutProperty('robinson-outline','visibility'),
+      ink:m.getPaintProperty('robinson-outline','line-color'),
+      width:m.getPaintProperty('robinson-outline','line-width')};
+    });
+    assert.equal(boundary.visible,'visible','Robinson needs a real projection-shaped edge');
+    assert.equal(boundary.width,name==='bosque'?1.4:1.15,'Boundary stays restrained on phone');
+    assert.equal(boundary.ink,name==='usiku'?'#b77b4d':name==='bosque'?'#003018':'#103135');
     if(width===390){
      await page.locator('.mood-grid').scrollIntoViewIfNeeded();
      await page.screenshot({path:path.join(output,`${name}-portraits.png`)});
@@ -91,11 +100,15 @@ const palettes={
       assert.match(await page.locator('#labAtlasGlobe').evaluate(el=>getComputedStyle(el).backgroundImage),
        /radial-gradient/,'Usiku Keyes background is the shared forest vignette');
      }
+     assert.equal(await page.locator('#labAtlasGlobe .maplibregl-canvas-container').evaluate(el=>getComputedStyle(el).visibility),
+      'hidden','Keyes must not expose the previous Robinson or Globe underlay');
      await page.screenshot({path:path.join(output,`${name}-keyes.png`)});
      await page.locator('[data-atlas-view=globe]').click();
      await page.waitForFunction(()=>{const state=window.HipsterAtlasState?.();
       return state?.projection==='globe'&&!state.transitioning;
      },null,{timeout:20000});
+     assert.equal(await page.locator('#labAtlasGlobe .maplibregl-canvas-container').evaluate(el=>getComputedStyle(el).visibility),
+      'visible','Returning from Keyes must restore the real Globe');
      await page.screenshot({path:path.join(output,`${name}-globe.png`)});
      await page.locator('[data-atlas-view=robinson]').click();
      await page.waitForFunction(()=>{const state=window.HipsterAtlasState?.();
