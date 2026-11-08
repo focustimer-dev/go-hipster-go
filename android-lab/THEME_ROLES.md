@@ -120,35 +120,33 @@ unit/visual workflows, and never let a missing token silently inherit the
 wrong theme. This first milestone is an architectural foundation, not
 permission to turn on Kingston or any other candidate in Preferences.
 
-## Kingston Blank-Label — isolated print-profile pilot
+## Kingston Blank-Label — Studio One reference refinement
 
-The first shortlisted design is a **QA-only experiment**, reachable in a
-development Android Lab browser bundle at `/?theme=kingston`. It is **not**
-offered in the appearance chooser or saved to Android's theme preference.
+The pilot remains **URL/QA-only** at `/?theme=kingston`, not offered in
+Preferences or saved as an installed preference. Its print direction is an
+aged 7-inch Jamaican Studio One label: warm cream paper with softened
+teal ink and modest registration wear, not an all-black Xerox flyer.
 
-The supplied material palette is chipboard `#d5cec2`, muted stock
-`#c7beaf`, black ink `#18151e`, and a cyan-stamped selection
-`#008fa3`. The original Poster display font is retained; physical
-printing effects are deliberately restrained until art direction is approved.
+- `theme.js` owns all Atlas and mood palette values for the pilot.
+  Robinson, Globe and Cahill share dark petrol water `#273d3b`,
+  warm land `#d3c4a8` and subdued teal selected geography `#6d9991`.
+- `theme-tokens.css` owns warm Jukebox/Manual paper `#e3d9c2`,
+  dark printed type `#263f3e`, gentle teal GO and readable cream text.
+- `theme-print.css` is the shared print-profile consumer, not per-theme
+  Kingston hacks. Selected mood tiles stay warm paper `#d2c3a6`
+  with a teal impression at the rim instead of a cyan flood.
+- **Character engravings retain original source images**, including their
+  two-tone shading, alpha and selected expressions. Do not convert the
+  entire face into an opaque CSS mask to make a new theme.
+- **The Funk is a locked exception** for this print profile and future
+  themes using it. Both neutral and selected retain the original figure,
+  selected pink pressing, readable original petrol label ink, and unaltered
+  vermilion laser intensity and geometry. No recoloring filters, custom
+  masks, hue rotations or hand-modified assets. Existing Libéri/Bosque/Usiku
+  artwork is left unchanged in this branch.
 
-- `theme.js`: one fully specified `ATLAS.kingston` and `MOODS.kingston`.
-- `theme-tokens.css`: all semantic UI colors for the pilot.
-- `theme-print.css`: **generic** print-profile consumers of those tokens,
-  not Kingston-specific selectors; meant to serve future print themes.
-- `manual-guide-theme.css`: generic print-profile binding for the existing
-  iframe, which receives the theme at first paint.
-- Android bundle: load the generic print binding only when the URL selects
-  the pilot. Production themes do not load its style rules.
-
-**Acceptance gate:** 320px and 390px phone Chromium checks, all three live
-projections (resting and transitions), all eight neutral/selected cast states,
-Manual, GO and receipt, contrast, no horizontal overflow, no JS exceptions.
-Check actual screenshots before considering release; the test suite is not
-evidence of final artistic polish. Preserve all map geometry/gestures,
-transparent art plates and the existing three themes.
-
-**Architectural debt exposed:** Some special characters still use approved
-custom alpha/effects, and the Android printed component surfaces need this
-new generic binding because the old Bosque/Usiku styles were theme-name
-selectors. Do not add Kingston-only selector patches to compensate for
-missing roles; improve the generic contract instead.
+**Visual gate:** screenshots at 320px and 390px must include the
+three resting maps, mood neutral/selected (all eight), Manual, Crate,
+GO and receipt. Source tests check original Funk pseudo-element image,
+laser opacity and filter. Keep this in a draft PR until visually approved.
+No Android APK signing, production PWA sync or deployment is requested.
