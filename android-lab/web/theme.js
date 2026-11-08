@@ -4,7 +4,7 @@
 'use strict';
 const KEY='ghg-lab-theme-v1',THEMES=['liberi','bosque','usiku'];
 // Pilot themes are URL/QA-only, never persisted or exposed in Preferences.
-const PILOTS=['kingston'];
+const PILOTS=['kingston','detroit'];
 const preview=new URLSearchParams(location.search).get('theme');
 /* Single paint contract for the three REAL projections and their cached
    animation frames. Geometry, sprites, camera and transitions are unchanged.
@@ -31,6 +31,13 @@ const ATLAS=Object.freeze({
   field:'radial-gradient(ellipse at 50% 38%,#004225 0%,#003018 78%)',
   graticule:'#b77b4d',graticuleOpacity:.2,
   oceanStroke:'#b77b4d',oceanStrokeOpacity:.72
+ }),
+ detroit:Object.freeze({
+  paper:'#e7e5db',land:'#d6d6c9',ocean:'#151515',ink:'#181818',
+  selected:'#d5e644',route:'#d5e644',routeOpacity:.72,routeWidth:1.05,
+  routeDash:[3,3],backdrop:'#e7e5db',field:'#e7e5db',
+  graticule:'#a2ac66',graticuleOpacity:.25,
+  oceanStroke:'#181818',oceanStrokeOpacity:1
  }),
  kingston:Object.freeze({
   // Aged Studio One paper with inked wax, not black photocopier stock.
@@ -59,6 +66,11 @@ const MOODS=Object.freeze({
   neutralPaper:'radial-gradient(ellipse farthest-corner at 50% 36%,#b77b4d 0%,#a86c43 34%,#925b39 68%,#7e4c30 100%)',
   neutralInk:'#063821',selectedPaper:'#e5cf42',selectedInk:'#003018',
   desireHeart:'#8e3069',funkPaper:'#6e225c',funkInk:'#f2c84e'
+ }),
+ detroit:Object.freeze({
+  neutralPaper:'#e7e5db',neutralInk:'#171717',
+  selectedPaper:'#d0d0bd',selectedInk:'#171717',
+  desireHeart:'#b94a2a',funkPaper:'#e4cbe4',funkInk:'#08252a'
  }),
  kingston:Object.freeze({
   // Selected stock is still LABEL PAPER; the stamped outline indicates state.

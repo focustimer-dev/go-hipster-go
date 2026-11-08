@@ -106,7 +106,7 @@ class AndroidThemeRoles(unittest.TestCase):
         pattern=r"\b([a-z]+):Object\.freeze\(\{(.*?)\n \}\)"
         atlas_def=dict(re.findall(pattern,atlas,re.S))
         mood_def=dict(re.findall(pattern,moods,re.S))
-        self.assertEqual(set(atlas_def),{"liberi","bosque","usiku","kingston"})
+        self.assertEqual(set(atlas_def),{"liberi","bosque","usiku","kingston","detroit"})
         self.assertEqual(set(mood_def),set(atlas_def))
         atlas_required={
             "paper","land","ocean","ink","selected","route",
@@ -136,7 +136,7 @@ class AndroidThemeRoles(unittest.TestCase):
         roles=source("android-lab/web/theme-tokens.css")
         css=source("android-lab/web/theme-print.css")
         bundle=source("scripts/bundle_android_lab.py")
-        self.assertIn("const PILOTS=['kingston']",js)
+        self.assertIn("const PILOTS=['kingston','detroit']",js)
         self.assertIn("PILOTS.includes(next)&&persist",js)
         self.assertIn("PILOTS.includes(preview)?preview:saved()",js)
         self.assertIn("data-lab-print-style",bundle)
@@ -211,6 +211,23 @@ class AndroidThemeRoles(unittest.TestCase):
         for role in ("--lab-print-active-ink","--lab-print-stamp"):
             self.assertIn("var("+role,css)
         self.assertIn("var(--lab-print-active-ink)",manual)
+
+    def test_second_print_theme_is_token_only(self):
+        js=source("android-lab/web/theme.js")
+        tokens=source("android-lab/web/theme-tokens.css")
+        css=source("android-lab/web/theme-print.css")
+        manual=source("android-lab/web/manual-guide.html")
+        self.assertIn("const PILOTS=['kingston','detroit']",js)
+        self.assertIn(":root[data-pwa-theme=detroit]",tokens)
+        self.assertIn("kingston|detroit",manual)
+        self.assertNotIn('data-lab-theme="detroit"',source("android-lab/web/workspace.html"))
+        self.assertNotIn("data-pwa-theme=detroit",css)
+        self.assertIn("var(--lab-print-substrate-texture,none)",css)
+        self.assertIn("var(--lab-print-stamp-border-style,double)",css)
+        for stock,ink in (("#e7e5db","#171717"),("#d0d0bd","#171717"),
+                          ("#f1f0e7","#171717"),("#d5e644","#171717"),
+                          ("#e7e5db","#913b25")):
+            self.assertGreaterEqual(contrast(stock,ink),4.5)
 
     def test_app_and_iframe_load_the_same_source(self):
         bundle = source("scripts/bundle_android_lab.py")

@@ -24,9 +24,11 @@
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .site{
   background-color:var(--lab-ui-surface);color:var(--lab-ui-ink);
+  background-image:var(--lab-print-substrate-texture,none);
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace :is(.lab-page,.lab-dialog){
   background-color:var(--lab-ui-surface);color:var(--lab-ui-ink);
+  background-image:var(--lab-print-substrate-texture,none);
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .lab-rail{
   background:var(--lab-ui-rail);color:var(--lab-ui-on-rail);
@@ -80,7 +82,7 @@
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .go-button .go-stamp{
   background:var(--lab-ui-highlight);color:var(--lab-ui-on-highlight);
-  border:3px double var(--lab-ui-on-highlight);
+  border:3px var(--lab-print-stamp-border-style,double) var(--lab-ui-on-highlight);
   font-size:clamp(1.5rem,6cqw,2.65rem);
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .go-options .go-extras{

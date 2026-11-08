@@ -122,6 +122,7 @@
 }
 :root[data-ghg-theme-profile=print] body.embedded-guide{
  background:var(--lab-ui-panel)!important;color:var(--lab-ui-on-panel)!important;
+ background-image:var(--lab-print-substrate-texture,none)!important;
 }
 :root[data-ghg-theme-profile=print] :is(.crate-tabs button:not([aria-selected=true]),.crate-dividers h2){
  background:var(--guide-muted)!important;color:var(--lab-ui-on-panel)!important;
