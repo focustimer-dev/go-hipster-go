@@ -905,3 +905,11 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
    display:grid;grid-column:2;grid-row:1;
   }
 }
+
+/* Review app: two additional theme-picker previews, no component overrides. */
+.lab-theme-choice[data-lab-theme=kingston] .lab-theme-swatches i:nth-child(1){background:#273d3b}
+.lab-theme-choice[data-lab-theme=kingston] .lab-theme-swatches i:nth-child(2){background:#e3d9c2}
+.lab-theme-choice[data-lab-theme=kingston] .lab-theme-swatches i:nth-child(3){background:#9b3a2b}
+.lab-theme-choice[data-lab-theme=detroit] .lab-theme-swatches i:nth-child(1){background:#171717}
+.lab-theme-choice[data-lab-theme=detroit] .lab-theme-swatches i:nth-child(2){background:#d5e644}
+.lab-theme-choice[data-lab-theme=detroit] .lab-theme-swatches i:nth-child(3){background:#f50093}
