@@ -23,3 +23,16 @@
   --lab-ui-ticket-stock:#f4efdf;--lab-ui-ticket-ink:#003018;
   --lab-ui-go:#7e4c30;--lab-ui-highlight:#e5cf42;--lab-ui-on-highlight:#003018;
 }
+
+/* First print-profile pilot. These roles are data, not component patches. */
+:root[data-pwa-theme=kingston]{
+ --lab-ui-surface:#d5cec2;--lab-ui-ink:#18151e;
+ --lab-ui-panel:#c7beaf;--lab-ui-on-panel:#18151e;
+ --lab-ui-rail:#18151e;--lab-ui-on-rail:#d5cec2;
+ --lab-ui-action:#18151e;--lab-ui-on-action:#d5cec2;
+ --lab-ui-rule:#18151e;--lab-ui-field:#eee5d4;--lab-ui-on-field:#18151e;
+ --lab-ui-focus:#18151e;--lab-ui-control-outline:#18151e;
+ --lab-ui-ticket-stock:#eee5d4;--lab-ui-ticket-ink:#18151e;
+ --lab-ui-go:#18151e;--lab-ui-highlight:#008fa3;--lab-ui-on-highlight:#18151e;
+ --lab-print-muted:#c7beaf;--lab-print-stamp:#008fa3;
+}
