@@ -32,6 +32,10 @@ Read the [regional atlas](regional-atlas.md) safeguards and lookup, then the fil
 
 For worldwide exploration, compare a few contrasting regions when useful; do not preload all 24 files. Regions guide exploration, while explicit user constraints and supported sonic fit decide selections. The 920 imported rows are unverified, overlapping search leads, not 920 verified genres.
 
+## Optional cover art
+
+Only for `Cover art: yes` or an explicit sleeve request, read [Cover art — period-authentic regional record sleeves](cover-art.md) after the final crate and title are established. Do not load this reference for ordinary GO.
+
 ## Optional depth and reuse
 
 Consult [curation examples](curation-examples.md) when bridge construction or editorial voice needs calibration; examples are not a default roster. Expand research whenever candidates are weak, repetitive or unsupported; this index imposes no search budget or shortlist cap.
