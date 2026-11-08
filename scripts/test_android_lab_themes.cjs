@@ -86,7 +86,10 @@ const palettes={
      if(name==='usiku'){
       const octantSea=await page.locator('#labAtlasCahill .lab-cahill-ocean').first()
        .evaluate(el=>getComputedStyle(el).fill);
-      assert.equal(octantSea,'rgb(41, 76, 62)','Usiku Keyes water must be distinct from the black field');
+      assert.equal(octantSea,'rgb(17, 17, 17)',
+       'Usiku Keyes water must match the dark Robinson and Globe ocean');
+      assert.match(await page.locator('#labAtlasGlobe').evaluate(el=>getComputedStyle(el).backgroundImage),
+       /radial-gradient/,'Usiku Keyes background is the shared forest vignette');
      }
      await page.screenshot({path:path.join(output,`${name}-keyes.png`)});
      await page.locator('[data-atlas-view=globe]').click();
