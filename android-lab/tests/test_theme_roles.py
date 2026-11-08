@@ -177,6 +177,41 @@ class AndroidThemeRoles(unittest.TestCase):
         self.assertNotIn("moods-selected-ink-v2.webp",css)
         self.assertNotIn("mask-image:url('/editions/gig-poster/assets/moods-neutral-ink-v2.webp')",css)
 
+    def test_every_print_theme_has_an_independent_accessible_ink_pair(self):
+        """Future print themes may choose colors, not skip semantic roles."""
+        raw=source("android-lab/web/theme-tokens.css")
+        profiles=re.findall(r":root\\[data-pwa-theme=([a-z-]+)\\]\\{([^}]*)\\}",raw,re.S)
+        print_profiles=[]
+        for name,body in profiles:
+            if "--lab-print-stamp:" not in body and "--lab-print-active-ink:" not in body:
+                continue
+            print_profiles.append(name)
+            values=dict(re.findall(r"(--lab-[a-z-]+):\\s*(#[0-9a-f]{6})\\s*;",body))
+            mandatory={
+                "--lab-print-stamp","--lab-print-active-ink",
+                "--lab-ui-surface","--lab-ui-ink","--lab-ui-rule",
+                "--lab-ui-go","--lab-ui-on-action",
+                "--lab-ui-highlight","--lab-ui-on-highlight",
+            }
+            self.assertTrue(mandatory.issubset(values),name+" missing print ink roles")
+            for bg,fg in (
+                ("--lab-ui-surface","--lab-ui-ink"),
+                ("--lab-ui-go","--lab-ui-on-action"),
+                ("--lab-ui-highlight","--lab-ui-on-highlight"),
+            ):
+                self.assertGreaterEqual(contrast(values[bg],values[fg]),4.5,
+                    name+" foreground on "+bg)
+            for ink in ("--lab-print-active-ink","--lab-print-stamp"):
+                self.assertGreaterEqual(contrast(values["--lab-ui-surface"],values[ink]),3,
+                    name+" graphical ink contrast: "+ink)
+        self.assertIn("kingston",print_profiles)
+        css=source("android-lab/web/theme-print.css")
+        manual=source("android-lab/web/manual-guide-theme.css")
+        self.assertNotRegex(css,r"data-pwa-theme=(kingston|detroit|addis|polish|beirut)")
+        for role in ("--lab-print-active-ink","--lab-print-stamp"):
+            self.assertIn("var("+role,css)
+        self.assertIn("var(--lab-print-active-ink)",manual)
+
     def test_app_and_iframe_load_the_same_source(self):
         bundle = source("scripts/bundle_android_lab.py")
         manual = source("android-lab/web/manual-guide.html")
