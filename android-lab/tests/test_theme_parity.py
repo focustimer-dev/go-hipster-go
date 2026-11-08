@@ -26,6 +26,9 @@ class AndroidThemeParity(unittest.TestCase):
         for file in ('launcher/assets/pwa-themes.css','launcher/assets/pwa-atlas-themes.css'):
             self.assertIn(file,build)
         self.assertIn('android-lab/web/theme.js',build)
+        self.assertIn('android-lab/web/theme-tokens.css',build)
+        manual=(ROOT/'android-lab/web/manual-guide.html').read_text()
+        self.assertIn('/assets/lab-theme-tokens.css',manual)
         self.assertIn('<script src="/assets/lab-themes.js"></script>',build)
         self.assertIn('<link rel="stylesheet" href="/assets/pwa-themes.css" data-lab-palette-style media="not all">',build)
         self.assertIn('document.documentElement.dataset.pwaTheme===',build)
@@ -51,7 +54,7 @@ class AndroidThemeParity(unittest.TestCase):
         css=(ROOT/'android-lab/web/workspace.css').read_text()
         palette=(ROOT/'launcher/assets/pwa-themes.css').read_text()
         self.assertIn("--racing-yellow:#e5cf42",palette)
-        roles=(ROOT/'launcher/assets/pwa-atlas-themes.css').read_text()
+        roles=(ROOT/'android-lab/web/theme-tokens.css').read_text()
         self.assertIn('--lab-ui-highlight:#e5cf42',roles)
         self.assertIn('--lab-ui-go:#00613b',roles)
         self.assertIn('--lab-action-yellow:var(--lab-ui-highlight)',css)
