@@ -657,7 +657,9 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
  body.gig-poster.lab-workspace[data-page=launch] .poster-go-trail-mark{
  font-size:1.35rem;
  padding:3px 5px;
- transform:none;
+ transform:none;animation:none;
+ background:transparent;color:var(--jukebox-ink);
+ border:0;box-shadow:none;
 }
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
  body.gig-poster.lab-workspace[data-page=launch] .poster-go-trail-arrow{
@@ -689,8 +691,13 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
 }
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
  body.gig-poster.lab-workspace[data-page=launch]
- :is(#labInspirationGo,.lab-inspiration-recent-copy span,.mood-hint){
+ :is(#labInspirationGo,.lab-inspiration-recent-copy span){
  font:400 .875rem/1.45 Arial,Helvetica,sans-serif;
+ letter-spacing:0;
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+ body.gig-poster.lab-workspace[data-page=launch] .mood-hint{
+ font:400 1rem/1.45 Arial,Helvetica,sans-serif;
  letter-spacing:0;
 }
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
