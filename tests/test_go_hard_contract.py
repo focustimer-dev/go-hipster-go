@@ -58,18 +58,21 @@ class GoHardContract(unittest.TestCase):
                      "adapters/chatgpt/CHATGPT_KNOWLEDGE.md",
                      "adapters/gemini/GEM_KNOWLEDGE.md",
                      "adapters/gemini/references/workflow.md"):
-            link = ("https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/verification.md"
+            link = ("https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/cover-art.md"
                     if path == "adapters/gemini/references/workflow.md"
-                    else "references/verification.md")
-            self.assertIn("[the sleeve workflow](" + link + ")", read(path), path)
-        for path in ("references/verification.md",
-                     "skills/go-hipster-go/references/verification.md",
+                    else "references/cover-art.md")
+            self.assertIn("[the four-layer period-authentic sleeve workflow](" + link + ")", read(path), path)
+        for path in ("references/cover-art.md",
+                     "skills/go-hipster-go/references/cover-art.md",
                      "adapters/chatgpt/CHATGPT_KNOWLEDGE.md",
                      "adapters/gemini/GEM_KNOWLEDGE.md"):
             policy = read(path)
-            self.assertIn("## Optional cover art", policy, path)
-            self.assertIn("original release year and actual local scene", policy, path)
-            self.assertIn("Do not claim art was uploaded or applied", policy, path)
+            self.assertIn("original release date and local scene", policy, path)
+            self.assertIn("Do not claim the art was uploaded", policy, path)
+            self.assertIn("1. **Packaging and substrate architecture.", policy, path)
+            self.assertIn("4. **Subject, composition and label furniture.", policy, path)
+        self.assertIn("## Optional cover art", read("references/verification.md"))
+        self.assertIn("(cover-art.md)", read("references/verification.md"))
 
     def test_mobile_ui_reuses_existing_primitive(self):
         html = read("launcher/index.html")
