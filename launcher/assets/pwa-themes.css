@@ -418,7 +418,7 @@ html[data-pwa-theme=usiku] body.gig-poster{
 /* A restrained leather chart mat around the night-ocean plate.
    The geography and map SVG continue to use their existing fills/gestures. */
 html[data-pwa-theme=usiku] body.gig-poster .crate-map-frame{
- background:radial-gradient(ellipse at 50% 45%,#003018 24%,#162e22 66%,#432b20 100%);
+ background:radial-gradient(ellipse at 50% 38%,#004225 0%,#003018 78%);
  border-top:1px solid var(--usiku-leather-edge);
  border-bottom:1px solid var(--usiku-leather-edge);
 }
