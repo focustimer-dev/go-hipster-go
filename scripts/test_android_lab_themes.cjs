@@ -68,8 +68,11 @@ const palettes={
     assert.equal(routes.width,name==='liberi'?1:1.7,'Routes must read at phone size for '+name);
     assert.equal(routes.opacity,name==='liberi'?.65:.88,'Routes must not fade away in '+name);
     const water=await page.evaluate(()=>window.labAtlasGlobe.getPaintProperty('ocean','background-color'));
-    assert.equal(water,({liberi:'#103135',bosque:'#f5f0e6',usiku:'#111111'})[name],
-     'Robinson and Globe water must preserve '+name+' ocean ink at phone size');
+    assert.equal(water,'rgba(0,0,0,0)',
+     'Robinson exterior field must not be painted with the water color');
+    const plate=await page.evaluate(()=>window.labAtlasGlobe.getPaintProperty('robinson-ocean','fill-color'));
+    assert.equal(plate,({liberi:'#103135',bosque:'#f5f0e6',usiku:'#111111'})[name],
+     'Robinson ocean polygon must preserve '+name+' actual sea ink');
     if(name!=='liberi')assert(routes.keyesWidth>=1.8,'Keyes dashed route ink must be visible on '+width+'px');
     if(width===390){
      await page.locator('.mood-grid').scrollIntoViewIfNeeded();
