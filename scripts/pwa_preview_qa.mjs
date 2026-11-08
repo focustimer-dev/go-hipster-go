@@ -221,8 +221,11 @@ for(const profile of profiles){
   });
   await page.waitForFunction(()=>{
     const ticket=document.getElementById('selectionTicket');
-    return ticket && !ticket.hidden && !ticket.classList.contains('is-docked');
-  },null,{timeout:6000});
+    if(!ticket || ticket.hidden || ticket.classList.contains('is-docked'))return false;
+    // Visibility changes via rAF; hidden=false alone can precede layout.
+    const bounds=ticket.getBoundingClientRect();
+    return bounds.height>=44&&getComputedStyle(ticket).display!=='none';
+  },null,{timeout:12000});
   const collision=await page.evaluate(()=>{
     const nav=document.querySelector('.pwa-rail').getBoundingClientRect();
     const ticket=document.getElementById('selectionTicket').getBoundingClientRect();
@@ -426,14 +429,21 @@ for (const width of [390,320]) {
     const proof=await veil.evaluate(el=>{
      const canvas=el.querySelector('.lab-cahill-motion-canvas');
      const pixel=canvas?.getContext('2d')?.getImageData(1,1,1,1).data;
-     return {backdrop:getComputedStyle(el).backgroundColor,
+     const style=getComputedStyle(el);
+     return {backdrop:style.backgroundColor,gradient:style.backgroundImage,
       pixel:pixel?[...pixel]:null};
     });
-    const backdrop=theme==='usiku'?'rgb(17, 17, 17)':'rgb(245, 240, 230)';
-    assert.equal(proof.backdrop,backdrop,'Cahill animated veil does not flash Liberi paper');
-    assert.deepEqual(proof.pixel?.slice(0,3),
-     theme==='usiku'?[17,17,17]:[245,240,230],
-     'Real Cahill tween canvas has themed pixels, not Liberi yellow');
+    if(theme==='usiku'){
+     assert.match(proof.gradient,/radial-gradient/,
+      'Usiku Cahill veil uses the same forest vignette as the resting map');
+     assert.deepEqual(proof.pixel?.slice(0,3),[0,48,24],
+      'Usiku Cahill canvas uses forest field outside dark oceans');
+    }else{
+     assert.equal(proof.backdrop,'rgb(245, 240, 230)',
+      'Bosque Cahill veil uses cream paper');
+     assert.deepEqual(proof.pixel?.slice(0,3),[245,240,230],
+      'Bosque Cahill canvas uses cream field, never Liberi mustard');
+    }
     await atlas.locator('#labAtlasGlobe').screenshot({
      path:folder+'/atlas-'+width+'-'+mode+'-inbetween.png',timeout:30000
     });
