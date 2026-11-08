@@ -65,6 +65,27 @@ class AndroidThemeRoles(unittest.TestCase):
                 a, b = data["--lab-ui-" + bg], data["--lab-ui-" + fg]
                 self.assertGreaterEqual(contrast(a, b), 4.5, f"{theme}: {fg} on {bg}")
 
+    def test_bosque_go_matches_existing_action_green(self):
+        bosque = self.tokens["bosque"]
+        self.assertEqual(bosque["--lab-ui-go"], bosque["--lab-ui-action"])
+        self.assertEqual(bosque["--lab-ui-go"], "#004225")
+        app = source("android-lab/web/workspace.css")
+        self.assertIn("background-image:none!important", app)
+        self.assertIn(":root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .lab-page", app)
+
+    def test_usiku_manual_setup_print_and_tempo_vignette(self):
+        manual = source("android-lab/web/manual-guide-theme.css")
+        self.assertIn(":is(#setupSend,#setupSendChat) .receipt", manual)
+        self.assertIn("color:var(--lab-ui-ticket-ink)!important", manual)
+        self.assertIn("font:400 clamp(1.5rem,5.2vw,2rem)/1.14 Poster,sans-serif", manual)
+        self.assertGreaterEqual(
+            contrast(self.tokens["usiku"]["--lab-ui-ticket-stock"],
+                     self.tokens["usiku"]["--lab-ui-ticket-ink"]), 4.5)
+        app = source("android-lab/web/workspace.css")
+        self.assertIn("#tempoSlider::-webkit-slider-thumb", app)
+        self.assertIn("#tempoSlider::-moz-range-thumb", app)
+        self.assertIn("radial-gradient(circle at 42% 38%,#b77b4d 0%,#925b39 48%,#7e4c30 100%)", app)
+
     def test_app_and_iframe_load_the_same_source(self):
         bundle = source("scripts/bundle_android_lab.py")
         manual = source("android-lab/web/manual-guide.html")
