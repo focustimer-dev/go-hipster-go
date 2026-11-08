@@ -220,7 +220,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert(Math.abs(robinsonFrame.width/robinsonFrame.height-720/372)<.05,'Robinson keeps the original wide chart');
   assert.equal(await page.locator('#atlasHome').textContent(),'← WHOLE WORLD');
   assert.equal(await page.evaluate(()=>labAtlasGlobe.getPaintProperty('ocean','background-color')),
-   'rgba(0,0,0,0)','Robinson clears the globe-wide ocean before painting the rounded map');
+   '#103135','Liberi Robinson sea remains petrol instead of revealing the cream map backing');
   try{await page.locator('#labAtlasGlobe').screenshot({path:'android-lab/build/switch-review/robinson-transition-fast.png',timeout:9000})}
   catch(err){console.warn('Optional robinson-transition-fast review screenshot skipped:',err.message)}
 
