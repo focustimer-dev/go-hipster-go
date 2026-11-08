@@ -87,3 +87,24 @@
  font:400 1.35rem/1.2 Poster,sans-serif;
  border-bottom:1px solid var(--lab-ui-rule);
 }
+
+/* Usiku setup demo: the ticket is pale stock, so its printed lettering
+   must use the same dark, high-density forest ink as the first-run card.
+   Match Copy Setup Check to our condensed Poster actions, not the generic
+   inherited light-on-dark Manual button. Applies to Gemini and ChatGPT. */
+:root[data-pwa-theme=usiku] body.embedded-guide :is(#setupSend,#setupSendChat) .receipt{
+ background:var(--lab-ui-ticket-stock)!important;
+ color:var(--lab-ui-ticket-ink)!important;
+ border-top-color:var(--lab-ui-ticket-ink)!important;
+}
+:root[data-pwa-theme=usiku] body.embedded-guide :is(#setupSend,#setupSendChat) .receipt .setup-actions .primary{
+ font:400 clamp(1.5rem,5.2vw,2rem)/1.14 Poster,sans-serif;
+ letter-spacing:.005em;
+ color:var(--lab-ui-ticket-ink)!important;
+ background:transparent!important;
+ border:2px solid var(--lab-ui-ticket-ink)!important;
+ min-height:48px;
+}
+:root[data-pwa-theme=usiku] body.embedded-guide :is(#setupSend,#setupSendChat) .receipt .setup-actions .primary:hover{
+ background:#00301812!important;
+}

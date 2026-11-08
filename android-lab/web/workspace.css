@@ -602,3 +602,26 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
  color:var(--lab-ui-on-action);
  border-color:var(--lab-ui-rule);
 }
+
+/* Release polish: Bosque uses one clean, flat paper surface across Jukebox,
+   Crate and Manual. The legacy .lab-page stock.webp texture belongs to
+   Libéri; the Usiku Crate keeps its own subtle dark texture untouched. */
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .lab-page{
+ background:var(--lab-ui-surface)!important;
+ background-image:none!important;
+ background-blend-mode:normal!important;
+}
+
+/* Usiku's tempo knob picks up the existing saddle/vignette inks used in its
+   portraits and Manual keycap. Only the thumb paint changes: keep track,
+   geometry, hitbox, value and Any-state semantics exactly as they are. */
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #tempoSlider::-webkit-slider-thumb{
+ background:radial-gradient(circle at 42% 38%,#b77b4d 0%,#925b39 48%,#7e4c30 100%);
+ border:2px solid var(--lab-ui-on-action);
+ box-shadow:0 0 0 1px var(--lab-ui-surface);
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #tempoSlider::-moz-range-thumb{
+ background:radial-gradient(circle at 42% 38%,#b77b4d 0%,#925b39 48%,#7e4c30 100%);
+ border:2px solid var(--lab-ui-on-action);
+ box-shadow:0 0 0 1px var(--lab-ui-surface);
+}
