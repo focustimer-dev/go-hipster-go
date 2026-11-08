@@ -29,3 +29,28 @@
 }
 :root[data-pwa-theme=usiku] .player #stop{border-color:#f5f0e6;color:#f5f0e6}
 :root[data-pwa-theme=bosque] .player #stop{border-color:#f5f0e6;color:#f5f0e6}
+
+/* Usiku's pale --ink must not become the eject key's pale keycap as well.
+   The recessed saddle transport key echoes the Jukebox portrait stock;
+   cream remains the legible glyph, including on hover and when opened. */
+:root[data-pwa-theme=usiku] .crate-action{
+ background:#38261c;
+ box-shadow:inset 0 0 0 1px #b77b4d88,0 1px 2px #0009;
+}
+:root[data-pwa-theme=usiku] .crate-action .deck-key,
+:root[data-pwa-theme=usiku] .crate-picker summary:hover .deck-key{
+ background:linear-gradient(180deg,#925b39 0%,#7e4c30 88%,#633920 100%);
+ box-shadow:inset 0 1px 0 #ffffff38,inset -1px 0 0 #0007,0 1px 1px #0009;
+}
+:root[data-pwa-theme=usiku] .crate-action .deck-key svg,
+:root[data-pwa-theme=usiku] .crate-picker summary:hover .crate-action .deck-key svg{
+ color:#f5f0e6;
+}
+:root[data-pwa-theme=usiku] .deck-key::after{
+ background:#f5f0e655;
+ box-shadow:none;
+}
+:root[data-pwa-theme=usiku] .crate-picker[open] .deck-key,
+:root[data-pwa-theme=usiku] .crate-picker summary:active .deck-key{
+ background:linear-gradient(180deg,#633920,#7e4c30);
+}
