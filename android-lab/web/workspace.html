@@ -6,11 +6,16 @@
 </nav>
 <main id="labCrate" class="lab-page" aria-labelledby="labCrateTitle" hidden>
 <h1 id="labCrateTitle" tabindex="-1">YOUR CRATE</h1><p class="lab-intro" id="labCrateHeaderSummary">Inspiration and exact requests, saved on this device.</p>
-<section aria-labelledby="labInspirationTitle"><h2 id="labInspirationTitle">INSPIRATION</h2><div class="lab-record"><div class="lab-record-main"><h3 id="labCrateReference">No reference on the counter.</h3><p id="labCrateReferenceHelp">Share a song link to Hipster GO Lab, or add a musical idea here.</p></div><button type="button" class="lab-text-button" data-lab-action="inspiration" id="labCrateReview">ADD</button></div></section>
+<section id="labCrateEmpty" class="lab-crate-empty" aria-labelledby="labCrateEmptyTitle" hidden>
+<h2 id="labCrateEmptyTitle">NOTHING IN YOUR CRATE YET</h2>
+<p>Start with an idea, an artist or a song link. Saved requests appear here after GO.</p>
+<button type="button" class="lab-wide-button" data-lab-action="inspiration">ADD AN INSPIRATION</button>
+</section>
+<section id="labCrateInspirationSection" aria-labelledby="labInspirationTitle"><h2 id="labInspirationTitle">INSPIRATION</h2><div class="lab-record"><div class="lab-record-main"><h3 id="labCrateReference">No reference on the counter.</h3><p id="labCrateReferenceHelp">Share a song link to Hipster GO Lab, or add a musical idea here.</p></div><button type="button" class="lab-text-button" data-lab-action="inspiration" id="labCrateReview">ADD</button></div></section>
 <button type="button" class="lab-wide-button" data-lab-action="shape-inspiration" id="labCrateContinue" hidden>USE IN JUKEBOX</button>
-<section aria-labelledby="labRecentTitle"><h2 id="labRecentTitle">RECENT INSPIRATIONS</h2><div id="labRecentInspirations"></div></section>
-<section aria-labelledby="labSavedTitle"><div class="lab-section-head"><h2 id="labSavedTitle">SAVED REQUESTS</h2><span id="labSavedCount" class="lab-meta">0 / 10</span></div><div id="labSavedRows"></div></section>
-<p class="lab-local-note">Saved on this device: the request, not the playlist. Uninstalling Lab removes your Crate.</p>
+<section id="labCrateRecentSection" aria-labelledby="labRecentTitle"><h2 id="labRecentTitle">RECENT INSPIRATIONS</h2><div id="labRecentInspirations"></div></section>
+<section id="labCrateSavedSection" aria-labelledby="labSavedTitle"><div class="lab-section-head"><h2 id="labSavedTitle">SAVED REQUESTS</h2><span id="labSavedCount" class="lab-meta">0 / 10</span></div><div id="labSavedRows"></div></section>
+<p class="lab-local-note" id="labCrateLocalNote">Saved on this device: the request, not the playlist. Uninstalling Lab removes your Crate.</p>
 </main>
 <main id="labManual" class="lab-page" aria-labelledby="labManualTitle" hidden>
 <h1 id="labManualTitle" class="lab-visually-hidden" tabindex="-1">The Manual</h1>

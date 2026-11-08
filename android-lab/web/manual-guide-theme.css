@@ -64,3 +64,26 @@
 :root[data-pwa-theme=usiku] .crate-picker summary:active .deck-key{
  background:linear-gradient(180deg,#633920,#7e4c30);
 }
+
+/* Android guide index: the picker is the page title; put the useful guides
+   first and keep the optional explanation in a quiet disclosure below. */
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku]) .manual-navigation{
+ margin-bottom:8px;
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku]) .manual-index{
+ padding:6px 0 16px;
+ border-bottom:1px solid var(--lab-ui-rule);
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku]) .manual-index a{
+ padding:12px 0;
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku]) .manual-liner{
+ margin-top:8px;
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku]) .manual-liner>summary{
+ box-sizing:border-box;
+ min-height:44px;
+ padding:13px 0;
+ font:400 1.35rem/1.2 Poster,sans-serif;
+ border-bottom:1px solid var(--lab-ui-rule);
+}

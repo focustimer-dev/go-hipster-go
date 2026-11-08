@@ -11,6 +11,73 @@ const palettes={
  bosque:{page:'rgb(245, 240, 230)',ink:'rgb(0, 48, 24)',land:'#004225'},
  usiku:{page:'rgb(17, 17, 17)',ink:'rgb(245, 240, 230)',land:'#f5f0e6'}
 };
+async function verifyCrateHierarchy(page,name,width){
+ const read=()=>page.evaluate(()=>{
+  const visible=id=>!document.getElementById(id).hidden;
+  return {
+   empty:visible('labCrateEmpty'),
+   reference:visible('labCrateInspirationSection'),
+   recent:visible('labCrateRecentSection'),
+   saved:visible('labCrateSavedSection'),
+   note:visible('labCrateLocalNote'),
+   count:document.getElementById('labSavedCount').textContent.trim()
+  };
+ });
+ const apply=async state=>page.evaluate(next=>{
+  Object.assign(window.auditCrate,{saved:[],recentInspirations:[],activeInspiration:''},next);
+  window.HipsterLabStateChanged();
+ },state);
+ assert.deepEqual(await read(),{empty:true,reference:false,recent:false,saved:false,note:false,count:'0 / 10'},
+  name+' empty Crate must have one invitation, no empty shelves');
+ const button=page.locator('#labCrateEmpty [data-lab-action="inspiration"]');
+ assert.equal(await button.count(),1,'Single actionable empty-state invitation');
+ if(width===390)await page.locator('#labCrate').screenshot({path:path.join(output,name+'-crate-empty.png')});
+ await apply({recentInspirations:[{id:'recent1',text:'Old soul at midnight'}]});
+ assert.deepEqual(await read(),{empty:false,reference:false,recent:true,saved:false,note:true,count:'0 / 10'},
+  name+' recent-only crate reveals just recent inspirations');
+ await apply({saved:[{id:'saved1',prompt:'@go-hipster-go go funky',name:'An old groove',ai:'gemini',time:1780000000000}]});
+ assert.deepEqual(await read(),{empty:false,reference:false,recent:false,saved:true,note:true,count:'1 / 10'},
+  name+' saved-only crate reveals only saved requests');
+ await apply({activeInspiration:'An old dub single'});
+ assert.deepEqual(await read(),{empty:false,reference:true,recent:false,saved:false,note:true,count:'0 / 10'},
+  name+' active inspiration reveals reference shelf');
+ await apply({});
+ await button.click();
+ assert.equal(await page.locator('#labJukebox').isVisible(),true,
+  'Empty Crate CTA opens Jukebox');
+ assert.equal(await page.locator('#labInspirationEditor').isVisible(),true,
+  'Empty Crate CTA opens the inspiration editor');
+ await page.locator('#labInspirationEditor [data-cancel]').click();
+}
+
+async function verifyManualHierarchy(page,name,width){
+ const guide=page.frameLocator('#labManualFrame');
+ await guide.locator('#manualNavigation').waitFor({state:'visible',timeout:15000});
+ const actual=await guide.locator('#manualHome').evaluate(home=>{
+  const index=home.querySelector('.manual-index'),liner=home.querySelector('.manual-liner');
+  const heading=index?.querySelector('h2');
+  const nav=index?.querySelector('nav');
+  return {
+   indexFirst:!!(index.compareDocumentPosition(liner)&Node.DOCUMENT_POSITION_FOLLOWING),
+   title:home.ownerDocument.getElementById('crateTitle')?.textContent,
+   category:home.ownerDocument.getElementById('crateCategory')?.textContent,
+   headingHidden:heading?.classList.contains('manual-home-heading'),
+   guideCount:nav?.querySelectorAll('a').length,
+   linerCollapsed:!liner.open,
+   includesSetup:!!nav?.querySelector('a[href="#setup"]'),
+   includesUse:!!nav?.querySelector('a[href="#idea"]')
+  };
+ });
+ assert.equal(actual.indexFirst,true,name+' guide choices precede optional explanation');
+ assert.equal(actual.headingHidden,true,'The repeated Manual heading is visually hidden, not removed from accessibility');
+ assert.equal(actual.guideCount,6,'All six practical guides remain accessible');
+ assert.equal(actual.includesSetup&&actual.includesUse,true,'Both Setup and Using guides remain linked');
+ assert.equal(actual.linerCollapsed,true,'Optional background remains collapsed');
+ assert.equal(actual.category,'Manual','The overview is Manual, not incorrectly labeled Setup');
+ assert.equal(actual.title,'Choose a guide','Picker advertises the immediate task');
+ if(width===390)await page.screenshot({path:path.join(output,name+'-manual-refined.png')});
+}
+
 (async()=>{
  const server=http.createServer((req,res)=>{
   const pathname=decodeURIComponent(new URL(req.url,'http://localhost').pathname);
@@ -29,7 +96,8 @@ const palettes={
    const errors=[];page.on('pageerror',e=>errors.push(e.message));
    await page.addInitScript(()=>{
     window.auditHandoff={mode:'share',oneTap:true};
-    window.HipsterLab={state:()=>JSON.stringify({saved:[],...window.auditHandoff}),inspiration:()=>'',copy:()=>true,go:()=>{}};
+    window.auditCrate={saved:[],recentInspirations:[],activeInspiration:''};
+    window.HipsterLab={state:()=>JSON.stringify({...window.auditCrate,...window.auditHandoff}),inspiration:()=>window.auditCrate.activeInspiration,copy:()=>true,go:()=>{}};
    });
    await page.goto('http://127.0.0.1:'+server.address().port+'/',{waitUntil:'domcontentloaded'});
    await page.waitForFunction(()=>window.labAtlasGlobe?.loaded()&&window.labCahillMap?.ready,null,{timeout:30000});
@@ -233,6 +301,7 @@ const palettes={
      await page.locator('[data-lab-tab=crate]').click();
      await page.locator('#labCrate').waitFor({state:'visible'});
      await page.screenshot({path:path.join(output,`${name}-crate.png`)});
+     await verifyCrateHierarchy(page,name,width);
      await page.locator('[data-lab-tab=manual]').click();
      await page.frameLocator('#labManualFrame').locator('#manualNavigation').waitFor({state:'visible',timeout:15000});
      await page.waitForFunction(name=>{
@@ -271,7 +340,15 @@ const palettes={
        'Usiku eject keycap is deep saddle, not cream');
       assert.equal(eject.housing,'rgb(56, 38, 28)','Usiku transport housing is visibly recessed');
      }
+     await verifyManualHierarchy(page,name,width);
      await page.screenshot({path:path.join(output,`${name}-manual.png`)});
+     await page.locator('[data-lab-tab=jukebox]').click();
+    }
+    if(width===320){
+     await page.locator('[data-lab-tab=crate]').click();
+     await verifyCrateHierarchy(page,name,width);
+     await page.locator('[data-lab-tab=manual]').click();
+     await verifyManualHierarchy(page,name,width);
      await page.locator('[data-lab-tab=jukebox]').click();
     }
    }

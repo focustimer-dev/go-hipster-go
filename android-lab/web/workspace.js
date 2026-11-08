@@ -103,6 +103,15 @@ function renderLabWorkspace(){
  doc.getElementById('labCrateReferenceHelp').textContent=reference?'Use it in Jukebox, or review the full reference.':'Share a song link to Lab, or add an idea.';
  doc.getElementById('labCrateReview').textContent=reference?'EDIT IN JUKEBOX':'ADD IN JUKEBOX';doc.getElementById('labCrateContinue').hidden=!reference;doc.getElementById('labSavedCount').textContent=entries.length+' / 10';
  const recent=Array.isArray(state.recentInspirations)?state.recentInspirations.filter(e=>e&&typeof e.id==='string'&&typeof e.text==='string').slice(0,3):[];
+ // A fresh Crate has one next step. Reveal only sections that contain
+ // records; all data stays in the existing native storage and render paths.
+ const emptyCrate=!reference&&recent.length===0&&entries.length===0;
+ doc.getElementById('labCrateEmpty').hidden=!emptyCrate;
+ doc.getElementById('labCrateHeaderSummary').hidden=emptyCrate;
+ doc.getElementById('labCrateInspirationSection').hidden=!reference;
+ doc.getElementById('labCrateRecentSection').hidden=recent.length===0;
+ doc.getElementById('labCrateSavedSection').hidden=entries.length===0;
+ doc.getElementById('labCrateLocalNote').hidden=emptyCrate;
  const shelf=doc.getElementById('labRecentInspirations');
  if(shelf&&shelf.dataset.records!==JSON.stringify([reference,recent])){
   shelf.dataset.records=JSON.stringify([reference,recent]);shelf.replaceChildren();
