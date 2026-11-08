@@ -164,7 +164,17 @@ async function verifyManualHierarchy(page,name,width){
     if(width===390)await page.screenshot({path:path.join(output,`${name}-preferences.png`)});
     await page.locator('[data-lab-action=close-preferences]').click();
     await page.waitForTimeout(150);
-    if(name==='usiku'&&width===390)await page.locator('.tempo-control').screenshot({path:path.join(output,'usiku-tempo-saddle-thumb.png')});
+    if(name==='usiku'&&width===390){
+     // Any intentionally hides its slider thumb. Select Mid to inspect the
+     // actual saddle-painted circle, then restore the user's Any state.
+     await page.locator('#tempoSlider').evaluate(el=>{
+      el.value='3';el.dispatchEvent(new Event('input',{bubbles:true}));
+     });
+     assert.equal(await page.locator('#tempoControl').getAttribute('data-tempo'),'moderate');
+     await page.locator('.tempo-control').screenshot({path:path.join(output,'usiku-tempo-saddle-thumb.png')});
+     await page.locator('#anyTempo').click();
+     assert.equal(await page.locator('#tempoControl').getAttribute('data-tempo'),'any');
+    }
     if(name==='usiku')await page.locator('#firstCrateSetup [data-action="choose"]').first().click();
     if(name==='usiku'){
      const contrast=await page.evaluate(()=>{
