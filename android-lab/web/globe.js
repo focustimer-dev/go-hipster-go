@@ -427,7 +427,10 @@ function labAtlasCommitMode(mode,keepHostSize=false){
  labGlobe.getSource('land').setData(mode==='robinson'?labRobinsonData:labGlobeGeography);
  if(labRouteGeography)labGlobe.getSource('routes').setData(mode==='robinson'?labRobinsonGeometry(labRouteGeography):labRouteGeography);
  for(const {marker,point} of labSecretMarkers)marker.setLngLat(labAtlasPoint(point));
- labGlobe.setPaintProperty('ocean','background-color',mode==='robinson'?'rgba(0,0,0,0)':'#103135');
+ // Color the actual water, including Robinson. A transparent MapLibre
+  // background exposed the cream backing through the ocean polygon in Liberi.
+  // The palette adapter supplies the same sea color to all three projections.
+  labGlobe.setPaintProperty('ocean','background-color',window.GHGAtlasPaintColors?.().ocean||'#103135');
  labGlobe.setLayoutProperty('robinson-ocean','visibility',mode==='robinson'?'visible':'none');
  labAtlasSwitchButtons(mode);
  labGlobe.touchZoomRotate[mode==='robinson'?'disableRotation':'enableRotation']();
