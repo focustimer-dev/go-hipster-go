@@ -68,7 +68,7 @@ const palettes={
     assert(routes.count>0&&routes.keyesCount>0,'Original shipping lanes must remain in both atlas engines');
     const expected=name==='liberi'?'#edc65d':name==='bosque'?'#8c6239':'#b77b4d';
     assert.equal(routes.color,expected,'Route ink '+name+' must match original/theme palette');
-    assert.equal(routes.width,name==='liberi'?1:1.7,'Routes must read at phone size for '+name);
+    assert.equal(routes.width,name==='liberi'?1:1.2,'Routes must read at phone size for '+name);
     assert.equal(routes.opacity,name==='liberi'?.65:.88,'Routes must not fade away in '+name);
     const water=await page.evaluate(()=>window.labAtlasGlobe.getPaintProperty('ocean','background-color'));
     assert.equal(water,'rgba(0,0,0,0)',
@@ -76,7 +76,7 @@ const palettes={
     const plate=await page.evaluate(()=>window.labAtlasGlobe.getPaintProperty('robinson-ocean','fill-color'));
     assert.equal(plate,({liberi:'#103135',bosque:'#e8e9df',usiku:'#111111'})[name],
      'Robinson ocean polygon must preserve '+name+' actual sea ink');
-    if(name!=='liberi')assert(routes.keyesWidth>=1.8,'Keyes dashed route ink must be visible on '+width+'px');
+    if(name!=='liberi')assert.equal(routes.keyesWidth,1.2,'Keyes routes must be slim and readable at '+width+'px');
     assert.equal(await page.evaluate(()=>!!window.labAtlasGlobe.getLayer('robinson-outline')),false,
      'No orphaned Robinson stroke; ocean ink separates map from its paper');
     if(width===390){
@@ -120,6 +120,17 @@ const palettes={
       const doc=document.getElementById('labManualFrame')?.contentDocument;
       return doc?.documentElement.dataset.pwaTheme===name;
      },name,{timeout:8000});
+     if(name==='usiku'){
+      const eject=await page.frameLocator('#labManualFrame').locator('.crate-action .deck-key svg')
+       .evaluate(el=>({
+        ink:getComputedStyle(el).color,
+        keycap:getComputedStyle(el.closest('.deck-key')).backgroundImage,
+        housing:getComputedStyle(el.closest('.crate-action')).backgroundColor
+       }));
+      assert.equal(eject.ink,'rgb(245, 240, 230)','Usiku eject icon keeps cream contrast');
+      assert.match(eject.keycap,/rgb\\(126, 76, 48\\)/,'Usiku eject keycap is deep saddle, not cream');
+      assert.equal(eject.housing,'rgb(56, 38, 28)','Usiku transport housing is visibly recessed');
+     }
      await page.screenshot({path:path.join(output,`${name}-manual.png`)});
      await page.locator('[data-lab-tab=jukebox]').click();
     }
