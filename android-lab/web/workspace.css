@@ -559,9 +559,13 @@ body.gig-poster .crate-map-frame.lab-globe-frame .atlas-radial-field{display:non
 body.gig-poster.lab-workspace[data-page=launch] #promptReceipt .receipt-copy{
  display:none!important;
 }
+/* Inverse share/reopen buttons use the local forest/cream/cognac inks in
+   BOTH new themes. Liberi alone retains the original vermilion impression. */
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace[data-page=launch],
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace[data-page=launch]{
  --receipt-ink:#004225;
 }
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace[data-page=launch] .handoff #openAi[aria-disabled=false],
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace[data-page=launch] .handoff #openAi[aria-disabled=false]{
  background:#004225;
  color:#f5f0e6;
