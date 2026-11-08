@@ -74,7 +74,7 @@ class AndroidThemeParity(unittest.TestCase):
         theme=(ROOT/'android-lab/web/theme.js').read_text()
         # A visible, direct action exists in the setup walkthrough, not just
         # a generic dialog reachable from the last item in More Resources.
-        self.assertIn('FINISH SETUP · RECORD INSTALLATION',guide)
+        self.assertIn('id="geminiSkillCheckStatus"',guide)
         self.assertIn('id="labSkillNotice"', (ROOT/'android-lab/web/workspace.html').read_text())
         self.assertIn('body.lab-workspace .lab-update-notice[hidden]{display:none}', (ROOT/'android-lab/web/workspace.css').read_text())
         self.assertIn('data-review-skill-updates',guide)
@@ -83,7 +83,7 @@ class AndroidThemeParity(unittest.TestCase):
         self.assertIn("type:'lab-skill-status'",workspace)
         self.assertIn("event.data?.type!=='lab-skill-status'",guide)
         self.assertIn('geminiSkillCheckStatus',guide)
-        self.assertIn('skill-checkin button',style)
+        self.assertIn('#setupConfirm .finish [data-review-skill-updates]',style)
         self.assertIn('background:#004225;color:#e5cf42;',style)
         # The original one-sided native checkbox confirmation must remain:
         # viewing/downloading cannot silently assert Gemini is updated.
