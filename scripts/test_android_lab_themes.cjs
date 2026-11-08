@@ -27,7 +27,10 @@ const palettes={
   for(const width of [390,320]){
    const page=await browser.newPage({viewport:{width,height:860},isMobile:true,hasTouch:true});
    const errors=[];page.on('pageerror',e=>errors.push(e.message));
-   await page.addInitScript(()=>{window.HipsterLab={state:()=>'{"saved":[]}',inspiration:()=>'',copy:()=>true,go:()=>{}}});
+   await page.addInitScript(()=>{
+    window.auditHandoff={mode:'share',oneTap:true};
+    window.HipsterLab={state:()=>JSON.stringify({saved:[],...window.auditHandoff}),inspiration:()=>'',copy:()=>true,go:()=>{}};
+   });
    await page.goto('http://127.0.0.1:'+server.address().port+'/',{waitUntil:'domcontentloaded'});
    await page.waitForFunction(()=>window.labAtlasGlobe?.loaded()&&window.labCahillMap?.ready,null,{timeout:30000});
    await page.emulateMedia({reducedMotion:'reduce'});
@@ -77,6 +80,18 @@ const palettes={
       await page.locator('#labInspiration').screenshot({path:path.join(output,'usiku-inspiration-contrast.png')});
       await page.locator('#labInspiration').evaluate(el=>el.hidden=true);
      }
+    }
+    // A valid handoff must not inherit Liberi's vermilion in the new skins.
+    if(name!=='liberi'){
+     const buttonInk=await page.locator('#openAi').evaluate(el=>{
+      el.setAttribute('aria-disabled','false');
+      const st=getComputedStyle(el);
+      const result={bg:st.backgroundColor,fg:st.color};
+      el.setAttribute('aria-disabled','true');
+      return result;
+     });
+     assert.equal(buttonInk.bg,'rgb(0, 66, 37)',name+' has a forest handoff key');
+     assert.equal(buttonInk.fg,'rgb(245, 240, 230)',name+' handoff lettering must be cream');
     }
     // Source map paint is not a post-hoc CSS bitmap filter.
     const paint=await page.evaluate(()=>({
@@ -218,7 +233,11 @@ const palettes={
     receiptText:document.getElementById('receiptCopy').textContent,
     heading:document.getElementById('handoffTitle').textContent,
     goState:document.getElementById('goButton').dataset.copyState,
-    handoffBackground:getComputedStyle(document.getElementById('openAi')).backgroundColor
+    handoffBackground:getComputedStyle(document.getElementById('openAi')).backgroundColor,
+    openHidden:document.getElementById('openAi').hidden,
+    manualOpenHidden:document.getElementById('manualOpenAi').hidden,
+    retryLabel:document.getElementById('shareButton').textContent,
+    retryVisible:getComputedStyle(document.getElementById('shareButton')).display!=='none'
    }));
    assert.equal(copied.goState,'copied','GO still confirms successful clipboard write');
    assert.equal(copied.receiptVisible,'none','Android receipt has no duplicate copied stamp');
@@ -226,6 +245,19 @@ const palettes={
    assert.equal(copied.receiptText,'','Receipt copy status is not repeated');
    assert.match(copied.heading,/^CONTINUE IN /,'Handoff communicates next step, not another copy stamp');
    assert.equal(copied.handoffBackground,'rgb(0, 66, 37)','Usiku handoff never injects vermilion');
+   assert.equal(copied.openHidden,true,'One-Tap sharing must not add a duplicate full-width share action');
+   assert.equal(copied.manualOpenHidden,true,'A successful copy should not show manual-only recovery');
+   assert.match(copied.retryLabel,/Share this request again/,'Recovery remains a single explicitly named share link');
+   assert.equal(copied.retryVisible,true,'Existing retry path must remain reachable');
+   await page.evaluate(()=>{
+    window.auditHandoff.oneTap=false;
+    window.HipsterLabStateChanged();
+   });
+   assert.equal(await page.locator('#openAi').evaluate(el=>el.hidden),false,'Two-step GO must retain the explicit Open/Share control');
+   await page.evaluate(()=>{
+    window.auditHandoff.oneTap=true;
+    window.HipsterLabStateChanged();
+   });
    if(width===390)await page.locator('#promptReceipt').screenshot({path:path.join(output,'usiku-copied-receipt.png')});
    await page.reload({waitUntil:'domcontentloaded'});
    assert.equal(await page.evaluate(()=>document.documentElement.dataset.pwaTheme),'usiku','Persisted theme must apply before paint');
