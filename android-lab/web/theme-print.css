@@ -199,4 +199,39 @@
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=triumphant][aria-pressed=true] .face::after{
   filter:url(#alphaInk)!important;
 }
+/* Print-profile QA corrections: all shared rules, no theme-name selectors.
+   Keep the original sprite alpha. The selected Funk plate has no visible
+   figure in this print treatment, so retain the ORIGINAL neutral engraving
+   under its distinct selected stock and rays until source-state audit. */
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #firstCrateSetup{
+ --ink:var(--lab-ui-ticket-ink);--paper:var(--lab-ui-ticket-stock);
+ --cream:var(--lab-ui-ticket-stock);--ticket-stock:var(--lab-ui-ticket-stock);
+ --receipt-red:var(--lab-ui-ticket-ink);
+ --setup-rule:var(--lab-ui-highlight);
+ --red:var(--lab-ui-highlight);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #firstCrateSetup .ink-stamp{
+ color:var(--lab-ui-ticket-ink);border-color:var(--lab-ui-highlight);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #labCrateEmpty{
+ border-color:var(--lab-ui-rule);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
+ background:var(--lab-ui-action);color:var(--lab-ui-on-action);border-color:var(--lab-ui-rule);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #goButton .star-glyph{
+ filter:var(--lab-print-stamp-filter,none);
+}
+/* Match the unique Desire/Triumph SVG ink-flood to the neutral/selected role,
+   leaving their existing luminance-based etch and artwork untouched. */
+:root[data-ghg-theme-profile=print] :is(#referenceInk,#alphaInk) feFlood{
+ flood-color:var(--lab-mood-neutral-ink);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true] .face::before{
+ opacity:1;background-color:var(--lab-mood-funk-ink);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true] .face::after{
+ opacity:0;
+}
+
 /* Do not alter layout widths, touch geometry, map projection math or font. */
