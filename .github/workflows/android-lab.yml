@@ -75,7 +75,11 @@ jobs:
       - run: node scripts/test_render_efficiency.cjs
       - run: node scripts/test_atlas_boundary.cjs
       - run: npx playwright install --with-deps chromium
-      - run: node scripts/test_android_lab_themes.cjs
+      # Bound headless browser tests explicitly. A stalled SwiftShader frame
+      # or orphaned Playwright wait must fail this stage, not monopolize the
+      # entire Android build. 124 means the watchdog expired.
+      - name: Phone theme and three-projection regression (4m watchdog)
+        run: timeout --signal=TERM --kill-after=10s 240s node scripts/test_android_lab_themes.cjs
       - name: Save native theme phone screenshots independently of unrelated Atlas motion checks
         if: always()
         uses: actions/upload-artifact@v4
@@ -83,15 +87,19 @@ jobs:
           name: android-theme-phone-review
           path: android-lab/build/theme-review/*.png
           if-no-files-found: warn
-      - run: node scripts/test_cahill_region_fit.cjs
+      - name: Cahill touch and region fit (2m watchdog)
+        run: timeout --signal=TERM --kill-after=10s 120s node scripts/test_cahill_region_fit.cjs
       # Gate on functional projection state, geometry, touch and routes,
       # not timing of SwiftShader's headless renderer callback.
       # Detailed map-animation timing stays an optional diagnostic in
       # test_cahill_motion.cjs (issue #183); Android Lab still fails when
       # the actual selected projection or app behavior is wrong.
-      - run: node scripts/test_android_lab.cjs
-      - run: node scripts/test_lab_tutorial.cjs
-      - run: node scripts/test_mood_ink.cjs
+      - name: Native interface and handoff regression (4m watchdog)
+        run: timeout --signal=TERM --kill-after=10s 240s node scripts/test_android_lab.cjs
+      - name: Android Manual walkthrough regression (2m watchdog)
+        run: timeout --signal=TERM --kill-after=10s 120s node scripts/test_lab_tutorial.cjs
+      - name: Original mood portrait integrity (2m watchdog)
+        run: timeout --signal=TERM --kill-after=10s 120s node scripts/test_mood_ink.cjs
       - uses: actions/upload-artifact@v4
         with:
           name: hipster-go-lab-unsigned-apk
