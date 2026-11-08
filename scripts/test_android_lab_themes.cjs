@@ -71,18 +71,11 @@ const palettes={
     assert.equal(water,'rgba(0,0,0,0)',
      'Robinson exterior field must not be painted with the water color');
     const plate=await page.evaluate(()=>window.labAtlasGlobe.getPaintProperty('robinson-ocean','fill-color'));
-    assert.equal(plate,({liberi:'#103135',bosque:'#f5f0e6',usiku:'#111111'})[name],
+    assert.equal(plate,({liberi:'#103135',bosque:'#e8e9df',usiku:'#111111'})[name],
      'Robinson ocean polygon must preserve '+name+' actual sea ink');
     if(name!=='liberi')assert(routes.keyesWidth>=1.8,'Keyes dashed route ink must be visible on '+width+'px');
-    const boundary=await page.evaluate(()=>{
-     const m=window.labAtlasGlobe;
-     return {visible:m.getLayoutProperty('robinson-outline','visibility'),
-      ink:m.getPaintProperty('robinson-outline','line-color'),
-      width:m.getPaintProperty('robinson-outline','line-width')};
-    });
-    assert.equal(boundary.visible,'visible','Robinson needs a real projection-shaped edge');
-    assert.equal(boundary.width,name==='bosque'?1.4:1.15,'Boundary stays restrained on phone');
-    assert.equal(boundary.ink,name==='usiku'?'#b77b4d':name==='bosque'?'#003018':'#103135');
+    assert.equal(await page.evaluate(()=>!!window.labAtlasGlobe.getLayer('robinson-outline')),false,
+     'No orphaned Robinson stroke; ocean ink separates map from its paper');
     if(width===390){
      await page.locator('.mood-grid').scrollIntoViewIfNeeded();
      await page.screenshot({path:path.join(output,`${name}-portraits.png`)});
