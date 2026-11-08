@@ -42,6 +42,10 @@ const palettes={
     assert.deepEqual(await page.locator('link[data-lab-palette-style]').evaluateAll(els=>els.map(e=>e.media)),
      [name==='liberi'?'not all':'all',name==='liberi'?'not all':'all'],
      'Inactive Libéri palette styles must not slow down the base map');
+    if(width===390)await page.screenshot({path:path.join(output,`${name}-preferences.png`)});
+    await page.locator('[data-lab-action=close-preferences]').click();
+    await page.waitForTimeout(150);
+    if(name==='usiku')await page.locator('#firstCrateSetup [data-action="choose"]').first().click();
     if(name==='usiku'){
      const contrast=await page.evaluate(()=>{
       const ticket=document.querySelector('#firstCrateSetup .ticket');
@@ -74,9 +78,6 @@ const palettes={
       await page.locator('#labInspiration').evaluate(el=>el.hidden=true);
      }
     }
-    if(width===390)await page.screenshot({path:path.join(output,`${name}-preferences.png`)});
-    await page.locator('[data-lab-action=close-preferences]').click();
-    await page.waitForTimeout(150);
     // Source map paint is not a post-hoc CSS bitmap filter.
     const paint=await page.evaluate(()=>({
      land:JSON.stringify(window.labAtlasGlobe.getPaintProperty('land','fill-color')),
