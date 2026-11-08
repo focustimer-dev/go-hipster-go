@@ -226,8 +226,17 @@ class AndroidThemeRoles(unittest.TestCase):
         self.assertIn("var(--lab-print-stamp-border-style,double)",css)
         for stock,ink in (("#e7e5db","#171717"),("#d0d0bd","#171717"),
                           ("#f1f0e7","#171717"),("#d5e644","#171717"),
-                          ("#e7e5db","#913b25")):
+                          ("#f0efe8","#171717")):
             self.assertGreaterEqual(contrast(stock,ink),4.5)
+        # Highlighter ink is a graphical selection mark on paper;
+        # both neon inks also remain legible as strong marks on toner.
+        self.assertGreaterEqual(contrast("#f0efe8","#f50093"),3)
+        self.assertGreaterEqual(contrast("#171717","#f50093"),4.5)
+        self.assertGreaterEqual(contrast("#171717","#d5e644"),4.5)
+        self.assertIn("--lab-print-active-ink:#f50093",tokens)
+        self.assertIn("--lab-print-control-ink:#f50093",tokens)
+        self.assertIn("--lab-print-stamp:#555555",tokens)
+        self.assertIn("var(--lab-print-control-ink,var(--lab-ui-ink))",css)
 
     def test_app_and_iframe_load_the_same_source(self):
         bundle = source("scripts/bundle_android_lab.py")

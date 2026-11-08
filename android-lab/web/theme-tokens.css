@@ -46,19 +46,20 @@
  --lab-print-stamp-filter:brightness(0) saturate(100%) invert(49%) sepia(16%) saturate(647%) hue-rotate(124deg) brightness(93%) contrast(85%);
 }
 
-/* Detroit Midnight Xerox: toner-paper and fluorescent sticker colors.
-   Only token values: no Detroit-specific component selectors. */
+/* Detroit Midnight Xerox: fluorescent chartreuse and hot pink against
+   toner black and photocopy stock. No Detroit-specific component selectors. */
 :root[data-pwa-theme=detroit]{
  --lab-ui-surface:#e7e5db;--lab-ui-ink:#171717;
  --lab-ui-panel:#e7e5db;--lab-ui-on-panel:#171717;
  --lab-ui-rail:#171717;--lab-ui-on-rail:#f1f0e7;
  --lab-ui-action:#171717;--lab-ui-on-action:#f1f0e7;
  --lab-ui-rule:#57564d;--lab-ui-field:#f0efe8;--lab-ui-on-field:#171717;
- --lab-ui-focus:#913b25;--lab-ui-control-outline:#171717;
+ --lab-ui-focus:#f50093;--lab-ui-control-outline:#171717;
  --lab-ui-ticket-stock:#f0efe8;--lab-ui-ticket-ink:#171717;
  --lab-ui-go:#171717;--lab-ui-highlight:#d5e644;--lab-ui-on-highlight:#171717;
- --lab-print-muted:#d0d0bd;--lab-print-stamp:#56662f;
- --lab-print-active-ink:#913b25;--lab-print-stamp-border-style:solid;
+ --lab-print-muted:#d0d0bd;--lab-print-stamp:#555555;
+ --lab-print-active-ink:#f50093;--lab-print-control-ink:#f50093;
+ --lab-print-stamp-border-style:solid;
  --lab-print-substrate-texture:repeating-linear-gradient(90deg,rgba(20,20,20,.018) 0 1px,transparent 1px 5px);
  --lab-print-stamp-filter:brightness(0) saturate(100%) invert(85%) sepia(27%) saturate(810%) hue-rotate(17deg) brightness(103%) contrast(92%);
 }

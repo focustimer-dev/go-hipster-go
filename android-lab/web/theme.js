@@ -69,8 +69,8 @@ const MOODS=Object.freeze({
  }),
  detroit:Object.freeze({
   neutralPaper:'#e7e5db',neutralInk:'#171717',
-  selectedPaper:'#d0d0bd',selectedInk:'#171717',
-  desireHeart:'#b94a2a',funkPaper:'#e4cbe4',funkInk:'#08252a'
+  selectedPaper:'#f0efe8',selectedInk:'#171717',
+  desireHeart:'#f50093',funkPaper:'#e4cbe4',funkInk:'#08252a'
  }),
  kingston:Object.freeze({
   // Selected stock is still LABEL PAPER; the stamped outline indicates state.

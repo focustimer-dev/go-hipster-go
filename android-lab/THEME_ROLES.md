@@ -192,3 +192,19 @@ three resting maps, mood neutral/selected (all eight), Manual, Crate,
 GO and receipt. Source tests check original Funk pseudo-element image,
 laser opacity and filter. Keep this in a draft PR until visually approved.
 No Android APK signing, production PWA sync or deployment is requested.
+
+## Detroit selection ink: neon pink plus chartreuse
+
+Detroit uses `#f50093` as active UI/focus ink (mood rims,
+Atlas tab underline, selected rail, selected switches, checked inputs,
+Manual index) and `#d5e644` as its fluorescent chartreuse
+GO-stamp/selected-map ink. On `#f0efe8` selected mood stock,
+pink graphical marks maintain at least 3:1 contrast; small text
+stays toner-black `#171717`. Quiet registration ink is neutral
+`#555555`, not another competing color. The existing Funk pressing,
+sprite poses, shading and laser colors remain unchanged.
+
+The generic print consumer owns state placement. The optional
+`--lab-print-control-ink` role defaults to the original neutral checkbox
+ink for Kingston and is fluorescent pink in Detroit. Never put neon
+foreground text directly on pale paper without independent contrast tests.

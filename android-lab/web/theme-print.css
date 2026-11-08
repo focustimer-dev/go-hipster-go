@@ -55,12 +55,13 @@
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #labServicePreferences .switch button[aria-pressed=true]{
   background:var(--lab-ui-action);color:var(--lab-ui-on-action);border-color:var(--lab-ui-action);
+  box-shadow:inset 0 -3px 0 var(--lab-print-active-ink);
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #labServicePreferences .switch button[aria-pressed=false]{
   background:transparent;color:var(--lab-ui-ink);border-color:var(--lab-ui-rule);
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace :is(.lab-choice input,.lab-dialog input[type=checkbox]){
-  accent-color:var(--lab-ui-ink);
+  accent-color:var(--lab-print-control-ink,var(--lab-ui-ink));
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace :is(button,a,input,select,textarea,summary):focus-visible{
   outline-color:var(--lab-ui-focus);

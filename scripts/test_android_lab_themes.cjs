@@ -867,6 +867,7 @@ async function verifyManualHierarchy(page,name,width){
       const old=selected.getAttribute('aria-pressed');
       selected.setAttribute('aria-pressed','true');
       const tile=css('.mood[data-mood=happy]').backgroundColor;
+      const rim=css('.mood[data-mood=happy]').boxShadow;
       selected.setAttribute('aria-pressed',old);
       return {
        theme:window.HipsterLabTheme.current(),
@@ -875,9 +876,11 @@ async function verifyManualHierarchy(page,name,width){
        mapOcean:window.labAtlasGlobe.getPaintProperty('robinson-ocean','fill-color'),
        page:css('#labJukebox').backgroundColor,
        paperTexture:css('#labJukebox').backgroundImage,
-       selected:tile,go:css('#goButton').backgroundColor,
+       selected:tile,selectedRim:rim,go:css('#goButton').backgroundColor,
        stamp:root.getPropertyValue('--lab-print-stamp').trim(),
-       active:root.getPropertyValue('--lab-print-active-ink').trim()
+       active:root.getPropertyValue('--lab-print-active-ink').trim(),
+       checkboxAccent:css('.lab-choice input').accentColor,
+       selectedTab:css('.lab-atlas-modes [aria-pressed=true]').borderBottomColor
       };
      });
      assert.equal(colors.theme,'detroit','URL-only Detroit theme');
@@ -886,10 +889,13 @@ async function verifyManualHierarchy(page,name,width){
      assert.equal(colors.mapOcean,colors.ocean,'Robinson uses the shared palette');
      assert.equal(colors.page,'rgb(231, 229, 219)','Photocopy paper stock');
      assert.match(colors.paperTexture,/repeating-linear-gradient/,'Generic printed texture token');
-     assert.equal(colors.selected,'rgb(208, 208, 189)','Selected mood retains shaded stock');
+     assert.equal(colors.selected,'rgb(240, 239, 232)','Selected mood uses bright Xerox paper for pink contrast');
+     assert.match(colors.selectedRim,/rgb\(245, 0, 147\)/,'Selected mood rim uses highlighter pink');
+     assert.equal(colors.selectedTab,'rgb(245, 0, 147)','Active Atlas tab uses pink');
+     assert.equal(colors.checkboxAccent,'rgb(245, 0, 147)','Checkbox ink is theme selectable');
      assert.equal(colors.go,'rgb(23, 23, 23)','Toner-black GO key');
-     assert.equal(colors.stamp,'#56662f','Registration ink is contrast safe');
-     assert.equal(colors.active,'#913b25','Active ink is separate from decoration');
+     assert.equal(colors.stamp,'#555555','Graphite registration stays neutral');
+     assert.equal(colors.active,'#f50093','Highlighter pink activates the selection roles');
      assert.equal(await xerox.locator('[data-lab-theme=detroit]').count(),0,'Pilot is not a preference');
      assert.equal(await xerox.evaluate(()=>localStorage.getItem('ghg-lab-theme-v1')),null,'Pilot not persisted');
      await xerox.screenshot({path:path.join(output,'detroit-390-jukebox.png')});
@@ -908,7 +914,7 @@ async function verifyManualHierarchy(page,name,width){
      assert.equal(cast.mask,'none','Funk engraving is not flattened');
      assert.equal(cast.raysFilter,'none','Funk laser colors are unchanged');
      assert.equal(cast.raysOpacity,'0.8','Funk original laser intensity');
-     assert.notEqual(cast.funkyStock,'rgb(208, 208, 189)','Funk retains unique pink paper');
+     assert.notEqual(cast.funkyStock,'rgb(240, 239, 232)','Funk retains unique pink paper');
      await xerox.locator('.mood-grid').screenshot({path:path.join(output,'detroit-390-all-selected.png')});
      await xerox.locator('.mood-grid .mood[data-mood]').evaluateAll(tiles=>{
       for(const tile of tiles)tile.setAttribute('aria-pressed','false');
