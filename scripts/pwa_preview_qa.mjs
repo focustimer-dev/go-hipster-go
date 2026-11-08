@@ -460,8 +460,8 @@ for (const width of [390,320]) {
    assert.equal(ink.land[2],colors.selected,'Selected region paint is yellow');
    assert.equal(ink.land[3],colors.land,'Unselected MapLibre land is themed');
    assert.equal(ink.robinson,colors.ocean,'Robinson ocean plate is themed');
-   assert.equal(ink.water,colors.ocean,
-    'The ocean remains visibly colored on Robinson and Globe; never reveal paper through water');
+   assert.equal(ink.water,ink.projection==='mercator'?'rgba(0,0,0,0)':colors.ocean,
+    'Robinson outside-paper stays separate from sea polygon; globe ocean matches theme');
    if(mode==='cahill-keyes'){
     const fill=await atlas.locator('#labAtlasCahill [data-cahill-region][aria-pressed=true]').first()
      .evaluate(el=>getComputedStyle(el).fill);
