@@ -508,3 +508,62 @@ body.gig-poster .crate-map-frame.lab-globe-frame .atlas-radial-field{display:non
   padding-inline:6px;font-size:.9rem;
  }
 }
+
+/* Android Usiku QA: original Liberi ink was inherited on green inspiration,
+   while the cream setup ticket inherited Usiku's inverse white ink.
+   Scope contrast to those two surfaces; don't change portraits or map paint. */
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labInspiration{
+ color:#f5f0e6!important;
+ border-block-color:#b77b4d;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace
+ :is(#labInspiration strong,#labInspirationPreview,#labInspirationMetadataStatus,#labInspiration button,#labInspirationGo){
+ color:#f5f0e6!important;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labInspiration button:focus-visible{
+ outline-color:#e5cf42;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #firstCrateSetup .ticket{
+ --ink:#003018;
+ --paper:#f5f0e6;
+ --receipt-red:#8c6239;
+ --setup-rule:#8c6239;
+ color:#003018;
+ color-scheme:light;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #firstCrateSetup .ticket .services select{
+ background:#f5f0e6;
+ color:#003018;
+ border-color:#003018;
+ -webkit-text-fill-color:#003018;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #firstCrateSetup .ticket .services select:disabled{
+ opacity:1;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #firstCrateSetup .ticket :is(.close-setup,.setup-back,.text-action){
+ color:#003018;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #firstCrateSetup .ticket .primary{
+ background:#003018;
+ color:#f5f0e6;
+ border-color:#003018;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #firstCrateSetup .ticket .confirm-ready{
+ color:#003018;
+ border-color:#003018;
+}
+
+/* GO alone carries the visible COPIED impression. The Android receipt has
+   an accessible status/handoff underneath it; a second vermilion stamp is
+   redundant and not part of the Usiku palette. Browser PWA is unchanged. */
+body.gig-poster.lab-workspace[data-page=launch] #promptReceipt .receipt-copy{
+ display:none!important;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace[data-page=launch]{
+ --receipt-ink:#004225;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace[data-page=launch] .handoff #openAi[aria-disabled=false]{
+ background:#004225;
+ color:#f5f0e6;
+ border-color:#b77b4d;
+}
