@@ -53,6 +53,46 @@ const palettes={
     }));
     assert(paint.land.includes(palettes[name].land),'Missing '+name+' MapLibre land fill: '+paint.land);
     assert(!paint.isWide,'Horizontal scroll/zoom introduced for '+name+' on '+width+'px');
+    if(name!=='liberi'){
+     const go=await page.locator('#goButton').evaluate(el=>{
+      const style=getComputedStyle(el);
+      const stamp=getComputedStyle(el.querySelector('.go-stamp'));
+      const headline=getComputedStyle(el.querySelector('.go-copy b'));
+      const caption=getComputedStyle(el.querySelector('.go-copy>span:not(.go-stamp)'));
+      return {background:style.backgroundColor,topBorder:style.borderTopColor,
+       headline:headline.color,caption:caption.color,
+       height:parseFloat(style.minHeight),stampBackground:stamp.backgroundColor,
+       stampInk:stamp.color,stampSize:parseFloat(stamp.fontSize)};
+     });
+     assert.equal(go.background,'rgb(0, 97, 59)',name+' GO needs its own green key');
+     assert.equal(go.headline,'rgb(229, 207, 66)',name+' GO label uses selected yellow');
+     assert.equal(go.topBorder,'rgb(229, 207, 66)',name+' GO has a slim selected-yellow crown');
+     assert.equal(go.caption,'rgb(245, 240, 230)',name+' secondary action label stays readable');
+     assert(go.height>=110,name+' GO remains visually prominent');
+     assert.equal(go.stampBackground,'rgb(229, 207, 66)',name+' COPIED stamp is selected yellow');
+     assert.equal(go.stampInk,'rgb(0, 48, 24)',name+' COPIED stamp uses dark contrast');
+     assert(go.stampSize>=24,name+' COPIED stamp keeps Libéri scale at phone width');
+     if(name==='usiku'){
+      const receipt=await page.locator('.receipt-heading').evaluate(el=>({
+       gradient:getComputedStyle(el).backgroundImage,
+       saveBackground:getComputedStyle(el.querySelector('.lab-save-button')).backgroundColor,
+       saveInk:getComputedStyle(el.querySelector('.lab-save-button')).color
+      }));
+      assert.match(receipt.gradient,/radial-gradient/,'Usiku receipt repeats the portrait vignette');
+      for(const shade of ['rgb(183, 123, 77)','rgb(168, 108, 67)','rgb(146, 91, 57)','rgb(126, 76, 48)'])
+       assert(receipt.gradient.includes(shade),'Missing Usiku vignette step '+shade);
+      assert.equal(receipt.saveBackground,'rgb(0, 48, 24)','Save Request stays readable on saddle');
+      assert.equal(receipt.saveInk,'rgb(245, 240, 230)','Save Request has cream lettering');
+     }
+     if(width===390){
+      await page.locator('.go-options').screenshot({path:path.join(output,`${name}-go-action.png`)});
+      await page.locator('#goButton').evaluate(el=>el.dataset.copyState='copied');
+      await page.locator('#goButton').screenshot({path:path.join(output,`${name}-copied-stamp.png`)});
+      await page.locator('#goButton').evaluate(el=>el.dataset.copyState='idle');
+      if(name==='usiku')
+       await page.locator('.receipt-heading').screenshot({path:path.join(output,'usiku-receipt-vignette.png')});
+     }
+    }
     const routes=await page.evaluate(()=>{
      const m=window.labAtlasGlobe;
      const source=m.getSource('routes')?.serialize?.().data?.features||[];
