@@ -97,16 +97,21 @@
   background:var(--lab-ui-ticket-stock);color:var(--lab-ui-ticket-ink);
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .lab-atlas-modes{
-  border-color:var(--lab-ui-rule);
+  border:0;border-bottom:1px solid var(--lab-ui-rule);
+  background:transparent;box-shadow:none;
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .lab-atlas-modes button{
+  min-height:48px;border:0;border-bottom:3px solid transparent;
   color:var(--lab-ui-ink);background:transparent;
+  font:400 1.15rem/1.1 Poster,sans-serif;letter-spacing:0;
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .lab-atlas-modes button+button{
-  border-inline-start-color:var(--lab-ui-rule);
+  border-inline-start:0;
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .lab-atlas-modes button[aria-pressed=true]{
-  background:var(--lab-ui-action);color:var(--lab-ui-on-action);
+  background:transparent;color:var(--lab-ui-ink);
+  border-bottom-color:var(--lab-ui-highlight);
+  text-decoration:underline;text-underline-offset:4px;
 }
 /* One coherent ocean/land palette for all three projections AND their veil. */
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #labAtlasGlobe,
