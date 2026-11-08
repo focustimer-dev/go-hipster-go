@@ -43,6 +43,9 @@ class AndroidThemeParity(unittest.TestCase):
             self.assertIn('data-pwa-theme='+name,css)
         self.assertIn('syncManualTheme',js)
         self.assertIn("addEventListener('load',syncManualTheme)",js)
+        self.assertIn(':root[data-pwa-theme=usiku] .crate-action .deck-key svg',css)
+        self.assertIn('color:#f5f0e6;',css)
+        self.assertIn('background:linear-gradient(180deg,#925b39 0%,#7e4c30',css)
 
     def test_navigable_routes_and_stable_animated_border_ink(self):
         tween=(ROOT/'android-lab/web/atlas-morph-vectors.js').read_text()
@@ -54,13 +57,17 @@ class AndroidThemeParity(unittest.TestCase):
         self.assertNotIn('context.strokeStyle=palette.ocean',tween)
         self.assertIn('getComputedStyle(ocean)',fold)
         self.assertIn('getComputedStyle(path)',fold)
-        self.assertIn("'line-width':1.7",native)
+        self.assertIn("'line-width':1.2",native)
         self.assertIn("'line-opacity':.88",native)
         self.assertIn("'line-dasharray':[3,2.6]",native)
         self.assertIn('opacity:.88,width:1.7,dash:[3,2.6]',browser)
         self.assertIn("'line-width':THEMED_ROUTE_PAINT.width",browser)
         self.assertIn('stroke-width:1.8;stroke-opacity:.9;',css)
         self.assertIn('stroke-dasharray:4 4;',css)
+        android=(ROOT/'android-lab/web/workspace.css').read_text()
+        self.assertIn('body.gig-poster.lab-workspace #labAtlasCahill .lab-cahill-routes path',android)
+        self.assertIn('stroke-width:1.2;',android)
+        self.assertIn('border:1px solid var(--usiku-leather,#b77b4d)',android)
 
     def test_keyes_underlay_and_soft_bosque_water_edge(self):
         css=(ROOT/'android-lab/web/workspace.css').read_text()
