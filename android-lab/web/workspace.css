@@ -645,6 +645,7 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch]{
  --jukebox-rule:var(--lab-ui-rule);
+ --jukebox-active-ink:var(--lab-print-active-ink,var(--lab-ui-focus));
  --jukebox-ink:var(--lab-ui-ink);
  --jukebox-paper:var(--lab-ui-surface);
 }
@@ -730,7 +731,7 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .tempo-heading #anyTempo[aria-pressed=true]{
  background:transparent;color:var(--jukebox-ink);
- border-bottom-color:var(--lab-ui-focus);
+ border-bottom-color:var(--jukebox-active-ink);
  text-decoration:underline;text-underline-offset:4px;
 }
 /* Atlas modes are one navigation strip with a real selected state, not
@@ -756,7 +757,7 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .lab-atlas-modes button[aria-pressed=true]{
  background:transparent;color:var(--jukebox-ink);
- border-bottom-color:var(--lab-ui-focus);
+ border-bottom-color:var(--jukebox-active-ink);
  text-decoration:underline;text-underline-offset:4px;
 }
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
@@ -798,7 +799,7 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .shuffle-pins .shuffle-pin[aria-pressed=true]{
  background:transparent;color:var(--jukebox-ink);
- border-bottom-color:var(--lab-ui-focus);
+ border-bottom-color:var(--jukebox-active-ink);
  text-decoration:underline;text-underline-offset:4px;
 }
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
@@ -873,7 +874,7 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .go-options .go-extras .cover-toggle[aria-pressed=true]{
  background:transparent;color:var(--jukebox-ink);
- border-bottom-color:var(--lab-ui-focus);
+ border-bottom-color:var(--jukebox-active-ink);
 }
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .go-options .go-extras .cover-toggle[aria-pressed=true] .option-state{
