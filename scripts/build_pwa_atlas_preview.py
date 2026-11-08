@@ -63,8 +63,13 @@ def main():
     # links. Duplicate injection produces redundant styles and fails palette
     # contract checks; keep a single stylesheet instance per source.
     for css in ("pwa-themes.css", "pwa-atlas-themes.css"):
+        lazy=f'<link rel="stylesheet" href="/pwa-atlas/assets/{css}" data-lab-palette-style media="not all">'
         link=f'<link rel="stylesheet" href="/pwa-atlas/assets/{css}">'
-        assert html.count(link)==1, f"Expected one shared theme link for {css}"
+        assert html.count(lazy)==1, f"Expected exactly one shared theme link for {css}"
+        html=html.replace(lazy,link)
+    native_toggle='<script>for(const link of document.querySelectorAll("link[data-lab-palette-style]"))link.media=document.documentElement.dataset.pwaTheme==="liberi"?"not all":"all";</script>'
+    assert html.count(native_toggle)==1, "Android-only palette toggle changed"
+    html=html.replace(native_toggle,"")
     injection = '<script src="/pwa-atlas/assets/pwa-atlas-bridge.js"></script>'
     assert "id=\"labGlobeGeography\"" in html, "Canonical geographic data missing"
     assert 'src="/pwa-atlas/assets/app.js"' in html, "Atlas app URL did not rewrite"
