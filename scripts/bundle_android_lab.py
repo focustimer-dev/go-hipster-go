@@ -46,13 +46,16 @@ def bundle(destination=None):
                 '<link rel="stylesheet" href="/assets/lab-theme-tokens.css" data-lab-palette-style media="not all">'
                 '<link rel="stylesheet" href="/assets/pwa-themes.css" data-lab-palette-style media="not all">'
                 '<link rel="stylesheet" href="/assets/pwa-atlas-themes.css" data-lab-palette-style media="not all">'
-                '<script>for(const link of document.querySelectorAll("link[data-lab-palette-style]"))link.media=document.documentElement.dataset.pwaTheme==="liberi"?"not all":"all";</script>')
+                '<link rel="stylesheet" href="/assets/lab-theme-print.css" data-lab-print-style media="not all">'
+                '<script>for(const link of document.querySelectorAll("link[data-lab-palette-style]"))link.media=document.documentElement.dataset.pwaTheme==="liberi"?"not all":"all";'
+                'for(const link of document.querySelectorAll("link[data-lab-print-style]"))link.media=document.documentElement.dataset.ghgThemeProfile==="print"?"all":"not all";</script>')
     html=html.replace('</head>',theme_head+'<script defer src="/assets/maplibre/maplibre-gl.js"></script><script defer src="/assets/cahill-keyes-vendor.js"></script><link rel="stylesheet" href="/assets/maplibre/maplibre-gl.css"></head>')
     page.write_text(html)
     shutil.copyfile(ROOT / 'android-lab/web/workspace.css', destination / 'assets/lab-workspace.css')
     shutil.copyfile(ROOT / 'android-lab/web/theme.js', destination / 'assets/lab-themes.js')
     # A single semantic UI palette is loaded by the app and Manual iframe.
     shutil.copyfile(ROOT / 'android-lab/web/theme-tokens.css', destination / 'assets/lab-theme-tokens.css')
+    shutil.copyfile(ROOT / 'android-lab/web/theme-print.css', destination / 'assets/lab-theme-print.css')
     # One shared color system for the Android app and browser companion.
     shutil.copyfile(ROOT / 'launcher/assets/pwa-themes.css', destination / 'assets/pwa-themes.css')
     shutil.copyfile(ROOT / 'launcher/assets/pwa-atlas-themes.css', destination / 'assets/pwa-atlas-themes.css')
