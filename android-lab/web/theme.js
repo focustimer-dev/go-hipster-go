@@ -3,29 +3,61 @@
 (function(){
 'use strict';
 const KEY='ghg-lab-theme-v1',THEMES=['liberi','bosque','usiku'];
-const PALETTES={
- liberi:{ocean:'#103135',land:'#dfb045',ink:'#103135',selected:'#a83223',route:'#a83223'},
- bosque:{ocean:'#e8e9df',land:'#004225',ink:'#003018',selected:'#e5cf42',route:'#8c6239'},
- usiku:{ocean:'#111111',land:'#f5f0e6',ink:'#003018',selected:'#e5cf42',route:'#b77b4d'}
+/* Single paint contract for the three REAL projections and their cached
+   animation frames. Geometry, sprites, camera and transitions are unchanged.
+   CSS receives identical roles via --lab-atlas-*; no per-projection palette. */
+const ATLAS=Object.freeze({
+ liberi:Object.freeze({
+  paper:'#dfb045',land:'#dfb045',ocean:'#103135',ink:'#103135',
+  selected:'#a83223',route:'#edc65d',routeOpacity:.65,routeWidth:1,
+  routeDash:[3,5],backdrop:'#dfb045',field:'#dfb045',
+  graticule:'#dfb045',graticuleOpacity:.21,
+  oceanStroke:'#103135',oceanStrokeOpacity:1
+ }),
+ bosque:Object.freeze({
+  paper:'#004225',land:'#004225',ocean:'#e8e9df',ink:'#003018',
+  selected:'#e5cf42',route:'#8c6239',routeOpacity:.88,routeWidth:1.2,
+  routeDash:[3,2.6],backdrop:'#f5f0e6',field:'#f5f0e6',
+  graticule:'#8c6239',graticuleOpacity:.24,
+  oceanStroke:'#003018',oceanStrokeOpacity:1
+ }),
+ usiku:Object.freeze({
+  paper:'#f5f0e6',land:'#f5f0e6',ocean:'#111111',ink:'#003018',
+  selected:'#e5cf42',route:'#b77b4d',routeOpacity:.88,routeWidth:1.2,
+  routeDash:[3,2.6],backdrop:'#003018',
+  field:'radial-gradient(ellipse at 50% 38%,#004225 0%,#003018 78%)',
+  graticule:'#b77b4d',graticuleOpacity:.2,
+  oceanStroke:'#b77b4d',oceanStrokeOpacity:.72
+ })
+});
+const CSS_ATLAS_ROLES={
+ paper:'paper',land:'land',ocean:'ocean',ink:'ink',
+ selected:'selected',route:'route',backdrop:'backdrop',
+ field:'field',graticule:'graticule',
+ 'graticule-opacity':'graticuleOpacity',
+ 'ocean-stroke':'oceanStroke',
+ 'ocean-stroke-opacity':'oceanStrokeOpacity',
+ 'route-width':'routeWidth','route-opacity':'routeOpacity'
 };
-const TWEEN={
- liberi:{paper:'#dfb045',ocean:'#103135',selected:'#a83223',ink:'#103135',backdrop:'#dfb045'},
- bosque:{paper:'#004225',ocean:'#e8e9df',selected:'#e5cf42',ink:'#003018',backdrop:'#f5f0e6'},
- usiku:{paper:'#f5f0e6',ocean:'#111111',selected:'#e5cf42',ink:'#003018',backdrop:'#003018'}
-};
+function applyAtlasTokens(){
+ const style=document.documentElement.style,palette=ATLAS[theme];
+ for(const [role,property] of Object.entries(CSS_ATLAS_ROLES))
+  style.setProperty('--lab-atlas-'+role,String(palette[property]));
+}
 function saved(){
  try{const value=localStorage.getItem(KEY);return THEMES.includes(value)?value:'liberi'}
  catch(_){return 'liberi'}
 }
 let theme=saved(),atlas=null,defaults=null,frame=0;
 document.documentElement.dataset.pwaTheme=theme;
-window.GHGAtlasPaintColors=()=>({theme,...TWEEN[theme]});
+applyAtlasTokens();
+window.GHGAtlasPaintColors=()=>({theme,...ATLAS[theme]});
 function refreshButtons(){
  document.querySelectorAll('[data-lab-theme]').forEach(button=>
   button.setAttribute('aria-pressed',String(button.dataset.labTheme===theme)));
 }
 function paint(){
- const map=atlas,palette=PALETTES[theme];
+ const map=atlas,palette=ATLAS[theme];
  if(!map||!map.getLayer?.('land'))return;
  try{
   if(!defaults){
@@ -38,26 +70,17 @@ function paint(){
     for(const prop of props)defaults[layer][prop]=map.getPaintProperty(layer,prop);
    }
   }
-  const desired=theme==='liberi'?{
+  // Keep MapLibre land, true ocean plate, coastlines and shipping lanes
+  // on the same palette as Cahill SVG and the vector/tween renderers.
+  const desired={
    land:{'fill-color':['case',['boolean',['feature-state','selected'],false],
-     '#a83223','#dfb045']},
-   borders:{'line-color':'#103135'},
-   ocean:{'background-color':map.getProjection()?.type==='mercator'?'rgba(0,0,0,0)':'#103135'},
-   'robinson-ocean':{'fill-color':'#103135'},
-   // Keep the original ink and dash rhythm in Liberi, even when the
-   // map's routes layer was added after the first palette snapshot.
-   routes:{'line-color':'#edc65d','line-opacity':.65,
-    'line-width':1,'line-dasharray':[3,5]}
-  }:{
-   land:{'fill-color':['case',['boolean',['feature-state','selected'],false],
-     palette.selected,palette.land]},
+    palette.selected,palette.land]},
    borders:{'line-color':palette.ink},
-   ocean:{'background-color':map.getProjection()?.type==='mercator'?'rgba(0,0,0,0)':palette.ocean},
+   ocean:{'background-color':map.getProjection()?.type==='mercator'?
+    'rgba(0,0,0,0)':palette.ocean},
    'robinson-ocean':{'fill-color':palette.ocean},
-   // Keep nautical routes discoverable without heavy strokes against
-   // Bosque's pale ocean and Usiku's night sea.
-   routes:{'line-color':palette.route,'line-opacity':.88,
-    'line-width':1.2,'line-dasharray':[3,2.6]}
+   routes:{'line-color':palette.route,'line-opacity':palette.routeOpacity,
+    'line-width':palette.routeWidth,'line-dasharray':palette.routeDash}
   };
   for(const [layer,paints] of Object.entries(desired)){
    if(!map.getLayer(layer))continue;
@@ -103,7 +126,7 @@ function setTheme(next,persist){
   }
  }
  if(theme!==next){theme=next;document.documentElement.dataset.pwaTheme=theme;
-  requestPaint();syncManualTheme();window.dispatchEvent(new Event('ghg-lab-theme-change'))}
+  applyAtlasTokens();requestPaint();syncManualTheme();window.dispatchEvent(new Event('ghg-lab-theme-change'))}
  refreshButtons();
  if(persist){
   const status=document.getElementById('labThemeStatus');
@@ -128,5 +151,5 @@ document.addEventListener('DOMContentLoaded',()=>{
  observer.observe(document.body,{childList:true,subtree:true});
  if(attach())observer.disconnect();
 });
-window.HipsterLabTheme=Object.freeze({current:()=>theme,set:setTheme,colors:()=>PALETTES[theme],refresh:requestPaint});
+window.HipsterLabTheme=Object.freeze({current:()=>theme,set:setTheme,colors:()=>ATLAS[theme],refresh:requestPaint});
 })();
