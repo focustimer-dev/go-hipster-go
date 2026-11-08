@@ -508,3 +508,38 @@ body.gig-poster .crate-map-frame.lab-globe-frame .atlas-radial-field{display:non
   padding-inline:6px;font-size:.9rem;
  }
 }
+
+/* The Manual's update dot has a discoverable destination on every guide.
+   One slim row, shown only for an actual unchecked Gemini Skill package. */
+body.lab-workspace .lab-update-notice{
+ display:flex;align-items:center;justify-content:space-between;
+ gap:10px;margin:0 0 9px;padding:7px 0 11px;
+ border-bottom:1px solid #103135;
+ color:#103135;background:transparent;
+}
+body.lab-workspace .lab-update-notice[hidden]{display:none}
+body.lab-workspace .lab-update-notice strong{
+ flex:1;min-width:0;
+ font:700 .75rem/1.35 'Courier New',monospace;
+ overflow-wrap:anywhere;
+}
+body.lab-workspace .lab-update-notice button{
+ flex:none;min-height:44px;padding:7px 10px;
+ border:1px solid currentColor;border-radius:0;
+ background:#103135;color:#dfb045;
+ font:400 clamp(.85rem,2.6cqw,1.05rem)/1.12 Poster,sans-serif;
+}
+:root[data-pwa-theme=bosque] body.lab-workspace .lab-update-notice{
+ color:#003018;border-color:#8c6239;
+}
+:root[data-pwa-theme=usiku] body.lab-workspace .lab-update-notice{
+ color:#f5f0e6;border-color:#b77b4d;
+}
+:root[data-pwa-theme=bosque] body.lab-workspace .lab-update-notice button,
+:root[data-pwa-theme=usiku] body.lab-workspace .lab-update-notice button{
+ background:#004225;color:#e5cf42;border-color:#e5cf42;
+}
+@media(max-width:360px){
+ body.lab-workspace .lab-update-notice{gap:6px}
+ body.lab-workspace .lab-update-notice button{padding:7px;font-size:.8rem}
+}
