@@ -180,7 +180,10 @@ class AndroidThemeRoles(unittest.TestCase):
         # Print themes must never flatten the Funk selected portrait or
         # repaint its original lasers. Other cast preserves sprite shading.
         self.assertIn("mood:not([data-mood=funky])[aria-pressed=true]",css)
-        self.assertIn("--funk-selected-paper:color-mix(in srgb,#e03fd8 22%,#f4efdf)",css)
+        self.assertIn("--funk-selected-paper:#311333",css)
+        self.assertIn("background-color:#6e225c",css)
+        self.assertIn("hue-rotate(324deg)",css)
+        self.assertIn("hue-rotate(23deg) saturate(1.24)",css)
         self.assertNotIn("hue-rotate(170deg)",css)
         self.assertNotIn("moods-selected-ink-v2.webp",css)
         self.assertNotIn("mask-image:url('/editions/gig-poster/assets/moods-neutral-ink-v2.webp')",css)
