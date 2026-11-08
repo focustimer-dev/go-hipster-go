@@ -180,13 +180,13 @@ class AndroidThemeRoles(unittest.TestCase):
     def test_every_print_theme_has_an_independent_accessible_ink_pair(self):
         """Future print themes may choose colors, not skip semantic roles."""
         raw=source("android-lab/web/theme-tokens.css")
-        profiles=re.findall(r":root\\[data-pwa-theme=([a-z-]+)\\]\\{([^}]*)\\}",raw,re.S)
+        profiles=re.findall(r":root\[data-pwa-theme=([a-z-]+)\]\{([^}]*)\}",raw,re.S)
         print_profiles=[]
         for name,body in profiles:
             if "--lab-print-stamp:" not in body and "--lab-print-active-ink:" not in body:
                 continue
             print_profiles.append(name)
-            values=dict(re.findall(r"(--lab-[a-z-]+):\\s*(#[0-9a-f]{6})\\s*;",body))
+            values=dict(re.findall(r"(--lab-[a-z-]+):\s*(#[0-9a-f]{6})\s*;",body))
             mandatory={
                 "--lab-print-stamp","--lab-print-active-ink",
                 "--lab-ui-surface","--lab-ui-ink","--lab-ui-rule",
