@@ -668,7 +668,12 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
    specialized material treatments. */
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
  body.gig-poster.lab-workspace[data-page=launch]
- :is(.refinements>.counter-label,.crate-geo-summary strong,.tempo-control::before){
+ :is(.refinements>.counter-label,.crate-geo-summary strong){
+ font:400 1.3rem/1.15 Poster,sans-serif;
+ letter-spacing:.005em;
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+ body.gig-poster.lab-workspace[data-page=launch] .tempo-control::before{
  font:400 1.3rem/1.15 Poster,sans-serif;
  letter-spacing:.005em;
 }
