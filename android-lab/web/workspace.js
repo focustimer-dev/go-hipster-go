@@ -49,11 +49,18 @@ function labNavigate(next,focus=true){
  if(focus)doc.querySelector(`[data-lab-tab="${next}"]`)?.focus({preventScroll:true});
 }
 function renderLabHandoff(){
+ // The GO key is the only visible copy stamp; the receipt provides the next action.
+ const receiptMark=doc.getElementById('receiptCopy');
+ if(receiptMark){receiptMark.hidden=true;receiptMark.textContent='';}
  const state=labState(),mode=state.mode||'open',oneTap=state.oneTap!==false;
  if(ai==='other'){
+  // Other AI never has a native handoff: restore the manual recovery link
+  // when switching away from an already-copied Gemini request.
+  const manual=doc.getElementById('manualOpenAi');if(manual)manual.hidden=false;
+  const share=doc.getElementById('shareButton');if(share)share.textContent='↗ Share current prompt';
   const guide=doc.getElementById('labGeminiGuide');if(guide)guide.hidden=true;
   const hint=doc.getElementById('goHint');if(hint)hint.textContent='COPY YOUR REQUEST';
-  const heading=doc.getElementById('handoffTitle');if(heading)heading.textContent='COPIED. OPEN YOUR AI MANUALLY.';
+  const heading=doc.getElementById('handoffTitle');if(heading)heading.textContent='OPEN YOUR AI MANUALLY';
   const instructions=doc.getElementById('handoffInstruction');if(instructions)instructions.textContent='Open your chosen AI yourself, paste the request and send it. Native handoff is unavailable for an unspecified AI.';
   const open=doc.getElementById('openAi');if(open)open.hidden=true;
   const button=doc.getElementById('goButton');if(button)button.setAttribute('aria-label','GO! Copy request for manual use in your AI');
@@ -64,10 +71,21 @@ function renderLabHandoff(){
  const hint=doc.getElementById('goHint');if(hint)hint.textContent=oneTap?verb+' '+aiNames[ai].toUpperCase():'COPY YOUR REQUEST';
  const ready=copiedPrompt===goPrompt(ai,service,mood);
  const heading=doc.getElementById('handoffTitle'),instructions=doc.getElementById('handoffInstruction');
- if(heading)heading.textContent=oneTap&&mode==='share'?'CONTINUE IN '+aiNames[ai].toUpperCase():oneTap?'REQUEST COPIED FOR '+aiNames[ai].toUpperCase():'COPIED. OPEN '+aiNames[ai].toUpperCase()+'.';
+ if(heading)heading.textContent='CONTINUE IN '+aiNames[ai].toUpperCase();
  if(instructions)instructions.textContent=oneTap&&mode==='share'?'Review and send the shared request in your AI. If it did not arrive, paste the copied request. Check the playlist result there.':'Paste and send the copied request in your AI. Check the playlist result there.';
  const guide=doc.getElementById('labGeminiGuide');if(guide)guide.hidden=!(ai==='gemini'&&service==='youtube'&&ready);
- const open=doc.getElementById('openAi');if(open&&ready)open.textContent=(mode==='share'?'SHARE AGAIN TO ':'OPEN ')+aiNames[ai].toUpperCase();
+ // One-Tap GO already shares the request. The footer's explicit share
+ // control is the retry path; do not promote a duplicate full-width CTA.
+ const open=doc.getElementById('openAi');
+ if(open){
+  open.hidden=oneTap&&mode==='share'&&ready;
+  if(ready)open.textContent=mode==='share'?'SHARE TO '+aiNames[ai].toUpperCase():'OPEN '+aiNames[ai].toUpperCase();
+ }
+ // Manual Open belongs to clipboard recovery, not to an already copied request.
+ const manualOpen=doc.getElementById('manualOpenAi');
+ if(manualOpen)manualOpen.hidden=oneTap&&ready;
+ const share=doc.getElementById('shareButton');
+ if(share)share.textContent=oneTap&&mode==='share'&&ready?'↗ Share this request again':'↗ Share current prompt';
  const button=doc.getElementById('goButton');if(button)button.setAttribute('aria-label',oneTap?'GO! Copy request and '+(mode==='share'?'share to ':mode==='browser'?'open browser for ':'open ')+aiNames[ai]:'GO! Copy current playlist request');
 }
 function renderLabWorkspace(){

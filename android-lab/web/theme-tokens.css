@@ -1,0 +1,25 @@
+/* Android-only semantic UI colors. Single source for the Android WebView
+   and its separately themed Manual iframe. The locked Libéri surface has no
+   overrides here; map ocean/land and portrait inks are separate systems.
+   Tokens describe jobs, not color names, so components cannot leak Libéri red. */
+
+:root[data-pwa-theme=bosque]{
+ --lab-ui-surface:#f5f0e6;--lab-ui-ink:#003018;
+  --lab-ui-panel:#f5f0e6;--lab-ui-rail:#003018;
+  --lab-ui-on-panel:#003018;--lab-ui-on-rail:#f5f0e6;
+  --lab-ui-action:#004225;--lab-ui-on-action:#f5f0e6;
+  --lab-ui-rule:#8c6239;--lab-ui-field:#f5f0e6;--lab-ui-on-field:#003018;
+  --lab-ui-focus:#8c6239;--lab-ui-control-outline:#003018;
+  --lab-ui-ticket-stock:#f4efdf;--lab-ui-ticket-ink:#003018;
+  --lab-ui-go:#00613b;--lab-ui-highlight:#e5cf42;--lab-ui-on-highlight:#003018;
+}
+:root[data-pwa-theme=usiku]{
+ --lab-ui-surface:#003018;--lab-ui-ink:#f5f0e6;
+  --lab-ui-panel:#111111;--lab-ui-rail:#111111;
+  --lab-ui-on-panel:#f5f0e6;--lab-ui-on-rail:#f5f0e6;
+  --lab-ui-action:#004225;--lab-ui-on-action:#f5f0e6;
+  --lab-ui-rule:#b77b4d;--lab-ui-field:#111111;--lab-ui-on-field:#f5f0e6;
+  --lab-ui-focus:#e5cf42;--lab-ui-control-outline:#b77b4d;
+  --lab-ui-ticket-stock:#f4efdf;--lab-ui-ticket-ink:#003018;
+  --lab-ui-go:#00613b;--lab-ui-highlight:#e5cf42;--lab-ui-on-highlight:#003018;
+}

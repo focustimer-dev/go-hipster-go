@@ -27,7 +27,10 @@ const palettes={
   for(const width of [390,320]){
    const page=await browser.newPage({viewport:{width,height:860},isMobile:true,hasTouch:true});
    const errors=[];page.on('pageerror',e=>errors.push(e.message));
-   await page.addInitScript(()=>{window.HipsterLab={state:()=>'{"saved":[]}',inspiration:()=>'',copy:()=>true}});
+   await page.addInitScript(()=>{
+    window.auditHandoff={mode:'share',oneTap:true};
+    window.HipsterLab={state:()=>JSON.stringify({saved:[],...window.auditHandoff}),inspiration:()=>'',copy:()=>true,go:()=>{}};
+   });
    await page.goto('http://127.0.0.1:'+server.address().port+'/',{waitUntil:'domcontentloaded'});
    await page.waitForFunction(()=>window.labAtlasGlobe?.loaded()&&window.labCahillMap?.ready,null,{timeout:30000});
    await page.emulateMedia({reducedMotion:'reduce'});
@@ -40,11 +43,87 @@ const palettes={
     assert.equal(await page.evaluate(()=>localStorage.getItem('ghg-lab-theme-v1')),name);
     assert.equal(await page.evaluate(()=>window.GHGAtlasPaintColors?.().theme),name);
     assert.deepEqual(await page.locator('link[data-lab-palette-style]').evaluateAll(els=>els.map(e=>e.media)),
-     [name==='liberi'?'not all':'all',name==='liberi'?'not all':'all'],
+     [name==='liberi'?'not all':'all',name==='liberi'?'not all':'all',name==='liberi'?'not all':'all'],
      'Inactive Libéri palette styles must not slow down the base map');
+    if(name!=='liberi'){
+     const ui=await page.evaluate(()=>{
+      const root=getComputedStyle(document.documentElement);
+      const val=name=>root.getPropertyValue('--lab-ui-'+name).trim();
+      const color=selector=>getComputedStyle(document.querySelector(selector)).color;
+      const background=selector=>getComputedStyle(document.querySelector(selector)).backgroundColor;
+      return {
+       surface:val('surface'),ink:val('ink'),panel:val('panel'),
+       action:val('action'),onAction:val('on-action'),ticket:val('ticket-stock'),
+       firstCrateInk:color('#firstCrateSetup .ticket'),firstCratePaper:background('#firstCrateSetup .ticket'),
+       rail:background('.lab-rail'),railInk:color('.lab-rail'),
+       jukebox:background('#labJukebox'),jukeboxInk:color('#labJukebox'),
+       crate:background('#labCrate'),crateInk:color('#labCrate'),
+       manual:background('#labManual'),manualInk:color('#labManual')
+      };
+     });
+     const hexColor=hex=>[
+      parseInt(hex.slice(1,3),16),parseInt(hex.slice(3,5),16),parseInt(hex.slice(5,7),16)
+     ];
+     const CSS=hex=>'rgb('+hexColor(hex).join(', ')+')';
+     assert.equal(ui.firstCrateInk,'rgb(0, 48, 24)',name+' setup keeps dark ink');
+     assert.equal(ui.firstCratePaper,CSS(ui.ticket),name+' setup uses shared paper token');
+     assert.equal(ui.railInk,CSS(ui.onAction),name+' rail label contrast');
+     assert.equal(ui.jukeboxInk,CSS(ui.ink),name+' Jukebox uses current ink');
+     assert.equal(ui.jukebox,CSS(ui.surface),name+' Jukebox uses current surface');
+     assert.equal(ui.crateInk,CSS(ui.ink),name+' Crate uses current ink');
+     assert.equal(ui.crate,CSS(ui.surface),name+' Crate uses current surface');
+     assert.equal(ui.manualInk,CSS(ui.ink),name+' Manual uses current ink');
+     assert.equal(ui.manual,CSS(ui.panel),name+' Manual uses panel surface');
+     assert.equal(ui.action,'#004225',name+' action palette is forest, not Libéri red');
+    }
     if(width===390)await page.screenshot({path:path.join(output,`${name}-preferences.png`)});
     await page.locator('[data-lab-action=close-preferences]').click();
     await page.waitForTimeout(150);
+    if(name==='usiku')await page.locator('#firstCrateSetup [data-action="choose"]').first().click();
+    if(name==='usiku'){
+     const contrast=await page.evaluate(()=>{
+      const ticket=document.querySelector('#firstCrateSetup .ticket');
+      const inspiration=document.querySelector('#labInspiration');
+      const wasHidden=inspiration.hidden;inspiration.hidden=false;
+      const color=selector=>getComputedStyle(document.querySelector(selector)).color;
+      const result={
+       card:color('#labInspiration'),title:color('#labInspirationPreview'),
+       label:color('#labInspiration strong'),edit:color('#labReviewInspiration'),
+       reminder:color('#labInspirationGo'),
+       ticket:color('#firstCrateSetup .ticket'),
+       ai:color('#fc-ai'),music:color('#fc-service'),
+       selectTextFill:getComputedStyle(document.querySelector('#fc-ai')).webkitTextFillColor,
+       primary:color('#firstCrateSetup .ticket .primary'),
+       ticketStock:getComputedStyle(ticket).backgroundColor
+      };
+      inspiration.hidden=wasHidden;
+      return result;
+     });
+     for(const key of ['card','title','label','edit','reminder'])
+      assert.equal(contrast[key],'rgb(245, 240, 230)','Usiku inspiration '+key+' needs cream contrast');
+     for(const key of ['ticket','ai','music','selectTextFill'])
+      assert.equal(contrast[key],'rgb(0, 48, 24)','Cream setup '+key+' needs dark ink');
+     assert.equal(contrast.primary,'rgb(245, 240, 230)','Setup primary is cream on petrol');
+     assert.equal(contrast.ticketStock,'rgb(244, 239, 223)','Keep historic paper setup card');
+     if(width===390){
+      await page.locator('#firstCrateSetup .ticket').screenshot({path:path.join(output,'usiku-setup-contrast.png')});
+      await page.locator('#labInspiration').evaluate(el=>el.hidden=false);
+      await page.locator('#labInspiration').screenshot({path:path.join(output,'usiku-inspiration-contrast.png')});
+      await page.locator('#labInspiration').evaluate(el=>el.hidden=true);
+     }
+    }
+    // A valid handoff must not inherit Liberi's vermilion in the new skins.
+    if(name!=='liberi'){
+     const buttonInk=await page.locator('#openAi').evaluate(el=>{
+      el.setAttribute('aria-disabled','false');
+      const st=getComputedStyle(el);
+      const result={bg:st.backgroundColor,fg:st.color};
+      el.setAttribute('aria-disabled','true');
+      return result;
+     });
+     assert.equal(buttonInk.bg,'rgb(0, 66, 37)',name+' has a forest handoff key');
+     assert.equal(buttonInk.fg,'rgb(245, 240, 230)',name+' handoff lettering must be cream');
+    }
     // Source map paint is not a post-hoc CSS bitmap filter.
     const paint=await page.evaluate(()=>({
      land:JSON.stringify(window.labAtlasGlobe.getPaintProperty('land','fill-color')),
@@ -160,6 +239,26 @@ const palettes={
       const doc=document.getElementById('labManualFrame')?.contentDocument;
       return doc?.documentElement.dataset.pwaTheme===name;
      },name,{timeout:8000});
+     if(name!=='liberi'){
+      const manualRoles=await page.frameLocator('#labManualFrame').locator('body.embedded-guide')
+       .evaluate(el=>{
+        const root=getComputedStyle(el.ownerDocument.documentElement);
+        return {
+         sheet:root.getPropertyValue('--lab-ui-panel').trim(),
+         ink:root.getPropertyValue('--lab-ui-on-panel').trim(),
+         color:getComputedStyle(el).color,
+         background:getComputedStyle(el).backgroundColor
+        };
+       });
+      assert.equal(manualRoles.sheet, name==='bosque'?'#f5f0e6':'#111111',
+       name+' iframe imports the exact shared panel token');
+      assert.equal(manualRoles.ink,name==='bosque'?'#003018':'#f5f0e6',
+       name+' iframe imports the exact shared ink token');
+      assert.equal(manualRoles.color,name==='bosque'?'rgb(0, 48, 24)':'rgb(245, 240, 230)',
+       name+' Manual body respects shared ink');
+      assert.equal(manualRoles.background,name==='bosque'?'rgb(245, 240, 230)':'rgb(17, 17, 17)',
+       name+' Manual body respects shared surface');
+     }
      if(name==='usiku'){
       const eject=await page.frameLocator('#labManualFrame').locator('.crate-action .deck-key svg')
        .evaluate(el=>({
@@ -176,6 +275,41 @@ const palettes={
      await page.locator('[data-lab-tab=jukebox]').click();
     }
    }
+   // One copy confirmation on GO, no red duplicate receipt stamp.
+   await page.locator('#goButton').click();
+   await page.waitForFunction(()=>document.getElementById('promptReceipt')?.dataset.copyState==='copied');
+   const copied=await page.evaluate(()=>({
+    receiptVisible:getComputedStyle(document.getElementById('receiptCopy')).display,
+    receiptHidden:document.getElementById('receiptCopy').hidden,
+    receiptText:document.getElementById('receiptCopy').textContent,
+    heading:document.getElementById('handoffTitle').textContent,
+    goState:document.getElementById('goButton').dataset.copyState,
+    handoffBackground:getComputedStyle(document.getElementById('openAi')).backgroundColor,
+    openHidden:document.getElementById('openAi').hidden,
+    manualOpenHidden:document.getElementById('manualOpenAi').hidden,
+    retryLabel:document.getElementById('shareButton').textContent,
+    retryVisible:getComputedStyle(document.getElementById('shareButton')).display!=='none'
+   }));
+   assert.equal(copied.goState,'copied','GO still confirms successful clipboard write');
+   assert.equal(copied.receiptVisible,'none','Android receipt has no duplicate copied stamp');
+   assert.equal(copied.receiptHidden,true,'Receipt copy mark is omitted semantically');
+   assert.equal(copied.receiptText,'','Receipt copy status is not repeated');
+   assert.match(copied.heading,/^CONTINUE IN /,'Handoff communicates next step, not another copy stamp');
+   assert.equal(copied.handoffBackground,'rgb(0, 66, 37)','Usiku handoff never injects vermilion');
+   assert.equal(copied.openHidden,true,'One-Tap sharing must not add a duplicate full-width share action');
+   assert.equal(copied.manualOpenHidden,true,'A successful copy should not show manual-only recovery');
+   assert.match(copied.retryLabel,/Share this request again/,'Recovery remains a single explicitly named share link');
+   assert.equal(copied.retryVisible,true,'Existing retry path must remain reachable');
+   await page.evaluate(()=>{
+    window.auditHandoff.oneTap=false;
+    window.HipsterLabStateChanged();
+   });
+   assert.equal(await page.locator('#openAi').evaluate(el=>el.hidden),false,'Two-step GO must retain the explicit Open/Share control');
+   await page.evaluate(()=>{
+    window.auditHandoff.oneTap=true;
+    window.HipsterLabStateChanged();
+   });
+   if(width===390)await page.locator('#promptReceipt').screenshot({path:path.join(output,'usiku-copied-receipt.png')});
    await page.reload({waitUntil:'domcontentloaded'});
    assert.equal(await page.evaluate(()=>document.documentElement.dataset.pwaTheme),'usiku','Persisted theme must apply before paint');
    assert.deepEqual(errors,[],'Android theme picker or renderer JS exceptions');
