@@ -6,7 +6,7 @@
 const KEY='ghg-pwa-crate-v1', REF='ghg-pwa-reference-v1', PREF='ghg-pwa-atlas-prefs-v1';
 const THEME_KEY='ghg-pwa-theme-v1', THEMES=['liberi','bosque','usiku'];
 const ATLAS_PALETTES={
- bosque:{ocean:'#f5f0e6',land:'#004225',ink:'#003018',selected:'#e5cf42',route:'#8c6239'},
+ bosque:{ocean:'#e8e9df',land:'#004225',ink:'#003018',selected:'#e5cf42',route:'#8c6239'},
  usiku:{ocean:'#111111',land:'#f5f0e6',ink:'#003018',selected:'#e5cf42',route:'#b77b4d'}
 };
 function atlasTheme(){
@@ -22,7 +22,7 @@ const LIBERI_ROUTE_PAINT={'line-color':'#edc65d','line-opacity':.65,
 const THEMED_ROUTE_PAINT={opacity:.88,width:1.7,dash:[3,2.6]};
 const TWEEN_PALETTES={
  liberi:{paper:'#dfb045',ocean:'#103135',selected:'#a83223',ink:'#103135',backdrop:'#dfb045'},
- bosque:{paper:'#004225',ocean:'#f5f0e6',selected:'#e5cf42',ink:'#003018',backdrop:'#f5f0e6'},
+ bosque:{paper:'#004225',ocean:'#e8e9df',selected:'#e5cf42',ink:'#003018',backdrop:'#f5f0e6'},
  usiku:{paper:'#f5f0e6',ocean:'#111111',selected:'#e5cf42',ink:'#003018',backdrop:'#003018'}
 };
 window.GHGAtlasPaintColors=()=>({theme:atlasTheme(),...TWEEN_PALETTES[atlasTheme()]});
@@ -72,8 +72,6 @@ function paintAtlasTheme(){
    borders:{'line-color':palette.ink},
    ocean:{'background-color':map.getProjection()?.type==='mercator'?'rgba(0,0,0,0)':palette.ocean},
    'robinson-ocean':{'fill-color':palette.ocean},
-   'robinson-outline':{'line-color':theme==='usiku'?'#b77b4d':palette.ink,
-    'line-width':theme==='bosque'?1.4:1.15,'line-opacity':theme==='bosque'?.85:.72},
    routes:{'line-color':palette.route,
     'line-opacity':THEMED_ROUTE_PAINT.opacity,
     'line-width':THEMED_ROUTE_PAINT.width,
@@ -83,7 +81,6 @@ function paintAtlasTheme(){
    // exterior: yellow paper outside Robinson, petrol in the actual sea.
    ocean:{'background-color':map.getProjection()?.type==='mercator'?'rgba(0,0,0,0)':'#103135'},
    'robinson-ocean':{'fill-color':'#103135'},
-   'robinson-outline':{'line-color':'#103135','line-width':1.15,'line-opacity':.8},
    routes:LIBERI_ROUTE_PAINT};
   for(const [layer,paints] of Object.entries(desired)){
    if(!map.getLayer(layer))continue;
