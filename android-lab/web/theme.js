@@ -105,6 +105,9 @@ function setTheme(next,persist){
  if(theme!==next){theme=next;document.documentElement.dataset.pwaTheme=theme;
   requestPaint();syncManualTheme();window.dispatchEvent(new Event('ghg-lab-theme-change'))}
  refreshButtons();
+ // Keep the native skill-update sheet in the same appearance as the WebView.
+ // The app bridge validates these names; no other preferences are exported.
+ if(persist)window.HipsterLab?.setTheme?.(theme);
  if(persist){
   const status=document.getElementById('labThemeStatus');
   if(status&&!status.textContent.includes('unavailable'))status.textContent='Appearance saved on this device.';
@@ -117,6 +120,8 @@ document.addEventListener('click',event=>{
 });
 document.addEventListener('DOMContentLoaded',()=>{
  refreshButtons();
+ // Existing installations already have a saved WebView theme.
+ window.HipsterLab?.setTheme?.(theme);
  const guide=document.getElementById('labManualFrame');
  guide?.addEventListener('load',syncManualTheme);
  syncManualTheme();
