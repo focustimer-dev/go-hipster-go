@@ -36,6 +36,10 @@
  --lab-ui-focus:#356766;--lab-ui-control-outline:#263f3e;
  --lab-ui-ticket-stock:#eee4cf;--lab-ui-ticket-ink:#263f3e;
  --lab-ui-go:#385e5a;--lab-ui-highlight:#7bb0aa;--lab-ui-on-highlight:#263f3e;
+ /* Two independent ink jobs: registration is decorative, activation
+    is the restrained pop on selected controls. The generic print CSS
+    owns placement; future themes supply only these values. */
  --lab-print-muted:#d0c6b0;--lab-print-stamp:#59817c;
+ --lab-print-active-ink:#9b3a2b;
  --lab-print-stamp-filter:brightness(0) saturate(100%) invert(49%) sepia(16%) saturate(647%) hue-rotate(124deg) brightness(93%) contrast(85%);
 }
