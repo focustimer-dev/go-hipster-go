@@ -70,7 +70,18 @@ function renderLabHandoff(){
  if(heading)heading.textContent='CONTINUE IN '+aiNames[ai].toUpperCase();
  if(instructions)instructions.textContent=oneTap&&mode==='share'?'Review and send the shared request in your AI. If it did not arrive, paste the copied request. Check the playlist result there.':'Paste and send the copied request in your AI. Check the playlist result there.';
  const guide=doc.getElementById('labGeminiGuide');if(guide)guide.hidden=!(ai==='gemini'&&service==='youtube'&&ready);
- const open=doc.getElementById('openAi');if(open&&ready)open.textContent=(mode==='share'?'SHARE AGAIN TO ':'OPEN ')+aiNames[ai].toUpperCase();
+ // One-Tap GO already shares the request. The footer's explicit share
+ // control is the retry path; do not promote a duplicate full-width CTA.
+ const open=doc.getElementById('openAi');
+ if(open){
+  open.hidden=oneTap&&mode==='share'&&ready;
+  if(ready)open.textContent=mode==='share'?'SHARE TO '+aiNames[ai].toUpperCase():'OPEN '+aiNames[ai].toUpperCase();
+ }
+ // Manual Open belongs to clipboard recovery, not to an already copied request.
+ const manualOpen=doc.getElementById('manualOpenAi');
+ if(manualOpen)manualOpen.hidden=oneTap&&ready;
+ const share=doc.getElementById('shareButton');
+ if(share)share.textContent=oneTap&&mode==='share'&&ready?'↗ Share this request again':'↗ Share current prompt';
  const button=doc.getElementById('goButton');if(button)button.setAttribute('aria-label',oneTap?'GO! Copy request and '+(mode==='share'?'share to ':mode==='browser'?'open browser for ':'open ')+aiNames[ai]:'GO! Copy current playlist request');
 }
 function renderLabWorkspace(){
