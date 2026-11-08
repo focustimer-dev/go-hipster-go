@@ -57,7 +57,7 @@
  --lab-ui-focus:#913b25;--lab-ui-control-outline:#171717;
  --lab-ui-ticket-stock:#f0efe8;--lab-ui-ticket-ink:#171717;
  --lab-ui-go:#171717;--lab-ui-highlight:#d5e644;--lab-ui-on-highlight:#171717;
- --lab-print-muted:#d0d0bd;--lab-print-stamp:#a9b55a;
+ --lab-print-muted:#d0d0bd;--lab-print-stamp:#56662f;
  --lab-print-active-ink:#913b25;--lab-print-stamp-border-style:solid;
  --lab-print-substrate-texture:repeating-linear-gradient(90deg,rgba(20,20,20,.018) 0 1px,transparent 1px 5px);
  --lab-print-stamp-filter:brightness(0) saturate(100%) invert(85%) sepia(27%) saturate(810%) hue-rotate(17deg) brightness(103%) contrast(92%);
