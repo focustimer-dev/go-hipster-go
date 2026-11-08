@@ -47,7 +47,8 @@ class AndroidThemeParity(unittest.TestCase):
         self.assertIn('syncManualTheme',js)
         self.assertIn("addEventListener('load',syncManualTheme)",js)
         self.assertIn(':root[data-pwa-theme=usiku] .crate-action .deck-key svg',css)
-        self.assertIn('color:#f5f0e6;',css)
+        self.assertIn('color:var(--lab-ui-on-action);',css)
+        self.assertIn('--lab-ui-on-action:#f5f0e6;', (ROOT/'android-lab/web/theme-tokens.css').read_text())
         self.assertIn('background:linear-gradient(180deg,#925b39 0%,#7e4c30',css)
 
     def test_android_primary_action_and_usiku_vignette_material(self):
