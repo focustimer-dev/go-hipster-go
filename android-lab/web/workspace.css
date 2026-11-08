@@ -636,13 +636,13 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
 }
 
 
-/* Jukebox quiet pass (Android Bosque + Usiku only).
+/* Canonical quiet Jukebox profile (Bosque, Usiku and shared print skins).
    The identity is a printed poster: Poster owns headings AND action labels,
    Arial is only for readable supporting copy, and Courier stays on literal
    receipt serials. Quieter means fewer boxes, not generic UI typography.
    This is one bounded override of the inherited gig-poster controls; the
    canonical PWA, Libéri, portraits and geographic geometry are untouched. */
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch]{
  --jukebox-rule:var(--lab-ui-rule);
  --jukebox-ink:var(--lab-ui-ink);
@@ -650,19 +650,19 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
 }
 /* Keep the instruction trail, but let it read as a caption, not another
    oversized headline or a pretend secondary GO button. */
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .poster-go-trail{
  margin-block:12px 9px;
  border-top:1px solid var(--jukebox-rule);
  border-bottom:0;
  padding:10px 0 5px;
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .poster-go-trail-word{
  font:400 1rem/1.15 Poster,sans-serif;
  letter-spacing:0;
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .poster-go-trail-mark{
  font-size:1.35rem;
  padding:3px 5px;
@@ -670,56 +670,56 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
  background:transparent;color:var(--jukebox-ink);
  border:0;box-shadow:none;
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .poster-go-trail-arrow{
  width:12px;height:12px;
 }
 /* Poster is the UI's voice for headings, decisions and actions. Supporting
    sentences use a readable sans. Actual archival metadata stays typewriter. */
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch]
  :is(.refinements>.counter-label,.crate-geo-summary strong){
  font:400 1.3rem/1.15 Poster,sans-serif;
  letter-spacing:.005em;
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .tempo-control::before{
  font:400 1.3rem/1.15 Poster,sans-serif;
  letter-spacing:.005em;
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] #labInspiration strong{
  font:400 1.1rem/1.1 Poster,sans-serif;
  letter-spacing:.005em;
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch]
  :is(#labInspirationPreview,#labInspiration #labReviewInspiration,#labAddInspiration .lab-inspiration-add-label){
  font:400 1.2rem/1.12 Poster,sans-serif;
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch]
  :is(#labInspirationGo,.lab-inspiration-recent-copy span){
  font:400 .875rem/1.45 Arial,Helvetica,sans-serif;
  letter-spacing:0;
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .mood-hint{
  font:400 1rem/1.45 Arial,Helvetica,sans-serif;
  letter-spacing:0;
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .fader-stops span{
  font:400 1rem/1.1 Poster,sans-serif;
  letter-spacing:0;
 }
 /* The tempo state is visible as a quiet underlined choice, not a framed
    card. The five-stop fader and Usiku's saddle thumb are unchanged. */
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .tempo-control[data-tempo=any]::before{
  content:'SET THE TEMPO';
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .tempo-heading #anyTempo{
  min-width:56px;min-height:44px;
  border:0;border-bottom:2px solid transparent;border-radius:0;
@@ -727,7 +727,7 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
  font:400 1.15rem/1.1 Poster,sans-serif;
  box-shadow:none;
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .tempo-heading #anyTempo[aria-pressed=true]{
  background:transparent;color:var(--jukebox-ink);
  border-bottom-color:var(--lab-ui-focus);
@@ -735,13 +735,13 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
 }
 /* Atlas modes are one navigation strip with a real selected state, not
    three independent bordered cards. No view dimensions or projections change. */
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .lab-atlas-modes{
  margin:8px 0 12px;
  border:0;border-bottom:1px solid var(--jukebox-rule);
  background:transparent;box-shadow:none;
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .lab-atlas-modes button{
  min-height:48px;
  border:0;border-bottom:3px solid transparent;
@@ -749,32 +749,32 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
  font:400 1.15rem/1.1 Poster,sans-serif;
  letter-spacing:0;
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .lab-atlas-modes button+button{
  border-inline-start:0;
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .lab-atlas-modes button[aria-pressed=true]{
  background:transparent;color:var(--jukebox-ink);
  border-bottom-color:var(--lab-ui-focus);
  text-decoration:underline;text-underline-offset:4px;
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .lab-atlas-modes svg{
  width:18px;height:18px;
 }
 /* Shuffle and its three locks form one low-contrast toolbar. Selection
    remains legible as an underline AND pinned icon, not just a color shift. */
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .crate-shuffle{
  border-top:1px solid var(--jukebox-rule);
  margin-top:10px;padding-block:8px 10px;
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .shuffle-controls{
  gap:4px 8px;
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch]
  :is(#shuffleCrate,.shuffle-pins .shuffle-pin){
  min-height:48px;
@@ -785,35 +785,35 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
  font:400 1.075rem/1.1 Poster,sans-serif;
  letter-spacing:0;
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] #shuffleCrate{
  border-bottom-color:var(--jukebox-rule);
  font-size:1.15rem;
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] #shuffleCrate:hover{
  background:transparent;color:var(--jukebox-ink);
  text-decoration:underline;text-underline-offset:4px;
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .shuffle-pins .shuffle-pin[aria-pressed=true]{
  background:transparent;color:var(--jukebox-ink);
  border-bottom-color:var(--lab-ui-focus);
  text-decoration:underline;text-underline-offset:4px;
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .shuffle-pins .shuffle-pin:hover{
  outline:0;text-decoration:underline;text-underline-offset:4px;
 }
 /* +ART and TRY HARD remain two full-height, discoverable options, but
    appear as printed checklist entries on the paper above the single GO key.
    Keep both actual button elements and their check state indicators. */
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .go-options .go-extras{
  border:0;border-top:1px solid var(--jukebox-rule);
  background:var(--jukebox-paper);color:var(--jukebox-ink);
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .go-options .go-extras .cover-toggle{
  position:relative;
  display:grid;grid-template-columns:20px minmax(0,1fr) 17px;
@@ -825,12 +825,12 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
  background:transparent;color:var(--jukebox-ink);
  box-shadow:none;
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .go-options .go-extras .cover-toggle+.cover-toggle{
  border-left:1px solid var(--jukebox-rule);
  border-top:0;
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .go-options .go-extras .option-copy{
  display:grid;grid-column:2;grid-row:1;
  grid-template-rows:auto auto;gap:3px;
@@ -838,7 +838,7 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
 }
 /* Explicitly target both options by ID to keep the same original Poster
    lettering on ART and TRY HARD despite older #goHard specificity. */
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch]
  .go-options .go-extras :is(#includeCover,#goHard) .option-label{
  font:400 1.375rem/1.06 Poster,sans-serif;
@@ -846,23 +846,23 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
  white-space:normal;
  color:var(--jukebox-ink);
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .go-options .go-extras .option-copy small{
  font:400 .8125rem/1.3 Arial,Helvetica,sans-serif;
  color:var(--jukebox-ink);
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .go-options .go-extras .extra-mark{
  grid-column:1;grid-row:1;align-self:center;
  width:20px;height:20px;margin:0;
  stroke:var(--jukebox-ink);
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch]
  .go-options .go-extras #includeCover .art-sleeve{
  fill:var(--jukebox-ink);
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .go-options .go-extras .option-state{
  position:static;grid-column:3;grid-row:1;
  justify-self:end;align-self:center;
@@ -870,37 +870,37 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
  border:1.5px solid var(--jukebox-ink);
  background:transparent;color:var(--jukebox-paper);
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .go-options .go-extras .cover-toggle[aria-pressed=true]{
  background:transparent;color:var(--jukebox-ink);
  border-bottom-color:var(--lab-ui-focus);
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .go-options .go-extras .cover-toggle[aria-pressed=true] .option-state{
  background:var(--jukebox-ink);border-color:var(--jukebox-ink);
  color:var(--jukebox-paper);
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .go-options .go-extras .option-state svg{
  display:block;width:100%;height:100%;
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch]
  :is(.lab-atlas-modes button,.shuffle-pins .shuffle-pin,#shuffleCrate,.tempo-heading #anyTempo,.go-extras .cover-toggle):focus-visible{
  outline:2px solid var(--lab-ui-focus);
  outline-offset:-2px;
 }
 @media(max-width:360px){
- :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+ :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
   body.gig-poster.lab-workspace[data-page=launch] .shuffle-controls{gap:4px}
- :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+ :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
   body.gig-poster.lab-workspace[data-page=launch] .shuffle-pins{gap:0}
- :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+ :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
   body.gig-poster.lab-workspace[data-page=launch] .go-options .go-extras .cover-toggle{
    grid-template-columns:18px minmax(0,1fr) 16px;
    column-gap:5px;padding-inline:7px;
   }
- :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+ :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
   body.gig-poster.lab-workspace[data-page=launch] .go-options .go-extras .option-copy{
    display:grid;grid-column:2;grid-row:1;
   }
