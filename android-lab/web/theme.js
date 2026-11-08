@@ -52,7 +52,7 @@ function paint(){
    land:{'fill-color':['case',['boolean',['feature-state','selected'],false],
      palette.selected,palette.land]},
    borders:{'line-color':palette.ink},
-   ocean:{'background-color':palette.ocean},
+   ocean:{'background-color':map.getProjection()?.type==='mercator'?'rgba(0,0,0,0)':palette.ocean},
    'robinson-ocean':{'fill-color':palette.ocean},
    // At 390px the original 1px/.65-alpha dashes nearly vanish against
    // Bosque's cream ocean and Usiku's night sea; keep routes discoverable.
