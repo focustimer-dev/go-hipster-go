@@ -434,8 +434,6 @@ function labAtlasCommitMode(mode,keepHostSize=false){
  labGlobe.setPaintProperty('ocean','background-color',mode==='robinson'?
   'rgba(0,0,0,0)':window.GHGAtlasPaintColors?.().ocean||'#103135');
  labGlobe.setLayoutProperty('robinson-ocean','visibility',mode==='robinson'?'visible':'none');
- // Trace the true Robinson footprint, not the rectangular map widget.
- labGlobe.setLayoutProperty('robinson-outline','visibility',mode==='robinson'?'visible':'none');
  labAtlasSwitchButtons(mode);
  labGlobe.touchZoomRotate[mode==='robinson'?'disableRotation':'enableRotation']();
  labGlobe.touchPitch[mode==='robinson'?'disable':'enable']();
@@ -468,11 +466,6 @@ function installLabAtlasModes(frame){
  const edge=[];for(let lat=90;lat>=-90;lat-=2)edge.push(labRobinsonPoint([-180,lat]));for(let lat=-90;lat<=90;lat+=2)edge.push(labRobinsonPoint([180,lat]));edge.push(edge[0]);
  labGlobe.addSource('robinson-ocean',{type:'geojson',data:{type:'Feature',properties:{},geometry:{type:'Polygon',coordinates:[edge]}}});
  labGlobe.addLayer({id:'robinson-ocean',type:'fill',source:'robinson-ocean',layout:{visibility:'none'},paint:{'fill-color':'#103135'}},'land');
- // The same projected ring is a precise, thin cartographic perimeter.
- // Especially helpful when Bosque's sea and surrounding paper are both cream.
- labGlobe.addLayer({id:'robinson-outline',type:'line',source:'robinson-ocean',
-  layout:{visibility:'none'},paint:{'line-color':'#103135',
-   'line-width':1.15,'line-opacity':.8}});
  const saved=stored('ghg-atlas-view-v2');
  labSetAtlasMode(['robinson','globe','cahill-keyes'].includes(saved)?saved:'robinson');
 }
