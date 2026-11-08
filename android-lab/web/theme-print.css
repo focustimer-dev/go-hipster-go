@@ -200,9 +200,8 @@
   filter:url(#alphaInk)!important;
 }
 /* Print-profile QA corrections: all shared rules, no theme-name selectors.
-   Keep the original sprite alpha. The selected Funk plate has no visible
-   figure in this print treatment, so retain the ORIGINAL neutral engraving
-   under its distinct selected stock and rays until source-state audit. */
+   Keep the original sprite alpha. Funk's approved selected engraving uses
+   the source plate with star glasses and braids, not its neutral pose. */
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #firstCrateSetup{
  --ink:var(--lab-ui-ticket-ink);--paper:var(--lab-ui-ticket-stock);
  --cream:var(--lab-ui-ticket-stock);--ticket-stock:var(--lab-ui-ticket-stock);
@@ -229,6 +228,8 @@
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true] .face::before{
  opacity:1;background-color:var(--lab-mood-funk-ink);
+ -webkit-mask-image:url('/editions/gig-poster/assets/moods-selected-ink-v2.webp');
+ mask-image:url('/editions/gig-poster/assets/moods-selected-ink-v2.webp');
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true] .face::after{
  opacity:0;
