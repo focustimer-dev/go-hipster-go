@@ -49,11 +49,14 @@ function labNavigate(next,focus=true){
  if(focus)doc.querySelector(`[data-lab-tab="${next}"]`)?.focus({preventScroll:true});
 }
 function renderLabHandoff(){
+ // The GO key is the only visible copy stamp; the receipt provides the next action.
+ const receiptMark=doc.getElementById('receiptCopy');
+ if(receiptMark){receiptMark.hidden=true;receiptMark.textContent='';}
  const state=labState(),mode=state.mode||'open',oneTap=state.oneTap!==false;
  if(ai==='other'){
   const guide=doc.getElementById('labGeminiGuide');if(guide)guide.hidden=true;
   const hint=doc.getElementById('goHint');if(hint)hint.textContent='COPY YOUR REQUEST';
-  const heading=doc.getElementById('handoffTitle');if(heading)heading.textContent='COPIED. OPEN YOUR AI MANUALLY.';
+  const heading=doc.getElementById('handoffTitle');if(heading)heading.textContent='OPEN YOUR AI MANUALLY';
   const instructions=doc.getElementById('handoffInstruction');if(instructions)instructions.textContent='Open your chosen AI yourself, paste the request and send it. Native handoff is unavailable for an unspecified AI.';
   const open=doc.getElementById('openAi');if(open)open.hidden=true;
   const button=doc.getElementById('goButton');if(button)button.setAttribute('aria-label','GO! Copy request for manual use in your AI');
@@ -64,7 +67,7 @@ function renderLabHandoff(){
  const hint=doc.getElementById('goHint');if(hint)hint.textContent=oneTap?verb+' '+aiNames[ai].toUpperCase():'COPY YOUR REQUEST';
  const ready=copiedPrompt===goPrompt(ai,service,mood);
  const heading=doc.getElementById('handoffTitle'),instructions=doc.getElementById('handoffInstruction');
- if(heading)heading.textContent=oneTap&&mode==='share'?'CONTINUE IN '+aiNames[ai].toUpperCase():oneTap?'REQUEST COPIED FOR '+aiNames[ai].toUpperCase():'COPIED. OPEN '+aiNames[ai].toUpperCase()+'.';
+ if(heading)heading.textContent='CONTINUE IN '+aiNames[ai].toUpperCase();
  if(instructions)instructions.textContent=oneTap&&mode==='share'?'Review and send the shared request in your AI. If it did not arrive, paste the copied request. Check the playlist result there.':'Paste and send the copied request in your AI. Check the playlist result there.';
  const guide=doc.getElementById('labGeminiGuide');if(guide)guide.hidden=!(ai==='gemini'&&service==='youtube'&&ready);
  const open=doc.getElementById('openAi');if(open&&ready)open.textContent=(mode==='share'?'SHARE AGAIN TO ':'OPEN ')+aiNames[ai].toUpperCase();
