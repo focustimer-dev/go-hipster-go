@@ -432,13 +432,13 @@ body.gig-poster .crate-map-frame.lab-globe-frame .atlas-radial-field{display:non
    without adding a heavy frame or altering the prompt/copy mechanics. */
 :root[data-pwa-theme=bosque] body.gig-poster.lab-workspace[data-page=launch],
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace[data-page=launch]{
- --lab-action-yellow:#e5cf42;
- --lab-action-ink:#003018;
+ --lab-action-yellow:var(--lab-ui-highlight);
+ --lab-action-ink:var(--lab-ui-on-highlight);
 }
 :root[data-pwa-theme=bosque] body.gig-poster.lab-workspace[data-page=launch] .go-options .go-button,
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace[data-page=launch] .go-options .go-button{
- background:#00613b;
- color:#f5f0e6;
+ background:var(--lab-ui-go);
+ color:var(--lab-ui-on-action);
  min-height:110px;
  border:0;
  border-top:2px solid var(--lab-action-yellow);
@@ -451,7 +451,7 @@ body.gig-poster .crate-map-frame.lab-globe-frame .atlas-radial-field{display:non
 }
 :root[data-pwa-theme=bosque] body.gig-poster.lab-workspace[data-page=launch] .go-button .go-copy>span:not(.go-stamp),
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace[data-page=launch] .go-button .go-copy>span:not(.go-stamp){
- color:#f5f0e6;
+ color:var(--lab-ui-on-action);
 }
 /* Only one dividing rule: remove the options' old cream rule rather than
    stacking it under the yellow crown of the GO key. */
@@ -483,7 +483,7 @@ body.gig-poster .crate-map-frame.lab-globe-frame .atlas-radial-field{display:non
   var(--usiku-neutral-stock,#a86c43) 34%,
   var(--usiku-neutral-mid,#925b39) 68%,
   var(--usiku-neutral-edge,#7e4c30) 100%);
- color:#f5f0e6;
+ color:var(--lab-ui-on-action);
  min-height:52px;
  padding:8px 10px;
  margin-bottom:10px;
@@ -492,9 +492,9 @@ body.gig-poster .crate-map-frame.lab-globe-frame .atlas-radial-field{display:non
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace[data-page=launch] .receipt-heading .lab-save-button{
  min-height:44px;
  padding:7px 9px;
- background:#003018;
- color:#f5f0e6;
- border:1px solid #f5f0e6;
+ background:var(--lab-ui-surface);
+ color:var(--lab-ui-on-action);
+ border:1px solid var(--lab-ui-on-action);
  text-decoration:none;
  font-size:clamp(.95rem,3.2cqw,1.125rem);
 }
