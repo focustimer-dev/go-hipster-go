@@ -150,5 +150,14 @@
  color:var(--lab-ui-ticket-ink)!important;background:transparent!important;
  border:2px solid var(--lab-ui-ticket-ink)!important;min-height:48px;
 }
+/* The same active-ink contract applies inside the Manual iframe.
+   Every future print theme changes these controls by supplying one token. */
+:root[data-ghg-theme-profile=print] :is(
+ .crate-tabs button[aria-selected=true],
+ .crate-dividers a[aria-current=page],
+ .manual-groups [aria-pressed=true]
+){
+ border-bottom:3px solid var(--lab-print-active-ink);
+}
 :root[data-ghg-theme-profile=print] .manual-index{border-bottom-color:var(--lab-ui-rule)}
 :root[data-ghg-theme-profile=print] .manual-liner>summary{border-bottom:1px solid var(--lab-ui-rule)}
