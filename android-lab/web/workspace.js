@@ -87,6 +87,8 @@ function renderLabWorkspace(){
  }
  const state=labState(),reference=labInspiration(),entries=Array.isArray(state.saved)?state.saved.filter(e=>e&&typeof e==='object'&&typeof e.id==='string'&&e.id.length>0&&typeof e.prompt==='string').slice(-10):[];
  const dot=doc.getElementById('labUpdateDot');dot.hidden=!state.updateAvailable;dot.setAttribute('aria-hidden','true');
+ const notice=doc.getElementById('labSkillNotice');notice.hidden=!state.updateAvailable;
+ doc.getElementById('labSkillNoticeText').textContent='Gemini Skill update available'+(state.updateLatest?' · '+state.updateLatest:'');
  doc.querySelector('[data-lab-tab="manual"]').setAttribute('aria-label',state.updateAvailable?'Manual, Gemini skill update available':'Manual');
  doc.getElementById('labCrateHeaderSummary').textContent=reference?labInspirationTitle(state.inspirationPreview?.title,reference):'Inspiration and exact requests, saved on this device.';
  doc.getElementById('labCrateReference').textContent=reference?'Reference ready':'No reference yet';
