@@ -33,11 +33,12 @@ const ATLAS=Object.freeze({
   oceanStroke:'#b77b4d',oceanStrokeOpacity:.72
  }),
  kingston:Object.freeze({
-  paper:'#c7beaf',land:'#c7beaf',ocean:'#18151e',ink:'#18151e',
-  selected:'#008fa3',route:'#008fa3',routeOpacity:.85,routeWidth:1.2,
-  routeDash:[3,2.6],backdrop:'#d5cec2',field:'#d5cec2',
-  graticule:'#008fa3',graticuleOpacity:.24,
-  oceanStroke:'#18151e',oceanStrokeOpacity:1
+  // Aged Studio One paper with inked wax, not black photocopier stock.
+  paper:'#d3c4a8',land:'#d3c4a8',ocean:'#273d3b',ink:'#263f3e',
+  selected:'#6d9991',route:'#7ba39b',routeOpacity:.73,routeWidth:1.15,
+  routeDash:[3,3],backdrop:'#e3d9c2',field:'#e3d9c2',
+  graticule:'#6d9991',graticuleOpacity:.18,
+  oceanStroke:'#263f3e',oceanStrokeOpacity:.92
  })
 });
 /* These color roles control PRINTED mood tiles and labels. The artwork
@@ -60,9 +61,11 @@ const MOODS=Object.freeze({
   desireHeart:'#8e3069',funkPaper:'#6e225c',funkInk:'#f2c84e'
  }),
  kingston:Object.freeze({
-  neutralPaper:'#d5cec2',neutralInk:'#18151e',
-  selectedPaper:'#008fa3',selectedInk:'#18151e',
-  desireHeart:'#18151e',funkPaper:'#18151e',funkInk:'#008fa3'
+  // Selected stock is still LABEL PAPER; the stamped outline indicates state.
+  // Funk retains its own approved pink pressing and original source shading.
+  neutralPaper:'#e3d9c2',neutralInk:'#263f3e',
+  selectedPaper:'#d2c3a6',selectedInk:'#244643',
+  desireHeart:'#657f78',funkPaper:'#e4cbe4',funkInk:'#08252a'
  })
 });
 const CSS_MOOD_ROLES={
