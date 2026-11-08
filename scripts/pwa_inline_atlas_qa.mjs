@@ -101,6 +101,35 @@ try{
      };
      throw new Error('Projection did not settle: '+JSON.stringify(state));
     },mode);
+    // Nine-combination release gate: visible ocean ink, real route geometry
+    // and readable Keyes octant separation after the projection SETTLES.
+    const visual=await frame.locator('body').evaluate(()=>{
+     const map=window.labAtlasGlobe;
+     const keyesOcean=document.querySelector('#labAtlasCahill .lab-cahill-ocean');
+     const keyesMat=document.querySelector('#labAtlasGlobe .lab-cahill-overlay');
+     const routes=[...document.querySelectorAll('#labAtlasCahill .lab-cahill-routes path')];
+     return {
+      sea:map.getPaintProperty('ocean','background-color'),
+      plate:map.getPaintProperty('robinson-ocean','fill-color'),
+      mapRoutes:map.getPaintProperty('routes','line-color'),
+      keyesOcean:keyesOcean?getComputedStyle(keyesOcean).fill:'',
+      keyesMat:keyesMat?getComputedStyle(keyesMat).backgroundColor:'',
+      projectedRoutes:routes.filter(path=>{
+       try{return path.getTotalLength()>4 && getComputedStyle(path).display!=='none'}catch(_){return false}
+      }).length
+     };
+    });
+    const seaPalette={liberi:'#103135',bosque:'#f5f0e6',usiku:'#111111'};
+    assert.equal(visual.mapRoutes,routeColors[theme],theme+'/'+mode+' routes keep theme ink');
+    assert(visual.projectedRoutes>0,theme+'/'+mode+' must retain visible projected Keyes routes');
+    if(mode!=='cahill-keyes'){
+     assert.equal(visual.sea,seaPalette[theme],theme+'/'+mode+' must not show paper through the ocean');
+     assert.equal(visual.plate,seaPalette[theme],theme+'/'+mode+' Robinson ocean plate must remain colored');
+    }
+    if(theme==='usiku'&&mode==='cahill-keyes'){
+     assert.equal(visual.keyesMat,'rgb(17, 17, 17)','Keyes map field stays near-black');
+     assert.equal(visual.keyesOcean,'rgb(41, 76, 62)','Usiku Keyes water is distinct dark petrol');
+    }
     if(width===390)await page.screenshot({path:path.join(out,theme+'-'+mode+'.png')});
     const state=await page.evaluate(()=>JSON.parse(localStorage.getItem('ghg-crate-map-regions-v1')||'[]').sort());
     assert.deepEqual(state,selected,'Projection mode must never rewrite selected Jukebox regions');
