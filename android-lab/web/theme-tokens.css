@@ -35,4 +35,5 @@
  --lab-ui-ticket-stock:#eee5d4;--lab-ui-ticket-ink:#18151e;
  --lab-ui-go:#18151e;--lab-ui-highlight:#008fa3;--lab-ui-on-highlight:#18151e;
  --lab-print-muted:#c7beaf;--lab-print-stamp:#008fa3;
+ --lab-print-stamp-filter:brightness(0) saturate(100%) invert(47%) sepia(90%) saturate(800%) hue-rotate(141deg) brightness(90%) contrast(100%);
 }
