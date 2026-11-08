@@ -107,6 +107,7 @@ try{
      const map=window.labAtlasGlobe;
      const keyesOcean=document.querySelector('#labAtlasCahill .lab-cahill-ocean');
      const keyesMat=document.querySelector('#labAtlasGlobe .lab-cahill-overlay');
+     const stage=document.getElementById('labAtlasGlobe');
      const routes=[...document.querySelectorAll('#labAtlasCahill .lab-cahill-routes path')];
      return {
       sea:map.getPaintProperty('ocean','background-color'),
@@ -114,6 +115,8 @@ try{
       mapRoutes:map.getPaintProperty('routes','line-color'),
       keyesOcean:keyesOcean?getComputedStyle(keyesOcean).fill:'',
       keyesMat:keyesMat?getComputedStyle(keyesMat).backgroundColor:'',
+      stageBackdrop:stage?getComputedStyle(stage).backgroundImage:'',
+      stageGround:stage?getComputedStyle(stage).backgroundColor:'',
       projectedRoutes:routes.filter(path=>{
        try{return path.getTotalLength()>4 && getComputedStyle(path).display!=='none'}catch(_){return false}
       }).length
@@ -123,12 +126,24 @@ try{
     assert.equal(visual.mapRoutes,routeColors[theme],theme+'/'+mode+' routes keep theme ink');
     assert(visual.projectedRoutes>0,theme+'/'+mode+' must retain visible projected Keyes routes');
     if(mode!=='cahill-keyes'){
-     assert.equal(visual.sea,seaPalette[theme],theme+'/'+mode+' must not show paper through the ocean');
-     assert.equal(visual.plate,seaPalette[theme],theme+'/'+mode+' Robinson ocean plate must remain colored');
+     assert.equal(visual.sea,mode==='robinson'?'rgba(0,0,0,0)':seaPalette[theme],
+      theme+'/'+mode+' background must allow the correct exterior field');
+     assert.equal(visual.plate,seaPalette[theme],
+      theme+'/'+mode+' Robinson ocean polygon must retain the real sea color');
+     if(mode==='robinson'){
+      if(theme==='usiku')assert.match(visual.stageBackdrop,/radial-gradient/,
+       'Usiku Robinson stage keeps the original forest vignette');
+      if(theme==='liberi')assert.equal(visual.stageGround,'rgb(223, 176, 69)',
+       'Liberi Robinson exterior must be yellow paper');
+     }
     }
     if(theme==='usiku'&&mode==='cahill-keyes'){
-     assert.equal(visual.keyesMat,'rgb(17, 17, 17)','Keyes map field stays near-black');
-     assert.equal(visual.keyesOcean,'rgb(41, 76, 62)','Usiku Keyes water is distinct dark petrol');
+     assert.equal(visual.keyesMat,'rgba(0, 0, 0, 0)',
+      'The transparent Keyes matte exposes the shared green field');
+     assert.equal(visual.keyesOcean,'rgb(17, 17, 17)',
+      'Usiku Keyes water is the same dark ocean as Robinson and Globe');
+     assert.match(visual.stageBackdrop,/radial-gradient/,
+      'Keyes has the same green vignette as the other projections');
     }
     if(width===390)await page.screenshot({path:path.join(out,theme+'-'+mode+'.png')});
     const state=await page.evaluate(()=>JSON.parse(localStorage.getItem('ghg-crate-map-regions-v1')||'[]').sort());
