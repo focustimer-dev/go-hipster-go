@@ -137,11 +137,19 @@ class AndroidThemeRoles(unittest.TestCase):
         css=source("android-lab/web/theme-print.css")
         bundle=source("scripts/bundle_android_lab.py")
         self.assertIn("const PILOTS=['kingston','detroit']",js)
-        self.assertIn("PILOTS.includes(next)&&persist",js)
+        review="applicationIdSuffix '.themepreview'" in source("android-lab/app/build.gradle")
+        if review:
+            self.assertIn("THEMES=['liberi','bosque','usiku','kingston','detroit']",js)
+            self.assertNotIn("PILOTS.includes(next)&&persist",js)
+        else:
+            self.assertIn("PILOTS.includes(next)&&persist",js)
         self.assertIn("PILOTS.includes(preview)?preview:saved()",js)
         self.assertIn("data-lab-print-style",bundle)
         self.assertIn("android-lab/web/theme-print.css",bundle)
-        self.assertNotIn('data-lab-theme="kingston"',source("android-lab/web/workspace.html"))
+        if review:
+            self.assertIn('data-lab-theme="kingston"',source("android-lab/web/workspace.html"))
+        else:
+            self.assertNotIn('data-lab-theme="kingston"',source("android-lab/web/workspace.html"))
         self.assertIn(":root[data-pwa-theme=kingston]",roles)
         self.assertIn(":root[data-ghg-theme-profile=print]",css)
         for role in ("--lab-ui-surface:#e3d9c2", "--lab-ui-action:#304743",
@@ -220,7 +228,11 @@ class AndroidThemeRoles(unittest.TestCase):
         self.assertIn("const PILOTS=['kingston','detroit']",js)
         self.assertIn(":root[data-pwa-theme=detroit]",tokens)
         self.assertIn("kingston|detroit",manual)
-        self.assertNotIn('data-lab-theme="detroit"',source("android-lab/web/workspace.html"))
+        review="applicationIdSuffix '.themepreview'" in source("android-lab/app/build.gradle")
+        if review:
+            self.assertIn('data-lab-theme="detroit"',source("android-lab/web/workspace.html"))
+        else:
+            self.assertNotIn('data-lab-theme="detroit"',source("android-lab/web/workspace.html"))
         self.assertNotIn("data-pwa-theme=detroit",css)
         self.assertIn("var(--lab-print-substrate-texture,none)",css)
         self.assertIn("var(--lab-print-stamp-border-style,double)",css)
@@ -237,6 +249,23 @@ class AndroidThemeRoles(unittest.TestCase):
         self.assertIn("--lab-print-control-ink:#f50093",tokens)
         self.assertIn("--lab-print-stamp:#555555",tokens)
         self.assertIn("var(--lab-print-control-ink,var(--lab-ui-ink))",css)
+
+    def test_print_mood_engraving_is_mood_palette_driven(self):
+        js=source("android-lab/web/theme.js")
+        css=source("android-lab/web/theme-print.css")
+        tokens=source("android-lab/web/theme-tokens.css")
+        self.assertIn("themeMoodNeutralEngraving",js)
+        self.assertIn("themeMoodSelectedEngraving",js)
+        self.assertIn("'neutralInk','neutralPaper'",js)
+        self.assertIn("'selectedInk','selectedPaper'",js)
+        self.assertIn("String(paper[i]-ink[i])",js)
+        self.assertIn("filter:url(#themeMoodNeutralEngraving)!important",css)
+        self.assertIn("filter:url(#themeMoodSelectedEngraving)!important",css)
+        self.assertIn("var(--lab-mood-selected-edge,var(--lab-print-active-ink))",css)
+        self.assertIn("--lab-mood-selected-edge:#171717",tokens)
+        self.assertIn("selectedPaper:'#f50093',selectedInk:'#171717'",js)
+        self.assertIn(":not([data-mood=funky])",css)
+        self.assertGreaterEqual(contrast("#f50093","#171717"),4.5)
 
     def test_app_and_iframe_load_the_same_source(self):
         bundle = source("scripts/bundle_android_lab.py")
