@@ -14,6 +14,19 @@ const labCahillMotion=(()=>{
  // paper atlas can then paint its FINAL pose to the same measured silhouette,
  // rather than docking a nominally sized drawing onto the live renderer.
  const landingFits={robinson:null,globe:null};
+ // Paths are permanent SVG geography. Re-parsing each country's "d" into a
+ // Path2D on every selection/theme refresh is needless allocation. Weak
+ // references avoid retaining a superseded SVG after an Atlas rebuild.
+ const parsedPaths=new WeakMap();
+ function cachedPath(node){
+  const d=node?.getAttribute('d');if(!d)return null;
+  let hit=parsedPaths.get(node);
+  if(!hit||hit.d!==d){
+   hit={d,path:new Path2D(d)};
+   parsedPaths.set(node,hit);
+  }
+  return hit.path;
+ }
  function rememberLiveFit(mode,width,height,fit){
   if(!landingFits.hasOwnProperty(mode)||!fit?.sampled||width<=0||height<=0||
      ![fit.x,fit.y,fit.sx,fit.sy].every(Number.isFinite))return false;
@@ -37,8 +50,7 @@ const labCahillMotion=(()=>{
   const world=svg.querySelector('.lab-cahill-geography');
   if(!world)return target;
   const put=(node,{fill,stroke,lineWidth,alpha=1}={})=>{
-   const d=node?.getAttribute('d');if(!d)return;
-   const path=new Path2D(d);
+   const path=cachedPath(node);if(!path)return;
    ctx.globalAlpha=alpha;
    if(fill){ctx.fillStyle=fill;ctx.fill(path)}
    if(stroke){ctx.lineWidth=lineWidth||.65;ctx.strokeStyle=stroke;ctx.stroke(path)}
@@ -91,7 +103,7 @@ const labCahillMotion=(()=>{
    const dash=(ink.strokeDasharray||path.getAttribute('stroke-dasharray')||'')
      .split(/[ ,]+/).map(parseFloat).filter(n=>Number.isFinite(n)&&n>0);
    if(dash.length)ctx.setLineDash(dash);
-   ctx.stroke(new Path2D(d));ctx.restore();
+   const cached=cachedPath(path);if(cached)ctx.stroke(cached);ctx.restore();
   }
   ctx.setTransform(1,0,0,1,0,0);ctx.globalAlpha=1;
   return target;
@@ -110,7 +122,7 @@ const labCahillMotion=(()=>{
   if(saved?.key===key&&saved.svg===svg&&saved.geojson===geojson)return saved;
   // Globe and Robinson share identical canonical vertices: project once,
   // then paint the two cached poses without duplicating preparation work.
-  const prepared=labAtlasMorphVectors.prepare(geojson,[10,15]);
+  const prepared=labAtlasMorphVectors.sourceData(geojson);
   const fits={globe:roundFit('globe',pixels),robinson:roundFit('robinson',pixels)};
   const images={keyes:keyesPicture(svg,selected,pixels),
    globe:roundPicture(prepared,selected,'globe',pixels,fits),
