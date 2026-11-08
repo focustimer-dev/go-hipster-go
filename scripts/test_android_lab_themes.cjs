@@ -194,14 +194,14 @@ const palettes={
      await guide.locator('#cratePicker > summary').click();
      await guide.locator('[data-crate-tab=setup]').click();
      await guide.locator('.crate-dividers a[href="#setup"]').click();
-     await guide.locator('.skill-checkin').waitFor({state:'visible'});
+     await guide.locator('#setupConfirm .finish').waitFor({state:'visible'});
      await page.waitForFunction(()=>{
       const status=document.getElementById('labManualFrame')?.contentDocument?.getElementById('geminiSkillCheckStatus');
       return status?.textContent.includes('gemini-skill-v3.11.2');
      },null,{timeout:6000});
      assert.match(await guide.locator('#geminiSkillCheckHint').textContent(),/gemini-skill-v3.11.1/);
      assert.match(await guide.locator('#geminiSkillCheckHint').textContent(),/yellow dot/);
-     const key=await guide.locator('.skill-checkin button').evaluate(el=>({
+     const key=await guide.locator('#setupConfirm .finish [data-review-skill-updates]').evaluate(el=>({
       color:getComputedStyle(el).color,
       bg:getComputedStyle(el).backgroundColor,
       height:el.getBoundingClientRect().height
@@ -212,9 +212,9 @@ const palettes={
      }
      assert(key.height>=44,'Gemini check-in is comfortably tappable');
      const before=await page.evaluate(()=>window.__labUpdatesOpened||0);
-     await guide.locator('.skill-checkin [data-review-skill-updates]').click();
+     await guide.locator('#setupConfirm .finish [data-review-skill-updates]').click();
      await page.waitForFunction(previous=>(window.__labUpdatesOpened||0)>previous,before);
-     await guide.locator('.skill-checkin').screenshot({path:path.join(output,`${name}-skill-checkin.png`)});
+     await guide.locator('#setupConfirm .finish').screenshot({path:path.join(output,`${name}-skill-checkin.png`)});
      await page.locator('[data-lab-tab=jukebox]').click();
     }
    }
