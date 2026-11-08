@@ -128,7 +128,8 @@ const palettes={
         housing:getComputedStyle(el.closest('.crate-action')).backgroundColor
        }));
       assert.equal(eject.ink,'rgb(245, 240, 230)','Usiku eject icon keeps cream contrast');
-      assert.match(eject.keycap,/rgb\\(126, 76, 48\\)/,'Usiku eject keycap is deep saddle, not cream');
+      assert(eject.keycap.includes('rgb(126, 76, 48)'),
+       'Usiku eject keycap is deep saddle, not cream');
       assert.equal(eject.housing,'rgb(56, 38, 28)','Usiku transport housing is visibly recessed');
      }
      await page.screenshot({path:path.join(output,`${name}-manual.png`)});
