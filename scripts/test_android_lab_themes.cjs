@@ -162,6 +162,13 @@ const palettes={
      await page.locator('#labCrate').waitFor({state:'visible'});
      await page.screenshot({path:path.join(output,`${name}-crate.png`)});
      await page.locator('[data-lab-tab=manual]').click();
+     assert.equal(await page.locator('#labSkillNotice').isVisible(),true,
+      'Manual must expose an update action on every guide, not just Gemini Setup');
+     assert.match(await page.locator('#labSkillNoticeText').textContent(),/gemini-skill-v3.11.2/);
+     const beforeNotice=await page.evaluate(()=>window.__labUpdatesOpened||0);
+     await page.locator('#labSkillNotice [data-lab-action=updates]').click();
+     await page.waitForFunction(previous=>(window.__labUpdatesOpened||0)>previous,beforeNotice);
+
      await page.frameLocator('#labManualFrame').locator('#manualNavigation').waitFor({state:'visible',timeout:15000});
      await page.waitForFunction(name=>{
       const doc=document.getElementById('labManualFrame')?.contentDocument;
