@@ -1,0 +1,202 @@
+/* Generic physical-print profile — not a Kingston-specific skin.
+   Future approved print themes provide new tokens, without new selectors.
+   Scope: Android Lab preview only. Original cast, Atlas, gestures and
+   animation geometry remain owned by the existing runtime. */
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace{
+  --ink:var(--lab-ui-ink);--ink2:var(--lab-ui-action);
+  --paper:var(--lab-ui-surface);--bone:var(--lab-ui-ticket-stock);
+  --red:var(--lab-ui-highlight);--red2:var(--lab-ui-rule);
+  --yellow:var(--lab-ui-surface);
+  --line:color-mix(in srgb,var(--lab-ui-rule) 48%,transparent);
+  --focus-ink:var(--lab-ui-focus);--focus-paper:var(--lab-ui-ticket-stock);
+  --control-metal:var(--lab-ui-field);--control-track:var(--lab-ui-ink);
+  --atlas-paper:var(--lab-atlas-field);--atlas-paper-light:var(--lab-print-muted);
+  --atlas-paper-hover:var(--lab-ui-ticket-stock);--atlas-ink:var(--lab-atlas-ink);
+  --atlas-accent:var(--lab-atlas-route);--atlas-border:var(--lab-atlas-ink);
+  --atlas-land:var(--lab-atlas-land);--atlas-water:var(--lab-atlas-ocean);
+  --atlas-boundary:var(--lab-atlas-ink);--atlas-selected:var(--lab-atlas-selected);
+  --selection-vermilion:var(--lab-mood-selected-paper);
+  --receipt-ink:var(--lab-ui-action);
+  --lab-action-yellow:var(--lab-ui-highlight);
+  --lab-action-ink:var(--lab-ui-on-highlight);
+  color:var(--lab-ui-ink);background:var(--lab-ui-surface);
+  color-scheme:light;
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .site{
+  background-color:var(--lab-ui-surface);color:var(--lab-ui-ink);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace :is(.lab-page,.lab-dialog){
+  background-color:var(--lab-ui-surface);color:var(--lab-ui-ink);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .lab-rail{
+  background:var(--lab-ui-rail);color:var(--lab-ui-on-rail);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .lab-rail button[aria-current=page]{
+  background:var(--lab-ui-action);color:var(--lab-ui-on-action);
+  border-bottom-color:var(--lab-ui-highlight);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .lab-rail button:last-child{
+  border-inline-start-color:var(--lab-ui-on-rail);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace :is(.lab-dialog-head,.lab-section-head,.lab-page section>h2,.lab-record,.lab-local-note){
+  border-color:var(--lab-ui-rule);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .lab-dialog-head{
+  background:var(--lab-ui-panel);color:var(--lab-ui-on-panel);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace :is(.lab-wide-button,.lab-text-button,.lab-dialog button,.lab-dialog a,.lab-guide-chapters button){
+  color:var(--lab-ui-ink);border-color:var(--lab-ui-rule);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace :is(#labSetupText,#labInspirationEditor textarea){
+  background:var(--lab-ui-field);color:var(--lab-ui-on-field);
+  border-color:var(--lab-ui-control-outline);caret-color:var(--lab-ui-ink);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #labServicePreferences .switch button[aria-pressed=true]{
+  background:var(--lab-ui-action);color:var(--lab-ui-on-action);border-color:var(--lab-ui-action);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #labServicePreferences .switch button[aria-pressed=false]{
+  background:transparent;color:var(--lab-ui-ink);border-color:var(--lab-ui-rule);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace :is(.lab-choice input,.lab-dialog input[type=checkbox]){
+  accent-color:var(--lab-ui-ink);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace :is(button,a,input,select,textarea,summary):focus-visible{
+  outline-color:var(--lab-ui-focus);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .lab-dialog .lab-theme-choice[aria-pressed=true]{
+  background:var(--lab-ui-action)!important;color:var(--lab-ui-on-action)!important;
+}
+/* Preserve the existing compact Jukebox structure, not a second card UI. */
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .go-options .go-button{
+  background:var(--lab-ui-go);color:var(--lab-ui-on-action);
+  min-height:110px;border:0;border-top:2px solid var(--lab-ui-highlight);
+  box-shadow:none;
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .go-button .go-copy b{
+  color:var(--lab-ui-highlight);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .go-button .go-copy>span:not(.go-stamp){
+  color:var(--lab-ui-on-action);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .go-button .go-stamp{
+  background:var(--lab-ui-highlight);color:var(--lab-ui-on-highlight);
+  border:3px double var(--lab-ui-on-highlight);
+  font-size:clamp(1.5rem,6cqw,2.65rem);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .go-options .go-extras{
+  border-bottom:0;
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .receipt-heading{
+  background:transparent;color:var(--lab-ui-ink);border-bottom:1px solid var(--lab-ui-rule);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .receipt-heading .lab-save-button{
+  background:transparent;color:var(--lab-ui-ink);border:1px solid var(--lab-ui-rule);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #firstCrateSetup .ticket{
+  --ink:var(--lab-ui-ticket-ink);--paper:var(--lab-ui-ticket-stock);
+  background:var(--lab-ui-ticket-stock);color:var(--lab-ui-ticket-ink);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .lab-atlas-modes{
+  border-color:var(--lab-ui-rule);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .lab-atlas-modes button{
+  color:var(--lab-ui-ink);background:transparent;
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .lab-atlas-modes button+button{
+  border-inline-start-color:var(--lab-ui-rule);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .lab-atlas-modes button[aria-pressed=true]{
+  background:var(--lab-ui-action);color:var(--lab-ui-on-action);
+}
+/* One coherent ocean/land palette for all three projections AND their veil. */
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #labAtlasGlobe,
+:root[data-ghg-theme-profile=print] #labAtlasGlobe :is(.lab-atlas-morph,.lab-cahill-motion){
+  background:var(--lab-atlas-field)!important;
+}
+:root[data-ghg-theme-profile=print] #labAtlasGlobe .lab-cahill-overlay{
+  background:transparent!important;
+}
+:root[data-ghg-theme-profile=print] #labAtlasCahill .lab-cahill-ocean,
+:root[data-ghg-theme-profile=print] #labCahillAntarcticOcean{
+  fill:var(--lab-atlas-ocean);stroke:var(--lab-atlas-ocean-stroke);
+  stroke-opacity:var(--lab-atlas-ocean-stroke-opacity);
+}
+:root[data-ghg-theme-profile=print] #labAtlasCahill .lab-cahill-graticule{
+  stroke:var(--lab-atlas-graticule);stroke-opacity:var(--lab-atlas-graticule-opacity);
+}
+:root[data-ghg-theme-profile=print] #labAtlasCahill [data-cahill-region][aria-pressed=false]{
+  fill:var(--lab-atlas-land);stroke:var(--lab-atlas-ink);
+}
+:root[data-ghg-theme-profile=print] #labAtlasCahill [data-cahill-region][aria-pressed=true]{
+  fill:var(--lab-atlas-selected);stroke:var(--lab-atlas-ink);stroke-width:1.35;
+}
+:root[data-ghg-theme-profile=print] #labAtlasCahill .lab-cahill-routes path{
+  stroke:var(--lab-atlas-route);stroke-width:1.2;stroke-opacity:var(--lab-atlas-route-opacity);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .crate-map-frame{
+  background:var(--lab-atlas-ocean);border-color:var(--lab-atlas-ink);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .crate-map-ocean{fill:var(--lab-atlas-ocean)}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #posterLandEngraving rect{fill:var(--lab-atlas-land)}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #posterLandEngraving path{stroke:var(--lab-atlas-ink)}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #posterSelectedHalftone rect{fill:var(--lab-atlas-selected)}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #posterSelectedHalftone path{stroke:var(--lab-atlas-ink)}
+/* Character alpha/engraving is original, only its printed ink changes. */
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[aria-pressed=false]{
+  background:var(--lab-mood-neutral-paper);color:var(--lab-mood-neutral-ink);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[aria-pressed=true]{
+  background:var(--lab-mood-selected-paper);color:var(--lab-mood-selected-ink);
+  box-shadow:inset 0 0 0 2px var(--lab-mood-selected-ink);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood .word{
+  color:var(--lab-mood-neutral-ink);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[aria-pressed=true] .word{
+  color:var(--lab-mood-selected-ink);background:transparent;
+  text-decoration:underline;text-decoration-color:var(--lab-mood-selected-ink);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood .face{
+  filter:none!important;
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood]:not([data-mood=desire]):not([data-mood=triumphant]) .face::before,
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood]:not([data-mood=desire]):not([data-mood=triumphant]) .face::after{
+  background-image:none!important;
+  -webkit-mask-size:300% 200%;mask-size:300% 200%;
+  -webkit-mask-position:var(--mood-position);mask-position:var(--mood-position);
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  filter:none!important;
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood]:not([data-mood=desire]):not([data-mood=triumphant]) .face::before{
+  background-color:var(--lab-mood-neutral-ink);
+  -webkit-mask-image:url('/editions/gig-poster/assets/moods-neutral-ink-v2.webp');
+  mask-image:url('/editions/gig-poster/assets/moods-neutral-ink-v2.webp');
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood]:not([data-mood=desire]):not([data-mood=triumphant]) .face::after{
+  background-color:var(--lab-mood-selected-ink);
+  -webkit-mask-image:url('/editions/gig-poster/assets/moods-selected-ink-v2.webp');
+  mask-image:url('/editions/gig-poster/assets/moods-selected-ink-v2.webp');
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true]{
+  background:var(--lab-mood-funk-paper);color:var(--lab-mood-funk-ink);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true] .face::after{
+  background-color:var(--lab-mood-funk-ink);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true] .word{
+  color:var(--lab-mood-funk-ink);text-decoration-color:var(--lab-mood-funk-ink);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true] .funk-rays{
+  filter:hue-rotate(170deg) saturate(.75);opacity:.65;
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=desire][aria-pressed=true] .face::before{
+  opacity:1;filter:url(#referenceInk)!important;
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=desire][aria-pressed=true] .face::after{opacity:0}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=desire] .desire-hearts{
+  background:var(--lab-mood-desire-hearts);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=triumphant][aria-pressed=true] .face::after{
+  filter:url(#alphaInk)!important;
+}
+/* Do not alter layout widths, touch geometry, map projection math or font. */
