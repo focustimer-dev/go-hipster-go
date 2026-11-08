@@ -69,7 +69,7 @@ const MOODS=Object.freeze({
  }),
  detroit:Object.freeze({
   neutralPaper:'#e7e5db',neutralInk:'#171717',
-  selectedPaper:'#f0efe8',selectedInk:'#171717',
+  selectedPaper:'#f50093',selectedInk:'#171717',
   desireHeart:'#f50093',funkPaper:'#e4cbe4',funkInk:'#08252a'
  }),
  kingston:Object.freeze({
@@ -94,12 +94,48 @@ const CSS_ATLAS_ROLES={
  'ocean-stroke-opacity':'oceanStrokeOpacity',
  'route-width':'routeWidth','route-opacity':'routeOpacity'
 };
+// Preserve the selected plate's original tonal engraving. A palette-driven
+// grayscale transfer maps dark hatch marks to the theme's selected ink and
+// pale etched highlights to the selected paper. Unlike feFlood, this retains
+// all intermediate shading and the original transparent sprite edges.
+function syncPortraitInk(){
+ const owner=document.getElementById('selectedMoodPetrol');
+ if(!owner)return; // the original SVG definitions may not exist before DOM ready
+ const ns='http://www.w3.org/2000/svg',id='themeMoodEngraving';
+ let filter=document.getElementById(id);
+ if(!filter){
+  filter=document.createElementNS(ns,'filter');
+  filter.setAttribute('id',id);
+  filter.setAttribute('color-interpolation-filters','sRGB');
+  const gray=document.createElementNS(ns,'feColorMatrix');
+  gray.setAttribute('type','saturate');gray.setAttribute('values','0');
+  const transfer=document.createElementNS(ns,'feComponentTransfer');
+  for(const channel of ['R','G','B']){
+   const channelNode=document.createElementNS(ns,'feFunc'+channel);
+   channelNode.setAttribute('type','linear');
+   transfer.appendChild(channelNode);
+  }
+  filter.append(gray,transfer);owner.parentNode.appendChild(filter);
+ }
+ const colors=MOODS[theme];
+ const parse=hex=>/^#[0-9a-f]{6}$/i.test(hex)?
+  [1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)/255):null;
+ const ink=parse(colors.selectedInk),paper=parse(colors.selectedPaper);
+ if(!ink||!paper)return;
+ const transfer=filter.querySelector('feComponentTransfer');
+ for(const [i,channel] of ['R','G','B'].entries()){
+  const el=transfer.querySelector('feFunc'+channel);
+  el.setAttribute('intercept',String(ink[i]));
+  el.setAttribute('slope',String(paper[i]-ink[i]));
+ }
+}
 function applyThemeTokens(){
  const style=document.documentElement.style,palette=ATLAS[theme],mood=MOODS[theme];
  for(const [role,property] of Object.entries(CSS_ATLAS_ROLES))
   style.setProperty('--lab-atlas-'+role,String(palette[property]));
  for(const [role,property] of Object.entries(CSS_MOOD_ROLES))
   style.setProperty('--lab-mood-'+role,String(mood[property]));
+ syncPortraitInk();
 }
 function saved(){
  try{const value=localStorage.getItem(KEY);return THEMES.includes(value)?value:'liberi'}
@@ -204,6 +240,7 @@ document.addEventListener('click',event=>{
 });
 document.addEventListener('DOMContentLoaded',()=>{
  setTheme(theme,false); // Restore review-theme CSS media links on app launch.
+ syncPortraitInk(); // Early token registration runs before the SVG exists.
  refreshButtons();
  const guide=document.getElementById('labManualFrame');
  guide?.addEventListener('load',syncManualTheme);
