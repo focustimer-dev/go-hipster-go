@@ -89,7 +89,14 @@
  display:block;margin-top:8px;
  font:400 .75rem/1.4 Arial,sans-serif;
 }
-#setupConfirm .finish [data-review-skill-updates]{margin:10px 0 14px}
+/* The final-check button sits inside an ink-dark demo stage. In Liberi it
+   must be the reverse key, not petrol on petrol. */
+#setupConfirm .finish [data-review-skill-updates]{
+ margin:10px 0 14px;
+ background:var(--paper);
+ color:var(--ink);
+ border-color:var(--paper);
+}
 :root[data-pwa-theme=bosque] :is(.skill-checkin button,#setupConfirm .finish [data-review-skill-updates]),
 :root[data-pwa-theme=usiku] :is(.skill-checkin button,#setupConfirm .finish [data-review-skill-updates]){
  background:#004225;color:#e5cf42;border-color:#e5cf42;
