@@ -229,7 +229,7 @@ async function verifyManualHierarchy(page,name,width){
        height:parseFloat(style.minHeight),stampBackground:stamp.backgroundColor,
        stampInk:stamp.color,stampSize:parseFloat(stamp.fontSize)};
      });
-     assert.equal(go.background,'rgb(0, 97, 59)',name+' GO needs its own green key');
+     assert.equal(go.background,name==='bosque'?'rgb(0, 66, 37)':'rgb(0, 97, 59)',name+' GO uses the approved action green');
      assert.equal(go.headline,'rgb(229, 207, 66)',name+' GO label uses selected yellow');
      assert.equal(go.topBorder,'rgb(229, 207, 66)',name+' GO has a slim selected-yellow crown');
      assert.equal(go.caption,'rgb(245, 240, 230)',name+' secondary action label stays readable');
