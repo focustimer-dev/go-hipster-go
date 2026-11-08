@@ -390,7 +390,8 @@ for (const width of [390,320]) {
   assert.equal(await atlas.evaluate(()=>document.documentElement.dataset.pwaTheme),theme,'Atlas inherited chosen PWA theme');
   const tweenPalette=await atlas.evaluate(()=>window.GHGAtlasPaintColors?.());
   assert.equal(tweenPalette?.theme,theme,'Tween frames inherit the current theme');
-  assert.equal(tweenPalette.backdrop,colors.ocean,'Atlas tween backdrop matches the selected theme ocean');
+  assert.equal(tweenPalette.backdrop,theme==='usiku'?'#003018':colors.ocean,
+   'Atlas tween BACKGROUND must match the paper/forest field, not the water');
   assert.equal(tweenPalette.selected,colors.selected,'Tween and live selected land share ink');
   const tweenBundle=(await (await atlasContext.request.get(base+'/pwa-atlas/assets/app.js')).text());
   assert.match(tweenBundle,/const palette=window\.GHGAtlasPaintColors/,'Browser-only tween renderer reads palette per frame');
