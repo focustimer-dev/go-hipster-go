@@ -103,7 +103,7 @@ class AndroidThemeRoles(unittest.TestCase):
         js=source("android-lab/web/theme.js")
         atlas=js.split("const ATLAS=Object.freeze({",1)[1].split("const MOODS=Object.freeze({",1)[0]
         moods=js.split("const MOODS=Object.freeze({",1)[1].split("const CSS_ATLAS_ROLES=",1)[0]
-        pattern=r"\\b([a-z]+):Object\\.freeze\\(\\{(.*?)\\n \\}\\)"
+        pattern=r"\b([a-z]+):Object\.freeze\(\{(.*?)\n \}\)"
         atlas_def=dict(re.findall(pattern,atlas,re.S))
         mood_def=dict(re.findall(pattern,moods,re.S))
         self.assertEqual(set(atlas_def),{"liberi","bosque","usiku"})
@@ -118,14 +118,14 @@ class AndroidThemeRoles(unittest.TestCase):
             "desireHeart","funkPaper","funkInk",
         }
         for theme in atlas_def:
-            atlas_roles=set(re.findall(r"\\b([a-zA-Z]+):",atlas_def[theme]))
-            mood_roles=set(re.findall(r"\\b([a-zA-Z]+):",mood_def[theme]))
+            atlas_roles=set(re.findall(r"\b([a-zA-Z]+):",atlas_def[theme]))
+            mood_roles=set(re.findall(r"\b([a-zA-Z]+):",mood_def[theme]))
             self.assertEqual(atlas_roles,atlas_required,theme+" Atlas roles")
             self.assertEqual(mood_roles,mood_required,theme+" portrait roles")
             for value in ("paper","ocean","land","ink","selected","route"):
-                self.assertRegex(atlas_def[theme],r"\\b"+value+r":'#[0-9a-f]{6}'")
+                self.assertRegex(atlas_def[theme],r"\b"+value+r":'#[0-9a-f]{6}'")
             for value in ("neutralInk","selectedPaper","selectedInk"):
-                self.assertRegex(mood_def[theme],r"\\b"+value+r":'#[0-9a-f]{6}'")
+                self.assertRegex(mood_def[theme],r"\b"+value+r":'#[0-9a-f]{6}'")
         # Selection ink remains legible on the shared yellow pressing.
         self.assertGreaterEqual(contrast("#e5cf42","#003018"),4.5)
         self.assertIn("function applyThemeTokens()",js)
