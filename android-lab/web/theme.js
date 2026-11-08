@@ -11,7 +11,7 @@ const PALETTES={
 const TWEEN={
  liberi:{paper:'#dfb045',ocean:'#103135',selected:'#a83223',ink:'#103135',backdrop:'#dfb045'},
  bosque:{paper:'#004225',ocean:'#f5f0e6',selected:'#e5cf42',ink:'#003018',backdrop:'#f5f0e6'},
- usiku:{paper:'#f5f0e6',ocean:'#111111',selected:'#e5cf42',ink:'#003018',backdrop:'#111111'}
+ usiku:{paper:'#f5f0e6',ocean:'#111111',selected:'#e5cf42',ink:'#003018',backdrop:'#003018'}
 };
 function saved(){
  try{const value=localStorage.getItem(KEY);return THEMES.includes(value)?value:'liberi'}
