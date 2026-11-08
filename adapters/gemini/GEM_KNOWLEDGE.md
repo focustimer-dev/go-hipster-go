@@ -3016,6 +3016,7 @@ Only on `Cover art: yes` or an explicit sleeve request: after the final playlist
 **Execution and status:** Compose these four choices into **one coherent image prompt**, not four incompatible style effects. Use an available host image generator; otherwise output the complete ready-to-use prompt. Provide one original square sleeve with the exact final playlist title. Do not claim the art was uploaded or applied to Spotify, YouTube Music or any service unless a real tool confirms that separate operation. Skip all artwork work when not requested.
 
 # END SOURCE: references/cover-art.md
+
 ---
 
 # BEGIN SOURCE: references/gemini-publish.md
