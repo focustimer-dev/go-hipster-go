@@ -27,6 +27,8 @@ class AndroidThemeParity(unittest.TestCase):
             self.assertIn(file,build)
         self.assertIn('android-lab/web/theme.js',build)
         self.assertIn('android-lab/web/theme-tokens.css',build)
+        self.assertIn('android-lab/web/theme-print.css',build)
+        self.assertIn('data-lab-print-style',build)
         manual=(ROOT/'android-lab/web/manual-guide.html').read_text()
         self.assertIn('/assets/lab-theme-tokens.css',manual)
         self.assertIn('<script src="/assets/lab-themes.js"></script>',build)
@@ -40,6 +42,7 @@ class AndroidThemeParity(unittest.TestCase):
         build=(ROOT/'scripts/bundle_android_lab.py').read_text()
         js=(ROOT/'android-lab/web/theme.js').read_text()
         self.assertIn('lab-manual-themes.css',manual)
+        self.assertIn('document.documentElement.dataset.ghgThemeProfile',manual)
         self.assertIn('parent.document.documentElement.dataset.pwaTheme',manual)
         self.assertIn("manual-guide-theme.css",build)
         for name in ('bosque','usiku'):
