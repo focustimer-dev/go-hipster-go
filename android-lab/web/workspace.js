@@ -70,6 +70,14 @@ function renderLabHandoff(){
  const open=doc.getElementById('openAi');if(open&&ready)open.textContent=(mode==='share'?'SHARE AGAIN TO ':'OPEN ')+aiNames[ai].toUpperCase();
  const button=doc.getElementById('goButton');if(button)button.setAttribute('aria-label',oneTap?'GO! Copy request and '+(mode==='share'?'share to ':mode==='browser'?'open browser for ':'open ')+aiNames[ai]:'GO! Copy current playlist request');
 }
+function labSendSkillState(state=labState()){
+ const frame=doc.getElementById('labManualFrame');
+ frame?.contentWindow?.postMessage({
+  type:'lab-skill-status',available:state.updateAvailable===true,
+  latest:String(state.updateLatest||'Not checked'),
+  recorded:String(state.updateConfirmed||'Not recorded')
+ },location.origin);
+}
 function renderLabWorkspace(){
  if(!doc.getElementById('labCrate'))return;
  const setupText=doc.getElementById('labSetupText');
@@ -107,7 +115,7 @@ function renderLabWorkspace(){
    const b=doc.createElement('button');b.type='button';b.className='lab-text-button';b.dataset.labSaved=String(entry.id);b.textContent='OPTIONS';b.setAttribute('aria-label','Options for saved request: '+h.textContent);row.append(main,b);rows.append(row);
   }
  }
- doc.getElementById('labServicePair').textContent=aiNames[ai]+' → '+serviceNames[service];doc.getElementById('labUpdateState').textContent=state.updateSummary||'Check your installed skill';doc.getElementById('labUpdateDetail').textContent=state.updateDetail||'Review the release, download deliberately, then record your installation.';
+ doc.getElementById('labServicePair').textContent=aiNames[ai]+' → '+serviceNames[service];doc.getElementById('labUpdateState').textContent=state.updateSummary||'Check your installed skill';doc.getElementById('labUpdateDetail').textContent=state.updateDetail||'Review the release, download deliberately, then record your installation.';labSendSkillState(state);
  doc.getElementById('labHandoffDescription').textContent=ai==='other'?'GO copies your request. Open your AI yourself, paste and send.':state.oneTap===false?'GO copies your request. Then choose OPEN to launch your selected AI.':state.mode==='share'?'GO copies the request and tries sharing it to your selected AI. If unavailable, choose an app from Android’s share menu.':state.mode==='browser'?'GO copies your request and opens your selected AI in the browser. Paste and send when ready.':'GO copies your request and opens the selected AI app. Paste and send when ready. If the app is unavailable, Lab opens its website.';renderLabHandoff();
 }
 function labPreferences(){
@@ -150,3 +158,4 @@ window.addEventListener('message',event=>{if(event.source===doc.getElementById('
 doc.getElementById('labManualReturn').onclick=()=>labShowManualResources(false);
 
 window.addEventListener('message',event=>{if(event.source===doc.getElementById('labManualFrame')?.contentWindow&&event.origin===location.origin&&event.data?.type==='lab-gemini-updates')window.HipsterLab?.showUpdates?.()});
+doc.getElementById('labManualFrame')?.addEventListener('load',()=>labSendSkillState());
