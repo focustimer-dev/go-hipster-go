@@ -382,3 +382,26 @@ body.gig-poster .crate-map-frame.lab-globe-frame .atlas-radial-field{display:non
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labManual{
  background:#111111!important;color:#f5f0e6!important;
 }
+
+/* Canonical Atlas field vs ocean separation. Preserve the live map geometry:
+   yellow Liberi paper and green Usiku vignette OUTSIDE the projection,
+   with petrol/dark water painted by the ocean polygon/sphere itself. */
+:root[data-pwa-theme=liberi] body.gig-poster.lab-workspace #labAtlasGlobe{
+ background:#dfb045!important;
+}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labAtlasGlobe{
+ background:#f5f0e6!important;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labAtlasGlobe{
+ background:radial-gradient(ellipse at 50% 38%,#004225 0%,#003018 78%)!important;
+}
+:root[data-pwa-theme=usiku] #labAtlasGlobe .lab-cahill-overlay{
+ background:transparent!important;
+}
+:root[data-pwa-theme=usiku] #labAtlasCahill .lab-cahill-ocean,
+:root[data-pwa-theme=usiku] #labCahillAntarcticOcean{
+ fill:#111111;stroke:#b77b4d;stroke-opacity:.72;
+}
+:root[data-pwa-theme=usiku] #labAtlasGlobe :is(.lab-atlas-morph,.lab-cahill-motion){
+ background:radial-gradient(ellipse at 50% 38%,#004225 0%,#003018 78%)!important;
+}
