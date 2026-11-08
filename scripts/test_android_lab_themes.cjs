@@ -694,7 +694,7 @@ async function verifyManualHierarchy(page,name,width){
    assert.equal(printedExtra.crateLabel,'rgb(213, 206, 194)','Crate CTA shares paper lettering');
    assert.equal(printedExtra.selectedFunk.opacity,'1','Selected Funk keeps the approved figure visible');
    assert.equal(printedExtra.selectedFunk.ink,'rgb(0, 143, 163)','Funk portrait has cyan ink');
-   assert.match(printedExtra.selectedFunk.mask,/moods-neutral-ink-v2.webp/,'Funk retains source engraving');
+   assert.match(printedExtra.selectedFunk.mask,/moods-selected-ink-v2.webp/,'Funk retains approved selected star-glasses engraving');
    assert.equal(printedExtra.desireInk,'rgb(24, 21, 30)','Desire/Triumph filter flood shares ink role');
    // Exercise every approved character in its selected pose. Do not mutate
    // the underlying artwork or depend on only one easy-to-color portrait.
