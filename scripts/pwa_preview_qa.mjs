@@ -39,6 +39,8 @@ for(const profile of profiles){
   assert.equal(response.status(),200);
   await page.locator('.pwa-rail').waitFor({state:'visible',timeout:20000});
   await page.locator('#goButton').waitFor({state:'visible'});
+  assert.equal(await page.locator('.site>.masthead').evaluate(el=>getComputedStyle(el).display),
+   'none','PWA navigation replaces the unnecessary second masthead in every theme');
   // Android 0.9.56 provides a Jukebox-level inspiration entry point.
   await page.locator('.pwa-add-inspiration').waitFor({state:'visible'});
   assert.equal(await page.locator('.pwa-atlas-preview-link').count(),0,'Retired three-map trial link must not appear in the Jukebox');
@@ -132,7 +134,10 @@ for(const profile of profiles){
     ticketOutline:getComputedStyle(document.querySelector('#selectionTicket')).borderTopWidth,
     ticketShadow:getComputedStyle(document.querySelector('#selectionTicket')).boxShadow,
     navTrim:getComputedStyle(document.querySelector('.pwa-rail button[aria-current="page"]')).borderBottomColor,
-    appearanceSwatch:getComputedStyle(document.querySelector('.pwa-theme-choice[data-pwa-theme="usiku"] .pwa-theme-sample i:nth-child(3)')).backgroundColor
+    appearanceSwatch:getComputedStyle(document.querySelector('.pwa-theme-choice[data-pwa-theme="usiku"] .pwa-theme-sample i:nth-child(3)')).backgroundColor,
+    decheeseBody:getComputedStyle(document.querySelector('.decheese-note')).color,
+    decheeseTitle:getComputedStyle(document.querySelector('.decheese-note strong')).color,
+    masthead:getComputedStyle(document.querySelector('.site>.masthead')).display
    }));
    if(name==='bosque'||name==='usiku'){
     assert.equal(observedThemes[name].desire,'rgb(229, 207, 66)','Desire uses racing-yellow selection');
@@ -169,7 +174,10 @@ for(const profile of profiles){
     assert.match(observedThemes.usiku.ticketShadow,/rgb\(17, 17, 17\)/,'Ticket offset shadow stays dark');
     assert.equal(observedThemes.usiku.navTrim,'rgb(183, 123, 77)','Selected navigation carries leather trim');
     assert.equal(observedThemes.usiku.appearanceSwatch,'rgb(0, 66, 37)','Usiku theme swatch reflects the green portrait pressing');
+    assert.equal(observedThemes.usiku.decheeseBody,'rgb(245, 240, 230)','De-cheese instructions are readable cream');
+    assert.equal(observedThemes.usiku.decheeseTitle,'rgb(229, 207, 66)','De-cheese heading uses high-contrast warm yellow');
    }
+   assert.equal(observedThemes[name].masthead,'none',name+' must not show redundant Jukebox masthead');
    if(profile.name==='phone'||profile.name==='phone-reduced-motion'){
     await page.screenshot({path:folder+'/'+profile.name+'-theme-'+name+'-top.png'});
     await page.locator('.mood-grid').scrollIntoViewIfNeeded();
@@ -271,6 +279,10 @@ for(const profile of profiles){
   await page.locator('[data-pwa-action="close"]').click();
   await page.locator('[data-pwa-tab="jukebox"]').click();
   await page.locator('#pwaInspiration [data-pwa-action="remove-reference"]').click();
+  await page.locator('#pwaInspiration').waitFor({state:'hidden'});
+  await page.locator('.pwa-add-inspiration').waitFor({state:'visible'});
+  assert.equal(await page.locator('#pwaReferenceName').innerText(),'No reference yet',
+   'The inspiration X immediately updates the Crate pane');
   assert.ok(!(await page.locator('#prompt').textContent()).includes('violin pulses'),'removed reference cleared from GO');
   await page.locator('[data-pwa-tab="crate"]').click();
   assert.match(await page.locator('#pwaRecent').innerText(),/violin pulses/);
@@ -448,8 +460,8 @@ for (const width of [390,320]) {
    assert.equal(ink.land[2],colors.selected,'Selected region paint is yellow');
    assert.equal(ink.land[3],colors.land,'Unselected MapLibre land is themed');
    assert.equal(ink.robinson,colors.ocean,'Robinson ocean plate is themed');
-   assert.equal(ink.water,ink.projection==='mercator'?'rgba(0,0,0,0)':colors.ocean,
-    'Visible globe ocean stays themed while Robinson engine keeps transparent backdrop');
+   assert.equal(ink.water,colors.ocean,
+    'The ocean remains visibly colored on Robinson and Globe; never reveal paper through water');
    if(mode==='cahill-keyes'){
     const fill=await atlas.locator('#labAtlasCahill [data-cahill-region][aria-pressed=true]').first()
      .evaluate(el=>getComputedStyle(el).fill);
