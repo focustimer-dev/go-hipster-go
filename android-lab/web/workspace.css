@@ -445,6 +445,17 @@ body.gig-poster .crate-map-frame.lab-globe-frame .atlas-radial-field{display:non
  padding-block:13px;
  box-shadow:none;
 }
+/* Usiku's one hero action now takes its identity from the saddle/vignette
+   printing already used on the mood portraits and tempo thumb. Its darker
+   middle tones protect the selected-yellow GO text and cream supporting
+   label; unlike the former bright green, this is not a new palette color. */
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace[data-page=launch] .go-options .go-button{
+ background-color:var(--lab-ui-go);
+ background-image:radial-gradient(ellipse farthest-corner at 45% 32%,
+  var(--usiku-neutral-mid,#925b39) 0%,
+  var(--usiku-neutral-edge,#7e4c30) 58%,
+  #38261c 100%);
+}
 :root[data-pwa-theme=bosque] body.gig-poster.lab-workspace[data-page=launch] .go-button .go-copy b,
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace[data-page=launch] .go-button .go-copy b{
  color:var(--lab-action-yellow);
@@ -474,33 +485,31 @@ body.gig-poster .crate-map-frame.lab-globe-frame .atlas-radial-field{display:non
  font-size:clamp(1.5rem,6cqw,2.65rem);
 }
 
-/* Repeat the actual saddle -> cognac -> dark-edge portrait vignette on a
-   short, functional receipt masthead; narrow trim alone did not echo its
-   material. Keep the rest of the crate/night paper, GO and maps untouched. */
+/* The receipt returns to the quiet printed heading it had before the
+   oversized saddle banner. Brown belongs to the GO action; the receipt
+   should read as information, not compete as a second hero surface. */
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace[data-page=launch] .receipt-heading{
- background:radial-gradient(ellipse farthest-corner at 50% 36%,
-  var(--usiku-neutral-center,#b77b4d) 0%,
-  var(--usiku-neutral-stock,#a86c43) 34%,
-  var(--usiku-neutral-mid,#925b39) 68%,
-  var(--usiku-neutral-edge,#7e4c30) 100%);
+ background:transparent;
  color:var(--lab-ui-on-action);
- min-height:52px;
- padding:8px 10px;
- margin-bottom:10px;
+ min-height:0;
+ padding:0 0 10px;
+ margin:20px 0 10px;
+ border:0;
+ border-bottom:1px solid var(--lab-ui-rule);
  font-size:clamp(1.5rem,4.5cqw,1.85rem);
 }
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace[data-page=launch] .receipt-heading .lab-save-button{
  min-height:44px;
  padding:7px 9px;
- background:var(--lab-ui-surface);
+ background:transparent;
  color:var(--lab-ui-on-action);
- border:1px solid var(--lab-ui-on-action);
+ border:1px solid var(--lab-ui-rule);
  text-decoration:none;
  font-size:clamp(.95rem,3.2cqw,1.125rem);
 }
 @media(max-width:360px){
  :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace[data-page=launch] .receipt-heading{
-  gap:6px;padding-inline:8px;
+  gap:6px;
  }
  :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace[data-page=launch] .receipt-heading .lab-save-button{
   padding-inline:6px;font-size:.9rem;
