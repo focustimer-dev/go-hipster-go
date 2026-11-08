@@ -72,6 +72,8 @@ function paintAtlasTheme(){
    borders:{'line-color':palette.ink},
    ocean:{'background-color':map.getProjection()?.type==='mercator'?'rgba(0,0,0,0)':palette.ocean},
    'robinson-ocean':{'fill-color':palette.ocean},
+   'robinson-outline':{'line-color':theme==='usiku'?'#b77b4d':palette.ink,
+    'line-width':theme==='bosque'?1.4:1.15,'line-opacity':theme==='bosque'?.85:.72},
    routes:{'line-color':palette.route,
     'line-opacity':THEMED_ROUTE_PAINT.opacity,
     'line-width':THEMED_ROUTE_PAINT.width,
@@ -81,6 +83,7 @@ function paintAtlasTheme(){
    // exterior: yellow paper outside Robinson, petrol in the actual sea.
    ocean:{'background-color':map.getProjection()?.type==='mercator'?'rgba(0,0,0,0)':'#103135'},
    'robinson-ocean':{'fill-color':'#103135'},
+   'robinson-outline':{'line-color':'#103135','line-width':1.15,'line-opacity':.8},
    routes:LIBERI_ROUTE_PAINT};
   for(const [layer,paints] of Object.entries(desired)){
    if(!map.getLayer(layer))continue;
