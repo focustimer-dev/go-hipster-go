@@ -427,3 +427,78 @@ body.gig-poster .crate-map-frame.lab-globe-frame .atlas-radial-field{display:non
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .selection-ticket .ticket-detail{
  border-top-color:var(--usiku-leather-edge,#b77b4d9e);
 }
+
+/* Android Jukebox: +ART/TRY HARD are options, GO is the primary action.
+   The two newer appearances previously painted all three as one dark band.
+   Restore a distinct, reachable green key with selection-yellow lettering,
+   without adding a heavy frame or altering the prompt/copy mechanics. */
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace[data-page=launch],
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace[data-page=launch]{
+ --lab-action-yellow:#e5cf42;
+ --lab-action-ink:#003018;
+}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace[data-page=launch] .go-options .go-button,
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace[data-page=launch] .go-options .go-button{
+ background:#00613b;
+ color:#f5f0e6;
+ min-height:110px;
+ border:0;
+ border-top:2px solid var(--lab-action-yellow);
+ padding-block:13px;
+ box-shadow:none;
+}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace[data-page=launch] .go-button .go-copy b,
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace[data-page=launch] .go-button .go-copy b{
+ color:var(--lab-action-yellow);
+}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace[data-page=launch] .go-button .go-copy>span:not(.go-stamp),
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace[data-page=launch] .go-button .go-copy>span:not(.go-stamp){
+ color:#f5f0e6;
+}
+/* Recolor the already-approved faceted star in situ, not a replacement icon. */
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace[data-page=launch] .go-button .star-glyph,
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace[data-page=launch] .go-button .star-glyph{
+ filter:brightness(0) saturate(100%) invert(87%) sepia(55%) saturate(558%) hue-rotate(347deg) brightness(95%) contrast(88%);
+}
+/* The COPIED stamp must be a real selection-yellow confirmation, not cream
+   on cream. Match Libéri's useful stamp scale at narrow Android widths. */
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace[data-page=launch] .go-button .go-stamp,
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace[data-page=launch] .go-button .go-stamp{
+ background:var(--lab-action-yellow);
+ color:var(--lab-action-ink);
+ border:3px double var(--lab-action-ink);
+ font-size:clamp(1.5rem,6cqw,2.65rem);
+}
+
+/* Repeat the actual saddle -> cognac -> dark-edge portrait vignette on a
+   short, functional receipt masthead; narrow trim alone did not echo its
+   material. Keep the rest of the crate/night paper, GO and maps untouched. */
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace[data-page=launch] .receipt-heading{
+ background:radial-gradient(ellipse farthest-corner at 50% 36%,
+  var(--usiku-neutral-center,#b77b4d) 0%,
+  var(--usiku-neutral-stock,#a86c43) 34%,
+  var(--usiku-neutral-mid,#925b39) 68%,
+  var(--usiku-neutral-edge,#7e4c30) 100%);
+ color:#f5f0e6;
+ min-height:52px;
+ padding:8px 10px;
+ margin-bottom:10px;
+ font-size:clamp(1.5rem,4.5cqw,1.85rem);
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace[data-page=launch] .receipt-heading .lab-save-button{
+ min-height:44px;
+ padding:7px 9px;
+ background:#003018;
+ color:#f5f0e6;
+ border:1px solid #f5f0e6;
+ text-decoration:none;
+ font-size:clamp(.95rem,3.2cqw,1.125rem);
+}
+@media(max-width:360px){
+ :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace[data-page=launch] .receipt-heading{
+  gap:6px;padding-inline:8px;
+ }
+ :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace[data-page=launch] .receipt-heading .lab-save-button{
+  padding-inline:6px;font-size:.9rem;
+ }
+}
