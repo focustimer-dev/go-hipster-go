@@ -35,6 +35,11 @@ async function verifyQuietJukebox(page,name,width){
    shuffleFont:family('#shuffleCrate'),
    paceStopsFont:family('.fader-stops span'),
    artFont:family('.go-extras .option-label'),
+   artInk:style('#includeCover .option-label').color,
+   hardInk:style('#goHard .option-label').color,
+   artIconStroke:style('#includeCover .extra-mark').stroke,
+   hardIconStroke:style('#goHard .extra-mark').stroke,
+   artSleeveFill:style('#includeCover .art-sleeve').fill,
    receiptFont:family('.receipt-top'),
    atlasBox:style('.lab-atlas-modes').borderLeftWidth,
    atlasSelected:selected('.lab-atlas-modes [data-atlas-view=robinson]'),
@@ -63,6 +68,9 @@ async function verifyQuietJukebox(page,name,width){
   assert.equal(report[key],'0px',name+' '+key+' is no longer an outlined card');
  assert.equal(report.extraSurface,rgb,name+' option toolbar sits on the theme paper');
  assert.equal(report.coverSurface,'rgba(0, 0, 0, 0)',name+' +ART is a flat option');
+ const actualInk=name==='bosque'?'rgb(0, 48, 24)':'rgb(245, 240, 230)';
+ for(const key of ['artInk','hardInk','artIconStroke','hardIconStroke','artSleeveFill'])
+  assert.equal(report[key],actualInk,name+' '+key+' is readable on theme paper');
  for(const key of ['pinSelected','atlasSelected','coverSelected','anySelected']){
   assert(report[key].borderSize>=2,name+' '+key+' has a clear non-color-only selection underline');
   assert.equal(report[key].background,'rgba(0, 0, 0, 0)',
