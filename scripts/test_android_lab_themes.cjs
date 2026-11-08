@@ -223,13 +223,13 @@ async function verifyManualHierarchy(page,name,width){
       selectedInk:val('--lab-mood-selected-ink')
      };
     });
-    const expected=themeContract[name];
+    const expectedTheme=themeContract[name];
     for(const role of ['ocean','land','route','selected','graticule']){
-     assert.equal(tokenState.atlas[role],expected[role],name+' atlas '+role+' registry');
-     assert.equal(tokenState.css[role],expected[role],name+' atlas '+role+' CSS paint');
+     assert.equal(tokenState.atlas[role],expectedTheme[role],name+' atlas '+role+' registry');
+     assert.equal(tokenState.css[role],expectedTheme[role],name+' atlas '+role+' CSS paint');
     }
-    assert.equal(tokenState.moodInk,expected.moodInk,name+' original neutral portrait ink');
-    assert.equal(tokenState.neutralInk,expected.moodInk,name+' neutral sprite mask role');
+    assert.equal(tokenState.moodInk,expectedTheme.moodInk,name+' original neutral portrait ink');
+    assert.equal(tokenState.neutralInk,expectedTheme.moodInk,name+' neutral sprite mask role');
     assert.equal(tokenState.selectedPaper,name==='liberi'?'#d64b30':'#e5cf42',
      name+' selected portrait paper');
     assert.equal(tokenState.selectedInk,name==='liberi'?'#103135':'#003018',
