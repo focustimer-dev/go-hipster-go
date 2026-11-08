@@ -201,26 +201,32 @@
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=triumphant][aria-pressed=true] .face::after{
   filter:url(#alphaInk)!important;
 }
-/* Locked Funk exception. Unlike the other seven, no palette-derived
-   background, recoloring mask, ink filter or hue-rotate on its lasers.
-   Neutral and selected use the approved base artwork, unchanged. */
-:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky]{
-  --funk-selected-paper:color-mix(in srgb,#e03fd8 22%,#f4efdf);
-  color:#08252a;
-}
-:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=false]{
-  background:#f4efdf;
-}
+/* Funk is a fixed, canonical performance — NOT a palette recipient.
+   This is the exact selected-state pressing from the approved Android
+   Bosque/Usiku implementation. The original expression sprite and laser
+   geometry remain untouched in mood-portraits.css. Other theme tokens
+   never override these colors. */
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true]{
-  background:var(--funk-selected-paper);color:#08252a;
-  box-shadow:inset 0 0 0 2px #08252a;
-}
-:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky] .word{
-  color:#08252a;
+  --funk-selected-paper:#311333;
+  background-color:#6e225c;
+  background-image:radial-gradient(circle at 83% 13%,#efa06344,transparent 41%),linear-gradient(145deg,#311333,#722269 66%,#a52d78);
+  box-shadow:inset 0 0 0 2px #f2c84e;
+  color:#f2c84e;
+  isolation:isolate;
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true] .word{
-  color:#08252a;background:transparent;text-decoration:underline;
-  text-decoration-color:#08252a;
+  color:#f2c84e;
+  background:transparent;
+  text-decoration:underline;
+  text-decoration-color:#f2c84e;
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true] .face::after{
+  /* Apply the ORIGINAL orange/gold ink to original selected figure alpha. */
+  filter:brightness(0) saturate(100%) invert(71%) sepia(46%) saturate(643%) hue-rotate(324deg) brightness(108%) contrast(94%)!important;
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true] .funk-rays{
+  opacity:.82;
+  filter:hue-rotate(23deg) saturate(1.24);
 }
 /* Print-profile QA corrections: shared roles, not theme-name selectors. */
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #firstCrateSetup{
