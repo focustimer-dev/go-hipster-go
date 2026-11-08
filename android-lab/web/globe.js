@@ -103,8 +103,12 @@ function initLabGlobe(){
   }
  }).observe(host);
 }
+// Shared immutable Robinson tables: projection and inverse are called for
+// thousands of geographic vertices. Never allocate lookup arrays per point.
+const LAB_ROBINSON_X=Object.freeze([1,.9986,.9954,.99,.9822,.973,.96,.9427,.9216,.8962,.8679,.835,.7986,.7597,.7186,.6732,.6213,.5722,.5322]);
+const LAB_ROBINSON_Y=Object.freeze([0,.062,.124,.186,.248,.31,.372,.434,.4958,.5571,.6176,.6769,.7346,.7903,.8435,.8936,.9394,.9761,1]);
 function labGlobeUnproject([x,y]){
- const X=[1,.9986,.9954,.99,.9822,.973,.96,.9427,.9216,.8962,.8679,.835,.7986,.7597,.7186,.6732,.6213,.5722,.5322],Y=[0,.062,.124,.186,.248,.31,.372,.434,.4958,.5571,.6176,.6769,.7346,.7903,.8435,.8936,.9394,.9761,1];
+ const X=LAB_ROBINSON_X,Y=LAB_ROBINSON_Y;
  const value=Math.min(1,Math.abs((188-y)/168));let i=0;while(i<17&&Y[i+1]<value)i++;const t=(value-Y[i])/(Y[i+1]-Y[i]),lat=(i+t)*5*Math.sign(188-y);return [Math.max(-180,Math.min(180,(x-360)/335/(X[i]+t*(X[i+1]-X[i]))*180)),lat];
 }
 function installLabGlobeSecrets(old){
@@ -136,7 +140,7 @@ function installLabGlobeSecrets(old){
 let labAtlasMode='robinson',labRobinsonData=null,labRouteGeography=null;
 const labSecretMarkers=[];
 function labRobinsonPoint([lon,lat]){
- const X=[1,.9986,.9954,.99,.9822,.973,.96,.9427,.9216,.8962,.8679,.835,.7986,.7597,.7186,.6732,.6213,.5722,.5322],Y=[0,.062,.124,.186,.248,.31,.372,.434,.4958,.5571,.6176,.6769,.7346,.7903,.8435,.8936,.9394,.9761,1];
+ const X=LAB_ROBINSON_X,Y=LAB_ROBINSON_Y;
  const a=Math.min(90,Math.abs(lat)),i=Math.min(17,Math.floor(a/5)),t=(a-i*5)/5;
  const x=lon*(X[i]+t*(X[i+1]-X[i])),y=Math.sign(lat)*(Y[i]+t*(Y[i+1]-Y[i]))*168/335*Math.PI;
  return [x,Math.atan(Math.sinh(y))*180/Math.PI];

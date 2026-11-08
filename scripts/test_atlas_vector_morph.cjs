@@ -19,6 +19,17 @@ const geo={type:'FeatureCollection',features:[
  coordinates:[[[[170,-10],[175,-10],[175,10],[170,10],[170,-10]]]]}}
 ]};
 const projected=vectors.prepare(geo,[10,15]);
+// All projection consumers (Robinson/Globe tween and Cahill paper-film)
+// must reuse the exact same projected coordinates until the GeoJSON changes.
+const cachedWorld=vectors.sourceData(geo);
+assert.equal(cachedWorld.vertices,projected.vertices);
+assert.strictEqual(vectors.sourceData(geo),cachedWorld,
+ 'Repeated selections reuse canonical projected vertices, not project them again');
+const changedGeo={...geo,features:[...geo.features]};
+assert.notStrictEqual(vectors.sourceData(changedGeo),cachedWorld,
+ 'A new source object invalidates cached geographic coordinates');
+assert.strictEqual(vectors.sourceData(changedGeo),vectors.sourceData(changedGeo),
+ 'Reprepared geometry remains memoized after invalidation');
 assert.equal(projected.vertices,10);
 assert.equal(projected.features.length,2);
 for(const f of projected.features)
