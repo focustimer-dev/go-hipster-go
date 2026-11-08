@@ -628,9 +628,9 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
 
 
 /* Jukebox quiet pass (Android Bosque + Usiku only).
-   The big voices are the portraits, Atlas and GO. Ordinary choices share
-   two typographic roles: Poster for section titles, Arial for controls and
-   reading. Courier remains on literal receipt serials, not input labels.
+   The identity is a printed poster: Poster owns headings AND action labels,
+   Arial is only for readable supporting copy, and Courier stays on literal
+   receipt serials. Quieter means fewer boxes, not generic UI typography.
    This is one bounded override of the inherited gig-poster controls; the
    canonical PWA, Libéri, portraits and geographic geometry are untouched. */
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
@@ -650,8 +650,8 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
 }
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
  body.gig-poster.lab-workspace[data-page=launch] .poster-go-trail-word{
- font:700 .8125rem/1.3 Arial,Helvetica,sans-serif;
- letter-spacing:.01em;
+ font:400 1rem/1.15 Poster,sans-serif;
+ letter-spacing:0;
 }
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
  body.gig-poster.lab-workspace[data-page=launch] .poster-go-trail-mark{
@@ -665,9 +665,8 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
  body.gig-poster.lab-workspace[data-page=launch] .poster-go-trail-arrow{
  width:12px;height:12px;
 }
-/* Type hierarchy: two visible families for decisions and instructions.
-   The handwritten/engraved content and printed receipt serial keep their
-   specialized material treatments. */
+/* Poster is the UI's voice for headings, decisions and actions. Supporting
+   sentences use a readable sans. Actual archival metadata stays typewriter. */
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
  body.gig-poster.lab-workspace[data-page=launch]
  :is(.refinements>.counter-label,.crate-geo-summary strong){
@@ -681,13 +680,13 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
 }
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
  body.gig-poster.lab-workspace[data-page=launch] #labInspiration strong{
- font:700 .75rem/1.3 Arial,Helvetica,sans-serif;
- letter-spacing:.04em;
+ font:400 1.1rem/1.1 Poster,sans-serif;
+ letter-spacing:.005em;
 }
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
  body.gig-poster.lab-workspace[data-page=launch]
  :is(#labInspirationPreview,#labInspiration #labReviewInspiration,#labAddInspiration .lab-inspiration-add-label){
- font:700 1rem/1.3 Arial,Helvetica,sans-serif;
+ font:400 1.2rem/1.12 Poster,sans-serif;
 }
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
  body.gig-poster.lab-workspace[data-page=launch]
@@ -702,7 +701,7 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
 }
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
  body.gig-poster.lab-workspace[data-page=launch] .fader-stops span{
- font:700 .8125rem/1.25 Arial,Helvetica,sans-serif;
+ font:400 1rem/1.1 Poster,sans-serif;
  letter-spacing:0;
 }
 /* The tempo state is visible as a quiet underlined choice, not a framed
@@ -716,7 +715,7 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
  min-width:56px;min-height:44px;
  border:0;border-bottom:2px solid transparent;border-radius:0;
  background:transparent;color:var(--jukebox-ink);
- font:700 .875rem/1.25 Arial,Helvetica,sans-serif;
+ font:400 1.15rem/1.1 Poster,sans-serif;
  box-shadow:none;
 }
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
@@ -738,7 +737,7 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
  min-height:48px;
  border:0;border-bottom:3px solid transparent;
  background:transparent;color:var(--jukebox-ink);
- font:700 .875rem/1.25 Arial,Helvetica,sans-serif;
+ font:400 1.15rem/1.1 Poster,sans-serif;
  letter-spacing:0;
 }
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
@@ -774,13 +773,13 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
  border:0;border-bottom:2px solid transparent;border-radius:0;
  background:transparent;color:var(--jukebox-ink);
  box-shadow:none;
- font:700 .8125rem/1.25 Arial,Helvetica,sans-serif;
- letter-spacing:.01em;
+ font:400 1.075rem/1.1 Poster,sans-serif;
+ letter-spacing:0;
 }
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
  body.gig-poster.lab-workspace[data-page=launch] #shuffleCrate{
  border-bottom-color:var(--jukebox-rule);
- font-size:.875rem;
+ font-size:1.15rem;
 }
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
  body.gig-poster.lab-workspace[data-page=launch] #shuffleCrate:hover{
@@ -828,14 +827,13 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
  grid-template-rows:auto auto;gap:3px;
  align-self:center;
 }
-/* Explicitly target both options by ID: the older poster-era #goHard
-   selector otherwise outranks the generic Jukebox label rule and leaves
-   TRY HARD in the display font. The two keys are one operational type role. */
+/* Explicitly target both options by ID to keep the same original Poster
+   lettering on ART and TRY HARD despite older #goHard specificity. */
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
  body.gig-poster.lab-workspace[data-page=launch]
  .go-options .go-extras :is(#includeCover,#goHard) .option-label{
- font:700 .9375rem/1.15 Arial,Helvetica,sans-serif;
- letter-spacing:.01em;
+ font:400 1.375rem/1.06 Poster,sans-serif;
+ letter-spacing:0;
  white-space:normal;
  color:var(--jukebox-ink);
 }
