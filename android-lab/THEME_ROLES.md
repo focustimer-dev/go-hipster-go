@@ -37,10 +37,13 @@ This Android-only refinement lives together in the final **Jukebox quiet pass**
 block of `android-lab/web/workspace.css`. It does not affect Libéri or the
 public PWA.
 
-- **Poster** is for the big brand, the illustrated mood names, section titles,
-  and the one GO action. **Arial** is for inputs, toolbar actions, help and
-  inline status. **Courier** stays only where it conveys an actual printed
-  artifact such as a receipt serial number.
+- **Poster is the founding visual identity**: use it for the brand, mood names,
+  headings, GO, and action labels (including +ART, TRY HARD, Shuffle, Atlas,
+  tempo choices and inspiration controls). Quieter means reducing their
+  ornamentation, not replacing that typeface.
+- **Arial** is reserved for sentences, descriptive help and secondary status.
+  **Courier** stays where it conveys a genuine printed artifact, such as a
+  receipt serial number. Avoid adding a fourth type family.
 - The illustrated moods and three geographic projections remain immediately
   accessible. Projection choices, Shuffle locks, the **Any** bypass, and the
   **+ART / TRY HARD** checkboxes use a quiet printed-strip language instead of
