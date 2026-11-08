@@ -23,3 +23,17 @@
   --lab-ui-ticket-stock:#f4efdf;--lab-ui-ticket-ink:#003018;
   --lab-ui-go:#7e4c30;--lab-ui-highlight:#e5cf42;--lab-ui-on-highlight:#003018;
 }
+
+/* Kingston Blank-Label — prototype only, not yet selectable.
+   Warm uncoated label, charcoal block print, faded vermilion stamp.
+   All roles exist before any visual implementation is enabled. */
+:root[data-pwa-theme=kingston]{
+ --lab-ui-surface:#e7d5a6;--lab-ui-ink:#26302b;
+ --lab-ui-panel:#f1e2ba;--lab-ui-rail:#253a37;
+ --lab-ui-on-panel:#26302b;--lab-ui-on-rail:#fff0ca;
+ --lab-ui-action:#253a37;--lab-ui-on-action:#fff0ca;
+ --lab-ui-rule:#866c49;--lab-ui-field:#f1e2ba;--lab-ui-on-field:#26302b;
+ --lab-ui-focus:#a63e28;--lab-ui-control-outline:#26302b;
+ --lab-ui-ticket-stock:#fff0ca;--lab-ui-ticket-ink:#26302b;
+ --lab-ui-go:#a63e28;--lab-ui-highlight:#e3b75c;--lab-ui-on-highlight:#26302b;
+}
