@@ -191,8 +191,27 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert(await page.locator('#labAtlasGlobe').evaluate(el=>Math.abs(window.labAtlasGlobe.getZoom()-(Math.log2(Math.max(120,Math.min(el.clientWidth,el.clientHeight))*Math.PI/512)-.25))<.1),'Resting globe refits narrower phones');
   await page.setViewportSize({width:412,height:915});await page.waitForTimeout(200);
   await page.locator('[data-atlas-view="robinson"]').evaluate(el=>el.click());
-  await page.waitForFunction(()=>window.labAtlasGlobe.getProjection()?.type==='mercator',
-   null,{timeout:8000});
+  try{
+   await page.waitForFunction(()=>window.labAtlasGlobe.getProjection()?.type==='mercator',
+    null,{timeout:8000});
+  }catch(error){
+   const state=await page.evaluate(()=>({
+    mapProjection:window.labAtlasGlobe?.getProjection?.()?.type,
+    logicalProjection:window.HipsterAtlasState?.(),
+    atlasButton:[...document.querySelectorAll('[data-atlas-view][aria-pressed=true]')]
+     .map(x=>x.dataset.atlasView),
+    reducedMotion:matchMedia('(prefers-reduced-motion:reduce)').matches,
+    mapLoaded:window.labAtlasGlobe?.loaded?.(),
+    mapStyleLoaded:window.labAtlasGlobe?.isStyleLoaded?.(),
+    landLoaded:window.labAtlasGlobe?.isSourceLoaded?.('land'),
+    mapMoving:window.labAtlasGlobe?.isMoving?.(),
+    overlays:document.querySelectorAll('.lab-atlas-morph,.lab-cahill-motion').length,
+    mapHeight:document.getElementById('labAtlasGlobe')?.clientHeight,
+    visible:document.visibilityState
+   }));
+   console.error('ANDROID_REDUCED_ROBINSON_DIAGNOSTIC',JSON.stringify(state));
+   throw error;
+  }
   assert.equal(await page.locator('.lab-atlas-morph').count(),0,
    'Reduced-motion Robinson return must not leave an overlay');
   assert.equal(await page.locator('#labAtlasGlobe').evaluate(el=>el.style.pointerEvents),'',
