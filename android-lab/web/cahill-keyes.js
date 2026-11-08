@@ -428,11 +428,17 @@ function labCahillInit(host,geography,routes,legacy){
   subscribe:fn=>{cameraListeners.add(fn);return ()=>cameraListeners.delete(fn)}
  };
  const navigator=labCahillInstallNavigator({host,camera});
+ const appliedRegionState=new WeakMap();
  const sync=()=>{
+  // The 183 country paths are static. Only touch SVG attributes for
+  // regions whose selection actually changed, rather than invalidating
+  // the entire paint layer on every focus/selection refresh.
   for(const {id,node}of regions){
    const selected=crateSelected.has(id);
+   if(appliedRegionState.get(node)===selected)continue;
    node.setAttribute('fill',selected?'#a83223':'#dfb045');
    node.setAttribute('aria-pressed',String(selected));
+   appliedRegionState.set(node,selected);
   }
   labCahillMotion.scheduleWarm(svg,geography,crateSelected);
  };
@@ -441,7 +447,9 @@ function labCahillInit(host,geography,routes,legacy){
    return animateCameraFit(1,W/2,TOP+H/2);
   let selected=crateSelected;
   if(atlasFocus)selected=new Set(crateRegions.filter(r=>r.continent===atlasFocus).map(r=>r.id));
-  const boxes=regions.filter(r=>selected.has(r.id)).map(r=>r.bounds||path.bounds(r.feature))
+  // Project each region's geographic bounds at most once. Repeated
+  // zoom-to-selection previously ran D3 projection for the same coastline.
+  const boxes=regions.filter(r=>selected.has(r.id)).map(r=>r.bounds||(r.bounds=path.bounds(r.feature)))
    .filter(b=>b.flat().every(Number.isFinite));
   if(!boxes.length)return reset();
   zoomBounds([Math.min(...boxes.map(b=>b[0][0])),Math.min(...boxes.map(b=>b[0][1]))],
