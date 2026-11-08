@@ -24,16 +24,18 @@
   --lab-ui-go:#7e4c30;--lab-ui-highlight:#e5cf42;--lab-ui-on-highlight:#003018;
 }
 
-/* First print-profile pilot. These roles are data, not component patches. */
+/* Kingston Studio One 7-inch stock — semantic print palette.
+   On-label teal is worn and desaturated; vinyl ocean is dark petrol,
+   not an all-black frame. Text/action pairings meet 4.5:1. */
 :root[data-pwa-theme=kingston]{
- --lab-ui-surface:#d5cec2;--lab-ui-ink:#18151e;
- --lab-ui-panel:#d5cec2;--lab-ui-on-panel:#18151e;
- --lab-ui-rail:#18151e;--lab-ui-on-rail:#d5cec2;
- --lab-ui-action:#18151e;--lab-ui-on-action:#d5cec2;
- --lab-ui-rule:#18151e;--lab-ui-field:#eee5d4;--lab-ui-on-field:#18151e;
- --lab-ui-focus:#18151e;--lab-ui-control-outline:#18151e;
- --lab-ui-ticket-stock:#eee5d4;--lab-ui-ticket-ink:#18151e;
- --lab-ui-go:#18151e;--lab-ui-highlight:#008fa3;--lab-ui-on-highlight:#18151e;
- --lab-print-muted:#c7beaf;--lab-print-stamp:#008fa3;
- --lab-print-stamp-filter:brightness(0) saturate(100%) invert(47%) sepia(90%) saturate(800%) hue-rotate(141deg) brightness(90%) contrast(100%);
+ --lab-ui-surface:#e3d9c2;--lab-ui-ink:#263f3e;
+ --lab-ui-panel:#e9dec9;--lab-ui-on-panel:#263f3e;
+ --lab-ui-rail:#304743;--lab-ui-on-rail:#efe4cb;
+ --lab-ui-action:#304743;--lab-ui-on-action:#efe4cb;
+ --lab-ui-rule:#7b8a7c;--lab-ui-field:#eee3ca;--lab-ui-on-field:#263f3e;
+ --lab-ui-focus:#356766;--lab-ui-control-outline:#263f3e;
+ --lab-ui-ticket-stock:#eee4cf;--lab-ui-ticket-ink:#263f3e;
+ --lab-ui-go:#385e5a;--lab-ui-highlight:#7bb0aa;--lab-ui-on-highlight:#263f3e;
+ --lab-print-muted:#d0c6b0;--lab-print-stamp:#59817c;
+ --lab-print-stamp-filter:brightness(0) saturate(100%) invert(49%) sepia(16%) saturate(647%) hue-rotate(124deg) brightness(93%) contrast(85%);
 }
