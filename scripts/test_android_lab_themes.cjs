@@ -67,6 +67,9 @@ const palettes={
     assert.equal(routes.color,expected,'Route ink '+name+' must match original/theme palette');
     assert.equal(routes.width,name==='liberi'?1:1.7,'Routes must read at phone size for '+name);
     assert.equal(routes.opacity,name==='liberi'?.65:.88,'Routes must not fade away in '+name);
+    const water=await page.evaluate(()=>window.labAtlasGlobe.getPaintProperty('ocean','background-color'));
+    assert.equal(water,({liberi:'#103135',bosque:'#f5f0e6',usiku:'#111111'})[name],
+     'Robinson and Globe water must preserve '+name+' ocean ink at phone size');
     if(name!=='liberi')assert(routes.keyesWidth>=1.8,'Keyes dashed route ink must be visible on '+width+'px');
     if(width===390){
      await page.locator('.mood-grid').scrollIntoViewIfNeeded();
@@ -77,6 +80,11 @@ const palettes={
      await page.waitForFunction(()=>{const state=window.HipsterAtlasState?.();
       return state?.projection==='cahill-keyes'&&!state.transitioning;
      },null,{timeout:20000});
+     if(name==='usiku'){
+      const octantSea=await page.locator('#labAtlasCahill .lab-cahill-ocean').first()
+       .evaluate(el=>getComputedStyle(el).fill);
+      assert.equal(octantSea,'rgb(41, 76, 62)','Usiku Keyes water must be distinct from the black field');
+     }
      await page.screenshot({path:path.join(output,`${name}-keyes.png`)});
      await page.locator('[data-atlas-view=globe]').click();
      await page.waitForFunction(()=>{const state=window.HipsterAtlasState?.();
