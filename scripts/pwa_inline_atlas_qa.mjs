@@ -118,25 +118,17 @@ try{
       stageBackdrop:stage?getComputedStyle(stage).backgroundImage:'',
       stageGround:stage?getComputedStyle(stage).backgroundColor:'',
       webglVisible:getComputedStyle(map.getCanvasContainer()).visibility,
-      robinsonRim:map.getLayoutProperty('robinson-outline','visibility'),
-      rimInk:map.getPaintProperty('robinson-outline','line-color'),
-      rimWidth:map.getPaintProperty('robinson-outline','line-width'),
+      hasArtificialRim:!!map.getLayer('robinson-outline'),
       projectedRoutes:routes.filter(path=>{
        try{return path.getTotalLength()>4 && getComputedStyle(path).display!=='none'}catch(_){return false}
       }).length
      };
     });
-    const seaPalette={liberi:'#103135',bosque:'#f5f0e6',usiku:'#111111'};
+    const seaPalette={liberi:'#103135',bosque:'#e8e9df',usiku:'#111111'};
     assert.equal(visual.webglVisible,mode==='cahill-keyes'?'hidden':'visible',
      theme+'/'+mode+' must never show the previous WebGL map through Keyes');
-    assert.equal(visual.robinsonRim,mode==='robinson'?'visible':'none',
-     theme+'/'+mode+' boundary must only appear around Robinson');
-    if(mode==='robinson'){
-     assert.equal(visual.rimWidth,theme==='bosque'?1.4:1.15,
-      theme+' Robinson silhouette should have a thin cartographic edge');
-     assert.equal(visual.rimInk,theme==='usiku'?'#b77b4d':
-      theme==='bosque'?'#003018':'#103135',theme+' boundary ink');
-    }
+    assert.equal(visual.hasArtificialRim,false,
+     theme+'/'+mode+' map must not draw the disconnected Robinson outline');
     assert.equal(visual.mapRoutes,routeColors[theme],theme+'/'+mode+' routes keep theme ink');
     assert(visual.projectedRoutes>0,theme+'/'+mode+' must retain visible projected Keyes routes');
     if(mode!=='cahill-keyes'){
@@ -150,6 +142,12 @@ try{
       if(theme==='liberi')assert.equal(visual.stageGround,'rgb(223, 176, 69)',
        'Liberi Robinson exterior must be yellow paper');
      }
+    }
+    if(theme==='bosque'&&mode==='cahill-keyes'){
+     assert.equal(visual.keyesOcean,'rgb(232, 233, 223)',
+      'Bosque Keyes sea matches softly tinted Robinson and Globe water');
+     assert.equal(visual.keyesMat,'rgb(245, 240, 230)',
+      'Bosque Keyes exterior stays cream');
     }
     if(theme==='usiku'&&mode==='cahill-keyes'){
      assert.equal(visual.keyesMat,'rgba(0, 0, 0, 0)',
