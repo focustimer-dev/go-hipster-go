@@ -2,6 +2,9 @@
 body.gig-poster.pwa-workspace{padding-top:56px;--pwa-petrol:#103135;--pwa-mustard:#dfb045}
 .pwa-workspace [hidden]{display:none!important}
 .pwa-workspace .topnav{display:none!important}
+/* The PWA navigation replaces the poster's original masthead entirely.
+   Leaving the empty masthead made a redundant solid-color header block. */
+body.gig-poster.pwa-workspace[data-page=launch] .site>.masthead{display:none!important;}
 .pwa-workspace :is(button,a,input,textarea,summary):focus-visible{outline:3px solid #a83223;outline-offset:3px}
 .pwa-rail{position:fixed;inset:0 0 auto;z-index:1000;height:56px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) 48px;background:#103135;color:#dfb045;border:0;padding:0 max(0px,env(safe-area-inset-right)) 0 max(0px,env(safe-area-inset-left))}
 .pwa-rail button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;border:0;border-bottom:3px solid transparent;border-radius:0;background:transparent;color:inherit;font:700 .675rem/1.2 Arial,sans-serif;letter-spacing:.025em;min-width:0;min-height:48px;padding:4px 2px;touch-action:manipulation}
