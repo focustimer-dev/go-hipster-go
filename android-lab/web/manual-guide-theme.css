@@ -1,12 +1,22 @@
 /* Android-only Manual iframe theme parity, based on shared app palettes.
    The original manual markup, copy, guides and media are unchanged. */
+/* Manual uses the same theme-tokens.css as the Jukebox; only the recessed
+   keycap and inactive guide-tab material are intentional local inks. */
 :root[data-pwa-theme=bosque]{
- --ink:#003018;--paper:#f5f0e6;--light:#f5f0e6;--red:#8c6239;
- --guide-muted:#d9c8ae;--guide-active:#004225;--guide-active-ink:#f5f0e6;
+ --ink:var(--lab-ui-on-panel);--paper:var(--lab-ui-panel);
+ --light:var(--lab-ui-on-action);--red:var(--lab-ui-rule);
+ --guide-muted:#d9c8ae;--guide-active:var(--lab-ui-action);
+ --guide-active-ink:var(--lab-ui-on-action);
 }
 :root[data-pwa-theme=usiku]{
- --ink:#f5f0e6;--paper:#111111;--light:#f5f0e6;--red:#b77b4d;
- --guide-muted:#24382d;--guide-active:#004225;--guide-active-ink:#f5f0e6;
+ --ink:var(--lab-ui-on-panel);--paper:var(--lab-ui-panel);
+ --light:var(--lab-ui-on-action);--red:var(--lab-ui-rule);
+ --guide-muted:#24382d;--guide-active:var(--lab-ui-action);
+ --guide-active-ink:var(--lab-ui-on-action);
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+ :is(button,a,textarea,input,summary):focus-visible{
+ outline-color:var(--lab-ui-focus);
 }
 :root[data-pwa-theme=bosque] body.embedded-guide,
 :root[data-pwa-theme=usiku] body.embedded-guide{background:var(--paper)!important;color:var(--ink)!important}
@@ -25,10 +35,10 @@
  background:var(--guide-active)!important;color:var(--guide-active-ink)!important;
 }
 :root[data-pwa-theme=usiku] :is(.deck-key,.crate-action,.crate-picker summary){
- border-color:#b77b4d;
+ border-color:var(--lab-ui-rule);
 }
-:root[data-pwa-theme=usiku] .player #stop{border-color:#f5f0e6;color:#f5f0e6}
-:root[data-pwa-theme=bosque] .player #stop{border-color:#f5f0e6;color:#f5f0e6}
+:root[data-pwa-theme=usiku] .player #stop{border-color:var(--lab-ui-on-action);color:var(--lab-ui-on-action)}
+:root[data-pwa-theme=bosque] .player #stop{border-color:var(--lab-ui-on-action);color:var(--lab-ui-on-action)}
 
 /* Usiku's pale --ink must not become the eject key's pale keycap as well.
    The recessed saddle transport key echoes the Jukebox portrait stock;
@@ -44,7 +54,7 @@
 }
 :root[data-pwa-theme=usiku] .crate-action .deck-key svg,
 :root[data-pwa-theme=usiku] .crate-picker summary:hover .crate-action .deck-key svg{
- color:#f5f0e6;
+ color:var(--lab-ui-on-action);
 }
 :root[data-pwa-theme=usiku] .deck-key::after{
  background:#f5f0e655;
