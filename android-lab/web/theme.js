@@ -5,12 +5,12 @@
 const KEY='ghg-lab-theme-v1',THEMES=['liberi','bosque','usiku'];
 const PALETTES={
  liberi:{ocean:'#103135',land:'#dfb045',ink:'#103135',selected:'#a83223',route:'#a83223'},
- bosque:{ocean:'#f5f0e6',land:'#004225',ink:'#003018',selected:'#e5cf42',route:'#8c6239'},
+ bosque:{ocean:'#e8e9df',land:'#004225',ink:'#003018',selected:'#e5cf42',route:'#8c6239'},
  usiku:{ocean:'#111111',land:'#f5f0e6',ink:'#003018',selected:'#e5cf42',route:'#b77b4d'}
 };
 const TWEEN={
  liberi:{paper:'#dfb045',ocean:'#103135',selected:'#a83223',ink:'#103135',backdrop:'#dfb045'},
- bosque:{paper:'#004225',ocean:'#f5f0e6',selected:'#e5cf42',ink:'#003018',backdrop:'#f5f0e6'},
+ bosque:{paper:'#004225',ocean:'#e8e9df',selected:'#e5cf42',ink:'#003018',backdrop:'#f5f0e6'},
  usiku:{paper:'#f5f0e6',ocean:'#111111',selected:'#e5cf42',ink:'#003018',backdrop:'#003018'}
 };
 function saved(){
@@ -44,7 +44,6 @@ function paint(){
    borders:{'line-color':'#103135'},
    ocean:{'background-color':map.getProjection()?.type==='mercator'?'rgba(0,0,0,0)':'#103135'},
    'robinson-ocean':{'fill-color':'#103135'},
-   'robinson-outline':{'line-color':'#103135','line-width':1.15,'line-opacity':.8},
    // Keep the original ink and dash rhythm in Liberi, even when the
    // map's routes layer was added after the first palette snapshot.
    routes:{'line-color':'#edc65d','line-opacity':.65,
@@ -55,10 +54,8 @@ function paint(){
    borders:{'line-color':palette.ink},
    ocean:{'background-color':map.getProjection()?.type==='mercator'?'rgba(0,0,0,0)':palette.ocean},
    'robinson-ocean':{'fill-color':palette.ocean},
-   'robinson-outline':{'line-color':theme==='usiku'?'#b77b4d':palette.ink,
-    'line-width':theme==='bosque'?1.4:1.15,'line-opacity':theme==='bosque'?.85:.72},
    // At 390px the original 1px/.65-alpha dashes nearly vanish against
-   // Bosque's cream ocean and Usiku's night sea; keep routes discoverable.
+   // Bosque's pale ocean and Usiku's night sea; keep routes discoverable.
    routes:{'line-color':palette.route,'line-opacity':.88,
     'line-width':1.7,'line-dasharray':[3,2.6]}
   };
