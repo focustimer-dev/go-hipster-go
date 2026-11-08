@@ -27,7 +27,7 @@ const palettes={
   for(const width of [390,320]){
    const page=await browser.newPage({viewport:{width,height:860},isMobile:true,hasTouch:true});
    const errors=[];page.on('pageerror',e=>errors.push(e.message));
-   await page.addInitScript(()=>{window.HipsterLab={state:()=>'{"saved":[]}',inspiration:()=>'',copy:()=>true}});
+   await page.addInitScript(()=>{window.HipsterLab={state:()=>'{"saved":[]}',inspiration:()=>'',copy:()=>true,go:()=>{}}});
    await page.goto('http://127.0.0.1:'+server.address().port+'/',{waitUntil:'domcontentloaded'});
    await page.waitForFunction(()=>window.labAtlasGlobe?.loaded()&&window.labCahillMap?.ready,null,{timeout:30000});
    await page.emulateMedia({reducedMotion:'reduce'});
@@ -42,6 +42,38 @@ const palettes={
     assert.deepEqual(await page.locator('link[data-lab-palette-style]').evaluateAll(els=>els.map(e=>e.media)),
      [name==='liberi'?'not all':'all',name==='liberi'?'not all':'all'],
      'Inactive Libéri palette styles must not slow down the base map');
+    if(name==='usiku'){
+     const contrast=await page.evaluate(()=>{
+      const ticket=document.querySelector('#firstCrateSetup .ticket');
+      const inspiration=document.querySelector('#labInspiration');
+      const wasHidden=inspiration.hidden;inspiration.hidden=false;
+      const color=selector=>getComputedStyle(document.querySelector(selector)).color;
+      const result={
+       card:color('#labInspiration'),title:color('#labInspirationPreview'),
+       label:color('#labInspiration strong'),edit:color('#labReviewInspiration'),
+       reminder:color('#labInspirationGo'),
+       ticket:color('#firstCrateSetup .ticket'),
+       ai:color('#fc-ai'),music:color('#fc-service'),
+       selectTextFill:getComputedStyle(document.querySelector('#fc-ai')).webkitTextFillColor,
+       primary:color('#firstCrateSetup .ticket .primary'),
+       ticketStock:getComputedStyle(ticket).backgroundColor
+      };
+      inspiration.hidden=wasHidden;
+      return result;
+     });
+     for(const key of ['card','title','label','edit','reminder'])
+      assert.equal(contrast[key],'rgb(245, 240, 230)','Usiku inspiration '+key+' needs cream contrast');
+     for(const key of ['ticket','ai','music','selectTextFill'])
+      assert.equal(contrast[key],'rgb(0, 48, 24)','Cream setup '+key+' needs dark ink');
+     assert.equal(contrast.primary,'rgb(245, 240, 230)','Setup primary is cream on petrol');
+     assert.equal(contrast.ticketStock,'rgb(244, 239, 223)','Keep historic paper setup card');
+     if(width===390){
+      await page.locator('#firstCrateSetup .ticket').screenshot({path:path.join(output,'usiku-setup-contrast.png')});
+      await page.locator('#labInspiration').evaluate(el=>el.hidden=false);
+      await page.locator('#labInspiration').screenshot({path:path.join(output,'usiku-inspiration-contrast.png')});
+      await page.locator('#labInspiration').evaluate(el=>el.hidden=true);
+     }
+    }
     if(width===390)await page.screenshot({path:path.join(output,`${name}-preferences.png`)});
     await page.locator('[data-lab-action=close-preferences]').click();
     await page.waitForTimeout(150);
@@ -176,6 +208,24 @@ const palettes={
      await page.locator('[data-lab-tab=jukebox]').click();
     }
    }
+   // One copy confirmation on GO, no red duplicate receipt stamp.
+   await page.locator('#goButton').click();
+   await page.waitForFunction(()=>document.getElementById('promptReceipt')?.dataset.copyState==='copied');
+   const copied=await page.evaluate(()=>({
+    receiptVisible:getComputedStyle(document.getElementById('receiptCopy')).display,
+    receiptHidden:document.getElementById('receiptCopy').hidden,
+    receiptText:document.getElementById('receiptCopy').textContent,
+    heading:document.getElementById('handoffTitle').textContent,
+    goState:document.getElementById('goButton').dataset.copyState,
+    handoffBackground:getComputedStyle(document.getElementById('openAi')).backgroundColor
+   }));
+   assert.equal(copied.goState,'copied','GO still confirms successful clipboard write');
+   assert.equal(copied.receiptVisible,'none','Android receipt has no duplicate copied stamp');
+   assert.equal(copied.receiptHidden,true,'Receipt copy mark is omitted semantically');
+   assert.equal(copied.receiptText,'','Receipt copy status is not repeated');
+   assert.match(copied.heading,/^CONTINUE IN /,'Handoff communicates next step, not another copy stamp');
+   assert.equal(copied.handoffBackground,'rgb(0, 66, 37)','Usiku handoff never injects vermilion');
+   if(width===390)await page.locator('#promptReceipt').screenshot({path:path.join(output,'usiku-copied-receipt.png')});
    await page.reload({waitUntil:'domcontentloaded'});
    assert.equal(await page.evaluate(()=>document.documentElement.dataset.pwaTheme),'usiku','Persisted theme must apply before paint');
    assert.deepEqual(errors,[],'Android theme picker or renderer JS exceptions');
