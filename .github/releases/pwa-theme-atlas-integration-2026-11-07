@@ -4,3 +4,11 @@ Approved source baseline: aca47cd08920196e2552df5bc651b4a3da77341f
 Includes: PR #188 (three-projection theme integration, browser tabs), PR #189 (Liberi paint restoration and isolated preview regression).
 Scope: public Cloudflare PWA only. No Android app changes or APK deployment.
 Gate: GitHub Actions Cloudflare one-shot deployment, exact Git commit verification, then live Chromium smoke and PWA QA.
+
+---
+PR #196 approved release (2026-11-07)
+Approved by the project owner after phone QA of Bosque, Usiku, Liberi, and all three Atlas projections.
+Merged PR #196 source commit: b6c7f588b6e008238e59a8c2c59234b83bc1a3f6
+Release scope: public Cloudflare PWA, including the inline canonical Atlas; Android Lab source is merged but no APK signing/distribution.
+Validation: five release-candidate workflows successful, including PWA Chromium QA, Android Lab, and Atlas performance comparison.
+Use the existing production one-shot GitHub Actions workflow, verify exact release-marker commit on live site, then run live Chromium smoke and PWA QA.
