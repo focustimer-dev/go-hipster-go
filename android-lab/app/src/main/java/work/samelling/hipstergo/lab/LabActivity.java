@@ -216,7 +216,8 @@ public class LabActivity extends Activity {
             return new org.json.JSONObject().put("saved",shelf.entries())
                 .put("activeInspiration",inspiration.value()).put("recentInspirations",inspiration.recent()).put("inspirationPreview",inspiration.preview())
                 .put("mode",prefs.getString("mode","open")).put("oneTap",prefs.getBoolean("oneTap",true))
-                .put("haptics",prefs.getBoolean("haptics",true)).put("updateAvailable",updates.available())
+                .put("haptics",prefs.getBoolean("haptics",true)).put("updateAvailable",updates.available()).put("updateConfirmed",updates.recordedVersion())
+                .put("updateLatest",updates.latestVersion())
                 .put("updateSummary",updates.summary()).put("updateDetail",updates.detail()).toString();
         }catch(org.json.JSONException e){return "{}";}
     }
