@@ -119,3 +119,36 @@ resting states AND in-between frames at 320/390px, run Android and PWA
 unit/visual workflows, and never let a missing token silently inherit the
 wrong theme. This first milestone is an architectural foundation, not
 permission to turn on Kingston or any other candidate in Preferences.
+
+## Kingston Blank-Label — isolated print-profile pilot
+
+The first shortlisted design is a **QA-only experiment**, reachable in a
+development Android Lab browser bundle at `/?theme=kingston`. It is **not**
+offered in the appearance chooser or saved to Android's theme preference.
+
+The supplied material palette is chipboard `#d5cec2`, muted stock
+`#c7beaf`, black ink `#18151e`, and a cyan-stamped selection
+`#008fa3`. The original Poster display font is retained; physical
+printing effects are deliberately restrained until art direction is approved.
+
+- `theme.js`: one fully specified `ATLAS.kingston` and `MOODS.kingston`.
+- `theme-tokens.css`: all semantic UI colors for the pilot.
+- `theme-print.css`: **generic** print-profile consumers of those tokens,
+  not Kingston-specific selectors; meant to serve future print themes.
+- `manual-guide-theme.css`: generic print-profile binding for the existing
+  iframe, which receives the theme at first paint.
+- Android bundle: load the generic print binding only when the URL selects
+  the pilot. Production themes do not load its style rules.
+
+**Acceptance gate:** 320px and 390px phone Chromium checks, all three live
+projections (resting and transitions), all eight neutral/selected cast states,
+Manual, GO and receipt, contrast, no horizontal overflow, no JS exceptions.
+Check actual screenshots before considering release; the test suite is not
+evidence of final artistic polish. Preserve all map geometry/gestures,
+transparent art plates and the existing three themes.
+
+**Architectural debt exposed:** Some special characters still use approved
+custom alpha/effects, and the Android printed component surfaces need this
+new generic binding because the old Bosque/Usiku styles were theme-name
+selectors. Do not add Kingston-only selector patches to compensate for
+missing roles; improve the generic contract instead.
