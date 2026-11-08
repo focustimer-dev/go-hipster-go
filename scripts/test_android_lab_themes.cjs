@@ -918,7 +918,7 @@ async function verifyManualHierarchy(page,name,width){
      assert.equal(colors.page,'rgb(231, 229, 219)','Photocopy paper stock');
      assert.match(colors.paperTexture,/repeating-linear-gradient/,'Generic printed texture token');
      assert.equal(colors.selected,'rgb(245, 0, 147)','Selected mood overlays the original engraving with highlighter pink');
-     assert.match(colors.selectedRim,/rgb\\(23, 23, 23\\)/,'Dark outline survives neon selected paper');
+     assert.ok(colors.selectedRim.includes('rgb(23, 23, 23)'),'Dark outline survives neon selected paper');
      assert.equal(colors.selectedTab,'rgb(245, 0, 147)','Active Atlas tab uses pink');
      assert.equal(colors.checkboxAccent,'rgb(245, 0, 147)','Checkbox ink is theme selectable');
      assert.match(colors.plateFilter,/themeMoodSelectedEngraving/,'Selected plate uses real palette ink transfer');
