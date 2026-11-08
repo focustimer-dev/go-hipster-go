@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Build a review-only browser route from the canonical Android Lab atlas.
 
-The Android bundle is the single source of geometry, projection transitions and
-shipping lanes. Build exclusively into launcher/pwa-atlas for the isolated Worker.
+The Android bundle is the single source of geography, projection transitions,
+theme-compatible paint hooks and shipping lanes. Build only into launcher/pwa-atlas.
 The public gig-poster, native Lab files and main PWA adapter remain untouched.
 """
 from pathlib import Path
@@ -32,45 +32,9 @@ def rewrite_absolute_assets(value):
                 value = value.replace(needle, start + "pwa-atlas/" + root)
     return value
 
-def theme_browser_tween_assets():
-    """Replace only the *generated PWA copy* of the Android transition paints.
-
-    A CSS filter cannot faithfully turn Liberi's yellow/red raster frames into
-    Bosque/Usiku geography. Keep the same geographic paths, render curves,
-    timing and the Android source, but read actual browser theme paint values.
-    Exact-match replacements fail closed if canonical engine code changes.
-    """
-    app = DEST / "assets" / "app.js"
-    source = app.read_text(encoding="utf-8")
-    changes = (
-        ("const palette={paper:'#dfb045',ocean:'#103135',selected:'#a83223'};",
-         "const paletteDefaults={paper:'#dfb045',ocean:'#103135',selected:'#a83223'};"),
-        ("function paint(canvas,prepared,t,selected,fits=null){",
-         "function paint(canvas,prepared,t,selected,fits=null){ const palette=window.GHGAtlasPaintColors?.()||paletteDefaults;"),
-        ("return width+'@'+selectionKey(selected);",
-         "return width+'@'+selectionKey(selected)+'@'+(window.GHGAtlasPaintColors?.().theme||'liberi');"),
-        ("const PAL={paper:'#dfb045',ocean:'#103135',selected:'#a83223',ink:'#103135'};",
-         "const PAL=new Proxy({paper:'#dfb045',ocean:'#103135',selected:'#a83223',ink:'#103135',backdrop:'#dfb045'},"
-         "{get(base,key){return window.GHGAtlasPaintColors?.()?.[key]||base[key]}});"),
-        ("const key=selectionKey(selected)+'@'+pixels;",
-         "const key=selectionKey(selected)+'@'+pixels+'@'+(window.GHGAtlasPaintColors?.().theme||'liberi');"),
-        ("ctx.fillStyle=PAL.paper;ctx.fillRect(0,0,pixels,pixels);",
-         "ctx.fillStyle=PAL.backdrop;ctx.fillRect(0,0,pixels,pixels);"),
-        ("ctx.globalCompositeOperation='destination-over';ctx.fillStyle=PAL.paper;",
-         "ctx.globalCompositeOperation='destination-over';ctx.fillStyle=PAL.backdrop;"),
-        ("ctx.fillStyle=PAL.paper;ctx.fillRect(0,0,size,size);",
-         "ctx.fillStyle=PAL.backdrop;ctx.fillRect(0,0,size,size);"),
-        ("ctx.fillStyle=item.getAttribute('fill');ctx.fill();",
-         "ctx.fillStyle=window.GHGAtlasPaintColors?getComputedStyle(item).fill:item.getAttribute('fill');ctx.fill();"),
-        ("veil.style.cssText='position:absolute;inset:0;z-index:30;overflow:hidden;background:#dfb045;pointer-events:none;';",
-         "veil.style.cssText='position:absolute;inset:0;z-index:30;overflow:hidden;background:'+PAL.backdrop+';pointer-events:none;';"),
-    )
-    for original, replacement in changes:
-        if source.count(original) != 1:
-            raise AssertionError(f"Atlas PWA tween anchor changed: {original[:75]}")
-        source = source.replace(original, replacement)
-    app.write_text(source, encoding="utf-8")
-
+# The canonical Android atlas now reads optional theme paints directly.
+# The PWA injects GHGAtlasPaintColors before the generated app script; no
+# brittle production JS source rewriting or second renderer is necessary.
 
 def main():
     bundle(DEST)
@@ -87,18 +51,73 @@ def main():
             updated = rewrite_absolute_assets(original)
             if updated != original:
                 file.write_text(updated, encoding="utf-8")
-    theme_browser_tween_assets()
     page = DEST / "index.html"
     html = page.read_text(encoding="utf-8")
-    injection = ('<link rel="stylesheet" href="/assets/pwa-themes.css">'
-                 '<link rel="stylesheet" href="/pwa-atlas/assets/pwa-atlas-themes.css">'
-                 '<script src="/pwa-atlas/assets/pwa-atlas-bridge.js"></script>')
+    # The PWA has its own palette owner (pwa-atlas-bridge.js). Strip the
+    # native Lab appearance controller here to avoid fighting MapLibre
+    # setPaintProperty loops and an Atlas that never reaches loaded()/idle.
+    native_theme='<script src="/pwa-atlas/assets/lab-themes.js"></script>'
+    assert html.count(native_theme)==1,"Android theme boot script path changed"
+    html=html.replace(native_theme,"")
+    # The canonical Android bundle already carries the *same* two shared CSS
+    # links. Duplicate injection produces redundant styles and fails palette
+    # contract checks; keep a single stylesheet instance per source.
+    for css in ("pwa-themes.css", "pwa-atlas-themes.css"):
+        lazy=f'<link rel="stylesheet" href="/pwa-atlas/assets/{css}" data-lab-palette-style media="not all">'
+        link=f'<link rel="stylesheet" href="/pwa-atlas/assets/{css}">'
+        assert html.count(lazy)==1, f"Expected exactly one shared theme link for {css}"
+        html=html.replace(lazy,link)
+    native_toggle='<script>for(const link of document.querySelectorAll("link[data-lab-palette-style]"))link.media=document.documentElement.dataset.pwaTheme==="liberi"?"not all":"all";</script>'
+    assert html.count(native_toggle)==1, "Android-only palette toggle changed"
+    html=html.replace(native_toggle,"")
+    injection = '<script src="/pwa-atlas/assets/pwa-atlas-bridge.js"></script>'
     assert "id=\"labGlobeGeography\"" in html, "Canonical geographic data missing"
     assert 'src="/pwa-atlas/assets/app.js"' in html, "Atlas app URL did not rewrite"
     assert "data-atlas-view" not in html or "robinson" in html
     assert html.count("</head>") == 1
     html = html.replace("</head>", injection + "</head>")
     page.write_text(html, encoding="utf-8")
+    # Build one Atlas-only UI surface from the SAME native-engine bundle.
+    # Source app/region data remain canonical, but only map+mode nodes render.
+    app = DEST / "assets/app.js"
+    code = app.read_text(encoding="utf-8")
+    expose = 'if(typeof window!=="undefined")window.HipsterPWABridge={'
+    assert code.count(expose) == 1, "Canonical map-state export location changed"
+    bridge = '''if(location.pathname==='/pwa-atlas/inline'||location.pathname==='/pwa-atlas/inline.html'){
+ window.HipsterInlineAtlas=Object.freeze({
+  getRegions:()=>[...crateSelected],
+  setRegions:ids=>{
+   if(!Array.isArray(ids)||ids.length>30||ids.some(id=>!validCrateRegions.has(id)))return false;
+   const next=new Set(ids);
+   if(next.size===crateSelected.size&&[...next].every(id=>crateSelected.has(id)))return false;
+   crateSelected.clear();for(const id of next)crateSelected.add(id);
+   lastCrateStamp=null;updateCrateMap(false);return true;
+  }
+ });
+ // Read-only projection status: button pressed means requested, not settled.
+ window.HipsterAtlasState=()=>({projection:labAtlasMode,
+   transitioning:!!labAtlasMorph});
+}
+'''
+    code = code.replace(expose, bridge + expose)
+    change = 'store(crateStorageKey,JSON.stringify([...crateSelected]));' + chr(10) + ' copiedPrompt=null;selectionChanged(false,true);if(reframe)frameSelectedAtlas();'
+    assert code.count(change)==1, "Canonical region-pick synchronization anchor changed"
+    code=code.replace(change,change+'''
+ if(window.HipsterInlineAtlas&&window.parent!==window){
+  window.parent.postMessage({type:'ghg-inline-atlas-regions',
+   regions:[...crateSelected]},location.origin);
+ }''')
+    app.write_text(code,encoding="utf-8")
+    for source,target in (("pwa-inline-child.js","pwa-inline-child.js"),
+                          ("pwa-inline-child.css","pwa-inline-child.css")):
+        shutil.copyfile(ROOT/"launcher/assets"/source,DEST/"assets"/target)
+    inline=html.replace('</head>',
+        '<link rel="stylesheet" href="/pwa-atlas/assets/pwa-inline-child.css"></head>')
+    assert inline.count('</body>')==1
+    inline=inline.replace('</body>',
+        '<div id="pwaInlineAtlasRoot" aria-label="Live listening Atlas"></div>'
+        '<script src="/pwa-atlas/assets/pwa-inline-child.js"></script></body>')
+    (DEST/"inline.html").write_text(inline,encoding="utf-8")
     print(f"Built canonical Android atlas browser route: {DEST}")
 
 if __name__ == "__main__":

@@ -228,6 +228,11 @@ body.gig-poster.lab-workspace .lab-atlas-modes button{display:flex;align-items:c
 .lab-atlas-modes button span{min-width:0;white-space:nowrap}
 /* The octahedral M-map uses SVG instead of unsupported MapLibre projections. */
 #labAtlasGlobe .lab-cahill-overlay{z-index:15;background:#dfb045;overflow:hidden;touch-action:pan-y}
+/* Keyes's transparent octant gaps show the paper/vignette, never the inactive
+   Robinson/Globe WebGL renderer. The fold veil covers the handoff. */
+#labAtlasGlobe.lab-cahill-active > .maplibregl-canvas-container{
+ visibility:hidden!important;pointer-events:none;
+}
 /* Native WebView SVG tap/focus rectangles are NOT region selections.
    Highlight by changing the geographic ink, never the polygon bounding box. */
 #labAtlasCahill,#labAtlasCahill *{
@@ -300,4 +305,108 @@ body.gig-poster .crate-map-frame.lab-globe-frame .atlas-radial-field{display:non
  #labAtlasGlobe .lab-cahill-pan-window{
   background:Highlight;border-color:CanvasText
  }
+}
+
+/* Shared Android/PWA appearance selector. Native Lab never renders PWA's
+   second navigation rail; these are Preferences-only presentation rules. */
+.lab-theme-section{margin:20px 0 24px;padding:18px 0 4px;border-block-start:1px solid currentColor}
+.lab-theme-section h3{margin:0 0 4px;font:400 1.45rem/1.15 Poster,Arial,sans-serif}
+.lab-theme-section .lab-help{margin:0 0 12px;max-width:40ch}
+.lab-theme-choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.lab-dialog .lab-theme-choice{display:flex;flex-direction:column;align-items:stretch;gap:5px;min-width:0;min-height:100px;margin:0;padding:8px;background:transparent;color:inherit;border:1px solid currentColor;border-radius:2px;text-align:left;cursor:pointer;touch-action:manipulation}
+.lab-theme-choice strong{font:400 clamp(1.05rem,4vw,1.4rem)/1.1 Poster,Arial,sans-serif}
+.lab-theme-choice small{font:.68rem/1.3 Arial,sans-serif}
+.lab-theme-swatches{display:flex;height:28px;overflow:hidden;border:1px solid #11111144}
+.lab-theme-swatches i{display:block;flex:1}
+.lab-theme-choice[data-lab-theme=liberi] .lab-theme-swatches i:nth-child(1){background:#103135}
+.lab-theme-choice[data-lab-theme=liberi] .lab-theme-swatches i:nth-child(2){background:#dfb045}
+.lab-theme-choice[data-lab-theme=liberi] .lab-theme-swatches i:nth-child(3){background:#a83223}
+.lab-theme-choice[data-lab-theme=bosque] .lab-theme-swatches i:nth-child(1){background:#003018}
+.lab-theme-choice[data-lab-theme=bosque] .lab-theme-swatches i:nth-child(2){background:#f5f0e6}
+.lab-theme-choice[data-lab-theme=bosque] .lab-theme-swatches i:nth-child(3){background:#8c6239}
+.lab-theme-choice[data-lab-theme=usiku] .lab-theme-swatches i:nth-child(1){background:#111111}
+.lab-theme-choice[data-lab-theme=usiku] .lab-theme-swatches i:nth-child(2){background:#003018}
+.lab-theme-choice[data-lab-theme=usiku] .lab-theme-swatches i:nth-child(3){background:#b77b4d}
+:root{--lab-theme-selected-bg:#103135;--lab-theme-selected-ink:#dfb045}
+:root[data-pwa-theme=bosque],:root[data-pwa-theme=usiku]{--lab-theme-selected-bg:#004225;--lab-theme-selected-ink:#f5f0e6}
+.lab-dialog .lab-theme-choice[aria-pressed=true]{background:var(--lab-theme-selected-bg);color:var(--lab-theme-selected-ink);outline:2px solid currentColor;outline-offset:1px}
+:root[data-pwa-theme] body.gig-poster.lab-workspace .lab-dialog .lab-theme-choice[aria-pressed=true]{background:var(--lab-theme-selected-bg)!important;color:var(--lab-theme-selected-ink)!important;border-color:currentColor}
+.lab-theme-choice:focus-visible{outline:3px solid currentColor;outline-offset:3px}
+.lab-theme-status{min-height:1.4em;margin:10px 0 0;font:.76rem/1.4 Arial,sans-serif}
+@media(max-width:340px){.lab-theme-choices{gap:5px}.lab-dialog .lab-theme-choice{padding:6px}.lab-theme-choice strong{font-size:1rem}}
+@media(forced-colors:active){.lab-dialog .lab-theme-choice[aria-pressed=true]{outline:3px solid Highlight}}
+
+/* Final phone QA: Preferences inherited the original Liberi mustard header,
+   near-black unselected service text and faint recording toggle captions.
+   Limit repairs to the Android modal; the source palette stays unchanged. */
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .lab-dialog-head{
+ background:#f5f0e6!important;color:#003018!important;border-bottom-color:#8c6239!important;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .lab-dialog-head{
+ background:#111111!important;color:#f5f0e6!important;border-bottom-color:#b77b4d!important;
+}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace .lab-dialog-head button{
+ color:#003018!important;border-color:#003018!important;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace .lab-dialog-head button{
+ color:#f5f0e6!important;border-color:#b77b4d!important;
+}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labServicePreferences .switch button[aria-pressed=true],
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labServicePreferences .switch button[aria-pressed=true]{
+ background:#004225!important;color:#f5f0e6!important;border-color:#003018!important;
+}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labServicePreferences .switch button[aria-pressed=false]{
+ color:#003018!important;border-color:#8c6239!important;background:transparent!important;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labServicePreferences .switch button[aria-pressed=false]{
+ color:#f5f0e6!important;border-color:#b77b4d!important;background:transparent!important;
+}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labRecordingPreferences :is(.recording-on,.recording-off){
+ color:#003018;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labRecordingPreferences :is(.recording-on,.recording-off){
+ color:#f5f0e6;
+}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labRecordingPreferences :not(:checked)+.recording-rocker .recording-off,
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labRecordingPreferences :checked+.recording-rocker .recording-on,
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labRecordingPreferences :not(:checked)+.recording-rocker .recording-off,
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labRecordingPreferences :checked+.recording-rocker .recording-on{
+ background:#004225!important;color:#f5f0e6!important;
+}
+
+/* Final Crate/Manual screen review: the legacy luminance stock made Usiku
+   fluoresce green on Crate. Keep texture subtle and align night surfaces. */
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labCrate{
+ background-color:#003018!important;
+ background-image:linear-gradient(rgba(0,48,24,.91),rgba(0,48,24,.91)),
+  url('/editions/gig-poster/assets/stock.webp')!important;
+ background-size:auto,460px!important;
+ background-blend-mode:normal,multiply!important;
+ color:#f5f0e6!important;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labManual{
+ background:#111111!important;color:#f5f0e6!important;
+}
+
+/* Canonical Atlas field vs ocean separation. Preserve the live map geometry:
+   yellow Liberi paper and green Usiku vignette OUTSIDE the projection,
+   with petrol/dark water painted by the ocean polygon/sphere itself. */
+:root[data-pwa-theme=liberi] body.gig-poster.lab-workspace #labAtlasGlobe{
+ background:#dfb045!important;
+}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labAtlasGlobe{
+ background:#f5f0e6!important;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labAtlasGlobe{
+ background:radial-gradient(ellipse at 50% 38%,#004225 0%,#003018 78%)!important;
+}
+:root[data-pwa-theme=usiku] #labAtlasGlobe .lab-cahill-overlay{
+ background:transparent!important;
+}
+:root[data-pwa-theme=usiku] #labAtlasCahill .lab-cahill-ocean,
+:root[data-pwa-theme=usiku] #labCahillAntarcticOcean{
+ fill:#111111;stroke:#b77b4d;stroke-opacity:.72;
+}
+:root[data-pwa-theme=usiku] #labAtlasGlobe :is(.lab-atlas-morph,.lab-cahill-motion){
+ background:radial-gradient(ellipse at 50% 38%,#004225 0%,#003018 78%)!important;
 }

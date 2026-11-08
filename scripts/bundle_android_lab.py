@@ -37,9 +37,22 @@ def bundle(destination=None):
         if html.count(marker)!=1:
             raise ValueError('Expected one HTML platform slot: '+marker)
         html=html.replace(marker,marker+content)
-    html=html.replace('</head>','<script defer src="/assets/maplibre/maplibre-gl.js"></script><script defer src="/assets/cahill-keyes-vendor.js"></script><link rel="stylesheet" href="/assets/maplibre/maplibre-gl.css"></head>')
+    # Palette is applied before first paint. The existing Android renderer
+    # receives only color values; no geographic geometry or state is replaced.
+    # Liberi uses the unmodified poster styling. Keep inactive Bosque/Usiku
+    # rules out of its style recalculation path; apply saved themes synchronously
+    # in the head, before first paint, then toggle on user choice.
+    theme_head=('<script src="/assets/lab-themes.js"></script>'
+                '<link rel="stylesheet" href="/assets/pwa-themes.css" data-lab-palette-style media="not all">'
+                '<link rel="stylesheet" href="/assets/pwa-atlas-themes.css" data-lab-palette-style media="not all">'
+                '<script>for(const link of document.querySelectorAll("link[data-lab-palette-style]"))link.media=document.documentElement.dataset.pwaTheme==="liberi"?"not all":"all";</script>')
+    html=html.replace('</head>',theme_head+'<script defer src="/assets/maplibre/maplibre-gl.js"></script><script defer src="/assets/cahill-keyes-vendor.js"></script><link rel="stylesheet" href="/assets/maplibre/maplibre-gl.css"></head>')
     page.write_text(html)
     shutil.copyfile(ROOT / 'android-lab/web/workspace.css', destination / 'assets/lab-workspace.css')
+    shutil.copyfile(ROOT / 'android-lab/web/theme.js', destination / 'assets/lab-themes.js')
+    # One shared color system for the Android app and browser companion.
+    shutil.copyfile(ROOT / 'launcher/assets/pwa-themes.css', destination / 'assets/pwa-themes.css')
+    shutil.copyfile(ROOT / 'launcher/assets/pwa-atlas-themes.css', destination / 'assets/pwa-atlas-themes.css')
     vendor = ROOT / 'android-lab/web/cahill-keyes-vendor.js'
     if not vendor.is_file():
         raise FileNotFoundError('Cahill-Keyes offline bundle missing: run bash scripts/build_cahill_keyes_vendor.sh')
@@ -47,6 +60,7 @@ def bundle(destination=None):
     shutil.copyfile(ROOT / 'android-lab/web/CAHILL-KEYES-NOTICES.txt',
                     destination / 'assets/CAHILL-KEYES-NOTICES.txt')
     shutil.copyfile(ROOT / 'android-lab/web/manual-guide.html', destination / 'manual-guide.html')
+    shutil.copyfile(ROOT / 'android-lab/web/manual-guide-theme.css', destination / 'assets/lab-manual-themes.css')
     shutil.copytree(ROOT / 'android-lab/web/tutorial-media', destination / 'assets/tutorial-media')
     script = destination / 'assets/app.js'
     text = script.read_text()

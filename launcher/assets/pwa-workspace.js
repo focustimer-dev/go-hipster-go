@@ -241,7 +241,18 @@ doc.addEventListener('click',async event=>{
   if(data.saved.length>=LIMIT_SAVED){notice('The shelf is full. Delete a saved request first.');navigate('crate');return}
   doc.getElementById('pwaSaveName').value='';openDialog('pwaSaveDialog');break;
  case 'edit-reference':editReference();break;
- case 'remove-reference':metadataRequest?.abort();metadataVersion++;metadataPending='';api.setReference('');closeDialog('pwaReferenceDialog');notice('Active inspiration cleared; recent inspirations kept.');break;
+ case 'remove-reference':{
+  // The original bridge updates its prompt but does not repaint this
+  // separate PWA sleeve. Refresh BOTH views immediately when X is pressed.
+  metadataRequest?.abort();metadataRequest=null;metadataVersion++;metadataPending='';
+  if(api.setReference('')){
+   closeDialog('pwaReferenceDialog');
+   paint();
+   window.dispatchEvent(new Event('ghg-pwa-inspiration-metadata'));
+   notice('Active inspiration cleared; recent inspirations kept.');
+  }
+  break;
+ }
  case 'cancel-reference':closeDialog('pwaReferenceDialog');break;
  case 'cancel-save':closeDialog('pwaSaveDialog');break;
  case 'copy-setup':{

@@ -6,7 +6,7 @@
 const KEY='ghg-pwa-crate-v1', REF='ghg-pwa-reference-v1', PREF='ghg-pwa-atlas-prefs-v1';
 const THEME_KEY='ghg-pwa-theme-v1', THEMES=['liberi','bosque','usiku'];
 const ATLAS_PALETTES={
- bosque:{ocean:'#f5f0e6',land:'#004225',ink:'#003018',selected:'#e5cf42',route:'#8c6239'},
+ bosque:{ocean:'#e8e9df',land:'#004225',ink:'#003018',selected:'#e5cf42',route:'#8c6239'},
  usiku:{ocean:'#111111',land:'#f5f0e6',ink:'#003018',selected:'#e5cf42',route:'#b77b4d'}
 };
 function atlasTheme(){
@@ -15,10 +15,15 @@ function atlasTheme(){
 }
 /* Dynamic browser-only paints for native projection tween canvases.
    The isolated PWA build opts in. Android's exact bundles stay untouched. */
+// Legible on small phones while keeping the original dotted nautical feel.
+// The original Liberi treatment is restored byte-for-byte on theme switch.
+const LIBERI_ROUTE_PAINT={'line-color':'#edc65d','line-opacity':.65,
+ 'line-width':1,'line-dasharray':[3,5]};
+const THEMED_ROUTE_PAINT={opacity:.88,width:1.7,dash:[3,2.6]};
 const TWEEN_PALETTES={
  liberi:{paper:'#dfb045',ocean:'#103135',selected:'#a83223',ink:'#103135',backdrop:'#dfb045'},
- bosque:{paper:'#004225',ocean:'#f5f0e6',selected:'#e5cf42',ink:'#003018',backdrop:'#f5f0e6'},
- usiku:{paper:'#f5f0e6',ocean:'#111111',selected:'#e5cf42',ink:'#003018',backdrop:'#111111'}
+ bosque:{paper:'#004225',ocean:'#e8e9df',selected:'#e5cf42',ink:'#003018',backdrop:'#f5f0e6'},
+ usiku:{paper:'#f5f0e6',ocean:'#111111',selected:'#e5cf42',ink:'#003018',backdrop:'#003018'}
 };
 window.GHGAtlasPaintColors=()=>({theme:atlasTheme(),...TWEEN_PALETTES[atlasTheme()]});
 // Applied before Android bundle DOM is parsed: no first-paint theme flash.
@@ -67,8 +72,16 @@ function paintAtlasTheme(){
    borders:{'line-color':palette.ink},
    ocean:{'background-color':map.getProjection()?.type==='mercator'?'rgba(0,0,0,0)':palette.ocean},
    'robinson-ocean':{'fill-color':palette.ocean},
-   routes:{'line-color':palette.route}
-  }:atlasThemeDefaults;
+   routes:{'line-color':palette.route,
+    'line-opacity':THEMED_ROUTE_PAINT.opacity,
+    'line-width':THEMED_ROUTE_PAINT.width,
+    'line-dasharray':THEMED_ROUTE_PAINT.dash}
+  }:{...atlasThemeDefaults,
+   // Restoring original Liberi must also restore the projection-dependent
+   // exterior: yellow paper outside Robinson, petrol in the actual sea.
+   ocean:{'background-color':map.getProjection()?.type==='mercator'?'rgba(0,0,0,0)':'#103135'},
+   'robinson-ocean':{'fill-color':'#103135'},
+   routes:LIBERI_ROUTE_PAINT};
   for(const [layer,paints] of Object.entries(desired)){
    if(!map.getLayer(layer))continue;
    for(const [prop,value] of Object.entries(paints)){

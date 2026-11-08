@@ -102,6 +102,24 @@ html[data-pwa-theme=usiku] body.gig-poster .receipt,
 html[data-pwa-theme=usiku] body.gig-poster .receipt-fold,
 html[data-pwa-theme=usiku] body.gig-poster .receipt pre{color:#f5f0e6}
 html[data-pwa-theme=usiku] body.gig-poster .receipt-copy{border-color:#f5f0e6;color:#f5f0e6}
+/* Usiku: de-cheese is a useful instruction, not dark red-on-green noise.
+   A warm heading and clear bone body copy retain the skeptical voice without
+   adding a new card, box, or unrelated brand color. */
+html[data-pwa-theme=usiku] body.gig-poster .decheese-note{
+ color:#f5f0e6;
+ border-inline-start:2px solid #b77b4d;
+ padding-inline-start:12px;
+}
+html[data-pwa-theme=usiku] body.gig-poster .decheese-note strong{
+ color:#e5cf42;
+}
+html[data-pwa-theme=usiku] body.gig-poster .decheese-note b{
+ color:#f5f0e6;
+ text-decoration:underline;
+ text-decoration-color:#b77b4d;
+ text-underline-offset:3px;
+}
+
 /* Browser-only rail, Crate, Manual, dialogs and guide picker. */
 html[data-pwa-theme=bosque] body.pwa-workspace .pwa-rail{background:#003018;color:#f5f0e6}
 html[data-pwa-theme=usiku] body.pwa-workspace .pwa-rail{background:#111111;color:#f5f0e6;border-bottom:1px solid #8c6239}
@@ -295,31 +313,6 @@ html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=funky][ari
  filter:hue-rotate(23deg) saturate(1.24);
 }
 
-/* Usiku neutral portrait ink: muted sage rather than white on black.
-   Preserve alpha transparency of the original locked plates. */
-html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=false]{
- background:#111111;
- color:#a6b3a3;
-}
-html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood]:nth-child(n){
- border-color:#8c623977;
-}
-/* Earlier Usiku parent filter inverted the entire engraving back to white.
-   Disable that filter and tint only the transparent sprite itself. */
-html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=false] .face{
- filter:none!important;
-}
-html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=false] .face::before{
- filter:brightness(0) saturate(100%) invert(61%) sepia(14%) saturate(470%) hue-rotate(78deg) brightness(91%);
- opacity:.95;
-}
-html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=false] .face::before{
- filter:url(#referenceInk) brightness(0) saturate(100%) invert(61%) sepia(14%) saturate(470%) hue-rotate(78deg)!important;
-}
-html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=triumphant][aria-pressed=false] .face::before{
- filter:url(#alphaInk) brightness(0) saturate(100%) invert(61%) sepia(14%) saturate(470%) hue-rotate(78deg)!important;
-}
-
 /* Racing-yellow map stamps are unambiguously active in BOTH colorways.
    Recolor the existing halftone pattern; keep Robinson geometry, boundaries,
    pan/zoom and original map engraving intact. */
@@ -353,42 +346,59 @@ html[data-pwa-theme=usiku] body.gig-poster .chart-rose-letters{fill:#f5f0e6}
 html[data-pwa-theme=bosque] body.gig-poster .chart-rose-north,
 html[data-pwa-theme=usiku] body.gig-poster .chart-rose-north{fill:#e5cf42}
 
-/* USIKU / light-catching green portrait stock, dark original engravings.
-   Preserve the painstaking reverse vignette: LIGHTER at the face center,
-   DARKER at its distal edges. Change neither the portraits themselves nor
-   the bright-yellow selected / violet Funk treatments. */
+/* USIKU / warm cognac-and-saddle vignette: LIGHTER at portrait center,
+   DARKER at the distal edges. Never paint the tile gradient green.
+   The approved neutral engraving stays forest-green, applied only to the
+   original character alpha; no new faces, photo-negatives, or selected edits. */
 html[data-pwa-theme=usiku] body.gig-poster{
- --usiku-neutral-stock:#27794f;
- --usiku-neutral-edge:#003823;
- --usiku-neutral-ink:#001f14;
+ --usiku-neutral-center:#b77b4d;
+ --usiku-neutral-stock:#a86c43;
+ --usiku-neutral-mid:#925b39;
+ --usiku-neutral-edge:#7e4c30;
+ --usiku-neutral-ink:#063821;
 }
 html[data-pwa-theme=usiku] body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood[data-mood][aria-pressed=false]{
  background:radial-gradient(ellipse farthest-corner at 50% 36%,
-  #34885e 0%,var(--usiku-neutral-stock) 34%,#145c3b 68%,var(--usiku-neutral-edge) 100%);
+  var(--usiku-neutral-center) 0%,var(--usiku-neutral-stock) 34%,
+  var(--usiku-neutral-mid) 68%,var(--usiku-neutral-edge) 100%);
  color:var(--usiku-neutral-ink);
  box-shadow:none;
 }
 html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=false] .word{
- /* Cream caption on dark lower edge; never invert the portrait art itself. */
  color:#f5f0e6;background:transparent;
 }
 html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood]:nth-child(n){
  border-color:#f5f0e650;
 }
-html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=false] .face,
-html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=false] .face::before{
+/* Usiku neutral portraits: plain forest-green engraved ink on warm saddle.
+   Reuse the approved transparent source as a mask; deliberately NO cream,
+   face fills, painted underprint, rebuilt silhouettes, or selected-state edits. */
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=false] .face{
+ background:none!important;
  filter:none!important;
 }
-html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=false] .face::before{
+html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood]:not([data-mood=desire]):not([data-mood=triumphant])[aria-pressed=false] .face::before{
+ background-image:none!important;
+ background-color:var(--usiku-neutral-ink)!important;
+ -webkit-mask-image:url('/editions/gig-poster/assets/moods-neutral-ink-v2.webp');
+ mask-image:url('/editions/gig-poster/assets/moods-neutral-ink-v2.webp');
+ -webkit-mask-position:var(--mood-position);
+ mask-position:var(--mood-position);
+ -webkit-mask-size:300% 200%;
+ mask-size:300% 200%;
+ -webkit-mask-repeat:no-repeat;
+ mask-repeat:no-repeat;
+ filter:none!important;
  opacity:1;
 }
-/* Desire and Triumph are separate alpha-extraction engravings. Keep their
-   native dark green ink-flood SVG filters, never brighten/invert them. */
+/* Additional portraits retain their source alpha and existing registration. */
 html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=false] .face::before{
  filter:url(#referenceInk)!important;
+ opacity:1;
 }
 html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=triumphant][aria-pressed=false] .face::before{
  filter:url(#alphaInk)!important;
+ opacity:1;
 }
 html[data-pwa-theme=usiku] body.gig-poster :is(.mood-hint,#moodHelp){
  color:#f5f0e6;
@@ -408,7 +418,7 @@ html[data-pwa-theme=usiku] body.gig-poster{
 /* A restrained leather chart mat around the night-ocean plate.
    The geography and map SVG continue to use their existing fills/gestures. */
 html[data-pwa-theme=usiku] body.gig-poster .crate-map-frame{
- background:radial-gradient(ellipse at 50% 45%,#003018 24%,#162e22 66%,#432b20 100%);
+ background:radial-gradient(ellipse at 50% 38%,#004225 0%,#003018 78%);
  border-top:1px solid var(--usiku-leather-edge);
  border-bottom:1px solid var(--usiku-leather-edge);
 }

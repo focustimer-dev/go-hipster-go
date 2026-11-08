@@ -30,6 +30,15 @@ class PWAThemeTests(unittest.TestCase):
         self.assertIn("@media(forced-colors:active)", css)
         self.assertIn(".crate-map-zone[data-selected=true] path", css)
 
+    def test_usiku_simple_ink_no_cream_assets(self):
+        css = (ROOT / "launcher/assets/pwa-themes.css").read_text()
+        self.assertIn("--usiku-neutral-ink:#063821", css)
+        self.assertIn("mask-image:url('/editions/gig-poster/assets/moods-neutral-ink-v2.webp')", css)
+        self.assertIn("--usiku-neutral-center:#b77b4d", css)
+        self.assertIn("--usiku-neutral-edge:#7e4c30", css)
+        self.assertNotIn("usiku-neutral-two-ink-v1.webp", css)
+        self.assertNotIn("rgba(240,200,161,.76)", css)
+
     def test_worker_applies_theme_early_to_browser_jukebox_and_manual(self):
         worker = (ROOT / "cloudflare/worker.js").read_text()
         self.assertIn('"/setup/"', worker)

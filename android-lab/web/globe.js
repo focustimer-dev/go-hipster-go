@@ -149,6 +149,11 @@ function labAtlasPoint(point){return labAtlasMode==='robinson'?labRobinsonPoint(
 function labAtlasHome(){return labAtlasMode==='globe'?[10,15]:[0,0]}
 
 let labAtlasModeInitialized=false,labAtlasMorph=null;
+/* Read-only atlas state for native/PWA integration and finished-frame QA.
+   Never changes the map, its camera, or the motion choreography. */
+window.HipsterAtlasState=()=>({
+ projection:labAtlasMode,transitioning:!!labAtlasMorph
+});
 const LAB_ATLAS_MORPH_DURATION=650;
 // Measured endpoint fits from completed MapLibre renders, keyed by viewport.
 // Avoid using stale calibration after rotation or layout changes.
@@ -422,7 +427,12 @@ function labAtlasCommitMode(mode,keepHostSize=false){
  labGlobe.getSource('land').setData(mode==='robinson'?labRobinsonData:labGlobeGeography);
  if(labRouteGeography)labGlobe.getSource('routes').setData(mode==='robinson'?labRobinsonGeometry(labRouteGeography):labRouteGeography);
  for(const {marker,point} of labSecretMarkers)marker.setLngLat(labAtlasPoint(point));
- labGlobe.setPaintProperty('ocean','background-color',mode==='robinson'?'rgba(0,0,0,0)':'#103135');
+ // The MapLibre background is the OUTSIDE paper in Robinson; the separate
+ // robinson-ocean polygon paints the actual water. Keep it transparent so the
+ // selected theme's stage (yellow or green vignette) remains visible.
+ // Globe uses its own ocean paint inside the spherical projection.
+ labGlobe.setPaintProperty('ocean','background-color',mode==='robinson'?
+  'rgba(0,0,0,0)':window.GHGAtlasPaintColors?.().ocean||'#103135');
  labGlobe.setLayoutProperty('robinson-ocean','visibility',mode==='robinson'?'visible':'none');
  labAtlasSwitchButtons(mode);
  labGlobe.touchZoomRotate[mode==='robinson'?'disableRotation':'enableRotation']();

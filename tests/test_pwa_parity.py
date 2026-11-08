@@ -63,7 +63,12 @@ class PwaWorkspaceContract(unittest.TestCase):
         self.assertIn("startsWith(github.head_ref, 'feat/pwa-')", workflow)
         self.assertIn("hipster-go-pwa-preview", workflow)
         self.assertIn("node --check launcher/assets/pwa-guides.js", workflow)
-        self.assertIn("PWA_PREVIEW_URL: https://hipster-go-pwa-preview.samelling.workers.dev", workflow)
+        # The worker must remain isolated and its target must match the QA URL.
+        import re
+        worker = re.search(r"command: deploy --name (hipster-go-(?:pwa-preview|pwa-inline-preview|android-theme-preview|pwa-theme-atlas-rc))", workflow)
+        self.assertIsNotNone(worker, "Only a named isolated preview Worker may be deployed")
+        self.assertIn("PWA_PREVIEW_URL: https://" + worker.group(1) + ".samelling.workers.dev", workflow)
+        self.assertNotIn("command: deploy --name hipster-go\n", workflow)
         self.assertNotIn("command: deploy --name hipster-go\n", workflow)
 
 if __name__ == "__main__":

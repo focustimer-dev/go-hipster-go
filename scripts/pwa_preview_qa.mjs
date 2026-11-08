@@ -4,14 +4,19 @@ import { mkdir,writeFile } from 'node:fs/promises';
 import { chromium } from 'playwright';
 const base=process.env.PWA_PREVIEW_URL;
 const isProduction=process.argv.includes('--allow-production');
-const previewOrigin='https://hipster-go-pwa-preview.samelling.workers.dev';
+const previewOrigins=new Set([
+ 'https://hipster-go-pwa-preview.samelling.workers.dev',
+ 'https://hipster-go-android-theme-preview.samelling.workers.dev',
+ 'https://hipster-go-pwa-inline-preview.samelling.workers.dev',
+ 'https://hipster-go-pwa-theme-atlas-rc.samelling.workers.dev'
+]);
 const publicOrigin='https://hipster-go.samelling.workers.dev';
 // The preview workflow must remain unable to visit production by accident.
 // Only the explicit production verification command may use the exact public
 // hostname; no arbitrary URLs, hidden redirects or write-capable sessions.
-assert.equal(base,isProduction?publicOrigin:previewOrigin,
+assert.ok(isProduction?base===publicOrigin:previewOrigins.has(base),
  isProduction?'Explicit production QA flag requires exact public origin':
- 'Only the dedicated preview is an allowed QA target');
+ 'Only explicitly named isolated preview Workers are allowed QA targets');
 const folder='artifacts/pwa-preview';
 await mkdir(folder,{recursive:true});
 const browser=await chromium.launch({headless:true,args:['--use-angle=swiftshader','--enable-unsafe-swiftshader']});
@@ -34,6 +39,8 @@ for(const profile of profiles){
   assert.equal(response.status(),200);
   await page.locator('.pwa-rail').waitFor({state:'visible',timeout:20000});
   await page.locator('#goButton').waitFor({state:'visible'});
+  assert.equal(await page.locator('.site>.masthead').evaluate(el=>getComputedStyle(el).display),
+   'none','PWA navigation replaces the unnecessary second masthead in every theme');
   // Android 0.9.56 provides a Jukebox-level inspiration entry point.
   await page.locator('.pwa-add-inspiration').waitFor({state:'visible'});
   assert.equal(await page.locator('.pwa-atlas-preview-link').count(),0,'Retired three-map trial link must not appear in the Jukebox');
@@ -105,6 +112,8 @@ for(const profile of profiles){
     neutral:getComputedStyle(document.querySelector('.mood[data-mood="sad"]')).backgroundImage,
     neutralPortraitFilter:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .face')).filter,
     neutralInkFilter:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .face'),'::before').filter,
+    neutralInkMask:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .face'),'::before').maskImage,
+    neutralInkColor:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .face'),'::before').backgroundColor,
     neutralLabel:getComputedStyle(document.querySelector('.mood[data-mood="sad"] .word')).color,
     neutralDesireInk:getComputedStyle(document.querySelector('.mood[data-mood="desire"] .face'),'::before').filter,
     sea:getComputedStyle(document.querySelector('.crate-map-ocean')).fill,
@@ -125,7 +134,10 @@ for(const profile of profiles){
     ticketOutline:getComputedStyle(document.querySelector('#selectionTicket')).borderTopWidth,
     ticketShadow:getComputedStyle(document.querySelector('#selectionTicket')).boxShadow,
     navTrim:getComputedStyle(document.querySelector('.pwa-rail button[aria-current="page"]')).borderBottomColor,
-    appearanceSwatch:getComputedStyle(document.querySelector('.pwa-theme-choice[data-pwa-theme="usiku"] .pwa-theme-sample i:nth-child(3)')).backgroundColor
+    appearanceSwatch:getComputedStyle(document.querySelector('.pwa-theme-choice[data-pwa-theme="usiku"] .pwa-theme-sample i:nth-child(3)')).backgroundColor,
+    decheeseBody:getComputedStyle(document.querySelector('.decheese-note')).color,
+    decheeseTitle:getComputedStyle(document.querySelector('.decheese-note strong')).color,
+    masthead:getComputedStyle(document.querySelector('.site>.masthead')).display
    }));
    if(name==='bosque'||name==='usiku'){
     assert.equal(observedThemes[name].desire,'rgb(229, 207, 66)','Desire uses racing-yellow selection');
@@ -140,12 +152,14 @@ for(const profile of profiles){
    }
    if(name==='usiku'){
     assert.match(observedThemes.usiku.neutral,/radial-gradient/,'Usiku neutral cards retain their reverse vignette');
-    assert.match(observedThemes.usiku.neutral,/rgb\(52, 136, 94\) 0%/,'Center catches light on mid-dark green stock');
-    assert.match(observedThemes.usiku.neutral,/rgb\(39, 121, 79\) 34%/,'Middle uses slightly lighter-than-tab forest green');
-    assert.match(observedThemes.usiku.neutral,/rgb\(0, 56, 35\) 100%/,'The outer card edge fades back into deep green');
+    assert.match(observedThemes.usiku.neutral,/rgb\(183, 123, 77\) 0%/,'Saddle center stays warm');
+    assert.match(observedThemes.usiku.neutral,/rgb\(168, 108, 67\) 34%/,'Cognac mid-tone stays warm');
+    assert.match(observedThemes.usiku.neutral,/rgb\(126, 76, 48\) 100%/,'Outer tile edge is deep cognac');
     assert.equal(observedThemes.usiku.neutralLabel,'rgb(245, 240, 230)','Usiku captions remain readable cream');
     assert.equal(observedThemes.usiku.neutralPortraitFilter,'none','Keep full original dark engraved portrait');
     assert.equal(observedThemes.usiku.neutralInkFilter,'none','No photo-negative or brightened portrait ink');
+    assert.match(observedThemes.usiku.neutralInkMask,/moods-neutral-ink-v2\.webp/,'Use original engraving alpha');
+    assert.equal(observedThemes.usiku.neutralInkColor,'rgb(6, 56, 33)','Plain forest-green ink, no cream');
     assert.match(observedThemes.usiku.neutralDesireInk,/referenceInk/,'Desire keeps dark SVG alpha extraction, not cream inversion');
     assert.doesNotMatch(observedThemes.usiku.neutralDesireInk,/invert/,'Desire must never become a photo-negative');
     assert.equal(observedThemes.usiku.sea,'rgb(17, 17, 17)','Usiku atlas ocean must be near-black');
@@ -160,12 +174,23 @@ for(const profile of profiles){
     assert.match(observedThemes.usiku.ticketShadow,/rgb\(17, 17, 17\)/,'Ticket offset shadow stays dark');
     assert.equal(observedThemes.usiku.navTrim,'rgb(183, 123, 77)','Selected navigation carries leather trim');
     assert.equal(observedThemes.usiku.appearanceSwatch,'rgb(0, 66, 37)','Usiku theme swatch reflects the green portrait pressing');
+    assert.equal(observedThemes.usiku.decheeseBody,'rgb(245, 240, 230)','De-cheese instructions are readable cream');
+    assert.equal(observedThemes.usiku.decheeseTitle,'rgb(229, 207, 66)','De-cheese heading uses high-contrast warm yellow');
    }
+   assert.equal(observedThemes[name].masthead,'none',name+' must not show redundant Jukebox masthead');
    if(profile.name==='phone'||profile.name==='phone-reduced-motion'){
     await page.screenshot({path:folder+'/'+profile.name+'-theme-'+name+'-top.png'});
     await page.locator('.mood-grid').scrollIntoViewIfNeeded();
     await page.screenshot({path:folder+'/'+profile.name+'-theme-'+name+'-portraits.png'});
-    await page.locator('#crateAtlasMap').scrollIntoViewIfNeeded();
+    // PR #195 replaces the old Robinson SVG once its real MapLibre widget is
+    // ready. Never require a deliberately hidden fallback element to scroll.
+    if(await page.locator('#pwaInlineAtlas').count()){
+     await page.locator('#crateGeo').scrollIntoViewIfNeeded();
+     await page.waitForFunction(()=>window.GHGInlineAtlas?.ready?.()===true,null,{timeout:30000});
+     await page.locator('#pwaInlineAtlas iframe').scrollIntoViewIfNeeded();
+    }else{
+     await page.locator('#crateAtlasMap').scrollIntoViewIfNeeded();
+    }
     await page.screenshot({path:folder+'/'+profile.name+'-theme-'+name+'-atlas.png'});
     await page.locator('#goButton').scrollIntoViewIfNeeded();
     await page.screenshot({path:folder+'/'+profile.name+'-theme-'+name+'-go.png'});
@@ -196,8 +221,11 @@ for(const profile of profiles){
   });
   await page.waitForFunction(()=>{
     const ticket=document.getElementById('selectionTicket');
-    return ticket && !ticket.hidden && !ticket.classList.contains('is-docked');
-  },null,{timeout:6000});
+    if(!ticket || ticket.hidden || ticket.classList.contains('is-docked'))return false;
+    // Visibility changes via rAF; hidden=false alone can precede layout.
+    const bounds=ticket.getBoundingClientRect();
+    return bounds.height>=44&&getComputedStyle(ticket).display!=='none';
+  },null,{timeout:12000});
   const collision=await page.evaluate(()=>{
     const nav=document.querySelector('.pwa-rail').getBoundingClientRect();
     const ticket=document.getElementById('selectionTicket').getBoundingClientRect();
@@ -254,6 +282,10 @@ for(const profile of profiles){
   await page.locator('[data-pwa-action="close"]').click();
   await page.locator('[data-pwa-tab="jukebox"]').click();
   await page.locator('#pwaInspiration [data-pwa-action="remove-reference"]').click();
+  await page.locator('#pwaInspiration').waitFor({state:'hidden'});
+  await page.locator('.pwa-add-inspiration').waitFor({state:'visible'});
+  assert.equal(await page.locator('#pwaReferenceName').innerText(),'No reference yet',
+   'The inspiration X immediately updates the Crate pane');
   assert.ok(!(await page.locator('#prompt').textContent()).includes('violin pulses'),'removed reference cleared from GO');
   await page.locator('[data-pwa-tab="crate"]').click();
   assert.match(await page.locator('#pwaRecent').innerText(),/violin pulses/);
@@ -338,7 +370,7 @@ for (const width of [390,320]) {
  const theme=width===390?'usiku':'bosque';
  const colors=theme==='usiku'?
   {ocean:'#111111',land:'#f5f0e6',selected:'#e5cf42'}:
-  {ocean:'#f5f0e6',land:'#004225',selected:'#e5cf42'};
+  {ocean:'#e8e9df',land:'#004225',selected:'#e5cf42'};
  const atlasContext=await browser.newContext({viewport:{width,height:844},isMobile:true,hasTouch:true,serviceWorkers:'block'});
  const atlas=await atlasContext.newPage();
  await atlas.addInitScript(theme=>{
@@ -361,7 +393,8 @@ for (const width of [390,320]) {
   assert.equal(await atlas.evaluate(()=>document.documentElement.dataset.pwaTheme),theme,'Atlas inherited chosen PWA theme');
   const tweenPalette=await atlas.evaluate(()=>window.GHGAtlasPaintColors?.());
   assert.equal(tweenPalette?.theme,theme,'Tween frames inherit the current theme');
-  assert.equal(tweenPalette.backdrop,colors.ocean,'Atlas tween backdrop matches the selected theme ocean');
+  assert.equal(tweenPalette.backdrop,theme==='usiku'?'#003018':'#f5f0e6',
+   'Atlas tween BACKGROUND must match the paper/forest field, not the water');
   assert.equal(tweenPalette.selected,colors.selected,'Tween and live selected land share ink');
   const tweenBundle=(await (await atlasContext.request.get(base+'/pwa-atlas/assets/app.js')).text());
   assert.match(tweenBundle,/const palette=window\.GHGAtlasPaintColors/,'Browser-only tween renderer reads palette per frame');
@@ -396,14 +429,21 @@ for (const width of [390,320]) {
     const proof=await veil.evaluate(el=>{
      const canvas=el.querySelector('.lab-cahill-motion-canvas');
      const pixel=canvas?.getContext('2d')?.getImageData(1,1,1,1).data;
-     return {backdrop:getComputedStyle(el).backgroundColor,
+     const style=getComputedStyle(el);
+     return {backdrop:style.backgroundColor,gradient:style.backgroundImage,
       pixel:pixel?[...pixel]:null};
     });
-    const backdrop=theme==='usiku'?'rgb(17, 17, 17)':'rgb(245, 240, 230)';
-    assert.equal(proof.backdrop,backdrop,'Cahill animated veil does not flash Liberi paper');
-    assert.deepEqual(proof.pixel?.slice(0,3),
-     theme==='usiku'?[17,17,17]:[245,240,230],
-     'Real Cahill tween canvas has themed pixels, not Liberi yellow');
+    if(theme==='usiku'){
+     assert.match(proof.gradient,/radial-gradient/,
+      'Usiku Cahill veil uses the same forest vignette as the resting map');
+     assert.deepEqual(proof.pixel?.slice(0,3),[0,48,24],
+      'Usiku Cahill canvas uses forest field outside dark oceans');
+    }else{
+     assert.equal(proof.backdrop,'rgb(245, 240, 230)',
+      'Bosque Cahill veil uses cream paper');
+     assert.deepEqual(proof.pixel?.slice(0,3),[245,240,230],
+      'Bosque Cahill canvas uses cream field, never Liberi mustard');
+    }
     await atlas.locator('#labAtlasGlobe').screenshot({
      path:folder+'/atlas-'+width+'-'+mode+'-inbetween.png',timeout:30000
     });
@@ -432,7 +472,7 @@ for (const width of [390,320]) {
    assert.equal(ink.land[3],colors.land,'Unselected MapLibre land is themed');
    assert.equal(ink.robinson,colors.ocean,'Robinson ocean plate is themed');
    assert.equal(ink.water,ink.projection==='mercator'?'rgba(0,0,0,0)':colors.ocean,
-    'Visible globe ocean stays themed while Robinson engine keeps transparent backdrop');
+    'Robinson outside-paper stays separate from sea polygon; globe ocean matches theme');
    if(mode==='cahill-keyes'){
     const fill=await atlas.locator('#labAtlasCahill [data-cahill-region][aria-pressed=true]').first()
      .evaluate(el=>getComputedStyle(el).fill);

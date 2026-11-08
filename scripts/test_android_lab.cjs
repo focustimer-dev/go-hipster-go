@@ -191,8 +191,33 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert(await page.locator('#labAtlasGlobe').evaluate(el=>Math.abs(window.labAtlasGlobe.getZoom()-(Math.log2(Math.max(120,Math.min(el.clientWidth,el.clientHeight))*Math.PI/512)-.25))<.1),'Resting globe refits narrower phones');
   await page.setViewportSize({width:412,height:915});await page.waitForTimeout(200);
   await page.locator('[data-atlas-view="robinson"]').evaluate(el=>el.click());
-  await page.waitForFunction(()=>window.labAtlasGlobe.getProjection()?.type==='mercator',
-   null,{timeout:8000});
+  try{
+   // Both the underlying renderer AND the canonical map state must land.
+   // SwiftShader can deliver its final frame after Playwright's first 8s
+   // deadline even when both states have already committed (see diagnostics).
+   await page.waitForFunction(()=>{
+    const state=window.HipsterAtlasState?.();
+    return state?.projection==='robinson'&&!state.transitioning&&
+      window.labAtlasGlobe?.getProjection?.()?.type==='mercator';
+   },null,{timeout:20000});
+  }catch(error){
+   const state=await page.evaluate(()=>({
+    mapProjection:window.labAtlasGlobe?.getProjection?.()?.type,
+    logicalProjection:window.HipsterAtlasState?.(),
+    atlasButton:[...document.querySelectorAll('[data-atlas-view][aria-pressed=true]')]
+     .map(x=>x.dataset.atlasView),
+    reducedMotion:matchMedia('(prefers-reduced-motion:reduce)').matches,
+    mapLoaded:window.labAtlasGlobe?.loaded?.(),
+    mapStyleLoaded:window.labAtlasGlobe?.isStyleLoaded?.(),
+    landLoaded:window.labAtlasGlobe?.isSourceLoaded?.('land'),
+    mapMoving:window.labAtlasGlobe?.isMoving?.(),
+    overlays:document.querySelectorAll('.lab-atlas-morph,.lab-cahill-motion').length,
+    mapHeight:document.getElementById('labAtlasGlobe')?.clientHeight,
+    visible:document.visibilityState
+   }));
+   console.error('ANDROID_REDUCED_ROBINSON_DIAGNOSTIC',JSON.stringify(state));
+   throw error;
+  }
   assert.equal(await page.locator('.lab-atlas-morph').count(),0,
    'Reduced-motion Robinson return must not leave an overlay');
   assert.equal(await page.locator('#labAtlasGlobe').evaluate(el=>el.style.pointerEvents),'',
@@ -201,7 +226,9 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert(Math.abs(robinsonFrame.width/robinsonFrame.height-720/372)<.05,'Robinson keeps the original wide chart');
   assert.equal(await page.locator('#atlasHome').textContent(),'← WHOLE WORLD');
   assert.equal(await page.evaluate(()=>labAtlasGlobe.getPaintProperty('ocean','background-color')),
-   'rgba(0,0,0,0)','Robinson clears the globe-wide ocean before painting the rounded map');
+   'rgba(0,0,0,0)','Robinson exposes the paper outside the globe silhouette');
+  assert.equal(await page.evaluate(()=>labAtlasGlobe.getPaintProperty('robinson-ocean','fill-color')),
+   '#103135','Liberi Robinson actual ocean polygon must remain petrol');
   try{await page.locator('#labAtlasGlobe').screenshot({path:'android-lab/build/switch-review/robinson-transition-fast.png',timeout:9000})}
   catch(err){console.warn('Optional robinson-transition-fast review screenshot skipped:',err.message)}
 
