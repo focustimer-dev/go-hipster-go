@@ -123,7 +123,7 @@ Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation;
 
 Explicit `go hard`, `go funky hard`, or PWA `Curation mode: GO HARD` enables editorial depth, not a sound or tempo change. Default **OFF**: ordinary `go` keeps its fast one-pass path. After the normal writer preflight, load and follow [the Deep Crate Protocol](references/go-hard.md) before curation. Compose with mood, pace, regions, track count, service and art; publish only one final playlist. If unavailable, do not claim a deep pass.
 
-**Optional art:** On `Cover art: yes`, follow [the sleeve workflow](references/verification.md) after GO.
+**Optional art:** On `Cover art: yes`, follow [the four-layer period-authentic sleeve workflow](references/cover-art.md) after GO; skip it otherwise.
 
 For Desire/Triumphant, read [moods](references/desire-triumphant.md) before selection, including combined-mood rules.
 
@@ -232,6 +232,10 @@ For `go funky`, also read [Funky: worldwide groove discovery](funky.md) before c
 Read the [regional atlas](regional-atlas.md) safeguards and lookup, then the files for each selected region. Its **Supplementary files** table is part of the lookup: include the matching additions, not just the baseline file. Before using expanded Oceania, Central America or Central & Southern Africa, read the [focused regional review](regional-review.md); its boundaries and overlap decisions take precedence. Central & Southern Africa requires both Central Africa and Southern Africa additions.
 
 For worldwide exploration, compare a few contrasting regions when useful; do not preload all 24 files. Regions guide exploration, while explicit user constraints and supported sonic fit decide selections. The 920 imported rows are unverified, overlapping search leads, not 920 verified genres.
+
+## Optional cover art
+
+Only for `Cover art: yes` or an explicit sleeve request, read [Cover art — period-authentic regional record sleeves](cover-art.md) after the final crate and title are established. Do not load this reference for ordinary GO.
 
 ## Optional depth and reuse
 
@@ -2985,10 +2989,33 @@ Keep the original ordered selections intact for comparison. If a streaming app o
 
 ## Optional cover art
 
-Only on `Cover art: yes` or an explicit sleeve request: **after** finishing the ordered playlist and title, generate **one square original album cover** that includes the **exact final playlist title**. Select a recording in the final crate as visual anchor; verify its **original release year and actual local scene** (not a reissue year). If evidence is incomplete, use an **explicitly approximate era or place** instead of inventing provenance. Reflect the *whole mix* symbolically using period/scene-aware typography, imagery and printing texture without copying an existing sleeve or leaning on cultural stereotypes. Use a host image tool if available; otherwise provide a ready-to-use image prompt. Briefly name the anchor track, year and place with any uncertainty. **Do not claim art was uploaded or applied** to a music service without its confirmation; generating an image does not save a cover. This optional workflow is skipped when not requested.
+Only on `Cover art: yes` or an explicit sleeve request: after the final playlist and title are fixed, follow the full [period-authentic regional sleeve policy](cover-art.md). Artwork is optional and is never evidence of a historical release or an upload to a music service.
 
 # END SOURCE: references/verification.md
 
+---
+
+# BEGIN SOURCE: references/cover-art.md
+
+# Cover art — period-authentic regional record sleeves
+
+**Activation:** Only for `Cover art: yes` or an explicit sleeve request, **after** the final ordered crate and exact playlist title are settled. Generate **one square original cover** with that exact title (including correct diacritics). Choose one *actual recording in the final crate* as the visual anchor. Check its **original release date and local scene**, never a reissue date or an inferred nationality; name the anchor, year and place briefly, qualifying uncertainty. The design must evoke the whole playlist, not merely illustrate one song. When the anchor is uncertain, use an explicitly approximate period/region and avoid fabricated provenance.
+
+**Primary art direction:** Depict a **physically manufactured record package from the anchored time and place**, not a present-day digital illustration with a vintage filter. Before invoking the image tool or supplying a ready-to-use image prompt, specify **all four material layers** below concretely. Choose techniques that *could plausibly coexist* in that market and period; examples are leads to verify, not interchangeable templates.
+
+1. **Packaging and substrate architecture.** Specify the period- and format-correct construction: a folded paper 7-inch picture/company sleeve, British laminated flipback LP jacket, Japanese board sleeve with an obi where appropriate, Jamaican hand-stamped generic jacket, a documented local paper or plastic-bag envelope, or a more suitable regional example. Distinguish the *printed sleeve* from any clear protective outer bag. Define the actual stock—unbleached fibrous greyback chipboard, raw-pulp paper, coated photographic insert mounted on board, or other supported material—with visible fiber/ink interaction. Use restrained, *physically plausible* oxidation, foxing, handling marks and soft edge wear **only when the object's age and material justify them**; not every sleeve should look ruined.
+
+2. **Regional print method and ink behavior.** Name the plausible press/reproduction system: two- or three-color spot-offset lithography, letterpress, silkscreen, a tipped-in glossy analog photographic print, or the region's documented alternative. Specify period-credible ink colors, surface finish, and behavior (matte absorption/dot gain on uncoated stock, cleaner edges on coated photographs). For multiple printed plates, allow **slight mechanical registration drift in the actual ink colors used**, not arbitrary cyan/vermilion fringes absent from the palette. Photographic halftones should be *commercial printing screens*, not giant decorative pop-art polka dots: line ruling follows stock/press quality (for example ~65–85 LPI on absorbent low-grade stock; ~100–120 LPI for some finer commercial work, with other values where justified). Use rosette structures only when the actual multicolor screen process calls for them; single-ink screens need not show rosettes.
+
+3. **Vernacular regional typography.** Base the primary display lettering on **documented local commercial art** of that specific place and decade: sign-painters' gouache lettering, shopfronts, film handbills, record ads and local publishing traditions. Possible research leads include Saigon sign-painting archived by Republish, Thai cinema handbills, Filipino komiks and Yoruba-language record-trade lettering—**use them only for a matching scene and period**. Draw diacritics as integral letterforms with plausible brush/pen weight; spell names and the final playlist title accurately. Pair the title with disciplined period-correct secondary lettering (often condensed block/grotesque capitals, but not where the scene used another convention). Avoid generic rounded-marker fonts, substitute scripts and fake “exotic” lettering. If the image tool cannot render critical title text reliably, give a correction note rather than pretending the lettering is accurate.
+
+4. **Subject, composition and label furniture.** Choose a historically plausible layout: documentary close- or medium-shot analog studio portraits with era-appropriate *verified* dress, hairstyles, textiles and tungsten/flash character, **or** regional modernist geometric blocks, hand-drawn collage or other supported press conventions. Keep original composition; do not copy an existing record jacket or imply a real musician posed for a nonexistent cover. Add small-format label furniture where plausible—speed badge, catalog number, imprint, copyright/footer details—matched to format and era. For example, do **not** put `STEREO 33⅓ RPM` on an otherwise authentic mono 45 RPM single. Use invented-but-believable **clearly fictional** catalog/imprint information rather than falsely attributing the playlist to a real label or claiming it was historically issued.
+
+**Negative constraints:** No generic CGI, volumetric digital lighting, modern glossy mockup aesthetics, synthetic crumple overlays, repeated distressed textures, oversized pop-art dots, ahistorical printing, stereotyped cultural props or false archival authenticity. Distinguish believable material imperfections from decorative “oldness.” Do not force a mid-century look on a substantially later era.
+
+**Execution and status:** Compose these four choices into **one coherent image prompt**, not four incompatible style effects. Use an available host image generator; otherwise output the complete ready-to-use prompt. Provide one original square sleeve with the exact final playlist title. Do not claim the art was uploaded or applied to Spotify, YouTube Music or any service unless a real tool confirms that separate operation. Skip all artwork work when not requested.
+
+# END SOURCE: references/cover-art.md
 ---
 
 # BEGIN SOURCE: references/gemini-publish.md
