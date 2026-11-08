@@ -55,57 +55,26 @@
  background:linear-gradient(180deg,#633920,#7e4c30);
 }
 
-/* Gemini setup is not complete until the installed Skill version is recorded.
-   Keep the follow-up within the setup flow, using the chosen ink and paper,
-   rather than relying on a distant untailored native Android sheet. */
-.skill-checkin{
- margin:16px 0 24px;
- padding:13px 0 16px;
- border-top:1px solid var(--ink);
- border-bottom:1px solid var(--ink);
- background:transparent;
- color:var(--ink);
-}
-.skill-checkin .skill-checkin-kicker{
- display:block;margin-bottom:7px;
- font:700 .72rem/1.4 'Courier New',monospace;
- letter-spacing:.08em;
-}
-.skill-checkin strong{
- display:block;margin:0 0 6px;
- font:400 clamp(1.45rem,5cqw,2rem)/1.12 Poster,sans-serif;
- letter-spacing:0;
-}
-.skill-checkin p{margin:0 0 12px;font:400 .9375rem/1.45 Arial,sans-serif}
-.skill-checkin button,
+/* A real final step in Gemini setup: record the version only after Gemini
+   confirms it has saved the Skill. Keep the top of Manual to one slim notice. */
 #setupConfirm .finish [data-review-skill-updates]{
- display:block;width:100%;min-height:48px;margin:0;
- padding:10px 12px;border:1px solid var(--ink);border-radius:0;
- background:var(--ink);color:var(--paper);
+ display:block;width:100%;min-height:48px;margin:12px 0 10px;
+ padding:10px 12px;border:1px solid var(--paper);border-radius:0;
+ background:var(--paper);color:var(--ink);
  font:400 clamp(1.05rem,3.5cqw,1.3rem)/1.15 Poster,sans-serif;
  text-align:center;cursor:pointer;
 }
-.skill-checkin small{
- display:block;margin-top:8px;
+#setupConfirm .finish .skill-checkin-disclaimer{
+ margin:0 0 12px;
  font:400 .75rem/1.4 Arial,sans-serif;
 }
-/* The final-check button sits inside an ink-dark demo stage. In Liberi it
-   must be the reverse key, not petrol on petrol. */
-#setupConfirm .finish [data-review-skill-updates]{
- margin:10px 0 14px;
- background:var(--paper);
- color:var(--ink);
- border-color:var(--paper);
-}
-:root[data-pwa-theme=bosque] :is(.skill-checkin button,#setupConfirm .finish [data-review-skill-updates]),
-:root[data-pwa-theme=usiku] :is(.skill-checkin button,#setupConfirm .finish [data-review-skill-updates]){
+:root[data-pwa-theme=bosque] #setupConfirm .finish [data-review-skill-updates],
+:root[data-pwa-theme=usiku] #setupConfirm .finish [data-review-skill-updates]{
  background:#004225;color:#e5cf42;border-color:#e5cf42;
 }
-.skill-checkin button:focus-visible,
 #setupConfirm .finish [data-review-skill-updates]:focus-visible{
  outline:3px solid var(--ink);outline-offset:3px;
 }
 @media(max-width:360px){
- .skill-checkin strong{font-size:1.4rem}
- .skill-checkin button,#setupConfirm .finish [data-review-skill-updates]{font-size:1rem}
+ #setupConfirm .finish [data-review-skill-updates]{font-size:1rem}
 }
