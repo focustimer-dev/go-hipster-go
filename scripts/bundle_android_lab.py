@@ -39,9 +39,13 @@ def bundle(destination=None):
         html=html.replace(marker,marker+content)
     # Palette is applied before first paint. The existing Android renderer
     # receives only color values; no geographic geometry or state is replaced.
+    # Liberi uses the unmodified poster styling. Keep inactive Bosque/Usiku
+    # rules out of its style recalculation path; apply saved themes synchronously
+    # in the head, before first paint, then toggle on user choice.
     theme_head=('<script src="/assets/lab-themes.js"></script>'
-                '<link rel="stylesheet" href="/assets/pwa-themes.css">'
-                '<link rel="stylesheet" href="/assets/pwa-atlas-themes.css">')
+                '<link rel="stylesheet" href="/assets/pwa-themes.css" data-lab-palette-style media="not all">'
+                '<link rel="stylesheet" href="/assets/pwa-atlas-themes.css" data-lab-palette-style media="not all">'
+                '<script>for(const link of document.querySelectorAll("link[data-lab-palette-style]"))link.media=document.documentElement.dataset.pwaTheme==="liberi"?"not all":"all";</script>')
     html=html.replace('</head>',theme_head+'<script defer src="/assets/maplibre/maplibre-gl.js"></script><script defer src="/assets/cahill-keyes-vendor.js"></script><link rel="stylesheet" href="/assets/maplibre/maplibre-gl.css"></head>')
     page.write_text(html)
     shutil.copyfile(ROOT / 'android-lab/web/workspace.css', destination / 'assets/lab-workspace.css')
