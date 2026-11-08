@@ -828,6 +828,18 @@ async function verifyManualHierarchy(page,name,width){
    assert.equal(manual.profile,'print','Manual inherits print profile');
    assert.equal(manual.ink,'rgb(38, 63, 62)','Manual ink');
    assert.equal(manual.stock,'rgb(227, 217, 194)','Manual matches Jukebox paper');
+   const manualActive=await pilot.frameLocator('#labManualFrame').locator('body.embedded-guide').evaluate(body=>{
+    const root=body.ownerDocument.documentElement;
+    const tab=body.ownerDocument.querySelector('.crate-tabs button[aria-selected=true]');
+    const before=getComputedStyle(tab).borderBottomColor;
+    try{
+     root.style.setProperty('--lab-print-active-ink','#7157a4');
+     const after=getComputedStyle(tab).borderBottomColor;
+     return {before,after};
+    }finally{root.style.removeProperty('--lab-print-active-ink')}
+   });
+   assert.equal(manualActive.before,'rgb(155, 58, 43)','Manual uses the same accent as Jukebox');
+   assert.equal(manualActive.after,'rgb(113, 87, 164)','Manual active ink also swaps with one token');
    await pilot.screenshot({path:path.join(output,'kingston-'+width+'-manual.png')});
    await pilot.locator('[data-lab-tab=crate]').click();
    await pilot.screenshot({path:path.join(output,'kingston-'+width+'-crate.png')});
