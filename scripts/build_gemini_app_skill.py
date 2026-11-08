@@ -56,6 +56,7 @@ REFERENCES = (
     "references/sonic-taxonomy.md",
     "references/curation-examples.md",
     "references/verification.md",
+    "references/cover-art.md",
     "references/gemini-publish.md",
 )
 
