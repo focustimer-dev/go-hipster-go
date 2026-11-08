@@ -94,39 +94,41 @@ const CSS_ATLAS_ROLES={
  'ocean-stroke-opacity':'oceanStrokeOpacity',
  'route-width':'routeWidth','route-opacity':'routeOpacity'
 };
-// Preserve the selected plate's original tonal engraving. A palette-driven
-// grayscale transfer maps dark hatch marks to the theme's selected ink and
-// pale etched highlights to the selected paper. Unlike feFlood, this retains
-// all intermediate shading and the original transparent sprite edges.
+// Tokenize BOTH portrait plates without flattening the etched highlights.
+// Map the original sprite's luminance between theme ink and paper, preserving
+// its alpha, graded strokes, shading and the approved expression artwork.
 function syncPortraitInk(){
  const owner=document.getElementById('selectedMoodPetrol');
- if(!owner)return; // the original SVG definitions may not exist before DOM ready
- const ns='http://www.w3.org/2000/svg',id='themeMoodEngraving';
- let filter=document.getElementById(id);
- if(!filter){
-  filter=document.createElementNS(ns,'filter');
-  filter.setAttribute('id',id);
-  filter.setAttribute('color-interpolation-filters','sRGB');
-  const gray=document.createElementNS(ns,'feColorMatrix');
-  gray.setAttribute('type','saturate');gray.setAttribute('values','0');
-  const transfer=document.createElementNS(ns,'feComponentTransfer');
-  for(const channel of ['R','G','B']){
-   const channelNode=document.createElementNS(ns,'feFunc'+channel);
-   channelNode.setAttribute('type','linear');
-   transfer.appendChild(channelNode);
-  }
-  filter.append(gray,transfer);owner.parentNode.appendChild(filter);
- }
- const colors=MOODS[theme];
+ if(!owner)return; // initial theme script executes before the source SVG exists
+ const ns='http://www.w3.org/2000/svg';
  const parse=hex=>/^#[0-9a-f]{6}$/i.test(hex)?
   [1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)/255):null;
- const ink=parse(colors.selectedInk),paper=parse(colors.selectedPaper);
- if(!ink||!paper)return;
- const transfer=filter.querySelector('feComponentTransfer');
- for(const [i,channel] of ['R','G','B'].entries()){
-  const el=transfer.querySelector('feFunc'+channel);
-  el.setAttribute('intercept',String(ink[i]));
-  el.setAttribute('slope',String(paper[i]-ink[i]));
+ const palette=MOODS[theme];
+ for(const [id,inkRole,paperRole] of [
+  ['themeMoodNeutralEngraving','neutralInk','neutralPaper'],
+  ['themeMoodSelectedEngraving','selectedInk','selectedPaper']]){
+  let filter=document.getElementById(id);
+  if(!filter){
+   filter=document.createElementNS(ns,'filter');
+   filter.setAttribute('id',id);
+   filter.setAttribute('color-interpolation-filters','sRGB');
+   const gray=document.createElementNS(ns,'feColorMatrix');
+   gray.setAttribute('type','saturate');gray.setAttribute('values','0');
+   const transfer=document.createElementNS(ns,'feComponentTransfer');
+   for(const channel of ['R','G','B']){
+    const node=document.createElementNS(ns,'feFunc'+channel);
+    node.setAttribute('type','linear');transfer.appendChild(node);
+   }
+   filter.append(gray,transfer);owner.parentNode.appendChild(filter);
+  }
+  const ink=parse(palette[inkRole]),paper=parse(palette[paperRole]);
+  if(!ink||!paper)continue; // gradient-only base themes do not consume these filters
+  const transfer=filter.querySelector('feComponentTransfer');
+  for(const [i,channel] of ['R','G','B'].entries()){
+   const node=transfer.querySelector('feFunc'+channel);
+   node.setAttribute('intercept',String(ink[i]));
+   node.setAttribute('slope',String(paper[i]-ink[i]));
+  }
  }
 }
 function applyThemeTokens(){
