@@ -98,6 +98,39 @@ class AndroidThemeRoles(unittest.TestCase):
         self.assertIn("#tempoSlider::-moz-range-thumb", app)
         self.assertIn("radial-gradient(circle at 42% 38%,#b77b4d 0%,#925b39 48%,#7e4c30 100%)", app)
 
+    def test_new_theme_requires_complete_atlas_and_portrait_palettes(self):
+        """Every named skin supplies every paint role, not just UI hexes."""
+        js=source("android-lab/web/theme.js")
+        atlas=js.split("const ATLAS=Object.freeze({",1)[1].split("const MOODS=Object.freeze({",1)[0]
+        moods=js.split("const MOODS=Object.freeze({",1)[1].split("const CSS_ATLAS_ROLES=",1)[0]
+        pattern=r"\\b([a-z]+):Object\\.freeze\\(\\{(.*?)\\n \\}\\)"
+        atlas_def=dict(re.findall(pattern,atlas,re.S))
+        mood_def=dict(re.findall(pattern,moods,re.S))
+        self.assertEqual(set(atlas_def),{"liberi","bosque","usiku"})
+        self.assertEqual(set(mood_def),set(atlas_def))
+        atlas_required={
+            "paper","land","ocean","ink","selected","route",
+            "routeOpacity","routeWidth","routeDash","backdrop","field",
+            "graticule","graticuleOpacity","oceanStroke","oceanStrokeOpacity",
+        }
+        mood_required={
+            "neutralPaper","neutralInk","selectedPaper","selectedInk",
+            "desireHeart","funkPaper","funkInk",
+        }
+        for theme in atlas_def:
+            atlas_roles=set(re.findall(r"\\b([a-zA-Z]+):",atlas_def[theme]))
+            mood_roles=set(re.findall(r"\\b([a-zA-Z]+):",mood_def[theme]))
+            self.assertEqual(atlas_roles,atlas_required,theme+" Atlas roles")
+            self.assertEqual(mood_roles,mood_required,theme+" portrait roles")
+            for value in ("paper","ocean","land","ink","selected","route"):
+                self.assertRegex(atlas_def[theme],r"\\b"+value+r":'#[0-9a-f]{6}'")
+            for value in ("neutralInk","selectedPaper","selectedInk"):
+                self.assertRegex(mood_def[theme],r"\\b"+value+r":'#[0-9a-f]{6}'")
+        # Selection ink remains legible on the shared yellow pressing.
+        self.assertGreaterEqual(contrast("#e5cf42","#003018"),4.5)
+        self.assertIn("function applyThemeTokens()",js)
+        self.assertIn("applyThemeTokens();requestPaint()",js)
+
     def test_app_and_iframe_load_the_same_source(self):
         bundle = source("scripts/bundle_android_lab.py")
         manual = source("android-lab/web/manual-guide.html")
