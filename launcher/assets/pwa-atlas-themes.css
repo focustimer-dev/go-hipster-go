@@ -7,7 +7,7 @@
  --yellow:#f5f0e6;--red:#8c6239;--red2:#8c6239;--line:#8c623999;
  --atlas-paper:#f5f0e6;--atlas-paper-light:#eee4d3;--atlas-paper-hover:#e7d7bd;
  --atlas-ink:#003018;--atlas-accent:#8c6239;--atlas-border:#8c6239;
- --atlas-land:#004225;--atlas-water:#f5f0e6;--atlas-boundary:#003018;
+ --atlas-land:#004225;--atlas-water:#e8e9df;--atlas-boundary:#003018;
  --atlas-selected:#e5cf42;background:#f5f0e6;color:#003018;color-scheme:light;
 }
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace{
@@ -110,7 +110,7 @@
    geometry, camera transform, pointer-events, discovery lanes or Antarctica. */
 :root[data-pwa-theme=bosque] #labAtlasCahill .lab-cahill-ocean,
 :root[data-pwa-theme=bosque] #labCahillAntarcticOcean{
- fill:#f5f0e6;stroke:#003018;
+ fill:#e8e9df;stroke:#003018;
 }
 :root[data-pwa-theme=usiku] #labAtlasCahill .lab-cahill-ocean,
 :root[data-pwa-theme=usiku] #labCahillAntarcticOcean{
