@@ -23,7 +23,7 @@ const THEMED_ROUTE_PAINT={opacity:.88,width:1.7,dash:[3,2.6]};
 const TWEEN_PALETTES={
  liberi:{paper:'#dfb045',ocean:'#103135',selected:'#a83223',ink:'#103135',backdrop:'#dfb045'},
  bosque:{paper:'#004225',ocean:'#f5f0e6',selected:'#e5cf42',ink:'#003018',backdrop:'#f5f0e6'},
- usiku:{paper:'#f5f0e6',ocean:'#111111',selected:'#e5cf42',ink:'#003018',backdrop:'#111111'}
+ usiku:{paper:'#f5f0e6',ocean:'#111111',selected:'#e5cf42',ink:'#003018',backdrop:'#003018'}
 };
 window.GHGAtlasPaintColors=()=>({theme:atlasTheme(),...TWEEN_PALETTES[atlasTheme()]});
 // Applied before Android bundle DOM is parsed: no first-paint theme flash.
