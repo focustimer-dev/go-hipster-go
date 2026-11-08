@@ -27,7 +27,13 @@ const palettes={
   for(const width of [390,320]){
    const page=await browser.newPage({viewport:{width,height:860},isMobile:true,hasTouch:true});
    const errors=[];page.on('pageerror',e=>errors.push(e.message));
-   await page.addInitScript(()=>{window.HipsterLab={state:()=>'{"saved":[]}',inspiration:()=>'',copy:()=>true}});
+   await page.addInitScript(()=>{
+    window.HipsterLab={
+     state:()=>JSON.stringify({saved:[],updateAvailable:true,updateLatest:'gemini-skill-v3.11.2',updateConfirmed:'gemini-skill-v3.11.1'}),
+     inspiration:()=>'',copy:()=>true,setTheme:theme=>{window.__nativeAppearance=theme},
+     showUpdates:()=>{window.__labUpdatesOpened=(window.__labUpdatesOpened||0)+1}
+    };
+   });
    await page.goto('http://127.0.0.1:'+server.address().port+'/',{waitUntil:'domcontentloaded'});
    await page.waitForFunction(()=>window.labAtlasGlobe?.loaded()&&window.labCahillMap?.ready,null,{timeout:30000});
    await page.emulateMedia({reducedMotion:'reduce'});
@@ -37,6 +43,7 @@ const palettes={
     assert.equal(await page.locator('[data-lab-theme][aria-pressed=true]').count(),1);
     assert.equal(await page.evaluate(()=>document.documentElement.dataset.pwaTheme),name);
     assert.equal(await page.evaluate(()=>window.HipsterLabTheme?.current()),name);
+    assert.equal(await page.evaluate(()=>window.__nativeAppearance),name,'Native update sheet appearance mirrors selected theme');
     assert.equal(await page.evaluate(()=>localStorage.getItem('ghg-lab-theme-v1')),name);
     assert.equal(await page.evaluate(()=>window.GHGAtlasPaintColors?.().theme),name);
     assert.deepEqual(await page.locator('link[data-lab-palette-style]').evaluateAll(els=>els.map(e=>e.media)),
@@ -173,6 +180,34 @@ const palettes={
       assert.equal(eject.housing,'rgb(56, 38, 28)','Usiku transport housing is visibly recessed');
      }
      await page.screenshot({path:path.join(output,`${name}-manual.png`)});
+     // The skill check-in is part of Gemini setup, not a buried resources
+     // page; it must show the recorded and available versions and open the
+     // native confirmation controller in all three appearance options.
+     const guide=page.frameLocator('#labManualFrame');
+     await guide.locator('#cratePicker > summary').click();
+     await guide.locator('[data-crate-tab=setup]').click();
+     await guide.locator('.crate-dividers a[href="#setup"]').click();
+     await guide.locator('.skill-checkin').waitFor({state:'visible'});
+     await page.waitForFunction(()=>{
+      const status=document.getElementById('labManualFrame')?.contentDocument?.getElementById('geminiSkillCheckStatus');
+      return status?.textContent.includes('gemini-skill-v3.11.2');
+     },null,{timeout:6000});
+     assert.match(await guide.locator('#geminiSkillCheckHint').textContent(),/gemini-skill-v3.11.1/);
+     assert.match(await guide.locator('#geminiSkillCheckHint').textContent(),/yellow dot/);
+     const key=await guide.locator('.skill-checkin button').evaluate(el=>({
+      color:getComputedStyle(el).color,
+      bg:getComputedStyle(el).backgroundColor,
+      height:el.getBoundingClientRect().height
+     }));
+     if(name!=='liberi'){
+      assert.equal(key.bg,'rgb(0, 66, 37)','Gemini check-in uses forest theme key');
+      assert.equal(key.color,'rgb(229, 207, 66)','Gemini check-in uses selection yellow');
+     }
+     assert(key.height>=44,'Gemini check-in is comfortably tappable');
+     const before=await page.evaluate(()=>window.__labUpdatesOpened||0);
+     await guide.locator('.skill-checkin [data-review-skill-updates]').click();
+     await page.waitForFunction(previous=>(window.__labUpdatesOpened||0)>previous,before);
+     await guide.locator('.skill-checkin').screenshot({path:path.join(output,`${name}-skill-checkin.png`)});
      await page.locator('[data-lab-tab=jukebox]').click();
     }
    }
