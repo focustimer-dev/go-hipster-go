@@ -3,6 +3,9 @@
 (function(){
 'use strict';
 const KEY='ghg-lab-theme-v1',THEMES=['liberi','bosque','usiku'];
+// Pilot themes are URL/QA-only, never persisted or exposed in Preferences.
+const PILOTS=['kingston'];
+const preview=new URLSearchParams(location.search).get('theme');
 /* Single paint contract for the three REAL projections and their cached
    animation frames. Geometry, sprites, camera and transitions are unchanged.
    CSS receives identical roles via --lab-atlas-*; no per-projection palette. */
@@ -28,6 +31,13 @@ const ATLAS=Object.freeze({
   field:'radial-gradient(ellipse at 50% 38%,#004225 0%,#003018 78%)',
   graticule:'#b77b4d',graticuleOpacity:.2,
   oceanStroke:'#b77b4d',oceanStrokeOpacity:.72
+ }),
+ kingston:Object.freeze({
+  paper:'#c7beaf',land:'#c7beaf',ocean:'#18151e',ink:'#18151e',
+  selected:'#008fa3',route:'#008fa3',routeOpacity:.85,routeWidth:1.2,
+  routeDash:[3,2.6],backdrop:'#d5cec2',field:'#d5cec2',
+  graticule:'#008fa3',graticuleOpacity:.24,
+  oceanStroke:'#18151e',oceanStrokeOpacity:1
  })
 });
 /* These color roles control PRINTED mood tiles and labels. The artwork
@@ -48,6 +58,11 @@ const MOODS=Object.freeze({
   neutralPaper:'radial-gradient(ellipse farthest-corner at 50% 36%,#b77b4d 0%,#a86c43 34%,#925b39 68%,#7e4c30 100%)',
   neutralInk:'#063821',selectedPaper:'#e5cf42',selectedInk:'#003018',
   desireHeart:'#8e3069',funkPaper:'#6e225c',funkInk:'#f2c84e'
+ }),
+ kingston:Object.freeze({
+  neutralPaper:'#d5cec2',neutralInk:'#18151e',
+  selectedPaper:'#008fa3',selectedInk:'#18151e',
+  desireHeart:'#18151e',funkPaper:'#18151e',funkInk:'#008fa3'
  })
 });
 const CSS_MOOD_ROLES={
@@ -75,8 +90,9 @@ function saved(){
  try{const value=localStorage.getItem(KEY);return THEMES.includes(value)?value:'liberi'}
  catch(_){return 'liberi'}
 }
-let theme=saved(),atlas=null,defaults=null,frame=0;
+let theme=PILOTS.includes(preview)?preview:saved(),atlas=null,defaults=null,frame=0;
 document.documentElement.dataset.pwaTheme=theme;
+document.documentElement.dataset.ghgThemeProfile=PILOTS.includes(theme)?'print':'';
 applyThemeTokens();
 window.GHGAtlasPaintColors=()=>({theme,...ATLAS[theme]});
 function refreshButtons(){
@@ -136,16 +152,22 @@ function syncManualTheme(){
  const frame=document.getElementById('labManualFrame');
  try{
   const guide=frame?.contentDocument;
-  if(guide&&guide.documentElement.dataset.pwaTheme!==theme)
-   guide.documentElement.dataset.pwaTheme=theme;
+  if(guide){
+   if(guide.documentElement.dataset.pwaTheme!==theme)
+    guide.documentElement.dataset.pwaTheme=theme;
+   guide.documentElement.dataset.ghgThemeProfile=PILOTS.includes(theme)?'print':'';
+  }
  }catch(e){console.warn('Manual theme synchronization unavailable',e)}
 }
 function setTheme(next,persist){
- if(!THEMES.includes(next))return false;
+ if(!THEMES.includes(next)&&!PILOTS.includes(next))return false;
+ if(PILOTS.includes(next)&&persist)return false;
  // The base Liberi palette is already in the canonical stylesheet.
  // Load the shared additional rules only for the two alternate themes.
  for(const link of document.querySelectorAll('link[data-lab-palette-style]'))
   link.media=next==='liberi'?'not all':'all';
+ for(const link of document.querySelectorAll('link[data-lab-print-style]'))
+  link.media=PILOTS.includes(next)?'all':'not all';
  if(persist){
   try{localStorage.setItem(KEY,next)}catch(e){
    const status=document.getElementById('labThemeStatus');
@@ -153,6 +175,7 @@ function setTheme(next,persist){
   }
  }
  if(theme!==next){theme=next;document.documentElement.dataset.pwaTheme=theme;
+  document.documentElement.dataset.ghgThemeProfile=PILOTS.includes(theme)?'print':'';
   applyThemeTokens();requestPaint();syncManualTheme();window.dispatchEvent(new Event('ghg-lab-theme-change'))}
  refreshButtons();
  if(persist){
@@ -178,5 +201,5 @@ document.addEventListener('DOMContentLoaded',()=>{
  observer.observe(document.body,{childList:true,subtree:true});
  if(attach())observer.disconnect();
 });
-window.HipsterLabTheme=Object.freeze({current:()=>theme,set:setTheme,colors:()=>ATLAS[theme],moods:()=>MOODS[theme],refresh:requestPaint});
+window.HipsterLabTheme=Object.freeze({current:()=>theme,set:setTheme,colors:()=>ATLAS[theme],moods:()=>MOODS[theme],pilot:()=>PILOTS.includes(theme),refresh:requestPaint});
 })();
