@@ -610,7 +610,114 @@ async function verifyManualHierarchy(page,name,width){
    assert.equal(await page.evaluate(()=>document.documentElement.dataset.pwaTheme),'usiku','Persisted theme must apply before paint');
    assert.deepEqual(errors,[],'Android theme picker or renderer JS exceptions');
    await page.close();
+   // Pilot is ONLY opened by a deliberate preview URL. It must not create
+   // a fourth installed preference or modify the user's stored appearance.
+   const pilot=await browser.newPage({viewport:{width,height:860},isMobile:true,hasTouch:true});
+   const pilotErrors=[];
+   pilot.on('pageerror',e=>pilotErrors.push(e.message));
+   await pilot.goto('http://127.0.0.1:'+server.address().port+'/?theme=kingston',{waitUntil:'domcontentloaded'});
+   await pilot.waitForFunction(()=>window.labAtlasGlobe?.loaded()&&window.labCahillMap?.ready,null,{timeout:30000});
+   await pilot.emulateMedia({reducedMotion:'reduce'});
+   assert.equal(await pilot.evaluate(()=>window.HipsterLabTheme?.current()),'kingston');
+   assert.equal(await pilot.evaluate(()=>document.documentElement.dataset.ghgThemeProfile),'print');
+   assert.equal(await pilot.locator('link[data-lab-print-style]').getAttribute('media'),'all');
+   assert.equal(await pilot.locator('[data-lab-theme=kingston]').count(),0,'Pilot must not enter Preferences');
+   assert.equal(await pilot.evaluate(()=>localStorage.getItem('ghg-lab-theme-v1')),null,
+    'Pilot must not overwrite the saved production theme');
+   const pilotInk=await pilot.evaluate(()=>{
+    const root=getComputedStyle(document.documentElement),map=window.labAtlasGlobe;
+    const css=name=>root.getPropertyValue('--lab-atlas-'+name).trim();
+    const el=selector=>getComputedStyle(document.querySelector(selector));
+    const face=document.querySelector('.mood[data-mood=happy] .face');
+    const tile=face.closest('.mood'),old=tile.getAttribute('aria-pressed');
+    tile.setAttribute('aria-pressed','false');
+    const neutral={tile:el('.mood[data-mood=happy]').backgroundColor,
+     ink:getComputedStyle(face,'::before').backgroundColor,
+     mask:getComputedStyle(face,'::before').maskImage};
+    tile.setAttribute('aria-pressed','true');
+    const selected={tile:el('.mood[data-mood=happy]').backgroundColor,
+     ink:getComputedStyle(face,'::after').backgroundColor,
+     mask:getComputedStyle(face,'::after').maskImage,
+     word:el('.mood[data-mood=happy] .word').color};
+    tile.setAttribute('aria-pressed',old);
+    return {
+     theme:window.GHGAtlasPaintColors(),
+     ocean:map.getPaintProperty('robinson-ocean','fill-color'),
+     atlasCssOcean:css('ocean'),atlasCssLand:css('land'),
+     canvas:el('#labAtlasGlobe').backgroundColor,
+     page:el('#labJukebox').backgroundColor,
+     go:el('#goButton').backgroundColor,
+     goHeadline:el('#goButton .go-copy b').color,
+     goCaption:el('#goButton .go-copy>span:not(.go-stamp)').color,
+     neutral,selected
+    };
+   });
+   assert.equal(pilotInk.theme.ocean,'#18151e','Pilot Atlas ocean contract');
+   assert.equal(pilotInk.theme.land,'#c7beaf','Pilot Atlas land contract');
+   assert.equal(pilotInk.theme.selected,'#008fa3','Pilot Atlas selection contract');
+   assert.equal(pilotInk.atlasCssOcean,'#18151e','Pilot CSS ocean from registry');
+   assert.equal(pilotInk.atlasCssLand,'#c7beaf','Pilot CSS land from registry');
+   assert.equal(pilotInk.ocean,'#18151e','Real Robinson ocean is print ink');
+   assert.equal(pilotInk.canvas,'rgb(213, 206, 194)','Map exterior is chipboard, not sea');
+   assert.equal(pilotInk.page,'rgb(213, 206, 194)','Jukebox is chipboard');
+   assert.equal(pilotInk.go,'rgb(24, 21, 30)','GO uses dark ink');
+   assert.equal(pilotInk.goHeadline,'rgb(0, 143, 163)','GO uses cyan stamped type');
+   assert.equal(pilotInk.goCaption,'rgb(213, 206, 194)','GO supporting type has high contrast');
+   assert.equal(pilotInk.neutral.tile,'rgb(213, 206, 194)','Neutral portrait stock');
+   assert.equal(pilotInk.neutral.ink,'rgb(24, 21, 30)','Neutral portrait engraving ink');
+   assert.match(pilotInk.neutral.mask,/moods-neutral-ink-v2.webp/,'Original neutral plate alpha');
+   assert.equal(pilotInk.selected.tile,'rgb(0, 143, 163)','Selected portrait cyan ink');
+   assert.equal(pilotInk.selected.ink,'rgb(24, 21, 30)','Selected engraving remains dark');
+   assert.equal(pilotInk.selected.word,'rgb(24, 21, 30)','Selected portrait label legible');
+   assert.match(pilotInk.selected.mask,/moods-selected-ink-v2.webp/,'Original selected plate alpha');
+   if(width===390){
+    await pilot.locator('.mood[data-mood=happy]').click();
+    await pilot.locator('.mood[data-mood=funky]').click();
+   }
+   await pilot.locator('.mood-grid').scrollIntoViewIfNeeded();
+   await pilot.screenshot({path:path.join(output,'kingston-'+width+'-portraits.png')});
+   await pilot.locator('#labAtlasGlobe').scrollIntoViewIfNeeded();
+   await pilot.screenshot({path:path.join(output,'kingston-'+width+'-robinson.png')});
+   await pilot.locator('[data-atlas-view=cahill-keyes]').click();
+   await pilot.waitForFunction(()=>{const s=window.HipsterAtlasState?.();return s?.projection==='cahill-keyes'&&!s.transitioning},
+    null,{timeout:20000});
+   const octant=await pilot.evaluate(()=>{
+    const ocean=document.querySelector('#labAtlasCahill .lab-cahill-ocean');
+    const grid=document.querySelector('#labAtlasCahill .lab-cahill-graticule');
+    return {ocean:getComputedStyle(ocean).fill,grid:getComputedStyle(grid).stroke,
+     field:getComputedStyle(document.getElementById('labAtlasGlobe')).backgroundColor}
+   });
+   assert.equal(octant.ocean,'rgb(24, 21, 30)','Keyes sea matches Robinson');
+   assert.equal(octant.grid,'rgb(0, 143, 163)','Cahill grid uses stamp ink');
+   assert.equal(octant.field,'rgb(213, 206, 194)','Keyes stage is chipboard');
+   await pilot.screenshot({path:path.join(output,'kingston-'+width+'-keyes.png')});
+   await pilot.locator('[data-atlas-view=globe]').click();
+   await pilot.waitForFunction(()=>{const s=window.HipsterAtlasState?.();return s?.projection==='globe'&&!s.transitioning},
+    null,{timeout:20000});
+   await pilot.screenshot({path:path.join(output,'kingston-'+width+'-globe.png')});
+   await pilot.locator('[data-atlas-view=robinson]').click();
+   await pilot.waitForFunction(()=>{const s=window.HipsterAtlasState?.();return s?.projection==='robinson'&&!s.transitioning},
+    null,{timeout:20000});
+   await pilot.locator('[data-lab-tab=manual]').click();
+   await pilot.frameLocator('#labManualFrame').locator('#manualNavigation').waitFor({state:'visible',timeout:15000});
+   const manual=await pilot.frameLocator('#labManualFrame').locator('body.embedded-guide').evaluate(el=>({
+    theme:el.ownerDocument.documentElement.dataset.pwaTheme,
+    profile:el.ownerDocument.documentElement.dataset.ghgThemeProfile,
+    ink:getComputedStyle(el).color,stock:getComputedStyle(el).backgroundColor
+   }));
+   assert.equal(manual.theme,'kingston','Manual inherits pilot');
+   assert.equal(manual.profile,'print','Manual inherits print profile');
+   assert.equal(manual.ink,'rgb(24, 21, 30)','Manual ink');
+   assert.equal(manual.stock,'rgb(213, 206, 194)','Manual uses Jukebox chipboard');
+   await pilot.screenshot({path:path.join(output,'kingston-'+width+'-manual.png')});
+   await pilot.locator('[data-lab-tab=crate]').click();
+   await pilot.screenshot({path:path.join(output,'kingston-'+width+'-crate.png')});
+   assert.deepEqual(pilotErrors,[],'Kingston pilot JS exceptions');
+   await pilot.reload({waitUntil:'domcontentloaded'});
+   assert.equal(await pilot.evaluate(()=>window.HipsterLabTheme?.current()),'kingston','Preview URL persists without storage');
+   assert.equal(await pilot.evaluate(()=>localStorage.getItem('ghg-lab-theme-v1')),null);
+   await pilot.close();
   }
-  console.log('PASS: Android Libéri/Bosque/Usiku are persistent, readable and map color-matched at 390px / 320px');
+  console.log('PASS: Android Libéri/Bosque/Usiku and URL-only Kingston pilot have matching Atlas, portrait and Manual roles at 390px / 320px');
  }finally{await browser?.close();await new Promise(ok=>server.close(ok))}
 })().catch(e=>{console.error(e);process.exitCode=1});
