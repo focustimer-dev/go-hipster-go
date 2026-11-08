@@ -2,7 +2,7 @@
    This early document script leaves native app state and map geometry alone. */
 (function(){
 'use strict';
-const KEY='ghg-lab-theme-v1',THEMES=['liberi','bosque','usiku'];
+const KEY='ghg-lab-theme-v1',THEMES=['liberi','bosque','usiku','kingston'];
 /* Single paint contract for the three REAL projections and their cached
    animation frames. Geometry, sprites, camera and transitions are unchanged.
    CSS receives identical roles via --lab-atlas-*; no per-projection palette. */
@@ -20,6 +20,13 @@ const ATLAS=Object.freeze({
   routeDash:[3,2.6],backdrop:'#f5f0e6',field:'#f5f0e6',
   graticule:'#8c6239',graticuleOpacity:.24,
   oceanStroke:'#003018',oceanStrokeOpacity:1
+ }),
+ kingston:Object.freeze({
+  paper:'#e7d5a6',land:'#d7bd80',ocean:'#253a37',ink:'#26302b',
+  selected:'#c24b2e',route:'#e3b75c',routeOpacity:.78,routeWidth:1.15,
+  routeDash:[3,3],backdrop:'#e7d5a6',field:'#e7d5a6',
+  graticule:'#b59665',graticuleOpacity:.25,
+  oceanStroke:'#26302b',oceanStrokeOpacity:.9
  }),
  usiku:Object.freeze({
   paper:'#f5f0e6',land:'#f5f0e6',ocean:'#111111',ink:'#003018',
@@ -43,6 +50,11 @@ const MOODS=Object.freeze({
   neutralPaper:'#f5f0e6',neutralInk:'#003018',
   selectedPaper:'#e5cf42',selectedInk:'#003018',
   desireHeart:'#8e3069',funkPaper:'#6e225c',funkInk:'#f2c84e'
+ }),
+ kingston:Object.freeze({
+  neutralPaper:'#e7d5a6',neutralInk:'#26302b',
+  selectedPaper:'#c24b2e',selectedInk:'#fff0ca',
+  desireHeart:'#cf6048',funkPaper:'#b6925b',funkInk:'#26302b'
  }),
  usiku:Object.freeze({
   neutralPaper:'radial-gradient(ellipse farthest-corner at 50% 36%,#b77b4d 0%,#a86c43 34%,#925b39 68%,#7e4c30 100%)',
