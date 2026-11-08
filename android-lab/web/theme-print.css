@@ -165,7 +165,7 @@
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=funky])[aria-pressed=true]{
   background:var(--lab-mood-selected-paper);color:var(--lab-mood-selected-ink);
-  box-shadow:inset 0 0 0 1px var(--lab-print-active-ink),inset 0 -3px 0 var(--lab-print-active-ink);
+  box-shadow:inset 0 0 0 2px var(--lab-mood-selected-edge,var(--lab-print-active-ink)),inset 0 -3px 0 var(--lab-mood-selected-edge,var(--lab-print-active-ink));
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=funky]) .word{
   color:var(--lab-mood-neutral-ink);
@@ -173,6 +173,20 @@
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=funky])[aria-pressed=true] .word{
   color:var(--lab-mood-selected-ink);background:transparent;
   text-decoration:underline;text-decoration-color:var(--lab-print-active-ink);
+}
+/* The two original expression plates are *actually* recolored by MOODS
+   neutralInk/selectedInk plus neutralPaper/selectedPaper. A theme-specific
+   SVG luminance transfer preserves hatch detail, including midtone shadows.
+   Never apply the legacy selectedMoodPetrol flood to the whole .face.
+   Funk, Desire and Triumph keep their separately approved artwork rules. */
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=funky])[aria-pressed=true] .face{
+  filter:none!important;
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=funky]):not([data-mood=desire]):not([data-mood=triumphant]) .face::before{
+  filter:url(#themeMoodNeutralEngraving)!important;
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=funky]):not([data-mood=desire]):not([data-mood=triumphant]) .face::after{
+  filter:url(#themeMoodSelectedEngraving)!important;
 }
 /* Keep original ::before and ::after image backgrounds, selected sprite
    expressions, alpha gradients, and Desire/Triumph artwork. Do not mask
