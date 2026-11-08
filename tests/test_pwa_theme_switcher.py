@@ -32,7 +32,7 @@ class PWAThemeTests(unittest.TestCase):
 
     def test_usiku_simple_ink_no_cream_assets(self):
         css = (ROOT / "launcher/assets/pwa-themes.css").read_text()
-        self.assertIn("--usiku-neutral-ink:#063821", css)
+        self.assertIn("--usiku-neutral-ink:var(--lab-mood-neutral-ink,#063821)", css)
         self.assertIn("mask-image:url('/editions/gig-poster/assets/moods-neutral-ink-v2.webp')", css)
         self.assertIn("--usiku-neutral-center:#b77b4d", css)
         self.assertIn("--usiku-neutral-edge:#7e4c30", css)

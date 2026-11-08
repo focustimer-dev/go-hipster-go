@@ -86,9 +86,11 @@ class AndroidThemeParity(unittest.TestCase):
         self.assertNotIn('context.strokeStyle=palette.ocean',tween)
         self.assertIn('getComputedStyle(ocean)',fold)
         self.assertIn('getComputedStyle(path)',fold)
-        self.assertIn("'line-width':1.2",native)
-        self.assertIn("'line-opacity':.88",native)
-        self.assertIn("'line-dasharray':[3,2.6]",native)
+        self.assertIn("'line-width':palette.routeWidth",native)
+        self.assertIn("'line-opacity':palette.routeOpacity",native)
+        self.assertIn("'line-dasharray':palette.routeDash",native)
+        self.assertIn("routeDash:[3,2.6]",native)
+        self.assertIn("routeDash:[3,5]",native)
         self.assertIn('opacity:.88,width:1.7,dash:[3,2.6]',browser)
         self.assertIn("'line-width':THEMED_ROUTE_PAINT.width",browser)
         self.assertIn('stroke-width:1.8;stroke-opacity:.9;',css)
@@ -108,12 +110,38 @@ class AndroidThemeParity(unittest.TestCase):
         self.assertIn('visibility:hidden!important',css)
         self.assertNotIn("id:'robinson-outline'",globe)
         self.assertNotIn("setLayoutProperty('robinson-outline'",globe)
+        self.assertIn("bosque:Object.freeze({",native)
+        self.assertIn("paper:'#004225',land:'#004225',ocean:'#e8e9df'",native)
+        self.assertIn("bosque:{ocean:'#e8e9df'",browser)
+        self.assertIn("bosque:{paper:'#004225',ocean:'#e8e9df'",browser)
         for code in (native,browser):
-            self.assertIn("bosque:{ocean:'#e8e9df'",code)
-            self.assertIn("bosque:{paper:'#004225',ocean:'#e8e9df'",code)
             self.assertNotIn("'robinson-outline'",code)
         self.assertIn('--atlas-water:#e8e9df',themes)
-        self.assertIn('fill:#e8e9df;stroke:#003018;',themes)
+        self.assertIn('fill:var(--lab-atlas-ocean,#e8e9df);stroke:var(--lab-atlas-ocean-stroke,#003018);',themes)
+
+    def test_single_atlas_registry_and_mood_roles(self):
+        native=(ROOT/'android-lab/web/theme.js').read_text()
+        css=(ROOT/'launcher/assets/pwa-atlas-themes.css').read_text()
+        portraits=(ROOT/'launcher/assets/pwa-themes.css').read_text()
+        fold=(ROOT/'android-lab/web/cahill-keyes-motion.js').read_text()
+        self.assertIn("const ATLAS=Object.freeze({",native)
+        self.assertIn("const MOODS=Object.freeze({",native)
+        self.assertNotIn("const TWEEN=",native)
+        self.assertNotIn("const PALETTES=",native)
+        self.assertIn("window.GHGAtlasPaintColors=()=>({theme,...ATLAS[theme]})",native)
+        for role in ('paper','ocean','land','ink','selected','route',
+                     'backdrop','field','graticule','ocean-stroke'):
+            self.assertIn("'--lab-atlas-'+role",native)
+        for role in ('neutral-paper','neutral-ink','selected-paper',
+                     'selected-ink','funk-paper','funk-ink','desire-hearts'):
+            self.assertIn("'--lab-mood-'+role",native)
+        self.assertIn("getComputedStyle(grid)",fold)
+        self.assertIn("getComputedStyle(item)",fold)
+        for role in ('ocean','land','ink','selected','route','field'):
+            self.assertIn('var(--lab-atlas-'+role,css)
+        for role in ('selected-paper','selected-ink','neutral-paper',
+                     'neutral-ink','funk-paper','funk-ink','desire-hearts'):
+            self.assertIn('var(--lab-mood-'+role,portraits)
 
     def test_three_projections_tween_without_liberi_color_flash(self):
         globe=(ROOT/'android-lab/web/atlas-morph-vectors.js').read_text()
@@ -123,7 +151,8 @@ class AndroidThemeParity(unittest.TestCase):
         self.assertIn("window.GHGAtlasPaintColors?.().theme||'liberi'",globe)
         self.assertIn('PAL=new Proxy',keyes)
         self.assertIn('PAL.backdrop',keyes)
-        self.assertIn('getComputedStyle(item).fill',keyes)
+        self.assertIn('polarInk.fill',keyes)
+        self.assertIn('getComputedStyle(item)',keyes)
         self.assertNotIn('theme_browser_tween_assets()',pwa)
         # Only recolor canonical paths, not geolocation, selections or map projection math.
         self.assertIn('bundle(DEST)',pwa)

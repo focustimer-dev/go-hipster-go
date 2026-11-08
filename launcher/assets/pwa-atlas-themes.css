@@ -101,7 +101,7 @@
  background:transparent;color:var(--lab-ui-ink);text-decoration:underline;text-underline-offset:4px;
 }
 :root[data-pwa-theme=bosque] #labAtlasGlobe .lab-cahill-overlay{
- background:#f5f0e6;
+ background:var(--lab-atlas-field,#f5f0e6);
 }
 :root[data-pwa-theme=usiku] #labAtlasGlobe .lab-cahill-overlay{
  /* The outer octants are paper, not sea. Show the vignetted green stage. */
@@ -111,28 +111,28 @@
    geometry, camera transform, pointer-events, discovery lanes or Antarctica. */
 :root[data-pwa-theme=bosque] #labAtlasCahill .lab-cahill-ocean,
 :root[data-pwa-theme=bosque] #labCahillAntarcticOcean{
- fill:#e8e9df;stroke:#003018;
+ fill:var(--lab-atlas-ocean,#e8e9df);stroke:var(--lab-atlas-ocean-stroke,#003018);
 }
 :root[data-pwa-theme=usiku] #labAtlasCahill .lab-cahill-ocean,
 :root[data-pwa-theme=usiku] #labCahillAntarcticOcean{
  /* Same #111 dark sea as Robinson and Globe. The green matte is separate. */
- fill:#111111;stroke:#b77b4d;stroke-opacity:.72;stroke-width:.9;
+ fill:var(--lab-atlas-ocean,#111111);stroke:var(--lab-atlas-ocean-stroke,#b77b4d);stroke-opacity:var(--lab-atlas-ocean-stroke-opacity,.72);stroke-width:.9;
 }
 :root[data-pwa-theme=bosque] #labAtlasCahill .lab-cahill-graticule{
- stroke:#8c6239;stroke-opacity:.24;
+ stroke:var(--lab-atlas-graticule,#8c6239);stroke-opacity:var(--lab-atlas-graticule-opacity,.24);
 }
 :root[data-pwa-theme=usiku] #labAtlasCahill .lab-cahill-graticule{
- stroke:#b77b4d;stroke-opacity:.2;
+ stroke:var(--lab-atlas-graticule,#b77b4d);stroke-opacity:var(--lab-atlas-graticule-opacity,.2);
 }
 :root[data-pwa-theme=bosque] #labAtlasCahill [data-cahill-region][aria-pressed=false]{
- fill:#004225;stroke:#003018;
+ fill:var(--lab-atlas-land,#004225);stroke:var(--lab-atlas-ink,#003018);
 }
 :root[data-pwa-theme=usiku] #labAtlasCahill [data-cahill-region][aria-pressed=false]{
- fill:#f5f0e6;stroke:#003018;
+ fill:var(--lab-atlas-land,#f5f0e6);stroke:var(--lab-atlas-ink,#003018);
 }
 :root[data-pwa-theme=bosque] #labAtlasCahill [data-cahill-region][aria-pressed=true],
 :root[data-pwa-theme=usiku] #labAtlasCahill [data-cahill-region][aria-pressed=true]{
- fill:#e5cf42;stroke:#003018;stroke-width:1.35;
+ fill:var(--lab-atlas-selected,#e5cf42);stroke:var(--lab-atlas-ink,#003018);stroke-width:1.35;
 }
 /* Mode-specific ocean/land colors for Globe and Robinson are painted with
    MapLibre expressions in the browser bridge, not an invert() bitmap hack. */
@@ -152,30 +152,30 @@
 /* Canvas tween frames use the exact browser-only color adapter; the veil
    around the vector canvas must match its ocean/backdrop throughout the fold. */
 :root[data-pwa-theme=bosque] #labAtlasGlobe :is(.lab-atlas-morph,.lab-cahill-motion){
- background-color:#f5f0e6!important;
+ background-color:var(--lab-atlas-field,#f5f0e6)!important;
 }
 :root[data-pwa-theme=usiku] #labAtlasGlobe :is(.lab-atlas-morph,.lab-cahill-motion){
- background:radial-gradient(ellipse at 50% 38%,#004225 0%,#003018 78%)!important;
+ background:var(--lab-atlas-field,radial-gradient(ellipse at 50% 38%,#004225 0%,#003018 78%))!important;
 }
 /* The original route paths remain untouched. Give their nautical ink
    enough weight to read at 320–390px without making them new highways. */
 :root[data-pwa-theme=bosque] #labAtlasCahill .lab-cahill-routes path{
- stroke:#8c6239;stroke-width:1.8;stroke-opacity:.9;
+ stroke:var(--lab-atlas-route,#8c6239);stroke-width:1.8;stroke-opacity:.9;
  stroke-dasharray:4 4;
 }
 :root[data-pwa-theme=usiku] #labAtlasCahill .lab-cahill-routes path{
- stroke:#b77b4d;stroke-width:1.8;stroke-opacity:.9;
+ stroke:var(--lab-atlas-route,#b77b4d);stroke-width:1.8;stroke-opacity:.9;
  stroke-dasharray:4 4;
 }
 
 /* Map chrome is NOT the water. Keep the same field color behind every
    projection without touching the MapLibre or Cahill ocean geometry. */
 :root[data-pwa-theme=liberi] body.gig-poster.lab-workspace #labAtlasGlobe{
- background:#dfb045!important;
+ background:var(--lab-atlas-field,#dfb045)!important;
 }
 :root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labAtlasGlobe{
- background:#f5f0e6!important;
+ background:var(--lab-atlas-field,#f5f0e6)!important;
 }
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labAtlasGlobe{
- background:radial-gradient(ellipse at 50% 38%,#004225 0%,#003018 78%)!important;
+ background:var(--lab-atlas-field,radial-gradient(ellipse at 50% 38%,#004225 0%,#003018 78%))!important;
 }

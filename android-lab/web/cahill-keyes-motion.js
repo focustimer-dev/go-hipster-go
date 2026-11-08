@@ -2,7 +2,7 @@
 // Geographically exact endpoints; in-between states are eased octahedral leaves.
 // Uses a temporary 2D canvas, no per-frame reprojecting of 183 countries.
 const labCahillMotion=(()=>{
- const PAL=new Proxy({paper:'#dfb045',ocean:'#103135',selected:'#a83223',ink:'#103135',backdrop:'#dfb045'},
+ const PAL=new Proxy({paper:'#dfb045',ocean:'#103135',selected:'#a83223',ink:'#103135',backdrop:'#dfb045',graticule:'#dfb045',graticuleOpacity:.21},
   {get(base,key){return window.GHGAtlasPaintColors?.()?.[key]||base[key]}});
  const W=960,H=505,TOP=65;
  const FRAME_PIXELS=460;
@@ -64,7 +64,14 @@ const labCahillMotion=(()=>{
   put(ocean,{stroke:oceanInk?.stroke||PAL.ink,
    lineWidth:parseFloat(oceanInk?.strokeWidth)||1,
    alpha:Number.isFinite(parseFloat(oceanInk?.strokeOpacity))?parseFloat(oceanInk.strokeOpacity):1});
-  put(world.querySelector('.lab-cahill-graticule'),{stroke:PAL.paper,lineWidth:.55,alpha:.21});
+  // Copy the resting Cahill grid's actual theme ink. Using PAL.paper here
+  // made Bosque's transition grid green while the live SVG was saddle.
+  const grid=world.querySelector('.lab-cahill-graticule');
+  const gridInk=grid?getComputedStyle(grid):null;
+  put(grid,{stroke:gridInk?.stroke||PAL.graticule,
+   lineWidth:parseFloat(gridInk?.strokeWidth)||.55,
+   alpha:Number.isFinite(parseFloat(gridInk?.strokeOpacity))?
+    parseFloat(gridInk.strokeOpacity):PAL.graticuleOpacity});
   for(const item of Array.from(world.children).filter(el=>el.tagName.toLowerCase()==='circle')){
    const cx=+item.getAttribute('cx'),cy=+item.getAttribute('cy'),r=+item.getAttribute('r');
    if(!Number.isFinite(cx+cy+r)||r<=0)continue;
@@ -72,13 +79,17 @@ const labCahillMotion=(()=>{
    // graticule must not wash out the Antarctic ocean fill.
    ctx.save();ctx.globalAlpha=1;
    ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);
-   const stroke=item.getAttribute('stroke');
+   const polarInk=getComputedStyle(item);
+   const stroke=polarInk.stroke||item.getAttribute('stroke');
    if(item.getAttribute('fill')&&item.getAttribute('fill')!=='none'){
-    ctx.fillStyle=window.GHGAtlasPaintColors?getComputedStyle(item).fill:item.getAttribute('fill');ctx.fill();
+    ctx.fillStyle=window.GHGAtlasPaintColors?polarInk.fill:item.getAttribute('fill');ctx.fill();
    }
    if(stroke&&stroke!=='none'){
-    ctx.lineWidth=+item.getAttribute('stroke-width')||.7;
-    ctx.strokeStyle=stroke;ctx.globalAlpha=+(item.getAttribute('stroke-opacity')||1);ctx.stroke();
+    ctx.lineWidth=parseFloat(polarInk.strokeWidth)||+item.getAttribute('stroke-width')||.7;
+    ctx.strokeStyle=stroke;
+    ctx.globalAlpha=Number.isFinite(parseFloat(polarInk.strokeOpacity))?
+     parseFloat(polarInk.strokeOpacity):+(item.getAttribute('stroke-opacity')||1);
+    ctx.stroke();
    }
    ctx.restore();
   }

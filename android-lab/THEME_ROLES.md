@@ -78,3 +78,44 @@ on the portrait fields and GO; avoid repeating it as large banners.
 
 All of this is Android-only. Bosque's forest GO and Libéri's original
 poster treatment are unaffected. Do not change the public PWA in this pass.
+
+
+## Projection and portrait role contract (theme expansion hardening)
+
+**Runtime owner:** `android-lab/web/theme.js` is the Android authority for
+three map projections and their tween frames. It publishes one `ATLAS` palette
+per theme through `GHGAtlasPaintColors()` and through computed
+`--lab-atlas-*` CSS properties. The older separate `PALETTES` and `TWEEN`
+dictionaries are retired. No geometry, state or map engine may be
+theme-specific.
+
+| Atlas role | Consumers |
+| --- | --- |
+| `paper` / `land` | Cahill SVG country fills and all intermediate country frames |
+| `ocean` | Robinson polygon, Globe field and Cahill sea/Antarctica |
+| `ink` / `selected` | country outlines, selected country fill, transition vectors |
+| `field` / `backdrop` | projection outer surface and canvas backdrop; not ocean |
+| `route` + opacity/width/dash | MapLibre shipping routes and CSS/SVG visual ink |
+| `graticule` + opacity | live Cahill grid and intermediate fold frames |
+| `oceanStroke` + opacity | Cahill sea/Antarctica outline |
+
+The PWA-only 3-projection preview uses the same CSS roles with its original
+fallback values; it does **not** receive the Android JavaScript theme
+registry in this change. The public PWA remains on its separate parity cycle.
+
+**Printed mood roles** are published from the `MOODS` registry in the same
+Android early-load script. `--lab-mood-neutral-paper` (which may be a
+gradient), `--lab-mood-neutral-ink`, `--lab-mood-selected-paper`,
+`--lab-mood-selected-ink`, `--lab-mood-funk-paper`,
+`--lab-mood-funk-ink` and `--lab-mood-desire-hearts` control paint
+without changing original sprites or their alpha and registration. The
+existing PWA skin retains exact fallback colors. Funk rays, Desire hearts
+and Triumph are **still** special approved artwork treatments, not new
+per-theme portrait assets.
+
+**Guardrails for the next theme:** keep the approved Libéri/Bosque/Usiku
+appearance, include neutral and selected portraits, check three projection
+resting states AND in-between frames at 320/390px, run Android and PWA
+unit/visual workflows, and never let a missing token silently inherit the
+wrong theme. This first milestone is an architectural foundation, not
+permission to turn on Kingston or any other candidate in Preferences.

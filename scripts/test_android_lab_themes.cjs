@@ -11,6 +11,11 @@ const palettes={
  bosque:{page:'rgb(245, 240, 230)',ink:'rgb(0, 48, 24)',land:'#004225'},
  usiku:{page:'rgb(17, 17, 17)',ink:'rgb(245, 240, 230)',land:'#f5f0e6'}
 };
+const themeContract={
+ liberi:{ocean:'#103135',land:'#dfb045',route:'#edc65d',selected:'#a83223',graticule:'#dfb045',moodInk:'#103135'},
+ bosque:{ocean:'#e8e9df',land:'#004225',route:'#8c6239',selected:'#e5cf42',graticule:'#8c6239',moodInk:'#003018'},
+ usiku:{ocean:'#111111',land:'#f5f0e6',route:'#b77b4d',selected:'#e5cf42',graticule:'#b77b4d',moodInk:'#063821'}
+};
 async function verifyQuietJukebox(page,name,width){
  if(name==='liberi')return;
  const report=await page.evaluate(()=>{
@@ -201,6 +206,57 @@ async function verifyManualHierarchy(page,name,width){
     assert.equal(await page.evaluate(()=>window.HipsterLabTheme?.current()),name);
     assert.equal(await page.evaluate(()=>localStorage.getItem('ghg-lab-theme-v1')),name);
     assert.equal(await page.evaluate(()=>window.GHGAtlasPaintColors?.().theme),name);
+    // The single contract must feed the actual map registry, CSS and moods
+    // after EVERY theme change; don't pass by comparing two hardcoded sheets.
+    const tokenState=await page.evaluate(()=>{
+     const atlas=window.GHGAtlasPaintColors(),moods=window.HipsterLabTheme.moods();
+     const root=getComputedStyle(document.documentElement);
+     const val=role=>root.getPropertyValue(role).trim();
+     return {
+      atlas:{ocean:atlas.ocean,land:atlas.land,route:atlas.route,
+       selected:atlas.selected,graticule:atlas.graticule},
+      css:{ocean:val('--lab-atlas-ocean'),land:val('--lab-atlas-land'),
+       route:val('--lab-atlas-route'),selected:val('--lab-atlas-selected'),
+       graticule:val('--lab-atlas-graticule')},
+      moodInk:moods.neutralInk,neutralInk:val('--lab-mood-neutral-ink'),
+      selectedPaper:val('--lab-mood-selected-paper'),
+      selectedInk:val('--lab-mood-selected-ink')
+     };
+    });
+    const expectedTheme=themeContract[name];
+    for(const role of ['ocean','land','route','selected','graticule']){
+     assert.equal(tokenState.atlas[role],expectedTheme[role],name+' atlas '+role+' registry');
+     assert.equal(tokenState.css[role],expectedTheme[role],name+' atlas '+role+' CSS paint');
+    }
+    assert.equal(tokenState.moodInk,expectedTheme.moodInk,name+' original neutral portrait ink');
+    assert.equal(tokenState.neutralInk,expectedTheme.moodInk,name+' neutral sprite mask role');
+    assert.equal(tokenState.selectedPaper,name==='liberi'?'#d64b30':'#e5cf42',
+     name+' selected portrait paper');
+    assert.equal(tokenState.selectedInk,name==='liberi'?'#103135':'#003018',
+     name+' selected label/outline ink');
+    if(name!=='liberi'){
+     // Test the real neutral and selected style states without changing
+     // user selections, portrait source image or click behavior.
+     const mood=await page.locator('.mood[data-mood=happy]').evaluate(el=>{
+      const old=el.getAttribute('aria-pressed');
+      el.setAttribute('aria-pressed','false');
+      const neutral={paper:getComputedStyle(el).backgroundImage,
+       mask:getComputedStyle(el.querySelector('.face'),'::before').maskImage};
+      el.setAttribute('aria-pressed','true');
+      const selected={paper:getComputedStyle(el).backgroundColor,
+       label:getComputedStyle(el.querySelector('.word')).color,
+       expression:getComputedStyle(el.querySelector('.face'),'::after').opacity};
+      el.setAttribute('aria-pressed',old);
+      return {neutral,selected};
+     });
+     assert.equal(mood.selected.paper,'rgb(229, 207, 66)',name+' selected tile uses shared stock');
+     assert.equal(mood.selected.label,'rgb(0, 48, 24)',name+' selected label uses shared ink');
+     assert.equal(mood.selected.expression,'1',name+' selected portrait uses approved expression plate');
+     if(name==='usiku'){
+      assert.match(mood.neutral.paper,/radial-gradient/,'Usiku neutral remains the saddle vignette');
+      assert.match(mood.neutral.mask,/moods-neutral-ink-v2.webp/,'Usiku retains original alpha engraving');
+     }
+    }
     assert.deepEqual(await page.locator('link[data-lab-palette-style]').evaluateAll(els=>els.map(e=>e.media)),
      [name==='liberi'?'not all':'all',name==='liberi'?'not all':'all',name==='liberi'?'not all':'all'],
      'Inactive Libéri palette styles must not slow down the base map');
