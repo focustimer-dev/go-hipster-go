@@ -59,6 +59,7 @@
  --lab-ui-go:#171717;--lab-ui-highlight:#d5e644;--lab-ui-on-highlight:#171717;
  --lab-print-muted:#d0d0bd;--lab-print-stamp:#555555;
  --lab-print-active-ink:#f50093;--lab-print-control-ink:#f50093;
+ --lab-mood-selected-edge:#171717; /* dark impression visible over pink pressing */
  --lab-print-stamp-border-style:solid;
  --lab-print-substrate-texture:repeating-linear-gradient(90deg,rgba(20,20,20,.018) 0 1px,transparent 1px 5px);
  --lab-print-stamp-filter:brightness(0) saturate(100%) invert(85%) sepia(27%) saturate(810%) hue-rotate(17deg) brightness(103%) contrast(92%);
