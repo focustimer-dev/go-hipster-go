@@ -103,7 +103,8 @@
  background:#f5f0e6;
 }
 :root[data-pwa-theme=usiku] #labAtlasGlobe .lab-cahill-overlay{
- background:#111111;
+ /* The outer octants are paper, not sea. Show the vignetted green stage. */
+ background:transparent;
 }
 /* Cahill: paint only the existing geographic paths. Never alter their
    geometry, camera transform, pointer-events, discovery lanes or Antarctica. */
@@ -113,9 +114,8 @@
 }
 :root[data-pwa-theme=usiku] #labAtlasCahill .lab-cahill-ocean,
 :root[data-pwa-theme=usiku] #labCahillAntarcticOcean{
- /* Dark petrol ocean, but distinct from the #111 Keyes map field.
-    Keep the characteristic octants readable at phone size without a new wash. */
- fill:#294c3e;stroke:#b77b4d;stroke-opacity:.72;stroke-width:.9;
+ /* Same #111 dark sea as Robinson and Globe. The green matte is separate. */
+ fill:#111111;stroke:#b77b4d;stroke-opacity:.72;stroke-width:.9;
 }
 :root[data-pwa-theme=bosque] #labAtlasCahill .lab-cahill-graticule{
  stroke:#8c6239;stroke-opacity:.24;
@@ -154,7 +154,7 @@
  background-color:#f5f0e6!important;
 }
 :root[data-pwa-theme=usiku] #labAtlasGlobe :is(.lab-atlas-morph,.lab-cahill-motion){
- background-color:#111111!important;
+ background:radial-gradient(ellipse at 50% 38%,#004225 0%,#003018 78%)!important;
 }
 /* The original route paths remain untouched. Give their nautical ink
    enough weight to read at 320–390px without making them new highways. */
@@ -165,4 +165,16 @@
 :root[data-pwa-theme=usiku] #labAtlasCahill .lab-cahill-routes path{
  stroke:#b77b4d;stroke-width:1.8;stroke-opacity:.9;
  stroke-dasharray:4 4;
+}
+
+/* Map chrome is NOT the water. Keep the same field color behind every
+   projection without touching the MapLibre or Cahill ocean geometry. */
+:root[data-pwa-theme=liberi] body.gig-poster.lab-workspace #labAtlasGlobe{
+ background:#dfb045!important;
+}
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labAtlasGlobe{
+ background:#f5f0e6!important;
+}
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labAtlasGlobe{
+ background:radial-gradient(ellipse at 50% 38%,#004225 0%,#003018 78%)!important;
 }
