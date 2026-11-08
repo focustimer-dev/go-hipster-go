@@ -51,6 +51,11 @@ final class SkillUpdates {
         ReleasePolicy.Release r=cached(channel());
         return r==null?"No release checked yet":available()?"Package available · "+r.tag:"Installation recorded · "+r.tag;
     }
+    String recordedVersion() {return prefs.getString(key("confirmedLabel",channel()),"Not recorded");}
+    String latestVersion() {
+        ReleasePolicy.Release release=cached(channel());
+        return release==null?"Not checked":release.tag;
+    }
     String detail() {
         long time=prefs.getLong(key("checked",channel()),0);
         return ("stable".equals(channel())?"Stable":"Lab")+" · Last successful check: "+
