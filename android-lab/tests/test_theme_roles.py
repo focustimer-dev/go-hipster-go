@@ -144,15 +144,24 @@ class AndroidThemeRoles(unittest.TestCase):
         self.assertNotIn('data-lab-theme="kingston"',source("android-lab/web/workspace.html"))
         self.assertIn(":root[data-pwa-theme=kingston]",roles)
         self.assertIn(":root[data-ghg-theme-profile=print]",css)
-        for role in ("--lab-ui-surface:#d5cec2", "--lab-ui-action:#18151e",
-                     "--lab-ui-highlight:#008fa3", "--lab-ui-on-highlight:#18151e"):
+        for role in ("--lab-ui-surface:#e3d9c2", "--lab-ui-action:#304743",
+                     "--lab-ui-go:#385e5a", "--lab-ui-highlight:#7bb0aa",
+                     "--lab-ui-on-highlight:#263f3e"):
             self.assertIn(role,roles)
         for role in ("--lab-atlas-ocean","--lab-atlas-land","--lab-atlas-field",
                      "--lab-mood-selected-paper","--lab-mood-neutral-ink"):
             self.assertIn("var("+role,css)
-        for paper,ink in (("#d5cec2","#18151e"),("#008fa3","#18151e"),
-                          ("#eee5d4","#18151e")):
+        for paper,ink in (("#e3d9c2","#263f3e"),("#d2c3a6","#244643"),
+                          ("#efe4cb","#385e5a"),("#efe4cb","#304743"),
+                          ("#eee4cf","#263f3e")):
             self.assertGreaterEqual(contrast(paper,ink),4.5)
+        # Print themes must never flatten the Funk selected portrait or
+        # repaint its original lasers. Other cast preserves sprite shading.
+        self.assertIn("mood:not([data-mood=funky])[aria-pressed=true]",css)
+        self.assertIn("--funk-selected-paper:color-mix(in srgb,#e03fd8 22%,#f4efdf)",css)
+        self.assertNotIn("hue-rotate(170deg)",css)
+        self.assertNotIn("moods-selected-ink-v2.webp",css)
+        self.assertNotIn("mask-image:url('/editions/gig-poster/assets/moods-neutral-ink-v2.webp')",css)
 
     def test_app_and_iframe_load_the_same_source(self):
         bundle = source("scripts/bundle_android_lab.py")
