@@ -235,5 +235,7 @@ const labAtlasMorphVectors=(()=>{
   canvas.width=canvas.height=width;
   return {data:sourceData(geojson),selected:new Set(selected)};
  }
- return {make,paint,paintCached,warmFrames,pauseWarm,cacheStatus,prepare,landingFit,estimatedFit};
+ // Share the exact same immutable geographic coordinates with Cahill's
+ // pre-rendered transition film. Selection and ink changes do not alter them.
+ return {make,paint,paintCached,warmFrames,pauseWarm,cacheStatus,prepare,sourceData,landingFit,estimatedFit};
 })();
