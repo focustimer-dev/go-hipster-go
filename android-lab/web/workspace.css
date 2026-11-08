@@ -565,3 +565,40 @@ body.gig-poster.lab-workspace[data-page=launch] #promptReceipt .receipt-copy{dis
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku]) body.gig-poster.lab-workspace :is(button,a,summary,select,textarea,input):focus-visible{
  outline-color:var(--lab-ui-focus);
 }
+
+/* Your Crate begins with a single actionable invitation instead of three
+   visibly empty shelves; populated shelves retain their existing layout. */
+body.gig-poster.lab-workspace #labCrateEmpty[hidden]{display:none!important}
+body.gig-poster.lab-workspace #labCrateEmpty{
+ margin:24px 0 0;
+ padding:22px 0 18px;
+ border-top:1px solid #103135;
+ border-bottom:1px solid #103135;
+}
+body.gig-poster.lab-workspace #labCrateEmpty h2{
+ border:0;
+ padding:0;
+ margin:0 0 10px;
+ font:400 clamp(1.65rem,7vw,2.15rem)/1.12 Poster,sans-serif;
+}
+body.gig-poster.lab-workspace #labCrateEmpty p{
+ margin:0;
+ max-width:38ch;
+ font:1rem/1.5 Arial,sans-serif;
+}
+body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
+ margin-top:18px;
+ background:#103135;
+ color:#dfb045;
+ border-color:#103135;
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+ body.gig-poster.lab-workspace #labCrateEmpty{
+ border-color:var(--lab-ui-rule);
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
+ background:var(--lab-ui-action);
+ color:var(--lab-ui-on-action);
+ border-color:var(--lab-ui-rule);
+}
