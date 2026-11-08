@@ -27,7 +27,9 @@ class AndroidThemeParity(unittest.TestCase):
             self.assertIn(file,build)
         self.assertIn('android-lab/web/theme.js',build)
         self.assertIn('<script src="/assets/lab-themes.js"></script>',build)
-        self.assertIn('<link rel="stylesheet" href="/assets/pwa-themes.css">',build)
+        self.assertIn('<link rel="stylesheet" href="/assets/pwa-themes.css" data-lab-palette-style media="not all">',build)
+        self.assertIn('document.documentElement.dataset.pwaTheme===',build)
+        self.assertIn("link.media=next==='liberi'?'not all':'all'",(ROOT/'android-lab/web/theme.js').read_text())
 
     def test_native_manual_reuses_palettes_in_embedded_guide(self):
         manual=(ROOT/'android-lab/web/manual-guide.html').read_text()
