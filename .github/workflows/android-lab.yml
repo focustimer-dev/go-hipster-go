@@ -84,10 +84,11 @@ jobs:
           path: android-lab/build/theme-review/*.png
           if-no-files-found: warn
       - run: node scripts/test_cahill_region_fit.cjs
-      # The full Cahill motion timing test is software-SwiftShader-specific,
-      # unreliable as a phone FPS release gate. Preserve the script for
-      # explicit hardware/performance investigation (issue #183).
-      # Keep geography/fit/touch/route and native browser checks required.
+      # Gate on functional projection state, geometry, touch and routes,
+      # not timing of SwiftShader's headless renderer callback.
+      # Detailed map-animation timing stays an optional diagnostic in
+      # test_cahill_motion.cjs (issue #183); Android Lab still fails when
+      # the actual selected projection or app behavior is wrong.
       - run: node scripts/test_android_lab.cjs
       - run: node scripts/test_lab_tutorial.cjs
       - run: node scripts/test_mood_ink.cjs
