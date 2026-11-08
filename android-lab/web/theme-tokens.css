@@ -29,7 +29,7 @@
    not an all-black frame. Text/action pairings meet 4.5:1. */
 :root[data-pwa-theme=kingston]{
  --lab-ui-surface:#e3d9c2;--lab-ui-ink:#263f3e;
- --lab-ui-panel:#e9dec9;--lab-ui-on-panel:#263f3e;
+ --lab-ui-panel:#e3d9c2;--lab-ui-on-panel:#263f3e;
  --lab-ui-rail:#304743;--lab-ui-on-rail:#efe4cb;
  --lab-ui-action:#304743;--lab-ui-on-action:#efe4cb;
  --lab-ui-rule:#7b8a7c;--lab-ui-field:#eee3ca;--lab-ui-on-field:#263f3e;
