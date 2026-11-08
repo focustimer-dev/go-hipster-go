@@ -25,8 +25,9 @@ class LabSnapshotTests(unittest.TestCase):
             stripped=page.replace('<link rel="stylesheet" href="/assets/lab-workspace.css">','')
             for theme_asset in (
                 '<script src="/assets/lab-themes.js"></script>',
-                '<link rel="stylesheet" href="/assets/pwa-themes.css">',
-                '<link rel="stylesheet" href="/assets/pwa-atlas-themes.css">'
+                '<link rel="stylesheet" href="/assets/pwa-themes.css" data-lab-palette-style media="not all">',
+                '<link rel="stylesheet" href="/assets/pwa-atlas-themes.css" data-lab-palette-style media="not all">',
+                '<script>for(const link of document.querySelectorAll("link[data-lab-palette-style]"))link.media=document.documentElement.dataset.pwaTheme==="liberi"?"not all":"all";</script>'
             ):
                 self.assertIn(theme_asset,stripped)
                 stripped=stripped.replace(theme_asset,'')
