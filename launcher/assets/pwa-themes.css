@@ -102,6 +102,24 @@ html[data-pwa-theme=usiku] body.gig-poster .receipt,
 html[data-pwa-theme=usiku] body.gig-poster .receipt-fold,
 html[data-pwa-theme=usiku] body.gig-poster .receipt pre{color:#f5f0e6}
 html[data-pwa-theme=usiku] body.gig-poster .receipt-copy{border-color:#f5f0e6;color:#f5f0e6}
+/* Usiku: de-cheese is a useful instruction, not dark red-on-green noise.
+   A warm heading and clear bone body copy retain the skeptical voice without
+   adding a new card, box, or unrelated brand color. */
+html[data-pwa-theme=usiku] body.gig-poster .decheese-note{
+ color:#f5f0e6;
+ border-inline-start:2px solid #b77b4d;
+ padding-inline-start:12px;
+}
+html[data-pwa-theme=usiku] body.gig-poster .decheese-note strong{
+ color:#e5cf42;
+}
+html[data-pwa-theme=usiku] body.gig-poster .decheese-note b{
+ color:#f5f0e6;
+ text-decoration:underline;
+ text-decoration-color:#b77b4d;
+ text-underline-offset:3px;
+}
+
 /* Browser-only rail, Crate, Manual, dialogs and guide picker. */
 html[data-pwa-theme=bosque] body.pwa-workspace .pwa-rail{background:#003018;color:#f5f0e6}
 html[data-pwa-theme=usiku] body.pwa-workspace .pwa-rail{background:#111111;color:#f5f0e6;border-bottom:1px solid #8c6239}
