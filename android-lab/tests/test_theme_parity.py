@@ -57,6 +57,18 @@ class AndroidThemeParity(unittest.TestCase):
         self.assertIn('stroke-width:1.8;stroke-opacity:.9;',css)
         self.assertIn('stroke-dasharray:4 4;',css)
 
+    def test_keyes_underlay_and_robinson_perimeter(self):
+        css=(ROOT/'android-lab/web/workspace.css').read_text()
+        globe=(ROOT/'android-lab/web/globe.js').read_text()
+        native=(ROOT/'android-lab/web/theme.js').read_text()
+        browser=(ROOT/'launcher/assets/pwa-atlas-bridge.js').read_text()
+        self.assertIn('#labAtlasGlobe.lab-cahill-active > .maplibregl-canvas-container',css)
+        self.assertIn('visibility:hidden!important',css)
+        self.assertIn("id:'robinson-outline'",globe)
+        self.assertIn("setLayoutProperty('robinson-outline'",globe)
+        self.assertIn("'robinson-outline':{'line-color':",native)
+        self.assertIn("'robinson-outline':{'line-color':",browser)
+
     def test_three_projections_tween_without_liberi_color_flash(self):
         globe=(ROOT/'android-lab/web/atlas-morph-vectors.js').read_text()
         keyes=(ROOT/'android-lab/web/cahill-keyes-motion.js').read_text()
