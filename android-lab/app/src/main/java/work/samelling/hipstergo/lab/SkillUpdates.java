@@ -86,7 +86,7 @@ final class SkillUpdates {
             return new Palette("#111111","#f5f0e6","#004225","#e5cf42","#e5cf42","#b77b4d");
         if("bosque".equals(theme))
             return new Palette("#f5f0e6","#003018","#004225","#f5f0e6","#8c6239","#8c6239");
-        return new Palette("#dfb045","#103135","#103135","#dfb045","#a83223","#103135");
+        return new Palette("#dfb045","#103135","#103135","#dfb045","#742019","#103135");
     }
     private int dp(int pixels) {
         return (int)(pixels*activity.getResources().getDisplayMetrics().density+0.5f);
