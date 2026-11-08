@@ -92,6 +92,10 @@ function syncManualTheme(){
 }
 function setTheme(next,persist){
  if(!THEMES.includes(next))return false;
+ // The base Liberi palette is already in the canonical stylesheet.
+ // Load the shared additional rules only for the two alternate themes.
+ for(const link of document.querySelectorAll('link[data-lab-palette-style]'))
+  link.media=next==='liberi'?'not all':'all';
  if(persist){
   try{localStorage.setItem(KEY,next)}catch(e){
    const status=document.getElementById('labThemeStatus');
