@@ -75,6 +75,8 @@ class AndroidThemeParity(unittest.TestCase):
         # A visible, direct action exists in the setup walkthrough, not just
         # a generic dialog reachable from the last item in More Resources.
         self.assertIn('FINISH SETUP · RECORD INSTALLATION',guide)
+        self.assertIn('id="labSkillNotice"', (ROOT/'android-lab/web/workspace.html').read_text())
+        self.assertIn('body.lab-workspace .lab-update-notice[hidden]{display:none}', (ROOT/'android-lab/web/workspace.css').read_text())
         self.assertIn('data-review-skill-updates',guide)
         self.assertIn('Both confirmed? One final check-in.',guide)
         self.assertIn("type:'lab-gemini-updates'",guide)
