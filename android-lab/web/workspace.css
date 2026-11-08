@@ -828,16 +828,15 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
  grid-template-rows:auto auto;gap:3px;
  align-self:center;
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
- body.gig-poster.lab-workspace[data-page=launch] .go-options .go-extras .option-label{
- font:700 .9375rem/1.15 Arial,Helvetica,sans-serif;
- letter-spacing:.01em;
-}
-/* Earlier multi-theme rules hard-coded cream ink on these two title glyphs.
-   An actual cream Bosque paper strip needs dark ink, including SVG strokes. */
+/* Explicitly target both options by ID: the older poster-era #goHard
+   selector otherwise outranks the generic Jukebox label rule and leaves
+   TRY HARD in the display font. The two keys are one operational type role. */
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
  body.gig-poster.lab-workspace[data-page=launch]
  .go-options .go-extras :is(#includeCover,#goHard) .option-label{
+ font:700 .9375rem/1.15 Arial,Helvetica,sans-serif;
+ letter-spacing:.01em;
+ white-space:normal;
  color:var(--jukebox-ink);
 }
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
