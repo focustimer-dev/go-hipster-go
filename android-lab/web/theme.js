@@ -54,10 +54,10 @@ function paint(){
    borders:{'line-color':palette.ink},
    ocean:{'background-color':map.getProjection()?.type==='mercator'?'rgba(0,0,0,0)':palette.ocean},
    'robinson-ocean':{'fill-color':palette.ocean},
-   // At 390px the original 1px/.65-alpha dashes nearly vanish against
-   // Bosque's pale ocean and Usiku's night sea; keep routes discoverable.
+   // Keep nautical routes discoverable without heavy strokes against
+   // Bosque's pale ocean and Usiku's night sea.
    routes:{'line-color':palette.route,'line-opacity':.88,
-    'line-width':1.7,'line-dasharray':[3,2.6]}
+    'line-width':1.2,'line-dasharray':[3,2.6]}
   };
   for(const [layer,paints] of Object.entries(desired)){
    if(!map.getLayer(layer))continue;

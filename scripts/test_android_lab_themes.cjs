@@ -53,6 +53,46 @@ const palettes={
     }));
     assert(paint.land.includes(palettes[name].land),'Missing '+name+' MapLibre land fill: '+paint.land);
     assert(!paint.isWide,'Horizontal scroll/zoom introduced for '+name+' on '+width+'px');
+    if(name!=='liberi'){
+     const go=await page.locator('#goButton').evaluate(el=>{
+      const style=getComputedStyle(el);
+      const stamp=getComputedStyle(el.querySelector('.go-stamp'));
+      const headline=getComputedStyle(el.querySelector('.go-copy b'));
+      const caption=getComputedStyle(el.querySelector('.go-copy>span:not(.go-stamp)'));
+      return {background:style.backgroundColor,topBorder:style.borderTopColor,
+       headline:headline.color,caption:caption.color,
+       height:parseFloat(style.minHeight),stampBackground:stamp.backgroundColor,
+       stampInk:stamp.color,stampSize:parseFloat(stamp.fontSize)};
+     });
+     assert.equal(go.background,'rgb(0, 97, 59)',name+' GO needs its own green key');
+     assert.equal(go.headline,'rgb(229, 207, 66)',name+' GO label uses selected yellow');
+     assert.equal(go.topBorder,'rgb(229, 207, 66)',name+' GO has a slim selected-yellow crown');
+     assert.equal(go.caption,'rgb(245, 240, 230)',name+' secondary action label stays readable');
+     assert(go.height>=110,name+' GO remains visually prominent');
+     assert.equal(go.stampBackground,'rgb(229, 207, 66)',name+' COPIED stamp is selected yellow');
+     assert.equal(go.stampInk,'rgb(0, 48, 24)',name+' COPIED stamp uses dark contrast');
+     assert(go.stampSize>=24,name+' COPIED stamp keeps Libéri scale at phone width');
+     if(name==='usiku'){
+      const receipt=await page.locator('.receipt-heading').evaluate(el=>({
+       gradient:getComputedStyle(el).backgroundImage,
+       saveBackground:getComputedStyle(el.querySelector('.lab-save-button')).backgroundColor,
+       saveInk:getComputedStyle(el.querySelector('.lab-save-button')).color
+      }));
+      assert.match(receipt.gradient,/radial-gradient/,'Usiku receipt repeats the portrait vignette');
+      for(const shade of ['rgb(183, 123, 77)','rgb(168, 108, 67)','rgb(146, 91, 57)','rgb(126, 76, 48)'])
+       assert(receipt.gradient.includes(shade),'Missing Usiku vignette step '+shade);
+      assert.equal(receipt.saveBackground,'rgb(0, 48, 24)','Save Request stays readable on saddle');
+      assert.equal(receipt.saveInk,'rgb(245, 240, 230)','Save Request has cream lettering');
+     }
+     if(width===390){
+      await page.locator('.go-options').screenshot({path:path.join(output,`${name}-go-action.png`)});
+      await page.locator('#goButton').evaluate(el=>el.dataset.copyState='copied');
+      await page.locator('#goButton').screenshot({path:path.join(output,`${name}-copied-stamp.png`)});
+      await page.locator('#goButton').evaluate(el=>el.dataset.copyState='idle');
+      if(name==='usiku')
+       await page.locator('.receipt-heading').screenshot({path:path.join(output,'usiku-receipt-vignette.png')});
+     }
+    }
     const routes=await page.evaluate(()=>{
      const m=window.labAtlasGlobe;
      const source=m.getSource('routes')?.serialize?.().data?.features||[];
@@ -68,7 +108,7 @@ const palettes={
     assert(routes.count>0&&routes.keyesCount>0,'Original shipping lanes must remain in both atlas engines');
     const expected=name==='liberi'?'#edc65d':name==='bosque'?'#8c6239':'#b77b4d';
     assert.equal(routes.color,expected,'Route ink '+name+' must match original/theme palette');
-    assert.equal(routes.width,name==='liberi'?1:1.7,'Routes must read at phone size for '+name);
+    assert.equal(routes.width,name==='liberi'?1:1.2,'Routes must read at phone size for '+name);
     assert.equal(routes.opacity,name==='liberi'?.65:.88,'Routes must not fade away in '+name);
     const water=await page.evaluate(()=>window.labAtlasGlobe.getPaintProperty('ocean','background-color'));
     assert.equal(water,'rgba(0,0,0,0)',
@@ -76,7 +116,7 @@ const palettes={
     const plate=await page.evaluate(()=>window.labAtlasGlobe.getPaintProperty('robinson-ocean','fill-color'));
     assert.equal(plate,({liberi:'#103135',bosque:'#e8e9df',usiku:'#111111'})[name],
      'Robinson ocean polygon must preserve '+name+' actual sea ink');
-    if(name!=='liberi')assert(routes.keyesWidth>=1.8,'Keyes dashed route ink must be visible on '+width+'px');
+    if(name!=='liberi')assert.equal(routes.keyesWidth,1.2,'Keyes routes must be slim and readable at '+width+'px');
     assert.equal(await page.evaluate(()=>!!window.labAtlasGlobe.getLayer('robinson-outline')),false,
      'No orphaned Robinson stroke; ocean ink separates map from its paper');
     if(width===390){
@@ -120,6 +160,18 @@ const palettes={
       const doc=document.getElementById('labManualFrame')?.contentDocument;
       return doc?.documentElement.dataset.pwaTheme===name;
      },name,{timeout:8000});
+     if(name==='usiku'){
+      const eject=await page.frameLocator('#labManualFrame').locator('.crate-action .deck-key svg')
+       .evaluate(el=>({
+        ink:getComputedStyle(el).color,
+        keycap:getComputedStyle(el.closest('.deck-key')).backgroundImage,
+        housing:getComputedStyle(el.closest('.crate-action')).backgroundColor
+       }));
+      assert.equal(eject.ink,'rgb(245, 240, 230)','Usiku eject icon keeps cream contrast');
+      assert(eject.keycap.includes('rgb(126, 76, 48)'),
+       'Usiku eject keycap is deep saddle, not cream');
+      assert.equal(eject.housing,'rgb(56, 38, 28)','Usiku transport housing is visibly recessed');
+     }
      await page.screenshot({path:path.join(output,`${name}-manual.png`)});
      await page.locator('[data-lab-tab=jukebox]').click();
     }
