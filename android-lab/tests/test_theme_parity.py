@@ -47,6 +47,24 @@ class AndroidThemeParity(unittest.TestCase):
         self.assertIn('color:#f5f0e6;',css)
         self.assertIn('background:linear-gradient(180deg,#925b39 0%,#7e4c30',css)
 
+    def test_android_primary_action_and_usiku_vignette_material(self):
+        css=(ROOT/'android-lab/web/workspace.css').read_text()
+        palette=(ROOT/'launcher/assets/pwa-themes.css').read_text()
+        self.assertIn("--racing-yellow:#e5cf42",palette)
+        self.assertIn('--lab-action-yellow:#e5cf42',css)
+        self.assertIn('background:#00613b;',css)
+        self.assertIn('border-top:2px solid var(--lab-action-yellow);',css)
+        self.assertIn('font-size:clamp(1.5rem,6cqw,2.65rem);',css)
+        self.assertIn('background:var(--lab-action-yellow);',css)
+        self.assertIn('color:var(--lab-action-ink);',css)
+        for shade in ('--usiku-neutral-center','--usiku-neutral-stock',
+                      '--usiku-neutral-mid','--usiku-neutral-edge'):
+            self.assertIn('var('+shade+',',css)
+        self.assertIn('body.gig-poster.lab-workspace[data-page=launch] .receipt-heading',css)
+        self.assertIn('.receipt-heading .lab-save-button',css)
+        # PWA remains on its twice-weekly cycle, not an accidental CSS edit.
+        self.assertIn('body.gig-poster.lab-workspace[data-page=launch]',css)
+
     def test_navigable_routes_and_stable_animated_border_ink(self):
         tween=(ROOT/'android-lab/web/atlas-morph-vectors.js').read_text()
         fold=(ROOT/'android-lab/web/cahill-keyes-motion.js').read_text()
