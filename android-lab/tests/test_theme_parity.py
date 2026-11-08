@@ -70,7 +70,7 @@ class AndroidThemeParity(unittest.TestCase):
         for shade in ('--usiku-neutral-mid','--usiku-neutral-edge'):
             self.assertIn('var('+shade+',',css)
         self.assertIn('background-image:radial-gradient(ellipse farthest-corner',css)
-        self.assertIn('Receipt returns to the quiet',css)
+        self.assertIn('background:transparent;',css)
         self.assertIn('body.gig-poster.lab-workspace[data-page=launch] .receipt-heading',css)
         self.assertIn('.receipt-heading .lab-save-button',css)
         # PWA remains on its twice-weekly cycle, not an accidental CSS edit.
