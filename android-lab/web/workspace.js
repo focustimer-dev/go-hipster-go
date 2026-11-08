@@ -54,6 +54,10 @@ function renderLabHandoff(){
  if(receiptMark){receiptMark.hidden=true;receiptMark.textContent='';}
  const state=labState(),mode=state.mode||'open',oneTap=state.oneTap!==false;
  if(ai==='other'){
+  // Other AI never has a native handoff: restore the manual recovery link
+  // when switching away from an already-copied Gemini request.
+  const manual=doc.getElementById('manualOpenAi');if(manual)manual.hidden=false;
+  const share=doc.getElementById('shareButton');if(share)share.textContent='↗ Share current prompt';
   const guide=doc.getElementById('labGeminiGuide');if(guide)guide.hidden=true;
   const hint=doc.getElementById('goHint');if(hint)hint.textContent='COPY YOUR REQUEST';
   const heading=doc.getElementById('handoffTitle');if(heading)heading.textContent='OPEN YOUR AI MANUALLY';
