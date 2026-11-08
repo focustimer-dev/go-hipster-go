@@ -666,7 +666,7 @@ async function verifyManualHierarchy(page,name,width){
    });
    assert.equal(selectorPaint.background,'rgba(0, 0, 0, 0)','Atlas selector remains unboxed');
    assert.equal(selectorPaint.ink,'rgb(38, 63, 62)','Atlas selector uses dark stamp ink');
-   assert.equal(selectorPaint.accent,'rgb(123, 176, 170)','Selected tab uses muted teal');
+   assert.equal(selectorPaint.accent,'rgb(155, 58, 43)','Selected tab uses active red ink, not registration teal');
    assert(!selectorPaint.style.includes('#103135')&&!selectorPaint.style.includes('#dfb045'),
     'Atlas buttons never inject Libéri inline paint');
    assert.equal(pilotInk.page,'rgb(227, 217, 194)','Jukebox uses aged record-label paper');
@@ -737,6 +737,51 @@ async function verifyManualHierarchy(page,name,width){
     assert.equal(portrait.selectedPlateOpacity,portrait.mood==='desire'?'0':'1',
      portrait.mood+' approved expression visibility');
    }
+   // New print themes choose two ink roles once. Prove every consumer
+   // changes automatically when these values change: no theme-name patches.
+   const inkPlacements=await pilot.evaluate(()=>{
+    const root=document.documentElement;
+    const mood=document.querySelector('.mood[data-mood=happy]');
+    const hard=document.getElementById('goHard');
+    const atlas=document.querySelector('.lab-atlas-modes button[aria-pressed=true]');
+    const go=document.getElementById('goButton');
+    const priorMood=mood.getAttribute('aria-pressed');
+    const priorHard=hard.getAttribute('aria-pressed');
+    const styles=()=>({
+      atlas:getComputedStyle(atlas).borderBottomColor,
+      mood:getComputedStyle(mood).boxShadow,
+      hard:getComputedStyle(hard).borderBottomColor,
+      goInk:getComputedStyle(go).borderTopColor,
+      goFill:getComputedStyle(go).backgroundColor,
+      ocean:window.GHGAtlasPaintColors().ocean
+    });
+    mood.setAttribute('aria-pressed','true');
+    hard.setAttribute('aria-pressed','true');
+    try{
+      const defaultInk=styles();
+      root.style.setProperty('--lab-print-active-ink','#7157a4');
+      const activeOverride=styles();
+      root.style.setProperty('--lab-print-stamp','#40806a');
+      const bothOverrides=styles();
+      return {defaultInk,activeOverride,bothOverrides};
+    }finally{
+      root.style.removeProperty('--lab-print-active-ink');
+      root.style.removeProperty('--lab-print-stamp');
+      mood.setAttribute('aria-pressed',priorMood);
+      hard.setAttribute('aria-pressed',priorHard);
+    }
+   });
+   assert.equal(inkPlacements.defaultInk.atlas,'rgb(155, 58, 43)','Default active ink on Atlas tab');
+   assert.match(inkPlacements.defaultInk.mood,/rgb\\(155, 58, 43\\)/,'Default active ink on selected mood rim');
+   assert.equal(inkPlacements.defaultInk.hard,'rgb(155, 58, 43)','Default active ink on TRY HARD');
+   assert.equal(inkPlacements.activeOverride.atlas,'rgb(113, 87, 164)','New theme ink automatically reaches Atlas');
+   assert.match(inkPlacements.activeOverride.mood,/rgb\\(113, 87, 164\\)/,'New theme ink automatically reaches portraits');
+   assert.equal(inkPlacements.activeOverride.hard,'rgb(113, 87, 164)','New theme ink automatically reaches toggles');
+   assert.equal(inkPlacements.bothOverrides.goInk,'rgb(64, 128, 106)','Registration ink travels separately to GO');
+   assert.equal(inkPlacements.bothOverrides.atlas,'rgb(113, 87, 164)','Registration never overrides activation');
+   assert.equal(inkPlacements.bothOverrides.ocean,'#273d3b','Accents never recolor map water');
+   assert.equal(inkPlacements.bothOverrides.goFill,inkPlacements.defaultInk.goFill,
+    'Accents never recolor GO hero surface');
    if(width===390){
     await pilot.locator('.mood-grid .mood[data-mood]').evaluateAll(tiles=>
      tiles.forEach(tile=>tile.setAttribute('aria-pressed','true')));
