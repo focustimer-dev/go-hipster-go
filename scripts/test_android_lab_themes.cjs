@@ -45,6 +45,37 @@ const palettes={
     assert.deepEqual(await page.locator('link[data-lab-palette-style]').evaluateAll(els=>els.map(e=>e.media)),
      [name==='liberi'?'not all':'all',name==='liberi'?'not all':'all',name==='liberi'?'not all':'all'],
      'Inactive Libéri palette styles must not slow down the base map');
+    if(name!=='liberi'){
+     const ui=await page.evaluate(()=>{
+      const root=getComputedStyle(document.documentElement);
+      const val=name=>root.getPropertyValue('--lab-ui-'+name).trim();
+      const color=selector=>getComputedStyle(document.querySelector(selector)).color;
+      const background=selector=>getComputedStyle(document.querySelector(selector)).backgroundColor;
+      return {
+       surface:val('surface'),ink:val('ink'),panel:val('panel'),
+       action:val('action'),onAction:val('on-action'),ticket:val('ticket-stock'),
+       firstCrateInk:color('#firstCrateSetup .ticket'),firstCratePaper:background('#firstCrateSetup .ticket'),
+       rail:background('.lab-rail'),railInk:color('.lab-rail'),
+       jukebox:background('#labJukebox'),jukeboxInk:color('#labJukebox'),
+       crate:background('#labCrate'),crateInk:color('#labCrate'),
+       manual:background('#labManual'),manualInk:color('#labManual')
+      };
+     });
+     const hexColor=hex=>[
+      parseInt(hex.slice(1,3),16),parseInt(hex.slice(3,5),16),parseInt(hex.slice(5,7),16)
+     ];
+     const CSS=hex=>'rgb('+hexColor(hex).join(', ')+')';
+     assert.equal(ui.firstCrateInk,'rgb(0, 48, 24)',name+' setup keeps dark ink');
+     assert.equal(ui.firstCratePaper,CSS(ui.ticket),name+' setup uses shared paper token');
+     assert.equal(ui.railInk,CSS(ui.onAction),name+' rail label contrast');
+     assert.equal(ui.jukeboxInk,CSS(ui.ink),name+' Jukebox uses current ink');
+     assert.equal(ui.jukebox,CSS(ui.surface),name+' Jukebox uses current surface');
+     assert.equal(ui.crateInk,CSS(ui.ink),name+' Crate uses current ink');
+     assert.equal(ui.crate,CSS(ui.surface),name+' Crate uses current surface');
+     assert.equal(ui.manualInk,CSS(ui.ink),name+' Manual uses current ink');
+     assert.equal(ui.manual,CSS(ui.panel),name+' Manual uses panel surface');
+     assert.equal(ui.action,'#004225',name+' action palette is forest, not Libéri red');
+    }
     if(width===390)await page.screenshot({path:path.join(output,`${name}-preferences.png`)});
     await page.locator('[data-lab-action=close-preferences]').click();
     await page.waitForTimeout(150);
@@ -208,6 +239,26 @@ const palettes={
       const doc=document.getElementById('labManualFrame')?.contentDocument;
       return doc?.documentElement.dataset.pwaTheme===name;
      },name,{timeout:8000});
+     if(name!=='liberi'){
+      const manualRoles=await page.frameLocator('#labManualFrame').locator('body.embedded-guide')
+       .evaluate(el=>{
+        const root=getComputedStyle(el.ownerDocument.documentElement);
+        return {
+         sheet:root.getPropertyValue('--lab-ui-panel').trim(),
+         ink:root.getPropertyValue('--lab-ui-on-panel').trim(),
+         color:getComputedStyle(el).color,
+         background:getComputedStyle(el).backgroundColor
+        };
+       });
+      assert.equal(manualRoles.sheet, name==='bosque'?'#f5f0e6':'#111111',
+       name+' iframe imports the exact shared panel token');
+      assert.equal(manualRoles.ink,name==='bosque'?'#003018':'#f5f0e6',
+       name+' iframe imports the exact shared ink token');
+      assert.equal(manualRoles.color,name==='bosque'?'rgb(0, 48, 24)':'rgb(245, 240, 230)',
+       name+' Manual body respects shared ink');
+      assert.equal(manualRoles.background,name==='bosque'?'rgb(245, 240, 230)':'rgb(17, 17, 17)',
+       name+' Manual body respects shared surface');
+     }
      if(name==='usiku'){
       const eject=await page.frameLocator('#labManualFrame').locator('.crate-action .deck-key svg')
        .evaluate(el=>({
