@@ -2,8 +2,8 @@
    This early document script leaves native app state and map geometry alone. */
 (function(){
 'use strict';
-const KEY='ghg-lab-theme-v1',THEMES=['liberi','bosque','usiku'];
-// Pilot themes are URL/QA-only, never persisted or exposed in Preferences.
+const KEY='ghg-lab-theme-v1',THEMES=['liberi','bosque','usiku','kingston','detroit'];
+// Dedicated review package only: both pilots are selectable in Preferences.
 const PILOTS=['kingston','detroit'];
 const preview=new URLSearchParams(location.search).get('theme');
 /* Single paint contract for the three REAL projections and their cached
@@ -176,7 +176,6 @@ function syncManualTheme(){
 }
 function setTheme(next,persist){
  if(!THEMES.includes(next)&&!PILOTS.includes(next))return false;
- if(PILOTS.includes(next)&&persist)return false;
  // The base Liberi palette is already in the canonical stylesheet.
  // Load the shared additional rules only for the two alternate themes.
  for(const link of document.querySelectorAll('link[data-lab-palette-style]'))
@@ -204,6 +203,7 @@ document.addEventListener('click',event=>{
  if(choice)setTheme(choice.dataset.labTheme,true);
 });
 document.addEventListener('DOMContentLoaded',()=>{
+ setTheme(theme,false); // Restore review-theme CSS media links on app launch.
  refreshButtons();
  const guide=document.getElementById('labManualFrame');
  guide?.addEventListener('load',syncManualTheme);
