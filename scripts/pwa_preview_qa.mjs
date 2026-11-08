@@ -370,7 +370,7 @@ for (const width of [390,320]) {
  const theme=width===390?'usiku':'bosque';
  const colors=theme==='usiku'?
   {ocean:'#111111',land:'#f5f0e6',selected:'#e5cf42'}:
-  {ocean:'#f5f0e6',land:'#004225',selected:'#e5cf42'};
+  {ocean:'#e8e9df',land:'#004225',selected:'#e5cf42'};
  const atlasContext=await browser.newContext({viewport:{width,height:844},isMobile:true,hasTouch:true,serviceWorkers:'block'});
  const atlas=await atlasContext.newPage();
  await atlas.addInitScript(theme=>{
