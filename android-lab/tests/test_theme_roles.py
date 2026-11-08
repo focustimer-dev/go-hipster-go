@@ -106,8 +106,19 @@ class AndroidThemeRoles(unittest.TestCase):
         pattern=r"\b([a-z]+):Object\.freeze\(\{(.*?)\n \}\)"
         atlas_def=dict(re.findall(pattern,atlas,re.S))
         mood_def=dict(re.findall(pattern,moods,re.S))
-        self.assertEqual(set(atlas_def),{"liberi","bosque","usiku"})
+        self.assertEqual(set(atlas_def),{"liberi","bosque","usiku","kingston"})
         self.assertEqual(set(mood_def),set(atlas_def))
+        # The pilot is intentionally not in Preferences or persisted selections.
+        self.assertIn("THEMES=['liberi','bosque','usiku']",js)
+        self.assertNotIn("'kingston']",js.split("const KEY=",1)[1].split(";",1)[0])
+        ui=source("android-lab/web/theme-tokens.css")
+        self.assertIn(":root[data-pwa-theme=kingston]",ui)
+        for role in ("surface","ink","panel","rail","on-panel","on-rail",
+                     "action","on-action","rule","field","on-field","focus",
+                     "control-outline","ticket-stock","ticket-ink","go",
+                     "highlight","on-highlight"):
+            self.assertIn("--lab-ui-"+role+":",ui.split(":root[data-pwa-theme=kingston]",1)[1])
+
         atlas_required={
             "paper","land","ocean","ink","selected","route",
             "routeOpacity","routeWidth","routeDash","backdrop","field",
