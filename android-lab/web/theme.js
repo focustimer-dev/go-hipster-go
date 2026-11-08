@@ -30,6 +30,31 @@ const ATLAS=Object.freeze({
   oceanStroke:'#b77b4d',oceanStrokeOpacity:.72
  })
 });
+/* These color roles control PRINTED mood tiles and labels. The artwork
+   itself remains the approved transparent plate; special Funk, Desire and
+   Triumph alpha masks are not recolored or regenerated here. */
+const MOODS=Object.freeze({
+ liberi:Object.freeze({
+  neutralPaper:'#dfb045',neutralInk:'#103135',
+  selectedPaper:'#d64b30',selectedInk:'#103135',
+  desireHeart:'#e03fd8',funkPaper:'#e03fd8',funkInk:'#103135'
+ }),
+ bosque:Object.freeze({
+  neutralPaper:'#f5f0e6',neutralInk:'#003018',
+  selectedPaper:'#e5cf42',selectedInk:'#003018',
+  desireHeart:'#8e3069',funkPaper:'#6e225c',funkInk:'#f2c84e'
+ }),
+ usiku:Object.freeze({
+  neutralPaper:'radial-gradient(ellipse farthest-corner at 50% 36%,#b77b4d 0%,#a86c43 34%,#925b39 68%,#7e4c30 100%)',
+  neutralInk:'#063821',selectedPaper:'#e5cf42',selectedInk:'#003018',
+  desireHeart:'#8e3069',funkPaper:'#6e225c',funkInk:'#f2c84e'
+ })
+});
+const CSS_MOOD_ROLES={
+ 'neutral-paper':'neutralPaper','neutral-ink':'neutralInk',
+ 'selected-paper':'selectedPaper','selected-ink':'selectedInk',
+ 'desire-hearts':'desireHeart','funk-paper':'funkPaper','funk-ink':'funkInk'
+};
 const CSS_ATLAS_ROLES={
  paper:'paper',land:'land',ocean:'ocean',ink:'ink',
  selected:'selected',route:'route',backdrop:'backdrop',
@@ -39,10 +64,12 @@ const CSS_ATLAS_ROLES={
  'ocean-stroke-opacity':'oceanStrokeOpacity',
  'route-width':'routeWidth','route-opacity':'routeOpacity'
 };
-function applyAtlasTokens(){
- const style=document.documentElement.style,palette=ATLAS[theme];
+function applyThemeTokens(){
+ const style=document.documentElement.style,palette=ATLAS[theme],mood=MOODS[theme];
  for(const [role,property] of Object.entries(CSS_ATLAS_ROLES))
   style.setProperty('--lab-atlas-'+role,String(palette[property]));
+ for(const [role,property] of Object.entries(CSS_MOOD_ROLES))
+  style.setProperty('--lab-mood-'+role,String(mood[property]));
 }
 function saved(){
  try{const value=localStorage.getItem(KEY);return THEMES.includes(value)?value:'liberi'}
@@ -50,7 +77,7 @@ function saved(){
 }
 let theme=saved(),atlas=null,defaults=null,frame=0;
 document.documentElement.dataset.pwaTheme=theme;
-applyAtlasTokens();
+applyThemeTokens();
 window.GHGAtlasPaintColors=()=>({theme,...ATLAS[theme]});
 function refreshButtons(){
  document.querySelectorAll('[data-lab-theme]').forEach(button=>
@@ -126,7 +153,7 @@ function setTheme(next,persist){
   }
  }
  if(theme!==next){theme=next;document.documentElement.dataset.pwaTheme=theme;
-  applyAtlasTokens();requestPaint();syncManualTheme();window.dispatchEvent(new Event('ghg-lab-theme-change'))}
+  applyThemeTokens();requestPaint();syncManualTheme();window.dispatchEvent(new Event('ghg-lab-theme-change'))}
  refreshButtons();
  if(persist){
   const status=document.getElementById('labThemeStatus');
@@ -151,5 +178,5 @@ document.addEventListener('DOMContentLoaded',()=>{
  observer.observe(document.body,{childList:true,subtree:true});
  if(attach())observer.disconnect();
 });
-window.HipsterLabTheme=Object.freeze({current:()=>theme,set:setTheme,colors:()=>ATLAS[theme],refresh:requestPaint});
+window.HipsterLabTheme=Object.freeze({current:()=>theme,set:setTheme,colors:()=>ATLAS[theme],moods:()=>MOODS[theme],refresh:requestPaint});
 })();
