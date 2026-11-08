@@ -267,6 +267,21 @@ class AndroidThemeRoles(unittest.TestCase):
         self.assertIn(":not([data-mood=funky])",css)
         self.assertGreaterEqual(contrast("#f50093","#171717"),4.5)
 
+    def test_print_profile_reuses_canonical_jukebox_and_funk(self):
+        css=source("android-lab/web/theme-print.css")
+        workspace=source("android-lab/web/workspace.css")
+        selector=":root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])"
+        self.assertGreaterEqual(workspace.count(selector),35)
+        self.assertIn("font:400 1.3rem/1.15 Poster,sans-serif",workspace)
+        self.assertIn("font:400 1rem/1.45 Arial,Helvetica,sans-serif",workspace)
+        self.assertIn("background-color:#6e225c",css)
+        self.assertIn("linear-gradient(145deg,#311333,#722269 66%,#a52d78)",css)
+        self.assertIn("box-shadow:inset 0 0 0 2px #f2c84e",css)
+        self.assertIn("hue-rotate(324deg)",css)
+        self.assertIn("hue-rotate(23deg) saturate(1.24)",css)
+        self.assertIn("opacity:.82",css)
+        self.assertNotIn("--funk-selected-paper:color-mix(in srgb,#e03fd8 22%,#f4efdf)",css)
+
     def test_app_and_iframe_load_the_same_source(self):
         bundle = source("scripts/bundle_android_lab.py")
         manual = source("android-lab/web/manual-guide.html")

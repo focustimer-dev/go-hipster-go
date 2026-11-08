@@ -208,3 +208,24 @@ The generic print consumer owns state placement. The optional
 `--lab-print-control-ink` role defaults to the original neutral checkbox
 ink for Kingston and is fluorescent pink in Detroit. Never put neon
 foreground text directly on pale paper without independent contrast tests.
+
+## Canonical Android fidelity in print profiles
+
+The `workspace.css` “quiet Jukebox” selector applies to Bosque, Usiku,
+**and any `data-ghg-theme-profile=print` theme**. This is shared structural
+typography, not palette: Poster headings, tempo labels, action labels, compact
+control geometry and Arial supporting copy should remain the same across
+every theme. Courier is reserved for archival/meta details.
+
+Funk's selected visual is **invariant** and matches the approved Bosque/Usiku
+pressing, regardless of print palette: violet/magenta gradient over #6e225c,
+#f2c84e star-gold letter and border, orange-gold ORIGINAL selected figure,
+and the original masked laser geometry with the canonical .82 intensity and
+23-degree color treatment. Print themes cannot substitute a pale generic
+pink card. The user-facing “The pocket has diplomatic immunity.” is shown
+only when Funk is actually selected; no copy changes are needed.
+
+Do not change the original neutral/selected sprite sheets or Jukebox
+interaction state to fix these style regressions. Android compilation and
+the 390px phone browser must validate computed font families and Funk
+selected state before future theme releases.

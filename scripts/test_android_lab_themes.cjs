@@ -692,6 +692,12 @@ async function verifyManualHierarchy(page,name,width){
    assert.equal(pilotInk.selected.word,'rgb(36, 70, 67)','Selected label ink is readable');
    assert.match(pilotInk.selected.image,/moods-selected-ink-v2.webp/,'Selected expression is original artwork');
    assert.equal(pilotInk.selected.mask,'none','Selected engraving keeps its full original shading');
+   const printHeading=await pilot.evaluate(()=>({
+    vibe:getComputedStyle(document.querySelector('.refinements>.counter-label')).fontFamily,
+    tempo:getComputedStyle(document.querySelector('.tempo-control'),'::before').fontFamily
+   }));
+   assert.match(printHeading.vibe,/Poster/,'Kingston inherits canonical Android Poster heading');
+   assert.match(printHeading.tempo,/Poster/,'Kingston inherits canonical tempo heading');
    const printedExtra=await pilot.evaluate(()=>{
     const tile=document.querySelector('#firstCrateSetup');
     const style=getComputedStyle(tile);
@@ -703,8 +709,10 @@ async function verifyManualHierarchy(page,name,width){
     const before=getComputedStyle(figure,'::before'),after=getComputedStyle(figure,'::after');
     const rays=getComputedStyle(funk.querySelector('.funk-rays'));
     const selectedFunk={beforeOpacity:before.opacity,afterOpacity:after.opacity,
-     image:after.backgroundImage,mask:after.maskImage,
-     raysFilter:rays.filter,raysOpacity:rays.opacity,stock:getComputedStyle(funk).backgroundColor};
+     image:after.backgroundImage,mask:after.maskImage,spriteFilter:after.filter,
+     raysFilter:rays.filter,raysOpacity:rays.opacity,stock:getComputedStyle(funk).backgroundColor,
+     label:getComputedStyle(funk.querySelector('.word')).color,
+     gradient:getComputedStyle(funk).backgroundImage};
     funk.setAttribute('aria-pressed',old);
     const flood=getComputedStyle(document.querySelector('#referenceInk feFlood'));
     return {ticketRule:style.getPropertyValue('--setup-rule').trim(),
@@ -721,8 +729,12 @@ async function verifyManualHierarchy(page,name,width){
    assert.equal(printedExtra.selectedFunk.afterOpacity,'1','Funk selected shows the approved star-glasses pose');
    assert.match(printedExtra.selectedFunk.image,/moods-selected-ink-v2.webp/,'Funk uses the original selected artwork');
    assert.equal(printedExtra.selectedFunk.mask,'none','Funk is never flattened into an ink mask');
-   assert.equal(printedExtra.selectedFunk.raysFilter,'none','Funk lasers are not hue-rotated');
-   assert.equal(printedExtra.selectedFunk.raysOpacity,'0.8','Funk retains original laser strength');
+   assert.match(printedExtra.selectedFunk.raysFilter,/hue-rotate\(23deg\)/,'Funk uses canonical laser colors');
+   assert.equal(printedExtra.selectedFunk.raysOpacity,'0.82','Funk retains canonical laser strength');
+   assert.match(printedExtra.selectedFunk.spriteFilter,/hue-rotate\(324deg\)/,'Funk selected engraving uses canonical orange-gold');
+   assert.match(printedExtra.selectedFunk.gradient,/linear-gradient/,'Funk canonical violet-magenta pressing');
+   assert.equal(printedExtra.selectedFunk.label,'rgb(242, 200, 78)','Funk canonical gold label');
+   assert.equal(printedExtra.selectedFunk.stock,'rgb(110, 34, 92)','Funk canonical violet base');
    assert.notEqual(printedExtra.selectedFunk.stock,'rgb(210, 195, 166)','Funk selected pink pressing stays distinct');
    assert.equal(printedExtra.desireInk,'rgb(38, 63, 62)','Desire and Triumph use shared engraving ink');
    // Exercise every approved character in its selected pose. Do not mutate
@@ -744,7 +756,7 @@ async function verifyManualHierarchy(page,name,width){
     if(!special)assert.equal(portrait.paper,'rgb(210, 195, 166)',
      portrait.mood+' selected paper');
     else assert.notEqual(portrait.paper,'rgb(210, 195, 166)','Funk retains its own pink paper');
-    assert.equal(portrait.label,special?'rgb(8, 37, 42)':'rgb(36, 70, 67)',
+    assert.equal(portrait.label,special?'rgb(242, 200, 78)':'rgb(36, 70, 67)',
      portrait.mood+' selected label');
     assert.equal(portrait.selectedPlateOpacity,portrait.mood==='desire'?'0':'1',
      portrait.mood+' approved expression visibility');
@@ -926,18 +938,44 @@ async function verifyManualHierarchy(page,name,width){
       return {size:tiles.length,
        funkImage:sprite.backgroundImage,mask:sprite.maskImage,
        raysFilter:rays.filter,raysOpacity:rays.opacity,
-       funkyStock:getComputedStyle(funk).backgroundColor};
+       spriteFilter:sprite.filter,
+       funkyWord:getComputedStyle(funk.querySelector('.word')).color,
+       funkyStock:getComputedStyle(funk).backgroundColor,
+       funkyGradient:getComputedStyle(funk).backgroundImage};
      });
      assert.equal(cast.size,8,'All original portraits selected');
      assert.match(cast.funkImage,/moods-selected-ink-v2.webp/,'Funk original selected sprite');
      assert.equal(cast.mask,'none','Funk engraving is not flattened');
-     assert.equal(cast.raysFilter,'none','Funk laser colors are unchanged');
-     assert.equal(cast.raysOpacity,'0.8','Funk original laser intensity');
+     assert.match(cast.raysFilter,/hue-rotate\(23deg\)/,'Funk canonical laser colors');
+     assert.equal(cast.raysOpacity,'0.82','Funk canonical laser intensity');
+     assert.match(cast.spriteFilter,/hue-rotate\(324deg\)/,'Funk canonical selected engraving');
+     assert.equal(cast.funkyWord,'rgb(242, 200, 78)','Funk canonical star-gold text');
+     assert.equal(cast.funkyStock,'rgb(110, 34, 92)','Funk canonical violet base');
+     assert.match(cast.funkyGradient,/linear-gradient/,'Funk magenta pressing preserved');
      assert.notEqual(cast.funkyStock,'rgb(245, 0, 147)','Funk retains its own pink pressing, not Detroit neon');
+     // Canonical Android typography MUST survive every print treatment.
+     const typography=await xerox.evaluate(()=>{
+      const style=sel=>getComputedStyle(document.querySelector(sel));
+      return {vibe:style('.refinements>.counter-label').fontFamily,
+       tempo:getComputedStyle(document.querySelector('.tempo-control'),'::before').fontFamily,
+       label:style('#labInspiration strong').fontFamily,
+       help:style('.mood-hint').fontFamily};
+     });
+     for(const family of [typography.vibe,typography.tempo,typography.label])
+      assert.match(family,/Poster/,'Detroit reuses canonical Android Poster headings');
+     assert.match(typography.help,/Arial/,'Supporting instructions retain readable sans');
      await diagnosticCapture(xerox.locator('.mood-grid'),'detroit-390-all-selected.png');
      await xerox.locator('.mood-grid .mood[data-mood]').evaluateAll(tiles=>{
       for(const tile of tiles)tile.setAttribute('aria-pressed','false');
      });
+     // UI copy is tied to REAL selection, not a permanent Funk tagline.
+     await xerox.locator('.mood[data-mood=funky]').click();
+     assert.match(await xerox.locator('#moodHelp').textContent(),/The pocket has diplomatic immunity\./,
+      'Funk immunity appears when selected');
+     assert.equal(await xerox.locator('.mood[data-mood=funky]').getAttribute('aria-pressed'),'true');
+     await xerox.locator('.mood[data-mood=funky]').click();
+     assert.doesNotMatch(await xerox.locator('#moodHelp').textContent(),/diplomatic immunity/,
+      'Funk immunity disappears when deselected');
      await xerox.locator('#labAtlasGlobe').scrollIntoViewIfNeeded();
      await diagnosticCapture(xerox,'detroit-390-robinson.png');
      await xerox.locator('[data-atlas-view=cahill-keyes]').click();
