@@ -151,7 +151,8 @@ class AndroidThemeParity(unittest.TestCase):
         self.assertIn("window.GHGAtlasPaintColors?.().theme||'liberi'",globe)
         self.assertIn('PAL=new Proxy',keyes)
         self.assertIn('PAL.backdrop',keyes)
-        self.assertIn('getComputedStyle(item).fill',keyes)
+        self.assertIn('polarInk.fill',keyes)
+        self.assertIn('getComputedStyle(item)',keyes)
         self.assertNotIn('theme_browser_tween_assets()',pwa)
         # Only recolor canonical paths, not geolocation, selections or map projection math.
         self.assertIn('bundle(DEST)',pwa)
