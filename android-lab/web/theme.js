@@ -42,7 +42,7 @@ function paint(){
    land:{'fill-color':['case',['boolean',['feature-state','selected'],false],
      '#a83223','#dfb045']},
    borders:{'line-color':'#103135'},
-   ocean:{'background-color':map.getProjection()?.type==='mercator'?'rgba(0,0,0,0)':'#103135'},
+   ocean:{'background-color':'#103135'},
    'robinson-ocean':{'fill-color':'#103135'},
    // Keep the original ink and dash rhythm in Liberi, even when the
    // map's routes layer was added after the first palette snapshot.
