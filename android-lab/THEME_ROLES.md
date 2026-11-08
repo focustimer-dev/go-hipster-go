@@ -145,6 +145,48 @@ teal ink and modest registration wear, not an all-black Xerox flyer.
   masks, hue rotations or hand-modified assets. Existing Libéri/Bosque/Usiku
   artwork is left unchanged in this branch.
 
+### Automatic accent placement — reusable print contract
+
+**Artwork supplies inks; the profile decides where they go.** A new print
+theme must provide these separate color roles in the Android UI palette:
+
+| Token | Stable job | Does not do |
+| --- | --- | --- |
+| `--lab-print-stamp` | Quiet registration ink for GO trim and printed flourishes | Fill entire controls or selected mood tiles |
+| `--lab-print-active-ink` | More energetic pressed/selected underline, mood rim, checkbox tick, active rail and Atlas keys | Repaint Atlas geography, water, GO hero fill or Manual paper |
+| `--lab-ui-highlight` / `--lab-ui-on-highlight` | Legible small stamped GO badge / ticket accent | Small body type without checked contrast |
+| `--lab-ui-go` / `--lab-ui-on-action` | Main GO impression and readable lettering | Automatically inherit an accent and become a random color |
+| `--lab-ui-rule` | Quiet structural borders and separators | Compete with the active-state color |
+| `--lab-atlas-*` | Same cartographic palette across all 3 maps and tweens | Inherit control-selected ink by accident |
+| `--lab-mood-*` | Neutral/selected paper + engraved ink for seven characters | Recolor the original Funk or change portrait image assets |
+
+The generic `android-lab/web/theme-print.css` defines the mapping *once*.
+For example, a Kingston active mark is brick `#9b3a2b`, while the quieter
+registration plate is muted teal `#59817c`; the entire page remains
+warm cream. This is a **two-ink printing convention**, not a claim that
+every future theme should use red or teal. Color and print texture vary by
+theme. Controls keep their geometry, semantic state and keyboard focus.
+
+**Next-theme recipe** (e.g. Detroit, Addis, Polish Jazz, Beirut):
+
+1. Author complete `ATLAS` and `MOODS` theme entries in `theme.js`.
+2. Supply the semantic UI, print stock and *two independent ink roles* in
+   `theme-tokens.css`. Choose readable foreground/background pairs.
+3. Bind only the generic `print` profile and visual treatment variants.
+   **Do not add theme-named selectors** for Jukebox, maps, GO or moods.
+4. Keep the preview URL-only and not persisted or listed in Preferences.
+5. Run the mobile Chromium visual matrix: all three projections,
+   neutral/selected portraits, all pressed controls, GO, receipt, Crate,
+   Manual, transitions, plus 320px/390px and no horizontal overflow.
+6. The browser's **ink-swap contract test** changes active ink and
+   registration ink independently at runtime. Every intended consumer
+   must react, while the ocean and GO field remain unchanged. The Funk
+   selected source plate, pressed pink backing and laser treatment never
+   change. A theme must pass that test **before** being enabled.
+
+This allows the next four themes to be approached as token + material
+settings, rather than another round of selectors and ad hoc art fixes.
+
 **Visual gate:** screenshots at 320px and 390px must include the
 three resting maps, mood neutral/selected (all eight), Manual, Crate,
 GO and receipt. Source tests check original Funk pseudo-element image,
