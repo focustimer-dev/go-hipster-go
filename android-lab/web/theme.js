@@ -116,6 +116,9 @@ document.addEventListener('DOMContentLoaded',()=>{
  const guide=document.getElementById('labManualFrame');
  guide?.addEventListener('load',syncManualTheme);
  syncManualTheme();
+ // Legacy SVG mode deliberately has no MapLibre map. Do not leave a
+ // document-wide MutationObserver running forever on atlas DOM updates.
+ if(new URLSearchParams(location.search).get('atlas')==='legacy')return;
  // The canonical Android map initializes asynchronously, only once.
  const observer=new MutationObserver(()=>{if(attach())observer.disconnect()});
  observer.observe(document.body,{childList:true,subtree:true});
