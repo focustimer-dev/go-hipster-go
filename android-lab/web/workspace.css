@@ -507,65 +507,61 @@ body.gig-poster .crate-map-frame.lab-globe-frame .atlas-radial-field{display:non
  }
 }
 
-/* Android Usiku QA: original Liberi ink was inherited on green inspiration,
-   while the cream setup ticket inherited Usiku's inverse white ink.
-   Scope contrast to those two surfaces; don't change portraits or map paint. */
-:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labInspiration{
- color:#f5f0e6!important;
- border-block-color:#b77b4d;
+/* Shared UI roles are scoped to Android and both new themes; historic
+   Libéri visuals and atlas geometry remain untouched. */
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku]) body.gig-poster.lab-workspace #labInspiration{
+ color:var(--lab-ui-ink)!important;
+ border-block-color:var(--lab-ui-rule);
 }
-:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku]) body.gig-poster.lab-workspace
  :is(#labInspiration strong,#labInspirationPreview,#labInspirationMetadataStatus,#labInspiration button,#labInspirationGo){
- color:#f5f0e6!important;
+ color:var(--lab-ui-ink)!important;
 }
-:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labInspiration button:focus-visible{
- outline-color:#e5cf42;
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku]) body.gig-poster.lab-workspace
+ :is(#labInspiration button,#labAddInspiration,#labInspirationEditor textarea,#labInspirationEditor button):focus-visible{
+ outline-color:var(--lab-ui-focus);
 }
-:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #firstCrateSetup .ticket{
- --ink:#003018;
- --paper:#f5f0e6;
- --receipt-red:#8c6239;
- --setup-rule:#8c6239;
- color:#003018;
+/* Paper-ticket controls require dark ink even inside a night-mode Jukebox. */
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku]) body.gig-poster.lab-workspace #firstCrateSetup .ticket{
+ --ink:var(--lab-ui-ticket-ink);
+ --paper:var(--lab-ui-on-action);
+ --receipt-red:var(--lab-ui-rule);
+ --setup-rule:var(--lab-ui-rule);
+ background:var(--lab-ui-ticket-stock);
+ color:var(--lab-ui-ticket-ink);
  color-scheme:light;
 }
-:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #firstCrateSetup .ticket .services select{
- background:#f5f0e6;
- color:#003018;
- border-color:#003018;
- -webkit-text-fill-color:#003018;
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku]) body.gig-poster.lab-workspace #firstCrateSetup .ticket .services select{
+ background:var(--lab-ui-on-action);
+ color:var(--lab-ui-ticket-ink);
+ border-color:var(--lab-ui-ticket-ink);
+ -webkit-text-fill-color:var(--lab-ui-ticket-ink);
 }
-:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #firstCrateSetup .ticket .services select:disabled{
- opacity:1;
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku]) body.gig-poster.lab-workspace #firstCrateSetup .ticket .services select:disabled{opacity:1}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku]) body.gig-poster.lab-workspace #firstCrateSetup .ticket :is(.close-setup,.setup-back,.text-action){
+ color:var(--lab-ui-ticket-ink);
 }
-:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #firstCrateSetup .ticket :is(.close-setup,.setup-back,.text-action){
- color:#003018;
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku]) body.gig-poster.lab-workspace #firstCrateSetup .ticket .primary{
+ background:var(--lab-ui-ticket-ink);
+ color:var(--lab-ui-on-action);
+ border-color:var(--lab-ui-ticket-ink);
 }
-:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #firstCrateSetup .ticket .primary{
- background:#003018;
- color:#f5f0e6;
- border-color:#003018;
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku]) body.gig-poster.lab-workspace #firstCrateSetup .ticket .confirm-ready{
+ color:var(--lab-ui-ticket-ink);
+ border-color:var(--lab-ui-ticket-ink);
 }
-:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #firstCrateSetup .ticket .confirm-ready{
- color:#003018;
- border-color:#003018;
+/* GO is the one visible COPIED impression. The receipt keeps the status,
+   manual fallback and an action-based (not duplicated) continuation. */
+body.gig-poster.lab-workspace[data-page=launch] #promptReceipt .receipt-copy{display:none!important}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku]) body.gig-poster.lab-workspace[data-page=launch]{
+ --receipt-ink:var(--lab-ui-action);
 }
-
-/* GO alone carries the visible COPIED impression. The Android receipt has
-   an accessible status/handoff underneath it; a second vermilion stamp is
-   redundant and not part of the Usiku palette. Browser PWA is unchanged. */
-body.gig-poster.lab-workspace[data-page=launch] #promptReceipt .receipt-copy{
- display:none!important;
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku]) body.gig-poster.lab-workspace[data-page=launch] .handoff #openAi[aria-disabled=false]{
+ background:var(--lab-ui-action);
+ color:var(--lab-ui-on-action);
+ border-color:var(--lab-ui-rule);
 }
-/* Inverse share/reopen buttons use the local forest/cream/cognac inks in
-   BOTH new themes. Liberi alone retains the original vermilion impression. */
-:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace[data-page=launch],
-:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace[data-page=launch]{
- --receipt-ink:#004225;
-}
-:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace[data-page=launch] .handoff #openAi[aria-disabled=false],
-:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace[data-page=launch] .handoff #openAi[aria-disabled=false]{
- background:#004225;
- color:#f5f0e6;
- border-color:#b77b4d;
+/* Give inherited native controls the same focus role as the selected theme. */
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku]) body.gig-poster.lab-workspace :is(button,a,summary,select,textarea,input):focus-visible{
+ outline-color:var(--lab-ui-focus);
 }
