@@ -833,6 +833,13 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
  font:700 .9375rem/1.15 Arial,Helvetica,sans-serif;
  letter-spacing:.01em;
 }
+/* Earlier multi-theme rules hard-coded cream ink on these two title glyphs.
+   An actual cream Bosque paper strip needs dark ink, including SVG strokes. */
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+ body.gig-poster.lab-workspace[data-page=launch]
+ .go-options .go-extras :is(#includeCover,#goHard) .option-label{
+ color:var(--jukebox-ink);
+}
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
  body.gig-poster.lab-workspace[data-page=launch] .go-options .go-extras .option-copy small{
  font:400 .8125rem/1.3 Arial,Helvetica,sans-serif;
@@ -842,6 +849,12 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
  body.gig-poster.lab-workspace[data-page=launch] .go-options .go-extras .extra-mark{
  grid-column:1;grid-row:1;align-self:center;
  width:20px;height:20px;margin:0;
+ stroke:var(--jukebox-ink);
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+ body.gig-poster.lab-workspace[data-page=launch]
+ .go-options .go-extras #includeCover .art-sleeve{
+ fill:var(--jukebox-ink);
 }
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
  body.gig-poster.lab-workspace[data-page=launch] .go-options .go-extras .option-state{
