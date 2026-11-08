@@ -17,6 +17,9 @@ class AndroidThemeParity(unittest.TestCase):
         self.assertIn('map.setPaintProperty',js)
         self.assertIn('background-color',js)
         self.assertIn('refreshButtons',js)
+        # The legacy SVG fallback has no MapLibre; keep its fast path free
+        # from an observer waiting for a map that cannot initialize.
+        self.assertIn("get('atlas')==='legacy'",js)
 
     def test_native_and_browser_share_exact_one_theme_css(self):
         build=(ROOT/'scripts/bundle_android_lab.py').read_text()
