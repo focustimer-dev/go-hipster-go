@@ -772,10 +772,10 @@ async function verifyManualHierarchy(page,name,width){
     }
    });
    assert.equal(inkPlacements.defaultInk.atlas,'rgb(155, 58, 43)','Default active ink on Atlas tab');
-   assert.match(inkPlacements.defaultInk.mood,/rgb\\(155, 58, 43\\)/,'Default active ink on selected mood rim');
+   assert(inkPlacements.defaultInk.mood.includes('rgb(155, 58, 43)'),'Default active ink on selected mood rim');
    assert.equal(inkPlacements.defaultInk.hard,'rgb(155, 58, 43)','Default active ink on TRY HARD');
    assert.equal(inkPlacements.activeOverride.atlas,'rgb(113, 87, 164)','New theme ink automatically reaches Atlas');
-   assert.match(inkPlacements.activeOverride.mood,/rgb\\(113, 87, 164\\)/,'New theme ink automatically reaches portraits');
+   assert(inkPlacements.activeOverride.mood.includes('rgb(113, 87, 164)'),'New theme ink automatically reaches portraits');
    assert.equal(inkPlacements.activeOverride.hard,'rgb(113, 87, 164)','New theme ink automatically reaches toggles');
    assert.equal(inkPlacements.bothOverrides.goInk,'rgb(64, 128, 106)','Registration ink travels separately to GO');
    assert.equal(inkPlacements.bothOverrides.atlas,'rgb(113, 87, 164)','Registration never overrides activation');
