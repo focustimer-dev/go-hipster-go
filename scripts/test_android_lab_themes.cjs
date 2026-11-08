@@ -941,7 +941,24 @@ async function verifyManualHierarchy(page,name,width){
       'Manual consumes the same second print profile');
      await xerox.screenshot({path:path.join(output,'detroit-390-manual.png')});
      await xerox.locator('[data-lab-tab=crate]').click();
-     await xerox.screenshot({path:path.join(output,'detroit-390-crate.png')});
+     await xerox.locator('#labCrate').waitFor({state:'visible',timeout:8000});
+     const crate=await xerox.locator('#labCrate').evaluate(el=>{
+      const ink=getComputedStyle(el);
+      return {paper:ink.backgroundColor,color:ink.color};
+     });
+     assert.equal(crate.paper,'rgb(231, 229, 219)','Crate inherits toner paper stock');
+     assert.equal(crate.color,'rgb(23, 23, 23)','Crate preserves readable print ink');
+     // Headless SwiftShader may stall a FULL viewport capture even once all
+     // interaction/state assertions passed. Diagnostics cannot hold CI hostage.
+     // Keep this capture optional, capped at eight seconds, and preserve the
+     // asserted functional gate above.
+     try{
+      await xerox.screenshot({path:path.join(output,'detroit-390-crate.png'),
+       animations:'disabled',timeout:8000});
+     }catch(e){
+      if(e.name!=='TimeoutError')throw e;
+      console.warn('DIAGNOSTIC: Detroit Crate screenshot skipped after 8s; functional Crate assertions passed');
+     }
      assert.deepEqual(errors,[],'No Detroit preview runtime errors');
      console.log('PASS: second print theme is token-only; Detroit Atlas, Funk, Manual and 390px snapshots');
     }finally{await xerox.close()}
