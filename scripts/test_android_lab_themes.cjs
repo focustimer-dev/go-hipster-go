@@ -143,6 +143,23 @@ async function verifyManualHierarchy(page,name,width){
      assert.equal(ui.manualInk,CSS(ui.ink),name+' Manual uses current ink');
      assert.equal(ui.manual,CSS(ui.panel),name+' Manual uses panel surface');
      assert.equal(ui.action,'#004225',name+' action palette is forest, not Libéri red');
+     if(name==='bosque'){
+      const finish=await page.evaluate(()=>{
+       const root=getComputedStyle(document.documentElement),paint=id=>getComputedStyle(document.querySelector(id));
+       return {
+        goToken:root.getPropertyValue('--lab-ui-go').trim(),
+        action:root.getPropertyValue('--lab-ui-action').trim(),
+        goPaint:paint('#goButton').backgroundColor,
+        crateTexture:paint('#labCrate').backgroundImage,
+        manualTexture:paint('#labManual').backgroundImage,
+        jukeboxTexture:paint('#labJukebox').backgroundImage
+       };
+      });
+      assert.equal(finish.goToken,finish.action,'Bosque GO uses the existing action green');
+      assert.equal(finish.goPaint,'rgb(0, 66, 37)','Bosque GO painted with shared forest ink');
+      for(const area of ['crateTexture','manualTexture','jukeboxTexture'])
+       assert.equal(finish[area],'none','Bosque clean paper must have no grain in '+area);
+     }
     }
     if(width===390)await page.screenshot({path:path.join(output,`${name}-preferences.png`)});
     await page.locator('[data-lab-action=close-preferences]').click();
@@ -339,9 +356,29 @@ async function verifyManualHierarchy(page,name,width){
       assert(eject.keycap.includes('rgb(126, 76, 48)'),
        'Usiku eject keycap is deep saddle, not cream');
       assert.equal(eject.housing,'rgb(56, 38, 28)','Usiku transport housing is visibly recessed');
+      const setupInk=await page.frameLocator('#labManualFrame').locator('#setupSendChat .receipt')
+       .evaluate(card=>{
+        const button=card.querySelector('#setupCopyChat'),b=getComputedStyle(button);
+        return {paper:getComputedStyle(card).backgroundColor,
+         ink:getComputedStyle(card).color,buttonInk:b.color,
+         font:b.fontFamily,fontSize:parseFloat(b.fontSize)};
+       });
+      assert.equal(setupInk.paper,'rgb(244, 239, 223)','Usiku setup ticket remains cream stock');
+      assert.equal(setupInk.ink,'rgb(0, 48, 24)','Usiku setup ticket has dark ink');
+      assert.equal(setupInk.buttonInk,'rgb(0, 48, 24)','Copy Setup Check uses dark ink');
+      assert.match(setupInk.font,/Poster/,'Copy Setup Check uses the branded display font');
+      assert(setupInk.fontSize>=24,'Copy Setup Check remains readable on phone');
      }
      await verifyManualHierarchy(page,name,width);
      await page.screenshot({path:path.join(output,`${name}-manual.png`)});
+     if(name==='usiku'&&width===390){
+      await page.frameLocator('#labManualFrame').locator('body')
+       .evaluate(body=>{body.ownerDocument.defaultView.location.hash='#setupSendChat';});
+      await page.frameLocator('#labManualFrame').locator('#setupSendChat')
+       .waitFor({state:'visible',timeout:8000});
+      await page.frameLocator('#labManualFrame').locator('#setupSendChat .receipt')
+       .screenshot({path:path.join(output,'usiku-setup-copy-ink.png')});
+     }
      await page.locator('[data-lab-tab=jukebox]').click();
     }
     if(width===320){
