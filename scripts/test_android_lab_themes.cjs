@@ -34,7 +34,10 @@ async function verifyQuietJukebox(page,name,width){
    noteFont:family('#labInspiration strong'),
    shuffleFont:family('#shuffleCrate'),
    paceStopsFont:family('.fader-stops span'),
-   artFont:family('.go-extras .option-label'),
+   artFont:family('#includeCover .option-label'),
+   hardFont:family('#goHard .option-label'),
+   artTypography:['fontSize','fontWeight','lineHeight','letterSpacing'].map(k=>style('#includeCover .option-label')[k]),
+   hardTypography:['fontSize','fontWeight','lineHeight','letterSpacing'].map(k=>style('#goHard .option-label')[k]),
    artInk:style('#includeCover .option-label').color,
    hardInk:style('#goHard .option-label').color,
    artIconStroke:style('#includeCover .extra-mark').stroke,
@@ -61,8 +64,11 @@ async function verifyQuietJukebox(page,name,width){
  const rgb=name==='bosque'?'rgb(245, 240, 230)':'rgb(0, 48, 24)';
  for(const key of ['headingFont','paceFont','copiedFont'])
   assert.match(report[key],/Poster/,name+' preserves Poster display voice: '+key);
- for(const key of ['noteFont','shuffleFont','paceStopsFont','artFont'])
+ for(const key of ['noteFont','shuffleFont','paceStopsFont','artFont','hardFont'])
   assert.match(report[key],/Arial/,name+' functional UI uses one readable family: '+key);
+ assert.equal(report.hardFont,report.artFont,name+' +ART / TRY HARD have the same font family');
+ assert.deepEqual(report.hardTypography,report.artTypography,
+  name+' +ART / TRY HARD have identical size, weight, leading and spacing');
  assert.match(report.receiptFont,/Courier/,name+' literal receipt serial retains typewriter face');
  for(const key of ['atlasBox','atlasButtonDivider','shuffleBorder','pinBorder','coverBorder','anyBorder'])
   assert.equal(report[key],'0px',name+' '+key+' is no longer an outlined card');
