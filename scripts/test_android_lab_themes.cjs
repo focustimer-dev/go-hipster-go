@@ -848,7 +848,105 @@ async function verifyManualHierarchy(page,name,width){
    assert.equal(await pilot.evaluate(()=>window.HipsterLabTheme?.current()),'kingston','Preview URL persists without storage');
    assert.equal(await pilot.evaluate(()=>localStorage.getItem('ghg-lab-theme-v1')),null);
    await pilot.close();
+   // Second print theme: one bounded 390px proof. No additional animation
+   // profiling or screenshot loops at smaller sizes; the shared engine is
+   // already covered by the Kingston + installed-theme 320/390 matrix.
+   if(width===390){
+    const xerox=await browser.newPage({viewport:{width,height:860},isMobile:true,hasTouch:true});
+    const errors=[];
+    xerox.on('pageerror',err=>errors.push(err.message));
+    try{
+     await xerox.goto('http://127.0.0.1:'+server.address().port+'/?theme=detroit',{waitUntil:'domcontentloaded'});
+     await xerox.waitForFunction(()=>window.labAtlasGlobe?.loaded()&&window.labCahillMap?.ready,
+      null,{timeout:25000});
+     await xerox.emulateMedia({reducedMotion:'reduce'});
+     const colors=await xerox.evaluate(()=>{
+      const css=s=>getComputedStyle(document.querySelector(s));
+      const root=getComputedStyle(document.documentElement);
+      const selected=document.querySelector('.mood[data-mood=happy]');
+      const old=selected.getAttribute('aria-pressed');
+      selected.setAttribute('aria-pressed','true');
+      const tile=css('.mood[data-mood=happy]').backgroundColor;
+      selected.setAttribute('aria-pressed',old);
+      return {
+       theme:window.HipsterLabTheme.current(),
+       profile:document.documentElement.dataset.ghgThemeProfile,
+       ocean:window.GHGAtlasPaintColors().ocean,
+       mapOcean:window.labAtlasGlobe.getPaintProperty('robinson-ocean','fill-color'),
+       page:css('#labJukebox').backgroundColor,
+       paperTexture:css('#labJukebox').backgroundImage,
+       selected:tile,go:css('#goButton').backgroundColor,
+       stamp:root.getPropertyValue('--lab-print-stamp').trim(),
+       active:root.getPropertyValue('--lab-print-active-ink').trim()
+      };
+     });
+     assert.equal(colors.theme,'detroit','URL-only Detroit theme');
+     assert.equal(colors.profile,'print','Second theme shares the print profile');
+     assert.equal(colors.ocean,'#151515','Toner-black ocean palette');
+     assert.equal(colors.mapOcean,colors.ocean,'Robinson uses the shared palette');
+     assert.equal(colors.page,'rgb(231, 229, 219)','Photocopy paper stock');
+     assert.match(colors.paperTexture,/repeating-linear-gradient/,'Generic printed texture token');
+     assert.equal(colors.selected,'rgb(208, 208, 189)','Selected mood retains shaded stock');
+     assert.equal(colors.go,'rgb(23, 23, 23)','Toner-black GO key');
+     assert.equal(colors.stamp,'#56662f','Registration ink is contrast safe');
+     assert.equal(colors.active,'#913b25','Active ink is separate from decoration');
+     assert.equal(await xerox.locator('[data-lab-theme=detroit]').count(),0,'Pilot is not a preference');
+     assert.equal(await xerox.evaluate(()=>localStorage.getItem('ghg-lab-theme-v1')),null,'Pilot not persisted');
+     await xerox.screenshot({path:path.join(output,'detroit-390-jukebox.png')});
+     const cast=await xerox.locator('.mood-grid .mood[data-mood]').evaluateAll(tiles=>{
+      for(const tile of tiles)tile.setAttribute('aria-pressed','true');
+      const funk=document.querySelector('.mood[data-mood=funky]');
+      const sprite=getComputedStyle(funk.querySelector('.face'),'::after');
+      const rays=getComputedStyle(funk.querySelector('.funk-rays'));
+      return {size:tiles.length,
+       funkImage:sprite.backgroundImage,mask:sprite.maskImage,
+       raysFilter:rays.filter,raysOpacity:rays.opacity,
+       funkyStock:getComputedStyle(funk).backgroundColor};
+     });
+     assert.equal(cast.size,8,'All original portraits selected');
+     assert.match(cast.funkImage,/moods-selected-ink-v2.webp/,'Funk original selected sprite');
+     assert.equal(cast.mask,'none','Funk engraving is not flattened');
+     assert.equal(cast.raysFilter,'none','Funk laser colors are unchanged');
+     assert.equal(cast.raysOpacity,'0.8','Funk original laser intensity');
+     assert.notEqual(cast.funkyStock,'rgb(208, 208, 189)','Funk retains unique pink paper');
+     await xerox.locator('.mood-grid').screenshot({path:path.join(output,'detroit-390-all-selected.png')});
+     await xerox.locator('.mood-grid .mood[data-mood]').evaluateAll(tiles=>{
+      for(const tile of tiles)tile.setAttribute('aria-pressed','false');
+     });
+     await xerox.locator('#labAtlasGlobe').scrollIntoViewIfNeeded();
+     await xerox.screenshot({path:path.join(output,'detroit-390-robinson.png')});
+     await xerox.locator('[data-atlas-view=cahill-keyes]').click();
+     await xerox.waitForFunction(()=>{
+      const s=window.HipsterAtlasState?.();return s?.projection==='cahill-keyes'&&!s.transitioning
+     },null,{timeout:16000});
+     const ocean=await xerox.locator('#labAtlasCahill .lab-cahill-ocean')
+      .evaluate(el=>getComputedStyle(el).fill);
+     assert.equal(ocean,'rgb(21, 21, 21)','Cahill sea matches Robinson');
+     await xerox.screenshot({path:path.join(output,'detroit-390-keyes.png')});
+     await xerox.locator('[data-atlas-view=globe]').click();
+     await xerox.waitForFunction(()=>{
+      const s=window.HipsterAtlasState?.();return s?.projection==='globe'&&!s.transitioning
+     },null,{timeout:16000});
+     await xerox.screenshot({path:path.join(output,'detroit-390-globe.png')});
+     await xerox.locator('[data-lab-tab=manual]').click();
+     await xerox.frameLocator('#labManualFrame').locator('#manualNavigation')
+      .waitFor({state:'visible',timeout:12000});
+     const manual=await xerox.frameLocator('#labManualFrame')
+      .locator('body.embedded-guide').evaluate(body=>({
+       theme:body.ownerDocument.documentElement.dataset.pwaTheme,
+       profile:body.ownerDocument.documentElement.dataset.ghgThemeProfile,
+       ink:getComputedStyle(body).color
+      }));
+     assert.deepEqual(manual,{theme:'detroit',profile:'print',ink:'rgb(23, 23, 23)'},
+      'Manual consumes the same second print profile');
+     await xerox.screenshot({path:path.join(output,'detroit-390-manual.png')});
+     await xerox.locator('[data-lab-tab=crate]').click();
+     await xerox.screenshot({path:path.join(output,'detroit-390-crate.png')});
+     assert.deepEqual(errors,[],'No Detroit preview runtime errors');
+     console.log('PASS: second print theme is token-only; Detroit Atlas, Funk, Manual and 390px snapshots');
+    }finally{await xerox.close()}
+   }
   }
-  console.log('PASS: Android Libéri/Bosque/Usiku and URL-only Kingston pilot have matching Atlas, portrait and Manual roles at 390px / 320px');
+  console.log('PASS: Android Libéri/Bosque/Usiku and URL-only Kingston/Detroit pilots have matching Atlas, portrait and Manual roles at 390px / 320px');
  }finally{await browser?.close();await new Promise(ok=>server.close(ok))}
 })().catch(e=>{console.error(e);process.exitCode=1});
