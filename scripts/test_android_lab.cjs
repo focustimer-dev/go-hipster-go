@@ -193,13 +193,14 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   await page.locator('[data-atlas-view="robinson"]').evaluate(el=>el.click());
   try{
    // Both the underlying renderer AND the canonical map state must land.
-   // SwiftShader can deliver its final frame after Playwright's first 8s
-   // deadline even when both states have already committed (see diagnostics).
+   // SwiftShader may stop requesting animation frames once the transition
+   // settles. Poll by clock rather than requestAnimationFrame so Playwright
+   // sees the already-committed state even on a quiescent headless renderer.
    await page.waitForFunction(()=>{
     const state=window.HipsterAtlasState?.();
     return state?.projection==='robinson'&&!state.transitioning&&
       window.labAtlasGlobe?.getProjection?.()?.type==='mercator';
-   },null,{timeout:20000});
+   },null,{timeout:20000,polling:100});
   }catch(error){
    const state=await page.evaluate(()=>({
     mapProjection:window.labAtlasGlobe?.getProjection?.()?.type,
