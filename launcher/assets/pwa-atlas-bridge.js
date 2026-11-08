@@ -70,7 +70,7 @@ function paintAtlasTheme(){
    land:{'fill-color':['case',['boolean',['feature-state','selected'],false],
      palette.selected,palette.land]},
    borders:{'line-color':palette.ink},
-   ocean:{'background-color':map.getProjection()?.type==='mercator'?'rgba(0,0,0,0)':palette.ocean},
+   ocean:{'background-color':palette.ocean},
    'robinson-ocean':{'fill-color':palette.ocean},
    routes:{'line-color':palette.route,
     'line-opacity':THEMED_ROUTE_PAINT.opacity,
