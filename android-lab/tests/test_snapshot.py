@@ -25,6 +25,7 @@ class LabSnapshotTests(unittest.TestCase):
             stripped=page.replace('<link rel="stylesheet" href="/assets/lab-workspace.css">','')
             for theme_asset in (
                 '<script src="/assets/lab-themes.js"></script>',
+                '<link rel="stylesheet" href="/assets/lab-theme-tokens.css" data-lab-palette-style media="not all">',
                 '<link rel="stylesheet" href="/assets/pwa-themes.css" data-lab-palette-style media="not all">',
                 '<link rel="stylesheet" href="/assets/pwa-atlas-themes.css" data-lab-palette-style media="not all">',
                 '<script>for(const link of document.querySelectorAll("link[data-lab-palette-style]"))link.media=document.documentElement.dataset.pwaTheme==="liberi"?"not all":"all";</script>'
@@ -34,6 +35,8 @@ class LabSnapshotTests(unittest.TestCase):
             stripped=stripped.replace('<p><a href="/atlas-lab.html">TRY MAPLIBRE GLOBE</a></p>','')
             stripped=re.sub(r'<script type="application/json" id="labGlobeGeography">.*?</script>','',stripped,flags=re.S)
             stripped=stripped.replace('<script defer src="/assets/maplibre/maplibre-gl.js"></script><script defer src="/assets/cahill-keyes-vendor.js"></script><link rel="stylesheet" href="/assets/maplibre/maplibre-gl.css">','')
+            self.assertEqual((dest/'assets/lab-theme-tokens.css').read_text(),
+                             (ROOT/'android-lab/web/theme-tokens.css').read_text())
             self.assertTrue((dest/'assets/maplibre/maplibre-gl.js').stat().st_size>500000)
             self.assertTrue((dest/'assets/cahill-keyes-vendor.js').stat().st_size>30000)
             self.assertIn('const geography=',(dest/'atlas-lab.html').read_text())
