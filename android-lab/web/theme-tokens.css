@@ -27,7 +27,7 @@
 /* First print-profile pilot. These roles are data, not component patches. */
 :root[data-pwa-theme=kingston]{
  --lab-ui-surface:#d5cec2;--lab-ui-ink:#18151e;
- --lab-ui-panel:#c7beaf;--lab-ui-on-panel:#18151e;
+ --lab-ui-panel:#d5cec2;--lab-ui-on-panel:#18151e;
  --lab-ui-rail:#18151e;--lab-ui-on-rail:#d5cec2;
  --lab-ui-action:#18151e;--lab-ui-on-action:#d5cec2;
  --lab-ui-rule:#18151e;--lab-ui-field:#eee5d4;--lab-ui-on-field:#18151e;
