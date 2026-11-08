@@ -34,6 +34,13 @@ async function verifyQuietJukebox(page,name,width){
    noteFont:family('#labInspiration strong'),
    shuffleFont:family('#shuffleCrate'),
    paceStopsFont:family('.fader-stops span'),
+   trailFont:family('.poster-go-trail-word'),
+   atlasFont:family('.lab-atlas-modes button'),
+   anyFont:family('#anyTempo'),
+   pinFont:family('#pinMood'),
+   inspirationNameFont:family('#labInspirationPreview'),
+   helpFont:family('.mood-hint'),
+   optionHelpFont:family('#includeCover .option-copy small'),
    artFont:family('#includeCover .option-label'),
    hardFont:family('#goHard .option-label'),
    artTypography:['fontSize','fontWeight','lineHeight','letterSpacing'].map(k=>style('#includeCover .option-label')[k]),
@@ -64,8 +71,11 @@ async function verifyQuietJukebox(page,name,width){
  const rgb=name==='bosque'?'rgb(245, 240, 230)':'rgb(0, 48, 24)';
  for(const key of ['headingFont','paceFont','copiedFont'])
   assert.match(report[key],/Poster/,name+' preserves Poster display voice: '+key);
- for(const key of ['noteFont','shuffleFont','paceStopsFont','artFont','hardFont'])
-  assert.match(report[key],/Arial/,name+' functional UI uses one readable family: '+key);
+ for(const key of ['noteFont','shuffleFont','paceStopsFont','trailFont',
+  'atlasFont','anyFont','pinFont','inspirationNameFont','artFont','hardFont'])
+  assert.match(report[key],/Poster/,name+' keeps branded Poster control typography: '+key);
+ for(const key of ['helpFont','optionHelpFont'])
+  assert.match(report[key],/Arial/,name+' readable description remains a simple sans: '+key);
  assert.equal(report.hardFont,report.artFont,name+' +ART / TRY HARD have the same font family');
  assert.deepEqual(report.hardTypography,report.artTypography,
   name+' +ART / TRY HARD have identical size, weight, leading and spacing');
