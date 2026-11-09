@@ -24,7 +24,7 @@ concurrency:
 jobs:
   preview-qa:
     # Only this repository's own parity branch, never external fork PRs.
-    if: github.event.pull_request.head.repo.full_name == github.repository && ((startsWith(github.head_ref, 'feat/pwa-') || startsWith(github.head_ref, 'feature/pwa-') || startsWith(github.head_ref, 'fix/pwa-')) || startsWith(github.head_ref, 'fix/inspiration-metadata-') || startsWith(github.head_ref, 'feat/compact-skill-first-'))
+    if: github.event.pull_request.head.repo.full_name == github.repository && ((startsWith(github.head_ref, 'feat/pwa-') || startsWith(github.head_ref, 'feature/pwa-') || startsWith(github.head_ref, 'fix/pwa-')) || startsWith(github.head_ref, 'fix/inspiration-metadata-') || startsWith(github.head_ref, 'feat/compact-skill-first-') || startsWith(github.head_ref, 'feature/regional-atlas-'))
     runs-on: ubuntu-latest
     environment: production
     timeout-minutes: 25
