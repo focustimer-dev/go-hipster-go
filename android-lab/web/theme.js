@@ -165,6 +165,29 @@ function syncPortraitInk(){
    node.setAttribute('slope',String(paper[i]-ink[i]));
   }
  }
+ // Selected Funk retains its original shaded sprite, not a flat ink flood.
+ // A fixed fluorescent-yellow luminance transfer preserves star-glasses
+ // detail, alpha and the identical appearance across all eight themes.
+ if(!document.getElementById('funkHighlighterEngraving')){
+  const filter=document.createElementNS(ns,'filter');
+  filter.setAttribute('id','funkHighlighterEngraving');
+  filter.setAttribute('color-interpolation-filters','sRGB');
+  const gray=document.createElementNS(ns,'feColorMatrix');
+  gray.setAttribute('type','saturate');gray.setAttribute('values','0');
+  const transfer=document.createElementNS(ns,'feComponentTransfer');
+  // At full light the print reaches #EEFF35. Dark etching remains visible.
+  // No feFuncA: leave the approved sprite's transparency untouched.
+  for(const [channel,offset,amplitude] of [
+   ['R','.733','.20'],['G','.83','.17'],['B','.038','.17']]){
+   const node=document.createElementNS(ns,'feFunc'+channel);
+   node.setAttribute('type','gamma');
+   node.setAttribute('amplitude',amplitude);
+   node.setAttribute('exponent','.65');
+   node.setAttribute('offset',offset);
+   transfer.appendChild(node);
+  }
+  filter.append(gray,transfer);owner.parentNode.appendChild(filter);
+ }
 }
 function applyThemeTokens(){
  const style=document.documentElement.style,palette=ATLAS[theme],mood=MOODS[theme];
