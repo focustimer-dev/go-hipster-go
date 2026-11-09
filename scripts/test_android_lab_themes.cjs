@@ -731,7 +731,7 @@ async function verifyManualHierarchy(page,name,width){
    assert.equal(printedExtra.selectedFunk.mask,'none','Funk is never flattened into an ink mask');
    assert.match(printedExtra.selectedFunk.raysFilter,/hue-rotate\(23deg\)/,'Funk uses canonical laser colors');
    assert.equal(printedExtra.selectedFunk.raysOpacity,'0.82','Funk retains canonical laser strength');
-   assert.match(printedExtra.selectedFunk.spriteFilter,/hue-rotate\(324deg\)/,'Funk selected engraving uses canonical orange-gold');
+   assert.match(printedExtra.selectedFunk.spriteFilter,/funkHighlighterEngraving/,'Funk selected engraving uses shaded yellow ink');
    assert.match(printedExtra.selectedFunk.gradient,/linear-gradient/,'Funk canonical violet-magenta pressing');
    assert.equal(printedExtra.selectedFunk.label,'rgb(242, 200, 78)','Funk canonical gold label');
    assert.equal(printedExtra.selectedFunk.stock,'rgb(110, 34, 92)','Funk canonical violet base');
@@ -948,7 +948,7 @@ async function verifyManualHierarchy(page,name,width){
      assert.equal(cast.mask,'none','Funk engraving is not flattened');
      assert.match(cast.raysFilter,/hue-rotate\(23deg\)/,'Funk canonical laser colors');
      assert.equal(cast.raysOpacity,'0.82','Funk canonical laser intensity');
-     assert.match(cast.spriteFilter,/hue-rotate\(324deg\)/,'Funk canonical selected engraving');
+     assert.match(cast.spriteFilter,/funkHighlighterEngraving/,'Funk canonical selected engraving');
      assert.equal(cast.funkyWord,'rgb(242, 200, 78)','Funk canonical star-gold text');
      assert.equal(cast.funkyStock,'rgb(110, 34, 92)','Funk canonical violet base');
      assert.match(cast.funkyGradient,/linear-gradient/,'Funk magenta pressing preserved');
