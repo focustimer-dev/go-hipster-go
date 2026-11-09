@@ -190,6 +190,19 @@ function syncCrate(){showCrateCategory($('manualNavigation').dataset.category);c
 window.addEventListener('hashchange',syncCrate);window.addEventListener('load',syncCrate);syncCrate();
 doc.addEventListener('keydown',e=>{if(e.key==='Escape'&&cratePicker.open){cratePicker.open=false;cratePicker.querySelector('summary').focus()}});doc.addEventListener('click',e=>{if(!cratePicker.contains(e.target))cratePicker.open=false});
 
+// In the Android iframe, external GitHub links must leave the offline shell.
+// Prevent WebView/CSP from attempting to render the remote page in this frame.
+doc.addEventListener('click',event=>{
+ const link=event.target.closest?.('a[href]');
+ if(!link||parent===window)return;
+ try{
+  const url=new URL(link.href);
+  if(url.protocol!=='https:'||url.hostname!=='github.com'||url.port)return;
+  event.preventDefault();
+  parent.postMessage({type:'lab-open-github',url:url.href},location.origin);
+ }catch(_){}
+},true);
+
 // Hysteresis prevents the shorter sticky header from triggering itself.
 let guideScrollQueued=false;
 function updateGuideCompact(){guideScrollQueued=false;const y=main.scrollTop;if(y>120)navigation.classList.add('is-compact');else if(y<32)navigation.classList.remove('is-compact')}
