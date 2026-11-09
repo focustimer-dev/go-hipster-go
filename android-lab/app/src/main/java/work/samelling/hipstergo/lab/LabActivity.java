@@ -231,6 +231,14 @@ public class LabActivity extends Activity {
         }
         @JavascriptInterface public void offerSetupShare(String ai,String text){if(url(ai)!=null&&validText(text))runOnUiThread(()->LabActivity.this.offerSetupShare(ai,text));}
         @JavascriptInterface public void showUpdates(){runOnUiThread(()->updates.show());}
+        /** Explicit user-tapped GitHub links leave the offline WebView.
+         * Never expose arbitrary URI schemes or untrusted hosts to the native bridge. */
+        @JavascriptInterface public void openGitHub(String destination){
+            if(destination==null||destination.length()>2048)return;
+            Uri u=Uri.parse(destination);
+            if(!"https".equals(u.getScheme())||!"github.com".equals(u.getHost())||u.getPort()!=-1)return;
+            runOnUiThread(()->browser(destination));
+        }
         @JavascriptInterface public void saveRequest(String ai,String text){if(SavedRequestPolicy.canSave(ai,text))runOnUiThread(()->shelf.save(ai,text));}
         @JavascriptInterface public void savedRequest(String id){if(id!=null&&id.length()<=64)runOnUiThread(()->shelf.showEntry(id));}
         @JavascriptInterface public void setPreference(String key,String value){
