@@ -634,8 +634,8 @@ body[data-page=launch] .hero-title .headline em{color:inherit;text-shadow:none}
 .manual-liner>summary{cursor:pointer;font-size:1.25rem;font-weight:700;min-height:44px;align-content:center}
 .manual-liner .liner-route strong{font-weight:800}
 
-.mood[data-mood="funky"] .face{background-image:url('/editions/gig-poster/assets/the-funk.webp');background-size:auto 100%;background-position:15% 0}
-.mood[data-mood="funky"][aria-pressed="true"] .face{background-position:85% 0}
+/* The active gig-poster cast uses the approved v2 neutral/selected sprite plates.
+   Retired single-Funk background frames are not needed by either renderer. */
 
 /* One print block: request options before the full-width copy action. */
 .go-options{display:grid;grid-template-columns:minmax(0,1fr);align-items:stretch;gap:0;margin-bottom:20px;border:1px solid var(--ink);border-radius:2px;background:var(--ink);color:var(--paper)}
