@@ -119,7 +119,7 @@ const specs=[
    assert.equal(ornament.compass,colorAsRgb(ornament.atlasInk),'Compass matches selected countries');
    assert.equal(ornament.hub,ornament.compass,'Compass center matches north');
    assert.equal(ornament.birdInk,colorAsRgb(ornament.stampInk),'Etched bird uses theme stamp ink');
-   assert.match(ornament.birdMask,/bird-globe\\.webp/);
+   assert.match(ornament.birdMask,/bird-globe\.webp/);
    assert.equal(ornament.heroText,'YOUR TASTE IS A PROBLEM');
    console.log('PASS: '+spec.id+' print tokens, neutral/selected Funk, map palette, Manual and hero');
   }
