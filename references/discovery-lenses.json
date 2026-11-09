@@ -392,7 +392,7 @@
   {
     "id": "legacy-46",
     "regions": [
-      "mediterranean-europe"
+      "balkans"
     ],
     "kind": "research-route",
     "text": "Albanian iso-polyphony: investigate investigate drone and interweaving voices.",
@@ -446,7 +446,7 @@
   {
     "id": "legacy-52",
     "regions": [
-      "mediterranean-europe"
+      "balkans"
     ],
     "kind": "research-route",
     "text": "Sevdalinka: investigate traditional urban song; verify text before describing its narrative.",
@@ -478,7 +478,7 @@
   {
     "id": "us-east-sacred-steel",
     "regions": [
-      "us-east"
+      "us-south"
     ],
     "kind": "research-route",
     "text": "Sacred Steel: research credited Florida church and live recordings; listen for expressive lead phrasing rather than default showcase tracks.",
@@ -514,7 +514,7 @@
   {
     "id": "us-east-miami-bass",
     "regions": [
-      "us-east"
+      "us-south"
     ],
     "kind": "research-route",
     "text": "Miami bass: investigate overlooked regional singles and electro arrangements; a recognizable bass sound alone is not a reason to select a track.",
@@ -523,7 +523,7 @@
   {
     "id": "us-east-florida-breaks",
     "regions": [
-      "us-east"
+      "us-south"
     ],
     "kind": "research-route",
     "text": "Florida breaks: research credited Orlando and Tampa releases with unusual break construction; avoid generic compilation filler.",
@@ -550,7 +550,7 @@
   {
     "id": "us-east-detroit-techno",
     "regions": [
-      "us-east"
+      "us-midwest"
     ],
     "kind": "research-route",
     "text": "Detroit techno: investigate less-circulated local releases with distinctive rhythmic or textural development; verify recording and scene provenance.",
@@ -559,7 +559,7 @@
   {
     "id": "us-east-ghettotech",
     "regions": [
-      "us-east"
+      "us-midwest"
     ],
     "kind": "research-route",
     "text": "Detroit ghettotech: research credited local releases with specific rhythmic personality; do not substitute generic fast club music.",
@@ -568,7 +568,7 @@
   {
     "id": "us-east-chicago-acid",
     "regions": [
-      "us-east"
+      "us-midwest"
     ],
     "kind": "research-route",
     "text": "Chicago acid house: look for overlooked releases with evolving arrangements, not a famous bassline or a genre demonstration.",
@@ -577,7 +577,7 @@
   {
     "id": "us-east-footwork",
     "regions": [
-      "us-east"
+      "us-midwest"
     ],
     "kind": "research-route",
     "text": "Chicago footwork and juke: investigate overlooked local recordings with compelling rhythmic tension; distinguish the routes rather than treating them as interchangeable.",
@@ -586,7 +586,7 @@
   {
     "id": "us-east-memphis-cassette",
     "regions": [
-      "us-east"
+      "us-south"
     ],
     "kind": "research-route",
     "text": "Memphis cassette rap: research credited original recordings and versions beyond the recurring compilation picks; distinguish them from later phonk revivals.",
@@ -595,7 +595,7 @@
   {
     "id": "us-east-piedmont",
     "regions": [
-      "us-east"
+      "us-south"
     ],
     "kind": "research-route",
     "text": "Piedmont blues: investigate less-familiar credited performances where guitar counterpoint and vocal phrasing earn the selection.",
@@ -604,7 +604,7 @@
   {
     "id": "us-east-swamp-pop",
     "regions": [
-      "us-east"
+      "us-south"
     ],
     "kind": "research-route",
     "text": "Louisiana swamp pop: research overlooked regional releases with distinctive phrasing or arrangements; do not rely on nostalgic atmosphere alone.",
@@ -613,7 +613,7 @@
   {
     "id": "us-east-shape-note",
     "regions": [
-      "us-east"
+      "us-south"
     ],
     "kind": "research-route",
     "text": "Shape-note singing: investigate suitable credited ensemble recordings; preserve communal and sacred context, and do not use tradition as novelty.",
@@ -631,7 +631,7 @@
   {
     "id": "us-west-conjunto",
     "regions": [
-      "us-west"
+      "us-south"
     ],
     "kind": "research-route",
     "text": "South Texas conjunto: investigate overlooked credited recordings with distinctive ensemble phrasing; distinguish conjunto from the wider Tejano umbrella.",
@@ -730,7 +730,7 @@
   {
     "id": "us-west-western-swing",
     "regions": [
-      "us-west"
+      "us-south"
     ],
     "kind": "research-route",
     "text": "Western swing: research overlooked Texas and Oklahoma recordings with striking ensemble exchanges; verify provenance rather than assuming any swing-country record fits.",
@@ -739,7 +739,7 @@
   {
     "id": "us-west-private-country",
     "regions": [
-      "us-west"
+      "us-south"
     ],
     "kind": "research-route",
     "text": "Western private-press country: investigate verified local releases with unusual songwriting or arrangements; private pressing is a research route, not a quality certificate.",
