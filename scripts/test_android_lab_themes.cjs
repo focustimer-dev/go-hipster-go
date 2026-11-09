@@ -5,12 +5,24 @@ const fs=require('node:fs'),http=require('node:http'),path=require('node:path');
 const assert=require('node:assert/strict');
 const root=path.resolve(__dirname,'../android-lab/app/src/main/assets/site');
 const output=path.resolve(__dirname,'../android-lab/build/theme-review');
+const reviewBuild=fs.readFileSync(path.join(__dirname,'../android-lab/web/workspace.html'),'utf8').includes('data-lab-theme="detroit"');
 const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css','.svg':'image/svg+xml','.webp':'image/webp','.png':'image/png','.woff':'font/woff'};
 const palettes={
  liberi:{page:'rgb(223, 176, 69)',ink:'rgb(16, 49, 53)',land:'#dfb045'},
  bosque:{page:'rgb(245, 240, 230)',ink:'rgb(0, 48, 24)',land:'#004225'},
  usiku:{page:'rgb(17, 17, 17)',ink:'rgb(245, 240, 230)',land:'#f5f0e6'}
 };
+// Headless screenshot capture is diagnostic, not a functional gate.
+// SwiftShader can stall even after projection and selected-state checks pass.
+async function diagnosticCapture(target,file){
+ try{
+  await target.screenshot({path:path.join(output,file),
+   animations:'disabled',timeout:6500});
+ }catch(e){
+  if(e.name!=='TimeoutError')throw e;
+  console.warn('DIAGNOSTIC: snapshot skipped after 6.5s: '+file);
+ }
+}
 const themeContract={
  liberi:{ocean:'#103135',land:'#dfb045',route:'#edc65d',selected:'#a83223',graticule:'#dfb045',moodInk:'#103135'},
  bosque:{ocean:'#e8e9df',land:'#004225',route:'#8c6239',selected:'#e5cf42',graticule:'#8c6239',moodInk:'#003018'},
@@ -610,7 +622,402 @@ async function verifyManualHierarchy(page,name,width){
    assert.equal(await page.evaluate(()=>document.documentElement.dataset.pwaTheme),'usiku','Persisted theme must apply before paint');
    assert.deepEqual(errors,[],'Android theme picker or renderer JS exceptions');
    await page.close();
+   // Pilot is ONLY opened by a deliberate preview URL. It must not create
+   // a fourth installed preference or modify the user's stored appearance.
+   const pilot=await browser.newPage({viewport:{width,height:860},isMobile:true,hasTouch:true});
+   const pilotErrors=[];
+   pilot.on('pageerror',e=>pilotErrors.push(e.message));
+   await pilot.goto('http://127.0.0.1:'+server.address().port+'/?theme=kingston',{waitUntil:'domcontentloaded'});
+   await pilot.waitForFunction(()=>window.labAtlasGlobe?.loaded()&&window.labCahillMap?.ready,null,{timeout:30000});
+   await pilot.emulateMedia({reducedMotion:'reduce'});
+   assert.equal(await pilot.evaluate(()=>window.HipsterLabTheme?.current()),'kingston');
+   assert.equal(await pilot.evaluate(()=>document.documentElement.dataset.ghgThemeProfile),'print');
+   assert.equal(await pilot.locator('link[data-lab-print-style]').getAttribute('media'),'all');
+   assert.equal(await pilot.locator('[data-lab-theme=kingston]').count(),reviewBuild?1:0,'Theme picker matches release/review build');
+   assert.equal(await pilot.evaluate(()=>localStorage.getItem('ghg-lab-theme-v1')),null,
+    'Pilot must not overwrite the saved production theme');
+   const pilotInk=await pilot.evaluate(()=>{
+    const root=getComputedStyle(document.documentElement),map=window.labAtlasGlobe;
+    const css=name=>root.getPropertyValue('--lab-atlas-'+name).trim();
+    const el=selector=>getComputedStyle(document.querySelector(selector));
+    const face=document.querySelector('.mood[data-mood=happy] .face');
+    const tile=face.closest('.mood'),old=tile.getAttribute('aria-pressed');
+    tile.setAttribute('aria-pressed','false');
+    const neutral={tile:el('.mood[data-mood=happy]').backgroundColor,
+     image:getComputedStyle(face,'::before').backgroundImage,
+     mask:getComputedStyle(face,'::before').maskImage};
+    tile.setAttribute('aria-pressed','true');
+    const selected={tile:el('.mood[data-mood=happy]').backgroundColor,
+     image:getComputedStyle(face,'::after').backgroundImage,
+     mask:getComputedStyle(face,'::after').maskImage,
+     word:el('.mood[data-mood=happy] .word').color};
+    tile.setAttribute('aria-pressed',old);
+    return {
+     theme:window.GHGAtlasPaintColors(),
+     ocean:map.getPaintProperty('robinson-ocean','fill-color'),
+     atlasCssOcean:css('ocean'),atlasCssLand:css('land'),
+     canvas:el('#labAtlasGlobe').backgroundColor,
+     page:el('#labJukebox').backgroundColor,
+     go:el('#goButton').backgroundColor,
+     goHeadline:el('#goButton .go-copy b').color,
+     goCaption:el('#goButton .go-copy>span:not(.go-stamp)').color,
+     neutral,selected
+    };
+   });
+   assert.equal(pilotInk.theme.ocean,'#273d3b','Pilot ocean uses dark teal vinyl ink');
+   assert.equal(pilotInk.theme.land,'#d3c4a8','Pilot map land uses aged label paper');
+   assert.equal(pilotInk.theme.selected,'#6d9991','Pilot map selected ink');
+   assert.equal(pilotInk.atlasCssOcean,'#273d3b','One ocean role across renderers');
+   assert.equal(pilotInk.atlasCssLand,'#d3c4a8','One land role across renderers');
+   assert.equal(pilotInk.ocean,'#273d3b','Real Robinson ocean uses palette ink');
+   assert.equal(pilotInk.canvas,'rgb(227, 217, 194)','Map exterior uses warm paper, not sea');
+   const selectorPaint=await pilot.locator('[data-atlas-view=robinson]').evaluate(el=>{
+    const st=getComputedStyle(el);
+    return {background:st.backgroundColor,ink:st.color,
+     accent:st.borderBottomColor,style:el.getAttribute('style')||''};
+   });
+   assert.equal(selectorPaint.background,'rgba(0, 0, 0, 0)','Atlas selector remains unboxed');
+   assert.equal(selectorPaint.ink,'rgb(38, 63, 62)','Atlas selector uses dark stamp ink');
+   assert.equal(selectorPaint.accent,'rgb(155, 58, 43)','Selected tab uses active red ink, not registration teal');
+   assert(!selectorPaint.style.includes('#103135')&&!selectorPaint.style.includes('#dfb045'),
+    'Atlas buttons never inject Libéri inline paint');
+   assert.equal(pilotInk.page,'rgb(227, 217, 194)','Jukebox uses aged record-label paper');
+   assert.equal(pilotInk.go,'rgb(56, 94, 90)','GO uses dark teal instead of black');
+   assert.equal(pilotInk.goHeadline,'rgb(239, 228, 203)','GO display type stays readable');
+   assert.equal(pilotInk.goCaption,'rgb(239, 228, 203)','GO supporting type stays readable');
+   assert.equal(pilotInk.neutral.tile,'rgb(227, 217, 194)','Neutral portrait stock');
+   assert.match(pilotInk.neutral.image,/moods-neutral-ink-v2.webp/,'Original neutral engraved artwork');
+   assert.equal(pilotInk.neutral.mask,'none','Neutral engraving keeps original shading');
+   assert.equal(pilotInk.selected.tile,'rgb(210, 195, 166)','Selected portrait uses warm paper, not full cyan');
+   assert.equal(pilotInk.selected.word,'rgb(36, 70, 67)','Selected label ink is readable');
+   assert.match(pilotInk.selected.image,/moods-selected-ink-v2.webp/,'Selected expression is original artwork');
+   assert.equal(pilotInk.selected.mask,'none','Selected engraving keeps its full original shading');
+   const printHeading=await pilot.evaluate(()=>({
+    vibe:getComputedStyle(document.querySelector('.refinements>.counter-label')).fontFamily,
+    tempo:getComputedStyle(document.querySelector('.tempo-control'),'::before').fontFamily
+   }));
+   assert.match(printHeading.vibe,/Poster/,'Kingston inherits canonical Android Poster heading');
+   assert.match(printHeading.tempo,/Poster/,'Kingston inherits canonical tempo heading');
+   const printedExtra=await pilot.evaluate(()=>{
+    const tile=document.querySelector('#firstCrateSetup');
+    const style=getComputedStyle(tile);
+    const star=getComputedStyle(document.querySelector('#goButton .star-glyph'));
+    const cta=getComputedStyle(document.querySelector('#labCrateEmpty .lab-wide-button'));
+    const funk=document.querySelector('.mood[data-mood=funky]'),old=funk.getAttribute('aria-pressed');
+    funk.setAttribute('aria-pressed','true');
+    const figure=funk.querySelector('.face');
+    const before=getComputedStyle(figure,'::before'),after=getComputedStyle(figure,'::after');
+    const rays=getComputedStyle(funk.querySelector('.funk-rays'));
+    const selectedFunk={beforeOpacity:before.opacity,afterOpacity:after.opacity,
+     image:after.backgroundImage,mask:after.maskImage,spriteFilter:after.filter,
+     raysFilter:rays.filter,raysOpacity:rays.opacity,stock:getComputedStyle(funk).backgroundColor,
+     label:getComputedStyle(funk.querySelector('.word')).color,
+     gradient:getComputedStyle(funk).backgroundImage};
+    funk.setAttribute('aria-pressed',old);
+    const flood=getComputedStyle(document.querySelector('#referenceInk feFlood'));
+    return {ticketRule:style.getPropertyValue('--setup-rule').trim(),
+     receiptInk:style.getPropertyValue('--receipt-red').trim(),starFilter:star.filter,
+     crateAction:cta.backgroundColor,crateLabel:cta.color,
+     selectedFunk,desireInk:flood.floodColor};
+   });
+   assert.equal(printedExtra.ticketRule,'#7bb0aa','Setup ticket uses muted stamp accent');
+   assert.equal(printedExtra.receiptInk,'#263f3e','Small ticket print remains legible');
+   assert.notEqual(printedExtra.starFilter,'none','GO stamp uses the subdued profile ink');
+   assert.equal(printedExtra.crateAction,'rgb(48, 71, 67)','Crate CTA shares teal action');
+   assert.equal(printedExtra.crateLabel,'rgb(239, 228, 203)','Crate CTA text has cream contrast');
+   assert.equal(printedExtra.selectedFunk.beforeOpacity,'0','Funk selected hides the neutral pose');
+   assert.equal(printedExtra.selectedFunk.afterOpacity,'1','Funk selected shows the approved star-glasses pose');
+   assert.match(printedExtra.selectedFunk.image,/moods-selected-ink-v2.webp/,'Funk uses the original selected artwork');
+   assert.equal(printedExtra.selectedFunk.mask,'none','Funk is never flattened into an ink mask');
+   assert.match(printedExtra.selectedFunk.raysFilter,/hue-rotate\(23deg\)/,'Funk uses canonical laser colors');
+   assert.equal(printedExtra.selectedFunk.raysOpacity,'0.82','Funk retains canonical laser strength');
+   assert.match(printedExtra.selectedFunk.spriteFilter,/hue-rotate\(324deg\)/,'Funk selected engraving uses canonical orange-gold');
+   assert.match(printedExtra.selectedFunk.gradient,/linear-gradient/,'Funk canonical violet-magenta pressing');
+   assert.equal(printedExtra.selectedFunk.label,'rgb(242, 200, 78)','Funk canonical gold label');
+   assert.equal(printedExtra.selectedFunk.stock,'rgb(110, 34, 92)','Funk canonical violet base');
+   assert.notEqual(printedExtra.selectedFunk.stock,'rgb(210, 195, 166)','Funk selected pink pressing stays distinct');
+   assert.equal(printedExtra.desireInk,'rgb(38, 63, 62)','Desire and Triumph use shared engraving ink');
+   // Exercise every approved character in its selected pose. Do not mutate
+   // the underlying artwork or depend on only one easy-to-color portrait.
+   const selectedCast=await pilot.locator('.mood-grid .mood[data-mood]').evaluateAll(tiles=>
+    tiles.map(tile=>{
+     const prior=tile.getAttribute('aria-pressed');
+     tile.setAttribute('aria-pressed','true');
+     const style=getComputedStyle(tile),word=getComputedStyle(tile.querySelector('.word'));
+     const face=tile.querySelector('.face'),after=getComputedStyle(face,'::after');
+     const result={mood:tile.dataset.mood,paper:style.backgroundColor,
+      label:word.color,selectedPlateOpacity:after.opacity};
+     tile.setAttribute('aria-pressed',prior);
+     return result;
+    }));
+   assert.equal(selectedCast.length,8,'All eight original characters render in pilot');
+   for(const portrait of selectedCast){
+    const special=portrait.mood==='funky';
+    if(!special)assert.equal(portrait.paper,'rgb(210, 195, 166)',
+     portrait.mood+' selected paper');
+    else assert.notEqual(portrait.paper,'rgb(210, 195, 166)','Funk retains its own pink paper');
+    assert.equal(portrait.label,special?'rgb(242, 200, 78)':'rgb(36, 70, 67)',
+     portrait.mood+' selected label');
+    assert.equal(portrait.selectedPlateOpacity,portrait.mood==='desire'?'0':'1',
+     portrait.mood+' approved expression visibility');
+   }
+   // New print themes choose two ink roles once. Prove every consumer
+   // changes automatically when these values change: no theme-name patches.
+   const inkPlacements=await pilot.evaluate(()=>{
+    const root=document.documentElement;
+    const mood=document.querySelector('.mood[data-mood=happy]');
+    const hard=document.getElementById('goHard');
+    const atlas=document.querySelector('.lab-atlas-modes button[aria-pressed=true]');
+    const go=document.getElementById('goButton');
+    const priorMood=mood.getAttribute('aria-pressed');
+    const priorHard=hard.getAttribute('aria-pressed');
+    const styles=()=>({
+      atlas:getComputedStyle(atlas).borderBottomColor,
+      mood:getComputedStyle(mood).boxShadow,
+      hard:getComputedStyle(hard).borderBottomColor,
+      goInk:getComputedStyle(go).borderTopColor,
+      goFill:getComputedStyle(go).backgroundColor,
+      ocean:window.GHGAtlasPaintColors().ocean
+    });
+    mood.setAttribute('aria-pressed','true');
+    hard.setAttribute('aria-pressed','true');
+    try{
+      const defaultInk=styles();
+      root.style.setProperty('--lab-print-active-ink','#7157a4');
+      const activeOverride=styles();
+      root.style.setProperty('--lab-print-stamp','#40806a');
+      const bothOverrides=styles();
+      return {defaultInk,activeOverride,bothOverrides};
+    }finally{
+      root.style.removeProperty('--lab-print-active-ink');
+      root.style.removeProperty('--lab-print-stamp');
+      mood.setAttribute('aria-pressed',priorMood);
+      hard.setAttribute('aria-pressed',priorHard);
+    }
+   });
+   assert.equal(inkPlacements.defaultInk.atlas,'rgb(155, 58, 43)','Default active ink on Atlas tab');
+   assert(inkPlacements.defaultInk.mood.includes('rgb(155, 58, 43)'),'Default active ink on selected mood rim');
+   assert.equal(inkPlacements.defaultInk.hard,'rgb(155, 58, 43)','Default active ink on TRY HARD');
+   assert.equal(inkPlacements.activeOverride.atlas,'rgb(113, 87, 164)','New theme ink automatically reaches Atlas');
+   assert(inkPlacements.activeOverride.mood.includes('rgb(113, 87, 164)'),'New theme ink automatically reaches portraits');
+   assert.equal(inkPlacements.activeOverride.hard,'rgb(113, 87, 164)','New theme ink automatically reaches toggles');
+   assert.equal(inkPlacements.bothOverrides.goInk,'rgb(64, 128, 106)','Registration ink travels separately to GO');
+   assert.equal(inkPlacements.bothOverrides.atlas,'rgb(113, 87, 164)','Registration never overrides activation');
+   assert.equal(inkPlacements.bothOverrides.ocean,'#273d3b','Accents never recolor map water');
+   assert.equal(inkPlacements.bothOverrides.goFill,inkPlacements.defaultInk.goFill,
+    'Accents never recolor GO hero surface');
+   if(width===390){
+    await pilot.locator('.mood-grid .mood[data-mood]').evaluateAll(tiles=>
+     tiles.forEach(tile=>tile.setAttribute('aria-pressed','true')));
+    await diagnosticCapture(pilot.locator('.mood-grid'),'kingston-390-all-selected.png');
+    await pilot.locator('.mood-grid .mood[data-mood]').evaluateAll(tiles=>
+     tiles.forEach(tile=>tile.setAttribute('aria-pressed','false')));
+   }
+   if(width===390){
+    await pilot.locator('.mood[data-mood=happy]').click();
+    await pilot.locator('.mood[data-mood=funky]').click();
+   }
+   await pilot.locator('.mood-grid').scrollIntoViewIfNeeded();
+   if(width===390)await diagnosticCapture(pilot,'kingston-390-portraits.png');
+   await pilot.locator('#labAtlasGlobe').scrollIntoViewIfNeeded();
+   if(width===390)await diagnosticCapture(pilot,'kingston-390-robinson.png');
+   await pilot.locator('[data-atlas-view=cahill-keyes]').click();
+   await pilot.waitForFunction(()=>{const s=window.HipsterAtlasState?.();return s?.projection==='cahill-keyes'&&!s.transitioning},
+    null,{timeout:20000});
+   const octant=await pilot.evaluate(()=>{
+    const ocean=document.querySelector('#labAtlasCahill .lab-cahill-ocean');
+    const grid=document.querySelector('#labAtlasCahill .lab-cahill-graticule');
+    return {ocean:getComputedStyle(ocean).fill,grid:getComputedStyle(grid).stroke,
+     field:getComputedStyle(document.getElementById('labAtlasGlobe')).backgroundColor}
+   });
+   assert.equal(octant.ocean,'rgb(39, 61, 59)','Keyes sea matches Robinson');
+   assert.equal(octant.grid,'rgb(109, 153, 145)','Cahill grid uses desaturated stamp ink');
+   assert.equal(octant.field,'rgb(227, 217, 194)','Keyes stage uses aged paper');
+   if(width===390)await diagnosticCapture(pilot,'kingston-390-keyes.png');
+   await pilot.locator('[data-atlas-view=globe]').click();
+   await pilot.waitForFunction(()=>{const s=window.HipsterAtlasState?.();return s?.projection==='globe'&&!s.transitioning},
+    null,{timeout:20000});
+   if(width===390)await diagnosticCapture(pilot,'kingston-390-globe.png');
+   await pilot.locator('[data-atlas-view=robinson]').click();
+   await pilot.waitForFunction(()=>{const s=window.HipsterAtlasState?.();return s?.projection==='robinson'&&!s.transitioning},
+    null,{timeout:20000});
+   await pilot.locator('[data-lab-tab=manual]').click();
+   await pilot.frameLocator('#labManualFrame').locator('#manualNavigation').waitFor({state:'visible',timeout:15000});
+   const manual=await pilot.frameLocator('#labManualFrame').locator('body.embedded-guide').evaluate(el=>({
+    theme:el.ownerDocument.documentElement.dataset.pwaTheme,
+    profile:el.ownerDocument.documentElement.dataset.ghgThemeProfile,
+    ink:getComputedStyle(el).color,stock:getComputedStyle(el).backgroundColor
+   }));
+   assert.equal(manual.theme,'kingston','Manual inherits pilot');
+   assert.equal(manual.profile,'print','Manual inherits print profile');
+   assert.equal(manual.ink,'rgb(38, 63, 62)','Manual ink');
+   assert.equal(manual.stock,'rgb(227, 217, 194)','Manual matches Jukebox paper');
+   const manualActive=await pilot.frameLocator('#labManualFrame').locator('body.embedded-guide').evaluate(body=>{
+    const root=body.ownerDocument.documentElement;
+    const tab=body.ownerDocument.querySelector('.crate-tabs button[aria-selected=true]');
+    const before=getComputedStyle(tab).borderBottomColor;
+    try{
+     root.style.setProperty('--lab-print-active-ink','#7157a4');
+     const after=getComputedStyle(tab).borderBottomColor;
+     return {before,after};
+    }finally{root.style.removeProperty('--lab-print-active-ink')}
+   });
+   assert.equal(manualActive.before,'rgb(155, 58, 43)','Manual uses the same accent as Jukebox');
+   assert.equal(manualActive.after,'rgb(113, 87, 164)','Manual active ink also swaps with one token');
+   if(width===390)await diagnosticCapture(pilot,'kingston-390-manual.png');
+   await pilot.locator('[data-lab-tab=crate]').click();
+   if(width===390)await diagnosticCapture(pilot,'kingston-390-crate.png');
+   assert.deepEqual(pilotErrors,[],'Kingston pilot JS exceptions');
+   await pilot.reload({waitUntil:'domcontentloaded'});
+   assert.equal(await pilot.evaluate(()=>window.HipsterLabTheme?.current()),'kingston','Preview URL persists without storage');
+   assert.equal(await pilot.evaluate(()=>localStorage.getItem('ghg-lab-theme-v1')),null);
+   await pilot.close();
+   // Second print theme: one bounded 390px proof. No additional animation
+   // profiling or screenshot loops at smaller sizes; the shared engine is
+   // already covered by the Kingston + installed-theme 320/390 matrix.
+   if(width===390){
+    const xerox=await browser.newPage({viewport:{width,height:860},isMobile:true,hasTouch:true});
+    const errors=[];
+    xerox.on('pageerror',err=>errors.push(err.message));
+    try{
+     await xerox.goto('http://127.0.0.1:'+server.address().port+'/?theme=detroit',{waitUntil:'domcontentloaded'});
+     await xerox.waitForFunction(()=>window.labAtlasGlobe?.loaded()&&window.labCahillMap?.ready,
+      null,{timeout:25000});
+     await xerox.emulateMedia({reducedMotion:'reduce'});
+     const colors=await xerox.evaluate(()=>{
+      const css=s=>getComputedStyle(document.querySelector(s));
+      const root=getComputedStyle(document.documentElement);
+      const selected=document.querySelector('.mood[data-mood=happy]');
+      const old=selected.getAttribute('aria-pressed');
+      selected.setAttribute('aria-pressed','true');
+      const tile=css('.mood[data-mood=happy]').backgroundColor;
+      const rim=css('.mood[data-mood=happy]').boxShadow;
+      const plateFilter=getComputedStyle(document.querySelector('.mood[data-mood=happy] .face'),'::after').filter;
+      const neutralFilter=getComputedStyle(document.querySelector('.mood[data-mood=happy] .face'),'::before').filter;
+      const svgFilter=document.getElementById('themeMoodSelectedEngraving');
+      const inkIntercept=svgFilter?.querySelector('feFuncR')?.getAttribute('intercept');
+      selected.setAttribute('aria-pressed',old);
+      return {
+       theme:window.HipsterLabTheme.current(),
+       profile:document.documentElement.dataset.ghgThemeProfile,
+       ocean:window.GHGAtlasPaintColors().ocean,
+       mapOcean:window.labAtlasGlobe.getPaintProperty('robinson-ocean','fill-color'),
+       page:css('#labJukebox').backgroundColor,
+       paperTexture:css('#labJukebox').backgroundImage,
+       selected:tile,selectedRim:rim,plateFilter,neutralFilter,inkIntercept,go:css('#goButton').backgroundColor,
+       stamp:root.getPropertyValue('--lab-print-stamp').trim(),
+       active:root.getPropertyValue('--lab-print-active-ink').trim(),
+       checkboxAccent:css('.lab-choice input').accentColor,
+       selectedTab:css('.lab-atlas-modes [aria-pressed=true]').borderBottomColor
+      };
+     });
+     assert.equal(colors.theme,'detroit','URL-only Detroit theme');
+     assert.equal(colors.profile,'print','Second theme shares the print profile');
+     assert.equal(colors.ocean,'#151515','Toner-black ocean palette');
+     assert.equal(colors.mapOcean,colors.ocean,'Robinson uses the shared palette');
+     assert.equal(colors.page,'rgb(231, 229, 219)','Photocopy paper stock');
+     assert.match(colors.paperTexture,/repeating-linear-gradient/,'Generic printed texture token');
+     assert.equal(colors.selected,'rgb(245, 0, 147)','Selected mood overlays the original engraving with highlighter pink');
+     assert.ok(colors.selectedRim.includes('rgb(23, 23, 23)'),'Dark outline survives neon selected paper');
+     assert.equal(colors.selectedTab,'rgb(245, 0, 147)','Active Atlas tab uses pink');
+     assert.equal(colors.checkboxAccent,'rgb(245, 0, 147)','Checkbox ink is theme selectable');
+     assert.match(colors.plateFilter,/themeMoodSelectedEngraving/,'Selected plate uses real palette ink transfer');
+     assert.match(colors.neutralFilter,/themeMoodNeutralEngraving/,'Neutral plate uses tokenized ink transfer');
+     assert.equal(Number(colors.inkIntercept).toFixed(4),'0.0902','Engraving has toner-black ink endpoints');
+     assert.equal(colors.go,'rgb(23, 23, 23)','Toner-black GO key');
+     assert.equal(colors.stamp,'#555555','Graphite registration stays neutral');
+     assert.equal(colors.active,'#f50093','Highlighter pink activates the selection roles');
+     assert.equal(await xerox.locator('[data-lab-theme=detroit]').count(),reviewBuild?1:0,'Theme picker matches release/review build');
+     assert.equal(await xerox.evaluate(()=>localStorage.getItem('ghg-lab-theme-v1')),null,'Pilot not persisted');
+     await diagnosticCapture(xerox,'detroit-390-jukebox.png');
+     const cast=await xerox.locator('.mood-grid .mood[data-mood]').evaluateAll(tiles=>{
+      for(const tile of tiles)tile.setAttribute('aria-pressed','true');
+      const funk=document.querySelector('.mood[data-mood=funky]');
+      const sprite=getComputedStyle(funk.querySelector('.face'),'::after');
+      const rays=getComputedStyle(funk.querySelector('.funk-rays'));
+      return {size:tiles.length,
+       funkImage:sprite.backgroundImage,mask:sprite.maskImage,
+       raysFilter:rays.filter,raysOpacity:rays.opacity,
+       spriteFilter:sprite.filter,
+       funkyWord:getComputedStyle(funk.querySelector('.word')).color,
+       funkyStock:getComputedStyle(funk).backgroundColor,
+       funkyGradient:getComputedStyle(funk).backgroundImage};
+     });
+     assert.equal(cast.size,8,'All original portraits selected');
+     assert.match(cast.funkImage,/moods-selected-ink-v2.webp/,'Funk original selected sprite');
+     assert.equal(cast.mask,'none','Funk engraving is not flattened');
+     assert.match(cast.raysFilter,/hue-rotate\(23deg\)/,'Funk canonical laser colors');
+     assert.equal(cast.raysOpacity,'0.82','Funk canonical laser intensity');
+     assert.match(cast.spriteFilter,/hue-rotate\(324deg\)/,'Funk canonical selected engraving');
+     assert.equal(cast.funkyWord,'rgb(242, 200, 78)','Funk canonical star-gold text');
+     assert.equal(cast.funkyStock,'rgb(110, 34, 92)','Funk canonical violet base');
+     assert.match(cast.funkyGradient,/linear-gradient/,'Funk magenta pressing preserved');
+     assert.notEqual(cast.funkyStock,'rgb(245, 0, 147)','Funk retains its own pink pressing, not Detroit neon');
+     // Canonical Android typography MUST survive every print treatment.
+     const typography=await xerox.evaluate(()=>{
+      const style=sel=>getComputedStyle(document.querySelector(sel));
+      return {vibe:style('.refinements>.counter-label').fontFamily,
+       tempo:getComputedStyle(document.querySelector('.tempo-control'),'::before').fontFamily,
+       label:style('#labInspiration strong').fontFamily,
+       help:style('.mood-hint').fontFamily};
+     });
+     for(const family of [typography.vibe,typography.tempo,typography.label])
+      assert.match(family,/Poster/,'Detroit reuses canonical Android Poster headings');
+     assert.match(typography.help,/Arial/,'Supporting instructions retain readable sans');
+     await diagnosticCapture(xerox.locator('.mood-grid'),'detroit-390-all-selected.png');
+     await xerox.locator('.mood-grid .mood[data-mood]').evaluateAll(tiles=>{
+      for(const tile of tiles)tile.setAttribute('aria-pressed','false');
+     });
+     // UI copy is tied to REAL selection, not a permanent Funk tagline.
+     await xerox.locator('.mood[data-mood=funky]').click();
+     assert.match(await xerox.locator('#moodHelp').textContent(),/The pocket has diplomatic immunity\./,
+      'Funk immunity appears when selected');
+     assert.equal(await xerox.locator('.mood[data-mood=funky]').getAttribute('aria-pressed'),'true');
+     await xerox.locator('.mood[data-mood=funky]').click();
+     assert.doesNotMatch(await xerox.locator('#moodHelp').textContent(),/diplomatic immunity/,
+      'Funk immunity disappears when deselected');
+     await xerox.locator('#labAtlasGlobe').scrollIntoViewIfNeeded();
+     await diagnosticCapture(xerox,'detroit-390-robinson.png');
+     await xerox.locator('[data-atlas-view=cahill-keyes]').click();
+     await xerox.waitForFunction(()=>{
+      const s=window.HipsterAtlasState?.();return s?.projection==='cahill-keyes'&&!s.transitioning
+     },null,{timeout:16000});
+     const ocean=await xerox.locator('#labAtlasCahill .lab-cahill-ocean')
+      .evaluate(el=>getComputedStyle(el).fill);
+     assert.equal(ocean,'rgb(21, 21, 21)','Cahill sea matches Robinson');
+     await diagnosticCapture(xerox,'detroit-390-keyes.png');
+     await xerox.locator('[data-atlas-view=globe]').click();
+     await xerox.waitForFunction(()=>{
+      const s=window.HipsterAtlasState?.();return s?.projection==='globe'&&!s.transitioning
+     },null,{timeout:16000});
+     await diagnosticCapture(xerox,'detroit-390-globe.png');
+     await xerox.locator('[data-lab-tab=manual]').click();
+     await xerox.frameLocator('#labManualFrame').locator('#manualNavigation')
+      .waitFor({state:'visible',timeout:12000});
+     const manual=await xerox.frameLocator('#labManualFrame')
+      .locator('body.embedded-guide').evaluate(body=>({
+       theme:body.ownerDocument.documentElement.dataset.pwaTheme,
+       profile:body.ownerDocument.documentElement.dataset.ghgThemeProfile,
+       ink:getComputedStyle(body).color
+      }));
+     assert.deepEqual(manual,{theme:'detroit',profile:'print',ink:'rgb(23, 23, 23)'},
+      'Manual consumes the same second print profile');
+     await diagnosticCapture(xerox,'detroit-390-manual.png');
+     await xerox.locator('[data-lab-tab=crate]').click();
+     await xerox.locator('#labCrate').waitFor({state:'visible',timeout:8000});
+     const crate=await xerox.locator('#labCrate').evaluate(el=>{
+      const ink=getComputedStyle(el);
+      return {paper:ink.backgroundColor,color:ink.color};
+     });
+     assert.equal(crate.paper,'rgb(231, 229, 219)','Crate inherits toner paper stock');
+     assert.equal(crate.color,'rgb(23, 23, 23)','Crate preserves readable print ink');
+     await diagnosticCapture(xerox,'detroit-390-crate.png');
+     assert.deepEqual(errors,[],'No Detroit preview runtime errors');
+     console.log('PASS: second print theme is token-only; Detroit Atlas, Funk, Manual and 390px snapshots');
+    }finally{await xerox.close()}
+   }
   }
-  console.log('PASS: Android Libéri/Bosque/Usiku are persistent, readable and map color-matched at 390px / 320px');
+  // Additional print themes have a separate short, no-screenshot contract test.
+  console.log('PASS: Android Libéri/Bosque/Usiku and URL-only Kingston/Detroit pilots have matching Atlas, portrait and Manual roles at 390px / 320px');
  }finally{await browser?.close();await new Promise(ok=>server.close(ok))}
 })().catch(e=>{console.error(e);process.exitCode=1});
