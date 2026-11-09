@@ -177,3 +177,16 @@ window.addEventListener('message',event=>{if(event.source===doc.getElementById('
 doc.getElementById('labManualReturn').onclick=()=>labShowManualResources(false);
 
 window.addEventListener('message',event=>{if(event.source===doc.getElementById('labManualFrame')?.contentWindow&&event.origin===location.origin&&event.data?.type==='lab-gemini-updates')window.HipsterLab?.showUpdates?.()});
+// External Manual links are never loaded in the embedded frame; forward only
+// explicit https links to the native system browser after origin/source checks.
+window.addEventListener('message',event=>{
+ if(event.source!==doc.getElementById('labManualFrame')?.contentWindow ||
+    event.origin!==location.origin || event.data?.type!=='lab-manual-external')return;
+ if(typeof event.data.url!=='string')return;
+ try{
+  const url=new URL(event.data.url);
+  if(url.protocol==='https:'&&url.origin!==location.origin&&
+     !url.username&&!url.password&&!url.port)
+   window.HipsterLab?.openExternal?.(url.href);
+ }catch(_){}
+});
