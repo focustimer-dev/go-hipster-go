@@ -32,10 +32,15 @@ const specs=[
   await page.waitForFunction(()=>window.labAtlasGlobe?.loaded()&&window.labCahillMap?.ready,null,{timeout:25000});
   for(const spec of specs){
    if(spec.id!=='addis')assert.equal(await page.evaluate(id=>window.HipsterLabTheme.set(id,false),spec.id),true);
-   await page.waitForFunction(([theme,ocean])=>
+   // Wait for the new palette to SETTLE. Stock and selected ink have a
+   // short CSS transition, so reading immediately after set() reports
+   // the previous theme's paper, even though selection is already updated.
+   await page.waitForFunction(([theme,ocean,stock])=>
     window.HipsterLabTheme.current()===theme&&
-    window.labAtlasGlobe.getPaintProperty('robinson-ocean','fill-color')===ocean,
-    [spec.id,spec.ocean],{timeout:8000});
+    window.labAtlasGlobe.getPaintProperty('robinson-ocean','fill-color')===ocean&&
+    getComputedStyle(document.querySelector('.mood[data-mood=happy]')).backgroundColor===stock&&
+    getComputedStyle(document.querySelector('.mood[data-mood=funky]')).backgroundColor===stock,
+    [spec.id,spec.ocean,spec.stock],{timeout:9000});
    const neutral=await page.evaluate(()=>{
     const cs=selector=>getComputedStyle(document.querySelector(selector));
     const f=document.querySelector('.mood[data-mood=funky]'),h=document.querySelector('.mood[data-mood=happy]');
