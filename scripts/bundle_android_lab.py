@@ -53,6 +53,12 @@ def bundle(destination=None):
     page.write_text(html)
     shutil.copyfile(ROOT / 'android-lab/web/workspace.css', destination / 'assets/lab-workspace.css')
     shutil.copyfile(ROOT / 'android-lab/web/theme.js', destination / 'assets/lab-themes.js')
+    # Bake the approved, theme-independent selected Funk art from the locked
+    # sprite instead of relying on WebView's pseudo-element SVG filter.
+    import runpy
+    runpy.run_path(str(ROOT / 'scripts/bake_funk_selected.py'))['bake_funk'](
+              ROOT / 'launcher/editions/gig-poster/assets/moods-selected-ink-v2.webp',
+              destination / 'assets/funk-selected-engraved.webp')
     # A single semantic UI palette is loaded by the app and Manual iframe.
     shutil.copyfile(ROOT / 'android-lab/web/theme-tokens.css', destination / 'assets/lab-theme-tokens.css')
     shutil.copyfile(ROOT / 'android-lab/web/theme-print.css', destination / 'assets/lab-theme-print.css')

@@ -727,11 +727,11 @@ async function verifyManualHierarchy(page,name,width){
    assert.equal(printedExtra.crateLabel,'rgb(239, 228, 203)','Crate CTA text has cream contrast');
    assert.equal(printedExtra.selectedFunk.beforeOpacity,'0','Funk selected hides the neutral pose');
    assert.equal(printedExtra.selectedFunk.afterOpacity,'1','Funk selected shows the approved star-glasses pose');
-   assert.match(printedExtra.selectedFunk.image,/moods-selected-ink-v2.webp/,'Funk uses the original selected artwork');
+   assert.match(printedExtra.selectedFunk.image,/funk-selected-engraved.webp/,'Funk selected is baked from the original approved artwork');
    assert.equal(printedExtra.selectedFunk.mask,'none','Funk is never flattened into an ink mask');
    assert.match(printedExtra.selectedFunk.raysFilter,/hue-rotate\(23deg\)/,'Funk uses canonical laser colors');
    assert.equal(printedExtra.selectedFunk.raysOpacity,'0.82','Funk retains canonical laser strength');
-   assert.match(printedExtra.selectedFunk.spriteFilter,/funkHighlighterEngraving/,'Funk selected engraving uses shaded yellow ink');
+   assert.equal(printedExtra.selectedFunk.spriteFilter,'none','Funk baked plate needs no WebView SVG filter');
    assert.match(printedExtra.selectedFunk.gradient,/linear-gradient/,'Funk canonical violet-magenta pressing');
    assert.equal(printedExtra.selectedFunk.label,'rgb(242, 200, 78)','Funk canonical gold label');
    assert.equal(printedExtra.selectedFunk.stock,'rgb(110, 34, 92)','Funk canonical violet base');
@@ -944,11 +944,11 @@ async function verifyManualHierarchy(page,name,width){
        funkyGradient:getComputedStyle(funk).backgroundImage};
      });
      assert.equal(cast.size,8,'All original portraits selected');
-     assert.match(cast.funkImage,/moods-selected-ink-v2.webp/,'Funk original selected sprite');
+     assert.match(cast.funkImage,/funk-selected-engraved.webp/,'Funk uses the approved baked selected portrait');
      assert.equal(cast.mask,'none','Funk engraving is not flattened');
      assert.match(cast.raysFilter,/hue-rotate\(23deg\)/,'Funk canonical laser colors');
      assert.equal(cast.raysOpacity,'0.82','Funk canonical laser intensity');
-     assert.match(cast.spriteFilter,/funkHighlighterEngraving/,'Funk canonical selected engraving');
+     assert.equal(cast.spriteFilter,'none','Selected Funk no longer relies on device-specific SVG filters');
      assert.equal(cast.funkyWord,'rgb(242, 200, 78)','Funk canonical star-gold text');
      assert.equal(cast.funkyStock,'rgb(110, 34, 92)','Funk canonical violet base');
      assert.match(cast.funkyGradient,/linear-gradient/,'Funk magenta pressing preserved');

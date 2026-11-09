@@ -23,7 +23,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.addInitScript(()=>{
    window.labCalls=[];window.labState={saved:[],mode:'open',oneTap:true,haptics:true,updateAvailable:false};
-   window.HipsterLab={state(){return JSON.stringify(window.labState)},setPreference(k,v){window.labState[k]=k==='mode'?v:v==='true';window.HipsterLabStateChanged()},saveRequest(a,t){labCalls.push(['save',a,t])},showUpdates(){labCalls.push(['updates'])},copy(t){labCalls.push(['copy',t]);return true},go(a,t){labCalls.push(['go',a,t])},open(a,t){labCalls.push(['open',a,t])},share(t){labCalls.push(['share',t])}};
+   window.HipsterLab={openExternal(url){labCalls.push(['external',url])},state(){return JSON.stringify(window.labState)},setPreference(k,v){window.labState[k]=k==='mode'?v:v==='true';window.HipsterLabStateChanged()},saveRequest(a,t){labCalls.push(['save',a,t])},showUpdates(){labCalls.push(['updates'])},copy(t){labCalls.push(['copy',t]);return true},go(a,t){labCalls.push(['go',a,t])},open(a,t){labCalls.push(['open',a,t])},share(t){labCalls.push(['share',t])}};
   });
   await page.goto('http://127.0.0.1:'+server.address().port+'/?ai=chatgpt&service=spotify&atlas=legacy');
   await page.locator('#goButton').click();
@@ -82,6 +82,22 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   const position=await page.evaluate(()=>window.scrollY);
   await page.locator('[data-lab-tab="crate"]').click();await page.locator('#labCrate').waitFor({state:'visible'});
   await page.locator('[data-lab-tab="manual"]').click();await page.locator('#labManual').waitFor({state:'visible'});
+  // Artwork guide is not the active tab. Exercise its delegated navigation
+  // handler without Playwright requiring an intentionally hidden panel.
+  await page.frameLocator('#labManualFrame').locator('a[href="https://music.youtube.com"]').evaluate(el=>el.click());
+  await page.waitForFunction(()=>labCalls.some(c=>c[0]==='external'&&c[1]==='https://music.youtube.com/'));
+  assert.equal((await page.evaluate(()=>labCalls)).filter(c=>c[0]==='external'&&c[1]==='https://music.youtube.com/').length,1);
+  assert(await page.frameLocator('#labManualFrame').locator('#cratePicker > summary').isVisible(),
+   'Manual stays loaded after opening an external link');
+  // The screenshot's failing URL is in the parent "More Resources" panel.
+  await page.frameLocator('#labManualFrame').locator('body').evaluate(()=>parent.postMessage({type:'lab-manual-resources'},location.origin));
+  await page.locator('#labMoreResources').waitFor({state:'visible'});
+  await page.locator('#labMoreResources a[href="https://github.com/focustimer-dev/go-hipster-go/releases/latest"]').first().click();
+  await page.waitForFunction(()=>labCalls.some(c=>c[0]==='external'&&c[1].includes('/releases/latest')));
+  assert.equal((await page.evaluate(()=>labCalls)).filter(c=>c[0]==='external'&&c[1]==='https://github.com/focustimer-dev/go-hipster-go/releases/latest').length,1);
+  assert.equal(await page.evaluate(()=>location.host.startsWith('127.0.0.1')),true,'Manual must remain on local origin');
+  await page.locator('#labManualReturn').click();
+  await page.locator('#labManualGuide').waitFor({state:'visible'});
   await page.frameLocator('#labManualFrame').locator('#cratePicker > summary').click();await page.frameLocator('#labManualFrame').locator('[data-crate-tab=setup]').click();await page.frameLocator('#labManualFrame').locator('.crate-dividers a[href="#setup"]').click();await page.frameLocator('#labManualFrame').locator('#reviewGeminiUpdates').click();await page.waitForFunction(()=>labCalls.some(c=>c[0]==='updates'));
   await page.locator('[data-lab-tab="jukebox"]').click();assert(Math.abs((await page.evaluate(()=>window.scrollY))-position)<2);
   await page.locator('.lab-rail [data-lab-action="preferences"]').click();await page.locator('#labPreferences').waitFor({state:'visible'});
