@@ -84,17 +84,8 @@ const specs=[
      canonicalSelector:f.matches('body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true]'),
      rootProfile:document.documentElement.dataset.ghgThemeProfile,
      pageContext:document.body.dataset.page,
-     image:art.backgroundImage,ink:art.filter,rays:rays.filter,opacity:rays.opacity,
-     yellowFilter:(()=>{
-      const filter=document.getElementById('funkHighlighterEngraving');
-      return {gray:filter?.querySelector('feColorMatrix')?.getAttribute('values'),
-       alphaTransfer:!!filter?.querySelector('feFuncA'),
-       channels:['R','G','B'].map(channel=>{
-        const f=filter?.querySelector('feFunc'+channel);
-        return [f?.getAttribute('type'),f?.getAttribute('offset'),
-         f?.getAttribute('amplitude'),f?.getAttribute('exponent')];
-       })};
-     })()};
+     image:art.backgroundImage,ink:art.filter,size:art.backgroundSize,
+     position:art.backgroundPosition,rays:rays.filter,opacity:rays.opacity};
     f.setAttribute('aria-pressed','false');return value;
    });
    assert.equal(selected.selectedAttribute,'true','Funk select state stays enabled during pressed visual');
@@ -102,13 +93,10 @@ const specs=[
    assert.equal(selected.canonicalSelector,true,'Funk is in the canonical Android Jukebox');
    assert.equal(selected.stock,'rgb(110, 34, 92)','Selected Funk is canonical, not theme-colored: '+JSON.stringify(selected));
    assert.equal(selected.label,'rgb(242, 200, 78)');
-   assert.match(selected.image,/moods-selected-ink-v2.webp/);
-   assert.match(selected.ink,/funkHighlighterEngraving/);
-   assert.equal(selected.yellowFilter.gray,'0','Retain selected plate luminance and engraving');
-   assert.equal(selected.yellowFilter.alphaTransfer,false,'Keep original sprite alpha');
-   assert.deepEqual(selected.yellowFilter.channels,[
-    ['gamma','.733','.20','.65'],['gamma','.83','.17','.65'],['gamma','.038','.17','.65']
-   ],'Fluorescent yellow reaches #EEFF35 without a monochrome flood');
+   assert.match(selected.image,/funk-selected-engraved.webp/,'Baked original Funk engraving');
+   assert.equal(selected.ink,'none','Android WebView should not need a pseudo-element SVG filter');
+   assert.equal(selected.size,'100% 100%','Funk uses the canonical square crop');
+   assert.equal(selected.position,'50% 50%');
    assert.match(selected.rays,/hue-rotate\(23deg\)/);
    assert.equal(selected.opacity,'0.82');
    const iframe=await page.evaluate(()=>document.getElementById('labManualFrame')?.contentDocument?.documentElement?.dataset);
