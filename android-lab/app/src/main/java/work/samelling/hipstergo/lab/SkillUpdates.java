@@ -19,11 +19,12 @@ final class SkillUpdates {
     private final SharedPreferences prefs;
     private final OpenUrl opener;
     private final Runnable changed;
+    private final NativeDialogPalette dialogs;
     private final ExecutorService executor=Executors.newSingleThreadExecutor();
     private volatile boolean checking=false;
     private String status="";
-    SkillUpdates(Activity activity, SharedPreferences prefs, OpenUrl opener, Runnable changed) {
-        this.activity=activity;this.prefs=prefs;this.opener=opener;this.changed=changed;
+    SkillUpdates(Activity activity, SharedPreferences prefs, OpenUrl opener, Runnable changed, NativeDialogPalette dialogs) {
+        this.activity=activity;this.prefs=prefs;this.opener=opener;this.changed=changed;this.dialogs=dialogs;
     }
     String channel(){return prefs.getString("skillChannel","stable");}
     private String key(String name,String channel){return "skill."+channel+"."+name;}
@@ -77,35 +78,35 @@ final class SkillUpdates {
         if(release!=null) {
             add(panel,"View changes",()->opener.open(release.page));
             add(panel,"Download & update instructions",()->instructions(release));
-            add(panel,"I installed this package",()->new AlertDialog.Builder(activity)
+            add(panel,"I installed this package",()->dialogs.show(new AlertDialog.Builder(activity)
                 .setTitle("Record your installation?")
                 .setMessage("Confirm only after replacing the skill in Gemini with "+release.tag+". This records your confirmation; it does not verify Gemini or install anything.")
                 .setPositiveButton("I installed it",(d,n)->{
                     prefs.edit().putString(key("confirmed",channel),release.identity())
                         .putString(key("confirmedLabel",channel),release.tag).apply();changed.run();dialog.dismiss();show();
-                }).setNegativeButton("Cancel",null).show());
+                }).setNegativeButton("Cancel",null)));
         }
         add(panel,"Release channel: "+channel,()->{
-            new AlertDialog.Builder(activity).setTitle("Choose release channel")
+            dialogs.show(new AlertDialog.Builder(activity).setTitle("Choose release channel")
                 .setSingleChoiceItems(new String[]{"Stable — approved releases","Lab — includes experimental prereleases"},"stable".equals(channel)?0:1,(d,n)->{
                     prefs.edit().putString("skillChannel",n==0?"stable":"lab").apply();status="";d.dismiss();dialog.dismiss();changed.run();show();
-                }).setNegativeButton("Cancel",null).show();
+                }).setNegativeButton("Cancel",null));
         });
         add(panel,"Daily in-app checks: "+(prefs.getBoolean("skillAuto",true)?"on":"off"),()->{
             prefs.edit().putBoolean("skillAuto",!prefs.getBoolean("skillAuto",true)).apply();dialog.dismiss();show();
         });
-        ScrollView scroll=new ScrollView(activity);scroll.addView(panel);dialog.setView(scroll);dialog.show();
+        ScrollView scroll=new ScrollView(activity);scroll.addView(panel);dialog.setView(scroll);dialogs.show(dialog);
     }
     private void add(LinearLayout panel,String label,Runnable action) {
         Button b=new Button(activity);b.setText(label);b.setAllCaps(false);
         b.setOnClickListener(v->action.run());panel.addView(b);
     }
     private void instructions(ReleasePolicy.Release release) {
-        new AlertDialog.Builder(activity).setTitle("Update "+release.tag)
+        dialogs.show(new AlertDialog.Builder(activity).setTitle("Update "+release.tag)
             .setMessage("1. Open the release page to review changes.\n2. Download the Gemini skill ZIP.\n3. In Gemini web: Customize → Skills → Go, Hipster, Go! → More → Replace skill.\n4. Choose the downloaded ZIP and Save.\n5. Return here and choose ‘I installed this package’.\n\nThe APK and your GO prompt stay unchanged. Downloads alone never mark an update as installed.")
             .setPositiveButton("Download ZIP",(d,n)->opener.open(release.download))
             .setNeutralButton("Gemini web",(d,n)->opener.open("https://gemini.google.com/app"))
-            .setNegativeButton("Back",(d,n)->show()).show();
+            .setNegativeButton("Back",(d,n)->show()));
     }
     private void check(boolean display) {
         if(checking)return;

@@ -186,10 +186,24 @@ html[data-pwa-theme=usiku] body.gig-poster .go-button .star-glyph{
  filter:grayscale(1) brightness(0) saturate(100%) invert(39%) sepia(17%) saturate(1296%) hue-rotate(346deg) brightness(93%) contrast(86%);
 }
 
+/* The compass north/hub/crown follow the selected-country halftone. */
+html[data-pwa-theme=bosque] body.gig-poster,
+html[data-pwa-theme=usiku] body.gig-poster{--chart-selected-ink:#e5cf42}
+html[data-pwa-theme=bosque] body.gig-poster .chart-rose-north,
+html[data-pwa-theme=usiku] body.gig-poster .chart-rose-north,
+html[data-pwa-theme=bosque] body.gig-poster .chart-rose-hub,
+html[data-pwa-theme=usiku] body.gig-poster .chart-rose-hub,
+html[data-pwa-theme=bosque] body.gig-poster .chart-rose-crown,
+html[data-pwa-theme=usiku] body.gig-poster .chart-rose-crown{
+ fill:var(--chart-selected-ink);
+}
+
 /* First visual-QA corrections: baked petrol engravings need readable contrast
    on inverse stock. Recolor only the rendered ink; preserve exact image assets. */
+/* The theme-colored alpha plate doesn't need the old image inversion. */
+html[data-pwa-theme=bosque] body.gig-poster .poster-bird,
 html[data-pwa-theme=usiku] body.gig-poster .poster-bird{
- filter:grayscale(1) brightness(0) invert(94%);
+ --poster-bird-ink:var(--ink);
 }
 html[data-pwa-theme=usiku] body.gig-poster:is([data-page=launch],[data-page=setup]) .mood-grid .mood .face{
  filter:grayscale(1) brightness(0) invert(94%);

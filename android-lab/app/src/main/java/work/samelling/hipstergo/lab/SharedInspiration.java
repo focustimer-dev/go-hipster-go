@@ -12,6 +12,7 @@ final class SharedInspiration {
     private final Activity activity;
     private final SharedPreferences prefs;
     private final Runnable changed;
+    private final NativeDialogPalette dialogs;
     private final ExecutorService worker=Executors.newSingleThreadExecutor();
     private Future<?> pending;
     private LinkPreview.Request previewRequest;
@@ -19,8 +20,8 @@ final class SharedInspiration {
     private boolean closed;
     private volatile boolean previewLoading;
     private volatile String loadingText="";
-    SharedInspiration(Activity activity,SharedPreferences prefs,Runnable changed) {
-        this.activity=activity;this.prefs=prefs;this.changed=changed;
+    SharedInspiration(Activity activity,SharedPreferences prefs,Runnable changed,NativeDialogPalette dialogs) {
+        this.activity=activity;this.prefs=prefs;this.changed=changed;this.dialogs=dialogs;
         if(!value().isEmpty())remember(value());
     }
     String value(){return prefs.getString("sharedInspiration","");}
@@ -88,6 +89,6 @@ final class SharedInspiration {
                 Toast.makeText(activity,"Inspiration added.",Toast.LENGTH_LONG).show();
             }).setNegativeButton("Cancel",null);
         if(!value().isEmpty())dialog.setNeutralButton("Remove",(d,n)->clear());
-        dialog.show();
+        dialogs.show(dialog);
     }
 }

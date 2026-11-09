@@ -119,3 +119,28 @@ resting states AND in-between frames at 320/390px, run Android and PWA
 unit/visual workflows, and never let a missing token silently inherit the
 wrong theme. This first milestone is an architectural foundation, not
 permission to turn on Kingston or any other candidate in Preferences.
+
+## Final Five print themes in the canonical Android app
+
+Libéri, Bosque and Usiku remain available, joined by five printed themes:
+Kingston Blank-Label, Detroit Midnight Xerox, Addis Jazz Offset,
+Polish Jazz Modernism and Beirut Cassette Slip.
+
+Each theme provides semantic UI, character engraving and Atlas palette
+roles. `theme.js` supplies shared maps and portrait colors, while
+`theme-tokens.css` defines printed materials and active interaction inks.
+The same `theme-print.css` handles all five designs. No extra Atlas
+geometry, source images or alternative Jukebox layouts are used.
+
+Unselected Funk inherits each theme's neutral paper, ink and tonal etching,
+just like the other portraits. Only the selected Funk is invariant across
+all eight themes: canonical violet/magenta pressing, orange-gold selected
+engraving, gold text/rim and masked rays, in one Android-wide style rule.
+
+The five print themes use their existing `--lab-print-active-ink` token
+to color the tempo thumb. No changes to the rail, hit targets, Any state or
+the three original themes' slider treatments.
+
+Only Android source is promoted; the standalone Theme Review APK variant,
+debug signing configuration and PWA release are excluded. The browser
+test for the new print palettes is short, screenshot-free and bounded.

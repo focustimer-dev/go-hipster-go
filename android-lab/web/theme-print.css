@@ -1,0 +1,271 @@
+/* Generic physical-print profile — not a Kingston-specific skin.
+   Future approved print themes provide new tokens, without new selectors.
+   Scope: Android Lab preview only. Original cast, Atlas, gestures and
+   animation geometry remain owned by the existing runtime. */
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace{
+  --ink:var(--lab-ui-ink);--ink2:var(--lab-ui-action);
+  --paper:var(--lab-ui-surface);--bone:var(--lab-ui-ticket-stock);
+  --red:var(--lab-ui-highlight);--red2:var(--lab-ui-rule);
+  --yellow:var(--lab-ui-surface);
+  --line:color-mix(in srgb,var(--lab-ui-rule) 48%,transparent);
+  --focus-ink:var(--lab-ui-focus);--focus-paper:var(--lab-ui-ticket-stock);
+  --control-metal:var(--lab-ui-field);--control-track:var(--lab-ui-ink);
+  --atlas-paper:var(--lab-atlas-field);--atlas-paper-light:var(--lab-print-muted);
+  --atlas-paper-hover:var(--lab-ui-ticket-stock);--atlas-ink:var(--lab-atlas-ink);
+  --atlas-accent:var(--lab-atlas-route);--atlas-border:var(--lab-atlas-ink);
+  --atlas-land:var(--lab-atlas-land);--atlas-water:var(--lab-atlas-ocean);
+  --atlas-boundary:var(--lab-atlas-ink);--atlas-selected:var(--lab-atlas-selected);
+  --selection-vermilion:var(--lab-mood-selected-paper);
+  --receipt-ink:var(--lab-ui-action);
+  --lab-action-yellow:var(--lab-ui-highlight);
+  --lab-action-ink:var(--lab-ui-on-highlight);
+  color:var(--lab-ui-ink);background:var(--lab-ui-surface);
+  color-scheme:light;
+}
+/* Stamp the original hero engraving in each palette's existing quiet
+   registration ink, not with a new per-theme override. */
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace{
+ --poster-bird-ink:var(--lab-print-stamp);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .site{
+  background-color:var(--lab-ui-surface);color:var(--lab-ui-ink);
+  background-image:var(--lab-print-substrate-texture,none);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace :is(.lab-page,.lab-dialog){
+  background-color:var(--lab-ui-surface);color:var(--lab-ui-ink);
+  background-image:var(--lab-print-substrate-texture,none);
+}
+/* A single user-state ink drives the printed tempo knob on ALL five
+   candidate themes: Kingston brick, Detroit highlighter pink, Addis teal,
+   Polish vermilion and Beirut dusty rose. Only the paint changes.
+   Preserve 27px thumb, drag hitbox, track, and the hidden Any-state thumb. */
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace
+ .tempo-control:not([data-tempo=any]) #tempoSlider::-webkit-slider-thumb{
+ background:var(--lab-print-active-ink);
+ border:2px solid var(--lab-ui-surface);
+ box-shadow:0 0 0 1px var(--lab-ui-ink);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace
+ .tempo-control:not([data-tempo=any]) #tempoSlider::-moz-range-thumb{
+ background:var(--lab-print-active-ink);
+ border:2px solid var(--lab-ui-surface);
+ box-shadow:0 0 0 1px var(--lab-ui-ink);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .lab-rail{
+  background:var(--lab-ui-rail);color:var(--lab-ui-on-rail);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .lab-rail button[aria-current=page]{
+  background:var(--lab-ui-action);color:var(--lab-ui-on-action);
+  border-bottom-color:var(--lab-print-active-ink);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .lab-rail button:last-child{
+  border-inline-start-color:var(--lab-ui-on-rail);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace :is(.lab-dialog-head,.lab-section-head,.lab-page section>h2,.lab-record,.lab-local-note){
+  border-color:var(--lab-ui-rule);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .lab-dialog-head{
+  background:var(--lab-ui-panel);color:var(--lab-ui-on-panel);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace :is(.lab-wide-button,.lab-text-button,.lab-dialog button,.lab-dialog a,.lab-guide-chapters button){
+  color:var(--lab-ui-ink);border-color:var(--lab-ui-rule);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace :is(#labSetupText,#labInspirationEditor textarea){
+  background:var(--lab-ui-field);color:var(--lab-ui-on-field);
+  border-color:var(--lab-ui-control-outline);caret-color:var(--lab-ui-ink);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #labServicePreferences .switch button[aria-pressed=true]{
+  background:var(--lab-ui-action);color:var(--lab-ui-on-action);border-color:var(--lab-ui-action);
+  box-shadow:inset 0 -3px 0 var(--lab-print-active-ink);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #labServicePreferences .switch button[aria-pressed=false]{
+  background:transparent;color:var(--lab-ui-ink);border-color:var(--lab-ui-rule);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace :is(.lab-choice input,.lab-dialog input[type=checkbox]){
+  accent-color:var(--lab-print-control-ink,var(--lab-ui-ink));
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace :is(button,a,input,select,textarea,summary):focus-visible{
+  outline-color:var(--lab-ui-focus);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .lab-dialog .lab-theme-choice[aria-pressed=true]{
+  background:var(--lab-ui-action)!important;color:var(--lab-ui-on-action)!important;
+}
+/* Preserve the existing compact Jukebox structure, not a second card UI. */
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .go-options .go-button{
+  background:var(--lab-ui-go);color:var(--lab-ui-on-action);
+  min-height:110px;border:0;border-top:1px solid var(--lab-print-stamp);
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--lab-ui-on-action) 28%,transparent);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .go-button .go-copy b{
+  color:var(--lab-ui-on-action);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .go-button .go-copy>span:not(.go-stamp){
+  color:var(--lab-ui-on-action);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .go-button .go-stamp{
+  background:var(--lab-ui-highlight);color:var(--lab-ui-on-highlight);
+  border:3px var(--lab-print-stamp-border-style,double) var(--lab-ui-on-highlight);
+  font-size:clamp(1.5rem,6cqw,2.65rem);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .go-options .go-extras{
+  border-bottom:0;
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .receipt-heading{
+  background:transparent;color:var(--lab-ui-ink);border-bottom:1px solid var(--lab-ui-rule);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .receipt-heading .lab-save-button{
+  background:transparent;color:var(--lab-ui-ink);border:1px solid var(--lab-ui-rule);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #firstCrateSetup .ticket{
+  --ink:var(--lab-ui-ticket-ink);--paper:var(--lab-ui-ticket-stock);
+  background:var(--lab-ui-ticket-stock);color:var(--lab-ui-ticket-ink);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .lab-atlas-modes{
+  border:0;border-bottom:1px solid var(--lab-ui-rule);
+  background:transparent;box-shadow:none;
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .lab-atlas-modes button{
+  min-height:48px;border:0;border-bottom:3px solid transparent;
+  color:var(--lab-ui-ink);background:transparent;
+  font:400 1.15rem/1.1 Poster,sans-serif;letter-spacing:0;
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .lab-atlas-modes button+button{
+  border-inline-start:0;
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .lab-atlas-modes button[aria-pressed=true]{
+  background:transparent;color:var(--lab-ui-ink);
+  border-bottom-color:var(--lab-print-active-ink);
+  text-decoration:underline;text-underline-offset:4px;
+}
+/* One coherent ocean/land palette for all three projections AND their veil. */
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #labAtlasGlobe,
+:root[data-ghg-theme-profile=print] #labAtlasGlobe :is(.lab-atlas-morph,.lab-cahill-motion){
+  background:var(--lab-atlas-field)!important;
+}
+:root[data-ghg-theme-profile=print] #labAtlasGlobe .lab-cahill-overlay{
+  background:transparent!important;
+}
+:root[data-ghg-theme-profile=print] #labAtlasCahill .lab-cahill-ocean,
+:root[data-ghg-theme-profile=print] #labCahillAntarcticOcean{
+  fill:var(--lab-atlas-ocean);stroke:var(--lab-atlas-ocean-stroke);
+  stroke-opacity:var(--lab-atlas-ocean-stroke-opacity);
+}
+:root[data-ghg-theme-profile=print] #labAtlasCahill .lab-cahill-graticule{
+  stroke:var(--lab-atlas-graticule);stroke-opacity:var(--lab-atlas-graticule-opacity);
+}
+:root[data-ghg-theme-profile=print] #labAtlasCahill [data-cahill-region][aria-pressed=false]{
+  fill:var(--lab-atlas-land);stroke:var(--lab-atlas-ink);
+}
+:root[data-ghg-theme-profile=print] #labAtlasCahill [data-cahill-region][aria-pressed=true]{
+  fill:var(--lab-atlas-selected);stroke:var(--lab-atlas-ink);stroke-width:1.35;
+}
+:root[data-ghg-theme-profile=print] #labAtlasCahill .lab-cahill-routes path{
+  stroke:var(--lab-atlas-route);stroke-width:1.2;stroke-opacity:var(--lab-atlas-route-opacity);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .crate-map-frame{
+  background:var(--lab-atlas-field);
+  border:1px solid var(--lab-ui-rule);
+}
+/* Vintage label: the map is an ink impression on paper, not a thick
+   photocopied rectangle. Water remains the same dark teal in every
+   projection, and the outer stage stays warm stock during transitions. */
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #labAtlasGlobe{
+  border-top:1px solid var(--lab-ui-rule);border-bottom:1px solid var(--lab-ui-rule);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .crate-map-ocean{fill:var(--lab-atlas-ocean)}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #posterLandEngraving rect{fill:var(--lab-atlas-land)}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #posterLandEngraving path{stroke:var(--lab-atlas-ink)}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #posterSelectedHalftone rect{fill:var(--lab-atlas-selected)}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #posterSelectedHalftone path{stroke:var(--lab-atlas-ink)}
+/* Normal portrait paper and ink apply to ALL eight, including Funk.
+   Only selected Funk is exempt from palette recoloring; the other seven
+   share the generic selected stock and preserve engraved image shading. */
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[aria-pressed=false]{
+  background:var(--lab-mood-neutral-paper);color:var(--lab-mood-neutral-ink);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=funky])[aria-pressed=true]{
+  background:var(--lab-mood-selected-paper);color:var(--lab-mood-selected-ink);
+  box-shadow:inset 0 0 0 2px var(--lab-mood-selected-edge,var(--lab-print-active-ink)),inset 0 -3px 0 var(--lab-mood-selected-edge,var(--lab-print-active-ink));
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood .word{
+  color:var(--lab-mood-neutral-ink);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=funky])[aria-pressed=true] .word{
+  color:var(--lab-mood-selected-ink);background:transparent;
+  text-decoration:underline;text-decoration-color:var(--lab-print-active-ink);
+}
+/* The two original expression plates are *actually* recolored by MOODS
+   neutralInk/selectedInk plus neutralPaper/selectedPaper. A theme-specific
+   SVG luminance transfer preserves hatch detail, including midtone shadows.
+   Never apply the legacy selectedMoodPetrol flood to the whole .face.
+   Funk, Desire and Triumph keep their separately approved artwork rules. */
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=funky])[aria-pressed=true] .face{
+  filter:none!important;
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=desire]):not([data-mood=triumphant]) .face::before{
+  filter:url(#themeMoodNeutralEngraving)!important;
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=funky]):not([data-mood=desire]):not([data-mood=triumphant]) .face::after{
+  filter:url(#themeMoodSelectedEngraving)!important;
+}
+/* Keep original ::before and ::after image backgrounds, selected sprite
+   expressions, alpha gradients, and Desire/Triumph artwork. Do not mask
+   the entire source to one flat color: it destroys etched portrait shading. */
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=desire][aria-pressed=true] .face::before{
+  opacity:1;filter:url(#referenceInk)!important;
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=desire][aria-pressed=true] .face::after{opacity:0}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=desire] .desire-hearts{
+  background:var(--lab-mood-desire-hearts);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=triumphant][aria-pressed=true] .face::after{
+  filter:url(#alphaInk)!important;
+}
+/* Neutral Funk shares each print palette's paper and engraving.
+   The selected Funk is locked once across ALL Android themes by
+   the canonical selected-performance rule in workspace.css. */
+/* Print-profile QA corrections: shared roles, not theme-name selectors. */
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #firstCrateSetup{
+ --ink:var(--lab-ui-ticket-ink);--paper:var(--lab-ui-ticket-stock);
+ --cream:var(--lab-ui-ticket-stock);--ticket-stock:var(--lab-ui-ticket-stock);
+ --receipt-red:var(--lab-ui-ticket-ink);
+ --setup-rule:var(--lab-ui-highlight);
+ --red:var(--lab-ui-highlight);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #firstCrateSetup .ink-stamp{
+ color:var(--lab-ui-ticket-ink);border-color:var(--lab-ui-highlight);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #labCrateEmpty{
+ border-color:var(--lab-ui-rule);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
+ background:var(--lab-ui-action);color:var(--lab-ui-on-action);border-color:var(--lab-ui-rule);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #goButton .star-glyph{
+ filter:var(--lab-print-stamp-filter,none);
+}
+/* Match the unique Desire/Triumph SVG ink-flood to the neutral/selected role,
+   leaving their existing luminance-based etch and artwork untouched. */
+:root[data-ghg-theme-profile=print] :is(#referenceInk,#alphaInk) feFlood{
+ flood-color:var(--lab-mood-neutral-ink);
+}
+/* Accent choreography for EVERY future print profile. The theme supplies
+   --lab-print-stamp (decorative plate) and --lab-print-active-ink (interactive
+   ink). No selector here names a theme or hardcodes its colors.
+   Active ink marks selection with a thin underprint, never a flood. */
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #labServicePreferences .switch button[aria-pressed=true]{
+  border-bottom:3px solid var(--lab-print-active-ink);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .shuffle-pins .shuffle-pin[aria-pressed=true],
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .tempo-heading #anyTempo[aria-pressed=true],
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .go-options .go-extras .cover-toggle[aria-pressed=true]{
+  border-bottom-color:var(--lab-print-active-ink);
+  text-decoration-color:var(--lab-print-active-ink);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .go-options .go-extras .cover-toggle[aria-pressed=true] .option-state{
+  background:var(--lab-print-active-ink);
+  border-color:var(--lab-print-active-ink);
+}
+/* The expressive GO printing, cartography and receipt use the quieter
+   registration ink; only user-driven states get the stronger hit. */
+/* Do not alter layout widths, touch geometry, map projection math or font. */

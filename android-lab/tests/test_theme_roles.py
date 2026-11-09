@@ -106,7 +106,7 @@ class AndroidThemeRoles(unittest.TestCase):
         pattern=r"\b([a-z]+):Object\.freeze\(\{(.*?)\n \}\)"
         atlas_def=dict(re.findall(pattern,atlas,re.S))
         mood_def=dict(re.findall(pattern,moods,re.S))
-        self.assertEqual(set(atlas_def),{"liberi","bosque","usiku"})
+        self.assertEqual(set(atlas_def),{"liberi","bosque","usiku","kingston","detroit","addis","polish","beirut"})
         self.assertEqual(set(mood_def),set(atlas_def))
         atlas_required={
             "paper","land","ocean","ink","selected","route",
@@ -115,7 +115,7 @@ class AndroidThemeRoles(unittest.TestCase):
         }
         mood_required={
             "neutralPaper","neutralInk","selectedPaper","selectedInk",
-            "desireHeart","funkPaper","funkInk",
+            "desireHeart",
         }
         for theme in atlas_def:
             atlas_roles=set(re.findall(r"\b([a-zA-Z]+):",atlas_def[theme]))
@@ -130,6 +130,230 @@ class AndroidThemeRoles(unittest.TestCase):
         self.assertGreaterEqual(contrast("#e5cf42","#003018"),4.5)
         self.assertIn("function applyThemeTokens()",js)
         self.assertIn("applyThemeTokens();requestPaint()",js)
+
+    def test_kingston_android_theme_contrast_safe(self):
+        js=source("android-lab/web/theme.js")
+        roles=source("android-lab/web/theme-tokens.css")
+        css=source("android-lab/web/theme-print.css")
+        bundle=source("scripts/bundle_android_lab.py")
+        self.assertIn("const PILOTS=['kingston','detroit','addis','polish','beirut']",js)
+        self.assertIn("THEMES=['liberi','bosque','usiku','kingston','detroit','addis','polish','beirut']",js)
+        self.assertNotIn("PILOTS.includes(next)&&persist",js)
+        self.assertIn("PILOTS.includes(preview)?preview:saved()",js)
+        self.assertIn("data-lab-print-style",bundle)
+        self.assertIn("android-lab/web/theme-print.css",bundle)
+        self.assertIn('data-lab-theme="kingston"',source("android-lab/web/workspace.html"))
+        self.assertIn(":root[data-pwa-theme=kingston]",roles)
+        self.assertIn(":root[data-ghg-theme-profile=print]",css)
+        for role in ("--lab-ui-surface:#e3d9c2", "--lab-ui-action:#304743",
+                     "--lab-ui-go:#385e5a", "--lab-ui-highlight:#7bb0aa",
+                     "--lab-ui-on-highlight:#263f3e"):
+            self.assertIn(role,roles)
+        for role in ("--lab-atlas-ocean","--lab-atlas-land","--lab-atlas-field",
+                     "--lab-mood-selected-paper","--lab-mood-neutral-ink"):
+            self.assertIn("var("+role,css)
+        for paper,ink in (("#e3d9c2","#263f3e"),("#d2c3a6","#244643"),
+                          ("#efe4cb","#385e5a"),("#efe4cb","#304743"),
+                          ("#eee4cf","#263f3e")):
+            self.assertGreaterEqual(contrast(paper,ink),4.5)
+        # Two ink jobs must be separately authored for EVERY print palette.
+        # Active brick is allowed for small marks but also meets AA if used
+        # as printed type on our current cream substrate.
+        self.assertIn("--lab-print-stamp:#59817c",roles)
+        self.assertIn("--lab-print-active-ink:#9b3a2b",roles)
+        self.assertGreaterEqual(contrast("#9b3a2b","#e3d9c2"),4.5)
+        for token in ("--lab-print-stamp","--lab-print-active-ink"):
+            self.assertIn("var("+token,css)
+        for intent in ("mood:not([data-mood=funky])[aria-pressed=true]",
+                       ".lab-atlas-modes button[aria-pressed=true]",
+                       ".shuffle-pins .shuffle-pin[aria-pressed=true]",
+                       ".go-options .go-extras .cover-toggle[aria-pressed=true]"):
+            self.assertIn(intent,css)
+        self.assertNotIn("data-pwa-theme=kingston",css)
+        # Print themes must never flatten the Funk selected portrait or
+        # repaint its original lasers. Other cast preserves sprite shading.
+        self.assertIn("mood:not([data-mood=funky])[aria-pressed=true]",css)
+        self.assertIn("--funk-selected-paper:#311333",source("android-lab/web/workspace.css"))
+        self.assertIn("background-color:#6e225c",source("android-lab/web/workspace.css"))
+        self.assertIn("hue-rotate(324deg)",source("android-lab/web/workspace.css"))
+        self.assertIn("hue-rotate(23deg) saturate(1.24)",source("android-lab/web/workspace.css"))
+        self.assertNotIn("hue-rotate(170deg)",css)
+        self.assertNotIn("moods-selected-ink-v2.webp",css)
+        self.assertNotIn("mask-image:url('/editions/gig-poster/assets/moods-neutral-ink-v2.webp')",css)
+
+    def test_every_print_theme_has_an_independent_accessible_ink_pair(self):
+        """Future print themes may choose colors, not skip semantic roles."""
+        raw=source("android-lab/web/theme-tokens.css")
+        profiles=re.findall(r":root\[data-pwa-theme=([a-z-]+)\]\{([^}]*)\}",raw,re.S)
+        print_profiles=[]
+        for name,body in profiles:
+            if "--lab-print-stamp:" not in body and "--lab-print-active-ink:" not in body:
+                continue
+            print_profiles.append(name)
+            values=dict(re.findall(r"(--lab-[a-z-]+):\s*(#[0-9a-f]{6})\s*;",body))
+            mandatory={
+                "--lab-print-stamp","--lab-print-active-ink",
+                "--lab-ui-surface","--lab-ui-ink","--lab-ui-rule",
+                "--lab-ui-go","--lab-ui-on-action",
+                "--lab-ui-highlight","--lab-ui-on-highlight",
+            }
+            self.assertTrue(mandatory.issubset(values),name+" missing print ink roles")
+            for bg,fg in (
+                ("--lab-ui-surface","--lab-ui-ink"),
+                ("--lab-ui-go","--lab-ui-on-action"),
+                ("--lab-ui-highlight","--lab-ui-on-highlight"),
+            ):
+                self.assertGreaterEqual(contrast(values[bg],values[fg]),4.5,
+                    name+" foreground on "+bg)
+            for ink in ("--lab-print-active-ink","--lab-print-stamp"):
+                self.assertGreaterEqual(contrast(values["--lab-ui-surface"],values[ink]),3,
+                    name+" graphical ink contrast: "+ink)
+        self.assertIn("kingston",print_profiles)
+        css=source("android-lab/web/theme-print.css")
+        manual=source("android-lab/web/manual-guide-theme.css")
+        self.assertNotRegex(css,r"data-pwa-theme=(kingston|detroit|addis|polish|beirut)")
+        for role in ("--lab-print-active-ink","--lab-print-stamp"):
+            self.assertIn("var("+role,css)
+        self.assertIn("var(--lab-print-active-ink)",manual)
+
+    def test_second_print_theme_is_token_only(self):
+        js=source("android-lab/web/theme.js")
+        tokens=source("android-lab/web/theme-tokens.css")
+        css=source("android-lab/web/theme-print.css")
+        manual=source("android-lab/web/manual-guide.html")
+        self.assertIn("const PILOTS=['kingston','detroit','addis','polish','beirut']",js)
+        self.assertIn(":root[data-pwa-theme=detroit]",tokens)
+        self.assertIn("kingston|detroit|addis|polish|beirut",manual)
+        self.assertIn('data-lab-theme="detroit"',source("android-lab/web/workspace.html"))
+        self.assertNotIn("data-pwa-theme=detroit",css)
+        self.assertIn("var(--lab-print-substrate-texture,none)",css)
+        self.assertIn("var(--lab-print-stamp-border-style,double)",css)
+        for stock,ink in (("#e7e5db","#171717"),("#d0d0bd","#171717"),
+                          ("#f1f0e7","#171717"),("#d5e644","#171717"),
+                          ("#f0efe8","#171717")):
+            self.assertGreaterEqual(contrast(stock,ink),4.5)
+        # Highlighter ink is a graphical selection mark on paper;
+        # both neon inks also remain legible as strong marks on toner.
+        self.assertGreaterEqual(contrast("#f0efe8","#f50093"),3)
+        self.assertGreaterEqual(contrast("#171717","#f50093"),4.5)
+        self.assertGreaterEqual(contrast("#171717","#d5e644"),4.5)
+        self.assertIn("--lab-print-active-ink:#f50093",tokens)
+        self.assertIn("--lab-print-control-ink:#f50093",tokens)
+        self.assertIn("--lab-print-stamp:#555555",tokens)
+        self.assertIn("var(--lab-print-control-ink,var(--lab-ui-ink))",css)
+
+    def test_print_mood_engraving_is_mood_palette_driven(self):
+        js=source("android-lab/web/theme.js")
+        css=source("android-lab/web/theme-print.css")
+        tokens=source("android-lab/web/theme-tokens.css")
+        self.assertIn("themeMoodNeutralEngraving",js)
+        self.assertIn("themeMoodSelectedEngraving",js)
+        self.assertIn("'neutralInk','neutralPaper'",js)
+        self.assertIn("'selectedInk','selectedPaper'",js)
+        self.assertIn("String(paper[i]-ink[i])",js)
+        self.assertIn("filter:url(#themeMoodNeutralEngraving)!important",css)
+        self.assertIn("filter:url(#themeMoodSelectedEngraving)!important",css)
+        self.assertIn("var(--lab-mood-selected-edge,var(--lab-print-active-ink))",css)
+        self.assertIn("--lab-mood-selected-edge:#171717",tokens)
+        self.assertIn("selectedPaper:'#f50093',selectedInk:'#171717'",js)
+        self.assertIn(":not([data-mood=funky])",css)
+        self.assertGreaterEqual(contrast("#f50093","#171717"),4.5)
+
+    def test_print_profile_reuses_canonical_jukebox_and_funk(self):
+        css=source("android-lab/web/theme-print.css")
+        workspace=source("android-lab/web/workspace.css")
+        selector=":root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])"
+        self.assertGreaterEqual(workspace.count(selector),35)
+        self.assertIn("font:400 1.3rem/1.15 Poster,sans-serif",workspace)
+        self.assertIn("font:400 1rem/1.45 Arial,Helvetica,sans-serif",workspace)
+        self.assertIn("background-color:#6e225c",source("android-lab/web/workspace.css"))
+        self.assertIn("linear-gradient(145deg,#311333,#722269 66%,#a52d78)",workspace)
+        self.assertIn("box-shadow:inset 0 0 0 2px #f2c84e",workspace)
+        self.assertIn("hue-rotate(324deg)",source("android-lab/web/workspace.css"))
+        self.assertIn("hue-rotate(23deg) saturate(1.24)",source("android-lab/web/workspace.css"))
+        self.assertIn("opacity:.82",workspace)
+        self.assertNotIn("--funk-selected-paper:color-mix(in srgb,#e03fd8 22%,#f4efdf)",css)
+
+    def test_funk_neutral_follows_theme_selected_is_invariant(self):
+        js=source("android-lab/web/theme.js")
+        print_css=source("android-lab/web/theme-print.css")
+        app=source("android-lab/web/workspace.css")
+        self.assertNotIn("funkPaper",js)
+        self.assertNotIn("funkInk",js)
+        self.assertIn(".mood[aria-pressed=false]",print_css)
+        self.assertIn("themeMoodNeutralEngraving",print_css)
+        self.assertIn("mood[data-mood=funky][aria-pressed=true]",app)
+        self.assertIn("background-color:#6e225c!important",app)
+        self.assertIn("opacity:.82!important",app)
+        self.assertNotRegex(print_css,r"data-pwa-theme=(addis|polish|beirut)")
+
+    def test_five_print_palettes_are_selectable_and_complete(self):
+        js=source("android-lab/web/theme.js")
+        roles=source("android-lab/web/theme-tokens.css")
+        html=source("android-lab/web/workspace.html")
+        guide=source("android-lab/web/manual-guide.html")
+        for name in ("kingston","detroit","addis","polish","beirut"):
+            self.assertIn('data-lab-theme="'+name+'"',html)
+            self.assertIn("data-pwa-theme="+name,roles)
+        self.assertIn("kingston|detroit|addis|polish|beirut",guide)
+        self.assertIn("const PILOTS=['kingston','detroit','addis','polish','beirut']",js)
+
+    def test_print_tempo_thumb_consumes_only_active_ink(self):
+        css=source("android-lab/web/theme-print.css")
+        for pseudo in ("::-webkit-slider-thumb","::-moz-range-thumb"):
+            self.assertIn(".tempo-control:not([data-tempo=any]) #tempoSlider"+pseudo,css)
+        self.assertIn("background:var(--lab-print-active-ink)",css)
+        self.assertIn("border:2px solid var(--lab-ui-surface)",css)
+        self.assertIn("box-shadow:0 0 0 1px var(--lab-ui-ink)",css)
+        self.assertNotIn("data-pwa-theme=addis",css)
+        self.assertNotIn("data-pwa-theme=polish",css)
+        self.assertNotIn("data-pwa-theme=beirut",css)
+        source_css=source("launcher/editions/gig-poster/edition.css")
+        self.assertIn(".tempo-control[data-tempo=any] #tempoSlider::-webkit-slider-thumb{opacity:0}",source_css)
+        self.assertIn(".tempo-control[data-tempo=any] #tempoSlider::-moz-range-thumb{opacity:0}",source_css)
+
+    def test_native_request_dialogs_consume_semantic_theme_tokens(self):
+        js=source("android-lab/web/theme.js")
+        activity=source("android-lab/app/src/main/java/work/samelling/hipstergo/lab/LabActivity.java")
+        native=source("android-lab/app/src/main/java/work/samelling/hipstergo/lab/NativeDialogPalette.java")
+        for role in ("--lab-ui-panel","--lab-ui-on-panel","--lab-ui-field",
+                     "--lab-ui-on-field","--lab-ui-rule","--lab-print-active-ink"):
+            self.assertIn(role,js)
+        self.assertIn("syncNativeDialogPalette();",js)
+        self.assertIn("setDialogPalette(theme,surface,ink,accent,field,fieldInk,rule)",js)
+        self.assertIn("@JavascriptInterface public void setDialogPalette(",activity)
+        self.assertIn("if(!THEMES.contains(theme))return;",native)
+        self.assertIn("contrast(s,i)<4.5",native)
+        self.assertIn("contrast(f,fi)<4.5",native)
+        self.assertIn("window.setBackgroundDrawable(paper)",native)
+        self.assertIn("input.setTextColor(fieldInk)",native)
+        for name in ("SavedRequests.java","SharedInspiration.java","SkillUpdates.java"):
+            java=source("android-lab/app/src/main/java/work/samelling/hipstergo/lab/"+name)
+            self.assertIn("NativeDialogPalette dialogs",java)
+            self.assertIn("dialogs.show(",java)
+        self.assertIn('dialogs.show(new AlertDialog.Builder(activity).setTitle("Save this request")',
+                      source("android-lab/app/src/main/java/work/samelling/hipstergo/lab/SavedRequests.java"))
+
+    def test_hero_and_compass_use_the_shared_atlas_palette(self):
+        hero=source("launcher/editions/gig-poster/index.html")
+        builder=source("scripts/build_gig_poster.py")
+        poster=source("launcher/editions/gig-poster/edition.css")
+        pwa=source("launcher/assets/pwa-themes.css")
+        android=source("android-lab/web/workspace.css")
+        print_css=source("android-lab/web/theme-print.css")
+        self.assertIn('<span class="poster-line">PROBLEM</span>',hero)
+        self.assertNotIn('<span class="poster-line">PROBLEM.</span>',hero)
+        self.assertIn('<span class="poster-line">PROBLEM</span>',builder)
+        self.assertIn('<span class="poster-bird" aria-hidden="true"></span>',hero)
+        self.assertIn('bird-globe.webp',poster)
+        self.assertIn('-webkit-mask:url(',poster)
+        self.assertIn('background-color:var(--poster-bird-ink,var(--ink))',poster)
+        self.assertIn('--poster-bird-ink:var(--lab-print-stamp)',print_css)
+        self.assertIn('--chart-selected-ink:var(--lab-atlas-selected)',android)
+        self.assertIn('fill:var(--lab-atlas-selected)',android)
+        for part in ('north','hub','crown'):
+            self.assertIn('chart-rose-'+part+'{fill:var(--chart-selected-ink',poster)
+            self.assertIn('.chart-rose-'+part,pwa)
 
     def test_app_and_iframe_load_the_same_source(self):
         bundle = source("scripts/bundle_android_lab.py")

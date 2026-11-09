@@ -108,3 +108,57 @@
 :root[data-pwa-theme=usiku] body.embedded-guide :is(#setupSend,#setupSendChat) .receipt .setup-actions .primary:hover{
  background:#00301812!important;
 }
+
+/* Reusable printed-paper profile. The iframe shares Kingston's semantic
+   tokens, not a hardcoded second copy of its palette or a second design. */
+:root[data-ghg-theme-profile=print]{
+ --ink:var(--lab-ui-on-panel);
+ --paper:var(--lab-ui-panel);
+ --light:var(--lab-ui-ticket-stock);
+ --red:var(--lab-ui-highlight);
+ --guide-muted:var(--lab-print-muted);
+ --guide-active:var(--lab-ui-action);
+ --guide-active-ink:var(--lab-ui-on-action);
+}
+:root[data-ghg-theme-profile=print] body.embedded-guide{
+ background:var(--lab-ui-panel)!important;color:var(--lab-ui-on-panel)!important;
+ background-image:var(--lab-print-substrate-texture,none)!important;
+}
+:root[data-ghg-theme-profile=print] :is(.crate-tabs button:not([aria-selected=true]),.crate-dividers h2){
+ background:var(--guide-muted)!important;color:var(--lab-ui-on-panel)!important;
+}
+:root[data-ghg-theme-profile=print] :is(.crate-tabs button[aria-selected=true],.crate-dividers a[aria-current=page],.manual-groups [aria-pressed=true]){
+ background:var(--guide-active)!important;color:var(--guide-active-ink)!important;
+}
+:root[data-ghg-theme-profile=print] .crate-picker summary{border-color:var(--lab-ui-rule)}
+:root[data-ghg-theme-profile=print] .crate-action{
+ background:var(--lab-ui-action);color:var(--lab-ui-on-action);
+ box-shadow:inset 0 0 0 1px var(--lab-ui-rule);
+}
+:root[data-ghg-theme-profile=print] .crate-action .deck-key{
+ background:var(--lab-ui-action);color:var(--lab-ui-on-action);
+}
+:root[data-ghg-theme-profile=print] :is(button,a,input,textarea,summary):focus-visible{
+ outline-color:var(--lab-ui-focus);
+}
+:root[data-ghg-theme-profile=print] body.embedded-guide :is(#setupSend,#setupSendChat) .receipt{
+ background:var(--lab-ui-ticket-stock)!important;
+ color:var(--lab-ui-ticket-ink)!important;
+ border-top-color:var(--lab-ui-ticket-ink)!important;
+}
+:root[data-ghg-theme-profile=print] body.embedded-guide :is(#setupSend,#setupSendChat) .receipt .setup-actions .primary{
+ font:400 clamp(1.5rem,5.2vw,2rem)/1.14 Poster,sans-serif;
+ color:var(--lab-ui-ticket-ink)!important;background:transparent!important;
+ border:2px solid var(--lab-ui-ticket-ink)!important;min-height:48px;
+}
+/* The same active-ink contract applies inside the Manual iframe.
+   Every future print theme changes these controls by supplying one token. */
+:root[data-ghg-theme-profile=print] :is(
+ .crate-tabs button[aria-selected=true],
+ .crate-dividers a[aria-current=page],
+ .manual-groups [aria-pressed=true]
+){
+ border-bottom:3px solid var(--lab-print-active-ink);
+}
+:root[data-ghg-theme-profile=print] .manual-index{border-bottom-color:var(--lab-ui-rule)}
+:root[data-ghg-theme-profile=print] .manual-liner>summary{border-bottom:1px solid var(--lab-ui-rule)}
