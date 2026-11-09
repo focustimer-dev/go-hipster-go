@@ -309,6 +309,20 @@ class AndroidThemeRoles(unittest.TestCase):
         self.assertIn("kingston|detroit|addis|polish|beirut",guide)
         self.assertIn("const PILOTS=['kingston','detroit','addis','polish','beirut']",js)
 
+    def test_print_tempo_thumb_consumes_only_active_ink(self):
+        css=source("android-lab/web/theme-print.css")
+        for pseudo in ("::-webkit-slider-thumb","::-moz-range-thumb"):
+            self.assertIn(".tempo-control:not([data-tempo=any]) #tempoSlider"+pseudo,css)
+        self.assertIn("background:var(--lab-print-active-ink)",css)
+        self.assertIn("border:2px solid var(--lab-ui-surface)",css)
+        self.assertIn("box-shadow:0 0 0 1px var(--lab-ui-ink)",css)
+        self.assertNotIn("data-pwa-theme=addis",css)
+        self.assertNotIn("data-pwa-theme=polish",css)
+        self.assertNotIn("data-pwa-theme=beirut",css)
+        source_css=source("launcher/editions/gig-poster/edition.css")
+        self.assertIn(".tempo-control[data-tempo=any] #tempoSlider::-webkit-slider-thumb{opacity:0}",source_css)
+        self.assertIn(".tempo-control[data-tempo=any] #tempoSlider::-moz-range-thumb{opacity:0}",source_css)
+
     def test_app_and_iframe_load_the_same_source(self):
         bundle = source("scripts/bundle_android_lab.py")
         manual = source("android-lab/web/manual-guide.html")

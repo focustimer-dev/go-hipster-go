@@ -65,10 +65,17 @@ const specs=[
     const st=getComputedStyle(f),art=getComputedStyle(f.querySelector('.face'),'::after');
     const rays=getComputedStyle(f.querySelector('.funk-rays'));
     const value={stock:st.backgroundColor,label:getComputedStyle(f.querySelector('.word')).color,
+     selectedAttribute:f.getAttribute('aria-pressed'),selectedMatches:f.matches('[aria-pressed=true]'),
+     canonicalSelector:f.matches('body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true]'),
+     rootProfile:document.documentElement.dataset.ghgThemeProfile,
+     pageContext:document.body.dataset.page,
      image:art.backgroundImage,ink:art.filter,rays:rays.filter,opacity:rays.opacity};
     f.setAttribute('aria-pressed','false');return value;
    });
-   assert.equal(selected.stock,'rgb(110, 34, 92)','Selected Funk is canonical, not theme-colored');
+   assert.equal(selected.selectedAttribute,'true','Funk select state stays enabled during pressed visual');
+   assert.equal(selected.selectedMatches,true,'Funk uses canonical selected-attribute selector');
+   assert.equal(selected.canonicalSelector,true,'Funk is in the canonical Android Jukebox');
+   assert.equal(selected.stock,'rgb(110, 34, 92)','Selected Funk is canonical, not theme-colored: '+JSON.stringify(selected));
    assert.equal(selected.label,'rgb(242, 200, 78)');
    assert.match(selected.image,/moods-selected-ink-v2.webp/);
    assert.match(selected.ink,/hue-rotate\(324deg\)/);

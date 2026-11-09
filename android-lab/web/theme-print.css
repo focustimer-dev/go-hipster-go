@@ -30,6 +30,22 @@
   background-color:var(--lab-ui-surface);color:var(--lab-ui-ink);
   background-image:var(--lab-print-substrate-texture,none);
 }
+/* A single user-state ink drives the printed tempo knob on ALL five
+   candidate themes: Kingston brick, Detroit highlighter pink, Addis teal,
+   Polish vermilion and Beirut dusty rose. Only the paint changes.
+   Preserve 27px thumb, drag hitbox, track, and the hidden Any-state thumb. */
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace
+ .tempo-control:not([data-tempo=any]) #tempoSlider::-webkit-slider-thumb{
+ background:var(--lab-print-active-ink);
+ border:2px solid var(--lab-ui-surface);
+ box-shadow:0 0 0 1px var(--lab-ui-ink);
+}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace
+ .tempo-control:not([data-tempo=any]) #tempoSlider::-moz-range-thumb{
+ background:var(--lab-print-active-ink);
+ border:2px solid var(--lab-ui-surface);
+ box-shadow:0 0 0 1px var(--lab-ui-ink);
+}
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .lab-rail{
   background:var(--lab-ui-rail);color:var(--lab-ui-on-rail);
 }

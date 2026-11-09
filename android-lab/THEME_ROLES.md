@@ -251,3 +251,10 @@ not reproduced sleeves, invented languages or unverified provenance.
 Keep all candidates in the separate Theme Review APK until Android phone
 captures, selected states, contrast, Manual and all Atlas projections are
 reviewed. No canonical Android/PWA deployment is authorized by this draft.
+
+### Print tempo fader color
+All five print skins use their existing `--lab-print-active-ink`
+selection color on the tempo slider **thumb**, with a paper keyline and
+readable ink rim. No theme-specific selector, new geometry, new font,
+new interaction or change to the Any-state hidden thumb. Existing
+Libéri/Bosque/Usiku tempo controls remain untouched.

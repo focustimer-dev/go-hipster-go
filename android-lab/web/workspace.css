@@ -910,7 +910,7 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
 /* Neutral Funk follows each theme exactly. Only its selected
    composition is invariant: one Android-wide contract for all eight.
    Approved source plates, cropping and laser mask remain untouched. */
-:root body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true]{
+:root body.gig-poster.lab-workspace:is([data-page=launch],[data-page=setup]) .mood-grid .mood[data-mood=funky][aria-pressed=true]{
  --funk-selected-paper:#311333;
  background-color:#6e225c!important;
  background-image:radial-gradient(circle at 83% 13%,#efa06344,transparent 41%),linear-gradient(145deg,#311333,#722269 66%,#a52d78)!important;
