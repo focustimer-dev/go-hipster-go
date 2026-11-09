@@ -68,9 +68,30 @@ function initLabGlobe(){
   labCahillInit(host,labGlobeGeography,labRouteGeography,old);
   installLabAtlasModes(frame);
  });
- labGlobe.on('click','land',event=>{
-  if(event.originalEvent?._atlasSecret||labGlobe.getLayer('route-targets')&&labGlobe.queryRenderedFeatures(event.point,{layers:['route-targets']}).length)return;
-  const id=event.features[0].properties.region;atlasFocus=null;atlasUserNavigated=true;toggleCrateRegion(id);
+ // One map-level handler also receives the water beside small islands.
+ // Screen-space queries happen only after a click, not on pointermove/render.
+ labGlobe.on('click',event=>{
+  if(!labGlobeReady||labAtlasMode==='cahill-keyes'||event.originalEvent?._atlasSecret||
+     (labGlobe.getLayer('route-targets')&&labGlobe.queryRenderedFeatures(event.point,{layers:['route-targets']}).length))return;
+  const direct=labGlobe.queryRenderedFeatures(event.point,{layers:['land']})[0];
+  let choice=direct?{type:'land',id:direct.properties.region}:null;
+  if(!choice){
+   const p=event.point,r=16;
+   const nearby=labGlobe.queryRenderedFeatures([[p.x-r,p.y-r],[p.x+r,p.y+r]],{layers:['land']});
+   choice=labAtlasSmallHit(nearby.map(feature=>feature.properties.region));
+  }
+  if(!choice)return;
+  atlasFocus=null;atlasUserNavigated=true;renderAtlasNavigation();
+  if(choice.type==='zoom'){
+   // At global scale Central America and the islands may share one finger.
+   // A closer view is safer than changing the wrong region.
+   const target=Math.min(labGlobe.getMaxZoom(),labGlobe.getZoom()+1.1);
+   if(target>labGlobe.getZoom()+.05)
+    labGlobe.easeTo({center:labGlobe.unproject(event.point),zoom:target,duration:260});
+   return;
+  }
+  if(!validCrateRegions.has(choice.id))return;
+  toggleCrateRegion(choice.id);
   setTimeout(()=>{if(!labAtlasMorph)labAtlasMorphVectors.warmFrames(
    labGlobeGeography,crateSelected,host.clientWidth)},0);
  });
