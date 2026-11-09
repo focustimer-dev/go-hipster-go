@@ -247,6 +247,24 @@ function syncManualTheme(){
   }
  }catch(e){console.warn('Manual theme synchronization unavailable',e)}
 }
+function syncNativeDialogPalette(){
+ const bridge=window.HipsterLab;
+ if(typeof bridge?.setDialogPalette!=='function')return; // Web-only demos.
+ const css=getComputedStyle(document.documentElement);
+ const token=(name,fallback)=>{
+  const value=css.getPropertyValue(name).trim();
+  return /^#[0-9a-fA-F]{6}$/.test(value)?value:fallback;
+ };
+ // Preserve Libéri's native gold/teal dialog.
+ const base=theme==='liberi';
+ const surface=base?'#dfb045':token('--lab-ui-panel','#dfb045');
+ const ink=base?'#103135':token('--lab-ui-on-panel','#103135');
+ const accent=base?'#103135':token(PILOTS.includes(theme)?'--lab-print-active-ink':'--lab-ui-focus',ink);
+ const field=base?'#dfb045':token('--lab-ui-field',surface);
+ const fieldInk=base?'#103135':token('--lab-ui-on-field',ink);
+ const rule=base?'#103135':token('--lab-ui-rule',ink);
+ bridge.setDialogPalette(theme,surface,ink,accent,field,fieldInk,rule);
+}
 function setTheme(next,persist){
  if(!THEMES.includes(next)&&!PILOTS.includes(next))return false;
  // The base Liberi palette is already in the canonical stylesheet.
@@ -265,6 +283,7 @@ function setTheme(next,persist){
   document.documentElement.dataset.ghgThemeProfile=PILOTS.includes(theme)?'print':'';
   applyThemeTokens();requestPaint();syncManualTheme();window.dispatchEvent(new Event('ghg-lab-theme-change'))}
  refreshButtons();
+ syncNativeDialogPalette();
  if(persist){
   const status=document.getElementById('labThemeStatus');
   if(status&&!status.textContent.includes('unavailable'))status.textContent='Appearance saved on this device.';
