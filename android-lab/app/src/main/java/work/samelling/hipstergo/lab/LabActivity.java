@@ -19,14 +19,16 @@ public class LabActivity extends Activity {
     private SkillUpdates updates;
     private SavedRequests shelf;
     private SharedInspiration inspiration;
+    private NativeDialogPalette dialogs;
     private android.content.SharedPreferences prefs;
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
         prefs = getSharedPreferences("lab", MODE_PRIVATE);
-        inspiration = new SharedInspiration(this,prefs,this::refreshInspiration);
-        updates = new SkillUpdates(this,prefs,this::browser,this::updateBadge);
-        shelf = new SavedRequests(this,prefs,this::handoff,this::copy,text->share(text,null),this::refreshWorkspace);
+        dialogs = new NativeDialogPalette(this);
+        inspiration = new SharedInspiration(this,prefs,this::refreshInspiration,dialogs);
+        updates = new SkillUpdates(this,prefs,this::browser,this::updateBadge,dialogs);
+        shelf = new SavedRequests(this,prefs,this::handoff,this::copy,text->share(text,null),this::refreshWorkspace,dialogs);
         getWindow().setStatusBarColor(Color.rgb(16,49,53));
         getWindow().setNavigationBarColor(Color.rgb(16,49,53));
         LinearLayout layout = new LinearLayout(this);
@@ -183,10 +185,10 @@ public class LabActivity extends Activity {
     private void offerSetupShare(String ai, String text) {
         if(url(ai)==null || !validText(text))return;
         String label="chatgpt".equals(ai)?"ChatGPT":"gemini".equals(ai)?"Gemini":"Claude";
-        new AlertDialog.Builder(this).setTitle("Share to "+label+"?")
+        dialogs.show(new AlertDialog.Builder(this).setTitle("Share to "+label+"?")
             .setMessage("Your setup request is copied. Share it to "+label+" to review and send. If it cannot accept the share, paste the copied request.")
             .setPositiveButton("Yes, share",(d,n)->{copy(text);share(text,aiPackage(ai));})
-            .setNegativeButton("No, keep copied",null).show();
+            .setNegativeButton("No, keep copied",null));
     }
     private void handoff(String ai, String text) { handoff(ai,text,false); }
     private void handoff(String ai, String text, boolean alreadyCopied) {
@@ -222,6 +224,11 @@ public class LabActivity extends Activity {
     }
     public final class Bridge {
         @JavascriptInterface public String state(){return workspaceState();}
+        /** Semantic palette values are validated again on the Android UI thread. */
+        @JavascriptInterface public void setDialogPalette(String theme,String surface,String ink,
+            String accent,String field,String fieldInk,String rule){
+            runOnUiThread(()->dialogs.update(theme,surface,ink,accent,field,fieldInk,rule));
+        }
         @JavascriptInterface public void offerSetupShare(String ai,String text){if(url(ai)!=null&&validText(text))runOnUiThread(()->LabActivity.this.offerSetupShare(ai,text));}
         @JavascriptInterface public void showUpdates(){runOnUiThread(()->updates.show());}
         @JavascriptInterface public void saveRequest(String ai,String text){if(SavedRequestPolicy.canSave(ai,text))runOnUiThread(()->shelf.save(ai,text));}
