@@ -168,17 +168,17 @@ function goPrompt(ai,service,mood){
  return parts.join("\n");
 }
 
-const crateRegions=[{"id":"us-west","label":"US West","continent":"americas-north"},{"id":"us-east","label":"US East","continent":"americas-north"},{"id":"canada-west","label":"Canada West","continent":"americas-north"},{"id":"canada-east","label":"Canada East","continent":"americas-north"},{"id":"mexico","label":"Mexico","continent":"americas-north"},{"id":"central-america","label":"Central America","continent":"americas-north"},{"id":"caribbean","label":"Caribbean","continent":"americas-north"},{"id":"northern-south-america","label":"Northern South America","continent":"americas-south"},{"id":"southern-south-america","label":"Southern South America","continent":"americas-south"},{"id":"atlantic-europe","label":"Atlantic & Western Europe","continent":"europe"},{"id":"mediterranean-europe","label":"Mediterranean & Balkans","continent":"europe"},{"id":"northern-europe","label":"Northern Europe","continent":"europe"},{"id":"eastern-europe","label":"Eastern Europe","continent":"europe"},{"id":"north-africa","label":"North Africa","continent":"africa"},{"id":"west-africa","label":"West Africa","continent":"africa"},{"id":"east-africa","label":"East Africa","continent":"africa"},{"id":"central-southern-africa","label":"Central & Southern Africa","continent":"africa"},{"id":"middle-east","label":"Middle East & Caucasus","continent":"asia"},{"id":"central-asia","label":"Central Asia","continent":"asia"},{"id":"south-asia","label":"South Asia","continent":"asia"},{"id":"east-asia","label":"East Asia","continent":"asia"},{"id":"southeast-asia","label":"Southeast Asia","continent":"asia"},{"id":"northern-asia","label":"Northern Asia","continent":"asia"},{"id":"oceania","label":"Oceania","continent":"oceania"},{"id":"antarctica","label":"Antarctica","continent":"antarctica"}];
+const crateRegions=[{"id":"us-west","label":"US West","continent":"americas-north"},{"id":"us-midwest","label":"US Midwest & Great Lakes","continent":"americas-north"},{"id":"us-south","label":"US South & Gulf","continent":"americas-north"},{"id":"us-east","label":"US East","continent":"americas-north"},{"id":"canada-west","label":"Canada West","continent":"americas-north"},{"id":"canada-east","label":"Canada East","continent":"americas-north"},{"id":"mexico","label":"Mexico","continent":"americas-north"},{"id":"central-america","label":"Central America","continent":"americas-north"},{"id":"caribbean","label":"Caribbean","continent":"americas-north"},{"id":"northern-south-america","label":"Northern South America","continent":"americas-south"},{"id":"southern-south-america","label":"Southern South America","continent":"americas-south"},{"id":"atlantic-europe","label":"Atlantic & Western Europe","continent":"europe"},{"id":"mediterranean-europe","label":"Mediterranean Europe","continent":"europe"},{"id":"balkans","label":"Balkans","continent":"europe"},{"id":"northern-europe","label":"Northern Europe","continent":"europe"},{"id":"eastern-europe","label":"Eastern Europe","continent":"europe"},{"id":"north-africa","label":"North Africa","continent":"africa"},{"id":"west-africa","label":"West Africa","continent":"africa"},{"id":"east-africa","label":"East Africa","continent":"africa"},{"id":"central-southern-africa","label":"Central & Southern Africa","continent":"africa"},{"id":"middle-east","label":"Middle East & Caucasus","continent":"asia"},{"id":"central-asia","label":"Central Asia","continent":"asia"},{"id":"south-asia","label":"South Asia","continent":"asia"},{"id":"east-asia","label":"East Asia","continent":"asia"},{"id":"southeast-asia","label":"Southeast Asia","continent":"asia"},{"id":"northern-asia","label":"Northern Asia","continent":"asia"},{"id":"oceania","label":"Oceania","continent":"oceania"},{"id":"antarctica","label":"Antarctica","continent":"antarctica"}];
 // Live ticket shorthand: abbreviations remain legible on a narrow phone.
 const ticketAiCodes={chatgpt:"GPT",gemini:"GEM",claude:"CLD",other:"OTHER"};
 const ticketServiceCodes={spotify:"SPOT",youtube:"YTM",apple:"APPLE"};
 const ticketMoodCodes={go:"SURP",happy:"HAPPY",angry:"ANGRY",sad:"SAD",weird:"WEIRD",criminal:"CRIME",funky:"FUNK"};
 const ticketTempoCodes={slow:"SLOW",relaxed:"RELAX",moderate:"MID",brisk:"BRISK",fast:"FAST"};
 const ticketRegionCodes={
- "us-west":"US-W","us-east":"US-E","canada-west":"CAN-W","canada-east":"CAN-E",
+ "us-west":"US-W","us-midwest":"US-MW","us-south":"US-S","us-east":"US-E","canada-west":"CAN-W","canada-east":"CAN-E",
  "mexico":"MEX","central-america":"C.AM","caribbean":"CARIB",
  "northern-south-america":"N.SA","southern-south-america":"S.SA",
- "atlantic-europe":"W.EUR","mediterranean-europe":"MED.EUR","northern-europe":"N.EUR","eastern-europe":"E.EUR",
+ "atlantic-europe":"W.EUR","mediterranean-europe":"MED.EUR","balkans":"BALK","northern-europe":"N.EUR","eastern-europe":"E.EUR",
  "north-africa":"N.AFR","west-africa":"W.AFR","east-africa":"E.AFR","central-southern-africa":"C/S.AFR",
  "middle-east":"M.EAST","central-asia":"C.AS","south-asia":"S.AS","east-asia":"E.AS",
  "southeast-asia":"SE.AS","northern-asia":"N.AS","oceania":"OCE","antarctica":"ANTARCTICA"
@@ -241,14 +241,18 @@ let atlasUserNavigated=false, atlasTouchGesture=null, atlasSuppressTapUntil=0;
 let lastCrateStamp=null;
 const atlasStampNodes=new Map();
 let atlasNavigationFrame=0,atlasPendingView=null,atlasWheelTimer=0;
-const crateStorageKey="ghg-crate-map-regions-v1";
+const crateStorageKey="ghg-crate-map-regions-v2";
 const validCrateRegions=new Set(crateRegions.map(r=>r.id));
 function readCrateRegions(){
  try{
-  const raw=JSON.parse(stored(crateStorageKey)||"[]");
+  const saved=stored(crateStorageKey);
+  const isLegacy=saved===null||saved===undefined;
+  const raw=JSON.parse((isLegacy?stored("ghg-crate-map-regions-v1"):saved)||"[]");
   if(!Array.isArray(raw))return new Set();
   const selected=new Set();
-  const migration={"north-america":["us-west","us-east","canada-west","canada-east"],"mexico-central":["mexico","central-america"]};
+  // Old East and Mediterranean selections covered more territory: preserve their scope.
+  const migration=isLegacy?{"north-america":["us-west","us-midwest","us-south","us-east","canada-west","canada-east"],"mexico-central":["mexico","central-america"],"us-east":["us-east","us-midwest","us-south"],"us-west":["us-west","us-south"],"mediterranean-europe":["mediterranean-europe","balkans"]}:{};
+  if(isLegacy)store(crateStorageKey,JSON.stringify([...new Set(raw.flatMap(id=>migration[id]||[id]))]));
   for(const id of raw){
    const children=migration[id]||[id];
    for(const child of children)if(validCrateRegions.has(child))selected.add(child);
@@ -400,7 +404,7 @@ function toggleCrateRegion(id){
  lastCrateStamp=added?id:null;
  updateCrateMap(added);
 }
-const crateStampNames={"us-west":"US W","us-east":"US E","canada-west":"CAN W","canada-east":"CAN E","mexico":"MEX","central-america":"CENT AM","caribbean":"CARIB","northern-south-america":"N S AM","southern-south-america":"S S AM","atlantic-europe":"W EUR","mediterranean-europe":"MED / BALK","northern-europe":"N EUR","eastern-europe":"E EUR","north-africa":"N AFR","west-africa":"W AFR","east-africa":"E AFR","central-southern-africa":"C / S AFR","middle-east":"MID EAST","central-asia":"C ASIA","south-asia":"S ASIA","east-asia":"E ASIA","southeast-asia":"SE ASIA","northern-asia":"N ASIA","oceania":"OCEANIA","antarctica":"ANTARCTICA"};
+const crateStampNames={"us-west":"US W","us-midwest":"US MW","us-south":"US S","us-east":"US E","canada-west":"CAN W","canada-east":"CAN E","mexico":"MEX","central-america":"CENT AM","caribbean":"CARIB","northern-south-america":"N S AM","southern-south-america":"S S AM","atlantic-europe":"W EUR","mediterranean-europe":"MED EUR","balkans":"BALK","northern-europe":"N EUR","eastern-europe":"E EUR","north-africa":"N AFR","west-africa":"W AFR","east-africa":"E AFR","central-southern-africa":"C / S AFR","middle-east":"MID EAST","central-asia":"C ASIA","south-asia":"S ASIA","east-asia":"E ASIA","southeast-asia":"SE ASIA","northern-asia":"N ASIA","oceania":"OCEANIA","antarctica":"ANTARCTICA"};
 function setAtlasAttribute(node,name,value){
  const text=String(value);if(node.getAttribute(name)!==text)node.setAttribute(name,text);
 }
