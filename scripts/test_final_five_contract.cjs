@@ -36,6 +36,10 @@ const specs=[
     window.HipsterLabTheme.current()===theme&&
     window.labAtlasGlobe.getPaintProperty('robinson-ocean','fill-color')===ocean,
     [spec.id,spec.ocean],{timeout:8000});
+   // Theme changes animate portrait paper over 160ms. Check SETTLED color.
+   await page.waitForFunction(stock=>
+     getComputedStyle(document.querySelector('.mood[data-mood=happy]')).backgroundColor===stock,
+     spec.stock,{timeout:4000});
    const neutral=await page.evaluate(()=>{
     const cs=selector=>getComputedStyle(document.querySelector(selector));
     const f=document.querySelector('.mood[data-mood=funky]'),h=document.querySelector('.mood[data-mood=happy]');
@@ -59,6 +63,19 @@ const specs=[
    assert.equal(neutral.ocean,spec.ocean);
    const rgb='rgb('+spec.ocean.slice(1).match(/.{2}/g).map(v=>parseInt(v,16)).join(', ')+')';
    assert.equal(neutral.cahill,rgb,'Cahill and Robinson share the palette');
+   const ornaments=await page.evaluate(()=>{
+     const north=document.querySelector('.chart-rose-north');
+     const bird=document.querySelector('.poster-bird');
+     const channels=document.getElementById('themeHeroEngraving')?.querySelector('feComponentTransfer');
+     return {compass:north?getComputedStyle(north).fill:null,
+       selected:getComputedStyle(document.documentElement).getPropertyValue('--lab-atlas-selected').trim(),
+       bird:bird?getComputedStyle(bird).filter:null,
+       channels:channels?.children.length||0};
+   });
+   const selectedRgb='rgb('+ornaments.selected.slice(1).match(/.{2}/g).map(v=>parseInt(v,16)).join(', ')+')';
+   assert.equal(ornaments.compass,selectedRgb,'Compass highlights exactly match selected country paint');
+   assert.match(ornaments.bird,/themeHeroEngraving/,'Bird/globe uses tonal palette color transfer');
+   assert.equal(ornaments.channels,3,'Bird/globe preserves three printed-ink channels');
    assert.match(neutral.heading,/Poster/);
    // CSS transitions briefly retain the old neutral tile and 0-opacity
    // lasers even while the selected artwork and gold text have switched.

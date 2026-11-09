@@ -346,6 +346,29 @@ class AndroidThemeRoles(unittest.TestCase):
         self.assertIn('dialogs.show(new AlertDialog.Builder(activity).setTitle("Save this request")',
                       source("android-lab/app/src/main/java/work/samelling/hipstergo/lab/SavedRequests.java"))
 
+    def test_hero_and_compass_use_global_semantic_colors(self):
+        html=source("launcher/index.html")
+        poster=source("launcher/editions/gig-poster/index.html")
+        generator=source("scripts/build_gig_poster.py")
+        for item in (html,poster,generator):
+            self.assertNotIn("PROBLEM.",item)
+        self.assertIn("<em>PROBLEM</em>",html)
+        self.assertIn('<span class="poster-line">PROBLEM</span>',poster)
+        self.assertIn('<span class="poster-line">PROBLEM</span>',generator)
+        base_css=source("launcher/editions/gig-poster/edition.css")
+        for selector in ("chart-rose-north","chart-rose-hub","chart-rose-crown"):
+            self.assertIn("."+selector+"{fill:var(--atlas-selected,var(--selection-vermilion))",base_css)
+        android_css=source("android-lab/web/workspace.css")
+        self.assertIn("fill:var(--lab-atlas-selected)!important",android_css)
+        self.assertIn("filter:url(#themeHeroEngraving)!important",android_css)
+        colors=source("android-lab/web/theme.js")
+        self.assertIn("const heroId='themeHeroEngraving'",colors)
+        self.assertIn("const neutralInk=parse(palette.neutralInk),neutralPaper=parse(palette.neutralPaper)",colors)
+        self.assertIn("String((neutralPaper[i]-neutralInk[i])*.22)",colors)
+        self.assertIn('assets/bird-globe.webp',poster)
+        pwa=source("launcher/assets/pwa-themes.css")
+        self.assertIn("body.gig-poster .chart-rose-north{fill:var(--atlas-selected)}",pwa)
+
     def test_app_and_iframe_load_the_same_source(self):
         bundle = source("scripts/bundle_android_lab.py")
         manual = source("android-lab/web/manual-guide.html")

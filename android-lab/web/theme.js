@@ -165,6 +165,33 @@ function syncPortraitInk(){
    node.setAttribute('slope',String(paper[i]-ink[i]));
   }
  }
+  // Recolor the unchanged transparent bird-and-globe engraving.
+  // Preserve SourceAlpha and graduated print hatch marks, rather than
+  // replacing it with a flat silhouette or per-theme asset.
+  const heroId='themeHeroEngraving';
+  let hero=document.getElementById(heroId);
+  if(!hero){
+   hero=document.createElementNS(ns,'filter');
+   hero.setAttribute('id',heroId);
+   hero.setAttribute('color-interpolation-filters','sRGB');
+   const gray=document.createElementNS(ns,'feColorMatrix');
+   gray.setAttribute('type','saturate');gray.setAttribute('values','0');
+   const transfer=document.createElementNS(ns,'feComponentTransfer');
+   for(const channel of ['R','G','B']){
+    const node=document.createElementNS(ns,'feFunc'+channel);
+    node.setAttribute('type','linear');transfer.appendChild(node);
+   }
+   hero.append(gray,transfer);owner.parentNode.appendChild(hero);
+  }
+  const neutralInk=parse(palette.neutralInk),neutralPaper=parse(palette.neutralPaper);
+  if(neutralInk&&neutralPaper){
+   const transfer=hero.querySelector('feComponentTransfer');
+   for(const [i,channel] of ['R','G','B'].entries()){
+    const node=transfer.querySelector('feFunc'+channel);
+    node.setAttribute('intercept',String(neutralInk[i]));
+    node.setAttribute('slope',String((neutralPaper[i]-neutralInk[i])*.22));
+   }
+  }
 }
 function applyThemeTokens(){
  const style=document.documentElement.style,palette=ATLAS[theme],mood=MOODS[theme];

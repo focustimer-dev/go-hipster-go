@@ -275,3 +275,17 @@ startup and every theme switch. Body and input text contrast is checked
 to at least 4.5:1. Neon accents with insufficient small-text contrast
 remain on borders and fields instead. Libéri's existing gold/teal native
 dialog is preserved verbatim. No theme-specific native color table.
+
+### Hero and compass follow the semantic theme contract
+
+The headline is always **YOUR TASTE / IS A / PROBLEM** without a full stop,
+in the source launcher, generated gig-poster edition and builder script.
+
+The untouched original transparent `bird-globe.webp` is recolored with an
+SVG luminance-transfer filter that reads each theme's existing neutral
+engraving ink/paper. Alpha, fine hatch texture and geometry remain intact.
+
+The compass's north blade, hub and crown use the **exact same ink** as
+selected Atlas countries: `--lab-atlas-selected` for Android across
+Robinson, Cahill–Keyes and Globe; `--atlas-selected` in the original PWA
+poster. Rings, labels and paper remain their normal readable treatment.

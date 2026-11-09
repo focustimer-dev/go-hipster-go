@@ -907,6 +907,15 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
   }
 }
 
+/* Global poster ornament roles. The original artist's engraving stays
+   pixel-identical; only its pigment changes via a tonal SVG transfer.
+   Compass north/hub/crown match the SAME paint as selected countries. */
+:root body.gig-poster.lab-workspace :is(.chart-rose-north,.chart-rose-hub,.chart-rose-crown){
+ fill:var(--lab-atlas-selected)!important;
+}
+:root body.gig-poster.lab-workspace .poster-bird{
+ filter:url(#themeHeroEngraving)!important;
+}
 /* Neutral Funk follows each theme exactly. Only its selected
    composition is invariant: one Android-wide contract for all eight.
    Approved source plates, cropping and laser mask remain untouched. */

@@ -344,7 +344,7 @@ html[data-pwa-theme=usiku] body.gig-poster .chart-rose-field{fill:#111111;stroke
 html[data-pwa-theme=usiku] body.gig-poster .chart-rose-ring{stroke:#f5f0e6}
 html[data-pwa-theme=usiku] body.gig-poster .chart-rose-letters{fill:#f5f0e6}
 html[data-pwa-theme=bosque] body.gig-poster .chart-rose-north,
-html[data-pwa-theme=usiku] body.gig-poster .chart-rose-north{fill:#e5cf42}
+html[data-pwa-theme=usiku] body.gig-poster .chart-rose-north{fill:var(--atlas-selected)}
 
 /* USIKU / warm cognac-and-saddle vignette: LIGHTER at portrait center,
    DARKER at the distal edges. Never paint the tile gradient green.

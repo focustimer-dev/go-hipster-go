@@ -19,7 +19,7 @@ s=s.replace(welcome,'')
 
 a=s.index('    <div class="hero-title">');b=s.index('    <section class="service-counter"',a)
 s=s[:a]+'''    <div class="hero-title poster-hero">
-      <h1 class="headline"><span class="poster-line">YOUR TASTE</span><span class="poster-line">IS A</span><span class="poster-line">PROBLEM.</span></h1>
+      <h1 class="headline"><span class="poster-line">YOUR TASTE</span><span class="poster-line">IS A</span><span class="poster-line">PROBLEM</span></h1>
       <span class="return-stamp">NO REFUNDS</span>
       <img class="poster-bird" src="/editions/gig-poster/assets/bird-globe.webp" width="1292" height="1196" alt="" aria-hidden="true">
       </div>

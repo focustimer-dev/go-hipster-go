@@ -15,7 +15,7 @@
   --atlas-accent:var(--lab-atlas-route);--atlas-border:var(--lab-atlas-ink);
   --atlas-land:var(--lab-atlas-land);--atlas-water:var(--lab-atlas-ocean);
   --atlas-boundary:var(--lab-atlas-ink);--atlas-selected:var(--lab-atlas-selected);
-  --selection-vermilion:var(--lab-mood-selected-paper);
+  --selection-vermilion:var(--lab-atlas-selected);
   --receipt-ink:var(--lab-ui-action);
   --lab-action-yellow:var(--lab-ui-highlight);
   --lab-action-ink:var(--lab-ui-on-highlight);

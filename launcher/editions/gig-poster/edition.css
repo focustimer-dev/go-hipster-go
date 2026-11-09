@@ -601,12 +601,12 @@ body.gig-poster .chart-rose-pearls{fill:var(--bone);stroke:none}
 body.gig-poster .chart-rose-flourish{stroke:var(--paper);stroke-width:.55;opacity:.85;fill:none}
 body.gig-poster .chart-rose-blade{fill:var(--paper);stroke:var(--ink);stroke-width:.7}
 body.gig-poster .chart-rose-shadow{fill:var(--ink);stroke:none}
-body.gig-poster .chart-rose-north{fill:var(--selection-vermilion);stroke:none}
+body.gig-poster .chart-rose-north{fill:var(--atlas-selected,var(--selection-vermilion));stroke:none}
 body.gig-poster .chart-rose-fine{fill:var(--bone);stroke:var(--ink);stroke-width:.55}
 body.gig-poster .chart-rose-disc{fill:var(--ink);stroke:var(--paper);stroke-width:.8}
 body.gig-poster .chart-rose-hub-ring{fill:none;stroke:var(--bone);stroke-width:.7}
-body.gig-poster .chart-rose-hub{fill:var(--selection-vermilion);stroke:var(--bone);stroke-width:.6}
-body.gig-poster .chart-rose-crown{fill:var(--selection-vermilion);stroke:var(--bone);stroke-width:.5}
+body.gig-poster .chart-rose-hub{fill:var(--atlas-selected,var(--selection-vermilion));stroke:var(--bone);stroke-width:.6}
+body.gig-poster .chart-rose-crown{fill:var(--atlas-selected,var(--selection-vermilion));stroke:var(--bone);stroke-width:.5}
 body.gig-poster .chart-rose-letters{text-anchor:middle;fill:var(--bone);stroke:none;font:bold 7px Georgia,serif;letter-spacing:.3px}
 /* One shared internal grid: identical title and helper text baselines. */
 body.gig-poster .go-options .go-extras{grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch}
