@@ -60,8 +60,18 @@ const specs=[
    const rgb='rgb('+spec.ocean.slice(1).match(/.{2}/g).map(v=>parseInt(v,16)).join(', ')+')';
    assert.equal(neutral.cahill,rgb,'Cahill and Robinson share the palette');
    assert.match(neutral.heading,/Poster/);
+   // CSS transitions briefly retain the old neutral tile and 0-opacity
+   // lasers even while the selected artwork and gold text have switched.
+   // Assert the SETTLED selected performance, not its first animation frame.
+   await page.evaluate(()=>document.querySelector('.mood[data-mood=funky]').setAttribute('aria-pressed','true'));
+   await page.waitForFunction(()=>{
+    const f=document.querySelector('.mood[data-mood=funky]');
+    return f.getAttribute('aria-pressed')==='true' &&
+     getComputedStyle(f).backgroundColor==='rgb(110, 34, 92)' &&
+     getComputedStyle(f.querySelector('.funk-rays')).opacity==='0.82';
+   },null,{timeout:5000});
    const selected=await page.evaluate(()=>{
-    const f=document.querySelector('.mood[data-mood=funky]');f.setAttribute('aria-pressed','true');
+    const f=document.querySelector('.mood[data-mood=funky]');
     const st=getComputedStyle(f),art=getComputedStyle(f.querySelector('.face'),'::after');
     const rays=getComputedStyle(f.querySelector('.funk-rays'));
     const value={stock:st.backgroundColor,label:getComputedStyle(f.querySelector('.word')).color,
