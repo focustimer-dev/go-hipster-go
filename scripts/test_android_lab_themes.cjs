@@ -944,11 +944,11 @@ async function verifyManualHierarchy(page,name,width){
        funkyGradient:getComputedStyle(funk).backgroundImage};
      });
      assert.equal(cast.size,8,'All original portraits selected');
-     assert.match(cast.funkImage,/moods-selected-ink-v2.webp/,'Funk original selected sprite');
+     assert.match(cast.funkImage,/funk-selected-engraved.webp/,'Funk uses the approved baked selected portrait');
      assert.equal(cast.mask,'none','Funk engraving is not flattened');
      assert.match(cast.raysFilter,/hue-rotate\(23deg\)/,'Funk canonical laser colors');
      assert.equal(cast.raysOpacity,'0.82','Funk canonical laser intensity');
-     assert.match(cast.spriteFilter,/funkHighlighterEngraving/,'Funk canonical selected engraving');
+     assert.equal(cast.spriteFilter,'none','Selected Funk no longer relies on device-specific SVG filters');
      assert.equal(cast.funkyWord,'rgb(242, 200, 78)','Funk canonical star-gold text');
      assert.equal(cast.funkyStock,'rgb(110, 34, 92)','Funk canonical violet base');
      assert.match(cast.funkyGradient,/linear-gradient/,'Funk magenta pressing preserved');
