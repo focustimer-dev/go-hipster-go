@@ -127,6 +127,16 @@ main.wrap{width:100%;flex:1 1 auto;min-height:0;margin:0 auto;overflow-y:auto;ov
 <section class="celebrate" id="complete" hidden aria-live="polite"><h3>That’s the whole routine.</h3><p>One idea. One request. Review, then Publish. You’re ready to make your own.</p><div class="setup-actions"><button id="again">Replay walkthrough</button><a href="#idea">Try your own idea</a><a href="#manual">Back to the manual</a></div></section>
 </main><div class="follow-title" id="followTitle" hidden></div><div class="player" id="player" hidden><span id="playCaption" role="status"></span><button id="stop">Stop</button></div>
 <script>
+// Intercept within this frame: native WebView onMainFrame navigation does not
+// see iframe links as top-level gestures, leaving GitHub under offline CSP.
+document.addEventListener('click',event=>{
+ const a=event.target.closest?.('a[href]');
+ if(!a||parent===window)return;
+ let url;try{url=new URL(a.href,location.href)}catch(_){return}
+ if(url.protocol!=='https:'||url.origin===location.origin)return;
+ event.preventDefault();
+ parent.postMessage({type:'lab-manual-external',url:url.href},location.origin);
+},true);
 if(parent!==window)document.body.classList.add('embedded-guide');const doc=document,repo='https://github.com/focustimer-dev/go-hipster-go',aiNames={gemini:'Gemini',chatgpt:'ChatGPT',claude:'Claude',other:'Other AI'},serviceNames={youtube:'YouTube Music',spotify:'Spotify'};
 function setupPrompt(ai,service){
  if(ai==="other")return "Load Go, Hipster, Go! from "+repo+" using your supported method. Confirm what loaded, whether it persists, and which authorized "+serviceNames[service]+" search and playlist-writing tools are available. Do not invent a connection or create a playlist. If GitHub cannot be read, ask for the needed files.";
