@@ -295,6 +295,10 @@ document.addEventListener('click',event=>{
  if(choice)setTheme(choice.dataset.labTheme,true);
 });
 document.addEventListener('DOMContentLoaded',()=>{
+ // A dormant print stylesheet may finish loading after the first paint.
+ // Refresh the native colors once it is ready so the first dialog is themed.
+ for(const link of document.querySelectorAll('link[data-lab-palette-style],link[data-lab-print-style]'))
+  link.addEventListener('load',syncNativeDialogPalette);
  setTheme(theme,false); // Restore the saved theme stylesheet on app launch.
  syncPortraitInk(); // Early token registration runs before the SVG exists.
  refreshButtons();
