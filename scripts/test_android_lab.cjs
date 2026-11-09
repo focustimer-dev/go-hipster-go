@@ -88,12 +88,14 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert(await page.frameLocator('#labManualFrame').locator('#cratePicker > summary').isVisible(),
    'Manual stays loaded after opening an external link');
   // The screenshot's failing URL is in the parent "More Resources" panel.
-  await page.evaluate(()=>labShowManualResources(true));
+  await page.frameLocator('#labManualFrame').locator('body').evaluate(()=>parent.postMessage({type:'lab-manual-resources'},location.origin));
+  await page.locator('#labMoreResources').waitFor({state:'visible'});
   await page.locator('#labMoreResources a[href="https://github.com/focustimer-dev/go-hipster-go/releases/latest"]').first().click();
   await page.waitForFunction(()=>labCalls.some(c=>c[0]==='external'&&c[1].includes('/releases/latest')));
   assert.equal((await page.evaluate(()=>labCalls)).filter(c=>c[0]==='external').length,2);
   assert.equal(await page.evaluate(()=>location.host.startsWith('127.0.0.1')),true,'Manual must remain on local origin');
-  await page.evaluate(()=>labShowManualResources(false));
+  await page.locator('#labManualReturn').click();
+  await page.locator('#labManualGuide').waitFor({state:'visible'});
   await page.frameLocator('#labManualFrame').locator('#cratePicker > summary').click();await page.frameLocator('#labManualFrame').locator('[data-crate-tab=setup]').click();await page.frameLocator('#labManualFrame').locator('.crate-dividers a[href="#setup"]').click();await page.frameLocator('#labManualFrame').locator('#reviewGeminiUpdates').click();await page.waitForFunction(()=>labCalls.some(c=>c[0]==='updates'));
   await page.locator('[data-lab-tab="jukebox"]').click();assert(Math.abs((await page.evaluate(()=>window.scrollY))-position)<2);
   await page.locator('.lab-rail [data-lab-action="preferences"]').click();await page.locator('#labPreferences').waitFor({state:'visible'});
