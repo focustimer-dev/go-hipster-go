@@ -53,6 +53,9 @@ class LabSnapshotTests(unittest.TestCase):
                 self.assertEqual((dest/path).read_bytes(),(ROOT/'launcher'/path).read_bytes())
             self.assertFalse((dest/'editions/gig-poster/assets/moods-neutral-approved-v1.webp').exists())
             self.assertFalse((dest/'editions/gig-poster/assets/moods-selected-approved-v1.webp').exists())
+            # The retired standalone Funk frame is no longer a request path.
+            self.assertFalse((dest/'editions/gig-poster/assets/the-funk.webp').exists())
+            self.assertNotIn('the-funk.webp',(dest/'assets/hipster.css').read_text())
             script=(dest/'assets/app.js').read_text()
             self.assertIn('window.HipsterLab.go(ai,prompt)',script)
             self.assertIn('if(event.defaultPrevented||!window.HipsterLab)return',script)
@@ -79,7 +82,8 @@ class RuntimeAssetTests(unittest.TestCase):
         from urllib.parse import urljoin,urlparse
         root=ROOT/'launcher'
         assets=set(json.loads((ROOT/'android-lab/web/runtime-assets.json').read_text()))
-        self.assertLess(sum((root/name).stat().st_size for name in assets),13000000)
+        self.assertLess(sum((root/name).stat().st_size for name in assets),12000000)
+        self.assertNotIn('editions/gig-poster/assets/the-funk.webp',assets)
         class Links(HTMLParser):
             def __init__(self):super().__init__();self.refs=[]
             def handle_starttag(self,tag,attrs):
