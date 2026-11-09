@@ -4,7 +4,7 @@ A generated, text-forward snapshot of the **canonical** repository skill. This i
 
 **Source:** https://github.com/focustimer-dev/go-hipster-go
 
-**Files included:** `references/recording-quality.md`, `references/reference-index.md`, `references/de-cheese.md`, `references/discovery-routes.md`, `references/funky.md`, `references/desire-triumphant.md`, `references/regions/antarctica.md`, `references/go-hard.md`, `references/regional-review.md`, `references/regions/oceania-additions.md`, `references/regions/central-america-additions.md`, `references/regions/central-africa-additions.md`, `references/regions/southern-africa-additions.md`, `references/regional-atlas.md`, `references/regions/us-west.md`, `references/regions/us-east.md`, `references/regions/canada-west.md`, `references/regions/canada-east.md`, `references/regions/mexico.md`, `references/regions/central-america.md`, `references/regions/caribbean.md`, `references/regions/northern-south-america.md`, `references/regions/southern-south-america.md`, `references/regions/atlantic-europe.md`, `references/regions/mediterranean-europe.md`, `references/regions/northern-europe.md`, `references/regions/eastern-europe.md`, `references/regions/north-africa.md`, `references/regions/west-africa.md`, `references/regions/east-africa.md`, `references/regions/central-southern-africa.md`, `references/regions/middle-east.md`, `references/regions/central-asia.md`, `references/regions/south-asia.md`, `references/regions/east-asia.md`, `references/regions/southeast-asia.md`, `references/regions/northern-asia.md`, `references/regions/oceania.md`, `SKILL.md`, `references/global-scenes.md`, `references/sonic-taxonomy.md`, `references/curation-examples.md`, `references/verification.md`, `references/cover-art.md`.
+**Files included:** `references/recording-quality.md`, `references/reference-index.md`, `references/de-cheese.md`, `references/discovery-routes.md`, `references/funky.md`, `references/desire-triumphant.md`, `references/regions/antarctica.md`, `references/go-hard.md`, `references/regional-review.md`, `references/regions/oceania-additions.md`, `references/regions/central-america-additions.md`, `references/regions/central-africa-additions.md`, `references/regions/southern-africa-additions.md`, `references/regional-atlas.md`, `references/regions/us-west.md`, `references/regions/us-east.md`, `references/regions/us-midwest.md`, `references/regions/us-south.md`, `references/regions/canada-west.md`, `references/regions/canada-east.md`, `references/regions/mexico.md`, `references/regions/central-america.md`, `references/regions/caribbean.md`, `references/regions/northern-south-america.md`, `references/regions/southern-south-america.md`, `references/regions/atlantic-europe.md`, `references/regions/mediterranean-europe.md`, `references/regions/balkans.md`, `references/regions/northern-europe.md`, `references/regions/eastern-europe.md`, `references/regions/north-africa.md`, `references/regions/west-africa.md`, `references/regions/east-africa.md`, `references/regions/central-southern-africa.md`, `references/regions/middle-east.md`, `references/regions/central-asia.md`, `references/regions/south-asia.md`, `references/regions/east-asia.md`, `references/regions/southeast-asia.md`, `references/regions/northern-asia.md`, `references/regions/oceania.md`, `SKILL.md`, `references/global-scenes.md`, `references/sonic-taxonomy.md`, `references/curation-examples.md`, `references/verification.md`, `references/cover-art.md`.
 
 
 ---
@@ -57,7 +57,7 @@ For `go funky`, also read [Funky: worldwide groove discovery](funky.md) before c
 
 Read the [regional atlas](regional-atlas.md) safeguards and lookup, then the files for each selected region. Its **Supplementary files** table is part of the lookup: include the matching additions, not just the baseline file. Before using expanded Oceania, Central America or Central & Southern Africa, read the [focused regional review](regional-review.md); its boundaries and overlap decisions take precedence. Central & Southern Africa requires both Central Africa and Southern Africa additions.
 
-For worldwide exploration, compare a few contrasting regions when useful; do not preload all 24 files. Regions guide exploration, while explicit user constraints and supported sonic fit decide selections. The 920 imported rows are unverified, overlapping search leads, not 920 verified genres.
+For worldwide exploration, compare a few contrasting regions when useful; do not preload all source files. Regions guide exploration, while explicit user constraints and supported sonic fit decide selections. The 920 original imported rows remain overlapping, unverified leads. The three new region guides reference existing handles, not 90 newly verified genres.
 
 ## Optional cover art
 
@@ -768,29 +768,49 @@ See the [focused regional review](regional-review.md) for the source-supported s
 
 ## Map regions and musical overlap
 
-The PWA map assigns one **primary listening region** to each whole-country land shape (except deliberate US, Canada and Russia splits). This is a map-navigation convention, **not** an exclusive cultural border, genre classification, or a claim that every coastal province belongs to the same scene. Keep geographic shapes, borders and camera geometry unchanged when updating these labels.
+The map assigns one **primary listening region** per country, or per US state; Canada and Russia retain their deliberate splits. These are navigation areas, **not** exclusive cultural boundaries. US divisions use public-domain Natural Earth state outlines; country coastlines and the three projections remain.
 
 | Country / cultural crossing | Primary map region | How to interpret selected music regions |
 | --- | --- | --- |
-| Turkey | Middle East & Caucasus | Anatolian and Istanbul routes live here. Turkish Thrace and Romani/Balkan collaborations may also be researched for Mediterranean & Balkans when their **recording-level regional connection** supports it. |
-| Spain | Mediterranean & Balkans | Balearic, Catalan, Valencian and Andalusian scenes support this default. Galicia, Asturias and Basque Atlantic scenes can also qualify for Atlantic & Western Europe with specific locality evidence. Do not treat all Spanish recordings as Mediterranean merely because Spain is painted there. |
+| Turkey | Middle East & Caucasus | Anatolian and Istanbul routes live here. Turkish Thrace and Romani/Balkan collaborations may also be researched for Mediterranean Europe when their **recording-level regional connection** supports it. |
+| Spain | Mediterranean Europe | Balearic, Catalan, Valencian and Andalusian scenes support this default. Galicia, Asturias and Basque Atlantic scenes can also qualify for Atlantic & Western Europe with specific locality evidence. Do not treat all Spanish recordings as Mediterranean merely because Spain is painted there. |
 | Portugal | Atlantic & Western Europe | Portuguese fado, Lisbon batida and Alentejo routes are historically catalogued in the Mediterranean source file, but Portugal is Atlantic for map navigation. The imported route IDs stay intact; research their actual origins. |
-| France | Atlantic & Western Europe | Corsican music and other explicitly Mediterranean French scenes can qualify for Mediterranean & Balkans, despite the France-wide map default. |
+| France | Atlantic & Western Europe | Corsican music and other explicitly Mediterranean French scenes can qualify for Mediterranean Europe, despite the France-wide map default. |
 | Brazil | Southern South America | Most catalogued Brazilian scenes (Rio, São Paulo, Bahia, Pernambuco) are covered here; Pará/Belém and other northern Brazil routes belong to Northern South America when requested. |
 | Sudan | North Africa | Khartoum, Omdurman, Nubian and Red Sea routes are filed under North Africa; **South Sudan** remains East Africa. |
 | Madagascar | East Africa | The east-African island scenes are researched under East Africa; the previous Central & Southern Africa map label was inconsistent. |
-| Cyprus | Mediterranean & Balkans | Keep its primary Mediterranean mapping; investigate Levantine or Middle Eastern overlaps only where the particular recording supports one. |
+| Cyprus | Mediterranean Europe | Keep its primary Mediterranean mapping; investigate Levantine or Middle Eastern overlaps only where the particular recording supports one. |
+| Greece | Mediterranean Europe | Epirus, northern Macedonia and Thrace recordings can be Balkan where the particular scene supports it. |
+| Croatia, Montenegro, Albania | Balkans | Adriatic/coastal recordings can also qualify for Mediterranean Europe with evidence. |
+| Romania | Balkans | Balkan and Eastern/Central European connections are not mutually exclusive. |
+| Illinois, Michigan | US Midwest & Great Lakes | Chicago and Detroit belong here, not US East. |
+| Texas | US South & Gulf | Tejano and conjunto can connect to northern Mexico when supported. |
 
-**Rule for curation:** A selected musical region may include a specifically verified cross-border or subnational scene despite a different whole-country map default. Do not automatically widen a selected region to *every* recording from an overlapping country, use a shared instrument or language as geographic proof, or count overlapping research leads as extra diversity. Preserve the provenance of the actual recording and the user's explicit region choices. One country still has one clickable primary region; selecting two overlapping regions remains possible using the named controls.
+### Musical connections across geographic regions
+
+**One map home, multiple musical connections when supported.** A selected region uses its primary geographic land shapes. Individual recordings can have secondary region associations only with sourced evidence about their actual artist, local scene, performance tradition, collaboration or recording provenance. Do not infer these from language, ancestry, instruments or mere proximity. Respect explicit geographic exclusions, and never count the same recording twice as diversity.
+
+- **Greece:** primary Mediterranean Europe; northern Epirus, Macedonia and Thrace can qualify for Balkan research when the recording's locality/tradition supports it. Greek island, Cretan and rebetiko traditions are diverse; Anatolian/Ottoman associations do not classify all Greece as Middle Eastern.
+- **Balkans–Mediterranean:** Croatia, Albania and Montenegro can have both Adriatic and Balkan recordings; Serbia, Bosnia, Bulgaria, Kosovo, North Macedonia and Romania should not be swept into a generic Mediterranean bucket. Romania and Slovenia also have other Central/Eastern European connections.
+- **Turkey/Cyprus:** Turkey remains Middle East & Caucasus and Cyprus Mediterranean Europe. Verify Thracian, Aegean, Levantine and Anatolian recording-specific connections.
+- **US:** Chicago and Detroit belong to Midwest & Great Lakes; Texas, Louisiana, Memphis and Atlanta belong to South & Gulf. Documented Chicago–Mississippi blues, Detroit–European techno, Texas–northern Mexico conjunto/Tejano and Gulf–Caribbean links may qualify elsewhere.
+- **Central America–Caribbean:** Garifuna music in Belize, Honduras, Guatemala and Nicaragua can qualify for Caribbean discovery if the actual recording supports it.
+- **Northern South America–Caribbean:** documented Colombian and Venezuelan coastal Caribbean music can cross.
+- **North–West Africa:** documented Gnawa, Saharan and trans-Sahel exchanges among Morocco, Algeria, Mali and Niger can cross.
+- **Central–South Asia:** Afghanistan connects several traditions, but eligibility is recording-specific, not universal.
+
+**Rule for curation:** A selected musical region may include a specifically verified cross-border or subnational scene despite a different whole-country map default. Do not automatically widen a selected region to *every* recording from an overlapping country, use a shared instrument or language as geographic proof, or count overlapping research leads as extra diversity. Preserve the provenance of the actual recording and the user's explicit region choices. Each state/country still has one clickable primary region; multiple named music regions can be selected.
 
 ## Lookup
 
-Match the exact region ID or visible label below. Read only the selected regional files; for worldwide discovery, compare a few contrasting regions rather than loading the entire atlas. Route IDs are stable lookup handles, not genre authority or ranking. These files contain 720 source rows (30 per region), not 720 independently verified genres.
+Match the exact region ID or visible label below. Read only the selected regional files; for worldwide discovery, compare a few contrasting regions rather than loading the entire atlas. Route IDs are stable lookup handles, not genre authority or ranking. The original 720 baseline route handles (30 per original non-Antarctic region) remain unchanged, not 720 independently verified genres. Three new geographic guides link to existing source handles rather than fabricating imported rows.
 
 | Region ID | Region | Reference |
 | --- | --- | --- |
 | `us-west` | US West | [us-west.md](regions/us-west.md) |
 | `us-east` | US East | [us-east.md](regions/us-east.md) |
+| `us-midwest` | US Midwest & Great Lakes | [us-midwest.md](regions/us-midwest.md) |
+| `us-south` | US South & Gulf | [us-south.md](regions/us-south.md) |
 | `canada-west` | Canada West | [canada-west.md](regions/canada-west.md) |
 | `canada-east` | Canada East | [canada-east.md](regions/canada-east.md) |
 | `mexico` | Mexico | [mexico.md](regions/mexico.md) |
@@ -799,7 +819,8 @@ Match the exact region ID or visible label below. Read only the selected regiona
 | `northern-south-america` | Northern South America | [northern-south-america.md](regions/northern-south-america.md) |
 | `southern-south-america` | Southern South America | [southern-south-america.md](regions/southern-south-america.md) |
 | `atlantic-europe` | Atlantic & Western Europe | [atlantic-europe.md](regions/atlantic-europe.md) |
-| `mediterranean-europe` | Mediterranean & Balkans | [mediterranean-europe.md](regions/mediterranean-europe.md) |
+| `mediterranean-europe` | Mediterranean Europe | [mediterranean-europe.md](regions/mediterranean-europe.md) |
+| `balkans` | Balkans | [balkans.md](regions/balkans.md) |
 | `northern-europe` | Northern Europe | [northern-europe.md](regions/northern-europe.md) |
 | `eastern-europe` | Eastern Europe | [eastern-europe.md](regions/eastern-europe.md) |
 | `north-africa` | North Africa | [north-africa.md](regions/north-africa.md) |
@@ -848,6 +869,8 @@ Honor the selected geography, mood and tempo above discovery cues. A tradition's
 For discovery, compare several compatible routes and dig beyond named touchstones: local labels, collaborators, overlooked releases and contemporary scenes. A famous name here is context, not a selection instruction. Admit accessible pop only when its particular groove, voice or arrangement earns the place; reject anonymous mood filler. Obscurity is not a quality test. Keep irony audible and purposeful. Do not impose acoustic, ceremonial or archival music merely to demonstrate breadth. Use only publicly released, appropriately documented recordings; do not infer access to restricted ceremonial material.
 
 Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
+
+**New map boundary:** US West remains the Pacific states, Mountain West, Alaska and Hawaiʻi. Original Texas and Oklahoma source handles remain here for traceability but now primarily belong to [US South & Gulf](us-south.md). Borderland and cross-regional musical connections need recording evidence.
 
 ## Source and status
 
@@ -906,6 +929,8 @@ For discovery, compare several compatible routes and dig beyond named touchstone
 
 Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
 
+**New map boundary:** US East now means primarily the Atlantic Northeast and Mid-Atlantic. The old 30 source handles remain unchanged for traceability; Chicago/Detroit leads are now researched under [US Midwest & Great Lakes](us-midwest.md), while Memphis, Atlanta, Florida, Louisiana and Appalachia are primarily [US South & Gulf](us-south.md). Only use these old rows for an East selection when an actual recording-level East connection is documented.
+
 ## Source and status
 
 Imported from listener-supplied regional survey, [Drive source](https://drive.google.com/file/d/1kkockosIGchtB76Xwjm189XebmJuyCDT/view), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
@@ -946,6 +971,74 @@ Imported from listener-supplied regional survey, [Drive source](https://drive.go
 | `us-east:30` | **Philadelphia Soul (TSOP)** | Philadelphia, Pennsylvania | Early-1970s lush orchestral R&B defined by sweeping string arrangements, French horns, vibraphone, and socially conscious vocal groups. |
 
 # END SOURCE: references/regions/us-east.md
+
+---
+
+# BEGIN SOURCE: references/regions/us-midwest.md
+
+# US Midwest & Great Lakes
+
+Region ID: `us-midwest`. Chicago and Detroit are core examples. Primary states: IL, IN, IA, KS, MI, MN, MO, NE, ND, OH, SD and WI.
+
+This new guide uses **unverified leads** from the existing survey, preserving its original route handles and [Drive source](https://drive.google.com/) attribution. No new imported routes or verified recordings are claimed. Verify provenance and sonic fit for each selection; cultural crossovers require recording-specific support.
+
+## Inherited research routes
+
+| Original stable handle | Research scope |
+| --- | --- |
+| [`us-east:13`](us-east.md) | Detroit techno/ghettotech |
+| [`us-east:14`](us-east.md) | Detroit techno/ghettotech |
+| [`us-east:15`](us-east.md) | Chicago house, footwork and drill |
+| [`us-east:16`](us-east.md) | Chicago house, footwork and drill |
+| [`us-east:17`](us-east.md) | Chicago house, footwork and drill |
+| [`us-east:26`](us-east.md) | Sacred steel's Michigan and Midwestern networks need source checks |
+
+## Research questions (not verified genres)
+
+- Seek documented Minneapolis funk, Kansas City jazz, St. Louis blues, Cleveland rock and Detroit soul/garage.
+- Investigate Mississippi–Chicago blues migration and Detroit–Europe techno connections only on sourced recordings.
+
+# END SOURCE: references/regions/us-midwest.md
+
+---
+
+# BEGIN SOURCE: references/regions/us-south.md
+
+# US South & Gulf
+
+Region ID: `us-south`. Texas belongs here, together with Louisiana, Mississippi, Tennessee, Georgia, Florida, Alabama, Arkansas, Oklahoma, Kentucky, North/South Carolina, Virginia and West Virginia.
+
+This new guide uses **unverified leads** from the existing survey, preserving its original route handles and [Drive source](https://drive.google.com/) attribution. No new imported routes or verified recordings are claimed. Verify provenance and sonic fit for each selection; cultural crossovers require recording-specific support.
+
+## Inherited research routes
+
+| Original stable handle | Research scope |
+| --- | --- |
+| [`us-east:05`](us-east.md) | Miami and Florida club scenes |
+| [`us-east:06`](us-east.md) | Miami and Florida club scenes |
+| [`us-east:18`](us-east.md) | Memphis and Atlanta rap |
+| [`us-east:19`](us-east.md) | Memphis and Atlanta rap |
+| [`us-east:20`](us-east.md) | Memphis and Atlanta rap |
+| [`us-east:21`](us-east.md) | New Orleans, Louisiana and Gulf traditions |
+| [`us-east:22`](us-east.md) | New Orleans, Louisiana and Gulf traditions |
+| [`us-east:23`](us-east.md) | New Orleans, Louisiana and Gulf traditions |
+| [`us-east:24`](us-east.md) | Appalachian, Piedmont, gospel and Southern music with locality checks |
+| [`us-east:25`](us-east.md) | Appalachian, Piedmont, gospel and Southern music with locality checks |
+| [`us-east:26`](us-east.md) | Appalachian, Piedmont, gospel and Southern music with locality checks |
+| [`us-east:27`](us-east.md) | Appalachian, Piedmont, gospel and Southern music with locality checks |
+| [`us-west:02`](us-west.md) | South Texas conjunto |
+| [`us-west:20`](us-west.md) | Texas/Oklahoma western swing, outlaw country, red dirt and Tejano |
+| [`us-west:21`](us-west.md) | Texas/Oklahoma western swing, outlaw country, red dirt and Tejano |
+| [`us-west:22`](us-west.md) | Texas/Oklahoma western swing, outlaw country, red dirt and Tejano |
+| [`us-west:23`](us-west.md) | Texas/Oklahoma western swing, outlaw country, red dirt and Tejano |
+| [`us-west:30`](us-west.md) | Houston slowed rap |
+
+## Research questions (not verified genres)
+
+- Trace Texas–northern Mexico traditions at recording level.
+- Keep New Orleans, Atlanta, Houston, Memphis and Appalachia distinct, not one undifferentiated Southern genre.
+
+# END SOURCE: references/regions/us-south.md
 
 ---
 
@@ -1413,7 +1506,7 @@ Imported from listener-supplied regional survey, [Drive source](https://drive.go
 
 # BEGIN SOURCE: references/regions/mediterranean-europe.md
 
-# Mediterranean & Balkans
+# Mediterranean Europe (original combined survey)
 
 Region ID: `mediterranean-europe`. Route handles: `mediterranean-europe:01`–`mediterranean-europe:30`.
 
@@ -1425,7 +1518,9 @@ For discovery, compare several compatible routes and dig beyond named touchstone
 
 Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
 
-**Listening-area overlap:** Spain remains the PWA's primary Mediterranean & Balkans map country (Balearics, Catalonia, Valencia, Andalusia). The imported Galicia/Asturias (`:07`) and Basque (`:08`) leads are Atlantic-facing; consult them for Atlantic & Western Europe only when locality and recording evidence support it. Portugal's `:09`–`:11` leads are preserved here for source traceability even though Portugal is Atlantic & Western Europe on the map. Corsican music (`:13`) is Mediterranean despite France's primary Atlantic map assignment. Turkish Anatolian and Istanbul routes primarily belong to Middle East & Caucasus, while Thracian/Balkan connections require specific provenance evidence. This note does not authorize adding otherwise out-of-region recordings simply because countries share a coast.
+**Listening-area overlap:** Spain remains the PWA's primary Mediterranean Europe map country (Balearics, Catalonia, Valencia, Andalusia). The imported Galicia/Asturias (`:07`) and Basque (`:08`) leads are Atlantic-facing; consult them for Atlantic & Western Europe only when locality and recording evidence support it. Portugal's `:09`–`:11` leads are preserved here for source traceability even though Portugal is Atlantic & Western Europe on the map. Corsican music (`:13`) is Mediterranean despite France's primary Atlantic map assignment. Turkish Anatolian and Istanbul routes primarily belong to Middle East & Caucasus, while Thracian/Balkan connections require specific provenance evidence. This note does not authorize adding otherwise out-of-region recordings simply because countries share a coast.
+
+**New map boundary:** Mediterranean Europe is now separate from [Balkans](balkans.md). Original combined-survey rows remain unchanged for traceability; Balkans-related rows are not generally Mediterranean recordings. Northern Greek and Adriatic crossover requires locality and recording-level evidence.
 
 ## Source and status
 
@@ -1467,6 +1562,39 @@ Imported from listener-supplied regional survey, [Drive source](https://drive.go
 | `mediterranean-europe:30` | **Maltese Għana (Għana Spirtu Pront)** | Malta | Improvised, high-pitched microtonal dual vocal repartee accompanied by twin Spanish guitars playing ornate Prejjem interludes. |
 
 # END SOURCE: references/regions/mediterranean-europe.md
+
+---
+
+# BEGIN SOURCE: references/regions/balkans.md
+
+# Balkans
+
+Region ID: `balkans`. Primary map countries: Albania, Bosnia and Herzegovina, Bulgaria, Croatia, Kosovo, Montenegro, North Macedonia, Romania, Serbia and Slovenia. Greece remains Mediterranean Europe but northern Greek scenes can cross on evidence.
+
+This new guide uses **unverified leads** from the existing survey, preserving its original route handles and [Drive source](https://drive.google.com/) attribution. No new imported routes or verified recordings are claimed. Verify provenance and sonic fit for each selection; cultural crossovers require recording-specific support.
+
+## Inherited research routes
+
+| Original stable handle | Research scope |
+| --- | --- |
+| [`mediterranean-europe:18`](mediterranean-europe.md) | Epirus and Greek–Albanian crossover, if supported |
+| [`mediterranean-europe:20`](mediterranean-europe.md) | Albanian, Bosnian and former Yugoslav scenes |
+| [`mediterranean-europe:21`](mediterranean-europe.md) | Albanian, Bosnian and former Yugoslav scenes |
+| [`mediterranean-europe:22`](mediterranean-europe.md) | Albanian, Bosnian and former Yugoslav scenes |
+| [`mediterranean-europe:23`](mediterranean-europe.md) | Serbian, Macedonian and Bulgarian music |
+| [`mediterranean-europe:24`](mediterranean-europe.md) | Serbian, Macedonian and Bulgarian music |
+| [`mediterranean-europe:25`](mediterranean-europe.md) | Serbian, Macedonian and Bulgarian music |
+| [`mediterranean-europe:26`](mediterranean-europe.md) | Serbian, Macedonian and Bulgarian music |
+| [`mediterranean-europe:27`](mediterranean-europe.md) | Romanian, Croatian and Slovenian traditions |
+| [`mediterranean-europe:28`](mediterranean-europe.md) | Romanian, Croatian and Slovenian traditions |
+| [`mediterranean-europe:29`](mediterranean-europe.md) | Romanian, Croatian and Slovenian traditions |
+
+## Research questions (not verified genres)
+
+- Investigate Kosovo, Montenegro, northern Greece and regional Romani scenes with credited, documented records.
+- Allow Dalmatian Adriatic coast music also into Mediterranean discovery when supported; preserve Romanian/Slovenian distinctions.
+
+# END SOURCE: references/regions/balkans.md
 
 ---
 
