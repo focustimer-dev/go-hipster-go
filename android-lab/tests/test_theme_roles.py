@@ -106,7 +106,7 @@ class AndroidThemeRoles(unittest.TestCase):
         pattern=r"\b([a-z]+):Object\.freeze\(\{(.*?)\n \}\)"
         atlas_def=dict(re.findall(pattern,atlas,re.S))
         mood_def=dict(re.findall(pattern,moods,re.S))
-        self.assertEqual(set(atlas_def),{"liberi","bosque","usiku","kingston","detroit"})
+        self.assertEqual(set(atlas_def),{"liberi","bosque","usiku","kingston","detroit","addis","polish","beirut"})
         self.assertEqual(set(mood_def),set(atlas_def))
         atlas_required={
             "paper","land","ocean","ink","selected","route",
@@ -115,7 +115,7 @@ class AndroidThemeRoles(unittest.TestCase):
         }
         mood_required={
             "neutralPaper","neutralInk","selectedPaper","selectedInk",
-            "desireHeart","funkPaper","funkInk",
+            "desireHeart",
         }
         for theme in atlas_def:
             atlas_roles=set(re.findall(r"\b([a-zA-Z]+):",atlas_def[theme]))
@@ -136,10 +136,10 @@ class AndroidThemeRoles(unittest.TestCase):
         roles=source("android-lab/web/theme-tokens.css")
         css=source("android-lab/web/theme-print.css")
         bundle=source("scripts/bundle_android_lab.py")
-        self.assertIn("const PILOTS=['kingston','detroit']",js)
+        self.assertIn("const PILOTS=['kingston','detroit','addis','polish','beirut']",js)
         review="applicationIdSuffix '.themepreview'" in source("android-lab/app/build.gradle")
         if review:
-            self.assertIn("THEMES=['liberi','bosque','usiku','kingston','detroit']",js)
+            self.assertIn("THEMES=['liberi','bosque','usiku','kingston','detroit','addis','polish','beirut']",js)
             self.assertNotIn("PILOTS.includes(next)&&persist",js)
         else:
             self.assertIn("PILOTS.includes(next)&&persist",js)
@@ -180,10 +180,10 @@ class AndroidThemeRoles(unittest.TestCase):
         # Print themes must never flatten the Funk selected portrait or
         # repaint its original lasers. Other cast preserves sprite shading.
         self.assertIn("mood:not([data-mood=funky])[aria-pressed=true]",css)
-        self.assertIn("--funk-selected-paper:#311333",css)
-        self.assertIn("background-color:#6e225c",css)
-        self.assertIn("hue-rotate(324deg)",css)
-        self.assertIn("hue-rotate(23deg) saturate(1.24)",css)
+        self.assertIn("--funk-selected-paper:#311333",source("android-lab/web/workspace.css"))
+        self.assertIn("background-color:#6e225c",source("android-lab/web/workspace.css"))
+        self.assertIn("hue-rotate(324deg)",source("android-lab/web/workspace.css"))
+        self.assertIn("hue-rotate(23deg) saturate(1.24)",source("android-lab/web/workspace.css"))
         self.assertNotIn("hue-rotate(170deg)",css)
         self.assertNotIn("moods-selected-ink-v2.webp",css)
         self.assertNotIn("mask-image:url('/editions/gig-poster/assets/moods-neutral-ink-v2.webp')",css)
@@ -228,9 +228,9 @@ class AndroidThemeRoles(unittest.TestCase):
         tokens=source("android-lab/web/theme-tokens.css")
         css=source("android-lab/web/theme-print.css")
         manual=source("android-lab/web/manual-guide.html")
-        self.assertIn("const PILOTS=['kingston','detroit']",js)
+        self.assertIn("const PILOTS=['kingston','detroit','addis','polish','beirut']",js)
         self.assertIn(":root[data-pwa-theme=detroit]",tokens)
-        self.assertIn("kingston|detroit",manual)
+        self.assertIn("kingston|detroit|addis|polish|beirut",manual)
         review="applicationIdSuffix '.themepreview'" in source("android-lab/app/build.gradle")
         if review:
             self.assertIn('data-lab-theme="detroit"',source("android-lab/web/workspace.html"))
@@ -277,13 +277,37 @@ class AndroidThemeRoles(unittest.TestCase):
         self.assertGreaterEqual(workspace.count(selector),35)
         self.assertIn("font:400 1.3rem/1.15 Poster,sans-serif",workspace)
         self.assertIn("font:400 1rem/1.45 Arial,Helvetica,sans-serif",workspace)
-        self.assertIn("background-color:#6e225c",css)
-        self.assertIn("linear-gradient(145deg,#311333,#722269 66%,#a52d78)",css)
-        self.assertIn("box-shadow:inset 0 0 0 2px #f2c84e",css)
-        self.assertIn("hue-rotate(324deg)",css)
-        self.assertIn("hue-rotate(23deg) saturate(1.24)",css)
-        self.assertIn("opacity:.82",css)
+        self.assertIn("background-color:#6e225c",source("android-lab/web/workspace.css"))
+        self.assertIn("linear-gradient(145deg,#311333,#722269 66%,#a52d78)",workspace)
+        self.assertIn("box-shadow:inset 0 0 0 2px #f2c84e",workspace)
+        self.assertIn("hue-rotate(324deg)",source("android-lab/web/workspace.css"))
+        self.assertIn("hue-rotate(23deg) saturate(1.24)",source("android-lab/web/workspace.css"))
+        self.assertIn("opacity:.82",workspace)
         self.assertNotIn("--funk-selected-paper:color-mix(in srgb,#e03fd8 22%,#f4efdf)",css)
+
+    def test_funk_neutral_follows_theme_selected_is_invariant(self):
+        js=source("android-lab/web/theme.js")
+        print_css=source("android-lab/web/theme-print.css")
+        app=source("android-lab/web/workspace.css")
+        self.assertNotIn("funkPaper",js)
+        self.assertNotIn("funkInk",js)
+        self.assertIn(".mood[aria-pressed=false]",print_css)
+        self.assertIn("themeMoodNeutralEngraving",print_css)
+        self.assertIn("mood[data-mood=funky][aria-pressed=true]",app)
+        self.assertIn("background-color:#6e225c!important",app)
+        self.assertIn("opacity:.82!important",app)
+        self.assertNotRegex(print_css,r"data-pwa-theme=(addis|polish|beirut)")
+
+    def test_five_print_palettes_are_selectable_and_complete(self):
+        js=source("android-lab/web/theme.js")
+        roles=source("android-lab/web/theme-tokens.css")
+        html=source("android-lab/web/workspace.html")
+        guide=source("android-lab/web/manual-guide.html")
+        for name in ("kingston","detroit","addis","polish","beirut"):
+            self.assertIn('data-lab-theme="'+name+'"',html)
+            self.assertIn("data-pwa-theme="+name,roles)
+        self.assertIn("kingston|detroit|addis|polish|beirut",guide)
+        self.assertIn("const PILOTS=['kingston','detroit','addis','polish','beirut']",js)
 
     def test_app_and_iframe_load_the_same_source(self):
         bundle = source("scripts/bundle_android_lab.py")

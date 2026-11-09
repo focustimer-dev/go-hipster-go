@@ -64,3 +64,51 @@
  --lab-print-substrate-texture:repeating-linear-gradient(90deg,rgba(20,20,20,.018) 0 1px,transparent 1px 5px);
  --lab-print-stamp-filter:brightness(0) saturate(100%) invert(85%) sepia(27%) saturate(810%) hue-rotate(17deg) brightness(103%) contrast(92%);
 }
+
+/* Addis Jazz Offset: aged cream, offset brown and hand-register teal. */
+:root[data-pwa-theme=addis]{
+ --lab-ui-surface:#f2e8ce;--lab-ui-ink:#2d251f;
+ --lab-ui-panel:#f2e8ce;--lab-ui-on-panel:#2d251f;
+ --lab-ui-rail:#2d251f;--lab-ui-on-rail:#f2e8ce;
+ --lab-ui-action:#2d251f;--lab-ui-on-action:#f2e8ce;
+ --lab-ui-rule:#866f55;--lab-ui-field:#f7edda;--lab-ui-on-field:#2d251f;
+ --lab-ui-focus:#0f6660;--lab-ui-control-outline:#2d251f;
+ --lab-ui-ticket-stock:#f7edda;--lab-ui-ticket-ink:#2d251f;
+ --lab-ui-go:#2d251f;--lab-ui-highlight:#d17d32;--lab-ui-on-highlight:#2d251f;
+ --lab-print-muted:#dbd0b5;--lab-print-stamp:#85602b;
+ --lab-print-active-ink:#0f6660;--lab-print-stamp-border-style:double;
+ --lab-print-substrate-texture:repeating-linear-gradient(0deg,rgba(45,37,31,.013) 0 1px,transparent 1px 8px);
+ --lab-print-stamp-filter:brightness(0) saturate(100%) invert(45%) sepia(65%) saturate(630%) hue-rotate(347deg) brightness(94%) contrast(87%);
+}
+
+/* Polish Jazz Modernism: graphic navy, vermilion and golden paper ink. */
+:root[data-pwa-theme=polish]{
+ --lab-ui-surface:#f6f2e6;--lab-ui-ink:#172c40;
+ --lab-ui-panel:#f6f2e6;--lab-ui-on-panel:#172c40;
+ --lab-ui-rail:#172c40;--lab-ui-on-rail:#f6f2e6;
+ --lab-ui-action:#172c40;--lab-ui-on-action:#f6f2e6;
+ --lab-ui-rule:#8a8a83;--lab-ui-field:#fffaf0;--lab-ui-on-field:#172c40;
+ --lab-ui-focus:#c13b28;--lab-ui-control-outline:#172c40;
+ --lab-ui-ticket-stock:#fffaf0;--lab-ui-ticket-ink:#172c40;
+ --lab-ui-go:#172c40;--lab-ui-highlight:#d8bd67;--lab-ui-on-highlight:#172c40;
+ --lab-print-muted:#e3dcd2;--lab-print-stamp:#b64b36;
+ --lab-print-active-ink:#c13b28;--lab-print-stamp-border-style:solid;
+ --lab-print-substrate-texture:none;
+ --lab-print-stamp-filter:brightness(0) saturate(100%) invert(38%) sepia(72%) saturate(960%) hue-rotate(331deg) brightness(94%) contrast(90%);
+}
+
+/* Beirut Cassette Slip: J-card stock, navy, brass and dusty rose. */
+:root[data-pwa-theme=beirut]{
+ --lab-ui-surface:#e3d8bf;--lab-ui-ink:#1c3240;
+ --lab-ui-panel:#e3d8bf;--lab-ui-on-panel:#1c3240;
+ --lab-ui-rail:#1c3240;--lab-ui-on-rail:#f2e9d3;
+ --lab-ui-action:#1c3240;--lab-ui-on-action:#f2e9d3;
+ --lab-ui-rule:#897a6c;--lab-ui-field:#f2e9d3;--lab-ui-on-field:#1c3240;
+ --lab-ui-focus:#99434b;--lab-ui-control-outline:#1c3240;
+ --lab-ui-ticket-stock:#f2e9d3;--lab-ui-ticket-ink:#1c3240;
+ --lab-ui-go:#1c3240;--lab-ui-highlight:#c5a06d;--lab-ui-on-highlight:#1c3240;
+ --lab-print-muted:#d5c4a5;--lab-print-stamp:#8e5052;
+ --lab-print-active-ink:#99434b;--lab-print-stamp-border-style:solid;
+ --lab-print-substrate-texture:repeating-linear-gradient(90deg,transparent 0 76px,rgba(28,50,64,.035) 76px 77px,transparent 77px 82px);
+ --lab-print-stamp-filter:brightness(0) saturate(100%) invert(59%) sepia(23%) saturate(1187%) hue-rotate(325deg) brightness(92%) contrast(87%);
+}

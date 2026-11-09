@@ -156,18 +156,17 @@
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #posterLandEngraving path{stroke:var(--lab-atlas-ink)}
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #posterSelectedHalftone rect{fill:var(--lab-atlas-selected)}
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #posterSelectedHalftone path{stroke:var(--lab-atlas-ink)}
-/* Real paper pressing, not photo-negative or a full cyan tile.
-   Selection stays evident through a darker stock and worn teal stamp rim.
-   Retain the original engraved image layers (their shading and alpha).
-   The Funk alone is a locked, theme-independent character pressing. */
-:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=funky])[aria-pressed=false]{
+/* Normal portrait paper and ink apply to ALL eight, including Funk.
+   Only selected Funk is exempt from palette recoloring; the other seven
+   share the generic selected stock and preserve engraved image shading. */
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[aria-pressed=false]{
   background:var(--lab-mood-neutral-paper);color:var(--lab-mood-neutral-ink);
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=funky])[aria-pressed=true]{
   background:var(--lab-mood-selected-paper);color:var(--lab-mood-selected-ink);
   box-shadow:inset 0 0 0 2px var(--lab-mood-selected-edge,var(--lab-print-active-ink)),inset 0 -3px 0 var(--lab-mood-selected-edge,var(--lab-print-active-ink));
 }
-:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=funky]) .word{
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood .word{
   color:var(--lab-mood-neutral-ink);
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=funky])[aria-pressed=true] .word{
@@ -182,7 +181,7 @@
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=funky])[aria-pressed=true] .face{
   filter:none!important;
 }
-:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=funky]):not([data-mood=desire]):not([data-mood=triumphant]) .face::before{
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=desire]):not([data-mood=triumphant])[aria-pressed=false] .face::before{
   filter:url(#themeMoodNeutralEngraving)!important;
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=funky]):not([data-mood=desire]):not([data-mood=triumphant]) .face::after{
@@ -201,33 +200,9 @@
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=triumphant][aria-pressed=true] .face::after{
   filter:url(#alphaInk)!important;
 }
-/* Funk is a fixed, canonical performance — NOT a palette recipient.
-   This is the exact selected-state pressing from the approved Android
-   Bosque/Usiku implementation. The original expression sprite and laser
-   geometry remain untouched in mood-portraits.css. Other theme tokens
-   never override these colors. */
-:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true]{
-  --funk-selected-paper:#311333;
-  background-color:#6e225c;
-  background-image:radial-gradient(circle at 83% 13%,#efa06344,transparent 41%),linear-gradient(145deg,#311333,#722269 66%,#a52d78);
-  box-shadow:inset 0 0 0 2px #f2c84e;
-  color:#f2c84e;
-  isolation:isolate;
-}
-:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true] .word{
-  color:#f2c84e;
-  background:transparent;
-  text-decoration:underline;
-  text-decoration-color:#f2c84e;
-}
-:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true] .face::after{
-  /* Apply the ORIGINAL orange/gold ink to original selected figure alpha. */
-  filter:brightness(0) saturate(100%) invert(71%) sepia(46%) saturate(643%) hue-rotate(324deg) brightness(108%) contrast(94%)!important;
-}
-:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true] .funk-rays{
-  opacity:.82;
-  filter:hue-rotate(23deg) saturate(1.24);
-}
+/* Neutral Funk shares each print palette's paper and engraving.
+   The selected Funk is locked once across ALL Android themes by
+   the canonical selected-performance rule in workspace.css. */
 /* Print-profile QA corrections: shared roles, not theme-name selectors. */
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #firstCrateSetup{
  --ink:var(--lab-ui-ticket-ink);--paper:var(--lab-ui-ticket-stock);

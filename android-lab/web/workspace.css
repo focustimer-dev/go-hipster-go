@@ -907,10 +907,42 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
   }
 }
 
-/* Review app: two additional theme-picker previews, no component overrides. */
+/* Neutral Funk follows each theme exactly. Only its selected
+   composition is invariant: one Android-wide contract for all eight.
+   Approved source plates, cropping and laser mask remain untouched. */
+:root body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true]{
+ --funk-selected-paper:#311333;
+ background-color:#6e225c!important;
+ background-image:radial-gradient(circle at 83% 13%,#efa06344,transparent 41%),linear-gradient(145deg,#311333,#722269 66%,#a52d78)!important;
+ box-shadow:inset 0 0 0 2px #f2c84e!important;
+ color:#f2c84e!important;
+ isolation:isolate;
+}
+:root body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true] .word{
+ color:#f2c84e!important;background:transparent!important;
+ text-decoration:underline;text-decoration-color:#f2c84e;
+}
+:root body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true] .face{filter:none!important}
+:root body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true] .face::after{
+ filter:brightness(0) saturate(100%) invert(71%) sepia(46%) saturate(643%) hue-rotate(324deg) brightness(108%) contrast(94%)!important;
+}
+:root body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true] .funk-rays{
+ opacity:.82!important;filter:hue-rotate(23deg) saturate(1.24)!important;
+}
+/* Review-only swatches; no changes to application styling. */
 .lab-theme-choice[data-lab-theme=kingston] .lab-theme-swatches i:nth-child(1){background:#273d3b}
 .lab-theme-choice[data-lab-theme=kingston] .lab-theme-swatches i:nth-child(2){background:#e3d9c2}
 .lab-theme-choice[data-lab-theme=kingston] .lab-theme-swatches i:nth-child(3){background:#9b3a2b}
 .lab-theme-choice[data-lab-theme=detroit] .lab-theme-swatches i:nth-child(1){background:#171717}
 .lab-theme-choice[data-lab-theme=detroit] .lab-theme-swatches i:nth-child(2){background:#d5e644}
 .lab-theme-choice[data-lab-theme=detroit] .lab-theme-swatches i:nth-child(3){background:#f50093}
+
+.lab-theme-choice[data-lab-theme=addis] .lab-theme-swatches i:nth-child(1){background:#2d251f}
+.lab-theme-choice[data-lab-theme=addis] .lab-theme-swatches i:nth-child(2){background:#f2e8ce}
+.lab-theme-choice[data-lab-theme=addis] .lab-theme-swatches i:nth-child(3){background:#d17d32}
+.lab-theme-choice[data-lab-theme=polish] .lab-theme-swatches i:nth-child(1){background:#172c40}
+.lab-theme-choice[data-lab-theme=polish] .lab-theme-swatches i:nth-child(2){background:#f6f2e6}
+.lab-theme-choice[data-lab-theme=polish] .lab-theme-swatches i:nth-child(3){background:#e34c2f}
+.lab-theme-choice[data-lab-theme=beirut] .lab-theme-swatches i:nth-child(1){background:#1c3240}
+.lab-theme-choice[data-lab-theme=beirut] .lab-theme-swatches i:nth-child(2){background:#e3d8bf}
+.lab-theme-choice[data-lab-theme=beirut] .lab-theme-swatches i:nth-child(3){background:#a84950}

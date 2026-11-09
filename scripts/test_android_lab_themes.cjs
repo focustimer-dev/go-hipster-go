@@ -1017,6 +1017,89 @@ async function verifyManualHierarchy(page,name,width){
     }finally{await xerox.close()}
    }
   }
+  // One focused 390px proof for the three additional print palettes.
+  // It checks the REAL three maps and original Funk sprites, with only one
+  // optional bounded visual diagnostic per theme. No extra animation benchmark.
+  if(width===390){
+   const specs=[
+    {id:'addis',ocean:'#0f4a48',stock:'rgb(242, 232, 206)'},
+    {id:'polish',ocean:'#172c40',stock:'rgb(246, 242, 230)'},
+    {id:'beirut',ocean:'#1c3240',stock:'rgb(227, 216, 191)'}
+   ];
+   for(const spec of specs){
+    const sample=await browser.newPage({viewport:{width:390,height:860},isMobile:true,hasTouch:true});
+    try{
+     await sample.goto('http://127.0.0.1:'+server.address().port+'/?theme='+spec.id,{waitUntil:'domcontentloaded'});
+     await sample.waitForFunction(()=>window.labAtlasGlobe?.loaded()&&window.labCahillMap?.ready,
+      null,{timeout:25000});
+     await sample.emulateMedia({reducedMotion:'reduce'});
+     const neutral=await sample.evaluate(()=>{
+      const css=selector=>getComputedStyle(document.querySelector(selector));
+      const funk=document.querySelector('.mood[data-mood=funky]');
+      const happy=document.querySelector('.mood[data-mood=happy]');
+      funk.setAttribute('aria-pressed','false');
+      happy.setAttribute('aria-pressed','false');
+      return {
+       theme:window.HipsterLabTheme.current(),
+       profile:document.documentElement.dataset.ghgThemeProfile,
+       regularPaper:css('.mood[data-mood=happy]').backgroundColor,
+       funkPaper:css('.mood[data-mood=funky]').backgroundColor,
+       regularInk:css('.mood[data-mood=happy] .word').color,
+       funkInk:css('.mood[data-mood=funky] .word').color,
+       neutralFilter:getComputedStyle(funk.querySelector('.face'),'::before').filter,
+       ocean:window.GHGAtlasPaintColors().ocean,
+       robinsonOcean:window.labAtlasGlobe.getPaintProperty('robinson-ocean','fill-color'),
+       cahillOcean:css('#labAtlasCahill .lab-cahill-ocean').fill
+      };
+     });
+     assert.equal(neutral.theme,spec.id);
+     assert.equal(neutral.profile,'print');
+     assert.equal(neutral.regularPaper,spec.stock);
+     assert.equal(neutral.funkPaper,neutral.regularPaper,'Neutral Funk follows '+spec.id+' stock');
+     assert.equal(neutral.funkInk,neutral.regularInk,'Neutral Funk follows '+spec.id+' ink');
+     assert.match(neutral.neutralFilter,/themeMoodNeutralEngraving/);
+     assert.equal(neutral.ocean,spec.ocean);
+     assert.equal(neutral.robinsonOcean,spec.ocean);
+     const rgb='rgb('+spec.ocean.slice(1).match(/.{2}/g).map(x=>parseInt(x,16)).join(', ')+')';
+     assert.equal(neutral.cahillOcean,rgb,'Cahill ocean matches palette');
+     const selected=await sample.evaluate(()=>{
+      const funk=document.querySelector('.mood[data-mood=funky]');
+      funk.setAttribute('aria-pressed','true');
+      const css=getComputedStyle(funk);
+      const sprite=getComputedStyle(funk.querySelector('.face'),'::after');
+      const rays=getComputedStyle(funk.querySelector('.funk-rays'));
+      const copy=getComputedStyle(funk.querySelector('.word'));
+      const result={paper:css.backgroundColor,gradient:css.backgroundImage,
+       image:sprite.backgroundImage,spriteInk:sprite.filter,laserInk:rays.filter,
+       laserOpacity:rays.opacity,label:copy.color};
+      funk.setAttribute('aria-pressed','false');
+      return result;
+     });
+     assert.equal(selected.paper,'rgb(110, 34, 92)','Selected Funk canonical violet stock');
+     assert.match(selected.gradient,/linear-gradient/);
+     assert.match(selected.image,/moods-selected-ink-v2.webp/);
+     assert.match(selected.spriteInk,/hue-rotate\(324deg\)/);
+     assert.match(selected.laserInk,/hue-rotate\(23deg\)/);
+     assert.equal(selected.laserOpacity,'0.82');
+     assert.equal(selected.label,'rgb(242, 200, 78)');
+     const heading=await sample.locator('.refinements>.counter-label').evaluate(el=>getComputedStyle(el).fontFamily);
+     assert.match(heading,/Poster/,'Canonical Android Jukebox typography');
+     await diagnosticCapture(sample,spec.id+'-390-jukebox.png');
+     await sample.locator('[data-atlas-view=cahill-keyes]').click();
+     await sample.waitForFunction(()=>{const s=window.HipsterAtlasState?.();return s?.projection==='cahill-keyes'&&!s.transitioning},null,{timeout:16000});
+     await sample.locator('[data-atlas-view=globe]').click();
+     await sample.waitForFunction(()=>{const s=window.HipsterAtlasState?.();return s?.projection==='globe'&&!s.transitioning},null,{timeout:16000});
+     await sample.locator('[data-lab-tab=manual]').click();
+     await sample.frameLocator('#labManualFrame').locator('#manualNavigation').waitFor({state:'visible',timeout:12000});
+     const guide=await sample.frameLocator('#labManualFrame').locator('body.embedded-guide').evaluate(el=>({
+      theme:el.ownerDocument.documentElement.dataset.pwaTheme,
+      profile:el.ownerDocument.documentElement.dataset.ghgThemeProfile
+     }));
+     assert.deepEqual(guide,{theme:spec.id,profile:'print'});
+     console.log('PASS: '+spec.id+' neutral/selected Funk, three projections and Manual');
+    }finally{await sample.close()}
+   }
+  }
   console.log('PASS: Android Libéri/Bosque/Usiku and URL-only Kingston/Detroit pilots have matching Atlas, portrait and Manual roles at 390px / 320px');
  }finally{await browser?.close();await new Promise(ok=>server.close(ok))}
 })().catch(e=>{console.error(e);process.exitCode=1});

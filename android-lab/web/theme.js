@@ -2,9 +2,9 @@
    This early document script leaves native app state and map geometry alone. */
 (function(){
 'use strict';
-const KEY='ghg-lab-theme-v1',THEMES=['liberi','bosque','usiku','kingston','detroit'];
-// Dedicated review package only: both pilots are selectable in Preferences.
-const PILOTS=['kingston','detroit'];
+const KEY='ghg-lab-theme-v1',THEMES=['liberi','bosque','usiku','kingston','detroit','addis','polish','beirut'];
+// Review-only: five independent print palettes in Preferences.
+const PILOTS=['kingston','detroit','addis','polish','beirut'];
 const preview=new URLSearchParams(location.search).get('theme');
 /* Single paint contract for the three REAL projections and their cached
    animation frames. Geometry, sprites, camera and transitions are unchanged.
@@ -32,6 +32,27 @@ const ATLAS=Object.freeze({
   graticule:'#b77b4d',graticuleOpacity:.2,
   oceanStroke:'#b77b4d',oceanStrokeOpacity:.72
  }),
+ addis:Object.freeze({
+  paper:'#f2e8ce',land:'#e1cfaa',ocean:'#0f4a48',ink:'#2d251f',
+  selected:'#d17d32',route:'#d99d51',routeOpacity:.7,routeWidth:1.15,
+  routeDash:[3,4],backdrop:'#f2e8ce',field:'#f2e8ce',
+  graticule:'#a77e54',graticuleOpacity:.28,
+  oceanStroke:'#2d251f',oceanStrokeOpacity:.85
+ }),
+ polish:Object.freeze({
+  paper:'#f6f2e6',land:'#f6f2e6',ocean:'#172c40',ink:'#172c40',
+  selected:'#e34c2f',route:'#d8bd67',routeOpacity:.78,routeWidth:1.08,
+  routeDash:[2.5,4],backdrop:'#f6f2e6',field:'#f6f2e6',
+  graticule:'#b6a88b',graticuleOpacity:.22,
+  oceanStroke:'#172c40',oceanStrokeOpacity:1
+ }),
+ beirut:Object.freeze({
+  paper:'#e3d8bf',land:'#d9c9ad',ocean:'#1c3240',ink:'#1c3240',
+  selected:'#a84950',route:'#c5a06d',routeOpacity:.76,routeWidth:1.07,
+  routeDash:[3,3.6],backdrop:'#e3d8bf',field:'#e3d8bf',
+  graticule:'#b39a7c',graticuleOpacity:.25,
+  oceanStroke:'#1c3240',oceanStrokeOpacity:1
+ }),
  detroit:Object.freeze({
   paper:'#e7e5db',land:'#d6d6c9',ocean:'#151515',ink:'#181818',
   selected:'#d5e644',route:'#d5e644',routeOpacity:.72,routeWidth:1.05,
@@ -48,42 +69,56 @@ const ATLAS=Object.freeze({
   oceanStroke:'#263f3e',oceanStrokeOpacity:.92
  })
 });
-/* These color roles control PRINTED mood tiles and labels. The artwork
-   itself remains the approved transparent plate; special Funk, Desire and
-   Triumph alpha masks are not recolored or regenerated here. */
+/* Neutral Funk shares the same paper and ink as the other portraits.
+   Only selected Funk is a fixed performance, not a palette role. */
 const MOODS=Object.freeze({
  liberi:Object.freeze({
   neutralPaper:'#dfb045',neutralInk:'#103135',
   selectedPaper:'#d64b30',selectedInk:'#103135',
-  desireHeart:'#e03fd8',funkPaper:'#e03fd8',funkInk:'#103135'
+  desireHeart:'#e03fd8'
  }),
  bosque:Object.freeze({
   neutralPaper:'#f5f0e6',neutralInk:'#003018',
   selectedPaper:'#e5cf42',selectedInk:'#003018',
-  desireHeart:'#8e3069',funkPaper:'#6e225c',funkInk:'#f2c84e'
+  desireHeart:'#8e3069'
  }),
  usiku:Object.freeze({
   neutralPaper:'radial-gradient(ellipse farthest-corner at 50% 36%,#b77b4d 0%,#a86c43 34%,#925b39 68%,#7e4c30 100%)',
   neutralInk:'#063821',selectedPaper:'#e5cf42',selectedInk:'#003018',
-  desireHeart:'#8e3069',funkPaper:'#6e225c',funkInk:'#f2c84e'
+  desireHeart:'#8e3069'
+ }),
+ addis:Object.freeze({
+  neutralPaper:'#f2e8ce',neutralInk:'#2d251f',
+  selectedPaper:'#e4ba7c',selectedInk:'#2d251f',
+  desireHeart:'#a84950'
+ }),
+ polish:Object.freeze({
+  neutralPaper:'#f6f2e6',neutralInk:'#172c40',
+  selectedPaper:'#eed5ab',selectedInk:'#172c40',
+  desireHeart:'#e34c2f'
+ }),
+ beirut:Object.freeze({
+  neutralPaper:'#e3d8bf',neutralInk:'#1c3240',
+  selectedPaper:'#d8b6a5',selectedInk:'#1c3240',
+  desireHeart:'#a84950'
  }),
  detroit:Object.freeze({
   neutralPaper:'#e7e5db',neutralInk:'#171717',
   selectedPaper:'#f50093',selectedInk:'#171717',
-  desireHeart:'#d5e644',funkPaper:'#e4cbe4',funkInk:'#08252a'
+  desireHeart:'#d5e644'
  }),
  kingston:Object.freeze({
   // Selected stock is still LABEL PAPER; the stamped outline indicates state.
   // Funk retains its own approved pink pressing and original source shading.
   neutralPaper:'#e3d9c2',neutralInk:'#263f3e',
   selectedPaper:'#d2c3a6',selectedInk:'#244643',
-  desireHeart:'#657f78',funkPaper:'#e4cbe4',funkInk:'#08252a'
+  desireHeart:'#657f78'
  })
 });
 const CSS_MOOD_ROLES={
  'neutral-paper':'neutralPaper','neutral-ink':'neutralInk',
  'selected-paper':'selectedPaper','selected-ink':'selectedInk',
- 'desire-hearts':'desireHeart','funk-paper':'funkPaper','funk-ink':'funkInk'
+ 'desire-hearts':'desireHeart'
 };
 const CSS_ATLAS_ROLES={
  paper:'paper',land:'land',ocean:'ocean',ink:'ink',

@@ -229,3 +229,25 @@ Do not change the original neutral/selected sprite sheets or Jukebox
 interaction state to fix these style regressions. Android compilation and
 the 390px phone browser must validate computed font families and Funk
 selected state before future theme releases.
+
+## Final Five: review-only token rollout
+
+Kingston, Detroit, Addis Jazz Offset, Polish Jazz Modernism and Beirut
+Cassette Slip all consume ONE shared print profile. Every palette contains
+complete UI, engraving and Atlas paint roles for Robinson, Cahill–Keyes,
+Globe and their transition frames. The themes differ only in colors, ink
+registration roles, GO stamp treatment and optional substrate texture.
+
+**Funk invariant:** Its neutral state is not special: it inherits the same
+neutral stock and engraved ink as every other portrait in that theme.
+There is no per-theme `funkPaper` or `funkInk` setting. Only the SELECTED
+Funk performance stays constant across all eight themes, implemented once
+in Android's `workspace.css`: violet/magenta pressing, star-gold lettering,
+orange-gold original selected sprite and approved masked rays. Preserve
+source geometry and alpha; do not paint a generic portrait overlay.
+
+The three new candidates use historically informed print vocabulary,
+not reproduced sleeves, invented languages or unverified provenance.
+Keep all candidates in the separate Theme Review APK until Android phone
+captures, selected states, contrast, Manual and all Atlas projections are
+reviewed. No canonical Android/PWA deployment is authorized by this draft.
