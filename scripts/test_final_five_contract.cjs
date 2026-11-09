@@ -99,7 +99,29 @@ const specs=[
    const iframe=await page.evaluate(()=>document.getElementById('labManualFrame')?.contentDocument?.documentElement?.dataset);
    assert.equal(iframe?.pwaTheme,spec.id);
    assert.equal(iframe?.ghgThemeProfile,'print');
-   console.log('PASS: '+spec.id+' print tokens, neutral/selected Funk, map palette and Manual');
+   // The compass is pressed in the same ink as selected countries;
+   // the unchanged hero artwork uses its transparent engraving as a mask.
+   const ornament=await page.evaluate(()=>{
+    const root=getComputedStyle(document.documentElement);
+    const bird=document.querySelector('.poster-bird');
+    return {
+     atlasInk:root.getPropertyValue('--lab-atlas-selected').trim(),
+     stampInk:root.getPropertyValue('--lab-print-stamp').trim(),
+     compass:getComputedStyle(document.querySelector('.chart-rose-north')).fill,
+     hub:getComputedStyle(document.querySelector('.chart-rose-hub')).fill,
+     birdInk:getComputedStyle(bird).backgroundColor,
+     birdMask:getComputedStyle(bird).maskImage,
+     heroText:[...document.querySelectorAll('.poster-hero .poster-line')]
+      .map(x=>x.textContent).join(' ')
+    };
+   });
+   const colorAsRgb=hex=>'rgb('+hex.slice(1).match(/.{2}/g).map(v=>parseInt(v,16)).join(', ')+')';
+   assert.equal(ornament.compass,colorAsRgb(ornament.atlasInk),'Compass matches selected countries');
+   assert.equal(ornament.hub,ornament.compass,'Compass center matches north');
+   assert.equal(ornament.birdInk,colorAsRgb(ornament.stampInk),'Etched bird uses theme stamp ink');
+   assert.match(ornament.birdMask,/bird-globe\\.webp/);
+   assert.equal(ornament.heroText,'YOUR TASTE IS A PROBLEM');
+   console.log('PASS: '+spec.id+' print tokens, neutral/selected Funk, map palette, Manual and hero');
   }
   assert.deepEqual(errors,[],'No theme runtime errors');
   await page.close();

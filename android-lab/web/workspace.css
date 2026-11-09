@@ -386,6 +386,14 @@ body.gig-poster .crate-map-frame.lab-globe-frame .atlas-radial-field{display:non
  background:var(--lab-ui-panel)!important;color:var(--lab-ui-on-panel)!important;
 }
 
+/* Android all-theme selection: compass details and the Robinson
+   selected-country halftone use the live Atlas selected-color token. */
+:root[data-pwa-theme] body.gig-poster.lab-workspace{
+ --chart-selected-ink:var(--lab-atlas-selected);
+}
+:root[data-pwa-theme] body.gig-poster.lab-workspace #posterSelectedHalftone rect{
+ fill:var(--lab-atlas-selected);
+}
 /* Canonical Atlas field vs ocean separation. Preserve the live map geometry:
    yellow Liberi paper and green Usiku vignette OUTSIDE the projection,
    with petrol/dark water painted by the ocean polygon/sphere itself. */

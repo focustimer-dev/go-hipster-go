@@ -20,7 +20,16 @@ body.gig-poster .topnav a+a{border-left:1px solid var(--ink);padding-left:16px}
 body.gig-poster:is([data-page=launch],[data-page=setup]) .hero-title{display:block;position:relative;margin:4px 0 10px;padding:0;border:0;min-height:0}
 body.gig-poster:is([data-page=launch],[data-page=setup]) .hero-title .headline,html[data-returning=true] body.gig-poster:is([data-page=launch],[data-page=setup]) .hero-title .headline{position:relative;z-index:1;width:69%;max-width:none;margin:0;padding:0;border:0;font:400 15.6cqw/.9 Poster,sans-serif;letter-spacing:-.025em;color:var(--ink);text-shadow:none;transform:scaleX(.88);transform-origin:left center;animation:none;overflow-wrap:normal}
 body.gig-poster .poster-line{display:block;white-space:nowrap}
-body.gig-poster .poster-bird{position:absolute;width:44%;height:auto;right:-1%;top:3%;pointer-events:none}
+body.gig-poster:is([data-page=launch],[data-page=setup]){--chart-selected-ink:#d64b30}
+/* Original etched bird/globe is a transparent ALPHA plate. Its tonal
+   hatching remains intact, while the printed ink follows each theme. */
+body.gig-poster .poster-bird{
+ position:absolute;width:44%;height:auto;aspect-ratio:1308/1202;
+ right:-1%;top:3%;pointer-events:none;
+ background-color:var(--poster-bird-ink,var(--ink));
+ -webkit-mask:url("/editions/gig-poster/assets/bird-globe.webp") center/contain no-repeat;
+ mask:url("/editions/gig-poster/assets/bird-globe.webp") center/contain no-repeat;
+}
 /* A quiet edition mark, revealed only on return; preserve the full hero every visit. */
 html[data-returning=true] body.gig-poster[data-page=launch] .poster-hero .return-stamp{
   display:table;position:relative;z-index:1;
@@ -601,12 +610,12 @@ body.gig-poster .chart-rose-pearls{fill:var(--bone);stroke:none}
 body.gig-poster .chart-rose-flourish{stroke:var(--paper);stroke-width:.55;opacity:.85;fill:none}
 body.gig-poster .chart-rose-blade{fill:var(--paper);stroke:var(--ink);stroke-width:.7}
 body.gig-poster .chart-rose-shadow{fill:var(--ink);stroke:none}
-body.gig-poster .chart-rose-north{fill:var(--selection-vermilion);stroke:none}
+body.gig-poster .chart-rose-north{fill:var(--chart-selected-ink,var(--selection-vermilion));stroke:none}
 body.gig-poster .chart-rose-fine{fill:var(--bone);stroke:var(--ink);stroke-width:.55}
 body.gig-poster .chart-rose-disc{fill:var(--ink);stroke:var(--paper);stroke-width:.8}
 body.gig-poster .chart-rose-hub-ring{fill:none;stroke:var(--bone);stroke-width:.7}
-body.gig-poster .chart-rose-hub{fill:var(--selection-vermilion);stroke:var(--bone);stroke-width:.6}
-body.gig-poster .chart-rose-crown{fill:var(--selection-vermilion);stroke:var(--bone);stroke-width:.5}
+body.gig-poster .chart-rose-hub{fill:var(--chart-selected-ink,var(--selection-vermilion));stroke:var(--bone);stroke-width:.6}
+body.gig-poster .chart-rose-crown{fill:var(--chart-selected-ink,var(--selection-vermilion));stroke:var(--bone);stroke-width:.5}
 body.gig-poster .chart-rose-letters{text-anchor:middle;fill:var(--bone);stroke:none;font:bold 7px Georgia,serif;letter-spacing:.3px}
 /* One shared internal grid: identical title and helper text baselines. */
 body.gig-poster .go-options .go-extras{grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch}

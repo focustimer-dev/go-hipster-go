@@ -312,6 +312,27 @@ class AndroidThemeRoles(unittest.TestCase):
         self.assertIn(".tempo-control[data-tempo=any] #tempoSlider::-webkit-slider-thumb{opacity:0}",source_css)
         self.assertIn(".tempo-control[data-tempo=any] #tempoSlider::-moz-range-thumb{opacity:0}",source_css)
 
+    def test_hero_and_compass_use_the_shared_atlas_palette(self):
+        hero=source("launcher/editions/gig-poster/index.html")
+        builder=source("scripts/build_gig_poster.py")
+        poster=source("launcher/editions/gig-poster/edition.css")
+        pwa=source("launcher/assets/pwa-themes.css")
+        android=source("android-lab/web/workspace.css")
+        print_css=source("android-lab/web/theme-print.css")
+        self.assertIn('<span class="poster-line">PROBLEM</span>',hero)
+        self.assertNotIn('<span class="poster-line">PROBLEM.</span>',hero)
+        self.assertIn('<span class="poster-line">PROBLEM</span>',builder)
+        self.assertIn('<span class="poster-bird" aria-hidden="true"></span>',hero)
+        self.assertIn('bird-globe.webp',poster)
+        self.assertIn('-webkit-mask:url(',poster)
+        self.assertIn('background-color:var(--poster-bird-ink,var(--ink))',poster)
+        self.assertIn('--poster-bird-ink:var(--lab-print-stamp)',print_css)
+        self.assertIn('--chart-selected-ink:var(--lab-atlas-selected)',android)
+        self.assertIn('fill:var(--lab-atlas-selected)',android)
+        for part in ('north','hub','crown'):
+            self.assertIn('chart-rose-'+part+'{fill:var(--chart-selected-ink',poster)
+            self.assertIn('.chart-rose-'+part,pwa)
+
     def test_app_and_iframe_load_the_same_source(self):
         bundle = source("scripts/bundle_android_lab.py")
         manual = source("android-lab/web/manual-guide.html")

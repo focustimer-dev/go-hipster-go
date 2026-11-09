@@ -22,6 +22,11 @@
   color:var(--lab-ui-ink);background:var(--lab-ui-surface);
   color-scheme:light;
 }
+/* Stamp the original hero engraving in each palette's existing quiet
+   registration ink, not with a new per-theme override. */
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace{
+ --poster-bird-ink:var(--lab-print-stamp);
+}
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .site{
   background-color:var(--lab-ui-surface);color:var(--lab-ui-ink);
   background-image:var(--lab-print-substrate-texture,none);
