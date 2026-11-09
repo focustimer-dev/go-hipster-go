@@ -727,11 +727,11 @@ async function verifyManualHierarchy(page,name,width){
    assert.equal(printedExtra.crateLabel,'rgb(239, 228, 203)','Crate CTA text has cream contrast');
    assert.equal(printedExtra.selectedFunk.beforeOpacity,'0','Funk selected hides the neutral pose');
    assert.equal(printedExtra.selectedFunk.afterOpacity,'1','Funk selected shows the approved star-glasses pose');
-   assert.match(printedExtra.selectedFunk.image,/moods-selected-ink-v2.webp/,'Funk uses the original selected artwork');
+   assert.match(printedExtra.selectedFunk.image,/funk-selected-engraved.webp/,'Funk selected is baked from the original approved artwork');
    assert.equal(printedExtra.selectedFunk.mask,'none','Funk is never flattened into an ink mask');
    assert.match(printedExtra.selectedFunk.raysFilter,/hue-rotate\(23deg\)/,'Funk uses canonical laser colors');
    assert.equal(printedExtra.selectedFunk.raysOpacity,'0.82','Funk retains canonical laser strength');
-   assert.match(printedExtra.selectedFunk.spriteFilter,/funkHighlighterEngraving/,'Funk selected engraving uses shaded yellow ink');
+   assert.equal(printedExtra.selectedFunk.spriteFilter,'none','Funk baked plate needs no WebView SVG filter');
    assert.match(printedExtra.selectedFunk.gradient,/linear-gradient/,'Funk canonical violet-magenta pressing');
    assert.equal(printedExtra.selectedFunk.label,'rgb(242, 200, 78)','Funk canonical gold label');
    assert.equal(printedExtra.selectedFunk.stock,'rgb(110, 34, 92)','Funk canonical violet base');
