@@ -10,6 +10,8 @@ For discovery, compare several compatible routes and dig beyond named touchstone
 
 Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
 
+**New map boundary:** US West remains the Pacific states, Mountain West, Alaska and Hawaiʻi. Original Texas and Oklahoma source handles remain here for traceability but now primarily belong to [US South & Gulf](us-south.md). Borderland and cross-regional musical connections need recording evidence.
+
 ## Source and status
 
 Imported from listener-supplied regional survey, [Drive source](https://drive.google.com/file/d/1kkockosIGchtB76Xwjm189XebmJuyCDT/view), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.

@@ -1,4 +1,4 @@
-# Mediterranean & Balkans
+# Mediterranean Europe (original combined survey)
 
 Region ID: `mediterranean-europe`. Route handles: `mediterranean-europe:01`–`mediterranean-europe:30`.
 
@@ -10,7 +10,9 @@ For discovery, compare several compatible routes and dig beyond named touchstone
 
 Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
 
-**Listening-area overlap:** Spain remains the PWA's primary Mediterranean & Balkans map country (Balearics, Catalonia, Valencia, Andalusia). The imported Galicia/Asturias (`:07`) and Basque (`:08`) leads are Atlantic-facing; consult them for Atlantic & Western Europe only when locality and recording evidence support it. Portugal's `:09`–`:11` leads are preserved here for source traceability even though Portugal is Atlantic & Western Europe on the map. Corsican music (`:13`) is Mediterranean despite France's primary Atlantic map assignment. Turkish Anatolian and Istanbul routes primarily belong to Middle East & Caucasus, while Thracian/Balkan connections require specific provenance evidence. This note does not authorize adding otherwise out-of-region recordings simply because countries share a coast.
+**Listening-area overlap:** Spain remains the PWA's primary Mediterranean Europe map country (Balearics, Catalonia, Valencia, Andalusia). The imported Galicia/Asturias (`:07`) and Basque (`:08`) leads are Atlantic-facing; consult them for Atlantic & Western Europe only when locality and recording evidence support it. Portugal's `:09`–`:11` leads are preserved here for source traceability even though Portugal is Atlantic & Western Europe on the map. Corsican music (`:13`) is Mediterranean despite France's primary Atlantic map assignment. Turkish Anatolian and Istanbul routes primarily belong to Middle East & Caucasus, while Thracian/Balkan connections require specific provenance evidence. This note does not authorize adding otherwise out-of-region recordings simply because countries share a coast.
+
+**New map boundary:** Mediterranean Europe is now separate from [Balkans](balkans.md). Original combined-survey rows remain unchanged for traceability; Balkans-related rows are not generally Mediterranean recordings. Northern Greek and Adriatic crossover requires locality and recording-level evidence.
 
 ## Source and status
 
