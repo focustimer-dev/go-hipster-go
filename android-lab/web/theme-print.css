@@ -181,7 +181,7 @@
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=funky])[aria-pressed=true] .face{
   filter:none!important;
 }
-:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=desire]):not([data-mood=triumphant])[aria-pressed=false] .face::before{
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=desire]):not([data-mood=triumphant]) .face::before{
   filter:url(#themeMoodNeutralEngraving)!important;
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=funky]):not([data-mood=desire]):not([data-mood=triumphant]) .face::after{
