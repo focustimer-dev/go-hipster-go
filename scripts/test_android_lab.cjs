@@ -85,8 +85,8 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   // Artwork guide is not the active tab. Exercise its delegated navigation
   // handler without Playwright requiring an intentionally hidden panel.
   await page.frameLocator('#labManualFrame').locator('a[href="https://music.youtube.com"]').evaluate(el=>el.click());
-  await page.waitForFunction(()=>labCalls.some(c=>c[0]==='external'));
-  assert.equal((await page.evaluate(()=>labCalls)).find(c=>c[0]==='external')[1],'https://music.youtube.com/');
+  await page.waitForFunction(()=>labCalls.some(c=>c[0]==='external'&&c[1]==='https://music.youtube.com/'));
+  assert.equal((await page.evaluate(()=>labCalls)).filter(c=>c[0]==='external'&&c[1]==='https://music.youtube.com/').length,1);
   assert(await page.frameLocator('#labManualFrame').locator('#cratePicker > summary').isVisible(),
    'Manual stays loaded after opening an external link');
   // The screenshot's failing URL is in the parent "More Resources" panel.
@@ -94,7 +94,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   await page.locator('#labMoreResources').waitFor({state:'visible'});
   await page.locator('#labMoreResources a[href="https://github.com/focustimer-dev/go-hipster-go/releases/latest"]').first().click();
   await page.waitForFunction(()=>labCalls.some(c=>c[0]==='external'&&c[1].includes('/releases/latest')));
-  assert.equal((await page.evaluate(()=>labCalls)).filter(c=>c[0]==='external').length,2);
+  assert.equal((await page.evaluate(()=>labCalls)).filter(c=>c[0]==='external'&&c[1]==='https://github.com/focustimer-dev/go-hipster-go/releases/latest').length,1);
   assert.equal(await page.evaluate(()=>location.host.startsWith('127.0.0.1')),true,'Manual must remain on local origin');
   await page.locator('#labManualReturn').click();
   await page.locator('#labManualGuide').waitFor({state:'visible'});
