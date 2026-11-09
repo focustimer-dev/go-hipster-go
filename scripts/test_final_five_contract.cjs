@@ -1,0 +1,88 @@
+// Lightweight Android Final Five contract gate: no screenshots or tween
+// benchmarks, and just ONE MapLibre initialization for three palettes.
+// The existing phone matrix separately exercises real map transitions.
+'use strict';
+const {chromium}=require('playwright');
+const fs=require('node:fs'),http=require('node:http'),path=require('node:path');
+const assert=require('node:assert/strict');
+const root=path.resolve(__dirname,'../android-lab/app/src/main/assets/site');
+const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css',
+ '.webp':'image/webp','.svg':'image/svg+xml','.png':'image/png','.woff':'font/woff'};
+const specs=[
+ {id:'addis',ocean:'#0f4a48',stock:'rgb(242, 232, 206)'},
+ {id:'polish',ocean:'#172c40',stock:'rgb(246, 242, 230)'},
+ {id:'beirut',ocean:'#1c3240',stock:'rgb(227, 216, 191)'}
+];
+(async()=>{
+ const server=http.createServer((req,res)=>{
+  const name=decodeURIComponent(new URL(req.url,'http://localhost').pathname);
+  const file=path.resolve(root,'.'+(name.endsWith('/')?name+'index.html':name));
+  if(!file.startsWith(root+path.sep)){res.writeHead(403);return res.end()}
+  try{res.setHeader('Content-Type',mime[path.extname(file)]||'application/octet-stream');res.end(fs.readFileSync(file))}
+  catch(_){res.writeHead(404);res.end()}
+ });
+ await new Promise(done=>server.listen(0,'127.0.0.1',done));
+ let browser;
+ try{
+  browser=await chromium.launch({headless:true,args:['--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+  const page=await browser.newPage({viewport:{width:390,height:860},isMobile:true,hasTouch:true});
+  page.setDefaultTimeout(9000);
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.goto('http://127.0.0.1:'+server.address().port+'/?theme=addis',{waitUntil:'domcontentloaded'});
+  await page.waitForFunction(()=>window.labAtlasGlobe?.loaded()&&window.labCahillMap?.ready,null,{timeout:25000});
+  for(const spec of specs){
+   if(spec.id!=='addis')assert.equal(await page.evaluate(id=>window.HipsterLabTheme.set(id,false),spec.id),true);
+   await page.waitForFunction(([theme,ocean])=>
+    window.HipsterLabTheme.current()===theme&&
+    window.labAtlasGlobe.getPaintProperty('robinson-ocean','fill-color')===ocean,
+    [spec.id,spec.ocean],{timeout:8000});
+   const neutral=await page.evaluate(()=>{
+    const cs=selector=>getComputedStyle(document.querySelector(selector));
+    const f=document.querySelector('.mood[data-mood=funky]'),h=document.querySelector('.mood[data-mood=happy]');
+    f.setAttribute('aria-pressed','false');h.setAttribute('aria-pressed','false');
+    return {theme:window.HipsterLabTheme.current(),profile:document.documentElement.dataset.ghgThemeProfile,
+     paper:cs('.mood[data-mood=happy]').backgroundColor,
+     funkPaper:cs('.mood[data-mood=funky]').backgroundColor,
+     ink:cs('.mood[data-mood=happy] .word').color,
+     funkInk:cs('.mood[data-mood=funky] .word').color,
+     before:getComputedStyle(f.querySelector('.face'),'::before').filter,
+     ocean:window.GHGAtlasPaintColors().ocean,
+     cahill:cs('#labAtlasCahill .lab-cahill-ocean').fill,
+     heading:cs('.refinements>.counter-label').fontFamily};
+   });
+   assert.equal(neutral.theme,spec.id);
+   assert.equal(neutral.profile,'print');
+   assert.equal(neutral.paper,spec.stock);
+   assert.equal(neutral.funkPaper,neutral.paper,'Neutral Funk must share '+spec.id+' stock');
+   assert.equal(neutral.funkInk,neutral.ink,'Neutral Funk must share '+spec.id+' ink');
+   assert.match(neutral.before,/themeMoodNeutralEngraving/);
+   assert.equal(neutral.ocean,spec.ocean);
+   const rgb='rgb('+spec.ocean.slice(1).match(/.{2}/g).map(v=>parseInt(v,16)).join(', ')+')';
+   assert.equal(neutral.cahill,rgb,'Cahill and Robinson share the palette');
+   assert.match(neutral.heading,/Poster/);
+   const selected=await page.evaluate(()=>{
+    const f=document.querySelector('.mood[data-mood=funky]');f.setAttribute('aria-pressed','true');
+    const st=getComputedStyle(f),art=getComputedStyle(f.querySelector('.face'),'::after');
+    const rays=getComputedStyle(f.querySelector('.funk-rays'));
+    const value={stock:st.backgroundColor,label:getComputedStyle(f.querySelector('.word')).color,
+     image:art.backgroundImage,ink:art.filter,rays:rays.filter,opacity:rays.opacity};
+    f.setAttribute('aria-pressed','false');return value;
+   });
+   assert.equal(selected.stock,'rgb(110, 34, 92)','Selected Funk is canonical, not theme-colored');
+   assert.equal(selected.label,'rgb(242, 200, 78)');
+   assert.match(selected.image,/moods-selected-ink-v2.webp/);
+   assert.match(selected.ink,/hue-rotate\(324deg\)/);
+   assert.match(selected.rays,/hue-rotate\(23deg\)/);
+   assert.equal(selected.opacity,'0.82');
+   const iframe=await page.evaluate(()=>document.getElementById('labManualFrame')?.contentDocument?.documentElement?.dataset);
+   assert.equal(iframe?.pwaTheme,spec.id);
+   assert.equal(iframe?.ghgThemeProfile,'print');
+   console.log('PASS: '+spec.id+' print tokens, neutral/selected Funk, map palette and Manual');
+  }
+  assert.deepEqual(errors,[],'No theme runtime errors');
+  await page.close();
+ }finally{
+  try{await browser?.close()}catch(_){}
+  await new Promise(done=>server.close(done));
+ }
+})().catch(err=>{console.error(err);process.exitCode=1});

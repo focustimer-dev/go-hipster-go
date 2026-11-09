@@ -12,6 +12,7 @@ on:
       - 'scripts/test_cahill_region_fit.cjs'
       - 'scripts/test_android_lab_dom.cjs'
       - 'scripts/test_android_lab_themes.cjs'
+      - 'scripts/test_final_five_contract.cjs'
       - 'scripts/test_lab_discovery_routes.cjs'
       - 'scripts/test_mood_ink.cjs'
       - 'launcher/**'
@@ -100,6 +101,11 @@ jobs:
           name: android-theme-phone-review
           path: android-lab/build/theme-review/*.png
           if-no-files-found: warn
+      # New print palettes share the already-tested renderer. Validate the
+      # color/portrait/iframe contract in a fresh, short browser process,
+      # without another map transition or screenshot workload.
+      - name: Final Five print palette and Funk contract (100s watchdog)
+        run: timeout --signal=TERM --kill-after=10s 100s node scripts/test_final_five_contract.cjs
       - name: Cahill touch and region fit (2m watchdog)
         run: timeout --signal=TERM --kill-after=10s 120s node scripts/test_cahill_region_fit.cjs
       # Gate on functional projection state, geometry, touch and routes,
