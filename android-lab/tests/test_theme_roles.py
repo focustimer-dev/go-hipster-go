@@ -312,6 +312,28 @@ class AndroidThemeRoles(unittest.TestCase):
         self.assertIn(".tempo-control[data-tempo=any] #tempoSlider::-webkit-slider-thumb{opacity:0}",source_css)
         self.assertIn(".tempo-control[data-tempo=any] #tempoSlider::-moz-range-thumb{opacity:0}",source_css)
 
+    def test_native_request_dialogs_consume_semantic_theme_tokens(self):
+        js=source("android-lab/web/theme.js")
+        activity=source("android-lab/app/src/main/java/work/samelling/hipstergo/lab/LabActivity.java")
+        native=source("android-lab/app/src/main/java/work/samelling/hipstergo/lab/NativeDialogPalette.java")
+        for role in ("--lab-ui-panel","--lab-ui-on-panel","--lab-ui-field",
+                     "--lab-ui-on-field","--lab-ui-rule","--lab-print-active-ink"):
+            self.assertIn(role,js)
+        self.assertIn("syncNativeDialogPalette();",js)
+        self.assertIn("setDialogPalette(theme,surface,ink,accent,field,fieldInk,rule)",js)
+        self.assertIn("@JavascriptInterface public void setDialogPalette(",activity)
+        self.assertIn("if(!THEMES.contains(theme))return;",native)
+        self.assertIn("contrast(s,i)<4.5",native)
+        self.assertIn("contrast(f,fi)<4.5",native)
+        self.assertIn("window.setBackgroundDrawable(paper)",native)
+        self.assertIn("input.setTextColor(fieldInk)",native)
+        for name in ("SavedRequests.java","SharedInspiration.java","SkillUpdates.java"):
+            java=source("android-lab/app/src/main/java/work/samelling/hipstergo/lab/"+name)
+            self.assertIn("NativeDialogPalette dialogs",java)
+            self.assertIn("dialogs.show(",java)
+        self.assertIn('dialogs.show(new AlertDialog.Builder(activity).setTitle("Save this request")',
+                      source("android-lab/app/src/main/java/work/samelling/hipstergo/lab/SavedRequests.java"))
+
     def test_hero_and_compass_use_the_shared_atlas_palette(self):
         hero=source("launcher/editions/gig-poster/index.html")
         builder=source("scripts/build_gig_poster.py")
