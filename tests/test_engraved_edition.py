@@ -283,7 +283,7 @@ class EngravedEditionChecks(unittest.TestCase):
         builder=(ROOT/"scripts/build_gig_poster.py").read_text()
         shared=(ROOT/"launcher/assets/hipster.css").read_text()
         edition=(BASE/"edition.css").read_text()
-        self.assertIn('YOUR TASTE<br> IS A <em>PROBLEM.</em>',original)
+        self.assertIn('YOUR TASTE<br> IS A <em>PROBLEM</em>',original)
         for page in (original,built):
             self.assertEqual(page.count('class="return-stamp">NO REFUNDS'),1)
             self.assertNotIn('BACK FOR',page)
