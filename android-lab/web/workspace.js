@@ -156,7 +156,18 @@ function initLabWorkspace(){
  initLabGuide();
  const heading=doc.querySelector('.receipt-heading');if(heading){const label=doc.createElement('span');while(heading.firstChild)label.appendChild(heading.firstChild);const b=doc.createElement('button');b.type='button';b.className='lab-text-button lab-save-button';b.dataset.labAction='save';b.textContent='SAVE REQUEST';heading.append(label,b)}
  doc.addEventListener('click',event=>{
-  const a=event.target.closest('a[href]');if(a){const u=new URL(a.href,location.href);if(u.origin===location.origin){if(/\/(?:setup\/?)$/.test(u.pathname)){event.preventDefault();labNavigate('manual');return}if(['/','/editions/gig-poster/'].includes(u.pathname)){event.preventDefault();labNavigate('jukebox');return}}}
+  const a=event.target.closest('a[href]');if(a){
+   const u=new URL(a.href,location.href);
+   if(u.protocol==='https:'&&u.origin!==location.origin){
+    // The Manual's "More Resources" links live in the parent WebView,
+    // while the how-to guide is an iframe. Both must leave via native browser.
+    event.preventDefault();window.HipsterLab?.openExternal?.(u.href);return;
+   }
+   if(u.origin===location.origin){
+    if(/\/(?:setup\/?)$/.test(u.pathname)){event.preventDefault();labNavigate('manual');return}
+    if(['/','/editions/gig-poster/'].includes(u.pathname)){event.preventDefault();labNavigate('jukebox');return}
+   }
+  }
   const b=event.target.closest('[data-lab-tab],[data-lab-action],[data-lab-saved],[data-lab-recent]');if(!b)return;
   if(b.dataset.labRecent){window.HipsterLab?.useRecentInspiration?.(b.dataset.labRecent);return}
   if(b.dataset.labTab){labNavigate(b.dataset.labTab);return}if(b.dataset.labSaved){window.HipsterLab?.savedRequest?.(b.dataset.labSaved);return}
