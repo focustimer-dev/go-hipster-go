@@ -258,3 +258,20 @@ selection color on the tempo slider **thumb**, with a paper keyline and
 readable ink rim. No theme-specific selector, new geometry, new font,
 new interaction or change to the Any-state hidden thumb. Existing
 Libéri/Bosque/Usiku tempo controls remain untouched.
+
+### Native Android dialogs have the same semantic theme roles
+
+The "Save this request" modal in the Jukebox, saved-request actions and
+deletion, inspiration editing, skill update confirmations and native
+share prompts are **native AlertDialogs**, not HTML overlays. The original
+yellow was baked into Android's `LabDialog` theme and thus did not
+respond to WebView theme tokens.
+
+A single `NativeDialogPalette` now consumes the active theme's CSS roles
+(`--lab-ui-panel`, `--lab-ui-on-panel`, `--lab-ui-field`,
+`--lab-ui-on-field`, `--lab-ui-rule`, and the selected-action ink).
+The trusted local bridge sends validated six-digit hexadecimal values on
+startup and every theme switch. Body and input text contrast is checked
+to at least 4.5:1. Neon accents with insufficient small-text contrast
+remain on borders and fields instead. Libéri's existing gold/teal native
+dialog is preserved verbatim. No theme-specific native color table.
