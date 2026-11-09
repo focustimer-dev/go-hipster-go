@@ -1018,9 +1018,10 @@ async function verifyManualHierarchy(page,name,width){
    }
   }
   // One focused 390px proof for the three additional print palettes.
-  // It checks the REAL three maps and original Funk sprites, with only one
-  // optional bounded visual diagnostic per theme. No extra animation benchmark.
-  if(width===390){
+  // Run once AFTER the existing 320/390 matrix; don't reference its loop-local
+  // width variable. The added suite has a fixed 390px mobile viewport.
+  // Screenshots remain optional, time-bounded diagnostics.
+  {
    const specs=[
     {id:'addis',ocean:'#0f4a48',stock:'rgb(242, 232, 206)'},
     {id:'polish',ocean:'#172c40',stock:'rgb(246, 242, 230)'},
