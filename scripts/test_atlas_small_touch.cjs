@@ -45,3 +45,18 @@ assert(cahill.includes('nearbySmallRegion')&&cahill.includes('zoomAssists'),'Key
 assert(bundle.includes("android-lab/web/atlas-touch-targets.js"),'Offline Android/PWA atlas bundles must include the shared helper');
 assert(read('scripts/pwa_inline_atlas_qa.mjs').includes('ghg-crate-map-regions-v2'),'PWA test must assert the current storage key');
 console.log('PASS: 51 state partitions, Mediterranean/Balkan split, parent map parity and ambiguous island tap safety.');
+
+// The regional ink removes state-to-state seams WITHOUT merging tap polygons.
+const globeSource=read('android-lab/web/globe.js');
+const outlineFn=globeSource.match(/function labUSRegionBorderGeometry\(geography\)\{[\s\S]*?\n\}/)?.[0];
+assert(outlineFn,'US boundary helper must be available to Globe and Keyes');
+const outlineContext=vm.createContext({});
+vm.runInContext(outlineFn,outlineContext);
+const square=(x,region)=>({type:'Feature',properties:{country:'USA',region},
+ geometry:{type:'Polygon',coordinates:[[[x,0],[x+1,0],[x+1,1],[x,1],[x,0]]]}});
+const threeStates={features:[square(0,'us-west'),square(1,'us-west'),square(2,'us-midwest')]};
+const outlines=vm.runInContext('labUSRegionBorderGeometry('+JSON.stringify(threeStates)+')',outlineContext);
+const lines=JSON.parse(JSON.stringify(outlines.geometry.coordinates));
+assert.equal(lines.length,9,'External perimeter and cross-region border only');
+assert(!lines.some(line=>line.every(point=>point[0]===1)),'Same-region state boundary must disappear');
+assert(lines.some(line=>line.every(point=>point[0]===2)),'Inter-region boundary remains');

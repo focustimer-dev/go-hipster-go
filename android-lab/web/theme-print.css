@@ -269,3 +269,9 @@
 /* The expressive GO printing, cartography and receipt use the quieter
    registration ink; only user-driven states get the stronger hit. */
 /* Do not alter layout widths, touch geometry, map projection math or font. */
+
+/* The US has four listening regions, not 51 drawn state subdivisions. */
+:root[data-ghg-theme-profile=print] #labAtlasCahill [data-cahill-us-state]{stroke:none!important}
+:root[data-ghg-theme-profile=print] #labAtlasCahill .lab-us-region-boundaries{
+ stroke:var(--lab-atlas-ink);stroke-width:.65;fill:none;
+}

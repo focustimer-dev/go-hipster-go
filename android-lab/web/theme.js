@@ -195,7 +195,7 @@ function paint(){
  try{
   if(!defaults){
    defaults={};
-   const properties={land:['fill-color'],borders:['line-color'],
+   const properties={land:['fill-color'],borders:['line-color'],'us-region-borders':['line-color'],
     ocean:['background-color'],'robinson-ocean':['fill-color'],routes:['line-color']};
    for(const [layer,props] of Object.entries(properties)){
     if(!map.getLayer(layer))continue;
@@ -209,6 +209,7 @@ function paint(){
    land:{'fill-color':['case',['boolean',['feature-state','selected'],false],
     palette.selected,palette.land]},
    borders:{'line-color':palette.ink},
+   'us-region-borders':{'line-color':palette.ink},
    ocean:{'background-color':map.getProjection()?.type==='mercator'?
     'rgba(0,0,0,0)':palette.ocean},
    'robinson-ocean':{'fill-color':palette.ocean},

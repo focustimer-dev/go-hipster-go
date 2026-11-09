@@ -81,7 +81,9 @@ function labCahillInit(host,geography,routes,legacy){
   const d=path(feature);
   if(!id||!d)continue;
   const country=make('path',{'d':d,'data-cahill-region':id,
-   fill:'#dfb045',stroke:'#103135','stroke-width':'.65','stroke-linejoin':'round'});
+   ...(feature.properties?.country==='USA'?{'data-cahill-us-state':'true'}:{}),
+   fill:'#dfb045',stroke:feature.properties?.country==='USA'?'none':'#103135',
+   'stroke-width':'.65','stroke-linejoin':'round'});
   const region=crateRegions.find(x=>x.id===id);
   const label=region?.label||region?.name||id.replace(/-/g,' ');
   country.appendChild(make('title')).textContent=label;
@@ -90,6 +92,14 @@ function labCahillInit(host,geography,routes,legacy){
   regions.push({id,feature,node:country});
   countries.appendChild(country);
  }
+ // One non-interactive path draws just the four US region outlines. The
+ // individual states still provide the same accurate hit/selection geometry.
+ const usBorderPath=path(labUSRegionBorderGeometry(geography));
+ if(usBorderPath)countries.appendChild(make('path',{
+  d:usBorderPath,class:'lab-us-region-boundaries',
+  fill:'none',stroke:'#103135','stroke-width':'.65',
+  'stroke-linejoin':'round','pointer-events':'none'
+ }));
  // The D3 Cahill–Keyes projection lacks the reunited Antarctic extension.
  // Reconstruct that missing landmass from canonical coordinates as an
  // equal-area South Polar panel joined below the M's South Atlantic.

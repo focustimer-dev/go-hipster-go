@@ -179,3 +179,9 @@
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labAtlasGlobe{
  background:var(--lab-atlas-field,radial-gradient(ellipse at 50% 38%,#004225 0%,#003018 78%))!important;
 }
+
+/* Keep state-level hit geometry; show only US listening-region borders. */
+:root[data-pwa-theme] #labAtlasCahill [data-cahill-us-state]{stroke:none!important}
+:root[data-pwa-theme] #labAtlasCahill .lab-us-region-boundaries{
+ stroke:var(--lab-atlas-ink,#103135);stroke-width:.65;fill:none;
+}
