@@ -177,3 +177,26 @@ window.addEventListener('message',event=>{if(event.source===doc.getElementById('
 doc.getElementById('labManualReturn').onclick=()=>labShowManualResources(false);
 
 window.addEventListener('message',event=>{if(event.source===doc.getElementById('labManualFrame')?.contentWindow&&event.origin===location.origin&&event.data?.type==='lab-gemini-updates')window.HipsterLab?.showUpdates?.()});
+// The embedded Manual cannot navigate GitHub: its offline CSP deliberately
+// blocks external frames. Route explicit link taps through the native browser.
+function labOpenGitHubLink(value){
+ try{
+  const url=new URL(value);
+  if(url.protocol!=='https:'||url.hostname!=='github.com'||url.port)return;
+  window.HipsterLab?.openGitHub?.(url.href);
+ }catch(_){}
+}
+window.addEventListener('message',event=>{
+ if(event.source!==doc.getElementById('labManualFrame')?.contentWindow||event.origin!==location.origin)return;
+ if(event.data?.type==='lab-open-github')labOpenGitHubLink(event.data.url);
+});
+doc.addEventListener('click',event=>{
+ const link=event.target.closest?.('a[href]');
+ if(!link||!link.closest('#labMoreResources'))return;
+ try{
+  const url=new URL(link.href);
+  if(url.protocol==='https:'&&url.hostname==='github.com'&&!url.port){
+   event.preventDefault();labOpenGitHubLink(url.href);
+  }
+ }catch(_){}
+},true);
