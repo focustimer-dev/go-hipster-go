@@ -932,8 +932,14 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
  text-decoration:underline;text-decoration-color:#f2c84e;
 }
 :root body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true] .face{filter:none!important}
+/* Use a packaged, pixel-locked yellow plate: Android WebView's SVG filter
+   on CSS pseudo-elements did not reliably match the browser review.
+   Baked from the original selected sprite with its exact alpha engraving. */
 :root body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true] .face::after{
- filter:url(#funkHighlighterEngraving)!important;
+ background-image:url('/assets/funk-selected-engraved.webp')!important;
+ background-size:100% 100%!important;
+ background-position:center!important;
+ filter:none!important;
 }
 :root body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true] .funk-rays{
  opacity:.82!important;filter:hue-rotate(23deg) saturate(1.24)!important;
