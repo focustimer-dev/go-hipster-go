@@ -917,7 +917,8 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
 
 /* Neutral Funk follows each theme exactly. Only its selected
    composition is invariant: one Android-wide contract for all eight.
-   Approved source plates, cropping and laser mask remain untouched. */
+   Shaded highlighter ink replaces the flat selected-image recolor.
+   Approved plates, cropping, alpha and laser mask remain untouched. */
 :root body.gig-poster.lab-workspace:is([data-page=launch],[data-page=setup]) .mood-grid .mood[data-mood=funky][aria-pressed=true]{
  --funk-selected-paper:#311333;
  background-color:#6e225c!important;
@@ -932,7 +933,7 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
 }
 :root body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true] .face{filter:none!important}
 :root body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true] .face::after{
- filter:brightness(0) saturate(100%) invert(71%) sepia(46%) saturate(643%) hue-rotate(324deg) brightness(108%) contrast(94%)!important;
+ filter:url(#funkHighlighterEngraving)!important;
 }
 :root body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true] .funk-rays{
  opacity:.82!important;filter:hue-rotate(23deg) saturate(1.24)!important;
