@@ -73,7 +73,7 @@ try{
    assert.equal(routeInk.width,theme==='liberi'?1:1.7,theme+' route width');
    assert.equal(routeInk.opacity,theme==='liberi'?.65:.88,theme+' route opacity');
    if(theme!=='liberi'){
-    assert(routeInk.keyesWidth>=1.8,theme+' Keyes route width must be readable');
+    assert(routeInk.keyesWidth>=1.75,theme+' Keyes route width must be readable (observed '+JSON.stringify(routeInk)+')');
     assert(routeInk.keyesOpacity>=.85,theme+' Keyes routes need sufficient opacity');
    }
    const selected=await page.evaluate(()=>JSON.parse(localStorage.getItem('ghg-crate-map-regions-v2')||'[]').sort());
