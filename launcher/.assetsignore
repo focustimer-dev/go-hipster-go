@@ -1,0 +1,20 @@
+# Public PWA assets excluded from Cloudflare Workers Static Assets uploads.
+# Historical source masters and portrait experiments remain in Git for audits.
+# Do not ignore approved v2 sprites, active WebPs, the Atlas, or the legacy
+# the-funk.webp URL (kept temporarily for older cached browser clients).
+editions/gig-poster/assets/desire-neutral-v1.png
+editions/gig-poster/assets/desire-selected-v1.png
+editions/gig-poster/assets/triumph-neutral-v1.png
+editions/gig-poster/assets/triumph-selected-v1.png
+editions/gig-poster/assets/engraved-six-clerks.webp
+editions/gig-poster/assets/weird-v18.webp
+editions/gig-poster/assets/clerks.webp
+editions/gig-poster/assets/clerks-v2.webp
+editions/gig-poster/assets/clerks-expressions.webp
+editions/gig-poster/assets/moods-neutral-approved-v1.webp
+editions/gig-poster/assets/moods-selected-approved-v1.webp
+editions/gig-poster/assets/weird-curly.webp
+editions/gig-poster/assets/mood-crowns-neutral-v2.png
+editions/gig-poster/assets/mood-crowns-selected-v2.png
+editions/gig-poster/assets/happy-neutral-ink-support-v1.png
+editions/gig-poster/assets/happy-selected-ink-support-v1.png
