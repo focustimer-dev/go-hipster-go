@@ -56,6 +56,19 @@ class LabSnapshotTests(unittest.TestCase):
             # The retired standalone Funk frame is no longer a request path.
             self.assertFalse((dest/'editions/gig-poster/assets/the-funk.webp').exists())
             self.assertNotIn('the-funk.webp',(dest/'assets/hipster.css').read_text())
+            # Locked plate has exact source alpha; no SVG filter needed at render time.
+            from PIL import Image
+            path=ROOT/'launcher/editions/gig-poster/assets/moods-selected-ink-v2.webp'
+            with Image.open(path) as sheet:
+                selected=sheet.convert('RGBA').crop((1024,512,1536,1024))
+            baked_path=dest/'assets/funk-selected-engraved.webp'
+            self.assertTrue(baked_path.is_file())
+            self.assertLess(baked_path.stat().st_size,170000)
+            with Image.open(baked_path) as image:
+                baked=image.convert('RGBA')
+            self.assertEqual(baked.size,(512,512))
+            self.assertEqual(baked.getchannel('A').tobytes(),selected.getchannel('A').tobytes())
+            self.assertEqual(baked.getpixel((256,200))[:3],(203,225,23))
             script=(dest/'assets/app.js').read_text()
             self.assertIn('window.HipsterLab.go(ai,prompt)',script)
             self.assertIn('if(event.defaultPrevented||!window.HipsterLab)return',script)
