@@ -1,0 +1,53 @@
+name: Android Funk yellow isolated phone preview
+on:
+  push:
+    branches: [review/android-funk-yellow-phone]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  phone-preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools'
+          log-accepted-android-sdk-licenses: false
+      - name: Install SDK and validate portrait theme contracts
+        run: |
+          set -euo pipefail
+          sdkmanager 'platforms;android-36' 'build-tools;35.0.0'
+          python -m pip install Pillow==12.0.0
+          python -m unittest discover -s android-lab/tests -v
+      - name: Build isolated debug-signed review APK
+        run: bash android/gradlew -p android-lab assembleReview --no-daemon
+      - name: Verify signature and non-production package
+        run: |
+          set -euo pipefail
+          apk=android-lab/app/build/outputs/apk/review/app-review.apk
+          tools="$ANDROID_HOME/build-tools/35.0.0"
+          test -s "$apk"
+          "$tools/apksigner" verify --verbose "$apk"
+          "$tools/aapt" dump badging "$apk" | tee /tmp/funk-badging.txt
+          grep -q "name='work.samelling.hipstergo.lab.funkpreview'" /tmp/funk-badging.txt
+          grep -q "versionName='0.9.67-funk-preview'" /tmp/funk-badging.txt
+          mkdir -p android-lab/build/funk-preview
+          cp "$apk" android-lab/build/funk-preview/Hipster-Funk-Yellow-Phone-Preview.apk
+          sha256sum android-lab/build/funk-preview/*.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hipster-funk-highlighter-installable-preview
+          path: android-lab/build/funk-preview/Hipster-Funk-Yellow-Phone-Preview.apk
+          retention-days: 7
+          if-no-files-found: error
