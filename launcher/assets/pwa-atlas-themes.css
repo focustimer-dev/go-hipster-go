@@ -159,11 +159,11 @@
 }
 /* The original route paths remain untouched. Give their nautical ink
    enough weight to read at 320–390px without making them new highways. */
-:root[data-pwa-theme=bosque] #labAtlasCahill .lab-cahill-routes path{
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace #labAtlasCahill .lab-cahill-routes path{
  stroke:var(--lab-atlas-route,#8c6239);stroke-width:1.8;stroke-opacity:.9;
  stroke-dasharray:4 4;
 }
-:root[data-pwa-theme=usiku] #labAtlasCahill .lab-cahill-routes path{
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labAtlasCahill .lab-cahill-routes path{
  stroke:var(--lab-atlas-route,#b77b4d);stroke-width:1.8;stroke-opacity:.9;
  stroke-dasharray:4 4;
 }
