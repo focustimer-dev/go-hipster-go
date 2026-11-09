@@ -84,7 +84,17 @@ const specs=[
      canonicalSelector:f.matches('body.gig-poster.lab-workspace .mood-grid .mood[data-mood=funky][aria-pressed=true]'),
      rootProfile:document.documentElement.dataset.ghgThemeProfile,
      pageContext:document.body.dataset.page,
-     image:art.backgroundImage,ink:art.filter,rays:rays.filter,opacity:rays.opacity};
+     image:art.backgroundImage,ink:art.filter,rays:rays.filter,opacity:rays.opacity,
+     yellowFilter:(()=>{
+      const filter=document.getElementById('funkHighlighterEngraving');
+      return {gray:filter?.querySelector('feColorMatrix')?.getAttribute('values'),
+       alphaTransfer:!!filter?.querySelector('feFuncA'),
+       channels:['R','G','B'].map(channel=>{
+        const f=filter?.querySelector('feFunc'+channel);
+        return [f?.getAttribute('type'),f?.getAttribute('offset'),
+         f?.getAttribute('amplitude'),f?.getAttribute('exponent')];
+       })};
+     })()};
     f.setAttribute('aria-pressed','false');return value;
    });
    assert.equal(selected.selectedAttribute,'true','Funk select state stays enabled during pressed visual');
@@ -93,7 +103,12 @@ const specs=[
    assert.equal(selected.stock,'rgb(110, 34, 92)','Selected Funk is canonical, not theme-colored: '+JSON.stringify(selected));
    assert.equal(selected.label,'rgb(242, 200, 78)');
    assert.match(selected.image,/moods-selected-ink-v2.webp/);
-   assert.match(selected.ink,/hue-rotate\(324deg\)/);
+   assert.match(selected.ink,/funkHighlighterEngraving/);
+   assert.equal(selected.yellowFilter.gray,'0','Retain selected plate luminance and engraving');
+   assert.equal(selected.yellowFilter.alphaTransfer,false,'Keep original sprite alpha');
+   assert.deepEqual(selected.yellowFilter.channels,[
+    ['gamma','.733','.20','.65'],['gamma','.83','.17','.65'],['gamma','.038','.17','.65']
+   ],'Fluorescent yellow reaches #EEFF35 without a monochrome flood');
    assert.match(selected.rays,/hue-rotate\(23deg\)/);
    assert.equal(selected.opacity,'0.82');
    const iframe=await page.evaluate(()=>document.getElementById('labManualFrame')?.contentDocument?.documentElement?.dataset);
