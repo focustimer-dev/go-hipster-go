@@ -8,8 +8,20 @@ android {
         targetSdkVersion 36
         versionCode 76
         versionName '0.9.67'
+        manifestPlaceholders = [appLabel: 'Hipster GO Lab']
     }
-    buildTypes { release { minifyEnabled false } }
+    buildTypes {
+        release { minifyEnabled false }
+        // Phone-only preview; does not replace canonical Android or its data.
+        review {
+            initWith release
+            applicationIdSuffix '.funkpreview'
+            versionNameSuffix '-funk-preview'
+            signingConfig signingConfigs.debug
+            manifestPlaceholders = [appLabel: 'Hipster Funk Preview']
+            matchingFallbacks = ['release']
+        }
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
