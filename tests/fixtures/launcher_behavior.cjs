@@ -227,7 +227,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  await atlas.elements.atlasHome.click();
  assert.equal(atlas.elements.atlasHome.hidden,true);
  await atlas.crateContinents.find(b=>b.dataset.crateContinent==='europe').click();
- assert.equal(atlas.crateRegions.filter(b=>!b.hidden).length,4);
+ assert.equal(atlas.crateRegions.filter(b=>!b.hidden).length,5,'Europe now includes a separate Balkans selection');
  assert.equal(atlas.elements.atlasLocator.textContent,'Europe / 3 STAMPS');
 
  // Visible shapes stay selectable after navigating beyond a focused continent.
@@ -239,7 +239,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.equal(crossAtlas.elements.atlasLocator.textContent,'Africa / 1 STAMP','Named controls follow the tapped region');
  assert.equal(crossAtlas.elements.crateAtlasMap.getAttribute('viewBox'),crossView,'Cross-continent selection does not move the target away');
  await crossAtlas.atlasCountries.find(b=>b.dataset.atlasRegion==='mediterranean-europe').click();
- assert.match(crossAtlas.elements.prompt.textContent,/Mediterranean & Balkans/,'Can select back across the boundary without reset');
+ assert.match(crossAtlas.elements.prompt.textContent,/Mediterranean Europe/,'Can select back across the boundary without reset');
  assert.match(crossAtlas.elements.prompt.textContent,/North Africa/,'Cross-continent selection preserves earlier stamps');
  assert.doesNotMatch(atlasCss,/path\[data-remote=true\]\{pointer-events:none/,'Painted regions must not be disabled by a stale continent focus');
 
@@ -260,7 +260,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  // Mexico and Central America are each independent.
  await atlas.elements.atlasHome.click();
  await atlas.crateContinents.find(b=>b.dataset.crateContinent==='americas-north').click();
- assert.equal(atlas.crateRegions.filter(b=>!b.hidden).length,7,'North America has seven distinct listening territories');
+ assert.equal(atlas.crateRegions.filter(b=>!b.hidden).length,9,'North America now has nine distinct listening territories');
  await atlas.crateRegions.find(b=>b.dataset.crateRegion==='us-west').click();
  await atlas.crateRegions.find(b=>b.dataset.crateRegion==='canada-east').click();
  await atlas.crateRegions.find(b=>b.dataset.crateRegion==='mexico').click();
