@@ -126,6 +126,17 @@ public class LabActivity extends Activity {
     }
 
     private boolean trusted(Uri u) { return "https".equals(u.getScheme()) && HOST.equals(u.getHost()) && u.getPort() == -1; }
+    // Only explicit secure public links may leave the offline Manual.
+    // Never allow a page to invoke arbitrary schemes or internal Lab URLs.
+    private boolean externalHttps(String raw) {
+        if(raw==null || raw.length()>2048) return false;
+        try {
+            Uri u=Uri.parse(raw);
+            return "https".equals(u.getScheme()) && u.getHost()!=null &&
+                !u.getHost().isEmpty() && !HOST.equals(u.getHost()) &&
+                u.getUserInfo()==null && u.getPort()==-1;
+        }catch(Exception ignored){ return false; }
+    }
     private WebResourceResponse blocked() {
         return new WebResourceResponse("text/plain","UTF-8",403,"Blocked",Collections.emptyMap(),new ByteArrayInputStream(new byte[0]));
     }
@@ -256,6 +267,9 @@ public class LabActivity extends Activity {
             if("other".equals(ai)){runOnUiThread(()->toast("Request copied. Open your AI manually, paste and send."));return;}
             if(url(ai)==null) return;
             runOnUiThread(()->{if(prefs.getBoolean("oneTap",true)) handoff(ai,text,true); else {pulse();toast("Prompt copied. Tap OPEN to launch your AI.");}});
+        }
+        @JavascriptInterface public void openExternal(String destination) {
+            if(externalHttps(destination))runOnUiThread(()->browser(destination));
         }
         @JavascriptInterface public void open(String ai,String text) {
             if(url(ai)!=null && validText(text))runOnUiThread(()->handoff(ai,text));
