@@ -132,7 +132,7 @@
 }
 :root[data-pwa-theme=bosque] #labAtlasCahill [data-cahill-region][aria-pressed=true],
 :root[data-pwa-theme=usiku] #labAtlasCahill [data-cahill-region][aria-pressed=true]{
- fill:var(--lab-atlas-selected,#e5cf42);stroke:var(--lab-atlas-ink,#003018);stroke-width:1.35;
+ fill:var(--lab-atlas-selected,#e5cf42);stroke:var(--lab-atlas-ink,#003018);stroke-width:.65;
 }
 /* Mode-specific ocean/land colors for Globe and Robinson are painted with
    MapLibre expressions in the browser bridge, not an invert() bitmap hack. */

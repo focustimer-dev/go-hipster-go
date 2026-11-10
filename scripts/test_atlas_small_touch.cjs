@@ -16,6 +16,19 @@ assert.deepEqual(decide(['mexico','central-america']),{type:'zoom'});
 assert.deepEqual(decide(['caribbean','northern-south-america']),{type:'zoom'});
 assert.equal(decide(['mexico']),null);
 assert.equal(decide([]),null);
+// Cahill border ink contract: selection never thickens polygon outlines,
+// all US state seams remain hidden, and the tween paints one shared outline.
+const workspaceCSS=read('android-lab/web/workspace.css');
+const printCSS=read('android-lab/web/theme-print.css');
+const themeCSS=read('launcher/assets/pwa-atlas-themes.css');
+const tweenSource=read('android-lab/web/cahill-keyes-motion.js');
+assert.match(workspaceCSS, /#labAtlasCahill \[data-cahill-region\]\[aria-pressed=true\]\{[\s\S]*?stroke-width:\.65!important;/);
+assert.match(workspaceCSS, /#labAtlasCahill \[data-cahill-us-state\]\{[\s\S]*?stroke:none!important;/);
+assert.doesNotMatch(printCSS, /\[data-cahill-region\]\[aria-pressed=true\]\{[^}]*stroke-width:1\.35/);
+assert.doesNotMatch(themeCSS, /\[data-cahill-region\]\[aria-pressed=true\]\{[^}]*stroke-width:1\.35/);
+assert.match(tweenSource, /region\.hasAttribute\('data-cahill-us-state'\)/);
+assert.match(tweenSource, /world\.querySelector\('\.lab-us-region-boundaries'\)/);
+
 const data=JSON.parse(read('assets/us-region-state-boundaries.json'));
 const {regionStates,states}=data;
 assert.equal(new Set(Object.values(regionStates).flat()).size,51,'All 50 US states plus DC belong to exactly one region');

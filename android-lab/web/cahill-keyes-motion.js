@@ -95,8 +95,20 @@ const labCahillMotion=(()=>{
   }
   ctx.globalAlpha=1;
   for(const region of world.querySelectorAll('[data-cahill-region]')){
-   const id=region.dataset.cahillRegion;
-   put(region,{fill:selected.has(id)?PAL.selected:PAL.paper,stroke:PAL.ink,lineWidth:.65});
+   // Transition snapshots must match the resting SVG: US states are hit shapes,
+   // not 51 outlines. Never add strokes for them in the rasterized tween.
+   const ink=getComputedStyle(region);
+   const isUSState=region.hasAttribute('data-cahill-us-state');
+   const stroke=!isUSState&&ink.stroke!=='none'?ink.stroke:null;
+   const lineWidth=Math.min(parseFloat(ink.strokeWidth)||.65,.65);
+   put(region,{fill:ink.fill|| (selected.has(region.dataset.cahillRegion)?PAL.selected:PAL.paper),
+    stroke,lineWidth});
+  }
+  const usOutline=world.querySelector('.lab-us-region-boundaries');
+  if(usOutline){
+   const ink=getComputedStyle(usOutline);
+   put(usOutline,{stroke:ink.stroke!=='none'?ink.stroke:PAL.ink,
+    lineWidth:Math.min(parseFloat(ink.strokeWidth)||.65,.65)});
   }
   // Decorative nautical ink is part of the printed chart, but invisible
   // route hit targets and interactive markers never enter animation frames.
