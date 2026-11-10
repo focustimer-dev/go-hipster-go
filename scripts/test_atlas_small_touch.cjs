@@ -79,6 +79,8 @@ assert.match(globe,/old\.querySelector\('#chart-engravings'\)/);
 assert.match(globe,/icon\.style\.webkitMaskImage=icon\.style\.maskImage/);
 assert.doesNotMatch(globe,/const clone=art\.cloneNode\(true\)/);
 assert.match(workspaceCSS,/\.lab-globe-engraving\{[\s\S]*?mask-size:300% 100%/);
+assert.match(workspaceCSS,/\.lab-globe-secret\[hidden\]\{display:none!important\}/);
+assert.doesNotMatch(globe,/button\.style\.cssText='width:44px[^']*color:#edc65d/);
 
 assert(globe.includes('labAtlasSmallHit(')&&globe.includes("labGlobe.on('click',event=>"),'Both MapLibre modes need the missed-tap handler');
 assert(cahill.includes('nearbySmallRegion')&&cahill.includes('zoomAssists'),'Keyes needs touch selection with safe zoom assistance');

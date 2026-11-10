@@ -203,7 +203,7 @@ function installLabGlobeSecrets(old){
    for(const part of route.getAttribute('d').match(/M[^M]+/g)||[]){const p=doc.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d',part);old.appendChild(p);const length=p.getTotalLength(),coordinates=[];for(let d=0;d<=length;d+=Math.max(1,length/64)){const point=p.getPointAtLength(d);coordinates.push(labGlobeUnproject([point.x,point.y]))}p.remove();features.push({type:'Feature',properties:{secret:hot.dataset.secret},geometry:{type:'LineString',coordinates}})}
   }else{
    const target=hot.querySelector('circle.atlas-secret-target');if(!target)continue;
-   const x=+target.getAttribute('cx'),y=+target.getAttribute('cy'),button=doc.createElement('button');button.className='lab-globe-secret';button.hidden=true;button.type='button';button.setAttribute('aria-label',hot.getAttribute('aria-label'));button.style.cssText='width:44px;height:44px;padding:3px;background:transparent;border:0;color:#edc65d';
+   const x=+target.getAttribute('cx'),y=+target.getAttribute('cy'),button=doc.createElement('button');button.className='lab-globe-secret';button.hidden=true;button.type='button';button.setAttribute('aria-label',hot.getAttribute('aria-label'));
    const art=arts.find(a=>Math.abs(+a.getAttribute('x')+(+a.getAttribute('width'))/2-x)<1&&Math.abs(+a.getAttribute('y')+(+a.getAttribute('height'))/2-y)<1);
    if(art&&engravingUrl){
     const icon=doc.createElement('span');icon.className='lab-globe-engraving';
