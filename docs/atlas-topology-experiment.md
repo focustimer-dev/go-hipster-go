@@ -43,3 +43,6 @@ experiment-only dependencies and run:
 Inspect the experimental side-by-side previews and run the targeted Atlas tests
 before accepting the regenerated file. The workflow by default does not mutate
 checked-in files.
+
+The original edge-joining helper is frozen under `scripts/fixtures/` exclusively
+for regression comparisons. It is not included in Android or PWA runtime bundles.

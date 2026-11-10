@@ -15,7 +15,7 @@ const regionOf=new Map(Object.entries(source.regionStates).flatMap(([region,post
 const features=source.states.map(s=>({type:'Feature',properties:{country:'USA',postal:s.postal,region:regionOf.get(s.postal)},geometry:s.geometry}));
 if(features.length!==51||regionOf.size!==51||Object.keys(source.regionStates).length!==4||features.some(f=>!f.properties.region))throw Error('Invalid 51-state/four-region source');
 const fc={type:'FeatureCollection',features};
-const code=fs.readFileSync('android-lab/web/globe.js','utf8').match(/function labUSRegionBorderGeometry\(geography\)\{[\s\S]*?\n\}/)?.[0];
+const code=fs.readFileSync('scripts/fixtures/legacy_us_border_helper.js','utf8').match(/function labUSRegionBorderGeometry\(geography\)\{[\s\S]*?\n\}/)?.[0];
 if(!code)throw Error('Existing border helper not found');
 const legacy=vm.runInNewContext(code+'\nlabUSRegionBorderGeometry;',{})(fc).geometry;
 const t0=performance.now(),topo=topology({states:fc}),buildMs=performance.now()-t0;
