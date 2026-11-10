@@ -942,7 +942,7 @@ See the [focused regional review](regional-review.md) for the source-supported s
 
 ## Map regions and musical overlap
 
-The map assigns one **primary listening region** per country, or per US state; Canada and Russia retain their deliberate splits. These are navigation areas, **not** exclusive cultural boundaries. US divisions use public-domain Natural Earth state outlines; country coastlines and the three projections remain.
+The map assigns one **primary listening region** per country, or per US state; Canada and Russia retain their deliberate splits. These are navigation areas, **not** exclusive cultural boundaries. US divisions use public-domain Natural Earth state polygons for taps, but render only the four listening-region outlines, not every internal state line. Country coastlines and the three projections remain.
 
 | Country / cultural crossing | Primary map region | How to interpret selected music regions |
 | --- | --- | --- |
