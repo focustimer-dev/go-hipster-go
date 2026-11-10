@@ -50,7 +50,7 @@ jobs:
           if [[ "${GITHUB_EVENT_NAME}" == "workflow_run" ]]; then
             # Sign once, only for this approved release-workflow change.
             gh api "repos/${GITHUB_REPOSITORY}/commits/${SOURCE_SHA}" \
-              --jq '.files[].filename' | grep -Fx '.github/workflows/sign-android-lab-0-9-69.yml' || {
+              --jq '.files[].filename' | grep -Fx '.github/workflows/sign-android-lab-0-9-68.yml' || {
               echo "::error::Not the approved one-shot release commit"
               exit 1
             }
