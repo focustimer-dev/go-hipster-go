@@ -8,7 +8,7 @@ const THEME_KEY='ghg-pwa-theme-v1', THEMES=['liberi','bosque','usiku','kingston'
 const PRINT_THEMES=new Set(['kingston','detroit','addis','polish','beirut']);
 const ATLAS_PALETTES={
  bosque:{ocean:'#e8e9df',land:'#004225',ink:'#003018',selected:'#e5cf42',route:'#8c6239'},
- usiku:{ocean:'#111111',land:'#f5f0e6',ink:'#003018',selected:'#e5cf42',route:'#b77b4d'}
+ usiku:{ocean:'#111111',land:'#f5f0e6',ink:'#003018',selected:'#e5cf42',route:'#b77b4d'},
  kingston:{ocean:'#273d3b',land:'#d3c4a8',ink:'#263f3e',selected:'#6d9991',route:'#7ba39b',routeOpacity:0.73,routeWidth:1.15,routeDash:[3,3]},
  detroit:{ocean:'#151515',land:'#d6d6c9',ink:'#181818',selected:'#d5e644',route:'#d5e644',routeOpacity:0.72,routeWidth:1.05,routeDash:[3,3]},
  addis:{ocean:'#0f4a48',land:'#e1cfaa',ink:'#2d251f',selected:'#d17d32',route:'#d99d51',routeOpacity:0.7,routeWidth:1.15,routeDash:[3,4]},
@@ -29,7 +29,7 @@ const THEMED_ROUTE_PAINT={opacity:.88,width:1.7,dash:[3,2.6]};
 const TWEEN_PALETTES={
  liberi:{paper:'#dfb045',ocean:'#103135',selected:'#a83223',ink:'#103135',backdrop:'#dfb045'},
  bosque:{paper:'#004225',ocean:'#e8e9df',selected:'#e5cf42',ink:'#003018',backdrop:'#f5f0e6'},
- usiku:{paper:'#f5f0e6',ocean:'#111111',selected:'#e5cf42',ink:'#003018',backdrop:'#003018'}
+ usiku:{paper:'#f5f0e6',ocean:'#111111',selected:'#e5cf42',ink:'#003018',backdrop:'#003018'},
  kingston:{paper:'#d3c4a8',ocean:'#273d3b',selected:'#6d9991',ink:'#263f3e',backdrop:'#e3d9c2',land:'#d3c4a8',route:'#7ba39b'},
  detroit:{paper:'#e7e5db',ocean:'#151515',selected:'#d5e644',ink:'#181818',backdrop:'#e7e5db',land:'#d6d6c9',route:'#d5e644'},
  addis:{paper:'#f2e8ce',ocean:'#0f4a48',selected:'#d17d32',ink:'#2d251f',backdrop:'#f2e8ce',land:'#e1cfaa',route:'#d99d51'},
