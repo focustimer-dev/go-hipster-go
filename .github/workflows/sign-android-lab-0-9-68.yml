@@ -1,4 +1,4 @@
-name: Sign canonical Android Lab 0.9.68 (approved one-shot)
+name: Sign canonical Android Lab 0.9.69 (approved one-shot)
 
 # Manual fallback and one-shot after successful main CI for this workflow edit.
 # Ordinary main commits do not trigger signing.
@@ -13,7 +13,7 @@ permissions:
   checks: read
 
 concurrency:
-  group: android-lab-canonical-0-9-68
+  group: android-lab-canonical-0-9-69
   cancel-in-progress: false
 
 jobs:
@@ -50,7 +50,7 @@ jobs:
           if [[ "${GITHUB_EVENT_NAME}" == "workflow_run" ]]; then
             # Sign once, only for this approved release-workflow change.
             gh api "repos/${GITHUB_REPOSITORY}/commits/${SOURCE_SHA}" \
-              --jq '.files[].filename' | grep -Fx '.github/workflows/sign-android-lab-0-9-68.yml' || {
+              --jq '.files[].filename' | grep -Fx '.github/workflows/sign-android-lab-0-9-69.yml' || {
               echo "::error::Not the approved one-shot release commit"
               exit 1
             }
@@ -91,7 +91,7 @@ jobs:
           apk=android-lab/app/build/outputs/apk/release/app-release-unsigned.apk
           test -s "$apk"
           badging="$("$tools/aapt" dump badging "$apk")"
-          [[ "$badging" == *"name='work.samelling.hipstergo.lab' versionCode='77' versionName='0.9.68'"* ]] || {
+          [[ "$badging" == *"name='work.samelling.hipstergo.lab' versionCode='78' versionName='0.9.69'"* ]] || {
             echo "::error::Unexpected package/version; no signing"
             exit 1
           }
@@ -118,22 +118,22 @@ jobs:
           if [[ -n "${ANDROID_KEY_PASSWORD:-}" ]]; then args+=(--key-pass env:ANDROID_KEY_PASSWORD); fi
           tools="$ANDROID_HOME/build-tools/35.0.0"
           "$tools/apksigner" sign "${args[@]}" \
-            --out Hipster-GO-Lab-0.9.68-signed.apk "$RUNNER_TEMP/lab-aligned.apk"
-          "$tools/apksigner" verify --verbose --print-certs Hipster-GO-Lab-0.9.68-signed.apk
-          cert="$("$tools/apksigner" verify --print-certs Hipster-GO-Lab-0.9.68-signed.apk)"
+            --out Hipster-GO-Lab-0.9.69-signed.apk "$RUNNER_TEMP/lab-aligned.apk"
+          "$tools/apksigner" verify --verbose --print-certs Hipster-GO-Lab-0.9.69-signed.apk
+          cert="$("$tools/apksigner" verify --print-certs Hipster-GO-Lab-0.9.69-signed.apk)"
           [[ "$cert" == *"Signer #1 certificate SHA-256 digest: 2e1c2c7d0ae0a75daa6da443c0c3193f212a5a86e685c885c2e93400099a4af0"* ]] || {
             echo "::error::Wrong signer; refusing an APK that cannot upgrade the existing Lab"
             exit 1
           }
-          "$tools/zipalign" -c 4 Hipster-GO-Lab-0.9.68-signed.apk
-          sha256sum Hipster-GO-Lab-0.9.68-signed.apk
-          printf 'Version: 0.9.68 (code 77)\nSource commit: %s\nPackage: work.samelling.hipstergo.lab\nCertificate SHA256: 2e1c2c7d0ae0a75daa6da443c0c3193f212a5a86e685c885c2e93400099a4af0\n' "$(git rev-parse HEAD)" > Hipster-GO-Lab-0.9.68-release-info.txt
+          "$tools/zipalign" -c 4 Hipster-GO-Lab-0.9.69-signed.apk
+          sha256sum Hipster-GO-Lab-0.9.69-signed.apk
+          printf 'Version: 0.9.69 (code 78)\nSource commit: %s\nPackage: work.samelling.hipstergo.lab\nCertificate SHA256: 2e1c2c7d0ae0a75daa6da443c0c3193f212a5a86e685c885c2e93400099a4af0\n' "$(git rev-parse HEAD)" > Hipster-GO-Lab-0.9.69-release-info.txt
       - name: Publish signed APK and identity record, never the key
         uses: actions/upload-artifact@v4
         with:
-          name: hipster-go-lab-0.9.68-canonical-signed
+          name: hipster-go-lab-0.9.69-canonical-signed
           path: |
-            Hipster-GO-Lab-0.9.68-signed.apk
-            Hipster-GO-Lab-0.9.68-release-info.txt
+            Hipster-GO-Lab-0.9.69-signed.apk
+            Hipster-GO-Lab-0.9.69-release-info.txt
           retention-days: 7
           if-no-files-found: error
