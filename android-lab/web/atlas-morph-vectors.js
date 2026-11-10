@@ -29,6 +29,7 @@ const labAtlasMorphVectors=(()=>{
   }
   const features=geojson.features.map(feature=>({
    region:feature.properties.region,
+   country:feature.properties.country,
    polygons:feature.geometry.coordinates.map(poly=>poly.map(ring=>ring.map(([lon,lat])=>point(lon,lat))))
   }));
   return {features,vertices:features.reduce((sum,f)=>sum+f.polygons.reduce((n,p)=>n+p.reduce((m,r)=>m+r.length,0),0),0)};
@@ -82,7 +83,15 @@ const labAtlasMorphVectors=(()=>{
     context.closePath();
    }
    context.fillStyle=selected.has(feature.region)?palette.selected:palette.paper;
-   context.fill('evenodd');context.stroke();
+   context.fill('evenodd');
+   if(feature.country==='USA'){
+    // A transient morph must never redraw 51 internal state boundaries.
+    // Overpaint antialias seams in the fill color; the resting renderer
+    // owns the ONE four-region outline layer, without duplicate ink.
+    context.strokeStyle=context.fillStyle;
+    context.stroke();
+    context.strokeStyle=palette.ink;
+   }else context.stroke();
   }
   context.restore();
  }

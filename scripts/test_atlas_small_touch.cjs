@@ -29,6 +29,26 @@ assert.doesNotMatch(themeCSS, /\[data-cahill-region\]\[aria-pressed=true\]\{[^}]
 assert.match(tweenSource, /region\.hasAttribute\('data-cahill-us-state'\)/);
 assert.match(tweenSource, /world\.querySelector\('\.lab-us-region-boundaries'\)/);
 
+// Regression: the temporary Robinson/Globe morph must not resurrect all US
+// state lines while folding to/from Cahill. Paint color-matched seams only.
+const morphEnv=vm.createContext({window:{},devicePixelRatio:1});
+vm.runInContext(read('android-lab/web/atlas-morph-vectors.js'),morphEnv);
+const painter=vm.runInContext('labAtlasMorphVectors',morphEnv);
+const triangle=(country,region)=>({type:'Feature',properties:{country,region},
+ geometry:{type:'MultiPolygon',coordinates:[[[[0,0],[1,0],[1,1],[0,0]]]]}});
+const prepared=painter.prepare({type:'FeatureCollection',features:[
+ triangle('USA','us-midwest'),triangle('CAN','canada-east')]});
+assert.equal(prepared.features[0].country,'USA','Morph must retain country identity');
+const painted=[],stroked=[],ink={
+ setTransform(){},clearRect(){},save(){},translate(){},scale(){},
+ beginPath(){},ellipse(){},clip(){},fillRect(){},moveTo(){},lineTo(){},
+ closePath(){},fill(){painted.push(this.fillStyle)},
+ stroke(){stroked.push(this.strokeStyle)},restore(){}};
+painter.paint({width:460,getContext:()=>ink},prepared,0,new Set(['us-midwest']));
+assert.equal(stroked.length,2,'One seam paint per feature, no duplicate overlay');
+assert.equal(stroked[0],painted[0],'Selected US state seam must use its fill color');
+assert.equal(stroked[1],'#103135','Non-US boundaries retain normal ink');
+
 const data=JSON.parse(read('assets/us-region-state-boundaries.json'));
 const {regionStates,states}=data;
 assert.equal(new Set(Object.values(regionStates).flat()).size,51,'All 50 US states plus DC belong to exactly one region');
@@ -53,6 +73,17 @@ for(const file of editions){
 }
 const globe=read('android-lab/web/globe.js'),cahill=read('android-lab/web/cahill-keyes.js'),
  bundle=read('scripts/bundle_android_lab.py');
+// One existing engraved sprite feeds every ship/monster marker; its tint is
+// a palette token, never a cross-SVG filter or a new duplicate asset.
+assert.match(globe,/old\.querySelector\('#chart-engravings'\)/);
+assert.match(globe,/icon\.style\.webkitMaskImage=icon\.style\.maskImage/);
+assert.doesNotMatch(globe,/const clone=art\.cloneNode\(true\)/);
+assert.match(workspaceCSS,/\.lab-globe-engraving\{[\s\S]*?mask-size:300% 100%/);
+assert.match(workspaceCSS,/\.lab-globe-secret\[hidden\]\{display:none!important\}/);
+assert.doesNotMatch(globe,/button\.style\.cssText='width:44px[^']*color:#edc65d/);
+assert.match(globe,/new maplibregl\.Marker\(\{element:button,opacityWhenCovered:0\}\)/);
+assert.match(workspaceCSS,/\.lab-globe-secret\.maplibregl-marker-covered\{pointer-events:none\}/);
+
 assert(globe.includes('labAtlasSmallHit(')&&globe.includes("labGlobe.on('click',event=>"),'Both MapLibre modes need the missed-tap handler');
 assert(cahill.includes('nearbySmallRegion')&&cahill.includes('zoomAssists'),'Keyes needs touch selection with safe zoom assistance');
 assert(bundle.includes("android-lab/web/atlas-touch-targets.js"),'Offline Android/PWA atlas bundles must include the shared helper');

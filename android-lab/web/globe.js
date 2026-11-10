@@ -192,6 +192,10 @@ function labGlobeUnproject([x,y]){
 }
 function installLabGlobeSecrets(old){
  const features=[],hotspots=[...old.querySelectorAll('.atlas-secret-hotspot')],arts=[...old.querySelectorAll('.chart-details > svg')];
+ // Use the original one-file engraving strip; never clone <use> elements
+ // that depend on a filter in the hidden Robinson SVG's private defs.
+ const engraving=old.querySelector('#chart-engravings');
+ const engravingUrl=engraving?.getAttribute('href')||engraving?.getAttribute('data-src');
  for(const hot of hotspots){
   const route=hot.querySelector('path.atlas-secret-route-touch');
   if(route){
@@ -199,11 +203,18 @@ function installLabGlobeSecrets(old){
    for(const part of route.getAttribute('d').match(/M[^M]+/g)||[]){const p=doc.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d',part);old.appendChild(p);const length=p.getTotalLength(),coordinates=[];for(let d=0;d<=length;d+=Math.max(1,length/64)){const point=p.getPointAtLength(d);coordinates.push(labGlobeUnproject([point.x,point.y]))}p.remove();features.push({type:'Feature',properties:{secret:hot.dataset.secret},geometry:{type:'LineString',coordinates}})}
   }else{
    const target=hot.querySelector('circle.atlas-secret-target');if(!target)continue;
-   const x=+target.getAttribute('cx'),y=+target.getAttribute('cy'),button=doc.createElement('button');button.className='lab-globe-secret';button.hidden=true;button.type='button';button.setAttribute('aria-label',hot.getAttribute('aria-label'));button.style.cssText='width:44px;height:44px;padding:3px;background:transparent;border:0;color:#edc65d';
+   const x=+target.getAttribute('cx'),y=+target.getAttribute('cy'),button=doc.createElement('button');button.className='lab-globe-secret';button.hidden=true;button.type='button';button.setAttribute('aria-label',hot.getAttribute('aria-label'));
    const art=arts.find(a=>Math.abs(+a.getAttribute('x')+(+a.getAttribute('width'))/2-x)<1&&Math.abs(+a.getAttribute('y')+(+a.getAttribute('height'))/2-y)<1);
-   if(art){const clone=art.cloneNode(true);clone.removeAttribute('x');clone.removeAttribute('y');clone.setAttribute('width','38');clone.setAttribute('height','38');button.appendChild(clone)}else{button.innerHTML='<svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12" fill="none" stroke="currentColor"/><path d="M16 7V25M7 16H25" stroke="currentColor"/></svg>'}
+   if(art&&engravingUrl){
+    const icon=doc.createElement('span');icon.className='lab-globe-engraving';
+    icon.setAttribute('aria-hidden','true');
+    icon.style.setProperty('--lab-engraving-position',String(arts.indexOf(art)*50)+'%');
+    icon.style.maskImage='url("'+engravingUrl+'")';
+    icon.style.webkitMaskImage=icon.style.maskImage;
+    button.appendChild(icon);
+   }else{button.innerHTML='<svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12" fill="none" stroke="currentColor"/><path d="M16 7V25M7 16H25" stroke="currentColor"/></svg>'}
    button.onclick=event=>{event.stopPropagation();old._atlasSecretsSync?.(true);old._atlasOpenSecret?.(hot.dataset.secret)};
-   const point=labGlobeUnproject([x,y]),marker=new maplibregl.Marker({element:button}).setLngLat(point).addTo(labGlobe);labSecretMarkers.push({marker,point,secret:hot.dataset.secret,label:hot.getAttribute('aria-label')});
+   const point=labGlobeUnproject([x,y]),marker=new maplibregl.Marker({element:button,opacityWhenCovered:0}).setLngLat(point).addTo(labGlobe);labSecretMarkers.push({marker,point,secret:hot.dataset.secret,label:hot.getAttribute('aria-label')});
   }
  }
  labRouteGeography={type:'FeatureCollection',features};
