@@ -119,6 +119,7 @@ for(const profile of profiles){
     sea:getComputedStyle(document.querySelector('.crate-map-ocean')).fill,
     land:getComputedStyle(document.querySelector('#posterLandEngraving rect')).fill,
     selectInk:getComputedStyle(document.querySelector('.mood[data-mood="funky"] .face'),'::after').filter,
+    selectPortraitImage:getComputedStyle(document.querySelector('.mood[data-mood="funky"] .face'),'::after').backgroundImage,
     funkGradient:getComputedStyle(document.querySelector('.mood[data-mood="funky"]')).backgroundImage,
     desireNeutralInk:getComputedStyle(document.querySelector('.mood[data-mood="desire"] .face'),'::before').filter,
     desireNeutralOpacity:getComputedStyle(document.querySelector('.mood[data-mood="desire"] .face'),'::before').opacity,
@@ -143,7 +144,8 @@ for(const profile of profiles){
     assert.equal(observedThemes[name].desire,'rgb(229, 207, 66)','Desire uses racing-yellow selection');
     assert.equal(observedThemes[name].funky,'rgb(110, 34, 92)','The Funk has its own violet base');
     assert.match(observedThemes[name].funkGradient,/linear-gradient/,'Funk uses a violet to magenta pressing');
-    assert.notEqual(observedThemes[name].selectInk,'none','Funk portrait retains its vivid ink treatment');
+    assert.equal(observedThemes[name].selectInk,'none','Canonical baked Funk needs no flat color filter');
+    assert.match(observedThemes[name].selectPortraitImage,/funk-selected-engraved\.webp/,'Funk uses the original engraved highlighter artwork');
     assert.match(observedThemes[name].desireNeutralInk,/referenceInk/,'Desire reuses the natural detailed portrait');
     assert.equal(observedThemes[name].desireNeutralOpacity,'1','Desire neutral portrait remains visible on selection');
     assert.equal(observedThemes[name].desireSelectedOpacity,'0','Desire negative-looking selection plate stays hidden');
