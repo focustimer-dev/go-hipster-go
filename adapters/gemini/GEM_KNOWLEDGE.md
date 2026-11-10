@@ -6,7 +6,7 @@ Generated from the filtered Gemini skill and regional reference files.
 
 ---
 name: go-hipster-go
-version: 3.11.2
+version: 3.11.5
 description: Go, Hipster, Go! moods, discovery routes, de-cheese and setup; verified global playlists with authorized YouTube Music publishing.
 ---
 

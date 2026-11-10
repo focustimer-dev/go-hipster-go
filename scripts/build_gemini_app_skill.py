@@ -146,7 +146,7 @@ def render_reference(relative: str, content: str) -> str:
 def render(canonical: str) -> str:
     preface = """---
 name: go-hipster-go
-version: 3.11.2
+version: __SKILL_VERSION__
 description: Go, Hipster, Go! moods, discovery routes, de-cheese and setup; verified global playlists with authorized YouTube Music publishing.
 ---
 
@@ -189,6 +189,9 @@ On setup, setup status, or setup change inspect actual connected music tools and
 Follow the [reference index](references/reference-index.md) before choosing a thesis. It specifies the required taxonomy, category discovery and verification sections, regional supplements and optional depth. Keep all four axes and the complete research map available. PWA angles, lenses and sparks remain hypotheses, not quotas or verified claims.
 
 """
+    import json
+    version = json.loads((ROOT / "plugin.json").read_text(encoding="utf-8"))["version"]
+    preface = preface.replace("__SKILL_VERSION__", version)
     result = preface + common_sections(canonical) + "\n"
     forbidden = ("scripts/", "python ", "add_playlist_items", "--strict",
                  "Spotify is the default service", "Spotify by default",

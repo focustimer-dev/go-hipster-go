@@ -46,11 +46,12 @@ final class SkillUpdates {
     }
     boolean available() {
         ReleasePolicy.Release r=cached(channel());
-        return r!=null&&!r.identity().equals(prefs.getString(key("confirmed",channel()),""));
+        return r!=null&&!r.identity().equals(prefs.getString(key("confirmed",channel()),""))
+            &&!r.identity().equals(prefs.getString(key("dismissed",channel()),""));
     }
     String summary() {
         ReleasePolicy.Release r=cached(channel());
-        return r==null?"No release checked yet":available()?"Package available · "+r.tag:"Installation recorded · "+r.tag;
+        return r==null?"No release checked yet":r.identity().equals(prefs.getString(key("confirmed",channel()),""))?"Installation recorded · "+r.tag:available()?"Package available · "+r.tag:"Update dismissed · "+r.tag;
     }
     String detail() {
         long time=prefs.getLong(key("checked",channel()),0);
@@ -70,7 +71,7 @@ final class SkillUpdates {
             "\nYou confirmed: "+confirmed+"\nLatest checked package: "+(release==null?"Not checked":release.tag)+
             "\nLast successful check: "+(time==0?"Never":DateFormat.format("MMM d, h:mm a",new Date(time)))+
             (status.isEmpty()?"":"\n\n"+status)+"\n\nLab checks public GitHub release metadata. Nothing is downloaded or installed automatically. Gemini's installed version cannot be read by this app.";
-        if(release!=null) message+="\n\nTo update:\n1. Download the Gemini skill ZIP.\n2. In Gemini web, open Customize → Skills → Go, Hipster, Go! → Replace skill, upload the ZIP and save.\n3. Return here and tap ‘I installed this package’ to clear the update badge.\n\nAlready installed it? Record it below. Closing this screen does not record installation.";
+        if(release!=null) message+="\n\nTo update:\n1. Download the Gemini skill ZIP.\n2. In Gemini web, open Customize → Skills → Go, Hipster, Go! → Replace skill, upload the ZIP and save.\n3. Return here and tap ‘I installed this package’ to clear the update badge.\n\nAlready installed it? Record it below. Choose ‘Not now’ to hide this package’s badge without marking it installed. A newer package can notify you again.";
         LinearLayout panel=new LinearLayout(activity);panel.setOrientation(1);panel.setPadding(32,16,32,16);
         TextView info=new TextView(activity);info.setText(message);panel.addView(info);
         AlertDialog dialog=new AlertDialog.Builder(activity).setTitle("Gemini skill updates")
@@ -80,6 +81,10 @@ final class SkillUpdates {
             add(panel,"Download Gemini skill ZIP",()->opener.open(release.download));
             add(panel,"Open Gemini web",()->opener.open("https://gemini.google.com/app"));
             add(panel,"View release changes",()->opener.open(release.page));
+            add(panel,"Not now — hide this package’s badge",()->{
+                prefs.edit().putString(key("dismissed",channel),release.identity()).apply();
+                changed.run();dialog.dismiss();
+            });
             add(panel,"I installed this package",()->dialogs.show(new AlertDialog.Builder(activity)
                 .setTitle("Record your installation?")
                 .setMessage("Confirm only after replacing the skill in Gemini with "+release.tag+". This records your confirmation; it does not verify Gemini or install anything.")

@@ -175,6 +175,7 @@ if(!await scene('keepStage','When the playlist arrives, send: go de-cheese.',600
 await typeCommand('auditCommand','go de-cheese');if(!await scene('auditSample','Read the audit. Choose which fixes you want.',2200))return;
 await typeCommand('publishCommand','Publish');if(!await scene('savedExample','Happy with it? Send: Publish. Then check YouTube Music.',3200))return;
 stop();$('watch').textContent='Replay the example';$('complete').hidden=false;$('complete').classList.add('show');$('complete').scrollIntoView({block:'center',behavior:reduced?'instant':'smooth'});}
+$('surprise').insertAdjacentHTML('beforeend','<p>Same settings, different playlist: send <strong>Refresh</strong> in the AI conversation containing your brief.</p>');
 $('surpriseGo').onclick=()=>{$('surpriseStatus').textContent='Example request: Go, Hipster, Go! Normal GO. Service: YouTube Music. Paste and send in Gemini, then review and Publish.'};$('again').onclick=play;$('watch').onclick=play;$('stop').onclick=stop;document.addEventListener('visibilitychange',()=>{if(document.hidden)stop()});update();
 
 const chatSetup=$('setupChat');chatSetup.dataset.manualPage='chatSetup';
