@@ -39,7 +39,10 @@ const TWEEN_PALETTES={
 window.GHGAtlasPaintColors=()=>({theme:atlasTheme(),...TWEEN_PALETTES[atlasTheme()]});
 /* Theme changes may reach an already-loaded iframe via the storage event.
    Keep its print stylesheet and Atlas CSS roles in step with MapLibre. */
+let appliedBrowserTheme='';
 function applyBrowserTheme(theme){
+ if(theme===appliedBrowserTheme)return;
+ appliedBrowserTheme=theme;
  const root=document.documentElement,print=PRINT_THEMES.has(theme);
  root.dataset.pwaTheme=theme;
  root.dataset.ghgThemeProfile=print?'print':'';
