@@ -37,7 +37,7 @@ export default {
           .on("head", { element(el) {
             if (isPwaLaunch) el.append('<link rel="stylesheet" href="/assets/pwa-workspace.css"><link rel="stylesheet" href="/assets/pwa-inline-atlas.css">', { html: true });
             // Apply persisted theme before the theme CSS to prevent a first-paint flash.
-            el.append('<script>try{var t=localStorage.getItem("ghg-pwa-theme-v1");document.documentElement.dataset.pwaTheme=/^(liberi|bosque|usiku)$/.test(t)?t:"liberi"}catch(e){document.documentElement.dataset.pwaTheme="liberi"}</script><link rel="stylesheet" href="/assets/pwa-themes.css">', { html: true });
+            el.append('<script>try{var t=localStorage.getItem("ghg-pwa-theme-v1");document.documentElement.dataset.pwaTheme=/^(liberi|bosque|usiku|kingston|detroit|addis|polish|beirut)$/.test(t)?t:"liberi"}catch(e){document.documentElement.dataset.pwaTheme="liberi"}</script><link rel="stylesheet" href="/assets/pwa-themes.css">', { html: true });
           } })
           .on("body", { element(el) {
             if (isPwaLaunch) el.append('<script defer src="/assets/pwa-workspace.js"></script><script defer src="/assets/pwa-guides.js"></script><script defer src="/assets/pwa-inline-atlas.js"></script>', { html: true });
