@@ -6,7 +6,7 @@ const doc=document,api=window.HipsterPWABridge;
 if(!api || !doc.querySelector('.site'))return;
 const STORE='ghg-pwa-crate-v1';
 const THEME_STORE='ghg-pwa-theme-v1';
-const THEMES=['liberi','bosque','usiku'];
+const THEMES=['liberi','bosque','usiku','kingston','detroit','addis','polish','beirut'];
 const LIMIT_SAVED=10,LIMIT_RECENT=3,LIMIT_REFERENCE=2000;
 const destinations={chatgpt:'https://chatgpt.com/',gemini:'https://gemini.google.com/app',claude:'https://claude.ai/'};
 let data=load(),screen='jukebox',activeSaved=null;
@@ -116,6 +116,11 @@ shell.innerHTML=[
  '<button class="pwa-theme-choice" type="button" data-pwa-theme="liberi" aria-pressed="true"><span class="pwa-theme-sample" aria-hidden="true"><i></i><i></i><i></i></span><strong>Liberi</strong><small>Original</small></button>',
  '<button class="pwa-theme-choice" type="button" data-pwa-theme="bosque" aria-pressed="false"><span class="pwa-theme-sample" aria-hidden="true"><i></i><i></i><i></i></span><strong>Bosque</strong><small>Forest &amp; tobacco</small></button>',
  '<button class="pwa-theme-choice" type="button" data-pwa-theme="usiku" aria-pressed="false"><span class="pwa-theme-sample" aria-hidden="true"><i></i><i></i><i></i></span><strong>Usiku</strong><small>After dark</small></button>',
+ '<button class="pwa-theme-choice" type="button" data-pwa-theme="kingston" aria-pressed="false"><span class="pwa-theme-sample" aria-hidden="true"><i></i><i></i><i></i></span><strong>Kingston</strong><small>Blank-label</small></button>',
+ '<button class="pwa-theme-choice" type="button" data-pwa-theme="detroit" aria-pressed="false"><span class="pwa-theme-sample" aria-hidden="true"><i></i><i></i><i></i></span><strong>Detroit</strong><small>Midnight Xerox</small></button>',
+ '<button class="pwa-theme-choice" type="button" data-pwa-theme="addis" aria-pressed="false"><span class="pwa-theme-sample" aria-hidden="true"><i></i><i></i><i></i></span><strong>Addis</strong><small>Jazz Offset</small></button>',
+ '<button class="pwa-theme-choice" type="button" data-pwa-theme="polish" aria-pressed="false"><span class="pwa-theme-sample" aria-hidden="true"><i></i><i></i><i></i></span><strong>Polish</strong><small>Jazz Modernism</small></button>',
+ '<button class="pwa-theme-choice" type="button" data-pwa-theme="beirut" aria-pressed="false"><span class="pwa-theme-sample" aria-hidden="true"><i></i><i></i><i></i></span><strong>Beirut</strong><small>Cassette Slip</small></button>',
  '</div><p id="pwaThemeStatus" class="pwa-theme-status" role="status" aria-live="polite">Saved on this device when browser storage is available.</p></section>',
  '<p>AI and music choices stay on the Jukebox for the browser edition.</p><button type="button" class="pwa-wide" data-pwa-action="services">CHANGE AI &amp; MUSIC</button>',
  '<button type="button" class="pwa-wide" data-pwa-action="recording">LISTENING PREFERENCES</button><p>GO copies your request. Open your chosen AI, paste and send; the browser does not automatically submit it.</p></div></dialog>',
