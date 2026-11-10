@@ -5,3 +5,5 @@ Source: merged PR #232 (aaa3566d94237a6a08810ca639d043b0f7722fb9)
 Scope: eight Android-approved themes, Atlas palettes, canonical selected Funk art, PWA-only tests
 Trigger: production Cloudflare Worker workflow, one-shot commit marker
 Android: no release or Android source changes
+
+Retry after adding pinned Pillow dependency to the production workflow (commit 2648bee12febbfca44fb1f3ef03b624b78cedaa0). The first deploy failed during asset packaging, before Cloudflare deployment.
