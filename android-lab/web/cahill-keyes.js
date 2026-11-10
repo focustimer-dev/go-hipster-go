@@ -40,7 +40,7 @@ function labCahillInit(host,geography,routes,legacy){
   'pointer-events':'none'});
  world.appendChild(grid);
  const countries=make('g',{'class':'lab-cahill-countries'});world.appendChild(countries);
- const regions=[];
+ const regions=[],usFills=[];
  let pendingTap=null,lastTouchUp=-Infinity;
  const cancelTap=()=>{if(pendingTap){clearTimeout(pendingTap);pendingTap=null}};
  // Android synthesizes click after pointerup, often after the map has moved.
@@ -92,8 +92,17 @@ function labCahillInit(host,geography,routes,legacy){
   regions.push({id,feature,node:country});
   countries.appendChild(country);
  }
- // One non-interactive path draws just the four US region outlines. The
- // individual states still provide the same accurate hit/selection geometry.
+ // Paint each joined listening region once. Transparent state paths above
+ // these fills keep the original touch geometry without antialias seams.
+ for(const sourceFeature of labUSRegionFills){
+  const d=path(correctWinding(sourceFeature));
+  if(!d)continue;
+  const id=sourceFeature.properties.region;
+  const node=make('path',{d,'data-cahill-region':id,'data-cahill-us-fill':'true'});
+  usFills.push({id,node});
+  countries.insertBefore(node,countries.firstChild);
+ }
+ // One non-interactive path draws just the four US region outlines.
  const usBorderPath=path(labUSRegionBorders);
  if(usBorderPath)countries.appendChild(make('path',{
   d:usBorderPath,class:'lab-us-region-boundaries',
@@ -467,14 +476,14 @@ function labCahillInit(host,geography,routes,legacy){
   // The 183 country paths are static. Only touch SVG attributes for
   // regions whose selection actually changed, rather than invalidating
   // the entire paint layer on every focus/selection refresh.
-  for(const {id,node}of regions){
+  for(const {id,node}of [...regions,...usFills]){
    const selected=crateSelected.has(id);
    if(appliedRegionState.get(node)===selected)continue;
    node.setAttribute('fill',selected?'#a83223':'#dfb045');
    node.setAttribute('aria-pressed',String(selected));
    appliedRegionState.set(node,selected);
   }
-  labCahillMotion.scheduleWarm(svg,geography,crateSelected);
+  labCahillMotion.scheduleWarm(svg,labJoinedGlobeGeography,crateSelected);
  };
  const focus=(view)=>{
   if(view===null||(!crateSelected.size&&!atlasFocus))

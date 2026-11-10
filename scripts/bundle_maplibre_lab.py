@@ -51,7 +51,15 @@ def _regional_mesh(source):
     feature = packed.get('feature', {})
     if feature.get('geometry', {}).get('type') != 'MultiLineString':
         raise ValueError('Invalid TopoJSON-derived US listening-region mesh')
-    return feature
+    fills = packed.get('fills', [])
+    expected_regions = {re.search(r'data-atlas-region="([^"]+)"', tag).group(1) for tag in tags}
+    if (len(fills) != len(expected_regions)
+            or {f['properties']['region'] for f in fills} != expected_regions
+            or any(f['properties']['country'] != 'USA'
+                   or f['geometry']['type'] != 'MultiPolygon'
+                   or not f['geometry']['coordinates'] for f in fills)):
+        raise ValueError('Invalid TopoJSON-derived US listening-region fills')
+    return feature, fills
 
 def bundle_maplibre(destination):
     archive=Path(tempfile.gettempdir())/'maplibre-gl-5.6.1.tgz'
@@ -64,7 +72,7 @@ def bundle_maplibre(destination):
         for name in ['dist/maplibre-gl.js','dist/maplibre-gl.css','LICENSE.txt']:
             (target/Path(name).name).write_bytes(tar.extractfile('package/'+name).read())
     source=(ROOT/'launcher/index.html').read_text();features=[]
-    shared_us_borders = _regional_mesh(source)
+    shared_us_borders, us_fills = _regional_mesh(source)
     for tag in re.findall(r'<path [^>]*data-atlas-country=[^>]*>',source):
         country=re.search(r'data-atlas-country="([^"]+)"',tag).group(1)
         region=re.search(r'data-atlas-region="([^"]+)"',tag).group(1)
@@ -81,4 +89,5 @@ def bundle_maplibre(destination):
     root=destination/'index.html'
     root.write_text(root.read_text().replace('</body>',
         '<script type="application/json" id="labGlobeGeography">'+json.dumps({'type':'FeatureCollection','features':features},separators=(',',':'))+'</script>'
-        +'<script type="application/json" id="labUSRegionBorders">'+json.dumps(shared_us_borders,separators=(',',':'))+'</script></body>'))
+        +'<script type="application/json" id="labUSRegionBorders">'+json.dumps(shared_us_borders,separators=(',',':'))+'</script>'
+        +'<script type="application/json" id="labUSRegionFills">'+json.dumps(us_fills,separators=(',',':'))+'</script></body>'))

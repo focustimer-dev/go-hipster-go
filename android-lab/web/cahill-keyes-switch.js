@@ -126,7 +126,7 @@ function labAtlasCahillTransition(mode,instant=false){
   }
  };
  const state=labCahillMotion.run({host,svg,to:mode,from,
-  geojson:labGlobeGeography,selected:crateSelected,
+  geojson:labJoinedGlobeGeography,selected:crateSelected,
   cahillView:labCahill.camera.snapshot(),complete:finish});
  labAtlasMorph=state;
  // Finish the inexpensive 2D geographic fold before changing MapLibre's

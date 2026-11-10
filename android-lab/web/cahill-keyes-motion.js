@@ -95,11 +95,10 @@ const labCahillMotion=(()=>{
   }
   ctx.globalAlpha=1;
   for(const region of world.querySelectorAll('[data-cahill-region]')){
-   // Transition snapshots must match the resting SVG: US states are hit shapes,
-   // not 51 outlines. Never add strokes for them in the rasterized tween.
+   // Only the joined US fills appear in the transition snapshot.
+   if(region.hasAttribute('data-cahill-us-state'))continue;
    const ink=getComputedStyle(region);
-   const isUSState=region.hasAttribute('data-cahill-us-state');
-   const stroke=!isUSState&&ink.stroke!=='none'?ink.stroke:null;
+   const stroke=ink.stroke!=='none'?ink.stroke:null;
    const lineWidth=Math.min(parseFloat(ink.strokeWidth)||.65,.65);
    put(region,{fill:ink.fill|| (selected.has(region.dataset.cahillRegion)?PAL.selected:PAL.paper),
     stroke,lineWidth});

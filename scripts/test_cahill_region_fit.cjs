@@ -16,7 +16,7 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
  let browser;
  try{
-  browser=await chromium.launch({headless:true,args:['--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+  browser=await chromium.launch({headless:true,executablePath:process.env.LAB_CHROMIUM,args:['--use-angle=swiftshader','--enable-unsafe-swiftshader']});
   for(const width of [412,320]){
    const page=await browser.newPage({viewport:{width,height:915},isMobile:true,hasTouch:true});
    const errors=[];page.on('pageerror',error=>errors.push(error.message));
@@ -26,10 +26,38 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    // Enter Keyes instantly so software WebGL projection timing cannot
    // obscure whether its independent region-fit camera is working.
    await page.emulateMedia({reducedMotion:'reduce'});
+   await page.locator('[data-atlas-view=globe]').evaluate(el=>el.click());
+   await page.waitForFunction(()=>labAtlasGlobe.getProjection()?.type==='globe'&&
+    window.HipsterAtlasState().transitioning===false);
+   const globe=await page.evaluate(()=>{
+    const map=labAtlasGlobe,{marker,point}=labSecretMarkers[0],el=marker.getElement();
+    const zoom=labGlobeHomeZoom()+1;
+    const sample=center=>{
+     map.jumpTo({center,zoom});
+     return {opacity:el.style.opacity,visibility:getComputedStyle(el).visibility,hidden:el.hidden};
+    };
+    const [lon,lat]=point;
+    return {front:sample(point),back:sample([lon+(lon>0?-180:180),-lat]),
+     fills:map.getSource('land')._data.features.filter(f=>f.properties.country==='USA').length};
+   });
+   assert.equal(globe.fills,4,'Globe paints four US regions');
+   assert.deepEqual(globe.front,{opacity:'1',visibility:'visible',hidden:false});
+   assert.deepEqual(globe.back,{opacity:'0',visibility:'hidden',hidden:false});
    await page.locator('[data-atlas-view=cahill-keyes]').evaluate(el=>el.click());
    await page.waitForFunction(()=>document.querySelector('[data-atlas-view=cahill-keyes]')?.getAttribute('aria-pressed')==='true',null,{timeout:7000});
    await page.emulateMedia({reducedMotion:'no-preference'});
    const svg=page.locator('#labAtlasCahill');
+   const usStates=svg.locator('[data-cahill-us-state]'),usFills=svg.locator('[data-cahill-us-fill]');
+   assert.equal(await usStates.count(),51,'Keyes retains the original state hit geometry');
+   assert.equal(await usFills.count(),4,'Keyes paints four US regions');
+   assert(await usStates.evaluateAll(nodes=>nodes.every(node=>{
+    const style=getComputedStyle(node);
+    return style.fillOpacity==='0'&&style.pointerEvents==='visiblepainted';
+   })));
+   assert(await usFills.evaluateAll(nodes=>nodes.every(node=>{
+    const style=getComputedStyle(node);
+    return style.fillOpacity==='1'&&style.pointerEvents==='none'&&style.stroke==='none';
+   })));
    // Set an unambiguous close-up starting camera with the real wheel
    // handler. Synthetic double-taps have their own separate easing tests
    // and can be coalesced on a saturated software WebGL test runner.

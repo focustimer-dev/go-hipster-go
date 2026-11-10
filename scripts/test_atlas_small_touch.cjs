@@ -112,3 +112,21 @@ assert(cahill.includes('const usBorderPath=path(labUSRegionBorders)'),
 assert(read('scripts/bundle_maplibre_lab.py').includes('sourceSha256'),
  'Build must reject a stale shared region mesh');
 console.log('PASS: one fingerprinted runtime TopoJSON border mesh, exact 620 edges, no state seams.');
+
+assert.deepEqual(packed.fills.map(f=>f.properties.region).sort(),Object.keys(regionStates).sort());
+for(const fill of packed.fills){
+ const {region,country}=fill.properties;
+ assert.equal(country,'USA');
+ assert.equal(fill.geometry.type,'MultiPolygon');
+ const regionOutline=[...sourceEdges].filter(([,owners])=>
+  owners.filter(owner=>owner===region).length===1).map(([edge])=>edge);
+ const fillOutline=[];
+ for(const polygon of fill.geometry.coordinates)for(const ring of polygon){
+  assert.deepEqual(ring[0],ring.at(-1));
+  for(let i=1;i<ring.length;i++){
+   if(ring[i-1].join()!==ring[i].join())fillOutline.push(segmentKey(ring[i-1],ring[i]));
+  }
+ }
+ assert.deepEqual(fillOutline.sort(),regionOutline.sort(),
+  region+' fill must share the exact regional boundary and omit internal state edges');
+}

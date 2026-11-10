@@ -6,7 +6,7 @@ import vm from 'node:vm';
 import {performance} from 'node:perf_hooks';
 import {gzipSync} from 'node:zlib';
 import {topology} from 'topojson-server';
-import {mesh} from 'topojson-client';
+import {merge,mesh} from 'topojson-client';
 import {geoPath,geoOrthographic} from 'd3-geo';
 import {geoRobinson} from 'd3-geo-projection';
 import {geoCahillKeyes} from 'd3-geo-polygon';
@@ -102,7 +102,11 @@ const rtAbsent=[...rtOldEdges].filter(k=>!rtNewEdges.has(k));
 const rtExtra=[...rtNewEdges].filter(k=>!rtOldEdges.has(k));
 if(rtAbsent.length||rtExtra.length)throw Error('Android runtime geometry mismatch. Old-only '+rtAbsent.length+', topo-only '+rtExtra.length);
 const sourceSha256=createHash('sha256').update(usTags.join('\n')).digest('hex');
-const packed={sourceSha256,sourceFeatureCount:usTags.length,feature:{
+const statesByRegion=Object.groupBy(rtTopo.objects.states.geometries,state=>state.properties.region);
+const fills=Object.entries(statesByRegion).map(([region,states])=>({
+ type:'Feature',properties:{country:'USA',region},geometry:merge(rtTopo,states)
+}));
+const packed={fills,sourceSha256,sourceFeatureCount:usTags.length,feature:{
  type:'Feature',properties:{kind:'us-listening-regions'},geometry:rtMesh}};
 fs.writeFileSync(path.join(out,'android-us-regions-mesh.json'),JSON.stringify(packed)+'\n');
 if(process.argv.includes('--write-android-mesh')){
