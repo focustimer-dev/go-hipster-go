@@ -74,16 +74,16 @@ function labUSRegionBorderGeometry(geography){
    coordinates:[...edges.values()].filter(e=>e.count===1||e.mixed).map(e=>[e.a,e.b])}};
 }
 
-let labGlobeGeography;
+let labGlobeGeography,labUSRegionBorders,labRobinsonUSRegionBorders;
 function initLabGlobe(){
  if(new URLSearchParams(location.search).get('atlas')==='legacy'||typeof maplibregl==='undefined')return;
  const old=doc.getElementById('crateAtlasMap'),frame=old?.closest('.crate-map-frame'),geometry=doc.getElementById('labGlobeGeography');if(!frame||!geometry)return;
  labGlobeGeography=JSON.parse(geometry.textContent);
- const usBorders=labUSRegionBorderGeometry(labGlobeGeography);
+ labUSRegionBorders=labUSRegionBorderGeometry(labGlobeGeography);
  const host=doc.createElement('div');host.id='labAtlasGlobe';host.style.cssText='position:relative;width:100%;aspect-ratio:720/372;background:transparent';host.setAttribute('aria-label','Interactive regional globe');
  frame.appendChild(host);
  try{
-  labGlobe=new maplibregl.Map({container:host,style:{version:8,sources:{land:{type:'geojson',data:labGlobeGeography},'us-regions':{type:'geojson',data:usBorders}},layers:[{id:'ocean',type:'background',paint:{'background-color':'#103135','background-color-transition':{duration:0,delay:0}}},{id:'land',type:'fill',source:'land',paint:{'fill-color':['case',['boolean',['feature-state','selected'],false],'#a83223','#dfb045']}},{id:'borders',type:'line',source:'land',filter:['!=',['get','country'],'USA'],paint:{'line-color':'#103135','line-width':.7}},{id:'us-region-borders',type:'line',source:'us-regions',paint:{'line-color':'#103135','line-width':.7}}]},center:[10,15],zoom:0,maxZoom:5.5,minZoom:-1,attributionControl:false,renderWorldCopies:false,dragRotate:false,pitchWithRotate:false,canvasContextAttributes:{antialias:true}});
+  labGlobe=new maplibregl.Map({container:host,style:{version:8,sources:{land:{type:'geojson',data:labGlobeGeography},'us-regions':{type:'geojson',data:labUSRegionBorders}},layers:[{id:'ocean',type:'background',paint:{'background-color':'#103135','background-color-transition':{duration:0,delay:0}}},{id:'land',type:'fill',source:'land',paint:{'fill-color':['case',['boolean',['feature-state','selected'],false],'#a83223','#dfb045']}},{id:'borders',type:'line',source:'land',filter:['!=',['get','country'],'USA'],paint:{'line-color':'#103135','line-width':.7}},{id:'us-region-borders',type:'line',source:'us-regions',paint:{'line-color':'#103135','line-width':.7}}]},center:[10,15],zoom:0,maxZoom:5.5,minZoom:-1,attributionControl:false,renderWorldCopies:false,dragRotate:false,pitchWithRotate:false,canvasContextAttributes:{antialias:true}});
  }catch(e){host.remove();labGlobe=null;status('Globe graphics unavailable. The original atlas is available.');return}
  window.labAtlasGlobe=labGlobe;
  labGlobe.on('load',()=>{
@@ -478,6 +478,10 @@ function labAtlasCommitMode(mode,keepHostSize=false){
  }
  if(!labRobinsonData)labRobinsonData=labRobinsonGeometry(labGlobeGeography);
  labGlobe.getSource('land').setData(mode==='robinson'?labRobinsonData:labGlobeGeography);
+ // The border overlay uses the same coordinate system as the painted land.
+ // Keep the four US region outlines aligned after Globe / Robinson switches.
+ if(!labRobinsonUSRegionBorders)labRobinsonUSRegionBorders=labRobinsonGeometry({type:'FeatureCollection',features:[labUSRegionBorders]});
+ labGlobe.getSource('us-regions').setData(mode==='robinson'?labRobinsonUSRegionBorders:labUSRegionBorders);
  if(labRouteGeography)labGlobe.getSource('routes').setData(mode==='robinson'?labRobinsonGeometry(labRouteGeography):labRouteGeography);
  for(const {marker,point} of labSecretMarkers)marker.setLngLat(labAtlasPoint(point));
  // The MapLibre background is the OUTSIDE paper in Robinson; the separate
