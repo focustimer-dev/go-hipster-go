@@ -71,14 +71,15 @@ for(const file of editions){
  for(const id of ['us-midwest','us-south','balkans','central-america','caribbean'])
   assert(names.includes(id),file+' must let users choose '+id);
 }
-// One existing engraved sprite feeds every ship/monster marker; its tint is
-// a palette token, never a cross-SVG filter or a new duplicate asset.
-assert.match(globeSource,/old\.querySelector\('#chart-engravings'\)/);
-assert.match(globeSource,/icon\.style\.webkitMaskImage=icon\.style\.maskImage/);
-assert.doesNotMatch(globeSource,/const clone=art\.cloneNode\(true\)/);
-assert.match(workspaceCSS,/\.lab-globe-engraving\{[\s\S]*?mask-size:300% 100%/);
 const globe=read('android-lab/web/globe.js'),cahill=read('android-lab/web/cahill-keyes.js'),
  bundle=read('scripts/bundle_android_lab.py');
+// One existing engraved sprite feeds every ship/monster marker; its tint is
+// a palette token, never a cross-SVG filter or a new duplicate asset.
+assert.match(globe,/old\.querySelector\('#chart-engravings'\)/);
+assert.match(globe,/icon\.style\.webkitMaskImage=icon\.style\.maskImage/);
+assert.doesNotMatch(globe,/const clone=art\.cloneNode\(true\)/);
+assert.match(workspaceCSS,/\.lab-globe-engraving\{[\s\S]*?mask-size:300% 100%/);
+
 assert(globe.includes('labAtlasSmallHit(')&&globe.includes("labGlobe.on('click',event=>"),'Both MapLibre modes need the missed-tap handler');
 assert(cahill.includes('nearbySmallRegion')&&cahill.includes('zoomAssists'),'Keyes needs touch selection with safe zoom assistance');
 assert(bundle.includes("android-lab/web/atlas-touch-targets.js"),'Offline Android/PWA atlas bundles must include the shared helper');
