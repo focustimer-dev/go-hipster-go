@@ -1,4 +1,5 @@
 import hashlib
+import json
 import importlib.util
 import tempfile
 import unittest
@@ -35,7 +36,51 @@ class LabSnapshotTests(unittest.TestCase):
                 self.assertIn(theme_asset,stripped)
                 stripped=stripped.replace(theme_asset,'')
             stripped=stripped.replace('<p><a href="/atlas-lab.html">TRY MAPLIBRE GLOBE</a></p>','')
-            stripped=re.sub(r'<script type="application/json" id="labGlobeGeography">.*?</script>','',stripped,flags=re.S)
+            for element in ('labGlobeGeography', 'labAtlasBoundaryLines', 'labUSRegionFills'):
+                stripped=re.sub(r'<script type="application/json" id="'+element+r'">.*?</script>','',stripped,flags=re.S)
+            self.assertIn('<script type="application/json" id="labAtlasBoundaryLines">',page)
+            self.assertEqual(page.count('id="labAtlasBoundaryLines"'),1)
+            self.assertEqual(page.count('id="labUSRegionFills"'),1)
+            def atlas_data(element):
+                return json.loads(re.search(r'id="' + element + r'">(.*?)</script>', page)[1])
+
+            def edges(lines):
+                return {tuple(sorted((tuple(a), tuple(b))))
+                        for line in lines for a, b in zip(line, line[1:]) if a != b}
+
+            us, mexico_coast = atlas_data('labAtlasBoundaryLines')['features']
+            mexico = next(f for f in atlas_data('labGlobeGeography')['features']
+                          if f['properties']['country'] == 'MEX')
+            mexico_edges = edges(ring for polygon in mexico['geometry']['coordinates'] for ring in polygon)
+            us_edges = edges(us['geometry']['coordinates'])
+            coast_edges = edges(mexico_coast['geometry']['coordinates'])
+            self.assertEqual(len(mexico_edges & us_edges), 27)
+            self.assertFalse(coast_edges & us_edges, 'The U.S. mesh alone paints the shared border')
+            self.assertEqual(coast_edges | (mexico_edges & us_edges), mexico_edges)
+
+            countries = atlas_data('labGlobeGeography')['features']
+
+            def country_rings(code):
+                return [ring for f in countries if f['properties']['country'] == code
+                        for polygon in f['geometry']['coordinates'] for ring in polygon]
+
+            russia = country_rings('RUS')
+            self.assertGreater(max(lat for ring in russia for _, lat in ring), 81)
+            self.assertTrue(any(lat > 77 and 100 < lon < 106 for ring in russia for lon, lat in ring),
+                            'Retain the restored mainland Arctic coast')
+            russia_edges = edges(russia)
+            for code, expected in [('KAZ', 46), ('CHN', 33), ('MNG', 29), ('GEO', 9), ('AZE', 5)]:
+                self.assertEqual(len(russia_edges & edges(country_rings(code))), expected, code)
+            for feature in countries:
+                if feature['properties']['country'] == 'RUS':
+                    region = feature['properties']['region']
+                    longitudes = [lon for polygon in feature['geometry']['coordinates']
+                                  for ring in polygon for lon, _ in ring]
+                    if region == 'eastern-europe':
+                        self.assertLessEqual(max(longitudes), 60)
+                    else:
+                        self.assertGreaterEqual(min(longitudes), 60)
+            self.assertNotIn('function labUSRegionBorderGeometry(', (dest/'assets/app.js').read_text())
             stripped=stripped.replace('<script defer src="/assets/maplibre/maplibre-gl.js"></script><script defer src="/assets/cahill-keyes-vendor.js"></script><link rel="stylesheet" href="/assets/maplibre/maplibre-gl.css">','')
             self.assertEqual((dest/'assets/lab-theme-tokens.css').read_text(),
                              (ROOT/'android-lab/web/theme-tokens.css').read_text())
@@ -155,7 +200,7 @@ class RuntimeAssetTests(unittest.TestCase):
         spec = importlib.util.spec_from_file_location('maplibre_bundle', ROOT / 'scripts/bundle_maplibre_lab.py')
         builder = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(builder)
-        regions = [('GRL','northern-europe'),('CAN','canada-west'),('CAN','canada-east'),('RUS','eastern-europe'),('RUS','northern-asia'),('NOR','northern-europe'),('ATA','antarctica')]
+        regions = [('GRL','northern-europe'),('CAN','canada-west'),('CAN','canada-east'),('NOR','northern-europe'),('ATA','antarctica')]
         features = [{'id':i,'properties':{'country':country,'region':region},'geometry':{}} for i,(country,region) in enumerate(regions)]
         restored = builder.complete_polar_coastlines(features)
         self.assertEqual([f['id'] for f in restored], list(range(len(regions))))
@@ -165,11 +210,8 @@ class RuntimeAssetTests(unittest.TestCase):
         greenland = next(f for f in restored if f['properties']['country']=='GRL')
         self.assertGreater(max(p[1] for p in points(greenland)),83.5)
         self.assertGreater(max(p[1] for p in points(by_region['canada-east'])),82)
-        self.assertGreater(max(p[1] for p in points(by_region['northern-asia'])),80)
         self.assertLessEqual(max(p[0] for p in points(by_region['canada-west'])),-95)
         self.assertGreaterEqual(min(p[0] for p in points(by_region['canada-east'])),-95)
-        self.assertLessEqual(max(p[0] for p in points(by_region['eastern-europe'])),60)
-        self.assertGreaterEqual(min(p[0] for p in points(by_region['northern-asia'])),60)
         self.assertLessEqual(min(p[1] for p in points(by_region['antarctica'])),-89.9)
         for feature in restored:
             for polygon in feature['geometry']['coordinates']:

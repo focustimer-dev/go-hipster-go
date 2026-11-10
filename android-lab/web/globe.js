@@ -30,7 +30,7 @@ function labGlobeSync(force=false){
  // Prewarm matched coastline images in idle slices, never during the morph.
  // A changed region selection invalidates the cache key automatically.
  if(!labAtlasMorph&&labGlobeGeography)
-  labAtlasMorphVectors.warmFrames(labGlobeGeography,crateSelected,
+  labAtlasMorphVectors.warmFrames(labJoinedGlobeGeography,crateSelected,
    labGlobe.getContainer().clientWidth);
  window.__labAtlasFrameCacheStatus=()=>labAtlasMorphVectors.cacheStatus(
   crateSelected,labGlobe.getContainer().clientWidth);
@@ -47,73 +47,36 @@ function labGlobeSync(force=false){
   }
  }
 }
-// Derive one visual border per US listening region from the EXISTING state
-// geometry. Internal state edges cancel; coastline and cross-region edges stay.
-// The original 51 features remain intact for taps and selected fills. Runs once.
-function labUSRegionBorderGeometry(geography){
- const edges=new Map();
- for(const feature of geography.features){
-  if(feature.properties?.country!=='USA')continue;
-  const region=feature.properties.region;
-  const polygons=feature.geometry.type==='MultiPolygon'
-   ?feature.geometry.coordinates:[feature.geometry.coordinates];
-  for(const polygon of polygons)for(const ring of polygon){
-   for(let i=1;i<ring.length;i++){
-    const a=ring[i-1],b=ring[i];
-    const ka=a.join(','),kb=b.join(',');
-    if(ka===kb)continue;
-    const key=ka<kb?ka+'|'+kb:kb+'|'+ka;
-    const previous=edges.get(key);
-    if(previous){previous.count++;if(previous.region!==region)previous.mixed=true}
-    else edges.set(key,{a,b,ka,kb,region,count:1,mixed:false});
-   }
-  }
- }
- // Preserve geographic accuracy and all state touch polygons, but discard
- // every internal state seam. Join surviving edges into long continuous
- // strokes: hundreds of tiny SVG strokes look broken on the Keyes projection.
- const visible=[...edges.values()].filter(e=>e.count===1||e.mixed);
- const neighbors=new Map();
- visible.forEach((edge,i)=>{
-  for(const key of [edge.ka,edge.kb]){
-   if(!neighbors.has(key))neighbors.set(key,[]);
-   neighbors.get(key).push(i);
-  }
- });
- const drawn=new Set(),lines=[];
- const trace=(start,key)=>{
-  const first=visible[start],line=[key===first.ka?first.a:first.b];
-  let index=start;
-  while(index!==undefined&&!drawn.has(index)){
-   const edge=visible[index];drawn.add(index);
-   const next=key===edge.ka?edge.kb:edge.ka;
-   line.push(next===edge.ka?edge.a:edge.b);
-   key=next;
-   const adjacent=neighbors.get(key);
-   // At a three-region junction, finish the stroke instead of guessing
-   // which of the three edges to connect through that intersection.
-   index=adjacent.length===2?adjacent.find(i=>!drawn.has(i)):undefined;
-  }
-  if(line.length>1)lines.push(line);
- };
- // Trace from open ends and multi-region junctions first, then closed rings.
- for(const [key,adjacent] of neighbors)if(adjacent.length!==2)
-  for(const index of adjacent)if(!drawn.has(index))trace(index,key);
- for(let i=0;i<visible.length;i++)if(!drawn.has(i))trace(i,visible[i].ka);
- return {type:'Feature',properties:{kind:'us-listening-regions'},
-  geometry:{type:'MultiLineString',coordinates:lines}};
-}
-
-let labGlobeGeography,labUSRegionBorders,labRobinsonUSRegionBorders;
+// The one four-region boundary mesh is precomputed from this exact poster
+// geography via TopoJSON at build time; individual states remain hit polygons.
+let labGlobeGeography,labJoinedGlobeGeography,labUSRegionFills,labAtlasBoundaryLines,labRobinsonBoundaryLines;
 function initLabGlobe(){
  if(new URLSearchParams(location.search).get('atlas')==='legacy'||typeof maplibregl==='undefined')return;
  const old=doc.getElementById('crateAtlasMap'),frame=old?.closest('.crate-map-frame'),geometry=doc.getElementById('labGlobeGeography');if(!frame||!geometry)return;
  labGlobeGeography=JSON.parse(geometry.textContent);
- labUSRegionBorders=labUSRegionBorderGeometry(labGlobeGeography);
+ const borderData=doc.getElementById('labAtlasBoundaryLines');
+ const fillData=doc.getElementById('labUSRegionFills');
+ if(!borderData||!fillData){console.warn('Atlas regional geometry unavailable');return}
+ try{
+  labAtlasBoundaryLines=JSON.parse(borderData.textContent);
+  if(labAtlasBoundaryLines.type!=='FeatureCollection')throw Error('Invalid regional mesh');
+  labUSRegionFills=JSON.parse(fillData.textContent);
+  // Reuse one existing feature ID per region so the same selection state
+  // applies to both the joined Globe land and Robinson's original land.
+  const fills=new Map(labUSRegionFills.map(fill=>[fill.properties.region,fill]));
+  const features=labGlobeGeography.features.flatMap(feature=>{
+   if(feature.properties.country!=='USA')return [feature];
+   const region=feature.properties.region,fill=fills.get(region);
+   if(!fill)return [];
+   fills.delete(region);
+   return [{...fill,id:feature.id}];
+  });
+  labJoinedGlobeGeography={type:'FeatureCollection',features};
+ }catch(error){console.warn('Atlas regional geometry invalid',error);return}
  const host=doc.createElement('div');host.id='labAtlasGlobe';host.style.cssText='position:relative;width:100%;aspect-ratio:720/372;background:transparent';host.setAttribute('aria-label','Interactive regional globe');
  frame.appendChild(host);
  try{
-  labGlobe=new maplibregl.Map({container:host,style:{version:8,sources:{land:{type:'geojson',data:labGlobeGeography},'us-regions':{type:'geojson',data:labUSRegionBorders}},layers:[{id:'ocean',type:'background',paint:{'background-color':'#103135','background-color-transition':{duration:0,delay:0}}},{id:'land',type:'fill',source:'land',paint:{'fill-color':['case',['boolean',['feature-state','selected'],false],'#a83223','#dfb045']}},{id:'borders',type:'line',source:'land',filter:['!=',['get','country'],'USA'],paint:{'line-color':'#103135','line-width':.7}},{id:'us-region-borders',type:'line',source:'us-regions',paint:{'line-color':'#103135','line-width':.7}}]},center:[10,15],zoom:0,maxZoom:5.5,minZoom:-1,attributionControl:false,renderWorldCopies:false,dragRotate:false,pitchWithRotate:false,canvasContextAttributes:{antialias:true}});
+  labGlobe=new maplibregl.Map({container:host,style:{version:8,sources:{land:{type:'geojson',data:labJoinedGlobeGeography},'us-regions':{type:'geojson',data:labAtlasBoundaryLines}},layers:[{id:'ocean',type:'background',paint:{'background-color':'#103135','background-color-transition':{duration:0,delay:0}}},{id:'land',type:'fill',source:'land',paint:{'fill-color':['case',['boolean',['feature-state','selected'],false],'#a83223','#dfb045']}},{id:'borders',type:'line',source:'land',filter:['!', ['in',['get','country'],['literal',['USA','MEX']]]],paint:{'line-color':'#103135','line-width':.7}},{id:'us-region-borders',type:'line',source:'us-regions',paint:{'line-color':'#103135','line-width':.7}}]},center:[10,15],zoom:0,maxZoom:5.5,minZoom:-1,attributionControl:false,renderWorldCopies:false,dragRotate:false,pitchWithRotate:false,canvasContextAttributes:{antialias:true}});
  }catch(e){host.remove();labGlobe=null;status('Globe graphics unavailable. The original atlas is available.');return}
  window.labAtlasGlobe=labGlobe;
  labGlobe.on('load',()=>{
@@ -151,14 +114,14 @@ function initLabGlobe(){
   if(!validCrateRegions.has(choice.id))return;
   toggleCrateRegion(choice.id);
   setTimeout(()=>{if(!labAtlasMorph)labAtlasMorphVectors.warmFrames(
-   labGlobeGeography,crateSelected,host.clientWidth)},0);
+   labJoinedGlobeGeography,crateSelected,host.clientWidth)},0);
  });
  // Region buttons also invalidate the geographic sprite when the user edits
  // the crate; snapshots must never show an obsolete selected region.
  doc.addEventListener('click',event=>{
   if(!event.target?.closest?.('[data-crate-region]'))return;
   setTimeout(()=>{if(!labAtlasMorph)labAtlasMorphVectors.warmFrames(
-   labGlobeGeography,crateSelected,host.clientWidth)},0);
+   labJoinedGlobeGeography,crateSelected,host.clientWidth)},0);
  });
  labGlobe.on('dragstart',()=>{labGlobeResting=false;atlasFocus=null;atlasUserNavigated=true;renderAtlasNavigation()});
  labGlobe.on('rotatestart',()=>{labGlobeResting=false;atlasUserNavigated=true;renderAtlasNavigation()});
@@ -169,7 +132,7 @@ function initLabGlobe(){
   // Reflow the silhouette without forcing MapLibre to repaint every frame.
   // The real map is resized once, after the spring reaches its target.
   if(labAtlasMorph)return;
-  labAtlasMorphVectors.warmFrames(labGlobeGeography,crateSelected,host.clientWidth);
+  labAtlasMorphVectors.warmFrames(labJoinedGlobeGeography,crateSelected,host.clientWidth);
   labGlobe.resize();
   if(labAtlasMode==='robinson')labGlobe.setMinZoom(labRobinsonMinimumZoom());
   // Refit at rest on rotation, without erasing a user's current close-up.
@@ -203,7 +166,7 @@ function installLabGlobeSecrets(old){
    const art=arts.find(a=>Math.abs(+a.getAttribute('x')+(+a.getAttribute('width'))/2-x)<1&&Math.abs(+a.getAttribute('y')+(+a.getAttribute('height'))/2-y)<1);
    if(art){const clone=art.cloneNode(true);clone.removeAttribute('x');clone.removeAttribute('y');clone.setAttribute('width','38');clone.setAttribute('height','38');button.appendChild(clone)}else{button.innerHTML='<svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12" fill="none" stroke="currentColor"/><path d="M16 7V25M7 16H25" stroke="currentColor"/></svg>'}
    button.onclick=event=>{event.stopPropagation();old._atlasSecretsSync?.(true);old._atlasOpenSecret?.(hot.dataset.secret)};
-   const point=labGlobeUnproject([x,y]),marker=new maplibregl.Marker({element:button}).setLngLat(point).addTo(labGlobe);labSecretMarkers.push({marker,point,secret:hot.dataset.secret,label:hot.getAttribute('aria-label')});
+   const point=labGlobeUnproject([x,y]),marker=new maplibregl.Marker({element:button,opacityWhenCovered:'0'}).setLngLat(point).addTo(labGlobe);labSecretMarkers.push({marker,point,secret:hot.dataset.secret,label:hot.getAttribute('aria-label')});
   }
  }
  labRouteGeography={type:'FeatureCollection',features};
@@ -307,7 +270,7 @@ function labAtlasMorphTo(mode){
   globe:labAtlasMorphVectors.estimatedFit('globe'),width,height:targetHeight};
  if(destinationFit)fits[mode]={...destinationFit};
  fits[from]=sourceFit;
- const vector=labAtlasMorphVectors.make(tween,labGlobeGeography,crateSelected,[10,15]);
+ const vector=labAtlasMorphVectors.make(tween,labJoinedGlobeGeography,crateSelected,[10,15]);
  const renderVector=progress=>{
   const started=performance.now();
   const cached=labAtlasMorphVectors.paintCached(tween,vector.data,progress,vector.selected,fits);
@@ -363,7 +326,7 @@ function labAtlasMorphTo(mode){
    labAtlasMorph=null;
    const next=state.queued;
    if(next&&next!==labAtlasMode)labSetAtlasMode(next);
-   else labAtlasMorphVectors.warmFrames(labGlobeGeography,crateSelected,
+   else labAtlasMorphVectors.warmFrames(labJoinedGlobeGeography,crateSelected,
     host.clientWidth);
   },135);
  };
@@ -507,11 +470,11 @@ function labAtlasCommitMode(mode,keepHostSize=false){
   labGlobe.setMaxBounds([[-179.999,-pole],[179.999,pole]]);
  }
  if(!labRobinsonData)labRobinsonData=labRobinsonGeometry(labGlobeGeography);
- labGlobe.getSource('land').setData(mode==='robinson'?labRobinsonData:labGlobeGeography);
+ labGlobe.getSource('land').setData(mode==='robinson'?labRobinsonData:labJoinedGlobeGeography);
  // The border overlay uses the same coordinate system as the painted land.
- // Keep the four US region outlines aligned after Globe / Robinson switches.
- if(!labRobinsonUSRegionBorders)labRobinsonUSRegionBorders=labRobinsonGeometry({type:'FeatureCollection',features:[labUSRegionBorders]});
- labGlobe.getSource('us-regions').setData(mode==='robinson'?labRobinsonUSRegionBorders:labUSRegionBorders);
+ // Keep the shared U.S.–Mexico border aligned after projection switches.
+ if(!labRobinsonBoundaryLines)labRobinsonBoundaryLines=labRobinsonGeometry(labAtlasBoundaryLines);
+ labGlobe.getSource('us-regions').setData(mode==='robinson'?labRobinsonBoundaryLines:labAtlasBoundaryLines);
  if(labRouteGeography)labGlobe.getSource('routes').setData(mode==='robinson'?labRobinsonGeometry(labRouteGeography):labRouteGeography);
  for(const {marker,point} of labSecretMarkers)marker.setLngLat(labAtlasPoint(point));
  // The MapLibre background is the OUTSIDE paper in Robinson; the separate

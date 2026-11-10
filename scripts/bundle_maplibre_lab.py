@@ -21,6 +21,38 @@ def _clip_longitude(ring, boundary, keep_west):
         result.append(result[0])
     return result
 
+def restore_russian_arctic(poster, source, keep_west):
+    """Extend the cropped Arctic coast while keeping the shared poster borders."""
+    crop_latitude = 75.03826
+    mainland = max(source, key=lambda polygon: len(polygon[0]))
+    arctic_islands = [polygon for polygon in source if polygon is not mainland
+                      and max(point[1] for point in polygon[0]) > crop_latitude]
+    islands = [[clipped for ring in polygon if (clipped := _clip_longitude(ring, 60, keep_west))]
+               for polygon in arctic_islands]
+    restored = [polygon for polygon in poster
+                if max(point[1] for point in polygon[0]) < crop_latitude]
+    if not keep_west:
+        # The mainland ring wraps across one continuous run of clipped points.
+        cropped = max(poster, key=lambda polygon: len(polygon[0]))
+        ring = cropped[0][:-1]
+        starts = [i for i, point in enumerate(ring)
+                  if point[1] < crop_latitude <= ring[i-1][1]]
+        start, = starts
+        ring = ring[start:] + ring[:start]
+        end = next(i for i, point in enumerate(ring) if point[1] >= crop_latitude)
+        if any(point[1] < crop_latitude for point in ring[end:]):
+            raise ValueError('Unexpected Russia mainland crop; check Arctic coast anchors')
+        kept = ring[:end]
+        coast = mainland[0]
+        first, last = (min(range(len(coast)), key=lambda i: math.dist(coast[i], anchor))
+                       for anchor in (kept[-1], kept[0]))
+        if first >= last or any(math.dist(coast[i], anchor) > .15
+                                for i, anchor in ((first, kept[-1]), (last, kept[0]))):
+            raise ValueError('Russia Arctic coast no longer matches poster anchors')
+        restored.append([kept + coast[first+1:last] + [kept[0]], *cropped[1:]])
+    return restored + [polygon for polygon in islands if polygon]
+
+
 def complete_polar_coastlines(features):
     """Restore source coastlines before projection, retaining IDs and region splits."""
     source = json.loads((ROOT / 'android-lab/web/polar-coastlines.geojson').read_text())
@@ -32,12 +64,66 @@ def complete_polar_coastlines(features):
         geometry = replacements[country]
         polygons = geometry['coordinates'] if geometry['type'] == 'MultiPolygon' else [geometry['coordinates']]
         region = feature['properties']['region']
-        split = (-95, region == 'canada-west') if country == 'CAN' else (60, region == 'eastern-europe') if country == 'RUS' else None
+        if country == 'RUS':
+            feature['geometry'] = {'type': 'MultiPolygon', 'coordinates': restore_russian_arctic(
+                feature['geometry']['coordinates'], polygons, region == 'eastern-europe')}
+            continue
+        split = (-95, region == 'canada-west') if country == 'CAN' else None
         if split:
             polygons = [[clipped for ring in polygon if (clipped := _clip_longitude(ring, *split))] for polygon in polygons]
             polygons = [polygon for polygon in polygons if polygon]
         feature['geometry'] = {'type': 'MultiPolygon', 'coordinates': polygons}
     return features
+
+def _regional_mesh(source):
+    """Use one cached topology mesh, and fail if poster geometry changes."""
+    import hashlib
+    tags = [tag for tag in re.findall(r'<path [^>]*data-atlas-country=[^>]*>', source)
+            if 'data-atlas-country="USA"' in tag]
+    packed = json.loads((ROOT / 'android-lab/web/us-region-mesh.json').read_text())
+    digest = hashlib.sha256('\n'.join(tags).encode('utf-8')).hexdigest()
+    if len(tags) != 51 or packed.get('sourceFeatureCount') != 51 or packed.get('sourceSha256') != digest:
+        raise ValueError('Atlas poster geometry changed: regenerate the shared TopoJSON mesh before building Android')
+    feature = packed.get('feature', {})
+    if feature.get('geometry', {}).get('type') != 'MultiLineString':
+        raise ValueError('Invalid TopoJSON-derived US listening-region mesh')
+    fills = packed.get('fills', [])
+    expected_regions = {re.search(r'data-atlas-region="([^"]+)"', tag).group(1) for tag in tags}
+    if (len(fills) != len(expected_regions)
+            or {f['properties']['region'] for f in fills} != expected_regions
+            or any(f['properties']['country'] != 'USA'
+                   or f['geometry']['type'] != 'MultiPolygon'
+                   or not f['geometry']['coordinates'] for f in fills)):
+        raise ValueError('Invalid TopoJSON-derived US listening-region fills')
+    return feature, fills
+
+def align_mexico_border(features, us_border):
+    """Reuse the U.S. border for Mexico's fill and return its remaining ink."""
+    pacific, junction, gulf = [-117.15, 32.52467], [-106.5, 31.77193], [-97.15, 25.89133]
+    lines = us_border['geometry']['coordinates']
+
+    def border_arc(start, end):
+        line, = (line for line in lines if start in line and end in line)
+        a, b = line.index(start), line.index(end)
+        return line[a:b+1] if a < b else line[b:a+1][::-1]
+
+    border = border_arc(pacific, junction) + border_arc(junction, gulf)[1:]
+    mexico, = (f for f in features if f['properties']['country'] == 'MEX')
+    polygons = mexico['geometry']['coordinates']
+    # The source poster's Mexico outline is offset north at the border.
+    # Trim the coastal points north of the new endpoints, then join the
+    # remaining coastline to the shared border.
+    old_gulf, old_pacific = [-97.15, 26.90887], [-117.15, 33.43619]
+    mainland, = (p for p in polygons if old_gulf in p[0] and old_pacific in p[0])
+    ring = mainland[0][:-1]
+    start = ring.index(old_gulf)
+    ring = ring[start:] + ring[:start]
+    coast = [gulf, *ring[2:ring.index(old_pacific)-1], pacific]
+    mainland[0] = coast + border[1:]
+    other_rings = [r for p in polygons for r in p if r is not mainland[0]]
+    return {'type': 'Feature', 'properties': {'country': 'MEX'},
+            'geometry': {'type': 'MultiLineString', 'coordinates': [coast, *other_rings]}}
+
 
 def bundle_maplibre(destination):
     archive=Path(tempfile.gettempdir())/'maplibre-gl-5.6.1.tgz'
@@ -50,6 +136,7 @@ def bundle_maplibre(destination):
         for name in ['dist/maplibre-gl.js','dist/maplibre-gl.css','LICENSE.txt']:
             (target/Path(name).name).write_bytes(tar.extractfile('package/'+name).read())
     source=(ROOT/'launcher/index.html').read_text();features=[]
+    shared_us_borders, us_fills = _regional_mesh(source)
     for tag in re.findall(r'<path [^>]*data-atlas-country=[^>]*>',source):
         country=re.search(r'data-atlas-country="([^"]+)"',tag).group(1)
         region=re.search(r'data-atlas-region="([^"]+)"',tag).group(1)
@@ -63,5 +150,10 @@ def bundle_maplibre(destination):
     features = complete_polar_coastlines(features)
     page=(ROOT/'android-lab/web/atlas-lab.html').read_text().replace('/*GEOGRAPHY*/',json.dumps({'type':'FeatureCollection','features':features},separators=(',',':')))
     (destination/'atlas-lab.html').write_text(page)
+    mexico_coast = align_mexico_border(features, shared_us_borders)
+    boundary_lines = {'type': 'FeatureCollection', 'features': [shared_us_borders, mexico_coast]}
     root=destination/'index.html'
-    root.write_text(root.read_text().replace('</body>', '<script type="application/json" id="labGlobeGeography">'+json.dumps({'type':'FeatureCollection','features':features},separators=(',',':'))+'</script></body>'))
+    root.write_text(root.read_text().replace('</body>',
+        '<script type="application/json" id="labGlobeGeography">'+json.dumps({'type':'FeatureCollection','features':features},separators=(',',':'))+'</script>'
+        +'<script type="application/json" id="labAtlasBoundaryLines">'+json.dumps(boundary_lines,separators=(',',':'))+'</script>'
+        +'<script type="application/json" id="labUSRegionFills">'+json.dumps(us_fills,separators=(',',':'))+'</script></body>'))

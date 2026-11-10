@@ -241,21 +241,28 @@ body.gig-poster.lab-workspace .lab-atlas-modes button{display:flex;align-items:c
  -webkit-user-select:none;
  user-select:none;
 }
+#labAtlasCahill{--lab-keyes-border-width:.4px}
 #labAtlasCahill [data-cahill-region]{
  outline:none;cursor:pointer;pointer-events:visiblePainted;
  vector-effect:non-scaling-stroke;
-}
-/* Cahill selection changes fill, not outline weight. At close zoom the ink
-   stays quiet; all 51 US state polygons remain independently selectable. */
-#labAtlasCahill [data-cahill-region][aria-pressed=true]{
- stroke-width:.65!important;
+ stroke-width:var(--lab-keyes-border-width);
 }
 #labAtlasCahill [data-cahill-us-state]{
  stroke:none!important;
+ fill-opacity:0;
+}
+#labAtlasCahill [data-cahill-mexico]{stroke:none!important}
+#labAtlasCahill [data-cahill-us-fill]{
+ stroke:none!important;
+ pointer-events:none;
+}
+/* MapLibre 5.6 writes inline opacity for covered Globe markers. */
+#labAtlasGlobe .lab-globe-secret[style*="opacity: 0;"]{
+ visibility:hidden;
 }
 #labAtlasCahill .lab-us-region-boundaries{
  fill:none;stroke:var(--lab-atlas-ink,#103135);
- stroke-width:.65;vector-effect:non-scaling-stroke;
+ stroke-width:var(--lab-keyes-border-width);vector-effect:non-scaling-stroke;
  pointer-events:none;
 }
 #labAtlasCahill .lab-cahill-discovery:focus{outline:none}

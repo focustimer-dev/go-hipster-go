@@ -22,7 +22,7 @@ const workspaceCSS=read('android-lab/web/workspace.css');
 const printCSS=read('android-lab/web/theme-print.css');
 const themeCSS=read('launcher/assets/pwa-atlas-themes.css');
 const tweenSource=read('android-lab/web/cahill-keyes-motion.js');
-assert.match(workspaceCSS, /#labAtlasCahill \[data-cahill-region\]\[aria-pressed=true\]\{[\s\S]*?stroke-width:\.65!important;/);
+assert.match(workspaceCSS, /#labAtlasCahill\{--lab-keyes-border-width:\.4px\}/);
 assert.match(workspaceCSS, /#labAtlasCahill \[data-cahill-us-state\]\{[\s\S]*?stroke:none!important;/);
 assert.doesNotMatch(printCSS, /\[data-cahill-region\]\[aria-pressed=true\]\{[^}]*stroke-width:1\.35/);
 assert.doesNotMatch(themeCSS, /\[data-cahill-region\]\[aria-pressed=true\]\{[^}]*stroke-width:1\.35/);
@@ -59,23 +59,74 @@ assert(bundle.includes("android-lab/web/atlas-touch-targets.js"),'Offline Androi
 assert(read('scripts/pwa_inline_atlas_qa.mjs').includes('ghg-crate-map-regions-v2'),'PWA test must assert the current storage key');
 console.log('PASS: 51 state partitions, Mediterranean/Balkan split, parent map parity and ambiguous island tap safety.');
 
-// The regional ink removes state-to-state seams WITHOUT merging tap polygons.
-const globeSource=read('android-lab/web/globe.js');
-const outlineFn=globeSource.match(/function labUSRegionBorderGeometry\(geography\)\{[\s\S]*?\n\}/)?.[0];
-assert(outlineFn,'US boundary helper must be available to Globe and Keyes');
-const outlineContext=vm.createContext({});
-vm.runInContext(outlineFn,outlineContext);
-const square=(x,region)=>({type:'Feature',properties:{country:'USA',region},
- geometry:{type:'Polygon',coordinates:[[[x,0],[x+1,0],[x+1,1],[x,1],[x,0]]]}});
-const threeStates={features:[square(0,'us-west'),square(1,'us-west'),square(2,'us-midwest')]};
-const outlines=vm.runInContext('labUSRegionBorderGeometry('+JSON.stringify(threeStates)+')',outlineContext);
-const lines=JSON.parse(JSON.stringify(outlines.geometry.coordinates));
-// No loss of real border segments while knitting them into fewer SVG strokes.
-const segments=lines.flatMap(line=>line.slice(1).map((point,i)=>[line[i],point]));
-assert.equal(segments.length,9,'External perimeter and cross-region border only');
-assert(lines.length<segments.length&&lines.some(line=>line.length>2),
- 'Segmented state edges must form continuous geographic border paths');
-assert(!segments.some(edge=>edge.every(point=>point[0]===1)),
- 'Same-region state boundary must disappear');
-assert(segments.some(edge=>edge.every(point=>point[0]===2)),
- 'Inter-region boundary remains');
+// One precomputed TopoJSON mesh replaces the bespoke edge-joining helper.
+// Compare the mesh against the EXACT source SVG the Android builder transforms,
+// not the higher-precision Natural Earth source (which could misalign overlays).
+const crypto=require('node:crypto');
+const packed=JSON.parse(read('android-lab/web/us-region-mesh.json'));
+const usTags=[...read('launcher/index.html').matchAll(/<path [^>]*data-atlas-country=[^>]*>/g)]
+ .map(m=>m[0]).filter(tag=>tag.includes('data-atlas-country="USA"'));
+assert.equal(usTags.length,51);
+assert.equal(packed.sourceFeatureCount,51);
+assert.equal(packed.sourceSha256,crypto.createHash('sha256').update(usTags.join('\n')).digest('hex'));
+const border=packed.feature;
+assert.equal(border.geometry.type,'MultiLineString');
+assert.equal(border.properties.kind,'us-listening-regions');
+const segmentKey=(a,b)=>[a.map(n=>+n.toFixed(5)).join(','),b.map(n=>+n.toFixed(5)).join(',')].sort().join('|');
+const sourceEdges=new Map();
+for(const tag of usTags){
+ const region=tag.match(/data-atlas-region="([^"]+)"/)[1];
+ const d=tag.match(/\bd="([^"]+)"/)[1];
+ for(const part of d.match(/M[^M]+/g)||[]){
+  const ring=[...part.matchAll(/[ML](-?[\d.]+)\s+(-?[\d.]+)/g)].map(pair=>{
+   const x=Number(pair[1]),y=Number(pair[2]);
+   return [+(x/2-180).toFixed(5),+(Math.atan(Math.sinh((235.5-y)/116))*180/Math.PI).toFixed(5)];
+  });
+  if(ring.length<3)continue;
+  if(ring[0].join()!==ring.at(-1).join())ring.push([...ring[0]]);
+  for(let i=1;i<ring.length;i++){
+   if(ring[i-1].join(',')===ring[i].join(','))continue; // Degenerate state vertices are not drawable borders.
+   const edge=segmentKey(ring[i-1],ring[i]);
+   if(!sourceEdges.has(edge))sourceEdges.set(edge,[]);
+   sourceEdges.get(edge).push(region);
+  }
+ }
+}
+const expected=new Set([...sourceEdges].filter(([,regions])=>
+ regions.length===1||new Set(regions).size>1).map(([edge])=>edge));
+const drawn=new Set();
+for(const line of border.geometry.coordinates){
+ assert(line.length>1);
+ for(let i=1;i<line.length;i++){
+  if(line[i-1].join(',')===line[i].join(','))continue; // TopoJSON may retain harmless zero-length vertices.
+  drawn.add(segmentKey(line[i-1],line[i]));
+ }
+}
+assert.equal(expected.size,620,'US regional border count changed unexpectedly');
+assert.deepEqual([...drawn].sort(),[...expected].sort(),
+ 'TopoJSON mesh must draw exactly the four listening-region outlines and coastlines');
+assert(!globe.includes('function labUSRegionBorderGeometry('),
+ 'Android must not retain a second dynamic border builder');
+assert(cahill.includes('const boundaryPath=path(labAtlasBoundaryLines)'),
+ 'Cahill and Globe must consume the same single geographic border mesh');
+assert(read('scripts/bundle_maplibre_lab.py').includes('sourceSha256'),
+ 'Build must reject a stale shared region mesh');
+console.log('PASS: one fingerprinted runtime TopoJSON border mesh, exact 620 edges, no state seams.');
+
+assert.deepEqual(packed.fills.map(f=>f.properties.region).sort(),Object.keys(regionStates).sort());
+for(const fill of packed.fills){
+ const {region,country}=fill.properties;
+ assert.equal(country,'USA');
+ assert.equal(fill.geometry.type,'MultiPolygon');
+ const regionOutline=[...sourceEdges].filter(([,owners])=>
+  owners.filter(owner=>owner===region).length===1).map(([edge])=>edge);
+ const fillOutline=[];
+ for(const polygon of fill.geometry.coordinates)for(const ring of polygon){
+  assert.deepEqual(ring[0],ring.at(-1));
+  for(let i=1;i<ring.length;i++){
+   if(ring[i-1].join()!==ring[i].join())fillOutline.push(segmentKey(ring[i-1],ring[i]));
+  }
+ }
+ assert.deepEqual(fillOutline.sort(),regionOutline.sort(),
+  region+' fill must share the exact regional boundary and omit internal state edges');
+}

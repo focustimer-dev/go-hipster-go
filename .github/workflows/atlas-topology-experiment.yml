@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/atlas-topology-experiment.yml'
       - 'scripts/atlas_topology_experiment.mjs'
+      - 'scripts/fixtures/legacy_us_border_helper.js'
       - 'docs/atlas-topology-experiment.md'
       - 'assets/us-region-state-boundaries.json'
 permissions:

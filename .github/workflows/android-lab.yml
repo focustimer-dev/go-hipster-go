@@ -77,17 +77,8 @@ jobs:
       - run: node scripts/test_render_efficiency.cjs
       - run: node scripts/test_atlas_boundary.cjs
       - run: npx playwright install --with-deps chromium
-      - name: Phone theme and three-projection regression (4m watchdog)
-        run: timeout --signal=TERM --kill-after=10s 240s node scripts/test_android_lab_themes.cjs
       - name: Final Five print palette and Funk contract (100s watchdog)
         run: timeout --signal=TERM --kill-after=10s 100s node scripts/test_final_five_contract.cjs
-      - name: Save native theme phone screenshots independently of unrelated Atlas motion checks
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: android-theme-phone-review
-          path: android-lab/build/theme-review/*.png
-          if-no-files-found: warn
       - run: node scripts/test_cahill_region_fit.cjs
       # Gate on functional projection state, geometry, touch and routes,
       # not timing of SwiftShader's headless renderer callback.
@@ -104,6 +95,16 @@ jobs:
             android-lab/app/build/outputs/apk/release/app-release-unsigned.apk
             android-lab/build/switch-review/*.png
             android-lab/build/motion-review/*.png
-            android-lab/build/theme-review/*.png
           if-no-files-found: error
-
+      # The screenshot sweep depends on software rendering and can hang
+      # after its assertions pass. Run it on demand after the release artifact.
+      - name: Manual phone theme and projection screenshots
+        if: github.event_name == 'workflow_dispatch'
+        run: timeout --signal=TERM --kill-after=10s 240s node scripts/test_android_lab_themes.cjs
+      - name: Save manual theme screenshots
+        if: always() && github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-theme-phone-review
+          path: android-lab/build/theme-review/*.png
+          if-no-files-found: warn

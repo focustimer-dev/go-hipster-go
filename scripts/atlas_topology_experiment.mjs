@@ -6,7 +6,7 @@ import vm from 'node:vm';
 import {performance} from 'node:perf_hooks';
 import {gzipSync} from 'node:zlib';
 import {topology} from 'topojson-server';
-import {mesh} from 'topojson-client';
+import {merge,mesh} from 'topojson-client';
 import {geoPath,geoOrthographic} from 'd3-geo';
 import {geoRobinson} from 'd3-geo-projection';
 import {geoCahillKeyes} from 'd3-geo-polygon';
@@ -15,7 +15,7 @@ const regionOf=new Map(Object.entries(source.regionStates).flatMap(([region,post
 const features=source.states.map(s=>({type:'Feature',properties:{country:'USA',postal:s.postal,region:regionOf.get(s.postal)},geometry:s.geometry}));
 if(features.length!==51||regionOf.size!==51||Object.keys(source.regionStates).length!==4||features.some(f=>!f.properties.region))throw Error('Invalid 51-state/four-region source');
 const fc={type:'FeatureCollection',features};
-const code=fs.readFileSync('android-lab/web/globe.js','utf8').match(/function labUSRegionBorderGeometry\(geography\)\{[\s\S]*?\n\}/)?.[0];
+const code=fs.readFileSync('scripts/fixtures/legacy_us_border_helper.js','utf8').match(/function labUSRegionBorderGeometry\(geography\)\{[\s\S]*?\n\}/)?.[0];
 if(!code)throw Error('Existing border helper not found');
 const legacy=vm.runInNewContext(code+'\nlabUSRegionBorderGeometry;',{})(fc).geometry;
 const t0=performance.now(),topo=topology({states:fc}),buildMs=performance.now()-t0;
@@ -102,9 +102,17 @@ const rtAbsent=[...rtOldEdges].filter(k=>!rtNewEdges.has(k));
 const rtExtra=[...rtNewEdges].filter(k=>!rtOldEdges.has(k));
 if(rtAbsent.length||rtExtra.length)throw Error('Android runtime geometry mismatch. Old-only '+rtAbsent.length+', topo-only '+rtExtra.length);
 const sourceSha256=createHash('sha256').update(usTags.join('\n')).digest('hex');
-const packed={sourceSha256,sourceFeatureCount:usTags.length,feature:{
+const statesByRegion=Object.groupBy(rtTopo.objects.states.geometries,state=>state.properties.region);
+const fills=Object.entries(statesByRegion).map(([region,states])=>({
+ type:'Feature',properties:{country:'USA',region},geometry:merge(rtTopo,states)
+}));
+const packed={fills,sourceSha256,sourceFeatureCount:usTags.length,feature:{
  type:'Feature',properties:{kind:'us-listening-regions'},geometry:rtMesh}};
 fs.writeFileSync(path.join(out,'android-us-regions-mesh.json'),JSON.stringify(packed)+'\n');
+if(process.argv.includes('--write-android-mesh')){
+ fs.writeFileSync('android-lab/web/us-region-mesh.json',JSON.stringify(packed)+'\n');
+ console.log('Updated Android TopoJSON mesh from runtime poster geometry.');
+}
 console.log('ATLAS_ANDROID_REGION_MESH='+JSON.stringify(packed));
 report.androidRuntime={sha256:sourceSha256,features:usTags.length,
  oldSegments:rtOldEdges.size,topologySegments:rtNewEdges.size,
