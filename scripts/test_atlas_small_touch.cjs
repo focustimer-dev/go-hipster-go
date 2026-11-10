@@ -97,7 +97,10 @@ const expected=new Set([...sourceEdges].filter(([,regions])=>
 const drawn=new Set();
 for(const line of border.geometry.coordinates){
  assert(line.length>1);
- for(let i=1;i<line.length;i++)drawn.add(segmentKey(line[i-1],line[i]));
+ for(let i=1;i<line.length;i++){
+  if(line[i-1].join(',')===line[i].join(','))continue; // TopoJSON may retain harmless zero-length vertices.
+  drawn.add(segmentKey(line[i-1],line[i]));
+ }
 }
 assert.equal(expected.size,620,'US regional border count changed unexpectedly');
 assert.deepEqual([...drawn].sort(),[...expected].sort(),
