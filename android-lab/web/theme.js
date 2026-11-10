@@ -2,14 +2,21 @@
    This early document script leaves native app state and map geometry alone. */
 (function(){
 'use strict';
-const KEY='ghg-lab-theme-v1',THEMES=['liberi','bosque','usiku','kingston','detroit','addis','polish','beirut'];
+const KEY='ghg-lab-theme-v1',THEMES=['liberi','bosque','usiku','kingston','detroit','addis','polish','beirut','michoacan'];
 // All five printed record traditions are selectable in Android Preferences.
-const PILOTS=['kingston','detroit','addis','polish','beirut'];
+const PILOTS=['kingston','detroit','addis','polish','beirut','michoacan'];
 const preview=new URLSearchParams(location.search).get('theme');
 /* Single paint contract for the three REAL projections and their cached
    animation frames. Geometry, sprites, camera and transitions are unchanged.
    CSS receives identical roles via --lab-atlas-*; no per-projection palette. */
 const ATLAS=Object.freeze({
+ michoacan:Object.freeze({
+  paper:'#d1ad91',land:'#d1ad91',ocean:'#24191b',ink:'#49232b',
+  selected:'#e5b653',route:'#e5b653',routeOpacity:.78,routeWidth:1.1,
+  routeDash:[3,4],backdrop:'#6a2430',field:'#6a2430',
+  graticule:'#d1ad91',graticuleOpacity:.22,
+  oceanStroke:'#e5b653',oceanStrokeOpacity:.65
+ }),
  liberi:Object.freeze({
   paper:'#dfb045',land:'#dfb045',ocean:'#103135',ink:'#103135',
   selected:'#a83223',route:'#edc65d',routeOpacity:.65,routeWidth:1,
@@ -72,6 +79,11 @@ const ATLAS=Object.freeze({
 /* Neutral Funk shares the same paper and ink as the other portraits.
    Only selected Funk is a fixed performance, not a palette role. */
 const MOODS=Object.freeze({
+ michoacan:Object.freeze({
+  neutralPaper:'#d1ad91',neutralInk:'#49232b',
+  selectedPaper:'#e5b653',selectedInk:'#24191b',
+  desireHeart:'#6a2430'
+ }),
  liberi:Object.freeze({
   neutralPaper:'#dfb045',neutralInk:'#103135',
   selectedPaper:'#d64b30',selectedInk:'#103135',

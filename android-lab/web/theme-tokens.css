@@ -112,3 +112,22 @@
  --lab-print-substrate-texture:repeating-linear-gradient(90deg,transparent 0 76px,rgba(28,50,64,.035) 76px 77px,transparent 77px 82px);
  --lab-print-stamp-filter:brightness(0) saturate(100%) invert(59%) sepia(23%) saturate(1187%) hue-rotate(325deg) brightness(92%) contrast(87%);
 }
+
+/* Michoacán: lacquer-red ground, clay engraving and restrained gold. */
+:root[data-pwa-theme=michoacan]{
+ --lab-ui-surface:#6a2430;--lab-ui-ink:#f3e6c9;
+ --lab-ui-panel:#6a2430;--lab-ui-on-panel:#f3e6c9;
+ --lab-ui-rail:#24191b;--lab-ui-on-rail:#f3e6c9;
+ --lab-ui-action:#24191b;--lab-ui-on-action:#f3e6c9;
+ --lab-ui-rule:#d1ad91;--lab-ui-field:#f3e6c9;--lab-ui-on-field:#24191b;
+ --lab-ui-focus:#e5b653;--lab-ui-control-outline:#d1ad91;
+ --lab-ui-ticket-stock:#f3e6c9;--lab-ui-ticket-ink:#24191b;
+ --lab-ui-go:#24191b;--lab-ui-go-ink:#e5b653;
+ --lab-ui-highlight:#e5b653;--lab-ui-on-highlight:#24191b;
+ --lab-print-muted:#8b4950;--lab-print-stamp:#f3e6c9;
+ --lab-print-active-ink:#e5b653;--lab-print-control-ink:#e5b653;
+ --lab-mood-selected-edge:#49232b;
+ --lab-print-stamp-border-style:solid;
+ --lab-print-substrate-texture:radial-gradient(ellipse at 50% 30%,transparent 35%,#24191b33 100%);
+ --lab-print-stamp-filter:brightness(0) saturate(100%) invert(92%) sepia(18%) saturate(388%) hue-rotate(350deg) brightness(101%) contrast(90%);
+}

@@ -144,3 +144,25 @@ the three original themes' slider treatments.
 Only Android source is promoted; the standalone Theme Review APK variant,
 debug signing configuration and PWA release are excluded. The browser
 test for the new print palettes is short, screenshot-free and bounded.
+
+
+## Michoacán — lacquer and gold
+
+Ninth theme, key `michoacan`. Inspired by Pátzcuaro lacquer and gold-leaf
+craft; the exact hex palette is an original interface interpretation.
+
+| Role | Color |
+| --- | --- |
+| Surface | `#6a2430` lacquer red |
+| UI ink and hero engraving | `#f3e6c9` parchment |
+| Rail, GO and all map oceans | `#24191b` charcoal plum |
+| Selection, tempo and map compass | `#e5b653` old gold |
+| Neutral portrait paper and map land | `#d1ad91` clay |
+| Neutral engraving and boundaries | `#49232b` dark wine |
+
+Keep the eight original mood portraits and their luminance detail. Selected
+portraits use gold paper and charcoal engraving; selected Funk remains its
+canonical performance. Android, PWA, Manual, map resting states and transition
+frames use the same roles. No new raster assets, map geometry or interaction paths.
+
+Reference: https://sic.cultura.gob.mx/ficha.php?disciplina=&table=artepmex&table_id=32

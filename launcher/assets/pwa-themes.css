@@ -648,7 +648,7 @@ html[data-pwa-theme=usiku] body.pwa-workspace .pwa-dialog-head{
 /* Existing poster markup, Crate and Manual accept Android semantic color roles.
    Geometry, gestures, local browser storage and original faces are unchanged. */
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
  body.gig-poster:is([data-page=launch],[data-page=setup]){
  --ink:var(--lab-ui-ink);--ink2:var(--lab-ui-action);
  --paper:var(--lab-ui-surface);--bone:var(--lab-ui-ticket-stock);
@@ -669,52 +669,52 @@ html[data-pwa-theme=usiku] body.pwa-workspace .pwa-dialog-head{
  background:var(--lab-ui-surface);color:var(--lab-ui-ink);color-scheme:light;
 }
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
  body.gig-poster .site{background:var(--lab-ui-surface);color:var(--lab-ui-ink)}
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
  body.gig-poster :is(.go-options,.go-button){background:var(--lab-ui-go);color:var(--lab-ui-on-action)}
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
  body.gig-poster .go-button .go-copy :is(b,span){color:var(--lab-ui-on-action)}
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
  body.gig-poster .mood-grid .mood[aria-pressed=true]{background:var(--lab-mood-selected-paper);color:var(--lab-mood-selected-ink);border-color:var(--lab-print-active-ink)}
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
  body.gig-poster .crate-map-zone[data-selected=true] path{fill:var(--lab-atlas-selected);stroke:var(--lab-atlas-ink)}
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
  body.pwa-workspace .pwa-rail{background:var(--lab-ui-rail);color:var(--lab-ui-on-rail)}
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
  body.pwa-workspace .pwa-rail button[aria-current=page]{background:var(--lab-ui-surface);color:var(--lab-ui-ink);border-bottom-color:var(--lab-print-active-ink)}
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
  body.pwa-workspace :is(.pwa-page,.pwa-dialog,.pwa-guide-nav,.pwa-guide-shelf){background:var(--lab-ui-surface);color:var(--lab-ui-ink)}
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
  body.pwa-workspace :is(.pwa-dialog-head,.pwa-page section>h2,.pwa-section-head,.pwa-record,.pwa-guide-picker,.pwa-local-note){border-color:var(--lab-ui-rule)}
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
  body.pwa-workspace :is(.pwa-record button,.pwa-wide,.pwa-save-button,.pwa-dialog button,.pwa-dialog a){color:var(--lab-ui-ink);border-color:var(--lab-ui-control-outline)}
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
  body.pwa-workspace :is(.pwa-dialog-body input,.pwa-dialog-body textarea,.pwa-dialog-body pre){background:var(--lab-ui-field);color:var(--lab-ui-on-field);border-color:var(--lab-ui-control-outline)}
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
  body.pwa-workspace .pwa-dialog-actions button[type=submit]{background:var(--lab-ui-action);color:var(--lab-ui-on-action)}
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
  body.pwa-workspace .pwa-inspiration{background:var(--lab-ui-rail);color:var(--lab-ui-on-rail);border-left:4px solid var(--lab-print-active-ink)}
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
  body.pwa-workspace .pwa-inspiration strong{color:var(--lab-ui-highlight)}
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
  body.pwa-workspace :is(.pwa-guide-tabs button,.pwa-sleeve-actions button){background:var(--lab-ui-field);color:var(--lab-ui-on-field)}
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
  body.gig-poster :is(button,a,input,textarea,summary):focus-visible{outline-color:var(--lab-ui-focus)}
 @media(max-width:520px){
  .pwa-theme-choices{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -759,4 +759,78 @@ html[data-pwa-theme=usiku] body.pwa-workspace .pwa-dialog-head{
 }
 :root body.gig-poster.pwa-workspace[data-page=launch] .mood-grid .mood[data-mood=funky][aria-pressed=true] .funk-rays{
  opacity:.82!important;filter:hue-rotate(23deg) saturate(1.24)!important;
+}
+
+/* Michoacán: lacquer-red ground, clay engraving and restrained gold. */
+:root[data-pwa-theme=michoacan]{
+ --lab-ui-surface:#6a2430;--lab-ui-ink:#f3e6c9;
+ --lab-ui-panel:#6a2430;--lab-ui-on-panel:#f3e6c9;
+ --lab-ui-rail:#24191b;--lab-ui-on-rail:#f3e6c9;
+ --lab-ui-action:#24191b;--lab-ui-on-action:#f3e6c9;
+ --lab-ui-rule:#d1ad91;--lab-ui-field:#f3e6c9;--lab-ui-on-field:#24191b;
+ --lab-ui-focus:#e5b653;--lab-ui-control-outline:#d1ad91;
+ --lab-ui-ticket-stock:#f3e6c9;--lab-ui-ticket-ink:#24191b;
+ --lab-ui-go:#24191b;--lab-ui-go-ink:#e5b653;
+ --lab-ui-highlight:#e5b653;--lab-ui-on-highlight:#24191b;
+ --lab-print-muted:#8b4950;--lab-print-stamp:#f3e6c9;
+ --lab-print-active-ink:#e5b653;--lab-print-control-ink:#e5b653;
+ --lab-mood-selected-edge:#49232b;
+ --lab-print-stamp-border-style:solid;
+ --lab-print-substrate-texture:radial-gradient(ellipse at 50% 30%,transparent 35%,#24191b33 100%);
+ --lab-print-stamp-filter:brightness(0) saturate(100%) invert(92%) sepia(18%) saturate(388%) hue-rotate(350deg) brightness(101%) contrast(90%);
+}
+
+:root[data-pwa-theme=michoacan]{
+ --lab-atlas-paper:#d1ad91;--lab-atlas-land:#d1ad91;
+ --lab-atlas-ocean:#24191b;--lab-atlas-ink:#49232b;
+ --lab-atlas-selected:#e5b653;--lab-atlas-route:#e5b653;
+ --lab-atlas-backdrop:#6a2430;--lab-atlas-field:#6a2430;
+ --lab-mood-neutral-paper:#d1ad91;--lab-mood-neutral-ink:#49232b;
+ --lab-mood-selected-paper:#e5b653;--lab-mood-selected-ink:#24191b;
+ --lab-mood-desire-heart:#6a2430;
+}
+
+[data-pwa-theme=michoacan] .pwa-theme-sample i:nth-child(1){background:#6a2430}
+[data-pwa-theme=michoacan] .pwa-theme-sample i:nth-child(2){background:#d1ad91}
+[data-pwa-theme=michoacan] .pwa-theme-sample i:nth-child(3){background:#e5b653}
+
+/* Dark lacquer stock: preserve the neutral and selected engraving plates. */
+:root[data-pwa-theme=michoacan] body.gig-poster .site{
+ background-color:var(--lab-ui-surface);background-image:var(--lab-print-substrate-texture);
+ --poster-bird-ink:var(--lab-print-stamp);
+}
+:root[data-pwa-theme=michoacan] body.gig-poster .mood-grid .mood{
+ background:var(--lab-mood-neutral-paper);color:var(--lab-mood-neutral-ink);
+}
+:root[data-pwa-theme=michoacan] body.gig-poster .mood-grid .mood .word{color:var(--lab-mood-neutral-ink)}
+:root[data-pwa-theme=michoacan] body.gig-poster .mood-grid .mood:not([data-mood=funky])[aria-pressed=true] .word{
+ color:var(--lab-mood-selected-ink);background:transparent;text-decoration:underline;
+ text-decoration-color:var(--lab-mood-selected-ink);
+}
+:root[data-pwa-theme=michoacan] body.gig-poster .mood-grid .mood:not([data-mood=desire]):not([data-mood=triumphant]) .face::before{
+ filter:url(#pwaMichoacanNeutral)!important;
+}
+:root[data-pwa-theme=michoacan] body.gig-poster .mood-grid .mood:not([data-mood=funky]):not([data-mood=desire]):not([data-mood=triumphant]) .face::after{
+ filter:url(#pwaMichoacanSelected)!important;
+}
+:root[data-pwa-theme=michoacan] body.gig-poster .mood-grid .mood:not([data-mood=funky])[aria-pressed=true] .face{filter:none!important}
+:root[data-pwa-theme=michoacan] body.gig-poster .go-button .go-copy b{color:var(--lab-ui-go-ink)}
+:root[data-pwa-theme=michoacan] body.gig-poster .poster-bird{--poster-bird-ink:var(--lab-print-stamp)}
+:root[data-pwa-theme=michoacan] body.pwa-workspace :is(.pwa-page,.pwa-dialog){background:var(--lab-ui-surface);color:var(--lab-ui-ink)}
+:root[data-pwa-theme=michoacan] body.pwa-workspace :is(.pwa-guide-nav,.pwa-guide-shelf){background:var(--lab-ui-surface);color:var(--lab-ui-ink)}
+:root[data-pwa-theme=michoacan] body.pwa-workspace :is(.pwa-guide-picker,.pwa-guide-current,.pwa-guide-link,.pwa-add-inspiration){color:var(--lab-ui-ink);border-color:var(--lab-ui-rule)}
+:root[data-pwa-theme=michoacan] body.pwa-workspace .pwa-dialog :is(input,textarea){caret-color:var(--lab-ui-on-field)}
+
+:root[data-pwa-theme=michoacan] body.gig-poster{
+ --chart-selected-ink:var(--lab-atlas-selected);
+}
+:root[data-pwa-theme=michoacan] body.gig-poster :is(.chart-rose-north,.chart-rose-hub,.chart-rose-crown){fill:var(--lab-atlas-selected)}
+:root[data-pwa-theme=michoacan] :is(#referenceInk,#alphaInk) feFlood{flood-color:var(--lab-mood-neutral-ink)}
+:root[data-pwa-theme=michoacan] body.gig-poster .mood[data-mood=desire] .desire-hearts{background:var(--lab-mood-desire-heart)}
+:root[data-pwa-theme=michoacan] body.pwa-workspace .pwa-guide-eject{background:var(--lab-ui-action);color:var(--lab-ui-on-action)}
+:root[data-pwa-theme=michoacan] body.gig-poster .mood[data-mood=desire][aria-pressed=true] .face::before{opacity:1;filter:url(#referenceInk)!important}
+:root[data-pwa-theme=michoacan] body.gig-poster .mood[data-mood=desire][aria-pressed=true] .face::after{opacity:0}
+:root[data-pwa-theme=michoacan] body.pwa-workspace .pwa-dialog .pwa-theme-choice[aria-pressed=true],
+:root[data-pwa-theme=michoacan] body.pwa-workspace .pwa-guide-tabs button[aria-selected=true]{
+ background:var(--lab-ui-action);color:var(--lab-ui-on-action);border-bottom-color:var(--lab-print-active-ink);
 }

@@ -9,6 +9,7 @@ const root=path.resolve(__dirname,'../android-lab/app/src/main/assets/site');
 const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css',
  '.webp':'image/webp','.svg':'image/svg+xml','.png':'image/png','.woff':'font/woff'};
 const specs=[
+ {id:'michoacan',ocean:'#24191b',stock:'rgb(209, 173, 145)'},
  {id:'addis',ocean:'#0f4a48',stock:'rgb(242, 232, 206)'},
  {id:'polish',ocean:'#172c40',stock:'rgb(246, 242, 230)'},
  {id:'beirut',ocean:'#1c3240',stock:'rgb(227, 216, 191)'}

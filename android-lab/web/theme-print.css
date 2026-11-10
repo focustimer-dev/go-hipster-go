@@ -97,7 +97,7 @@
   box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--lab-ui-on-action) 28%,transparent);
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .go-button .go-copy b{
-  color:var(--lab-ui-on-action);
+  color:var(--lab-ui-go-ink,var(--lab-ui-on-action));
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .go-button .go-copy>span:not(.go-stamp){
   color:var(--lab-ui-on-action);
