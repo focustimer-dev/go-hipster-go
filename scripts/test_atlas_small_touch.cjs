@@ -57,6 +57,12 @@ const square=(x,region)=>({type:'Feature',properties:{country:'USA',region},
 const threeStates={features:[square(0,'us-west'),square(1,'us-west'),square(2,'us-midwest')]};
 const outlines=vm.runInContext('labUSRegionBorderGeometry('+JSON.stringify(threeStates)+')',outlineContext);
 const lines=JSON.parse(JSON.stringify(outlines.geometry.coordinates));
-assert.equal(lines.length,9,'External perimeter and cross-region border only');
-assert(!lines.some(line=>line.every(point=>point[0]===1)),'Same-region state boundary must disappear');
-assert(lines.some(line=>line.every(point=>point[0]===2)),'Inter-region boundary remains');
+// No loss of real border segments while knitting them into fewer SVG strokes.
+const segments=lines.flatMap(line=>line.slice(1).map((point,i)=>[line[i],point]));
+assert.equal(segments.length,9,'External perimeter and cross-region border only');
+assert(lines.length<segments.length&&lines.some(line=>line.length>2),
+ 'Segmented state edges must form continuous geographic border paths');
+assert(!segments.some(edge=>edge.every(point=>point[0]===1)),
+ 'Same-region state boundary must disappear');
+assert(segments.some(edge=>edge.every(point=>point[0]===2)),
+ 'Inter-region boundary remains');
