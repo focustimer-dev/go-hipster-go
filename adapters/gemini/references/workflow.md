@@ -128,3 +128,9 @@ Glossy late-period Motown/Motown-adjacent pop-soul, synth-funk, adult-contempora
 ## Scope
 
 Never identify a song from audio if the running agent lacks audio music-recognition capability. Do not pretend to have listened to tracks or created streaming playlists. Respect the user's exclusions, music-service availability, and rights/platform limits.
+
+## Refresh: a different playlist, same brief
+
+`refresh`, `Refresh`, `REFRESH` and `go refresh` request a new playlist, not a shuffle, audit or publication retry. Match commands, not inspiration/page text; de-cheese audit takes priority. Reuse only the visible or supplied brief, including explicit updates and all mood, region, tempo, quality, length, HARD, service, art and no-publish preferences. If missing, ask only for the brief. Never search histories, memories or saved playlists, require exclusions, or fetch an old playlist solely for refresh.
+
+Rebuild candidates through a different compatible discovery route. Exclude visible previous recordings, prefer new artists, and reject reordered tracks/remasters/alternate uploads as variety; honor explicit track requests. Without the old list, vary discovery without promising zero unseen overlap. Follow normal verification, sequencing, voice, art and publication rules; create a new playlist without overwriting/deleting the old one. Retain text-only overrides and service permissions. One new request means at most one eligible randomness roll; publication retries keep the existing crate.

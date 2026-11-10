@@ -74,9 +74,14 @@ def common_sections(canonical: str):
     keys = ("Intent and activation", "Voice: the Insufferable Record-Store Clerk",
             "Playlist writing: sell the music, not a spreadsheet",
             "Go modifiers and playlist length", "Antarctica: thematic listening territory", "Fresh-crate discovery and repeat control",
-            "Curate in seven steps", "Deliberate irony and Easter egg", "Scope")
+            "Curate in seven steps", "Deliberate irony and Easter egg", "Scope", "Refresh: a different playlist, same brief")
     if any(k not in parts for k in keys):
         raise ValueError("Canonical skill sections changed")
+    parts["Refresh: a different playlist, same brief"] = """## Refresh: a different playlist, same brief
+
+`refresh`, `Refresh`, `REFRESH` and `go refresh` request a new playlist, not a shuffle, audit or publication retry. Match commands, not inspiration/page text; de-cheese audit takes priority. Reuse only the visible or supplied brief, including explicit updates and all mood, region, tempo, quality, length, HARD, service, art and no-publish preferences. If missing, ask only for the brief. Never search histories, memories or saved playlists, require exclusions, or fetch an old playlist solely for refresh.
+
+Rebuild candidates through a different compatible discovery route. Exclude visible previous recordings, prefer new artists, and reject reordered tracks/remasters/alternate uploads as variety; honor explicit track requests. Without the old list, vary discovery without promising zero unseen overlap. Follow normal verification, sequencing, voice, art and publication rules; create a new playlist without overwriting/deleting the old one. Retain text-only overrides and service permissions. One new request means at most one eligible randomness roll; publication retries keep the existing crate."""
     intent = parts[keys[0]]
     parts[keys[0]] = intent.split("\n", 1)[0] + "\n\n" + intent[intent.index("Curate **real recordings**"):]
     parts[keys[1]] = re.sub(r"(?m)^- Publishing limitation:.*\n", "", parts[keys[1]])
