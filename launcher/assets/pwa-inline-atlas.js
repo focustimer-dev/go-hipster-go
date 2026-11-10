@@ -4,7 +4,7 @@
 (function(){
 'use strict';
 if(document.body.dataset.page!=='launch'||!document.body.classList.contains('gig-poster'))return;
-const regionKey='ghg-crate-map-regions-v1',type='ghg-inline-atlas',frameSelector='.crate-geo .crate-map-frame';
+const regionKey='ghg-crate-map-regions-v2',type='ghg-inline-atlas',frameSelector='.crate-geo .crate-map-frame';
 const original=document.querySelector(frameSelector),section=original?.closest('.crate-geo');
 if(!original||!section||document.getElementById('pwaInlineAtlas'))return;
 const valid=new Set(Array.from(document.querySelectorAll('[data-crate-region]'),button=>button.dataset.crateRegion).filter(Boolean));

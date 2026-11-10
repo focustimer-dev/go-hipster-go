@@ -38,7 +38,7 @@ class PolarCoastlineTests(unittest.TestCase):
         page = (ROOT / 'launcher/index.html').read_text()
         app = (ROOT / 'launcher/assets/app.js').read_text()
         regions = json.loads(re.search(r'const crateRegions=(\[.*?\]);', app).group(1))
-        self.assertEqual(len(regions), 25)
+        self.assertEqual(len(regions), 28)
         self.assertIn({'id': 'antarctica', 'label': 'Antarctica', 'continent': 'antarctica'}, regions)
         self.assertIn('data-crate-region="antarctica"', page)
         self.assertIn('data-atlas-region="antarctica"', page)

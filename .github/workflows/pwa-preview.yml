@@ -24,7 +24,7 @@ concurrency:
 jobs:
   preview-qa:
     # Only this repository's own parity branch, never external fork PRs.
-    if: github.event.pull_request.head.repo.full_name == github.repository && ((startsWith(github.head_ref, 'feat/pwa-') || startsWith(github.head_ref, 'feature/pwa-') || startsWith(github.head_ref, 'fix/pwa-')) || startsWith(github.head_ref, 'fix/inspiration-metadata-') || startsWith(github.head_ref, 'feat/compact-skill-first-'))
+    if: github.event.pull_request.head.repo.full_name == github.repository && ((startsWith(github.head_ref, 'feat/pwa-') || startsWith(github.head_ref, 'feature/pwa-') || startsWith(github.head_ref, 'fix/pwa-')) || startsWith(github.head_ref, 'fix/inspiration-metadata-') || startsWith(github.head_ref, 'feat/compact-skill-first-') || startsWith(github.head_ref, 'feature/regional-atlas-'))
     runs-on: ubuntu-latest
     environment: production
     timeout-minutes: 25
@@ -33,6 +33,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Install artwork-build dependency for isolated preview
+        run: python -m pip install Pillow==12.0.0
       - name: Build and check unchanged gig-poster edition
         run: |
           python scripts/build_gig_poster.py
@@ -51,7 +53,7 @@ jobs:
         run: test -n "$CF_TOKEN" || { echo "::error::Missing Cloudflare deploy token"; exit 1; }
       - name: Stamp exact preview revision
         run: sed -i "s/__GITHUB_SHA__/${GITHUB_SHA}/g" wrangler.toml
-      - name: Package canonical Android 0.9.56 Atlas in an isolated browser path
+      - name: Package canonical Android Atlas in an isolated browser path
         run: |
           python scripts/build_pwa_atlas_preview.py
           test -s launcher/pwa-atlas/index.html

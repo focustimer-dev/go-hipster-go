@@ -81,7 +81,9 @@ function labCahillInit(host,geography,routes,legacy){
   const d=path(feature);
   if(!id||!d)continue;
   const country=make('path',{'d':d,'data-cahill-region':id,
-   fill:'#dfb045',stroke:'#103135','stroke-width':'.65','stroke-linejoin':'round'});
+   ...(feature.properties?.country==='USA'?{'data-cahill-us-state':'true'}:{}),
+   fill:'#dfb045',stroke:feature.properties?.country==='USA'?'none':'#103135',
+   'stroke-width':'.65','stroke-linejoin':'round'});
   const region=crateRegions.find(x=>x.id===id);
   const label=region?.label||region?.name||id.replace(/-/g,' ');
   country.appendChild(make('title')).textContent=label;
@@ -90,6 +92,14 @@ function labCahillInit(host,geography,routes,legacy){
   regions.push({id,feature,node:country});
   countries.appendChild(country);
  }
+ // One non-interactive path draws just the four US region outlines. The
+ // individual states still provide the same accurate hit/selection geometry.
+ const usBorderPath=path(labUSRegionBorderGeometry(geography));
+ if(usBorderPath)countries.appendChild(make('path',{
+  d:usBorderPath,class:'lab-us-region-boundaries',
+  fill:'none',stroke:'#103135','stroke-width':'.65',
+  'stroke-linejoin':'round','pointer-events':'none'
+ }));
  // The D3 Cahill–Keyes projection lacks the reunited Antarctic extension.
  // Reconstruct that missing landmass from canonical coordinates as an
  // equal-area South Polar panel joined below the M's South Atlantic.
@@ -333,7 +343,7 @@ function labCahillInit(host,geography,routes,legacy){
  });
  // Android WebView SVG clicks can be focus/selection events instead of
  // geographic taps. Handle the completed finger directly.
- const touchDebug={landTaps:0,routeTaps:0,misses:0,last:null};
+ const touchDebug={landTaps:0,routeTaps:0,misses:0,zoomAssists:0,last:null};
  const resolveTouchTarget=(cx,cy,original)=>{
   const candidates=[doc.elementFromPoint(cx,cy),original];
   for(const node of candidates){
@@ -344,6 +354,8 @@ function labCahillInit(host,geography,routes,legacy){
    const land=node?.closest?.('[data-cahill-region]');
    if(land)return {type:'land',id:land.getAttribute('data-cahill-region')};
   }
+  const small=nearbySmallRegion(cx,cy);
+  if(small)return small;
   const region=nearbyRegion(cx,cy);
   return region?{type:'land',id:region}:null;
  };
@@ -370,7 +382,10 @@ function labCahillInit(host,geography,routes,legacy){
    if(labAtlasMode!=='cahill-keyes'||performance.now()<blockedClicks)return;
    touchDebug.last=choice;
    if(choice.type==='route'){touchDebug.routeTaps++;lanes.open(choice.id)}
-   else if(validCrateRegions.has(choice.id)){
+   else if(choice.type==='zoom'){
+    touchDebug.zoomAssists++;
+    if(zoom<5.45)animateZoomAt(1.65,event.clientX,event.clientY);
+   }else if(validCrateRegions.has(choice.id)){
     touchDebug.landTaps++;atlasFocus=null;atlasUserNavigated=true;
     toggleCrateRegion(choice.id);labCahillSync();
    }
@@ -378,6 +393,22 @@ function labCahillInit(host,geography,routes,legacy){
  };
  svg.addEventListener('pointerup',endPointer);
  svg.addEventListener('pointercancel',endPointer);
+ // Buffered island hit test. Sample only on missed taps, in CSS pixels;
+ // never make broad SVG overlays that can steal a neighboring country's tap.
+ const nearbySmallRegion=(cx,cy)=>{
+  const frame=viewport.getBoundingClientRect();
+  if(cx<frame.left||cx>frame.right||cy<frame.top||cy>frame.bottom)return null;
+  const candidates=new Set();
+  for(const radius of [8,16]){
+   for(let i=0;i<16;i++){
+    const angle=i*Math.PI/8,x=cx+radius*Math.cos(angle),y=cy+radius*Math.sin(angle);
+    if(x<frame.left||x>frame.right||y<frame.top||y>frame.bottom)continue;
+    const id=doc.elementFromPoint(x,y)?.closest?.('[data-cahill-region]')?.getAttribute('data-cahill-region');
+    if(id)candidates.add(id);
+   }
+  }
+  return labAtlasSmallHit(candidates);
+ };
  // A few projected islands/slivers are narrower than a finger on phones.
  // Forgive near-coast taps ONLY if exactly one region appears in a small
  // screen-space halo; if two countries compete, do not guess.
@@ -403,13 +434,16 @@ function labCahillInit(host,geography,routes,legacy){
   // 183+ clickable SVG polygons that Android WebView outlines as boxes.
   if(event.target.closest?.('[data-cahill-discovery],[data-cahill-route-target]'))return;
   const direct=event.target.closest?.('[data-cahill-region]');
-  const id=direct?.getAttribute('data-cahill-region')||
-   nearbyRegion(event.clientX,event.clientY);
-  if(!id)return;
+  const fallback=direct?null:nearbySmallRegion(event.clientX,event.clientY);
+  const id=!direct&&!fallback?nearbyRegion(event.clientX,event.clientY):null;
+  const choice=direct?{type:'land',id:direct.getAttribute('data-cahill-region')}:
+   fallback||(id?{type:'land',id}:null);
+  if(!choice)return;
   event.stopPropagation();
   activateOnTap(()=>{
    atlasFocus=null;atlasUserNavigated=true;
-   toggleCrateRegion(id);labCahillSync();
+   if(choice.type==='zoom'){if(zoom<5.45)animateZoomAt(1.65,event.clientX,event.clientY);return}
+   if(validCrateRegions.has(choice.id)){toggleCrateRegion(choice.id);labCahillSync()}
   },event);
  });
  // Navigator drives only this camera, not the region stamping event pipeline.

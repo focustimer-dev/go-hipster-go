@@ -159,11 +159,11 @@
 }
 /* The original route paths remain untouched. Give their nautical ink
    enough weight to read at 320–390px without making them new highways. */
-:root[data-pwa-theme=bosque] #labAtlasCahill .lab-cahill-routes path{
+:root[data-pwa-theme=bosque] body.gig-poster.lab-workspace.pwa-atlas-only #labAtlasCahill .lab-cahill-routes path{
  stroke:var(--lab-atlas-route,#8c6239);stroke-width:1.8;stroke-opacity:.9;
  stroke-dasharray:4 4;
 }
-:root[data-pwa-theme=usiku] #labAtlasCahill .lab-cahill-routes path{
+:root[data-pwa-theme=usiku] body.gig-poster.lab-workspace.pwa-atlas-only #labAtlasCahill .lab-cahill-routes path{
  stroke:var(--lab-atlas-route,#b77b4d);stroke-width:1.8;stroke-opacity:.9;
  stroke-dasharray:4 4;
 }
@@ -178,4 +178,10 @@
 }
 :root[data-pwa-theme=usiku] body.gig-poster.lab-workspace #labAtlasGlobe{
  background:var(--lab-atlas-field,radial-gradient(ellipse at 50% 38%,#004225 0%,#003018 78%))!important;
+}
+
+/* Keep state-level hit geometry; show only US listening-region borders. */
+:root[data-pwa-theme] #labAtlasCahill [data-cahill-us-state]{stroke:none!important}
+:root[data-pwa-theme] #labAtlasCahill .lab-us-region-boundaries{
+ stroke:var(--lab-atlas-ink,#103135);stroke-width:.65;fill:none;
 }

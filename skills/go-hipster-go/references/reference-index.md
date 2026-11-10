@@ -30,7 +30,7 @@ For `go funky`, also read [Funky: worldwide groove discovery](funky.md) before c
 
 Read the [regional atlas](regional-atlas.md) safeguards and lookup, then the files for each selected region. Its **Supplementary files** table is part of the lookup: include the matching additions, not just the baseline file. Before using expanded Oceania, Central America or Central & Southern Africa, read the [focused regional review](regional-review.md); its boundaries and overlap decisions take precedence. Central & Southern Africa requires both Central Africa and Southern Africa additions.
 
-For worldwide exploration, compare a few contrasting regions when useful; do not preload all 24 files. Regions guide exploration, while explicit user constraints and supported sonic fit decide selections. The 920 imported rows are unverified, overlapping search leads, not 920 verified genres.
+For worldwide exploration, compare a few contrasting regions when useful; do not preload all source files. Regions guide exploration, while explicit user constraints and supported sonic fit decide selections. The 920 original imported rows remain overlapping, unverified leads. The three new region guides reference existing handles, not 90 newly verified genres.
 
 ## Optional cover art
 

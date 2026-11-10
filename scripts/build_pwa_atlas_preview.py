@@ -59,10 +59,10 @@ def main():
     native_theme='<script src="/pwa-atlas/assets/lab-themes.js"></script>'
     assert html.count(native_theme)==1,"Android theme boot script path changed"
     html=html.replace(native_theme,"")
-    # The canonical Android bundle already carries the *same* two shared CSS
-    # links. Duplicate injection produces redundant styles and fails palette
-    # contract checks; keep a single stylesheet instance per source.
-    for css in ("pwa-themes.css", "pwa-atlas-themes.css"):
+    # The Android bundle already carries these three palette sheets. Enable
+    # their existing links for the browser preview, without duplicate requests;
+    # the Android theme controller and its media toggle were removed above.
+    for css in ("lab-theme-tokens.css", "pwa-themes.css", "pwa-atlas-themes.css"):
         lazy=f'<link rel="stylesheet" href="/pwa-atlas/assets/{css}" data-lab-palette-style media="not all">'
         link=f'<link rel="stylesheet" href="/pwa-atlas/assets/{css}">'
         assert html.count(lazy)==1, f"Expected exactly one shared theme link for {css}"

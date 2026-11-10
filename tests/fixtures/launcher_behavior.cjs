@@ -26,7 +26,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  const launchMarkup=fs.readFileSync('launcher/index.html','utf8');
  const crateRegions=[...launchMarkup.matchAll(/data-crate-region="([^"]+)" data-continent="([^"]+)"/g)].map(m=>new Element({crateRegion:m[1],continent:m[2]}));
  const crateContinents=[...launchMarkup.matchAll(/data-crate-continent="([^"]+)"/g)].map(m=>new Element({crateContinent:m[1]}));
- const atlasCountries=[...launchMarkup.matchAll(/data-atlas-country="([^"]+)" data-atlas-region="([^"]+)" data-atlas-continent="([^"]+)"/g)].map(m=>new Element({atlasCountry:m[1],atlasRegion:m[2],atlasContinent:m[3]}));
+ const atlasCountries=[...launchMarkup.matchAll(/data-atlas-country="([^"]+)"(?: data-atlas-state="[A-Z]{2}")? data-atlas-region="([^"]+)" data-atlas-continent="([^"]+)"/g)].map(m=>new Element({atlasCountry:m[1],atlasRegion:m[2],atlasContinent:m[3]}));
  const atlasZones=[...launchMarkup.matchAll(/class="crate-map-zone" data-atlas-zone="([^"]*)"/g)].map(m=>new Element({atlasZone:m[1]}));
  const groups={'[data-ai]':ais,'[data-service]':services,'[data-mood]':moods,'[data-crate-region]':crateRegions,'[data-crate-continent]':crateContinents,'[data-atlas-country]':atlasCountries,'[data-atlas-zone]':atlasZones,'[data-setup]':[]};
  const doc={activeElement:null,body:{dataset:{page},appendChild(){}},getElementById:id=>elements[id]||null,querySelectorAll:q=>groups[q]||[],createElement:()=>Object.assign(new Element(),{ownerDocument:doc,style:{},select(){}}),execCommand:()=>false};
@@ -120,14 +120,14 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  await optin.elements.shuffleCrate.click();
  assert.doesNotMatch(optin.elements.prompt.textContent,/antarctica/i,'Unpinned shuffle returns to ordinary regional pool');
  const neutral=catalog.filter(l=>!l.regions.length);assert.ok(neutral.length>=12);
- assert.ok(catalog.filter(l=>l.regions.includes('us-east')).length>=16);
- assert.ok(catalog.filter(l=>l.regions.includes('us-west')).length>=16);
+ for(const region of ['us-east','us-west','us-midwest','us-south'])assert.ok(catalog.some(l=>l.regions.includes(region)),region+' has relevant local research lenses');
+ // A region need not have 16 built-in seeds; explicitly selected geography remains authoritative.
  // Cartographer's Desk: authentic land polygons and continent drilldown.
  const geographicMarkup=fs.readFileSync('launcher/index.html','utf8');
  assert.ok((geographicMarkup.match(/data-atlas-country=/g)||[]).length>=175,'Actual country-shaped hit paths rather than rectangular overlays');
  assert.equal((geographicMarkup.match(/<rect class="crate-map-region"/g)||[]).length,0,'No old rectangular hitboxes');
- assert.equal((geographicMarkup.match(/<button type="button" data-crate-region=/g)||[]).length,25);
- assert.equal((geographicMarkup.match(/data-atlas-country="USA"/g)||[]).length,2,'US has distinct East and West path hit targets');
+ assert.equal((geographicMarkup.match(/<button type="button" data-crate-region=/g)||[]).length,28);
+ assert.equal((geographicMarkup.match(/data-atlas-country="USA"/g)||[]).length,51,'US states have 51 unique state/District hit targets');
  assert.equal((geographicMarkup.match(/data-atlas-country="CAN"/g)||[]).length,2,'Canada has distinct East and West path hit targets');
  assert.equal((geographicMarkup.match(/data-atlas-region="mexico"/g)||[]).length,1,'Mexico has its own hit area');
  assert.match(geographicMarkup,/data-atlas-region="central-america"/);
@@ -202,7 +202,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  await atlas.crateRegions.find(b=>b.dataset.crateRegion==='east-africa').click();
  assert.equal(atlas.elements.atlasPassport.hidden,false,'Selection reveals the passport');
  assert.match(atlas.elements.prompt.textContent,/Regional exploration: East Africa/);
- assert.match(atlasStore.get('ghg-crate-map-regions-v1'),/east-africa/);
+ assert.match(atlasStore.get('ghg-crate-map-regions-v2'),/east-africa/);
  assert.equal(atlas.elements.atlasStamps.children.length,1,'Selected region creates a removable stamp');
  assert.equal(atlas.elements.atlasStamps.children[0].children[0].textContent,'E AFR','Compact stamp label is regional');
  assert.equal(atlas.atlasZones.find(z=>z.dataset.atlasZone==='east-africa').attrs['data-selected'],'true','Map matches stamp selection');
@@ -227,7 +227,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  await atlas.elements.atlasHome.click();
  assert.equal(atlas.elements.atlasHome.hidden,true);
  await atlas.crateContinents.find(b=>b.dataset.crateContinent==='europe').click();
- assert.equal(atlas.crateRegions.filter(b=>!b.hidden).length,4);
+ assert.equal(atlas.crateRegions.filter(b=>!b.hidden).length,5,'Europe now includes a separate Balkans selection');
  assert.equal(atlas.elements.atlasLocator.textContent,'Europe / 3 STAMPS');
 
  // Visible shapes stay selectable after navigating beyond a focused continent.
@@ -239,7 +239,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.equal(crossAtlas.elements.atlasLocator.textContent,'Africa / 1 STAMP','Named controls follow the tapped region');
  assert.equal(crossAtlas.elements.crateAtlasMap.getAttribute('viewBox'),crossView,'Cross-continent selection does not move the target away');
  await crossAtlas.atlasCountries.find(b=>b.dataset.atlasRegion==='mediterranean-europe').click();
- assert.match(crossAtlas.elements.prompt.textContent,/Mediterranean & Balkans/,'Can select back across the boundary without reset');
+ assert.match(crossAtlas.elements.prompt.textContent,/Mediterranean Europe/,'Can select back across the boundary without reset');
  assert.match(crossAtlas.elements.prompt.textContent,/North Africa/,'Cross-continent selection preserves earlier stamps');
  assert.doesNotMatch(atlasCss,/path\[data-remote=true\]\{pointer-events:none/,'Painted regions must not be disabled by a stale continent focus');
 
@@ -260,7 +260,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  // Mexico and Central America are each independent.
  await atlas.elements.atlasHome.click();
  await atlas.crateContinents.find(b=>b.dataset.crateContinent==='americas-north').click();
- assert.equal(atlas.crateRegions.filter(b=>!b.hidden).length,7,'North America has seven distinct listening territories');
+ assert.equal(atlas.crateRegions.filter(b=>!b.hidden).length,9,'North America now has nine distinct listening territories');
  await atlas.crateRegions.find(b=>b.dataset.crateRegion==='us-west').click();
  await atlas.crateRegions.find(b=>b.dataset.crateRegion==='canada-east').click();
  await atlas.crateRegions.find(b=>b.dataset.crateRegion==='mexico').click();
@@ -270,7 +270,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.doesNotMatch(atlas.elements.prompt.textContent,/Mexico & Central America/,'Mexico is no longer bundled with Central America');
  assert.doesNotMatch(atlas.elements.prompt.textContent,/Regional exploration: N\. America/,'The generic continent cannot override detailed region selections');
  const legacyNorth=harness(async()=>{},'?mood=criminal','launch',new Map([['ghg-crate-map-regions-v1','["north-america","mexico-central"]']]));
- assert.equal(legacyNorth.elements.atlasStamps.children.length,6,'Legacy broad areas migrate to six precise stamps');
+ assert.equal(legacyNorth.elements.atlasStamps.children.length,8,'Legacy broad areas migrate to eight precise stamps');
  assert.match(legacyNorth.elements.prompt.textContent,/US East/);
  assert.match(legacyNorth.elements.prompt.textContent,/Canada West/);
  assert.match(legacyNorth.elements.prompt.textContent,/Mexico/);
