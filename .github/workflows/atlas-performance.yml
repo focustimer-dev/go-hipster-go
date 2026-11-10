@@ -1,17 +1,11 @@
 name: Atlas performance comparison
 on:
-  pull_request:
-    paths:
-      - 'launcher/**'
-      - 'android-lab/web/**'
-      - 'scripts/bundle_android_lab.py'
-      - 'scripts/atlas_navigation.py'
-      - 'scripts/robinson_atlas.py'
-      - 'scripts/build_gig_poster.py'
-      - 'scripts/profile_atlas.cjs'
-      - 'scripts/assert_atlas_ocean.cjs'
-      - 'android-lab/release-baseline.json'
-      - '.github/workflows/atlas-performance.yml'
+  workflow_dispatch:
+    inputs:
+      baseline_sha:
+        description: Full commit SHA to compare against the selected branch
+        required: true
+        type: string
 permissions:
   contents: read
 concurrency:
@@ -34,11 +28,10 @@ jobs:
           node-version: '22'
       - run: npm install --no-save --package-lock=false playwright@1.64.1
       - run: npx playwright install --with-deps chromium
-      - run: |
-          # Test this PR against the currently stable Android code on its target
-          # branch, not the archival 0.9.19 research baseline. The latter
-          # contains a different atlas and obscures PR-specific regressions.
-          baseline="${{ github.event.pull_request.base.sha }}"
+      - name: Compare the selected branch with the requested baseline
+        env:
+          baseline: ${{ inputs.baseline_sha }}
+        run: |
           [[ "$baseline" =~ ^[0-9a-f]{40}$ ]] || exit 1
           git worktree add --detach /tmp/atlas-baseline "$baseline"
           python /tmp/atlas-baseline/scripts/bundle_android_lab.py
