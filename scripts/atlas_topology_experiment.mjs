@@ -105,6 +105,10 @@ const sourceSha256=createHash('sha256').update(usTags.join('\n')).digest('hex');
 const packed={sourceSha256,sourceFeatureCount:usTags.length,feature:{
  type:'Feature',properties:{kind:'us-listening-regions'},geometry:rtMesh}};
 fs.writeFileSync(path.join(out,'android-us-regions-mesh.json'),JSON.stringify(packed)+'\n');
+if(process.argv.includes('--write-android-mesh')){
+ fs.writeFileSync('android-lab/web/us-region-mesh.json',JSON.stringify(packed)+'\n');
+ console.log('Updated Android TopoJSON mesh from runtime poster geometry.');
+}
 console.log('ATLAS_ANDROID_REGION_MESH='+JSON.stringify(packed));
 report.androidRuntime={sha256:sourceSha256,features:usTags.length,
  oldSegments:rtOldEdges.size,topologySegments:rtNewEdges.size,

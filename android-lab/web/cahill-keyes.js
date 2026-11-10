@@ -94,7 +94,7 @@ function labCahillInit(host,geography,routes,legacy){
  }
  // One non-interactive path draws just the four US region outlines. The
  // individual states still provide the same accurate hit/selection geometry.
- const usBorderPath=path(labUSRegionBorderGeometry(geography));
+ const usBorderPath=path(labUSRegionBorders);
  if(usBorderPath)countries.appendChild(make('path',{
   d:usBorderPath,class:'lab-us-region-boundaries',
   fill:'none',stroke:'#103135','stroke-width':'.65',

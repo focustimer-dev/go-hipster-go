@@ -39,6 +39,20 @@ def complete_polar_coastlines(features):
         feature['geometry'] = {'type': 'MultiPolygon', 'coordinates': polygons}
     return features
 
+def _regional_mesh(source):
+    """Use one cached topology mesh, and fail if poster geometry changes."""
+    import hashlib
+    tags = [tag for tag in re.findall(r'<path [^>]*data-atlas-country=[^>]*>', source)
+            if 'data-atlas-country="USA"' in tag]
+    packed = json.loads((ROOT / 'android-lab/web/us-region-mesh.json').read_text())
+    digest = hashlib.sha256('\n'.join(tags).encode('utf-8')).hexdigest()
+    if len(tags) != 51 or packed.get('sourceFeatureCount') != 51 or packed.get('sourceSha256') != digest:
+        raise ValueError('Atlas poster geometry changed: regenerate the shared TopoJSON mesh before building Android')
+    feature = packed.get('feature', {})
+    if feature.get('geometry', {}).get('type') != 'MultiLineString':
+        raise ValueError('Invalid TopoJSON-derived US listening-region mesh')
+    return feature
+
 def bundle_maplibre(destination):
     archive=Path(tempfile.gettempdir())/'maplibre-gl-5.6.1.tgz'
     if not archive.exists() or hashlib.sha256(archive.read_bytes()).hexdigest()!=DIGEST:
@@ -50,6 +64,7 @@ def bundle_maplibre(destination):
         for name in ['dist/maplibre-gl.js','dist/maplibre-gl.css','LICENSE.txt']:
             (target/Path(name).name).write_bytes(tar.extractfile('package/'+name).read())
     source=(ROOT/'launcher/index.html').read_text();features=[]
+    shared_us_borders = _regional_mesh(source)
     for tag in re.findall(r'<path [^>]*data-atlas-country=[^>]*>',source):
         country=re.search(r'data-atlas-country="([^"]+)"',tag).group(1)
         region=re.search(r'data-atlas-region="([^"]+)"',tag).group(1)
@@ -64,4 +79,6 @@ def bundle_maplibre(destination):
     page=(ROOT/'android-lab/web/atlas-lab.html').read_text().replace('/*GEOGRAPHY*/',json.dumps({'type':'FeatureCollection','features':features},separators=(',',':')))
     (destination/'atlas-lab.html').write_text(page)
     root=destination/'index.html'
-    root.write_text(root.read_text().replace('</body>', '<script type="application/json" id="labGlobeGeography">'+json.dumps({'type':'FeatureCollection','features':features},separators=(',',':'))+'</script></body>'))
+    root.write_text(root.read_text().replace('</body>',
+        '<script type="application/json" id="labGlobeGeography">'+json.dumps({'type':'FeatureCollection','features':features},separators=(',',':'))+'</script>'
+        +'<script type="application/json" id="labUSRegionBorders">'+json.dumps(shared_us_borders,separators=(',',':'))+'</script></body>'))

@@ -35,7 +35,11 @@ class LabSnapshotTests(unittest.TestCase):
                 self.assertIn(theme_asset,stripped)
                 stripped=stripped.replace(theme_asset,'')
             stripped=stripped.replace('<p><a href="/atlas-lab.html">TRY MAPLIBRE GLOBE</a></p>','')
-            stripped=re.sub(r'<script type="application/json" id="labGlobeGeography">.*?</script>','',stripped,flags=re.S)
+            for element in ('labGlobeGeography', 'labUSRegionBorders'):
+                stripped=re.sub(r'<script type="application/json" id="'+element+r'">.*?</script>','',stripped,flags=re.S)
+            self.assertIn('<script type="application/json" id="labUSRegionBorders">',page)
+            self.assertEqual(page.count('id="labUSRegionBorders"'),1)
+            self.assertNotIn('function labUSRegionBorderGeometry(', (dest/'assets/app.js').read_text())
             stripped=stripped.replace('<script defer src="/assets/maplibre/maplibre-gl.js"></script><script defer src="/assets/cahill-keyes-vendor.js"></script><link rel="stylesheet" href="/assets/maplibre/maplibre-gl.css">','')
             self.assertEqual((dest/'assets/lab-theme-tokens.css').read_text(),
                              (ROOT/'android-lab/web/theme-tokens.css').read_text())
