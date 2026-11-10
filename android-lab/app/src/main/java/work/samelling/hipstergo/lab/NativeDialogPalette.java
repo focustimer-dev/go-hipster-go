@@ -11,6 +11,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -73,7 +74,9 @@ final class NativeDialogPalette {
   }
  }
  private void tint(View view){
-  if(view instanceof EditText){
+  if(view instanceof ImageButton){
+   ((ImageButton)view).setImageTintList(ColorStateList.valueOf(ink));
+  }else if(view instanceof EditText){
    EditText input=(EditText)view;input.setTextColor(fieldInk);
    input.setHintTextColor(Color.argb(160,Color.red(fieldInk),Color.green(fieldInk),Color.blue(fieldInk)));
    input.setBackgroundTintList(ColorStateList.valueOf(accent));
