@@ -37,20 +37,30 @@ const TWEEN_PALETTES={
  beirut:{paper:'#e3d8bf',ocean:'#1c3240',selected:'#a84950',ink:'#1c3240',backdrop:'#e3d8bf',land:'#d9c9ad',route:'#c5a06d'},
 };
 window.GHGAtlasPaintColors=()=>({theme:atlasTheme(),...TWEEN_PALETTES[atlasTheme()]});
-// Applied before Android bundle DOM is parsed: no first-paint theme flash.
-document.documentElement.dataset.pwaTheme=atlasTheme();
-const printProfile=PRINT_THEMES.has(atlasTheme());
-document.documentElement.dataset.ghgThemeProfile=printProfile?'print':'';
-for(const link of document.querySelectorAll('link[data-lab-print-style]'))
- link.media=printProfile?'all':'not all';
-// The preview removes native theme.js, so supply its semantic map roles here.
-const initialAtlas=atlasTheme(),initialPalette=ATLAS_PALETTES[initialAtlas],initialTween=TWEEN_PALETTES[initialAtlas];
-if(initialPalette){
- for(const [key,value] of Object.entries({...initialPalette,...initialTween})){
-  if(typeof value==='string'&&/^(paper|land|ocean|ink|selected|route|backdrop)$/.test(key))
-   document.documentElement.style.setProperty('--lab-atlas-'+key,value);
+/* Theme changes may reach an already-loaded iframe via the storage event.
+   Keep its print stylesheet and Atlas CSS roles in step with MapLibre. */
+function applyBrowserTheme(theme){
+ const root=document.documentElement,print=PRINT_THEMES.has(theme);
+ root.dataset.pwaTheme=theme;
+ root.dataset.ghgThemeProfile=print?'print':'';
+ for(const link of document.querySelectorAll('link[data-lab-print-style]'))
+  link.media=print?'all':'not all';
+ const palette=ATLAS_PALETTES[theme],tween=TWEEN_PALETTES[theme],roles=[
+  'paper','land','ocean','ink','selected','route','backdrop','field',
+  'graticule','ocean-stroke','route-opacity','route-width'
+ ];
+ for(const role of roles)root.style.removeProperty('--lab-atlas-'+role);
+ if(print&&palette&&tween){
+  const paint={...palette,...tween,field:tween.backdrop,
+   graticule:palette.route,'ocean-stroke':palette.ink,
+   'route-opacity':palette.routeOpacity,'route-width':palette.routeWidth};
+  for(const role of roles){
+   const value=paint[role];
+   if(value!==undefined)root.style.setProperty('--lab-atlas-'+role,String(value));
+  }
  }
 }
+applyBrowserTheme(atlasTheme());
 const services={chatgpt:'https://chatgpt.com/',gemini:'https://gemini.google.com/app',
  claude:'https://claude.ai/'};
 function read(key,fallback){
@@ -73,7 +83,7 @@ function prefs(){return read(PREF,{mode:'browser',oneTap:false,haptics:false})}
 let atlasThemeMap=null,atlasThemeFrame=0,atlasThemeDefaults=null;
 function paintAtlasTheme(){
  const map=atlasThemeMap,theme=atlasTheme(),palette=ATLAS_PALETTES[theme];
- document.documentElement.dataset.pwaTheme=theme;
+ applyBrowserTheme(theme);
  if(!map||!map.getLayer?.('land'))return;
  try{
   // Capture the unmodified Android MapLibre paints once, before applying a
