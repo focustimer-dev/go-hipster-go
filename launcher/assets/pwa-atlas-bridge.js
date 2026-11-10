@@ -110,7 +110,7 @@ function paintAtlasTheme(){
    'robinson-ocean':{'fill-color':palette.ocean},
    routes:{'line-color':palette.route,
     'line-opacity':palette.routeOpacity??THEMED_ROUTE_PAINT.opacity,
-    'line-width':palette.routeWidth??THEMED_ROUTE_PAINT.width,
+    'line-width':THEMED_ROUTE_PAINT.width,
     'line-dasharray':palette.routeDash??THEMED_ROUTE_PAINT.dash}
   }:{...atlasThemeDefaults,
    // Restoring original Liberi must also restore the projection-dependent
