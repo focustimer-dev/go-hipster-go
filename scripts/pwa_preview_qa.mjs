@@ -209,6 +209,34 @@ for(const profile of profiles){
   await page.locator('button[data-pwa-theme="liberi"]').click();
   await page.locator('[data-pwa-action="close"]').click();
   await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
+  // Five approved Android print themes: behavior and storage stay unchanged.
+  const printPapers={
+   kingston:'rgb(227, 217, 194)',detroit:'rgb(231, 229, 219)',
+   addis:'rgb(242, 232, 206)',polish:'rgb(246, 242, 230)',
+   beirut:'rgb(227, 216, 191)'
+  };
+  for(const [name,paper] of Object.entries(printPapers)){
+   await page.locator('[data-pwa-action="prefs"]').click();
+   await page.locator('button[data-pwa-theme="'+name+'"]').click();
+   assert.equal(await page.evaluate(()=>document.documentElement.dataset.pwaTheme),name);
+   assert.equal(await page.locator('button[data-pwa-theme][aria-pressed=true]').count(),1);
+   await page.locator('[data-pwa-action="close"]').click();
+   assert.equal(await page.locator('.site').evaluate(el=>getComputedStyle(el).backgroundColor),paper);
+   for(const tab of ['crate','manual']){
+    await page.locator('[data-pwa-tab="'+tab+'"]').click();
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2),false,name+' '+tab+' overflow');
+    if(profile.name==='phone')await page.screenshot({path:folder+'/phone-print-'+name+'-'+tab+'.png'});
+   }
+   await page.locator('[data-pwa-tab="jukebox"]').click();
+   assert.equal(await page.locator('#prompt').textContent(),promptBeforeColorChange,
+    name+' theme must not alter the playlist request');
+  }
+  await page.reload({waitUntil:'domcontentloaded'});
+  await page.locator('.pwa-rail').waitFor({state:'visible'});
+  assert.equal(await page.evaluate(()=>document.documentElement.dataset.pwaTheme),'beirut','Print theme survives reload');
+  await page.locator('[data-pwa-action="prefs"]').click();
+  await page.locator('button[data-pwa-theme="liberi"]').click();
+  await page.locator('[data-pwa-action="close"]').click();
   const rects=await page.locator('.pwa-rail button').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return {width:r.width,height:r.height}}));
   assert.equal(rects.length,4,'four rail buttons');
   assert.ok(rects.every(r=>r.width>=44&&r.height>=44),'rail touch targets');
