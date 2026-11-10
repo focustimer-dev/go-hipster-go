@@ -49,17 +49,17 @@ function labGlobeSync(force=false){
 }
 // The one four-region boundary mesh is precomputed from this exact poster
 // geography via TopoJSON at build time; individual states remain hit polygons.
-let labGlobeGeography,labJoinedGlobeGeography,labUSRegionFills,labUSRegionBorders,labRobinsonUSRegionBorders;
+let labGlobeGeography,labJoinedGlobeGeography,labUSRegionFills,labAtlasBoundaryLines,labRobinsonBoundaryLines;
 function initLabGlobe(){
  if(new URLSearchParams(location.search).get('atlas')==='legacy'||typeof maplibregl==='undefined')return;
  const old=doc.getElementById('crateAtlasMap'),frame=old?.closest('.crate-map-frame'),geometry=doc.getElementById('labGlobeGeography');if(!frame||!geometry)return;
  labGlobeGeography=JSON.parse(geometry.textContent);
- const borderData=doc.getElementById('labUSRegionBorders');
+ const borderData=doc.getElementById('labAtlasBoundaryLines');
  const fillData=doc.getElementById('labUSRegionFills');
  if(!borderData||!fillData){console.warn('Atlas regional geometry unavailable');return}
  try{
-  labUSRegionBorders=JSON.parse(borderData.textContent);
-  if(labUSRegionBorders.geometry?.type!=='MultiLineString')throw Error('Invalid regional mesh');
+  labAtlasBoundaryLines=JSON.parse(borderData.textContent);
+  if(labAtlasBoundaryLines.type!=='FeatureCollection')throw Error('Invalid regional mesh');
   labUSRegionFills=JSON.parse(fillData.textContent);
   // Reuse one existing feature ID per region so the same selection state
   // applies to both the joined Globe land and Robinson's original land.
@@ -76,7 +76,7 @@ function initLabGlobe(){
  const host=doc.createElement('div');host.id='labAtlasGlobe';host.style.cssText='position:relative;width:100%;aspect-ratio:720/372;background:transparent';host.setAttribute('aria-label','Interactive regional globe');
  frame.appendChild(host);
  try{
-  labGlobe=new maplibregl.Map({container:host,style:{version:8,sources:{land:{type:'geojson',data:labJoinedGlobeGeography},'us-regions':{type:'geojson',data:labUSRegionBorders}},layers:[{id:'ocean',type:'background',paint:{'background-color':'#103135','background-color-transition':{duration:0,delay:0}}},{id:'land',type:'fill',source:'land',paint:{'fill-color':['case',['boolean',['feature-state','selected'],false],'#a83223','#dfb045']}},{id:'borders',type:'line',source:'land',filter:['!=',['get','country'],'USA'],paint:{'line-color':'#103135','line-width':.7}},{id:'us-region-borders',type:'line',source:'us-regions',paint:{'line-color':'#103135','line-width':.7}}]},center:[10,15],zoom:0,maxZoom:5.5,minZoom:-1,attributionControl:false,renderWorldCopies:false,dragRotate:false,pitchWithRotate:false,canvasContextAttributes:{antialias:true}});
+  labGlobe=new maplibregl.Map({container:host,style:{version:8,sources:{land:{type:'geojson',data:labJoinedGlobeGeography},'us-regions':{type:'geojson',data:labAtlasBoundaryLines}},layers:[{id:'ocean',type:'background',paint:{'background-color':'#103135','background-color-transition':{duration:0,delay:0}}},{id:'land',type:'fill',source:'land',paint:{'fill-color':['case',['boolean',['feature-state','selected'],false],'#a83223','#dfb045']}},{id:'borders',type:'line',source:'land',filter:['!', ['in',['get','country'],['literal',['USA','MEX']]]],paint:{'line-color':'#103135','line-width':.7}},{id:'us-region-borders',type:'line',source:'us-regions',paint:{'line-color':'#103135','line-width':.7}}]},center:[10,15],zoom:0,maxZoom:5.5,minZoom:-1,attributionControl:false,renderWorldCopies:false,dragRotate:false,pitchWithRotate:false,canvasContextAttributes:{antialias:true}});
  }catch(e){host.remove();labGlobe=null;status('Globe graphics unavailable. The original atlas is available.');return}
  window.labAtlasGlobe=labGlobe;
  labGlobe.on('load',()=>{
@@ -472,9 +472,9 @@ function labAtlasCommitMode(mode,keepHostSize=false){
  if(!labRobinsonData)labRobinsonData=labRobinsonGeometry(labGlobeGeography);
  labGlobe.getSource('land').setData(mode==='robinson'?labRobinsonData:labJoinedGlobeGeography);
  // The border overlay uses the same coordinate system as the painted land.
- // Keep the four US region outlines aligned after Globe / Robinson switches.
- if(!labRobinsonUSRegionBorders)labRobinsonUSRegionBorders=labRobinsonGeometry({type:'FeatureCollection',features:[labUSRegionBorders]});
- labGlobe.getSource('us-regions').setData(mode==='robinson'?labRobinsonUSRegionBorders:labUSRegionBorders);
+ // Keep the shared U.S.–Mexico border aligned after projection switches.
+ if(!labRobinsonBoundaryLines)labRobinsonBoundaryLines=labRobinsonGeometry(labAtlasBoundaryLines);
+ labGlobe.getSource('us-regions').setData(mode==='robinson'?labRobinsonBoundaryLines:labAtlasBoundaryLines);
  if(labRouteGeography)labGlobe.getSource('routes').setData(mode==='robinson'?labRobinsonGeometry(labRouteGeography):labRouteGeography);
  for(const {marker,point} of labSecretMarkers)marker.setLngLat(labAtlasPoint(point));
  // The MapLibre background is the OUTSIDE paper in Robinson; the separate

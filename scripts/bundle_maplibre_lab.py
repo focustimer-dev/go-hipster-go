@@ -61,6 +61,34 @@ def _regional_mesh(source):
         raise ValueError('Invalid TopoJSON-derived US listening-region fills')
     return feature, fills
 
+def align_mexico_border(features, us_border):
+    """Reuse the U.S. border for Mexico's fill and return its remaining ink."""
+    pacific, junction, gulf = [-117.15, 32.52467], [-106.5, 31.77193], [-97.15, 25.89133]
+    lines = us_border['geometry']['coordinates']
+
+    def border_arc(start, end):
+        line, = (line for line in lines if start in line and end in line)
+        a, b = line.index(start), line.index(end)
+        return line[a:b+1] if a < b else line[b:a+1][::-1]
+
+    border = border_arc(pacific, junction) + border_arc(junction, gulf)[1:]
+    mexico, = (f for f in features if f['properties']['country'] == 'MEX')
+    polygons = mexico['geometry']['coordinates']
+    # The source poster's Mexico outline is offset north at the border.
+    # Trim the coastal points north of the new endpoints, then join the
+    # remaining coastline to the shared border.
+    old_gulf, old_pacific = [-97.15, 26.90887], [-117.15, 33.43619]
+    mainland, = (p for p in polygons if old_gulf in p[0] and old_pacific in p[0])
+    ring = mainland[0][:-1]
+    start = ring.index(old_gulf)
+    ring = ring[start:] + ring[:start]
+    coast = [gulf, *ring[2:ring.index(old_pacific)-1], pacific]
+    mainland[0] = coast + border[1:]
+    other_rings = [r for p in polygons for r in p if r is not mainland[0]]
+    return {'type': 'Feature', 'properties': {'country': 'MEX'},
+            'geometry': {'type': 'MultiLineString', 'coordinates': [coast, *other_rings]}}
+
+
 def bundle_maplibre(destination):
     archive=Path(tempfile.gettempdir())/'maplibre-gl-5.6.1.tgz'
     if not archive.exists() or hashlib.sha256(archive.read_bytes()).hexdigest()!=DIGEST:
@@ -86,8 +114,10 @@ def bundle_maplibre(destination):
     features = complete_polar_coastlines(features)
     page=(ROOT/'android-lab/web/atlas-lab.html').read_text().replace('/*GEOGRAPHY*/',json.dumps({'type':'FeatureCollection','features':features},separators=(',',':')))
     (destination/'atlas-lab.html').write_text(page)
+    mexico_coast = align_mexico_border(features, shared_us_borders)
+    boundary_lines = {'type': 'FeatureCollection', 'features': [shared_us_borders, mexico_coast]}
     root=destination/'index.html'
     root.write_text(root.read_text().replace('</body>',
         '<script type="application/json" id="labGlobeGeography">'+json.dumps({'type':'FeatureCollection','features':features},separators=(',',':'))+'</script>'
-        +'<script type="application/json" id="labUSRegionBorders">'+json.dumps(shared_us_borders,separators=(',',':'))+'</script>'
+        +'<script type="application/json" id="labAtlasBoundaryLines">'+json.dumps(boundary_lines,separators=(',',':'))+'</script>'
         +'<script type="application/json" id="labUSRegionFills">'+json.dumps(us_fills,separators=(',',':'))+'</script></body>'))

@@ -54,6 +54,10 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    const usStates=svg.locator('[data-cahill-us-state]'),usFills=svg.locator('[data-cahill-us-fill]');
    assert.equal(await usStates.count(),51,'Keyes retains the original state hit geometry');
    assert.equal(await usFills.count(),4,'Keyes paints four US regions');
+   for(const selector of ['.lab-us-region-boundaries','[data-cahill-region="canada-west"]']){
+    const widths=await svg.locator(selector).evaluateAll(nodes=>nodes.map(node=>getComputedStyle(node).strokeWidth));
+    assert(widths.length&&widths.every(w=>w==='0.4px'),selector+' uses thin Keyes border ink');
+   }
    assert(await usStates.evaluateAll(nodes=>nodes.every(node=>{
     const style=getComputedStyle(node);
     return style.fillOpacity==='0'&&style.pointerEvents.toLowerCase()==='visiblepainted';

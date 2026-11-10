@@ -82,8 +82,9 @@ function labCahillInit(host,geography,routes,legacy){
   if(!id||!d)continue;
   const country=make('path',{'d':d,'data-cahill-region':id,
    ...(feature.properties?.country==='USA'?{'data-cahill-us-state':'true'}:{}),
-   fill:'#dfb045',stroke:feature.properties?.country==='USA'?'none':'#103135',
-   'stroke-width':'.65','stroke-linejoin':'round'});
+   ...(feature.properties?.country==='MEX'?{'data-cahill-mexico':'true'}:{}),
+   fill:'#dfb045',stroke:['USA','MEX'].includes(feature.properties?.country)?'none':'#103135',
+   'stroke-linejoin':'round'});
   const region=crateRegions.find(x=>x.id===id);
   const label=region?.label||region?.name||id.replace(/-/g,' ');
   country.appendChild(make('title')).textContent=label;
@@ -102,11 +103,11 @@ function labCahillInit(host,geography,routes,legacy){
   usFills.push({id,node});
   countries.insertBefore(node,countries.firstChild);
  }
- // One non-interactive path draws just the four US region outlines.
- const usBorderPath=path(labUSRegionBorders);
- if(usBorderPath)countries.appendChild(make('path',{
-  d:usBorderPath,class:'lab-us-region-boundaries',
-  fill:'none',stroke:'#103135','stroke-width':'.65',
+ // One non-interactive path draws the U.S. regions and Mexico's coast.
+ const boundaryPath=path(labAtlasBoundaryLines);
+ if(boundaryPath)countries.appendChild(make('path',{
+  d:boundaryPath,class:'lab-us-region-boundaries',
+  fill:'none',stroke:'#103135',
   'stroke-linejoin':'round','pointer-events':'none'
  }));
  // The D3 Cahill–Keyes projection lacks the reunited Antarctic extension.
@@ -143,7 +144,7 @@ function labCahillInit(host,geography,routes,legacy){
   if(!d)continue;
   const country=make('path',{id:'labCahillAntarctica',
    'data-cahill-region':id,d,fill:'#dfb045',stroke:'#103135',
-   'stroke-width':'.8','stroke-linejoin':'round'});
+   'stroke-linejoin':'round'});
   country.appendChild(make('title')).textContent='Antarctica';
   // SVG paths are painted geography, not focusable rectangular WebView controls.
   // Keyboard/screen-reader region controls already exist under Choose by Name.

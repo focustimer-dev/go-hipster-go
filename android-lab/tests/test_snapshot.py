@@ -1,4 +1,5 @@
 import hashlib
+import json
 import importlib.util
 import tempfile
 import unittest
@@ -35,11 +36,27 @@ class LabSnapshotTests(unittest.TestCase):
                 self.assertIn(theme_asset,stripped)
                 stripped=stripped.replace(theme_asset,'')
             stripped=stripped.replace('<p><a href="/atlas-lab.html">TRY MAPLIBRE GLOBE</a></p>','')
-            for element in ('labGlobeGeography', 'labUSRegionBorders', 'labUSRegionFills'):
+            for element in ('labGlobeGeography', 'labAtlasBoundaryLines', 'labUSRegionFills'):
                 stripped=re.sub(r'<script type="application/json" id="'+element+r'">.*?</script>','',stripped,flags=re.S)
-            self.assertIn('<script type="application/json" id="labUSRegionBorders">',page)
-            self.assertEqual(page.count('id="labUSRegionBorders"'),1)
+            self.assertIn('<script type="application/json" id="labAtlasBoundaryLines">',page)
+            self.assertEqual(page.count('id="labAtlasBoundaryLines"'),1)
             self.assertEqual(page.count('id="labUSRegionFills"'),1)
+            def atlas_data(element):
+                return json.loads(re.search(r'id="' + element + r'">(.*?)</script>', page)[1])
+
+            def edges(lines):
+                return {tuple(sorted((tuple(a), tuple(b))))
+                        for line in lines for a, b in zip(line, line[1:]) if a != b}
+
+            us, mexico_coast = atlas_data('labAtlasBoundaryLines')['features']
+            mexico = next(f for f in atlas_data('labGlobeGeography')['features']
+                          if f['properties']['country'] == 'MEX')
+            mexico_edges = edges(ring for polygon in mexico['geometry']['coordinates'] for ring in polygon)
+            us_edges = edges(us['geometry']['coordinates'])
+            coast_edges = edges(mexico_coast['geometry']['coordinates'])
+            self.assertEqual(len(mexico_edges & us_edges), 27)
+            self.assertFalse(coast_edges & us_edges, 'The U.S. mesh alone paints the shared border')
+            self.assertEqual(coast_edges | (mexico_edges & us_edges), mexico_edges)
             self.assertNotIn('function labUSRegionBorderGeometry(', (dest/'assets/app.js').read_text())
             stripped=stripped.replace('<script defer src="/assets/maplibre/maplibre-gl.js"></script><script defer src="/assets/cahill-keyes-vendor.js"></script><link rel="stylesheet" href="/assets/maplibre/maplibre-gl.css">','')
             self.assertEqual((dest/'assets/lab-theme-tokens.css').read_text(),

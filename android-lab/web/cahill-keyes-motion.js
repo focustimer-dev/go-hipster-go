@@ -99,7 +99,7 @@ const labCahillMotion=(()=>{
    if(region.hasAttribute('data-cahill-us-state'))continue;
    const ink=getComputedStyle(region);
    const stroke=ink.stroke!=='none'?ink.stroke:null;
-   const lineWidth=Math.min(parseFloat(ink.strokeWidth)||.65,.65);
+   const lineWidth=parseFloat(ink.strokeWidth);
    put(region,{fill:ink.fill|| (selected.has(region.dataset.cahillRegion)?PAL.selected:PAL.paper),
     stroke,lineWidth});
   }
@@ -107,7 +107,7 @@ const labCahillMotion=(()=>{
   if(usOutline){
    const ink=getComputedStyle(usOutline);
    put(usOutline,{stroke:ink.stroke!=='none'?ink.stroke:PAL.ink,
-    lineWidth:Math.min(parseFloat(ink.strokeWidth)||.65,.65)});
+    lineWidth:parseFloat(ink.strokeWidth)});
   }
   // Decorative nautical ink is part of the printed chart, but invisible
   // route hit targets and interactive markers never enter animation frames.

@@ -22,7 +22,7 @@ const workspaceCSS=read('android-lab/web/workspace.css');
 const printCSS=read('android-lab/web/theme-print.css');
 const themeCSS=read('launcher/assets/pwa-atlas-themes.css');
 const tweenSource=read('android-lab/web/cahill-keyes-motion.js');
-assert.match(workspaceCSS, /#labAtlasCahill \[data-cahill-region\]\[aria-pressed=true\]\{[\s\S]*?stroke-width:\.65!important;/);
+assert.match(workspaceCSS, /#labAtlasCahill\{--lab-keyes-border-width:\.4px\}/);
 assert.match(workspaceCSS, /#labAtlasCahill \[data-cahill-us-state\]\{[\s\S]*?stroke:none!important;/);
 assert.doesNotMatch(printCSS, /\[data-cahill-region\]\[aria-pressed=true\]\{[^}]*stroke-width:1\.35/);
 assert.doesNotMatch(themeCSS, /\[data-cahill-region\]\[aria-pressed=true\]\{[^}]*stroke-width:1\.35/);
@@ -107,7 +107,7 @@ assert.deepEqual([...drawn].sort(),[...expected].sort(),
  'TopoJSON mesh must draw exactly the four listening-region outlines and coastlines');
 assert(!globe.includes('function labUSRegionBorderGeometry('),
  'Android must not retain a second dynamic border builder');
-assert(cahill.includes('const usBorderPath=path(labUSRegionBorders)'),
+assert(cahill.includes('const boundaryPath=path(labAtlasBoundaryLines)'),
  'Cahill and Globe must consume the same single geographic border mesh');
 assert(read('scripts/bundle_maplibre_lab.py').includes('sourceSha256'),
  'Build must reject a stale shared region mesh');
