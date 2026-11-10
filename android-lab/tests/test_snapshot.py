@@ -47,7 +47,24 @@ class LabSnapshotTests(unittest.TestCase):
             start=stripped.index('<nav class="lab-rail"')
             end=stripped.index('<div class="site">',start)
             stripped=stripped[:start]+stripped[end:]
+            # Android ships a smaller WebP chart instead of the unchanged PNG master.
+            self.assertIn('atlas-engraved-details.webp',stripped)
+            self.assertNotIn('atlas-engraved-details.png',stripped)
+            stripped=stripped.replace('atlas-engraved-details.webp','atlas-engraved-details.png')
             self.assertEqual(stripped,(ROOT/'launcher/editions/gig-poster/index.html').read_text())
+            from PIL import Image
+            for name in ('desire-neutral-v1.webp','desire-selected-v1.webp',
+                         'triumph-neutral-v1.webp','triumph-selected-v1.webp'):
+                original=ROOT/'launcher/editions/gig-poster/assets'/name
+                packaged=dest/'editions/gig-poster/assets'/name
+                self.assertLess(packaged.stat().st_size,original.stat().st_size)
+                with Image.open(original) as original_image, Image.open(packaged) as packaged_image:
+                    self.assertEqual(original_image.size,packaged_image.size)
+                    self.assertEqual(original_image.convert('RGBA').getchannel('A').tobytes(),
+                                     packaged_image.convert('RGBA').getchannel('A').tobytes())
+            self.assertFalse((dest/'editions/gig-poster/assets/atlas-engraved-details.png').exists())
+            self.assertTrue((dest/'editions/gig-poster/assets/atlas-engraved-details.webp').exists())
+
             for asset in ('moods-neutral-ink-v2.webp','moods-selected-ink-v2.webp','anton.woff','stock.webp'):
                 path=Path('editions/gig-poster/assets')/asset
                 self.assertEqual((dest/path).read_bytes(),(ROOT/'launcher'/path).read_bytes())

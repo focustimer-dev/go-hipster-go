@@ -116,6 +116,9 @@ def bundle(destination=None):
     script.write_text(text)
     import runpy
     runpy.run_path(str(ROOT/'scripts/bundle_maplibre_lab.py'))['bundle_maplibre'](destination)
+    # Only the packaged Android copies are compressed. Originals in launcher/
+    # remain lossless and can be re-encoded for future visual revisions.
+    runpy.run_path(str(ROOT/'scripts/optimize_android_artwork.py'))['optimize'](destination)
     return destination
 
 if __name__ == '__main__':
