@@ -70,14 +70,16 @@ final class SkillUpdates {
             "\nYou confirmed: "+confirmed+"\nLatest checked package: "+(release==null?"Not checked":release.tag)+
             "\nLast successful check: "+(time==0?"Never":DateFormat.format("MMM d, h:mm a",new Date(time)))+
             (status.isEmpty()?"":"\n\n"+status)+"\n\nLab checks public GitHub release metadata. Nothing is downloaded or installed automatically. Gemini's installed version cannot be read by this app.";
+        if(release!=null) message+="\n\nTo update:\n1. Download the Gemini skill ZIP.\n2. In Gemini web, open Customize → Skills → Go, Hipster, Go! → Replace skill, upload the ZIP and save.\n3. Return here and tap ‘I installed this package’ to clear the update badge.\n\nAlready installed it? Record it below. Closing this screen does not record installation.";
         LinearLayout panel=new LinearLayout(activity);panel.setOrientation(1);panel.setPadding(32,16,32,16);
         TextView info=new TextView(activity);info.setText(message);panel.addView(info);
         AlertDialog dialog=new AlertDialog.Builder(activity).setTitle("Gemini skill updates")
             .setNegativeButton("Close",null).create();
         add(panel,checking?"Checking…":"Check for updates",()->{dialog.dismiss();check(true);});
         if(release!=null) {
-            add(panel,"View changes",()->opener.open(release.page));
-            add(panel,"Download & update instructions",()->instructions(release));
+            add(panel,"Download Gemini skill ZIP",()->opener.open(release.download));
+            add(panel,"Open Gemini web",()->opener.open("https://gemini.google.com/app"));
+            add(panel,"View release changes",()->opener.open(release.page));
             add(panel,"I installed this package",()->dialogs.show(new AlertDialog.Builder(activity)
                 .setTitle("Record your installation?")
                 .setMessage("Confirm only after replacing the skill in Gemini with "+release.tag+". This records your confirmation; it does not verify Gemini or install anything.")

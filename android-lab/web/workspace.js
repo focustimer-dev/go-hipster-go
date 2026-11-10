@@ -96,8 +96,10 @@ function renderLabWorkspace(){
   doc.getElementById('labSetupStatus').textContent='Setup changed. Copy a fresh connection check for your chosen AI and music service.';
  }
  const state=labState(),reference=labInspiration(),entries=Array.isArray(state.saved)?state.saved.filter(e=>e&&typeof e==='object'&&typeof e.id==='string'&&e.id.length>0&&typeof e.prompt==='string').slice(-10):[];
- const dot=doc.getElementById('labUpdateDot');dot.hidden=!state.updateAvailable;dot.setAttribute('aria-hidden','true');
- doc.querySelector('[data-lab-tab="manual"]').setAttribute('aria-label',state.updateAvailable?'Manual, Gemini skill update available':'Manual');
+ const geminiUpdate=ai==='gemini'&&state.updateAvailable;
+ doc.getElementById('labUpdatesTitle').closest('section').hidden=ai!=='gemini';
+ const dot=doc.getElementById('labUpdateDot');dot.hidden=!geminiUpdate;dot.setAttribute('aria-hidden','true');
+ doc.querySelector('[data-lab-tab="manual"]').setAttribute('aria-label',geminiUpdate?'Manual, Gemini skill update available':'Manual');
  doc.getElementById('labCrateHeaderSummary').textContent=reference?labInspirationTitle(state.inspirationPreview?.title,reference):'Inspiration and exact requests, saved on this device.';
  doc.getElementById('labCrateReference').textContent=reference?'Reference ready':'No reference yet';
  doc.getElementById('labCrateReferenceHelp').textContent=reference?'Use it in Jukebox, or review the full reference.':'Share a song link to Lab, or add an idea.';
@@ -170,7 +172,7 @@ function initLabWorkspace(){
   }
   const b=event.target.closest('[data-lab-tab],[data-lab-action],[data-lab-saved],[data-lab-recent]');if(!b)return;
   if(b.dataset.labRecent){window.HipsterLab?.useRecentInspiration?.(b.dataset.labRecent);return}
-  if(b.dataset.labTab){labNavigate(b.dataset.labTab);return}if(b.dataset.labSaved){window.HipsterLab?.savedRequest?.(b.dataset.labSaved);return}
+  if(b.dataset.labTab){labNavigate(b.dataset.labTab);if(b.dataset.labTab==='manual'&&ai==='gemini'&&labState().updateAvailable)window.HipsterLab?.showUpdates?.();return}if(b.dataset.labSaved){window.HipsterLab?.savedRequest?.(b.dataset.labSaved);return}
   const action=b.dataset.labAction;
   if(action==='preferences')labPreferences();else if(action==='close-preferences')doc.getElementById('labPreferences').close();
   else if(action==='inspiration')labOpenInspirationEditor();else if(action==='save')window.HipsterLab?.saveRequest?.(ai,goPrompt(ai,service,mood));else if(action==='updates')window.HipsterLab?.showUpdates?.();else if(action==='jukebox')labNavigate('jukebox');
