@@ -71,6 +71,12 @@ for(const file of editions){
  for(const id of ['us-midwest','us-south','balkans','central-america','caribbean'])
   assert(names.includes(id),file+' must let users choose '+id);
 }
+// One existing engraved sprite feeds every ship/monster marker; its tint is
+// a palette token, never a cross-SVG filter or a new duplicate asset.
+assert.match(globeSource,/old\.querySelector\('#chart-engravings'\)/);
+assert.match(globeSource,/icon\.style\.webkitMaskImage=icon\.style\.maskImage/);
+assert.doesNotMatch(globeSource,/const clone=art\.cloneNode\(true\)/);
+assert.match(workspaceCSS,/\.lab-globe-engraving\{[\s\S]*?mask-size:300% 100%/);
 const globe=read('android-lab/web/globe.js'),cahill=read('android-lab/web/cahill-keyes.js'),
  bundle=read('scripts/bundle_android_lab.py');
 assert(globe.includes('labAtlasSmallHit(')&&globe.includes("labGlobe.on('click',event=>"),'Both MapLibre modes need the missed-tap handler');

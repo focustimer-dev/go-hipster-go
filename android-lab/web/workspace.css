@@ -264,6 +264,22 @@ body.gig-poster.lab-workspace .lab-atlas-modes button{display:flex;align-items:c
 }
 body.gig-poster .crate-map-frame:has(.lab-cahill-active) .atlas-radial-field{display:none}
 
+/* A single theme-colored mask for the three nautical engravings in both
+   MapLibre projections. No duplicated SVG defs or chart filters per marker. */
+#labAtlasGlobe .lab-globe-secret{
+ display:grid;place-items:center;width:44px;height:44px;padding:0;
+ border:0;background:transparent;color:var(--lab-atlas-route,#edc65d);
+}
+#labAtlasGlobe .lab-globe-engraving{
+ display:block;width:38px;height:38px;background:currentColor;
+ mask-size:300% 100%;-webkit-mask-size:300% 100%;
+ mask-position:var(--lab-engraving-position) center;
+ -webkit-mask-position:var(--lab-engraving-position) center;
+ mask-repeat:no-repeat;-webkit-mask-repeat:no-repeat;
+}
+#labAtlasGlobe .lab-globe-secret:focus-visible{
+ outline:2px solid currentColor;outline-offset:2px;
+}
 /* The Globe uses a square Android canvas; Robinson's long chart rays are hidden only here. */
 body.gig-poster .crate-map-frame.lab-globe-frame .atlas-radial-field{display:none}
 
