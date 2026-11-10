@@ -29,20 +29,24 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    await page.locator('[data-atlas-view=globe]').evaluate(el=>el.click());
    await page.waitForFunction(()=>labAtlasGlobe.getProjection()?.type==='globe'&&
     window.HipsterAtlasState().transitioning===false);
-   const globe=await page.evaluate(()=>{
-    const map=labAtlasGlobe,{marker,point}=labSecretMarkers[0],el=marker.getElement();
-    const zoom=labGlobeHomeZoom()+1;
-    const sample=center=>{
-     map.jumpTo({center,zoom});
-     return {opacity:el.style.opacity,visibility:getComputedStyle(el).visibility,hidden:el.hidden};
-    };
-    const [lon,lat]=point;
-    return {front:sample(point),back:sample([lon+(lon>0?-180:180),-lat]),
-     fills:map.getSource('land')._data.features.filter(f=>f.properties.country==='USA').length};
+   const ship=page.locator('#labAtlasGlobe .lab-globe-secret[aria-label="Discover: THE UNLICENSED VESSEL"]');
+   const {zoom,fills}=await page.evaluate(async ()=>{
+    const map=window.labAtlasGlobe;
+    const {features}=await map.getSource('land').getData();
+    return {zoom:map.getZoom()+1,fills:features.filter(f=>f.properties.country==='USA').length};
    });
-   assert.equal(globe.fills,4,'Globe paints four US regions');
-   assert.deepEqual(globe.front,{opacity:'1',visibility:'visible',hidden:false});
-   assert.deepEqual(globe.back,{opacity:'0',visibility:'hidden',hidden:false});
+   assert.equal(fills,4,'Globe paints four US regions');
+   const shipState=()=>ship.evaluate(el=>({
+    opacity:el.style.opacity,visibility:getComputedStyle(el).visibility,hidden:el.hidden
+   }));
+   // The ship is in the eastern Atlantic. Center it on the near side,
+   // then turn the same globe to the opposite hemisphere.
+   await page.evaluate(zoom=>window.labAtlasGlobe.jumpTo({center:[-37,11],zoom}),zoom);
+   await ship.waitFor({state:'visible',timeout:5000});
+   assert.deepEqual(await shipState(),{opacity:'1',visibility:'visible',hidden:false});
+   await page.evaluate(zoom=>window.labAtlasGlobe.jumpTo({center:[143,-11],zoom}),zoom);
+   await ship.waitFor({state:'hidden',timeout:5000});
+   assert.deepEqual(await shipState(),{opacity:'0',visibility:'hidden',hidden:false});
    await page.locator('[data-atlas-view=cahill-keyes]').evaluate(el=>el.click());
    await page.waitForFunction(()=>document.querySelector('[data-atlas-view=cahill-keyes]')?.getAttribute('aria-pressed')==='true',null,{timeout:7000});
    await page.emulateMedia({reducedMotion:'no-preference'});
@@ -52,7 +56,7 @@ const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css'
    assert.equal(await usFills.count(),4,'Keyes paints four US regions');
    assert(await usStates.evaluateAll(nodes=>nodes.every(node=>{
     const style=getComputedStyle(node);
-    return style.fillOpacity==='0'&&style.pointerEvents==='visiblepainted';
+    return style.fillOpacity==='0'&&style.pointerEvents.toLowerCase()==='visiblepainted';
    })));
    assert(await usFills.evaluateAll(nodes=>nodes.every(node=>{
     const style=getComputedStyle(node);
