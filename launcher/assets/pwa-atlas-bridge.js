@@ -4,10 +4,16 @@
 (function(){
 'use strict';
 const KEY='ghg-pwa-crate-v1', REF='ghg-pwa-reference-v1', PREF='ghg-pwa-atlas-prefs-v1';
-const THEME_KEY='ghg-pwa-theme-v1', THEMES=['liberi','bosque','usiku'];
+const THEME_KEY='ghg-pwa-theme-v1', THEMES=['liberi','bosque','usiku','kingston','detroit','addis','polish','beirut'];
+const PRINT_THEMES=new Set(['kingston','detroit','addis','polish','beirut']);
 const ATLAS_PALETTES={
  bosque:{ocean:'#e8e9df',land:'#004225',ink:'#003018',selected:'#e5cf42',route:'#8c6239'},
  usiku:{ocean:'#111111',land:'#f5f0e6',ink:'#003018',selected:'#e5cf42',route:'#b77b4d'}
+ kingston:{ocean:'#273d3b',land:'#d3c4a8',ink:'#263f3e',selected:'#6d9991',route:'#7ba39b',routeOpacity:0.73,routeWidth:1.15,routeDash:[3,3]},
+ detroit:{ocean:'#151515',land:'#d6d6c9',ink:'#181818',selected:'#d5e644',route:'#d5e644',routeOpacity:0.72,routeWidth:1.05,routeDash:[3,3]},
+ addis:{ocean:'#0f4a48',land:'#e1cfaa',ink:'#2d251f',selected:'#d17d32',route:'#d99d51',routeOpacity:0.7,routeWidth:1.15,routeDash:[3,4]},
+ polish:{ocean:'#172c40',land:'#f6f2e6',ink:'#172c40',selected:'#e34c2f',route:'#d8bd67',routeOpacity:0.78,routeWidth:1.08,routeDash:[2.5,4]},
+ beirut:{ocean:'#1c3240',land:'#d9c9ad',ink:'#1c3240',selected:'#a84950',route:'#c5a06d',routeOpacity:0.76,routeWidth:1.07,routeDash:[3,3.6]},
 };
 function atlasTheme(){
  try{const v=localStorage.getItem(THEME_KEY);return THEMES.includes(v)?v:'liberi'}
@@ -24,10 +30,27 @@ const TWEEN_PALETTES={
  liberi:{paper:'#dfb045',ocean:'#103135',selected:'#a83223',ink:'#103135',backdrop:'#dfb045'},
  bosque:{paper:'#004225',ocean:'#e8e9df',selected:'#e5cf42',ink:'#003018',backdrop:'#f5f0e6'},
  usiku:{paper:'#f5f0e6',ocean:'#111111',selected:'#e5cf42',ink:'#003018',backdrop:'#003018'}
+ kingston:{paper:'#d3c4a8',ocean:'#273d3b',selected:'#6d9991',ink:'#263f3e',backdrop:'#e3d9c2',land:'#d3c4a8',route:'#7ba39b'},
+ detroit:{paper:'#e7e5db',ocean:'#151515',selected:'#d5e644',ink:'#181818',backdrop:'#e7e5db',land:'#d6d6c9',route:'#d5e644'},
+ addis:{paper:'#f2e8ce',ocean:'#0f4a48',selected:'#d17d32',ink:'#2d251f',backdrop:'#f2e8ce',land:'#e1cfaa',route:'#d99d51'},
+ polish:{paper:'#f6f2e6',ocean:'#172c40',selected:'#e34c2f',ink:'#172c40',backdrop:'#f6f2e6',land:'#f6f2e6',route:'#d8bd67'},
+ beirut:{paper:'#e3d8bf',ocean:'#1c3240',selected:'#a84950',ink:'#1c3240',backdrop:'#e3d8bf',land:'#d9c9ad',route:'#c5a06d'},
 };
 window.GHGAtlasPaintColors=()=>({theme:atlasTheme(),...TWEEN_PALETTES[atlasTheme()]});
 // Applied before Android bundle DOM is parsed: no first-paint theme flash.
 document.documentElement.dataset.pwaTheme=atlasTheme();
+const printProfile=PRINT_THEMES.has(atlasTheme());
+document.documentElement.dataset.ghgThemeProfile=printProfile?'print':'';
+for(const link of document.querySelectorAll('link[data-lab-print-style]'))
+ link.media=printProfile?'all':'not all';
+// The preview removes native theme.js, so supply its semantic map roles here.
+const initialAtlas=atlasTheme(),initialPalette=ATLAS_PALETTES[initialAtlas],initialTween=TWEEN_PALETTES[initialAtlas];
+if(initialPalette){
+ for(const [key,value] of Object.entries({...initialPalette,...initialTween})){
+  if(typeof value==='string'&&/^(paper|land|ocean|ink|selected|route|backdrop)$/.test(key))
+   document.documentElement.style.setProperty('--lab-atlas-'+key,value);
+ }
+}
 const services={chatgpt:'https://chatgpt.com/',gemini:'https://gemini.google.com/app',
  claude:'https://claude.ai/'};
 function read(key,fallback){
@@ -73,9 +96,9 @@ function paintAtlasTheme(){
    ocean:{'background-color':map.getProjection()?.type==='mercator'?'rgba(0,0,0,0)':palette.ocean},
    'robinson-ocean':{'fill-color':palette.ocean},
    routes:{'line-color':palette.route,
-    'line-opacity':THEMED_ROUTE_PAINT.opacity,
-    'line-width':THEMED_ROUTE_PAINT.width,
-    'line-dasharray':THEMED_ROUTE_PAINT.dash}
+    'line-opacity':palette.routeOpacity??THEMED_ROUTE_PAINT.opacity,
+    'line-width':palette.routeWidth??THEMED_ROUTE_PAINT.width,
+    'line-dasharray':palette.routeDash??THEMED_ROUTE_PAINT.dash}
   }:{...atlasThemeDefaults,
    // Restoring original Liberi must also restore the projection-dependent
    // exterior: yellow paper outside Robinson, petrol in the actual sea.
