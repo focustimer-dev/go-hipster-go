@@ -85,6 +85,7 @@ for(const tag of usTags){
   if(ring.length<3)continue;
   if(ring[0].join()!==ring.at(-1).join())ring.push([...ring[0]]);
   for(let i=1;i<ring.length;i++){
+   if(ring[i-1].join(',')===ring[i].join(','))continue; // Degenerate state vertices are not drawable borders.
    const edge=segmentKey(ring[i-1],ring[i]);
    if(!sourceEdges.has(edge))sourceEdges.set(edge,[]);
    sourceEdges.get(edge).push(region);
