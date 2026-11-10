@@ -60,6 +60,13 @@ class PWAThemeTests(unittest.TestCase):
         self.assertIn("ghgThemeProfile", bridge)
         self.assertIn("applyBrowserTheme(theme)", bridge)
 
+    def test_selected_funk_uses_the_baked_android_plate_not_flat_filter(self):
+        browser = (ROOT / "launcher/assets/pwa-themes.css").read_text()
+        bundle = (ROOT / "scripts/bundle_android_lab.py").read_text()
+        self.assertIn("/pwa-atlas/assets/funk-selected-engraved.webp", browser)
+        self.assertIn("destination / 'assets/funk-selected-engraved.webp'", bundle)
+        self.assertIn("background-size:100% 100%!important", browser)
+
     def test_worker_applies_theme_early_to_browser_jukebox_and_manual(self):
         worker = (ROOT / "cloudflare/worker.js").read_text()
         self.assertIn('"/setup/"', worker)
