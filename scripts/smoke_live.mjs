@@ -182,10 +182,10 @@ export async function checkRelease(browser, baseURL, expectedCommit, sourceCache
     await page.locator('[data-mood="desire"]').click();
     await page.locator('[data-mood="funky"]').click();
     await page.waitForFunction(() => getComputedStyle(document.querySelector('.desire-hearts')).opacity === '1');
-    // The hearts' opacity transition began with Desire, but Funk was selected
-    // a beat later and its background-color is still interpolating in OKLab.
-    // Wait for the *Funk* color transition to finish before comparing the
-    // canonical shared CSS color token. Never relax the actual color assertion.
+    // Desire's hearts retain their approved light ink, while selected Funk
+    // now uses its own invariant violet/magenta pressing. The older equality
+    // check tied two independent artwork roles together and no longer applies.
+    // Wait for the Funk transition to settle before checking its color.
     await page.locator('[data-mood="funky"]').evaluate(async element => {
       await Promise.all(element.getAnimations().map(animation =>
         animation.finished.catch(() => {})));
@@ -196,7 +196,8 @@ export async function checkRelease(browser, baseURL, expectedCommit, sourceCache
       desire: getComputedStyle(document.querySelector('[data-mood="desire"]')).backgroundColor,
       ink: getComputedStyle(document.querySelector('[data-mood="desire"] .face')).filter,
     }));
-    assert.equal(selectedColors.hearts, selectedColors.funk, 'Desire hearts must match Funk background');
+    assert.notEqual(selectedColors.hearts,'rgba(0, 0, 0, 0)', 'Selected Desire hearts need visible ink');
+    assert.equal(selectedColors.funk,'rgb(110, 34, 92)', 'Selected Funk retains its violet pressing');
     assert.equal(selectedColors.desire, 'rgb(214, 75, 48)', 'Selected stock must remain true vermilion');
     assert.match(selectedColors.ink, /selectedMoodPetrol/, 'Approved deeper petrol is not active');
     assert.deepEqual(await moodBoxes(), beforeMoodBoxes, 'Mood selection moved portrait controls');
