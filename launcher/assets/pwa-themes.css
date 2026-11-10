@@ -481,3 +481,282 @@ html[data-pwa-theme=usiku] body.pwa-workspace .pwa-dialog-head{
 .pwa-theme-choice[data-pwa-theme=usiku] .pwa-theme-sample i:nth-child(3){
  background:#004225;
 }
+
+
+/* Android-approved print themes: semantic tokens copied from
+   android-lab/web/theme-tokens.css; separate browser adapter, no new artwork. */
+/* Kingston Studio One 7-inch stock — semantic print palette.
+   On-label teal is worn and desaturated; vinyl ocean is dark petrol,
+   not an all-black frame. Text/action pairings meet 4.5:1. */
+:root[data-pwa-theme=kingston]{
+ --lab-ui-surface:#e3d9c2;--lab-ui-ink:#263f3e;
+ --lab-ui-panel:#e3d9c2;--lab-ui-on-panel:#263f3e;
+ --lab-ui-rail:#304743;--lab-ui-on-rail:#efe4cb;
+ --lab-ui-action:#304743;--lab-ui-on-action:#efe4cb;
+ --lab-ui-rule:#7b8a7c;--lab-ui-field:#eee3ca;--lab-ui-on-field:#263f3e;
+ --lab-ui-focus:#356766;--lab-ui-control-outline:#263f3e;
+ --lab-ui-ticket-stock:#eee4cf;--lab-ui-ticket-ink:#263f3e;
+ --lab-ui-go:#385e5a;--lab-ui-highlight:#7bb0aa;--lab-ui-on-highlight:#263f3e;
+ /* Two independent ink jobs: registration is decorative, activation
+    is the restrained pop on selected controls. The generic print CSS
+    owns placement; future themes supply only these values. */
+ --lab-print-muted:#d0c6b0;--lab-print-stamp:#59817c;
+ --lab-print-active-ink:#9b3a2b;
+ --lab-print-stamp-border-style:double;
+ --lab-print-substrate-texture:none;
+ --lab-print-stamp-filter:brightness(0) saturate(100%) invert(49%) sepia(16%) saturate(647%) hue-rotate(124deg) brightness(93%) contrast(85%);
+}
+
+/* Detroit Midnight Xerox: fluorescent chartreuse and hot pink against
+   toner black and photocopy stock. No Detroit-specific component selectors. */
+:root[data-pwa-theme=detroit]{
+ --lab-ui-surface:#e7e5db;--lab-ui-ink:#171717;
+ --lab-ui-panel:#e7e5db;--lab-ui-on-panel:#171717;
+ --lab-ui-rail:#171717;--lab-ui-on-rail:#f1f0e7;
+ --lab-ui-action:#171717;--lab-ui-on-action:#f1f0e7;
+ --lab-ui-rule:#57564d;--lab-ui-field:#f0efe8;--lab-ui-on-field:#171717;
+ --lab-ui-focus:#f50093;--lab-ui-control-outline:#171717;
+ --lab-ui-ticket-stock:#f0efe8;--lab-ui-ticket-ink:#171717;
+ --lab-ui-go:#171717;--lab-ui-highlight:#d5e644;--lab-ui-on-highlight:#171717;
+ --lab-print-muted:#d0d0bd;--lab-print-stamp:#555555;
+ --lab-print-active-ink:#f50093;--lab-print-control-ink:#f50093;
+ --lab-mood-selected-edge:#171717; /* dark impression visible over pink pressing */
+ --lab-print-stamp-border-style:solid;
+ --lab-print-substrate-texture:repeating-linear-gradient(90deg,rgba(20,20,20,.018) 0 1px,transparent 1px 5px);
+ --lab-print-stamp-filter:brightness(0) saturate(100%) invert(85%) sepia(27%) saturate(810%) hue-rotate(17deg) brightness(103%) contrast(92%);
+}
+
+/* Addis Jazz Offset: aged cream, offset brown and hand-register teal. */
+:root[data-pwa-theme=addis]{
+ --lab-ui-surface:#f2e8ce;--lab-ui-ink:#2d251f;
+ --lab-ui-panel:#f2e8ce;--lab-ui-on-panel:#2d251f;
+ --lab-ui-rail:#2d251f;--lab-ui-on-rail:#f2e8ce;
+ --lab-ui-action:#2d251f;--lab-ui-on-action:#f2e8ce;
+ --lab-ui-rule:#866f55;--lab-ui-field:#f7edda;--lab-ui-on-field:#2d251f;
+ --lab-ui-focus:#0f6660;--lab-ui-control-outline:#2d251f;
+ --lab-ui-ticket-stock:#f7edda;--lab-ui-ticket-ink:#2d251f;
+ --lab-ui-go:#2d251f;--lab-ui-highlight:#d17d32;--lab-ui-on-highlight:#2d251f;
+ --lab-print-muted:#dbd0b5;--lab-print-stamp:#85602b;
+ --lab-print-active-ink:#0f6660;--lab-print-stamp-border-style:double;
+ --lab-print-substrate-texture:repeating-linear-gradient(0deg,rgba(45,37,31,.013) 0 1px,transparent 1px 8px);
+ --lab-print-stamp-filter:brightness(0) saturate(100%) invert(45%) sepia(65%) saturate(630%) hue-rotate(347deg) brightness(94%) contrast(87%);
+}
+
+/* Polish Jazz Modernism: graphic navy, vermilion and golden paper ink. */
+:root[data-pwa-theme=polish]{
+ --lab-ui-surface:#f6f2e6;--lab-ui-ink:#172c40;
+ --lab-ui-panel:#f6f2e6;--lab-ui-on-panel:#172c40;
+ --lab-ui-rail:#172c40;--lab-ui-on-rail:#f6f2e6;
+ --lab-ui-action:#172c40;--lab-ui-on-action:#f6f2e6;
+ --lab-ui-rule:#8a8a83;--lab-ui-field:#fffaf0;--lab-ui-on-field:#172c40;
+ --lab-ui-focus:#c13b28;--lab-ui-control-outline:#172c40;
+ --lab-ui-ticket-stock:#fffaf0;--lab-ui-ticket-ink:#172c40;
+ --lab-ui-go:#172c40;--lab-ui-highlight:#d8bd67;--lab-ui-on-highlight:#172c40;
+ --lab-print-muted:#e3dcd2;--lab-print-stamp:#b64b36;
+ --lab-print-active-ink:#c13b28;--lab-print-stamp-border-style:solid;
+ --lab-print-substrate-texture:none;
+ --lab-print-stamp-filter:brightness(0) saturate(100%) invert(38%) sepia(72%) saturate(960%) hue-rotate(331deg) brightness(94%) contrast(90%);
+}
+
+/* Beirut Cassette Slip: J-card stock, navy, brass and dusty rose. */
+:root[data-pwa-theme=beirut]{
+ --lab-ui-surface:#e3d8bf;--lab-ui-ink:#1c3240;
+ --lab-ui-panel:#e3d8bf;--lab-ui-on-panel:#1c3240;
+ --lab-ui-rail:#1c3240;--lab-ui-on-rail:#f2e9d3;
+ --lab-ui-action:#1c3240;--lab-ui-on-action:#f2e9d3;
+ --lab-ui-rule:#897a6c;--lab-ui-field:#f2e9d3;--lab-ui-on-field:#1c3240;
+ --lab-ui-focus:#99434b;--lab-ui-control-outline:#1c3240;
+ --lab-ui-ticket-stock:#f2e9d3;--lab-ui-ticket-ink:#1c3240;
+ --lab-ui-go:#1c3240;--lab-ui-highlight:#c5a06d;--lab-ui-on-highlight:#1c3240;
+ --lab-print-muted:#d5c4a5;--lab-print-stamp:#8e5052;
+ --lab-print-active-ink:#99434b;--lab-print-stamp-border-style:solid;
+ --lab-print-substrate-texture:repeating-linear-gradient(90deg,transparent 0 76px,rgba(28,50,64,.035) 76px 77px,transparent 77px 82px);
+ --lab-print-stamp-filter:brightness(0) saturate(100%) invert(59%) sepia(23%) saturate(1187%) hue-rotate(325deg) brightness(92%) contrast(87%);
+}
+
+:root[data-pwa-theme=kingston]{
+ --lab-atlas-paper:#d3c4a8;
+ --lab-atlas-land:#d3c4a8;
+ --lab-atlas-ocean:#273d3b;
+ --lab-atlas-ink:#263f3e;
+ --lab-atlas-selected:#6d9991;
+ --lab-atlas-route:#7ba39b;
+ --lab-atlas-backdrop:#e3d9c2;
+ --lab-mood-neutral-paper:#e3d9c2;
+ --lab-mood-neutral-ink:#263f3e;
+ --lab-mood-selected-paper:#d2c3a6;
+ --lab-mood-selected-ink:#244643;
+ --lab-mood-desire-heart:#657f78;
+}
+:root[data-pwa-theme=detroit]{
+ --lab-atlas-paper:#e7e5db;
+ --lab-atlas-land:#d6d6c9;
+ --lab-atlas-ocean:#151515;
+ --lab-atlas-ink:#181818;
+ --lab-atlas-selected:#d5e644;
+ --lab-atlas-route:#d5e644;
+ --lab-atlas-backdrop:#e7e5db;
+ --lab-mood-neutral-paper:#e7e5db;
+ --lab-mood-neutral-ink:#171717;
+ --lab-mood-selected-paper:#f50093;
+ --lab-mood-selected-ink:#171717;
+ --lab-mood-desire-heart:#d5e644;
+}
+:root[data-pwa-theme=addis]{
+ --lab-atlas-paper:#f2e8ce;
+ --lab-atlas-land:#e1cfaa;
+ --lab-atlas-ocean:#0f4a48;
+ --lab-atlas-ink:#2d251f;
+ --lab-atlas-selected:#d17d32;
+ --lab-atlas-route:#d99d51;
+ --lab-atlas-backdrop:#f2e8ce;
+ --lab-mood-neutral-paper:#f2e8ce;
+ --lab-mood-neutral-ink:#2d251f;
+ --lab-mood-selected-paper:#e4ba7c;
+ --lab-mood-selected-ink:#2d251f;
+ --lab-mood-desire-heart:#a84950;
+}
+:root[data-pwa-theme=polish]{
+ --lab-atlas-paper:#f6f2e6;
+ --lab-atlas-land:#f6f2e6;
+ --lab-atlas-ocean:#172c40;
+ --lab-atlas-ink:#172c40;
+ --lab-atlas-selected:#e34c2f;
+ --lab-atlas-route:#d8bd67;
+ --lab-atlas-backdrop:#f6f2e6;
+ --lab-mood-neutral-paper:#f6f2e6;
+ --lab-mood-neutral-ink:#172c40;
+ --lab-mood-selected-paper:#eed5ab;
+ --lab-mood-selected-ink:#172c40;
+ --lab-mood-desire-heart:#e34c2f;
+}
+:root[data-pwa-theme=beirut]{
+ --lab-atlas-paper:#e3d8bf;
+ --lab-atlas-land:#d9c9ad;
+ --lab-atlas-ocean:#1c3240;
+ --lab-atlas-ink:#1c3240;
+ --lab-atlas-selected:#a84950;
+ --lab-atlas-route:#c5a06d;
+ --lab-atlas-backdrop:#e3d8bf;
+ --lab-mood-neutral-paper:#e3d8bf;
+ --lab-mood-neutral-ink:#1c3240;
+ --lab-mood-selected-paper:#d8b6a5;
+ --lab-mood-selected-ink:#1c3240;
+ --lab-mood-desire-heart:#a84950;
+}
+
+/* Existing poster markup, Crate and Manual accept Android semantic color roles.
+   Geometry, gestures, local browser storage and original faces are unchanged. */
+:root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ body.gig-poster:is([data-page=launch],[data-page=setup]){
+ --ink:var(--lab-ui-ink);--ink2:var(--lab-ui-action);
+ --paper:var(--lab-ui-surface);--bone:var(--lab-ui-ticket-stock);
+ --red:var(--lab-print-active-ink);--red2:var(--lab-ui-rule);
+ --yellow:var(--lab-ui-highlight);--line:var(--lab-ui-rule);
+ --focus-ink:var(--lab-ui-focus);--focus-paper:var(--lab-ui-ticket-stock);
+ --control-metal:var(--lab-ui-field);--control-track:var(--lab-ui-ink);
+ --atlas-paper:var(--lab-ui-surface);--atlas-paper-light:var(--lab-print-muted);
+ --atlas-paper-hover:var(--lab-ui-ticket-stock);
+ --atlas-ink:var(--lab-atlas-ink);--atlas-accent:var(--lab-atlas-route);
+ --atlas-border:var(--lab-atlas-ink);--atlas-land:var(--lab-atlas-land);
+ --atlas-water:var(--lab-atlas-ocean);--atlas-boundary:var(--lab-atlas-ink);
+ --atlas-selected:var(--lab-atlas-selected);
+ --selection-vermilion:var(--lab-print-active-ink);
+ --pwa-petrol:var(--lab-ui-rail);--pwa-mustard:var(--lab-ui-surface);
+ --ghg-theme-active:var(--lab-ui-rail);
+ --ghg-theme-active-text:var(--lab-ui-on-rail);
+ background:var(--lab-ui-surface);color:var(--lab-ui-ink);color-scheme:light;
+}
+:root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ body.gig-poster .site{background:var(--lab-ui-surface);color:var(--lab-ui-ink)}
+:root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ body.gig-poster :is(.go-options,.go-button){background:var(--lab-ui-go);color:var(--lab-ui-on-action)}
+:root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ body.gig-poster .go-button .go-copy :is(b,span){color:var(--lab-ui-on-action)}
+:root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ body.gig-poster .mood-grid .mood[aria-pressed=true]{background:var(--lab-mood-selected-paper);color:var(--lab-mood-selected-ink);border-color:var(--lab-print-active-ink)}
+:root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ body.gig-poster .crate-map-zone[data-selected=true] path{fill:var(--lab-atlas-selected);stroke:var(--lab-atlas-ink)}
+:root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ body.pwa-workspace .pwa-rail{background:var(--lab-ui-rail);color:var(--lab-ui-on-rail)}
+:root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ body.pwa-workspace .pwa-rail button[aria-current=page]{background:var(--lab-ui-surface);color:var(--lab-ui-ink);border-bottom-color:var(--lab-print-active-ink)}
+:root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ body.pwa-workspace :is(.pwa-page,.pwa-dialog,.pwa-guide-nav,.pwa-guide-shelf){background:var(--lab-ui-surface);color:var(--lab-ui-ink)}
+:root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ body.pwa-workspace :is(.pwa-dialog-head,.pwa-page section>h2,.pwa-section-head,.pwa-record,.pwa-guide-picker,.pwa-local-note){border-color:var(--lab-ui-rule)}
+:root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ body.pwa-workspace :is(.pwa-record button,.pwa-wide,.pwa-save-button,.pwa-dialog button,.pwa-dialog a){color:var(--lab-ui-ink);border-color:var(--lab-ui-control-outline)}
+:root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ body.pwa-workspace :is(.pwa-dialog-body input,.pwa-dialog-body textarea,.pwa-dialog-body pre){background:var(--lab-ui-field);color:var(--lab-ui-on-field);border-color:var(--lab-ui-control-outline)}
+:root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ body.pwa-workspace .pwa-dialog-actions button[type=submit]{background:var(--lab-ui-action);color:var(--lab-ui-on-action)}
+:root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ body.pwa-workspace .pwa-inspiration{background:var(--lab-ui-rail);color:var(--lab-ui-on-rail);border-left:4px solid var(--lab-print-active-ink)}
+:root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ body.pwa-workspace .pwa-inspiration strong{color:var(--lab-ui-highlight)}
+:root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ body.pwa-workspace :is(.pwa-guide-tabs button,.pwa-sleeve-actions button){background:var(--lab-ui-field);color:var(--lab-ui-on-field)}
+:root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut])
+ body.gig-poster :is(button,a,input,textarea,summary):focus-visible{outline-color:var(--lab-ui-focus)}
+@media(max-width:520px){
+ .pwa-theme-choices{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+.pwa-theme-choice[data-pwa-theme=kingston] .pwa-theme-sample i:nth-child(1){background:#263f3e}
+.pwa-theme-choice[data-pwa-theme=kingston] .pwa-theme-sample i:nth-child(2){background:#e3d9c2}
+.pwa-theme-choice[data-pwa-theme=kingston] .pwa-theme-sample i:nth-child(3){background:#9b3a2b}
+.pwa-theme-choice[data-pwa-theme=detroit] .pwa-theme-sample i:nth-child(1){background:#171717}
+.pwa-theme-choice[data-pwa-theme=detroit] .pwa-theme-sample i:nth-child(2){background:#e7e5db}
+.pwa-theme-choice[data-pwa-theme=detroit] .pwa-theme-sample i:nth-child(3){background:#f50093}
+.pwa-theme-choice[data-pwa-theme=addis] .pwa-theme-sample i:nth-child(1){background:#2d251f}
+.pwa-theme-choice[data-pwa-theme=addis] .pwa-theme-sample i:nth-child(2){background:#f2e8ce}
+.pwa-theme-choice[data-pwa-theme=addis] .pwa-theme-sample i:nth-child(3){background:#0f6660}
+.pwa-theme-choice[data-pwa-theme=polish] .pwa-theme-sample i:nth-child(1){background:#172c40}
+.pwa-theme-choice[data-pwa-theme=polish] .pwa-theme-sample i:nth-child(2){background:#f6f2e6}
+.pwa-theme-choice[data-pwa-theme=polish] .pwa-theme-sample i:nth-child(3){background:#c13b28}
+.pwa-theme-choice[data-pwa-theme=beirut] .pwa-theme-sample i:nth-child(1){background:#1c3240}
+.pwa-theme-choice[data-pwa-theme=beirut] .pwa-theme-sample i:nth-child(2){background:#e3d8bf}
+.pwa-theme-choice[data-pwa-theme=beirut] .pwa-theme-sample i:nth-child(3){background:#99434b}
+
+/* Canonical selected Funk performance: reuse the same baked Android engraving
+   from the already-packaged three-map bundle. Keep the theme-colored neutral
+   Funk untouched; selected violet/magenta and shaded highlighter are invariant. */
+:root body.gig-poster.pwa-workspace[data-page=launch] .mood-grid .mood[data-mood=funky][aria-pressed=true]{
+ --funk-selected-paper:#311333;
+ background-color:#6e225c!important;
+ background-image:radial-gradient(circle at 83% 13%,#efa06344,transparent 41%),linear-gradient(145deg,#311333,#722269 66%,#a52d78)!important;
+ color:#f2c84e!important;
+ box-shadow:inset 0 0 0 2px #f2c84e!important;
+ isolation:isolate;
+}
+:root body.gig-poster.pwa-workspace[data-page=launch] .mood-grid .mood[data-mood=funky][aria-pressed=true] .word{
+ color:#f2c84e!important;background:transparent!important;
+ text-decoration:underline;text-decoration-color:#f2c84e!important;
+}
+:root body.gig-poster.pwa-workspace[data-page=launch] .mood-grid .mood[data-mood=funky][aria-pressed=true] .face{filter:none!important}
+:root body.gig-poster.pwa-workspace[data-page=launch] .mood-grid .mood[data-mood=funky][aria-pressed=true] .face::after{
+ background-image:url('/pwa-atlas/assets/funk-selected-engraved.webp')!important;
+ background-size:100% 100%!important;
+ background-position:center!important;
+ filter:none!important;
+}
+:root body.gig-poster.pwa-workspace[data-page=launch] .mood-grid .mood[data-mood=funky][aria-pressed=true] .funk-rays{
+ opacity:.82!important;filter:hue-rotate(23deg) saturate(1.24)!important;
+}

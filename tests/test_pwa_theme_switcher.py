@@ -6,11 +6,11 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 
 class PWAThemeTests(unittest.TestCase):
-    def test_three_named_preferences_and_stable_local_storage_key(self):
+    def test_eight_named_preferences_and_stable_local_storage_key(self):
         js = (ROOT / "launcher/assets/pwa-workspace.js").read_text()
-        self.assertIn("const THEMES=['liberi','bosque','usiku']", js)
+        self.assertIn("const THEMES=['liberi','bosque','usiku','kingston','detroit','addis','polish','beirut']", js)
         self.assertIn("const THEME_STORE='ghg-pwa-theme-v1'", js)
-        for theme in ("liberi", "bosque", "usiku"):
+        for theme in ("liberi", "bosque", "usiku", "kingston", "detroit", "addis", "polish", "beirut"):
             self.assertIn(f'data-pwa-theme="{theme}"', js)
         self.assertIn('aria-labelledby="pwaThemeHeading"', js)
         self.assertIn("aria-pressed", js)
@@ -38,6 +38,34 @@ class PWAThemeTests(unittest.TestCase):
         self.assertIn("--usiku-neutral-edge:#7e4c30", css)
         self.assertNotIn("usiku-neutral-two-ink-v1.webp", css)
         self.assertNotIn("rgba(240,200,161,.76)", css)
+
+    def test_print_themes_match_approved_android_ui_tokens(self):
+        canonical = (ROOT / "android-lab/web/theme-tokens.css").read_text()
+        browser = (ROOT / "launcher/assets/pwa-themes.css").read_text()
+        for theme in ("kingston", "detroit", "addis", "polish", "beirut"):
+            start = canonical.index(":root[data-pwa-theme=" + theme + "]{")
+            end = canonical.index("\n}", start) + 2
+            self.assertIn(canonical[start:end], browser)
+            self.assertIn(f":root[data-pwa-theme={theme}]", browser)
+        self.assertIn("--lab-atlas-ocean", browser)
+        self.assertIn("--lab-mood-selected-paper", browser)
+        self.assertIn("@media(max-width:520px)", browser)
+
+    def test_print_themes_work_in_three_projection_browser_atlas(self):
+        bridge = (ROOT / "launcher/assets/pwa-atlas-bridge.js").read_text()
+        for theme in ("kingston", "detroit", "addis", "polish", "beirut"):
+            self.assertIn(theme + ":{ocean:", bridge)
+            self.assertIn(theme + ":{paper:", bridge)
+        self.assertIn("data-lab-print-style", bridge)
+        self.assertIn("ghgThemeProfile", bridge)
+        self.assertIn("applyBrowserTheme(theme)", bridge)
+
+    def test_selected_funk_uses_the_baked_android_plate_not_flat_filter(self):
+        browser = (ROOT / "launcher/assets/pwa-themes.css").read_text()
+        bundle = (ROOT / "scripts/bundle_android_lab.py").read_text()
+        self.assertIn("/pwa-atlas/assets/funk-selected-engraved.webp", browser)
+        self.assertIn("destination / 'assets/funk-selected-engraved.webp'", bundle)
+        self.assertIn("background-size:100% 100%!important", browser)
 
     def test_worker_applies_theme_early_to_browser_jukebox_and_manual(self):
         worker = (ROOT / "cloudflare/worker.js").read_text()

@@ -119,6 +119,7 @@ for(const profile of profiles){
     sea:getComputedStyle(document.querySelector('.crate-map-ocean')).fill,
     land:getComputedStyle(document.querySelector('#posterLandEngraving rect')).fill,
     selectInk:getComputedStyle(document.querySelector('.mood[data-mood="funky"] .face'),'::after').filter,
+    selectPortraitImage:getComputedStyle(document.querySelector('.mood[data-mood="funky"] .face'),'::after').backgroundImage,
     funkGradient:getComputedStyle(document.querySelector('.mood[data-mood="funky"]')).backgroundImage,
     desireNeutralInk:getComputedStyle(document.querySelector('.mood[data-mood="desire"] .face'),'::before').filter,
     desireNeutralOpacity:getComputedStyle(document.querySelector('.mood[data-mood="desire"] .face'),'::before').opacity,
@@ -143,7 +144,8 @@ for(const profile of profiles){
     assert.equal(observedThemes[name].desire,'rgb(229, 207, 66)','Desire uses racing-yellow selection');
     assert.equal(observedThemes[name].funky,'rgb(110, 34, 92)','The Funk has its own violet base');
     assert.match(observedThemes[name].funkGradient,/linear-gradient/,'Funk uses a violet to magenta pressing');
-    assert.notEqual(observedThemes[name].selectInk,'none','Funk portrait retains its vivid ink treatment');
+    assert.equal(observedThemes[name].selectInk,'none','Canonical baked Funk needs no flat color filter');
+    assert.match(observedThemes[name].selectPortraitImage,/funk-selected-engraved\.webp/,'Funk uses the original engraved highlighter artwork');
     assert.match(observedThemes[name].desireNeutralInk,/referenceInk/,'Desire reuses the natural detailed portrait');
     assert.equal(observedThemes[name].desireNeutralOpacity,'1','Desire neutral portrait remains visible on selection');
     assert.equal(observedThemes[name].desireSelectedOpacity,'0','Desire negative-looking selection plate stays hidden');
@@ -209,6 +211,34 @@ for(const profile of profiles){
   await page.locator('button[data-pwa-theme="liberi"]').click();
   await page.locator('[data-pwa-action="close"]').click();
   await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
+  // Five approved Android print themes: behavior and storage stay unchanged.
+  const printPapers={
+   kingston:'rgb(227, 217, 194)',detroit:'rgb(231, 229, 219)',
+   addis:'rgb(242, 232, 206)',polish:'rgb(246, 242, 230)',
+   beirut:'rgb(227, 216, 191)'
+  };
+  for(const [name,paper] of Object.entries(printPapers)){
+   await page.locator('[data-pwa-action="prefs"]').click();
+   await page.locator('button[data-pwa-theme="'+name+'"]').click();
+   assert.equal(await page.evaluate(()=>document.documentElement.dataset.pwaTheme),name);
+   assert.equal(await page.locator('button[data-pwa-theme][aria-pressed=true]').count(),1);
+   await page.locator('[data-pwa-action="close"]').click();
+   assert.equal(await page.locator('.site').evaluate(el=>getComputedStyle(el).backgroundColor),paper);
+   for(const tab of ['crate','manual']){
+    await page.locator('[data-pwa-tab="'+tab+'"]').click();
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2),false,name+' '+tab+' overflow');
+    if(profile.name==='phone')await page.screenshot({path:folder+'/phone-print-'+name+'-'+tab+'.png'});
+   }
+   await page.locator('[data-pwa-tab="jukebox"]').click();
+   assert.equal(await page.locator('#prompt').textContent(),promptBeforeColorChange,
+    name+' theme must not alter the playlist request');
+  }
+  await page.reload({waitUntil:'domcontentloaded'});
+  await page.locator('.pwa-rail').waitFor({state:'visible'});
+  assert.equal(await page.evaluate(()=>document.documentElement.dataset.pwaTheme),'beirut','Print theme survives reload');
+  await page.locator('[data-pwa-action="prefs"]').click();
+  await page.locator('button[data-pwa-theme="liberi"]').click();
+  await page.locator('[data-pwa-action="close"]').click();
   const rects=await page.locator('.pwa-rail button').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return {width:r.width,height:r.height}}));
   assert.equal(rects.length,4,'four rail buttons');
   assert.ok(rects.every(r=>r.width>=44&&r.height>=44),'rail touch targets');
