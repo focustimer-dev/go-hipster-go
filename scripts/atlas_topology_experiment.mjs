@@ -69,6 +69,49 @@ const report={
 };
 fs.writeFileSync(path.join(out,'metrics.json'),JSON.stringify(report,null,2)+'\n');
 fs.writeFileSync(path.join(out,'comparison.html'),'<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Atlas topology comparison</title><style>body{background:#f4efe5;color:#003f2b;font:16px system-ui;margin:1rem}.panels{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1rem}.panel{border:1px solid #aba48f;background:#fffdf8;padding:.8rem}.panel svg{width:100%;height:auto}h2{margin-top:2rem}</style><h1>One geographic border mesh, three D3 projections</h1><p>Canonical 51 US polygons remain unchanged for touch selection. Both sides draw border lines only; production is unaffected.</p>'+sections.join('')+'</html>');
+// Additional deployment candidate: construct topology from the actual poster
+// SVG coordinates that bundle_maplibre_lab.py turns into Android GeoJSON.
+// This avoids small border/fill discrepancies from mixing source precisions.
+const {createHash}=await import('node:crypto');
+const launcher=fs.readFileSync('launcher/index.html','utf8');
+const usTags=[...launcher.matchAll(/<path [^>]*data-atlas-country=[^>]*>/g)].map(x=>x[0]).filter(x=>x.includes('data-atlas-country="USA"'));
+const runtimeFeatures=usTags.map(tag=>{
+ const country=tag.match(/data-atlas-country="([^"]+)"/)[1];
+ const region=tag.match(/data-atlas-region="([^"]+)"/)[1];
+ const d=tag.match(/\bd="([^"]+)"/)[1];
+ const coordinates=[...d.matchAll(/M[^M]+/g)].map(part=>{
+  const ring=[...part[0].matchAll(/[ML](-?[\d.]+)\s+(-?[\d.]+)/g)].map(pair=>{
+   const x=Number(pair[1]),y=Number(pair[2]);
+   return [Number((x/2-180).toFixed(5)),
+    Number((Math.atan(Math.sinh((235.5-y)/116))*180/Math.PI).toFixed(5))];
+  });
+  if(ring.length<3)return null;
+  if(ring[0][0]!==ring.at(-1)[0]||ring[0][1]!==ring.at(-1)[1])ring.push([...ring[0]]);
+  return [ring];
+ }).filter(Boolean);
+ return {type:'Feature',properties:{country,region},geometry:{type:'MultiPolygon',coordinates}};
+});
+if(runtimeFeatures.length!==51||runtimeFeatures.some(x=>!x.geometry.coordinates.length))
+ throw Error('Android runtime must have 51 US state/DC shapes');
+const runtimeFC={type:'FeatureCollection',features:runtimeFeatures};
+const rtTopo=topology({states:runtimeFC});
+const rtMesh=mesh(rtTopo,rtTopo.objects.states,(a,b)=>a===b||a.properties.region!==b.properties.region);
+const rtOld=vm.runInNewContext(code+'\nlabUSRegionBorderGeometry;',{})(runtimeFC).geometry;
+const rtOldEdges=getEdges(rtOld),rtNewEdges=getEdges(rtMesh);
+const rtAbsent=[...rtOldEdges].filter(k=>!rtNewEdges.has(k));
+const rtExtra=[...rtNewEdges].filter(k=>!rtOldEdges.has(k));
+if(rtAbsent.length||rtExtra.length)throw Error('Android runtime geometry mismatch. Old-only '+rtAbsent.length+', topo-only '+rtExtra.length);
+const sourceSha256=createHash('sha256').update(usTags.join('\n')).digest('hex');
+const packed={sourceSha256,sourceFeatureCount:usTags.length,feature:{
+ type:'Feature',properties:{kind:'us-listening-regions'},geometry:rtMesh}};
+fs.writeFileSync(path.join(out,'android-us-regions-mesh.json'),JSON.stringify(packed)+'\n');
+report.androidRuntime={sha256:sourceSha256,features:usTags.length,
+ oldSegments:rtOldEdges.size,topologySegments:rtNewEdges.size,
+ topologicalPaths:rtMesh.coordinates.length,legacyPaths:rtOld.coordinates.length,
+ missing:rtAbsent.length,additional:rtExtra.length,
+ packedBytes:Buffer.byteLength(JSON.stringify(packed))};
+fs.writeFileSync(path.join(out,'metrics.json'),JSON.stringify(report,null,2)+'\n');
+
 console.log(JSON.stringify(report,null,2));
 if(missing.length||excess.length||leaks.length)throw Error('Topology differs from current boundary segments or leaks same-region state seams; investigate before adoption');
 console.log('PASS: identical visible boundary segments, no state seams, valid paths in all three D3 projections.');
