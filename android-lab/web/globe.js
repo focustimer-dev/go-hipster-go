@@ -214,7 +214,7 @@ function installLabGlobeSecrets(old){
     button.appendChild(icon);
    }else{button.innerHTML='<svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12" fill="none" stroke="currentColor"/><path d="M16 7V25M7 16H25" stroke="currentColor"/></svg>'}
    button.onclick=event=>{event.stopPropagation();old._atlasSecretsSync?.(true);old._atlasOpenSecret?.(hot.dataset.secret)};
-   const point=labGlobeUnproject([x,y]),marker=new maplibregl.Marker({element:button}).setLngLat(point).addTo(labGlobe);labSecretMarkers.push({marker,point,secret:hot.dataset.secret,label:hot.getAttribute('aria-label')});
+   const point=labGlobeUnproject([x,y]),marker=new maplibregl.Marker({element:button,opacityWhenCovered:0}).setLngLat(point).addTo(labGlobe);labSecretMarkers.push({marker,point,secret:hot.dataset.secret,label:hot.getAttribute('aria-label')});
   }
  }
  labRouteGeography={type:'FeatureCollection',features};

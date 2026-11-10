@@ -271,6 +271,7 @@ body.gig-poster .crate-map-frame:has(.lab-cahill-active) .atlas-radial-field{dis
  border:0;background:transparent;color:var(--lab-atlas-route,#edc65d);
 }
 #labAtlasGlobe .lab-globe-secret[hidden]{display:none!important}
+#labAtlasGlobe .lab-globe-secret.maplibregl-marker-covered{pointer-events:none}
 #labAtlasGlobe .lab-globe-engraving{
  display:block;width:38px;height:38px;background:currentColor;
  mask-size:300% 100%;-webkit-mask-size:300% 100%;
