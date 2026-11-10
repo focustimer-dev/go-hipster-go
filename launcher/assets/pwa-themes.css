@@ -734,3 +734,29 @@ html[data-pwa-theme=usiku] body.pwa-workspace .pwa-dialog-head{
 .pwa-theme-choice[data-pwa-theme=beirut] .pwa-theme-sample i:nth-child(1){background:#1c3240}
 .pwa-theme-choice[data-pwa-theme=beirut] .pwa-theme-sample i:nth-child(2){background:#e3d8bf}
 .pwa-theme-choice[data-pwa-theme=beirut] .pwa-theme-sample i:nth-child(3){background:#99434b}
+
+/* Canonical selected Funk performance: reuse the same baked Android engraving
+   from the already-packaged three-map bundle. Keep the theme-colored neutral
+   Funk untouched; selected violet/magenta and shaded highlighter are invariant. */
+:root body.gig-poster.pwa-workspace[data-page=launch] .mood-grid .mood[data-mood=funky][aria-pressed=true]{
+ --funk-selected-paper:#311333;
+ background-color:#6e225c!important;
+ background-image:radial-gradient(circle at 83% 13%,#efa06344,transparent 41%),linear-gradient(145deg,#311333,#722269 66%,#a52d78)!important;
+ color:#f2c84e!important;
+ box-shadow:inset 0 0 0 2px #f2c84e!important;
+ isolation:isolate;
+}
+:root body.gig-poster.pwa-workspace[data-page=launch] .mood-grid .mood[data-mood=funky][aria-pressed=true] .word{
+ color:#f2c84e!important;background:transparent!important;
+ text-decoration:underline;text-decoration-color:#f2c84e!important;
+}
+:root body.gig-poster.pwa-workspace[data-page=launch] .mood-grid .mood[data-mood=funky][aria-pressed=true] .face{filter:none!important}
+:root body.gig-poster.pwa-workspace[data-page=launch] .mood-grid .mood[data-mood=funky][aria-pressed=true] .face::after{
+ background-image:url('/pwa-atlas/assets/funk-selected-engraved.webp')!important;
+ background-size:100% 100%!important;
+ background-position:center!important;
+ filter:none!important;
+}
+:root body.gig-poster.pwa-workspace[data-page=launch] .mood-grid .mood[data-mood=funky][aria-pressed=true] .funk-rays{
+ opacity:.82!important;filter:hue-rotate(23deg) saturate(1.24)!important;
+}
