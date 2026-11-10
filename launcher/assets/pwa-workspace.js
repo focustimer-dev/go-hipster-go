@@ -119,7 +119,7 @@ shell.innerHTML=[
  '<button class="pwa-theme-choice" type="button" data-pwa-theme="kingston" aria-pressed="false"><span class="pwa-theme-sample" aria-hidden="true"><i></i><i></i><i></i></span><strong>Kingston</strong><small>Blank-label</small></button>',
  '<button class="pwa-theme-choice" type="button" data-pwa-theme="detroit" aria-pressed="false"><span class="pwa-theme-sample" aria-hidden="true"><i></i><i></i><i></i></span><strong>Detroit</strong><small>Midnight Xerox</small></button>',
  '<button class="pwa-theme-choice" type="button" data-pwa-theme="addis" aria-pressed="false"><span class="pwa-theme-sample" aria-hidden="true"><i></i><i></i><i></i></span><strong>Addis</strong><small>Jazz Offset</small></button>',
- '<button class="pwa-theme-choice" type="button" data-pwa-theme="polish" aria-pressed="false"><span class="pwa-theme-sample" aria-hidden="true"><i></i><i></i><i></i></span><strong>Polish</strong><small>Jazz Modernism</small></button>',
+ '<button class="pwa-theme-choice" type="button" data-pwa-theme="polish" aria-pressed="false"><span class="pwa-theme-sample" aria-hidden="true"><i></i><i></i><i></i></span><strong>Katowice</strong><small>Jazz Modernism</small></button>',
  '<button class="pwa-theme-choice" type="button" data-pwa-theme="beirut" aria-pressed="false"><span class="pwa-theme-sample" aria-hidden="true"><i></i><i></i><i></i></span><strong>Beirut</strong><small>Cassette Slip</small></button>',
  '</div><p id="pwaThemeStatus" class="pwa-theme-status" role="status" aria-live="polite">Saved on this device when browser storage is available.</p></section>',
  '<p>AI and music choices stay on the Jukebox for the browser edition.</p><button type="button" class="pwa-wide" data-pwa-action="services">CHANGE AI &amp; MUSIC</button>',
