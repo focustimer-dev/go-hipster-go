@@ -157,7 +157,7 @@
   fill:var(--lab-atlas-land);stroke:var(--lab-atlas-ink);
 }
 :root[data-ghg-theme-profile=print] #labAtlasCahill [data-cahill-region][aria-pressed=true]{
-  fill:var(--lab-atlas-selected);stroke:var(--lab-atlas-ink);stroke-width:1.35;
+  fill:var(--lab-atlas-selected);stroke:var(--lab-atlas-ink);stroke-width:.65;
 }
 :root[data-ghg-theme-profile=print] #labAtlasCahill .lab-cahill-routes path{
   stroke:var(--lab-atlas-route);stroke-width:1.2;stroke-opacity:var(--lab-atlas-route-opacity);
