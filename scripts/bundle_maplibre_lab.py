@@ -21,6 +21,38 @@ def _clip_longitude(ring, boundary, keep_west):
         result.append(result[0])
     return result
 
+def restore_russian_arctic(poster, source, keep_west):
+    """Extend the cropped Arctic coast while keeping the shared poster borders."""
+    crop_latitude = 75.03826
+    mainland = max(source, key=lambda polygon: len(polygon[0]))
+    arctic_islands = [polygon for polygon in source if polygon is not mainland
+                      and max(point[1] for point in polygon[0]) > crop_latitude]
+    islands = [[clipped for ring in polygon if (clipped := _clip_longitude(ring, 60, keep_west))]
+               for polygon in arctic_islands]
+    restored = [polygon for polygon in poster
+                if max(point[1] for point in polygon[0]) < crop_latitude]
+    if not keep_west:
+        # The mainland ring wraps across one continuous run of clipped points.
+        cropped = max(poster, key=lambda polygon: len(polygon[0]))
+        ring = cropped[0][:-1]
+        starts = [i for i, point in enumerate(ring)
+                  if point[1] < crop_latitude <= ring[i-1][1]]
+        start, = starts
+        ring = ring[start:] + ring[:start]
+        end = next(i for i, point in enumerate(ring) if point[1] >= crop_latitude)
+        if any(point[1] < crop_latitude for point in ring[end:]):
+            raise ValueError('Unexpected Russia mainland crop; check Arctic coast anchors')
+        kept = ring[:end]
+        coast = mainland[0]
+        first, last = (min(range(len(coast)), key=lambda i: math.dist(coast[i], anchor))
+                       for anchor in (kept[-1], kept[0]))
+        if first >= last or any(math.dist(coast[i], anchor) > .15
+                                for i, anchor in ((first, kept[-1]), (last, kept[0]))):
+            raise ValueError('Russia Arctic coast no longer matches poster anchors')
+        restored.append([kept + coast[first+1:last] + [kept[0]], *cropped[1:]])
+    return restored + [polygon for polygon in islands if polygon]
+
+
 def complete_polar_coastlines(features):
     """Restore source coastlines before projection, retaining IDs and region splits."""
     source = json.loads((ROOT / 'android-lab/web/polar-coastlines.geojson').read_text())
@@ -32,7 +64,11 @@ def complete_polar_coastlines(features):
         geometry = replacements[country]
         polygons = geometry['coordinates'] if geometry['type'] == 'MultiPolygon' else [geometry['coordinates']]
         region = feature['properties']['region']
-        split = (-95, region == 'canada-west') if country == 'CAN' else (60, region == 'eastern-europe') if country == 'RUS' else None
+        if country == 'RUS':
+            feature['geometry'] = {'type': 'MultiPolygon', 'coordinates': restore_russian_arctic(
+                feature['geometry']['coordinates'], polygons, region == 'eastern-europe')}
+            continue
+        split = (-95, region == 'canada-west') if country == 'CAN' else None
         if split:
             polygons = [[clipped for ring in polygon if (clipped := _clip_longitude(ring, *split))] for polygon in polygons]
             polygons = [polygon for polygon in polygons if polygon]
