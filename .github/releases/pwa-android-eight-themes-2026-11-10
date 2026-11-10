@@ -7,3 +7,5 @@ Trigger: production Cloudflare Worker workflow, one-shot commit marker
 Android: no release or Android source changes
 
 Retry after adding pinned Pillow dependency to the production workflow (commit 2648bee12febbfca44fb1f3ef03b624b78cedaa0). The first deploy failed during asset packaging, before Cloudflare deployment.
+
+Production smoke follow-up: standalone selected Desire hearts now checked independently from the approved Funk violet/magenta selected portrait. Smoke validation was outdated; first successful deployment had already completed before the check failed. Check correction commit: 414ddc081d37cf3cb1c4dc122cb7e16c9b04e5e9.
