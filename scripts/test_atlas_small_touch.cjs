@@ -35,7 +35,7 @@ const morphEnv=vm.createContext({window:{},devicePixelRatio:1});
 vm.runInContext(read('android-lab/web/atlas-morph-vectors.js'),morphEnv);
 const painter=vm.runInContext('labAtlasMorphVectors',morphEnv);
 const triangle=(country,region)=>({type:'Feature',properties:{country,region},
- geometry:{type:'MultiPolygon',coordinates:[[[[0,0],[1,0],[1,1],[0,0]]]]]}});
+ geometry:{type:'MultiPolygon',coordinates:[[[[0,0],[1,0],[1,1],[0,0]]]]}});
 const prepared=painter.prepare({type:'FeatureCollection',features:[
  triangle('USA','us-midwest'),triangle('CAN','canada-east')]});
 assert.equal(prepared.features[0].country,'USA','Morph must retain country identity');
