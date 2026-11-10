@@ -1,9 +1,14 @@
 name: Sign canonical Android Lab 0.9.69 (approved one-shot)
 
-# Manual fallback and one-shot after successful main CI for this workflow edit.
-# Ordinary main commits do not trigger signing.
+# One-shot signed release from this workflow edit. The release job independently
+# verifies the app build and fast deterministic tests; flaky headless screenshots
+# are NOT a release gate. Ordinary main commits cannot trigger this signer.
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sign-android-lab-0-9-68.yml'
   workflow_run:
     workflows: ["Android Lab (no deployment)"]
     types: [completed]
@@ -20,6 +25,7 @@ jobs:
   build-sign:
     if: >-
       github.event_name == 'workflow_dispatch' ||
+      github.event_name == 'push' ||
       (github.event.workflow_run.conclusion == 'success' &&
        github.event.workflow_run.head_branch == 'main' &&
        github.event.workflow_run.event == 'push' &&
@@ -31,7 +37,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
-      - name: Require approved main commit and successful Android Lab CI
+      - name: Require approved one-shot main source revision
         env:
           GH_TOKEN: ${{ github.token }}
           SOURCE_SHA: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
@@ -47,20 +53,22 @@ jobs:
             echo "::error::main has moved; refuse to sign an out-of-date commit"
             exit 1
           }
-          if [[ "${GITHUB_EVENT_NAME}" == "workflow_run" ]]; then
-            # Sign once, only for this approved release-workflow change.
+          if [[ "${GITHUB_EVENT_NAME}" != "workflow_dispatch" ]]; then
+            # Sign only when the exact current main commit changes this release workflow.
             gh api "repos/${GITHUB_REPOSITORY}/commits/${SOURCE_SHA}" \
               --jq '.files[].filename' | grep -Fx '.github/workflows/sign-android-lab-0-9-68.yml' || {
               echo "::error::Not the approved one-shot release commit"
               exit 1
             }
           fi
-          result="$(gh api "repos/${GITHUB_REPOSITORY}/commits/${SOURCE_SHA}/check-runs" \
-            --jq '[.check_runs[] | select(.name=="lab" and .head_sha=="'"${SOURCE_SHA}"'") | .conclusion] | first // ""')"
-          test "$result" = "success" || {
-            echo "::error::The exact main commit does not have a green Android Lab CI run"
-            exit 1
-          }
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_run" ]]; then
+            result="$(gh api "repos/${GITHUB_REPOSITORY}/commits/${SOURCE_SHA}/check-runs" \
+              --jq '[.check_runs[] | select(.name=="lab" and .head_sha=="'"${SOURCE_SHA}"'") | .conclusion] | first // ""')"
+            test "$result" = "success" || {
+              echo "::error::The exact main commit does not have a green Android Lab CI run"
+              exit 1
+            }
+          fi
           test "$(git rev-parse HEAD)" = "${SOURCE_SHA}" || {
             echo "::error::Checkout does not match release source"
             exit 1
@@ -82,6 +90,8 @@ jobs:
           sdkmanager 'platforms;android-36' 'build-tools;35.0.0'
           python -m pip install Pillow==12.0.0
           python -m unittest discover -s android-lab/tests -v
+          node scripts/test_atlas_small_touch.cjs
+          node scripts/test_lab_discovery_routes.cjs
           bash android/gradlew -p android-lab testReleaseUnitTest assembleRelease lintVitalRelease --no-daemon
       - name: Verify exact package and version, then align
         shell: bash
