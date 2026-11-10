@@ -435,3 +435,13 @@ Artwork acceptance and era slider are tracked in docs/mood-expansion-plan.md; no
 - Keep a clean mono archival release eligible. Do not infer quality from a region, tradition or date. Intentional fuzz and lo-fi remain eligible unless their actual presentation conflicts with the listening preference.
 - With uncertain quality and no audio access, disclose uncertainty; never claim an audition. If no suitable alternative is verifiable within the brief, explain the shortfall without silently changing regions or dropping the preference.
 - Repeat for GO HARD and for a legacy long app prompt. The compact app flag must invoke the same skill policy.
+
+
+## Refresh command regression cases
+
+- After a visible regional mashup, `Refresh`: retain its constraints, select new recordings and prefer new artists; create a new playlist without changing the old one.
+- After obscure-artist alternatives, `refresh text only`: explore a different compatible route, exclude visible recordings and publish nothing.
+- After open-ended GO, `REFRESH`: build a new candidate pool, not a reorder or remaster swap.
+- In a new conversation, `refresh`: ask only for the missing brief; do not access histories or require exclusions.
+- `go refresh slow` updates tempo; an inspiration title containing refresh alone does not dispatch it.
+- A publication retry preserves the existing crate; de-cheese retains audit priority.
