@@ -153,7 +153,8 @@ function pwaInspirationMetadata(reference){
 
 // The skill owns curation policy; GO sends only current creative inputs and service.
 function goPrompt(ai,service,mood){
- const parts=[goCommand(ai,service,mood)];
+ const parts=[goCommand(ai,service,mood)+(mixCurveTrialCode?", text only":"")];
+ if(mixCurveTrialCode)parts.push(mixCurveTrialCode);
  /* PLATFORM_ROUTE_PROMPT */
 
  if(crateSelected.size)parts.push(crateRegionPrompt());
@@ -504,6 +505,56 @@ function updateCrateMap(reframe=true){
  copiedPrompt=null;selectionChanged(false,true);if(reframe)frameSelectedAtlas();
 }
 const params=new URLSearchParams(location.search);
+// BEGIN optional mix-curve trial. Remove this block, its panel mount, and the two GO hooks to retire it.
+const mixCurveTrialEnabled=body.dataset.page==="launch"&&params.get("mixCurve")==="1";
+let mixCurveTrialInput=null;
+let mixCurveTrialCode="";
+function parseMixCurveTrial(value){
+ const lines=value.trim().split(/\r?\n/);
+ if(lines.length===2&&/^go, text only$/i.test(lines[0].trim()))lines.shift();
+ if(lines.length!==1)return null;
+ const code=lines[0].trim();
+ if(!code)return "";
+ const payload=code.slice(3);
+ if(!code.startsWith("c1:"))return null;
+ const slots=payload.match(/-?[0-2](?:[hasdwcft]{1,2}|x)?/g);
+ if(!slots||slots.length!==12||slots.join("")!==payload)return null;
+ if(slots.some(slot=>/^-0|([hasdwcft])\1$/.test(slot)))return null;
+ return code;
+}
+function mountMixCurveTrial(){
+ if(!mixCurveTrialEnabled)return;
+ const tempoControl=doc.getElementById("tempoControl");
+ if(!tempoControl)return;
+ const panel=doc.createElement("details");
+ panel.open=true;
+ const heading=doc.createElement("summary");
+ heading.textContent="Mix curve trial";
+ const label=doc.createElement("label");
+ label.textContent="Paste a curve or the Kingston test request ";
+ const input=doc.createElement("textarea");
+ input.rows=2;
+ input.maxLength=100;
+ input.placeholder="c1:…";
+ const help=doc.createElement("p");
+ help.id="mixCurveTrialHelp";
+ help.textContent="A curve runs GO in text-only mode. Clear the field to return to normal GO.";
+ input.setAttribute("aria-describedby",help.id);
+ input.addEventListener("input",()=>{
+   const parsed=parseMixCurveTrial(input.value);
+   mixCurveTrialCode=parsed??"";
+   input.setCustomValidity(parsed===null?"Paste a valid curve with 12 tracks, or clear the field.":"");
+   input.setAttribute("aria-invalid",String(parsed===null));
+   copiedPrompt=null;
+   renderLaunch();
+ });
+ label.append(input);
+ panel.append(heading,label,help);
+ tempoControl.after(panel);
+ mixCurveTrialInput=input;
+}
+// END optional mix-curve trial
+
 includeCover=params.get("cover")==="1";
 goHard=params.get("hard")==="1";
 skipRough=params.has("clean")?params.get("clean")==="1":stored("ghg-skip-rough-v1")==="1";
@@ -769,6 +820,7 @@ if(coverOption)coverOption.addEventListener("click",()=>{
  status("Cover art "+(includeCover?"included":"removed")+". Press GO to copy the updated request.");
 });
 async function copyGo(){
+ if(mixCurveTrialInput&&!mixCurveTrialInput.reportValidity())return;
  const button=doc.getElementById("goButton");
  if(button&&button.disabled)return;
  /* PLATFORM_BEFORE_GO */
@@ -1381,6 +1433,7 @@ if(tempoSlider){
 }
 const anyTempo=doc.getElementById("anyTempo");
 if(anyTempo)anyTempo.addEventListener("click",()=>{tempo="";copiedPrompt=null;selectionChanged()});
+mountMixCurveTrial();
 const go=doc.getElementById("goButton");if(go)go.addEventListener("click",copyGo);
 for(const id of ["openAi","browserAi"]){const a=doc.getElementById(id);if(a)a.addEventListener("click",event=>{
  if(copiedPrompt!==goPrompt(ai,service,mood)){event.preventDefault();status("Press GO to copy the current prompt before opening your AI.")}
