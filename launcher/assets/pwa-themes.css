@@ -814,6 +814,9 @@ html[data-pwa-theme=usiku] body.pwa-workspace .pwa-dialog-head{
  filter:url(#pwaMichoacanSelected)!important;
 }
 :root[data-pwa-theme=michoacan] body.gig-poster .mood-grid .mood:not([data-mood=funky])[aria-pressed=true] .face{filter:none!important}
+:root[data-pwa-theme=michoacan] body.gig-poster[data-page=launch] :is(.receipt[data-copy-state=copied] .receipt-copy,.handoff #openAi[aria-disabled=false]){
+ background:var(--lab-ui-highlight);color:var(--lab-ui-on-highlight);border-color:var(--lab-ui-highlight);
+}
 :root[data-pwa-theme=michoacan] body.gig-poster .go-button .go-copy b{color:var(--lab-ui-go-ink)}
 :root[data-pwa-theme=michoacan] body.gig-poster .poster-bird{--poster-bird-ink:var(--lab-print-stamp)}
 :root[data-pwa-theme=michoacan] body.pwa-workspace :is(.pwa-page,.pwa-dialog){background:var(--lab-ui-surface);color:var(--lab-ui-ink)}
