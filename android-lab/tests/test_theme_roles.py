@@ -106,7 +106,7 @@ class AndroidThemeRoles(unittest.TestCase):
         pattern=r"\b([a-z]+):Object\.freeze\(\{(.*?)\n \}\)"
         atlas_def=dict(re.findall(pattern,atlas,re.S))
         mood_def=dict(re.findall(pattern,moods,re.S))
-        self.assertEqual(set(atlas_def),{"liberi","bosque","usiku","kingston","detroit","addis","polish","beirut"})
+        self.assertEqual(set(atlas_def),{"liberi","bosque","usiku","kingston","detroit","addis","polish","beirut","michoacan"})
         self.assertEqual(set(mood_def),set(atlas_def))
         atlas_required={
             "paper","land","ocean","ink","selected","route",
@@ -131,13 +131,30 @@ class AndroidThemeRoles(unittest.TestCase):
         self.assertIn("function applyThemeTokens()",js)
         self.assertIn("applyThemeTokens();requestPaint()",js)
 
+    def test_michoacan_dark_surface_and_paper_pairs(self):
+        raw=source("android-lab/web/theme-tokens.css")
+        body=re.search(r":root\[data-pwa-theme=michoacan\]\{([^}]*)\}",raw,re.S).group(1)
+        values=dict(re.findall(r"(--lab-[a-z-]+):\s*(#[0-9a-f]{6})\s*;",body))
+        for bg,fg in (("surface","ink"),("panel","on-panel"),("rail","on-rail"),
+                      ("action","on-action"),("field","on-field"),("ticket-stock","ticket-ink"),
+                      ("go","go-ink"),("highlight","on-highlight")):
+            self.assertGreaterEqual(contrast(values["--lab-ui-"+bg],values["--lab-ui-"+fg]),4.5,bg)
+        self.assertGreaterEqual(contrast("#d1ad91","#49232b"),4.5)
+        self.assertGreaterEqual(contrast("#e5b653","#24191b"),4.5)
+        # Actual source art is luminance-transferred, not inverted or replaced.
+        pwa=source("launcher/assets/pwa-workspace.js")
+        for name in ("pwaMichoacanNeutral","pwaMichoacanSelected"):
+            self.assertIn('id="'+name+'"',pwa)
+        self.assertIn('feComponentTransfer',pwa)
+        self.assertIn('--lab-mood-selected-edge:#49232b',raw)
+
     def test_kingston_android_theme_contrast_safe(self):
         js=source("android-lab/web/theme.js")
         roles=source("android-lab/web/theme-tokens.css")
         css=source("android-lab/web/theme-print.css")
         bundle=source("scripts/bundle_android_lab.py")
-        self.assertIn("const PILOTS=['kingston','detroit','addis','polish','beirut']",js)
-        self.assertIn("THEMES=['liberi','bosque','usiku','kingston','detroit','addis','polish','beirut']",js)
+        self.assertIn("const PILOTS=['kingston','detroit','addis','polish','beirut','michoacan']",js)
+        self.assertIn("THEMES=['liberi','bosque','usiku','kingston','detroit','addis','polish','beirut','michoacan']",js)
         self.assertNotIn("PILOTS.includes(next)&&persist",js)
         self.assertIn("PILOTS.includes(preview)?preview:saved()",js)
         self.assertIn("data-lab-print-style",bundle)
@@ -211,7 +228,7 @@ class AndroidThemeRoles(unittest.TestCase):
         self.assertIn("kingston",print_profiles)
         css=source("android-lab/web/theme-print.css")
         manual=source("android-lab/web/manual-guide-theme.css")
-        self.assertNotRegex(css,r"data-pwa-theme=(kingston|detroit|addis|polish|beirut)")
+        self.assertNotRegex(css,r"data-pwa-theme=(kingston|detroit|addis|polish|beirut|michoacan)")
         for role in ("--lab-print-active-ink","--lab-print-stamp"):
             self.assertIn("var("+role,css)
         self.assertIn("var(--lab-print-active-ink)",manual)
@@ -221,9 +238,9 @@ class AndroidThemeRoles(unittest.TestCase):
         tokens=source("android-lab/web/theme-tokens.css")
         css=source("android-lab/web/theme-print.css")
         manual=source("android-lab/web/manual-guide.html")
-        self.assertIn("const PILOTS=['kingston','detroit','addis','polish','beirut']",js)
+        self.assertIn("const PILOTS=['kingston','detroit','addis','polish','beirut','michoacan']",js)
         self.assertIn(":root[data-pwa-theme=detroit]",tokens)
-        self.assertIn("kingston|detroit|addis|polish|beirut",manual)
+        self.assertIn("kingston|detroit|addis|polish|beirut|michoacan",manual)
         self.assertIn('data-lab-theme="detroit"',source("android-lab/web/workspace.html"))
         self.assertNotIn("data-pwa-theme=detroit",css)
         self.assertIn("var(--lab-print-substrate-texture,none)",css)
@@ -293,18 +310,18 @@ class AndroidThemeRoles(unittest.TestCase):
         baked=source("scripts/bake_funk_selected.py")
         self.assertIn("CELL_BOX = (1024, 512, 1536, 1024)",baked)
         self.assertIn("baked.putalpha(alpha)",baked)
-        self.assertNotRegex(print_css,r"data-pwa-theme=(addis|polish|beirut)")
+        self.assertNotRegex(print_css,r"data-pwa-theme=(addis|polish|beirut|michoacan)")
 
-    def test_five_print_palettes_are_selectable_and_complete(self):
+    def test_print_palettes_are_selectable_and_complete(self):
         js=source("android-lab/web/theme.js")
         roles=source("android-lab/web/theme-tokens.css")
         html=source("android-lab/web/workspace.html")
         guide=source("android-lab/web/manual-guide.html")
-        for name in ("kingston","detroit","addis","polish","beirut"):
+        for name in ("kingston","detroit","addis","polish","beirut","michoacan"):
             self.assertIn('data-lab-theme="'+name+'"',html)
             self.assertIn("data-pwa-theme="+name,roles)
-        self.assertIn("kingston|detroit|addis|polish|beirut",guide)
-        self.assertIn("const PILOTS=['kingston','detroit','addis','polish','beirut']",js)
+        self.assertIn("kingston|detroit|addis|polish|beirut|michoacan",guide)
+        self.assertIn("const PILOTS=['kingston','detroit','addis','polish','beirut','michoacan']",js)
 
     def test_print_tempo_thumb_consumes_only_active_ink(self):
         css=source("android-lab/web/theme-print.css")

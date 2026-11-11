@@ -15,6 +15,7 @@ on:
       - '.github/releases/pwa-skill-3-11-2-2026-11-06'
       - '.github/releases/pwa-theme-atlas-integration-2026-11-07'
       - '.github/releases/pwa-android-eight-themes-2026-11-10'
+      - '.github/releases/pwa-michoacan-2026-11-10'
 
 permissions:
   contents: read

@@ -97,6 +97,10 @@ manual.addEventListener('click',async event=>{
  }
 });
 manual.addEventListener('keydown',event=>{
+ if(event.key==='Escape'&&picker.open){
+  event.preventDefault();picker.open=false;
+  picker.querySelector('summary').focus();return;
+ }
  const tab=event.target.closest('[data-pwa-guide-group]');
  if(!tab||!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
  event.preventDefault();const next=tab.dataset.pwaGuideGroup==='setup'?'use':'setup';

@@ -97,7 +97,7 @@
   box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--lab-ui-on-action) 28%,transparent);
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .go-button .go-copy b{
-  color:var(--lab-ui-on-action);
+  color:var(--lab-ui-go-ink,var(--lab-ui-on-action));
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .go-button .go-copy>span:not(.go-stamp){
   color:var(--lab-ui-on-action);
@@ -274,4 +274,9 @@
 :root[data-ghg-theme-profile=print] #labAtlasCahill [data-cahill-us-state]{stroke:none!important}
 :root[data-ghg-theme-profile=print] #labAtlasCahill .lab-us-region-boundaries{
  stroke:var(--lab-atlas-ink);fill:none;
+}
+
+/* The enhancements sit on GO's dark stock, not the page substrate. */
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .go-options .go-extras :is(#includeCover,#goHard) .option-label{
+ color:var(--lab-ui-on-action);
 }

@@ -43,7 +43,7 @@ try{
   assert.equal(await frame.locator('#labAtlasGlobe').count(),1,'Exactly one actual WebGL map');
   assert.equal(await frame.locator('.lab-atlas-modes [data-atlas-view]').count(),3,'Real Android projection controls');
   await page.evaluate(()=>localStorage.removeItem('ghg-crate-map-regions-v2'));
-  for(const theme of ['liberi','bosque','usiku']){
+  for(const theme of ['liberi','bosque','usiku','michoacan']){
    await page.locator('[data-pwa-action=prefs]').first().click();
    await page.locator('.pwa-theme-choice[data-pwa-theme='+theme+']').click();
    await page.locator('[data-pwa-action=close]').first().click();
@@ -68,11 +68,11 @@ try{
      keyesColor:keyes?.stroke||''};
    });
    assert(routeInk.count>0&&routeInk.paths>0,'Sailing routes must remain on both map renderers');
-   const routeColors={liberi:'#edc65d',bosque:'#8c6239',usiku:'#b77b4d'};
+   const routeColors={liberi:'#edc65d',bosque:'#8c6239',usiku:'#b77b4d',michoacan:'#e5b653'};
    assert.equal(routeInk.paint,routeColors[theme],theme+' route ink palette');
    assert.equal(routeInk.width,theme==='liberi'?1:1.7,theme+' route width');
-   assert.equal(routeInk.opacity,theme==='liberi'?.65:.88,theme+' route opacity');
-   if(theme!=='liberi'){
+   assert.equal(routeInk.opacity,theme==='liberi'?.65:theme==='michoacan'?.78:.88,theme+' route opacity');
+   if(theme!=='liberi'&&theme!=='michoacan'){
     assert(routeInk.keyesWidth>=1.75,theme+' Keyes route width must be readable (observed '+JSON.stringify(routeInk)+')');
     assert(routeInk.keyesOpacity>=.85,theme+' Keyes routes need sufficient opacity');
    }
@@ -124,7 +124,7 @@ try{
       }).length
      };
     });
-    const seaPalette={liberi:'#103135',bosque:'#e8e9df',usiku:'#111111'};
+    const seaPalette={liberi:'#103135',bosque:'#e8e9df',usiku:'#111111',michoacan:'#24191b'};
     assert.equal(visual.webglVisible,mode==='cahill-keyes'?'hidden':'visible',
      theme+'/'+mode+' must never show the previous WebGL map through Keyes');
     assert.equal(visual.hasArtificialRim,false,

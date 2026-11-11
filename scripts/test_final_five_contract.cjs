@@ -9,6 +9,7 @@ const root=path.resolve(__dirname,'../android-lab/app/src/main/assets/site');
 const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css',
  '.webp':'image/webp','.svg':'image/svg+xml','.png':'image/png','.woff':'font/woff'};
 const specs=[
+ {id:'michoacan',ocean:'#24191b',stock:'rgb(209, 173, 145)'},
  {id:'addis',ocean:'#0f4a48',stock:'rgb(242, 232, 206)'},
  {id:'polish',ocean:'#172c40',stock:'rgb(246, 242, 230)'},
  {id:'beirut',ocean:'#1c3240',stock:'rgb(227, 216, 191)'}
@@ -31,7 +32,7 @@ const specs=[
   await page.goto('http://127.0.0.1:'+server.address().port+'/?theme=addis',{waitUntil:'domcontentloaded'});
   await page.waitForFunction(()=>window.labAtlasGlobe?.loaded()&&window.labCahillMap?.ready,null,{timeout:25000});
   for(const spec of specs){
-   if(spec.id!=='addis')assert.equal(await page.evaluate(id=>window.HipsterLabTheme.set(id,false),spec.id),true);
+   assert.equal(await page.evaluate(id=>window.HipsterLabTheme.set(id,false),spec.id),true);
    // Wait for the new palette to SETTLE. Stock and selected ink have a
    // short CSS transition, so reading immediately after set() reports
    // the previous theme's paper, even though selection is already updated.

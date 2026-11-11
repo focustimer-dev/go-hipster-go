@@ -6,11 +6,11 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 
 class PWAThemeTests(unittest.TestCase):
-    def test_eight_named_preferences_and_stable_local_storage_key(self):
+    def test_nine_named_preferences_and_stable_local_storage_key(self):
         js = (ROOT / "launcher/assets/pwa-workspace.js").read_text()
-        self.assertIn("const THEMES=['liberi','bosque','usiku','kingston','detroit','addis','polish','beirut']", js)
+        self.assertIn("const THEMES=['liberi','bosque','usiku','kingston','detroit','addis','polish','beirut','michoacan']", js)
         self.assertIn("const THEME_STORE='ghg-pwa-theme-v1'", js)
-        for theme in ("liberi", "bosque", "usiku", "kingston", "detroit", "addis", "polish", "beirut"):
+        for theme in ("liberi", "bosque", "usiku", "kingston", "detroit", "addis", "polish", "beirut", "michoacan"):
             self.assertIn(f'data-pwa-theme="{theme}"', js)
         self.assertIn('aria-labelledby="pwaThemeHeading"', js)
         self.assertIn("aria-pressed", js)
@@ -42,7 +42,7 @@ class PWAThemeTests(unittest.TestCase):
     def test_print_themes_match_approved_android_ui_tokens(self):
         canonical = (ROOT / "android-lab/web/theme-tokens.css").read_text()
         browser = (ROOT / "launcher/assets/pwa-themes.css").read_text()
-        for theme in ("kingston", "detroit", "addis", "polish", "beirut"):
+        for theme in ("kingston", "detroit", "addis", "polish", "beirut", "michoacan"):
             start = canonical.index(":root[data-pwa-theme=" + theme + "]{")
             end = canonical.index("\n}", start) + 2
             self.assertIn(canonical[start:end], browser)
@@ -53,7 +53,7 @@ class PWAThemeTests(unittest.TestCase):
 
     def test_print_themes_work_in_three_projection_browser_atlas(self):
         bridge = (ROOT / "launcher/assets/pwa-atlas-bridge.js").read_text()
-        for theme in ("kingston", "detroit", "addis", "polish", "beirut"):
+        for theme in ("kingston", "detroit", "addis", "polish", "beirut", "michoacan"):
             self.assertIn(theme + ":{ocean:", bridge)
             self.assertIn(theme + ":{paper:", bridge)
         self.assertIn("data-lab-print-style", bridge)

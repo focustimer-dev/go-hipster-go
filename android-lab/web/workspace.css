@@ -982,3 +982,7 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
 .lab-theme-choice[data-lab-theme=beirut] .lab-theme-swatches i:nth-child(1){background:#1c3240}
 .lab-theme-choice[data-lab-theme=beirut] .lab-theme-swatches i:nth-child(2){background:#e3d8bf}
 .lab-theme-choice[data-lab-theme=beirut] .lab-theme-swatches i:nth-child(3){background:#a84950}
+
+[data-lab-theme=michoacan] .lab-theme-swatches i:nth-child(1){background:#6a2430}
+[data-lab-theme=michoacan] .lab-theme-swatches i:nth-child(2){background:#d1ad91}
+[data-lab-theme=michoacan] .lab-theme-swatches i:nth-child(3){background:#e5b653}

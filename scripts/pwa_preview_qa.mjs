@@ -215,7 +215,7 @@ for(const profile of profiles){
   const printPapers={
    kingston:'rgb(227, 217, 194)',detroit:'rgb(231, 229, 219)',
    addis:'rgb(242, 232, 206)',polish:'rgb(246, 242, 230)',
-   beirut:'rgb(227, 216, 191)'
+   beirut:'rgb(227, 216, 191)',michoacan:'rgb(106, 36, 48)'
   };
   for(const [name,paper] of Object.entries(printPapers)){
    await page.locator('[data-pwa-action="prefs"]').click();
@@ -227,15 +227,36 @@ for(const profile of profiles){
    for(const tab of ['crate','manual']){
     await page.locator('[data-pwa-tab="'+tab+'"]').click();
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2),false,name+' '+tab+' overflow');
-    if(profile.name==='phone')await page.screenshot({path:folder+'/phone-print-'+name+'-'+tab+'.png'});
+    if(profile.name==='phone'||name==='michoacan')await page.screenshot({path:folder+'/'+profile.name+'-print-'+name+'-'+tab+'.png'});
    }
    await page.locator('[data-pwa-tab="jukebox"]').click();
    assert.equal(await page.locator('#prompt').textContent(),promptBeforeColorChange,
     name+' theme must not alter the playlist request');
+   if(name==='michoacan'){
+    for(const id of ['includeCover','goHard']){
+     assert.equal(await page.locator('#'+id+' .option-label').evaluate(el=>getComputedStyle(el).color),'rgb(243, 230, 201)','Enhancement label uses parchment on dark GO stock');
+    }
+    await page.locator('#tempoSlider').press('ArrowRight');
+    await page.screenshot({path:folder+'/'+profile.name+'-michoacan-tempo.png'});
+    await page.locator('#anyTempo').click();
+    await page.locator('#goButton').scrollIntoViewIfNeeded();
+    await page.screenshot({path:folder+'/'+profile.name+'-michoacan-go.png'});
+    await page.locator('[data-pwa-tab="manual"]').click();
+    assert.equal(await page.locator('.pwa-guide-services').evaluate(el=>getComputedStyle(el).borderTopWidth),'0px');
+    await page.locator('[data-pwa-tab="jukebox"]').click();
+    await page.locator('.mood-grid').scrollIntoViewIfNeeded();
+    await page.screenshot({path:folder+'/'+profile.name+'-michoacan-jukebox.png'});
+    assert.equal(await page.locator('.mood[data-mood=sad]').evaluate(el=>getComputedStyle(el).backgroundColor),'rgb(209, 173, 145)');
+    assert.equal(await page.locator('.mood[data-mood=sad] .word').evaluate(el=>getComputedStyle(el).color),'rgb(73, 35, 43)');
+    assert.equal(await page.locator('.mood[data-mood=funky]').evaluate(el=>getComputedStyle(el).backgroundColor),'rgb(110, 34, 92)');
+    await page.reload({waitUntil:'domcontentloaded'});
+    await page.locator('.pwa-rail').waitFor({state:'visible'});
+    assert.equal(await page.evaluate(()=>document.documentElement.dataset.pwaTheme),'michoacan');
+   }
   }
   await page.reload({waitUntil:'domcontentloaded'});
   await page.locator('.pwa-rail').waitFor({state:'visible'});
-  assert.equal(await page.evaluate(()=>document.documentElement.dataset.pwaTheme),'beirut','Print theme survives reload');
+  assert.equal(await page.evaluate(()=>document.documentElement.dataset.pwaTheme),'michoacan','Print theme survives reload');
   await page.locator('[data-pwa-action="prefs"]').click();
   await page.locator('button[data-pwa-theme="liberi"]').click();
   await page.locator('[data-pwa-action="close"]').click();

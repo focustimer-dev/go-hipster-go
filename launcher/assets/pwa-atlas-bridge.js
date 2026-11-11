@@ -4,9 +4,10 @@
 (function(){
 'use strict';
 const KEY='ghg-pwa-crate-v1', REF='ghg-pwa-reference-v1', PREF='ghg-pwa-atlas-prefs-v1';
-const THEME_KEY='ghg-pwa-theme-v1', THEMES=['liberi','bosque','usiku','kingston','detroit','addis','polish','beirut'];
-const PRINT_THEMES=new Set(['kingston','detroit','addis','polish','beirut']);
+const THEME_KEY='ghg-pwa-theme-v1', THEMES=['liberi','bosque','usiku','kingston','detroit','addis','polish','beirut','michoacan'];
+const PRINT_THEMES=new Set(['kingston','detroit','addis','polish','beirut','michoacan']);
 const ATLAS_PALETTES={
+ michoacan:{ocean:'#24191b',land:'#d1ad91',ink:'#49232b',selected:'#e5b653',route:'#e5b653',routeOpacity:.78,routeWidth:1.1,routeDash:[3,4]},
  bosque:{ocean:'#e8e9df',land:'#004225',ink:'#003018',selected:'#e5cf42',route:'#8c6239'},
  usiku:{ocean:'#111111',land:'#f5f0e6',ink:'#003018',selected:'#e5cf42',route:'#b77b4d'},
  kingston:{ocean:'#273d3b',land:'#d3c4a8',ink:'#263f3e',selected:'#6d9991',route:'#7ba39b',routeOpacity:0.73,routeWidth:1.15,routeDash:[3,3]},
@@ -27,6 +28,7 @@ const LIBERI_ROUTE_PAINT={'line-color':'#edc65d','line-opacity':.65,
  'line-width':1,'line-dasharray':[3,5]};
 const THEMED_ROUTE_PAINT={opacity:.88,width:1.7,dash:[3,2.6]};
 const TWEEN_PALETTES={
+ michoacan:{paper:'#d1ad91',ocean:'#24191b',selected:'#e5b653',ink:'#49232b',backdrop:'#6a2430',land:'#d1ad91',route:'#e5b653'},
  liberi:{paper:'#dfb045',ocean:'#103135',selected:'#a83223',ink:'#103135',backdrop:'#dfb045'},
  bosque:{paper:'#004225',ocean:'#e8e9df',selected:'#e5cf42',ink:'#003018',backdrop:'#f5f0e6'},
  usiku:{paper:'#f5f0e6',ocean:'#111111',selected:'#e5cf42',ink:'#003018',backdrop:'#003018'},
