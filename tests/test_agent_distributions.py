@@ -68,6 +68,7 @@ class PortableAgentTests(unittest.TestCase):
             self.assertEqual(names, set(__import__("scripts.build_gemini_app_skill", fromlist=["REFERENCES"]).REFERENCES) | {
                 "SKILL.md",
                 "references/workflow.md",
+                "references/tempo-curve.md",
                 "references/global-scenes.md",
                 "references/sonic-taxonomy.md",
                 "references/curation-examples.md",
@@ -76,6 +77,9 @@ class PortableAgentTests(unittest.TestCase):
             entry = z.read("SKILL.md").decode("utf-8")
             self.assertLess(len(entry), 6500)
             self.assertIn("references/workflow.md", entry)
+            self.assertIn("read [tempo curve](references/tempo-curve.md) before choosing tracks", entry)
+            curve = z.read("references/tempo-curve.md").decode("utf-8")
+            self.assertIn("c1:-2wd-1012a210-1s-2-10", curve)
             text = entry + z.read("references/workflow.md").decode("utf-8")
             self.assertTrue(text.startswith("---\nname: go-hipster-go\n"))
             self.assertIn("passive-aggressive record-store clerk", text[:700])
@@ -115,6 +119,7 @@ class PortableAgentTests(unittest.TestCase):
             self.assertNotIn(r"\n\n##", text)
             # The short Gemini entry stays capped at 6.5 KB; detailed policy is deferred.
             self.assertLess(len(text), 40000)
+            self.assertNotIn("## Tempo and mood curve", text)
             quality = z.read("references/recording-quality.md").decode("utf-8")
             self.assertIn("Never silently relax", quality)
             self.assertIn("recording-quality.md", z.read("references/reference-index.md").decode("utf-8"))
