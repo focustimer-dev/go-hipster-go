@@ -159,7 +159,7 @@ function goPrompt(ai,service,mood){
 
  if(crateSelected.size)parts.push(crateRegionPrompt());
  const brief=moodDiscoveryBrief(mood);if(brief)parts.push(brief.trim());
- if(tempo)parts.push("Tempo preference: "+tempoNames[tempo]+".");
+ if(tempo&&!mixCurveTrialCode)parts.push("Tempo preference: "+tempoNames[tempo]+".");
  if(skipRough)parts.push("Recording preference: Skip rough recordings.");
  /* PLATFORM_REFERENCE */
  if(pwaReference)parts.push(...inspirationPromptLines(pwaReference,pwaInspirationMetadata(pwaReference)));
@@ -506,8 +506,8 @@ function updateCrateMap(reframe=true){
 }
 const params=new URLSearchParams(location.search);
 // BEGIN optional mix-curve trial. Remove this block, its panel mount, and the two GO hooks to retire it.
-const mixCurveTrialEnabled=body.dataset.page==="launch"&&params.get("mixCurve")==="1";
-let mixCurveTrialInput=null;
+const mixCurveTrialAvailable=body.dataset.page==="launch"&&
+ (params.get("mixCurve")==="1"||Boolean(doc.querySelector('script[src="/assets/lab-themes.js"]')));
 let mixCurveTrialCode="";
 function parseMixCurveTrial(value){
  const lines=value.trim().split(/\r?\n/);
@@ -523,35 +523,49 @@ function parseMixCurveTrial(value){
  return code;
 }
 function mountMixCurveTrial(){
- if(!mixCurveTrialEnabled)return;
+ if(!mixCurveTrialAvailable)return;
  const tempoControl=doc.getElementById("tempoControl");
  if(!tempoControl)return;
- const panel=doc.createElement("details");
- panel.open=true;
- const heading=doc.createElement("summary");
- heading.textContent="Mix curve trial";
+ const panel=doc.createElement("div");
  const label=doc.createElement("label");
- label.textContent="Paste a curve or the Kingston test request ";
- const input=doc.createElement("textarea");
- input.rows=2;
- input.maxLength=100;
- input.placeholder="c1:…";
- const help=doc.createElement("p");
- help.id="mixCurveTrialHelp";
- help.textContent="A curve runs GO in text-only mode. Clear the field to return to normal GO.";
- input.setAttribute("aria-describedby",help.id);
- input.addEventListener("input",()=>{
-   const parsed=parseMixCurveTrial(input.value);
-   mixCurveTrialCode=parsed??"";
-   input.setCustomValidity(parsed===null?"Paste a valid curve with 12 tracks, or clear the field.":"");
-   input.setAttribute("aria-invalid",String(parsed===null));
+ const toggle=doc.createElement("input");
+ toggle.type="checkbox";
+ label.append(toggle," Tempo curve trial");
+ panel.append(label);
+ tempoControl.before(panel);
+ let frame=null;
+ function setCurve(code){
+   if(code===mixCurveTrialCode)return;
+   mixCurveTrialCode=code;
    copiedPrompt=null;
    renderLaunch();
+ }
+ window.addEventListener("message",event=>{
+   if(!frame||event.source!==frame.contentWindow||event.origin!=="null")return;
+   const data=event.data;
+   if(!data||data.type!=="ghg-mix-curve"||typeof data.code!=="string")return;
+   const parsed=parseMixCurveTrial(data.code);
+   if(parsed===null)return;
+   if(Number.isFinite(data.height))frame.height=Math.max(100,Math.min(900,Math.ceil(data.height)));
+   setCurve(parsed);
  });
- label.append(input);
- panel.append(heading,label,help);
- tempoControl.after(panel);
- mixCurveTrialInput=input;
+ toggle.addEventListener("change",()=>{
+   if(!toggle.checked){
+     frame?.remove();
+     frame=null;
+     setCurve("");
+     return;
+   }
+   frame=doc.createElement("iframe");
+   frame.title="Kingston tempo curve editor";
+   frame.setAttribute("sandbox","allow-scripts");
+   frame.width="100%";
+   frame.height="250";
+   frame.style.border="0";
+   frame.style.display="block";
+   frame.src="/assets/mix-curve-trial.html";
+   panel.append(frame);
+ });
 }
 // END optional mix-curve trial
 
@@ -820,7 +834,6 @@ if(coverOption)coverOption.addEventListener("click",()=>{
  status("Cover art "+(includeCover?"included":"removed")+". Press GO to copy the updated request.");
 });
 async function copyGo(){
- if(mixCurveTrialInput&&!mixCurveTrialInput.reportValidity())return;
  const button=doc.getElementById("goButton");
  if(button&&button.disabled)return;
  /* PLATFORM_BEFORE_GO */
