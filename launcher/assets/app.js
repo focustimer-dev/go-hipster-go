@@ -631,11 +631,13 @@ function mountMixCurveTrial(){
    skipClick=null;
    if(!active){
      if(frame)frame.style.display="none";
+     doc.dispatchEvent(new Event("mixcurvegeometrychange"));
      setCurve("");
      return;
    }
    if(!frame){
      frame=doc.createElement("iframe");
+     frame.id="mixCurveEditor";
      frame.title="Tempo curve editor";
      frame.setAttribute("sandbox","allow-scripts");
      frame.width="100%";
@@ -656,6 +658,7 @@ function mountMixCurveTrial(){
      panel.append(frame);
    }
    frame.style.display="block";
+   doc.dispatchEvent(new Event("mixcurvegeometrychange"));
    setCurve(draftCode);
  }
  simpleButton.addEventListener("click",()=>selectCurve(false));
@@ -773,10 +776,10 @@ function renderLaunch(regionsOnly=false){
  e.mood.textContent=moodLabel(mood).toUpperCase();
  e.code.textContent=(ai==="chatgpt"?"CG":ai==="gemini"?"GM":ai==="claude"?"CL":"OTHER")+"-"+mood.slice(0,3).toUpperCase()+"-01";
  e.open.href=ai==="gemini"?geminiIntent:destinations[ai];e.open.textContent="↗ OPEN "+aiNames[ai].toUpperCase();
- const summary=doc.getElementById("receiptSummary");if(summary)summary.textContent=aiNames[ai]+" · "+serviceNames[service]+" · "+moodLabel(mood)+(tempo?" · "+tempoNames[tempo]:"")+" · 12 tracks"+(includeCover?" · cover art":"")+(goHard?" · deep crate":"")+(skipRough?" · skip rough recordings":"");
+ const summary=doc.getElementById("receiptSummary");if(summary)summary.textContent=aiNames[ai]+" · "+serviceNames[service]+" · "+moodLabel(mood)+(mixCurveTrialCode?" · Tempo curve":tempo?" · "+tempoNames[tempo]:"")+" · 12 tracks"+(includeCover?" · cover art":"")+(goHard?" · deep crate":"")+(skipRough?" · skip rough recordings":"");
  const regions=doc.getElementById("receiptRegions");if(regions)regions.textContent="CRATES / "+(crateSelected.size?crateRegions.filter(r=>crateSelected.has(r.id)).map(r=>r.label).join(" · "):"Worldwide");
  const ticketShort=doc.getElementById("selectionTicketShort");
- if(ticketShort)ticketShort.textContent=ticketAiCodes[ai]+" › "+ticketServiceCodes[service]+" · "+(moodParts(mood).map(m=>ticketMoodCodes[m]||({desire:"LOVE",triumphant:"WIN"})[m]).join("+")||"SURP")+" · "+(tempo?ticketTempoCodes[tempo]:"ANY");
+ if(ticketShort)ticketShort.textContent=ticketAiCodes[ai]+" › "+ticketServiceCodes[service]+" · "+(moodParts(mood).map(m=>ticketMoodCodes[m]||({desire:"LOVE",triumphant:"WIN"})[m]).join("+")||"SURP")+" · "+(mixCurveTrialCode?"CURVE":tempo?ticketTempoCodes[tempo]:"ANY");
  const ticketRegionShort=doc.getElementById("selectionTicketRegionShort");
  if(ticketRegionShort){
   const inspirationActive=Boolean((typeof labInspiration==="function"&&labInspiration())||pwaReference);
@@ -1600,7 +1603,9 @@ if(ticket){
     ticket.classList.remove("is-docked");
     details.open=false;
    }
-   const hidden=choiceBottom>(lab?56:0);
+   const curveBounds=doc.getElementById("mixCurveEditor")?.getBoundingClientRect();
+   const viewingCurve=Boolean(curveBounds&&curveBounds.height>0&&curveBounds.bottom>(lab?64:0)&&curveBounds.top<window.innerHeight);
+   const hidden=viewingCurve||choiceBottom>(lab?56:0);
    if(ticket.hidden!==hidden)ticket.hidden=hidden;
    ticket.classList.toggle('is-compact',choosingMoods);
    if(ticket.hidden)details.open=false;
@@ -1613,6 +1618,7 @@ if(ticket){
  }
  window.addEventListener("scroll",queueSelectionTicketVisibility,{passive:true});
  window.addEventListener("resize",queueSelectionTicketVisibility,{passive:true});
+ doc.addEventListener("mixcurvegeometrychange",queueSelectionTicketVisibility);
  doc.addEventListener('focusin',event=>{
   if(!body.classList.contains('lab-workspace')||ticket.hidden||ticket.classList.contains('is-docked')||!event.target.closest?.('.mood-grid'))return;
   const bounds=event.target.getBoundingClientRect(),bottom=ticket.getBoundingClientRect().bottom;
