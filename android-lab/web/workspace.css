@@ -95,7 +95,7 @@ body.gig-poster.lab-workspace #labRecordingPreferences #skipRough:focus-visible+
 /* An active reference becomes a record sleeve, not another selection state. */
 body.gig-poster.lab-workspace #labInspiration{
  display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px;
- margin:0;padding:4px 0;border-block:1px solid #10313566;color:#103135;
+ margin:0;padding:4px 0;border-block:1px solid var(--line);color:var(--ink);
  scroll-margin-top:72px;
 }
 #labInspiration strong{display:block;font:700 .6875rem/1.3 'Courier New',monospace;letter-spacing:.06em}
@@ -107,9 +107,9 @@ body.gig-poster.lab-workspace #labInspiration button{
 }
 #labInspiration #labReviewInspiration{text-decoration:underline;text-underline-offset:3px}
 body.gig-poster.lab-workspace #labInspiration #labDismissInspiration{font:400 1.4rem/1 Arial,sans-serif}
-#labInspiration button:focus-visible{outline:2px solid #103135;outline-offset:-2px}
+#labInspiration button:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
 .lab-workspace [data-mood]{scroll-margin-top:72px}
-#labInspirationGo{font:700 .8125rem/1.5 'Courier New',monospace;color:#103135;margin:12px 0}
+#labInspirationGo{font:700 .8125rem/1.5 'Courier New',monospace;color:var(--ink);margin:12px 0}
 
 #labSetupDetails[hidden]{display:none}
 #labSetupPreferences #firstCrateSetup{margin:0 0 24px;padding:0}
