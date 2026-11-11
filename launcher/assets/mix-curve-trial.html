@@ -40,7 +40,7 @@ body{background:#22332e;color:var(--ink)}main{max-width:820px;background:var(--p
 .mood-track::before{content:'';position:absolute;inset:0 -22px;z-index:-1;border:0;background:var(--portrait-ground);pointer-events:none}
 .drop-ready .empty-strip{font-weight:700}
 .export code{white-space:pre-wrap}body,main{background:var(--paper);min-height:0}main{padding:0;max-width:none}.palette{margin-top:0}</style>
-<main><div id="palette" class="palette" aria-label="Moods"></div>
+<main>
 <details id="curve"><summary>Slide the tempo <span id="count"></span></summary>
 <div class="chart" id="chart">
 <canvas id="graph" aria-label="Tempo curve. Tab to the handles to adjust them with arrow keys."></canvas>
@@ -48,7 +48,6 @@ body{background:#22332e;color:var(--ink)}main{max-width:820px;background:var(--p
 <div class="mood-track" id="lane" aria-label="Mood changes"></div>
 </div>
 <p id="hint" class="muted" role="status">Drag a portrait onto the curve. Drag a stamp out to remove it.</p>
-<div class="bar" id="place-controls" hidden><label>Start at <select id="place-track"></select></label><button id="place">Place mood</button></div>
 </details>
 </main>
 <script>
@@ -60,7 +59,7 @@ const tempos=['Slow','Relaxed','Mid','Brisk','Fast'];
 const verticalInset=15;
 const points=[{x:0,y:0},{x:.32,y:1},{x:.68,y:1},{x:1,y:0}];
 const moods=new Map();
-let pending=null, gesture=null, curveEdited=false;
+let gesture=null, curveEdited=false;
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 const theme=name=>getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 const trackAt=x=>{
@@ -137,7 +136,7 @@ points.forEach((point,i)=>{
  const handle=document.createElement('button');
  handle.className='handle';
  handle.onpointerdown=e=>{
-   if(pending||gesture||e.button!==0)return;
+   if(gesture||e.button!==0)return;
    gesture={type:'curve',pointer:e.pointerId,i,x:e.clientX,y:e.clientY,startX:point.x,startY:point.y};
    handle.setPointerCapture(e.pointerId);
  };
@@ -166,12 +165,6 @@ function stampMarker(button,mood){
  button.replaceChildren(...parts(mood).map(portrait));
  button.title=mood??'';
 }
-function selectMood(mood){
- pending=mood;
- $('place-controls').hidden=!mood;
- for(const button of $('palette').children)button.setAttribute('aria-pressed',parts(mood).includes(button.dataset.mood));
- $('hint').textContent=mood?'Tap the curve to place '+mood+'.':'Drag a portrait onto the curve. Drag a stamp out to remove it.';
-}
 function renderMoods(){
  lane.replaceChildren();
  if(!moods.size){
@@ -185,7 +178,7 @@ function renderMoods(){
    pin.className='pin';pin.dataset.track=track;stampMarker(pin,mood);
    pin.style.left=((track+.5)/12*100)+'%';
    pin.setAttribute('aria-label',mood+', track '+(track+1)+'. Delete to remove, arrow keys to move.');
-   pin.onpointerdown=e=>{if(!pending)startMoodDrag(e,pin,mood,track)};
+   pin.onpointerdown=e=>{startMoodDrag(e,pin,mood,track)};
    pin.onkeydown=e=>{
      if(!['Delete','Backspace','ArrowLeft','ArrowRight'].includes(e.key))return;
      e.preventDefault();moods.delete(track);
@@ -202,7 +195,7 @@ function renderMoods(){
 }
 function place(track,mood){
  curveEdited=true;
- moods.set(track,mood);selectMood(null);renderMoods();
+ moods.set(track,mood);renderMoods();
 }
 function startMoodDrag(e,element,mood,from){
  if(gesture||e.button!==0)return;
@@ -222,7 +215,7 @@ document.addEventListener('pointermove',e=>{
  if(gesture?.pointer!==e.pointerId)return;
  if(gesture.type==='curve'){movePoint(gesture.i,e);return}
  if(!gesture.active&&Math.hypot(e.clientX-gesture.x,e.clientY-gesture.y)<7)return;
- if(!gesture.active){gesture.active=true;if(gesture.from!==undefined)selectMood(null)}
+ if(!gesture.active)gesture.active=true;
  const canDrop=inside(e,gesture);
  ghost.textContent=gesture.from!==undefined&&!canDrop?'Release to remove':gesture.mood;
  ghost.hidden=false;
@@ -235,37 +228,21 @@ function endGesture(e){
  if(e.type!=='pointerup'||current.type!=='mood'||!current.active)return;
  if(current.from!==undefined)moods.delete(current.from);
  if(inside(e,current))place(trackAt(e.clientX),current.mood);
- else {selectMood(null);renderMoods()};
+ else renderMoods();
 }
 document.addEventListener('pointerup',endGesture);
 document.addEventListener('pointercancel',endGesture);
 document.addEventListener('lostpointercapture',endGesture);
-chart.onclick=e=>{if(pending)place(trackAt(e.clientX),pending)};
-function bindMoodDrag(button,getMood){
- button.onpointerdown=e=>{
-   delete button.dataset.dragged;
-   if(curve.open)startMoodDrag(e,button,getMood());
- };
- button.onpointerup=e=>{
-   if(gesture?.pointer===e.pointerId&&gesture.active)button.dataset.dragged='yes';
- };
-}
-Object.keys(codes).forEach(mood=>{
- const button=document.createElement('button');
- button.className='stamp';button.dataset.mood=mood;
- button.setAttribute('aria-pressed','false');
- button.append(portrait(mood),mood);
- bindMoodDrag(button,()=>parts(pending).includes(mood)?pending:mood);
- button.onclick=e=>{
-   if(e.detail&&button.dataset.dragged){delete button.dataset.dragged;return}
-   const selected=parts(pending);
-   const next=selected.includes(mood)?selected.filter(name=>name!==mood):[...selected.slice(0,1),mood];
-   selectMood(next.join(' + ')||null);
- };
- $('palette').append(button);
+const moodNames={happy:"Happy",angry:"Angry",sad:"Sad",desire:"Desire",weird:"Weird",criminal:"Criminal",funky:"The Funk",triumphant:"Triumph"};
+window.addEventListener("message",event=>{
+ if(event.source!==parent)return;
+ const data=event.data;
+ if(data?.type==="ghg-portrait-drag"){curve.open=true;return}
+ if(data?.type!=="ghg-portrait-drop"||!Array.isArray(data.moods)||data.moods.length<1||data.moods.length>2)return;
+ if(data.moods.some(name=>!Object.hasOwn(moodNames,name))||new Set(data.moods).size!==data.moods.length)return;
+ if(!Number.isFinite(data.x)||!Number.isFinite(data.y)||!inside({clientX:data.x,clientY:data.y},{}))return;
+ place(trackAt(data.x),data.moods.map(name=>moodNames[name]).join(" + "));
 });
-for(let i=0;i<12;i++)$('place-track').add(new Option('Track '+(i+1),i));
-$('place').onclick=()=>{if(pending)place(Number($('place-track').value),pending)};
 new ResizeObserver(reportCurve).observe(document.querySelector("main"));
 new ResizeObserver(draw).observe(graph);
 curve.addEventListener('toggle',draw);
