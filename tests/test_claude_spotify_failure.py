@@ -10,7 +10,7 @@ class ClaudeSpotifyFailureTests(unittest.TestCase):
         for phrase in (
             "prompt-generated playlist", "Spotify Premium", "add_playlist_items",
             "subscription tier **unverified**", "25 identical entries",
-            "0 published", "may reject duplicates"):
+            "may reject duplicates"):
             self.assertIn(phrase.lower(),skill.lower())
 
     def test_claude_field_report_and_adapter_are_cautious(self):
@@ -24,9 +24,10 @@ class ClaudeSpotifyFailureTests(unittest.TestCase):
         self.assertIn("do not",guide.lower())
         self.assertIn("later premium-required error",guide.lower())
         verification=(ROOT/"references/verification.md").read_text(encoding="utf-8")
-        self.assertIn("two generated results",verification)
+        self.assertIn("two generated results",manual)
+        self.assertIn("0 published",verification)
         self.assertIn("listener-observed",verification)
-        self.assertIn("do not invent saved urls",verification.lower())
+        self.assertIn("do not invent saved urls",manual.lower())
         self.assertIn("claude.com/connectors/spotify",spotify)
 
     def test_protected_debarge_result_and_mirror(self):

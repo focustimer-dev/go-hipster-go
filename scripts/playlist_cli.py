@@ -3,7 +3,6 @@
 from __future__ import annotations
 import argparse
 from collections import Counter
-from math import ceil
 import json
 import re
 import secrets
@@ -100,25 +99,9 @@ def artist_spacing_issues(data: object) -> list[str]:
     for track in tracks:
         raw = track.get("artist") if isinstance(track, dict) else None
         names.append(" ".join(raw.split()).casefold() if isinstance(raw, str) else "")
-    issues = []
-    for i, name in enumerate(names):
-        if not name:
-            continue
-        if i >= 1 and name == names[i - 1]:
-            issues.append(f"same lead artist in consecutive positions {i} and {i + 1}")
-        elif i >= 2 and name == names[i - 2]:
-            issues.append(f"same lead artist too close at positions {i - 1} and {i + 1}")
     counts = Counter(name for name in names if name)
-    n = len(tracks)
-    if n >= 10:
-        target = ceil(n * 0.70)
-        if len(counts) < target:
-            issues.append(f"only {len(counts)} distinct lead artists in {n} tracks; aim for at least {target}")
-        maximum = max(2, ceil(n / 6))
-        for name, count in counts.items():
-            if count > maximum:
-                issues.append(f"artist '{name}' appears {count} times in {n} tracks; aim for at most {maximum}")
-    return issues
+    return [f"lead artist '{name}' appears {count} times"
+            for name, count in counts.items() if count > 1]
 
 
 def check_skill(root:Path=ROOT)->list[str]:
@@ -168,7 +151,7 @@ def main(argv=None)->int:
     sub=p.add_subparsers(dest='command',required=True)
     v=sub.add_parser('validate',help='Validate structural playlist JSON; NOT catalog truth')
     v.add_argument('path',type=Path); v.add_argument('--strict',action='store_true')
-    q=sub.add_parser('lint-sequence',help='Editorial artist diversity/spacing check; exceptional artist-led sets may override')
+    q=sub.add_parser('lint-sequence',help='Editorial lead-artist uniqueness check; exceptional artist-led sets may override')
     q.add_argument('path',type=Path)
     sub.add_parser('roll',help='Uniform 1:100 roll; call only once per eligible playlist')
     d=sub.add_parser('debarge',help='Create explicit 25-track joke payload')
@@ -191,7 +174,7 @@ def main(argv=None)->int:
     if errs:
         for e in errs: print('FAIL:',e,file=sys.stderr)
         return 1
-    print('PASS: '+('skill metadata and links' if a.command=='check-skill' else 'artist spacing and diversity' if a.command=='lint-sequence' else 'playlist structure')+' (not evidence of online verification).')
+    print('PASS: '+('skill metadata and links' if a.command=='check-skill' else 'lead-artist uniqueness' if a.command=='lint-sequence' else 'playlist structure')+' (not evidence of online verification).')
     return 0
 
 

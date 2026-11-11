@@ -1,6 +1,6 @@
 ---
 name: go-hipster-go
-version: 3.11.2
+version: 3.11.3
 description: Go, Hipster, Go! moods, discovery routes, de-cheese and setup; verified global playlists with authorized YouTube Music publishing.
 ---
 
@@ -34,7 +34,7 @@ For `Discovery route: v1/Rxx`, read [routes](https://raw.githubusercontent.com/f
 
 A PWA **Mood angle** is an optional subplot, never a twelve-track quota. For Criminal, vary actual criminal narratives, languages, cultural scenes and storytelling perspectives; a prison-escape angle can inspire some tracks without reducing the entire crate to songs with escape in their titles. Treat a fresh-crate discovery lens and random spark as weak hypotheses, and omit a lens when its lyrical story cannot be verified. Song-specific criminal evidence always outranks word association.
 
-**Pre-publish deduplication:** Produce the intended 12 **distinct recordings** (or requested count) before publication, aside from the expressly triggered DeBarge exception. Reject duplicate lyric uploads, compilations and transliterated or remastered versions of the same underlying song masquerading as different picks; compare normalized artist/title/recording and note real version differences. Prefer different artists where musical fit allows it. If YouTube Music returns extra songs, duplicate tracks or a different count, label the result **APPROXIMATE**, state the observed discrepancy and never claim the intended crate was saved exactly.
+**Pre-publish deduplication:** Produce the intended 12 **distinct recordings** (or requested count) before publication, aside from the expressly triggered DeBarge exception. Reject duplicate lyric uploads, compilations and transliterated or remastered versions of the same underlying song masquerading as different picks; compare normalized artist/title/recording and note real version differences. If YouTube Music returns extra songs, duplicate tracks or a different count, label the result **APPROXIMATE**, state the observed discrepancy and never claim the intended crate was saved exactly.
 
 ## Gemini setup
 
