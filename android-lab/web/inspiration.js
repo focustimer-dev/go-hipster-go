@@ -102,7 +102,19 @@ function renderLabInspiration(){
  recentButton.querySelector('strong').textContent=labInspirationTitle(latest?.title,latest?.text);
  recentButton.onclick=()=>{doc.getElementById('labInspirationDraft').value=latest?.text||''};
  const preview=labState().inspirationPreview||{};
- doc.getElementById('labInspirationPreview').textContent=labInspirationTitle(preview.title,value);
+ const title=labInspirationTitle(preview.title,value);
+ doc.getElementById('labInspirationPreview').textContent=title;
+ const go=doc.querySelector('.grind');
+ if(go){
+  let slip=doc.getElementById('labInspirationGo');
+  if(!slip){
+   slip=doc.createElement('p');slip.id='labInspirationGo';
+   slip.innerHTML='<strong aria-label="Inspiration">INSP</strong><span></span>';
+   go.after(slip);
+  }
+  slip.hidden=!value;
+  slip.querySelector('span').textContent=title;
+ }
  const metaNote=doc.getElementById('labInspirationMetadataStatus');
  const hasLink=/https:\/\/[^\s<>]+/i.test(value);
  const message=hasLink?(preview.loading?'Looking up link details…':
