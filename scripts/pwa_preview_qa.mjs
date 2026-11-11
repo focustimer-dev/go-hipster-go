@@ -233,6 +233,17 @@ for(const profile of profiles){
    assert.equal(await page.locator('#prompt').textContent(),promptBeforeColorChange,
     name+' theme must not alter the playlist request');
    if(name==='michoacan'){
+    for(const id of ['includeCover','goHard']){
+     assert.equal(await page.locator('#'+id+' .option-label').evaluate(el=>getComputedStyle(el).color),'rgb(243, 230, 201)','Enhancement label uses parchment on dark GO stock');
+    }
+    await page.locator('#tempoSlider').press('ArrowRight');
+    await page.screenshot({path:folder+'/'+profile.name+'-michoacan-tempo.png'});
+    await page.locator('#anyTempo').click();
+    await page.locator('#goButton').scrollIntoViewIfNeeded();
+    await page.screenshot({path:folder+'/'+profile.name+'-michoacan-go.png'});
+    await page.locator('[data-pwa-tab="manual"]').click();
+    assert.equal(await page.locator('.pwa-guide-services').evaluate(el=>getComputedStyle(el).borderTopWidth),'0px');
+    await page.locator('[data-pwa-tab="jukebox"]').click();
     await page.locator('.mood-grid').scrollIntoViewIfNeeded();
     await page.screenshot({path:folder+'/'+profile.name+'-michoacan-jukebox.png'});
     assert.equal(await page.locator('.mood[data-mood=sad]').evaluate(el=>getComputedStyle(el).backgroundColor),'rgb(209, 173, 145)');
