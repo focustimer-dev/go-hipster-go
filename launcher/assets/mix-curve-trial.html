@@ -39,20 +39,20 @@ body{background:#22332e;color:var(--ink)}main{max-width:820px;background:var(--p
 .mood-track{background:var(--portrait-ground);isolation:isolate}
 .mood-track::before{content:'';position:absolute;inset:0 -22px;z-index:-1;border:0;background:var(--portrait-ground);pointer-events:none}
 .drop-ready .empty-strip{font-weight:700}
-.export code{white-space:pre-wrap}body,main{background:var(--paper);min-height:0}main{padding:0;max-width:none}.palette{margin-top:0}</style>
+.export code{white-space:pre-wrap}body,main{background:var(--paper);min-height:0}main{padding:0;max-width:none}.palette{margin-top:0}#curve{margin-top:0}</style>
 <main>
-<details id="curve"><summary>Slide the tempo <span id="count"></span></summary>
+<div id="curve">
 <div class="chart" id="chart">
 <canvas id="graph" aria-label="Tempo curve. Tab to the handles to adjust them with arrow keys."></canvas>
 <div class="handles" id="handles"></div>
 <div class="mood-track" id="lane" aria-label="Mood changes"></div>
 </div>
 <p id="hint" class="muted" role="status">Drag a portrait onto the curve. Drag a stamp out to remove it.</p>
-</details>
+</div>
 </main>
 <script>
 const $=id=>document.getElementById(id);
-const curve=$('curve'), chart=$('chart'), graph=$('graph'), lane=$('lane');
+const chart=$('chart'), graph=$('graph'), lane=$('lane');
 const ctx=graph.getContext('2d');
 const codes={Happy:'h',Angry:'a',Sad:'s',Desire:'d',Weird:'w',Criminal:'c','The Funk':'f',Triumph:'t'};
 const tempos=['Slow','Relaxed','Mid','Brisk','Fast'];
@@ -186,11 +186,11 @@ function renderMoods(){
      if(direction)moods.set(clamp(track+direction,0,11),mood);
      renderMoods();
      if(direction)lane.querySelector('[data-track="'+clamp(track+direction,0,11)+'"]')?.focus();
-     else curve.querySelector('summary').focus();
+     else $('handles').firstElementChild.focus();
    };
    lane.append(pin);
  }
- $('count').textContent=moods.size?moods.size+' mood changes':'';
+
  draw();
 }
 function place(track,mood){
@@ -237,7 +237,6 @@ const moodNames={happy:"Happy",angry:"Angry",sad:"Sad",desire:"Desire",weird:"We
 window.addEventListener("message",event=>{
  if(event.source!==parent)return;
  const data=event.data;
- if(data?.type==="ghg-portrait-drag"){curve.open=true;return}
  if(data?.type!=="ghg-portrait-drop"||!Array.isArray(data.moods)||data.moods.length<1||data.moods.length>2)return;
  if(data.moods.some(name=>!Object.hasOwn(moodNames,name))||new Set(data.moods).size!==data.moods.length)return;
  if(!Number.isFinite(data.x)||!Number.isFinite(data.y)||!inside({clientX:data.x,clientY:data.y},{}))return;
@@ -245,6 +244,5 @@ window.addEventListener("message",event=>{
 });
 new ResizeObserver(reportCurve).observe(document.querySelector("main"));
 new ResizeObserver(draw).observe(graph);
-curve.addEventListener('toggle',draw);
 renderMoods();
 </script></html>
