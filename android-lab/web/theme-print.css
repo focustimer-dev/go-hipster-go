@@ -275,3 +275,8 @@
 :root[data-ghg-theme-profile=print] #labAtlasCahill .lab-us-region-boundaries{
  stroke:var(--lab-atlas-ink);fill:none;
 }
+
+/* The enhancements sit on GO's dark stock, not the page substrate. */
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .go-options .go-extras :is(#includeCover,#goHard) .option-label{
+ color:var(--lab-ui-on-action);
+}
