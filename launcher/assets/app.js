@@ -779,7 +779,8 @@ function renderLaunch(regionsOnly=false){
  if(ticketShort)ticketShort.textContent=ticketAiCodes[ai]+" › "+ticketServiceCodes[service]+" · "+(moodParts(mood).map(m=>ticketMoodCodes[m]||({desire:"LOVE",triumphant:"WIN"})[m]).join("+")||"SURP")+" · "+(tempo?ticketTempoCodes[tempo]:"ANY");
  const ticketRegionShort=doc.getElementById("selectionTicketRegionShort");
  if(ticketRegionShort){
-  ticketRegionShort.textContent=shortTicketRegions()+" · ART:"+(includeCover?"ON":"OFF")+" · HARD:"+(goHard?"ON":"OFF")+(skipRough?" · SKIP ROUGH: ON":"");
+  const inspirationActive=Boolean((typeof labInspiration==="function"&&labInspiration())||pwaReference);
+  ticketRegionShort.textContent=shortTicketRegions()+(inspirationActive?" · INSP: ON":"")+" · ART:"+(includeCover?"ON":"OFF")+" · HARD:"+(goHard?"ON":"OFF")+(skipRough?" · SKIP ROUGH: ON":"");
   ticketRegionShort.title=crateSelected.size?crateRegions.filter(r=>crateSelected.has(r.id)).map(r=>r.label).join(", "):"Worldwide";
  }
  if(!regionsOnly){
