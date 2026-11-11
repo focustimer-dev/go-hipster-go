@@ -82,7 +82,7 @@ const root=path.resolve(__dirname,'../android-lab/app/src/main/assets/site');
   assert.equal(calls.filter(c=>c[0]==='go').length,handoffsBefore,'Receiving inspiration must never auto-launch AI');
   assert.equal(w.document.querySelector('#labInspiration').hidden,false);
   assert(w.document.querySelector('#labInspiration').compareDocumentPosition(w.document.querySelector('[data-mood]'))&w.Node.DOCUMENT_POSITION_FOLLOWING,'Inspiration starts before music choices');
-  assert.equal(w.document.querySelector('#labInspirationGo').hidden,false);
+  assert.match(w.document.querySelector('#selectionTicketRegionShort').textContent,/INSP: ON/);
   click('[data-lab-tab="crate"]');assert.equal(w.document.querySelector('#labCrateContinue').hidden,false);click('#labCrateContinue');
   assert.equal(w.document.querySelector('#labJukebox').hidden,false,'Crate offers a direct route to shaping choices');
   assert.equal(w.document.activeElement,w.document.querySelector('[data-mood]'));
