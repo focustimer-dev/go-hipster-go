@@ -72,12 +72,16 @@ GEM_BUNDLE = Path("adapters/gemini/GEM_KNOWLEDGE.md")
 
 def gem_knowledge():
     """Reuse the Gemini-filtered skill for Gem knowledge, not the multi-host source."""
-    from build_gemini_app_skill import render, render_reference, REFERENCES
+    from build_gemini_app_skill import modular_files, render, render_reference, REFERENCES
     canon = (ROOT / "SKILL.md").read_text(encoding="utf-8")
     parts = ["# Go, Hipster, Go! — Gemini Skill knowledge bundle\n\n",
              "Generated from the filtered Gemini skill and regional reference files.\n\n",
              "# BEGIN SOURCE: SKILL.md\n\n", render(canon),
              "\n# END SOURCE: SKILL.md\n"]
+    curve_path = "references/tempo-curve.md"
+    curve = modular_files(canon)[curve_path]
+    parts.extend(["\n---\n\n# BEGIN SOURCE: " + curve_path + "\n\n", curve.strip(),
+                  "\n\n# END SOURCE: " + curve_path + "\n"])
     for path in REFERENCES:
         data = (ROOT / path).read_text(encoding="utf-8")
         parts.extend(["\n---\n\n# BEGIN SOURCE: " + path + "\n\n",
