@@ -834,3 +834,15 @@ html[data-pwa-theme=usiku] body.pwa-workspace .pwa-dialog-head{
 :root[data-pwa-theme=michoacan] body.pwa-workspace .pwa-guide-tabs button[aria-selected=true]{
  background:var(--lab-ui-action);color:var(--lab-ui-on-action);border-bottom-color:var(--lab-print-active-ink);
 }
+
+/* Michoacán finishing details: readable extras, selected-gold pace, quiet Manual. */
+:root[data-pwa-theme=michoacan] body.gig-poster .go-options .go-extras :is(#includeCover,#goHard) .option-label{
+ color:var(--lab-ui-on-action);
+}
+:root[data-pwa-theme=michoacan] body.gig-poster .tempo-control:not([data-tempo=any]) #tempoSlider::-webkit-slider-thumb{
+ background:var(--lab-print-active-ink);border-color:var(--lab-ui-ink);
+}
+:root[data-pwa-theme=michoacan] body.gig-poster .tempo-control:not([data-tempo=any]) #tempoSlider::-moz-range-thumb{
+ background:var(--lab-print-active-ink);border-color:var(--lab-ui-ink);
+}
+:root[data-pwa-theme=michoacan] body.pwa-workspace .pwa-guide-services{border-top:0}
