@@ -527,12 +527,23 @@ function mountMixCurveTrial(){
  const tempoControl=doc.getElementById("tempoControl");
  if(!tempoControl)return;
  const panel=doc.createElement("div");
- const label=doc.createElement("label");
- const toggle=doc.createElement("input");
- toggle.type="checkbox";
- label.append(toggle," Tempo curve trial");
- panel.append(label);
+ const choices=doc.createElement("div");
+ choices.className="tempo-mode-switch";
+ choices.setAttribute("role","group");
+ choices.setAttribute("aria-label","Tempo control");
+ const simpleButton=doc.createElement("button");
+ const curveButton=doc.createElement("button");
+ for(const button of [simpleButton,curveButton])button.type="button";
+ simpleButton.textContent="Set the tempo";
+ curveButton.textContent="The curve";
+ simpleButton.setAttribute("aria-pressed","true");
+ curveButton.setAttribute("aria-pressed","false");
+ choices.append(simpleButton,curveButton);
+ panel.append(choices);
  tempoControl.before(panel);
+ let curveActive=false;
+ let draftCode="";
+ const tempoDisplay=tempoControl.style.display;
  let frame=null;
  let drag=null;
  let skipClick=null;
@@ -541,7 +552,7 @@ function mountMixCurveTrial(){
  for(const button of portraits){
    button.addEventListener("pointerdown",event=>{
      skipClick=null;
-     if(!frame||drag||event.button!==0||!event.isPrimary)return;
+     if(!curveActive||!frame||drag||event.button!==0||!event.isPrimary)return;
      const selected=moodParts(mood);
      const value=button.dataset.mood;
      drag={button,id:event.pointerId,x:event.clientX,y:event.clientY,
@@ -559,7 +570,6 @@ function mountMixCurveTrial(){
    if(Math.hypot(event.clientX-drag.x,event.clientY-drag.y)<8)return;
    drag.active=true;
    drag.button.setPointerCapture(event.pointerId);
-   frame.contentWindow?.postMessage({type:"ghg-portrait-drag"},"*");
  });
  function endPortraitDrag(event){
    if(!drag||drag.id!==event.pointerId)return;
@@ -587,28 +597,38 @@ function mountMixCurveTrial(){
    const parsed=parseMixCurveTrial(data.code);
    if(parsed===null)return;
    if(Number.isFinite(data.height))frame.height=Math.max(100,Math.min(900,Math.ceil(data.height)));
-   setCurve(parsed);
+   draftCode=parsed;
+   if(curveActive)setCurve(draftCode);
  });
- toggle.addEventListener("change",()=>{
-   portraits.forEach((button,i)=>{button.style.touchAction=toggle.checked?"none":previousTouch[i]});
-   if(!toggle.checked){
-     drag=null;
-     skipClick=null;
-     frame?.remove();
-     frame=null;
+ function selectCurve(active){
+   if(curveActive===active)return;
+   curveActive=active;
+   simpleButton.setAttribute("aria-pressed",String(!active));
+   curveButton.setAttribute("aria-pressed",String(active));
+   tempoControl.style.display=active?"none":tempoDisplay;
+   portraits.forEach((button,i)=>{button.style.touchAction=active?"none":previousTouch[i]});
+   drag=null;
+   skipClick=null;
+   if(!active){
+     if(frame)frame.style.display="none";
      setCurve("");
      return;
    }
-   frame=doc.createElement("iframe");
-   frame.title="Kingston tempo curve editor";
-   frame.setAttribute("sandbox","allow-scripts");
-   frame.width="100%";
-   frame.height="250";
-   frame.style.border="0";
+   if(!frame){
+     frame=doc.createElement("iframe");
+     frame.title="Kingston tempo curve editor";
+     frame.setAttribute("sandbox","allow-scripts");
+     frame.width="100%";
+     frame.height="154";
+     frame.style.border="0";
+     frame.src="/assets/mix-curve-trial.html";
+     panel.append(frame);
+   }
    frame.style.display="block";
-   frame.src="/assets/mix-curve-trial.html";
-   panel.append(frame);
- });
+   setCurve(draftCode);
+ }
+ simpleButton.addEventListener("click",()=>selectCurve(false));
+ curveButton.addEventListener("click",()=>selectCurve(true));
 }
 // END optional mix-curve trial
 
