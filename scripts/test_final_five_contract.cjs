@@ -32,7 +32,7 @@ const specs=[
   await page.goto('http://127.0.0.1:'+server.address().port+'/?theme=addis',{waitUntil:'domcontentloaded'});
   await page.waitForFunction(()=>window.labAtlasGlobe?.loaded()&&window.labCahillMap?.ready,null,{timeout:25000});
   for(const spec of specs){
-   if(spec.id!=='addis')assert.equal(await page.evaluate(id=>window.HipsterLabTheme.set(id,false),spec.id),true);
+   assert.equal(await page.evaluate(id=>window.HipsterLabTheme.set(id,false),spec.id),true);
    // Wait for the new palette to SETTLE. Stock and selected ink have a
    // short CSS transition, so reading immediately after set() reports
    // the previous theme's paper, even though selection is already updated.
