@@ -199,10 +199,8 @@ On setup, setup status, or setup change inspect actual connected music tools and
 Follow the [reference index](references/reference-index.md) before choosing a thesis. It specifies the required taxonomy, category discovery and verification sections, regional supplements and optional depth. Keep all four axes and the complete research map available. PWA angles, lenses and sparks remain hypotheses, not quotas or verified claims.
 
 """
-    curve = section_map(canonical)["Tempo and mood curve"].strip()
-    preface = preface.replace("For `Discovery route:", "For `c1:` briefs, follow the tempo and mood curve rules in the workflow before discovery.\n\nFor `Discovery route:", 1)
-    workflow = common_sections(canonical).replace("## Refresh: a different playlist, same brief", curve + "\n\n## Refresh: a different playlist, same brief", 1)
-    result = preface + workflow + "\n"
+    preface = preface.replace("For `Discovery route:", "For a new or retained `c1:` curve, read [tempo curve](references/tempo-curve.md) before choosing tracks.\n\nFor `Discovery route:", 1)
+    result = preface + common_sections(canonical) + "\n"
     forbidden = ("scripts/", "python ", "add_playlist_items", "--strict",
                  "Spotify is the default service", "Spotify by default",
                  "In ordinary **ChatGPT**", "Apple Music handoff",
@@ -218,13 +216,14 @@ def modular_files(canonical: str, online: bool = False) -> dict[str, str]:
     split = full.index("## Intent and activation")
     entry, workflow = full[:split], full[split:]
     entry += "## Detailed workflow\n\nRead [workflow.md](references/workflow.md) before curation. Only load relevant references; no installation preload or region crawling. Disclose missing files.\n"
-    files = {"SKILL.md": entry, "references/workflow.md": workflow}
+    curve = section_map(canonical)["Tempo and mood curve"].strip() + "\n"
+    files = {"SKILL.md": entry, "references/workflow.md": workflow, "references/tempo-curve.md": curve}
     if online:
         base = "https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/"
         import re
         def link(match):
             path = match.group(1)
-            target = "adapters/gemini/references/workflow.md" if path == "references/workflow.md" else path
+            target = "adapters/gemini/" + path if path in files else path
             return "](" + base + target + ")"
         for path, content in list(files.items()):
             files[path] = re.sub(r"\]\((references/[^)]+)\)", link, content)
