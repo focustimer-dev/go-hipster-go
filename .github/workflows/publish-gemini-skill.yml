@@ -44,8 +44,10 @@ jobs:
           with ZipFile(path) as z:
               import sys
               sys.path.insert(0, "scripts")
-              from build_gemini_app_skill import REFERENCES
-              assert set(z.namelist()) == {"SKILL.md", "references/workflow.md", *REFERENCES}
+              from build_gemini_app_skill import REFERENCES, modular_files
+              generated = modular_files(Path('SKILL.md').read_text(encoding='utf-8'))
+              assert set(z.namelist()) == set(generated) | set(REFERENCES)
+              assert 'references/tempo-curve.md' in z.namelist()
               text=z.read('SKILL.md').decode('utf-8') + z.read('references/workflow.md').decode('utf-8')
               assert '## The personality is mandatory in Gemini' in text
               assert 'DeBarge Protocol' in text and '25 consecutive' in text
