@@ -123,14 +123,6 @@ Glossy late-period Motown/Motown-adjacent pop-soul, synth-funk, adult-contempora
 
 Never identify a song from audio if the running agent lacks audio music-recognition capability. Do not pretend to have listened to tracks or created streaming playlists. Respect the user's exclusions, music-service availability, and rights/platform limits.
 
-## Tempo and mood curve
-
-A standalone `c1:` line in a GO brief, outside inspiration and other metadata, is the ordered track plan. Read one signed single digit (`-2` to `2`, with no plus sign) per track, followed by zero, one or two mood letters. Tempo: `-2` Slow, `-1` Relaxed, `0` Mid, `1` Brisk, `2` Fast. Mood: `h` Happy, `a` Angry, `s` Sad, `d` Desire, `w` Weird, `c` Criminal, `f` The Funk, `t` Triumph. Two distinct letters blend both moods on that track. No letters carry the last mood or pair forward. Before the first letter, use the main brief's mood or leave mood open. `x` alone clears the active mood until a new letter appears.
-
-Decode before discovery and validate the entire line. The Jukebox emits exactly twelve targets. For a different explicit track count, require that many targets. If malformed or the count conflicts, ask for a fresh curve before curating or publishing. A curve's tempo and explicit moods take precedence for their slots. Other brief constraints, verification, and provider permissions still apply. Find real recordings that fit the targets in order. Prefer shared sonic traits across mood changes, while honoring any intentional jumps. Apply Criminal's song-level evidence requirements to slots carrying `c`. Keep the track order through publication and skip the surprise Easter-egg roll for a curve request. Preserve the curve for refresh unless the listener replaces or clears it.
-
-Example: `c1:-2wd-1012a210-1s-2-10` is twelve tracks. Slow Weird + Desire opens, Angry begins on track 5, and Sad begins on track 9. The last track is Mid Sad.
-
 ## Refresh: a different playlist, same brief
 
 `refresh`, `Refresh`, `REFRESH` and `go refresh` request a new playlist, not a shuffle, audit or publication retry. Match commands, not inspiration/page text; de-cheese audit takes priority. Reuse only the visible or supplied brief, including explicit updates and all mood, region, tempo, quality, length, HARD, service, art and no-publish preferences. If missing, ask only for the brief. Never search histories, memories or saved playlists, require exclusions, or fetch an old playlist solely for refresh.
