@@ -768,8 +768,6 @@ function renderLaunch(regionsOnly=false){
  const tempoHelp=doc.getElementById("tempoHelp");if(tempoHelp)tempoHelp.textContent=tempo?tempoNames[tempo]+" pace. Choose Any to clear it.":"Any pace. The clerk can cope. Move the slider to choose.";
  if(anyTempo)anyTempo.setAttribute("aria-pressed",String(!tempo));
  doc.querySelectorAll("[data-mood]").forEach(b=>b.setAttribute("aria-pressed",String(moodParts(mood).includes(b.dataset.mood))));
- const clerkNotes={happy:"Optimism. An ambitious brief.",angry:"For when everyone else is obviously the problem.",sad:"Melancholy. Filed under essential listening.",weird:"The neighbors may have questions.",funky:"The pocket has diplomatic immunity."};
- const moodHelp=doc.getElementById("moodHelp");if(moodHelp)moodHelp.textContent=mood==="criminal"?"Songs about crime. Artist reputations are not evidence.":mood==="go"?"No mood? We’ll use our judgment.":moodLabel(mood)+" selected. "+(moodParts(mood).map(m=>clerkNotes[m]).filter(Boolean).join(" ")||"Pick up to two moods. Tap again to clear.");
  }
  const e={prompt:doc.getElementById("prompt"),mood:doc.getElementById("moodName"),code:doc.getElementById("receiptCode"),open:doc.getElementById("openAi"),browser:doc.getElementById("browserAi")};
  if(!e.prompt)return;
