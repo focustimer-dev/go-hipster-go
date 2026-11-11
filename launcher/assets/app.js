@@ -507,7 +507,7 @@ function updateCrateMap(reframe=true){
 const params=new URLSearchParams(location.search);
 // BEGIN optional mix-curve trial. Remove this block, its panel mount, and the two GO hooks to retire it.
 const mixCurveTrialAvailable=body.dataset.page==="launch"&&
- (params.get("mixCurve")==="1"||Boolean(doc.querySelector('script[src="/assets/lab-themes.js"]')));
+ (params.get("mixCurve")==="1"||Boolean(doc.querySelector?.('script[src="/assets/lab-themes.js"]')));
 let mixCurveTrialCode="";
 function parseMixCurveTrial(value){
  const lines=value.trim().split(/\r?\n/);
