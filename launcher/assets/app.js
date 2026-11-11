@@ -534,6 +534,46 @@ function mountMixCurveTrial(){
  panel.append(label);
  tempoControl.before(panel);
  let frame=null;
+ let drag=null;
+ let skipClick=null;
+ const portraits=[...doc.querySelectorAll("[data-mood]")];
+ const previousTouch=portraits.map(button=>button.style.touchAction);
+ for(const button of portraits){
+   button.addEventListener("pointerdown",event=>{
+     skipClick=null;
+     if(!frame||drag||event.button!==0||!event.isPrimary)return;
+     const selected=moodParts(mood);
+     const value=button.dataset.mood;
+     drag={button,id:event.pointerId,x:event.clientX,y:event.clientY,
+       moods:selected.includes(value)?selected:[value],active:false};
+   });
+   button.addEventListener("click",event=>{
+     if(skipClick!==button||event.detail===0)return;
+     skipClick=null;
+     event.preventDefault();
+     event.stopImmediatePropagation();
+   },true);
+ }
+ doc.addEventListener("pointermove",event=>{
+   if(!frame||!drag||drag.id!==event.pointerId||drag.active)return;
+   if(Math.hypot(event.clientX-drag.x,event.clientY-drag.y)<8)return;
+   drag.active=true;
+   drag.button.setPointerCapture(event.pointerId);
+   frame.contentWindow?.postMessage({type:"ghg-portrait-drag"},"*");
+ });
+ function endPortraitDrag(event){
+   if(!drag||drag.id!==event.pointerId)return;
+   const current=drag;
+   drag=null;
+   if(!frame||!current.active||event.type!=="pointerup")return;
+   skipClick=current.button;
+   const bounds=frame.getBoundingClientRect();
+   frame.contentWindow?.postMessage({type:"ghg-portrait-drop",moods:current.moods,
+     x:event.clientX-bounds.left,y:event.clientY-bounds.top},"*");
+ }
+ doc.addEventListener("pointerup",endPortraitDrag);
+ doc.addEventListener("pointercancel",endPortraitDrag);
+ doc.addEventListener("lostpointercapture",endPortraitDrag);
  function setCurve(code){
    if(code===mixCurveTrialCode)return;
    mixCurveTrialCode=code;
@@ -550,7 +590,10 @@ function mountMixCurveTrial(){
    setCurve(parsed);
  });
  toggle.addEventListener("change",()=>{
+   portraits.forEach((button,i)=>{button.style.touchAction=toggle.checked?"none":previousTouch[i]});
    if(!toggle.checked){
+     drag=null;
+     skipClick=null;
      frame?.remove();
      frame=null;
      setCurve("");
