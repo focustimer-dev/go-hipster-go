@@ -199,7 +199,6 @@ body.gig-poster.lab-workspace[data-page=launch] .go-options .go-button{border-ra
 #labAddInspiration[hidden]{display:none}
 .lab-inspiration-add-label{display:flex;align-items:center;gap:8px;font:400 1.125rem/1.1 Poster,sans-serif}
 .lab-inspiration-add-label svg{flex:none}
-#labAddInspiration small{font:.75rem/1.25 Arial,sans-serif;text-align:right}
 #labInspirationEditor{padding:8px 0;border-block:1px solid #10313566;color:#103135}
 #labInspirationEditor label{display:block;color:#103135;font:400 1.125rem/1.15 Poster,sans-serif}
 #labInspirationEditor textarea {
@@ -995,3 +994,9 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
 [data-lab-theme=michoacan] .lab-theme-swatches i:nth-child(1){background:#6a2430}
 [data-lab-theme=michoacan] .lab-theme-swatches i:nth-child(2){background:#d1ad91}
 [data-lab-theme=michoacan] .lab-theme-swatches i:nth-child(3){background:#e5b653}
+
+/* Keep gesture guidance and action feedback visible in the Jukebox. */
+body.gig-poster.lab-workspace[data-page=launch] :is(
+ .hero-purpose,.crate-geo-identity small,#tempoHelp,.footnote,
+ .crate-shuffle:has(#shuffleCrate:not(:disabled)) #shuffleHelp
+){display:none}
