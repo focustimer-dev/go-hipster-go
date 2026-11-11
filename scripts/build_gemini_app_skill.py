@@ -83,7 +83,10 @@ def common_sections(canonical: str):
 
 Rebuild candidates through a different compatible discovery route. Exclude visible previous recordings, prefer new artists, and reject reordered tracks/remasters/alternate uploads as variety; honor explicit track requests. Without the old list, vary discovery without promising zero unseen overlap. Follow normal verification, sequencing, voice, art and publication rules; create a new playlist without overwriting/deleting the old one. Retain text-only overrides and service permissions. One new request means at most one eligible randomness roll; publication retries keep the existing crate."""
     intent = parts[keys[0]]
-    parts[keys[0]] = intent.split("\n", 1)[0] + "\n\n" + intent[intent.index("Curate **real recordings**"):]
+    # The Gemini entry already defines activation, publishing, and brief precedence.
+    parts[keys[0]] = intent.split("\n", 1)[0] + """
+
+Curate **real recordings** for music discovery and playlist requests. Do not activate on unrelated uses of "go". Prioritize sonic coherence and discovery over popularity or arbitrary obscurity. Explore era, audible texture/production, actual geographic scene, and microgenre/movement as prompts. Respect mood, setting, vocals, energy, exclusions, length, service, and adventurousness."""
     parts[keys[1]] = re.sub(r"(?m)^- Publishing limitation:.*\n", "", parts[keys[1]])
     parts[keys[2]] = (parts[keys[2]].replace("including in **Claude**", "including in **Gemini**")
                        .replace("Spotify's playlist description field", "a playlist description field")
@@ -107,7 +110,14 @@ Antarctica requires deliberate naming or named PWA selection. Exclude it from pl
                    count=1, flags=re.S)
     if "**Gemini + YouTube Music — publication is the default" not in fresh:
         raise ValueError("Gemini policy anchor changed")
-    parts["Fresh-crate discovery and repeat control"] = fresh.split("**Gemini + YouTube Music — publication is the default")[0].strip()
+    fresh = fresh.split("**Gemini + YouTube Music — publication is the default")[0].strip()
+    # The entry already defines GO, the 12-track default, and the reference index.
+    fresh = re.sub(r"(?m)^\*\*Lean Jukebox contract:\*\*.*\n\n", "", fresh, count=1)
+    fresh = re.sub(
+        r"(?m)^\*\*Load before choosing a thesis:\*\*.*$",
+        "Compare three routes internally. Taxonomy examples are search leads. Mood angles yield to explicit selections.",
+        fresh, count=1)
+    parts["Fresh-crate discovery and repeat control"] = fresh
     egg, n = re.subn(
         r"Never claim 1% without using a true random facility; when Python is available run .*? once and read the result\.",
         "Never claim a 1% random result without a genuine random facility in this conversation. Do not run scripts.",
