@@ -39,7 +39,13 @@ body{background:#22332e;color:var(--ink)}main{max-width:820px;background:var(--p
 .mood-track{background:var(--portrait-ground);isolation:isolate}
 .mood-track::before{content:'';position:absolute;inset:0 -22px;z-index:-1;border:0;background:var(--portrait-ground);pointer-events:none}
 .drop-ready .empty-strip{font-weight:700}
-.export code{white-space:pre-wrap}body,main{background:var(--paper);min-height:0}main{padding:0;max-width:none}.palette{margin-top:0}#curve{margin-top:0}</style>
+.export code{white-space:pre-wrap}body,main{background:var(--paper);min-height:0}main{padding:0;max-width:none}.palette{margin-top:0}#curve{margin-top:0}html[data-chart-theme]{background:var(--paper);color:var(--ink)}
+html[data-chart-theme] body,html[data-chart-theme] main{background:var(--paper);color:var(--ink)}
+html[data-chart-theme] #curve{--curve-line:var(--ink);--curve-endpoint:var(--ink);--curve-handle:var(--atlas-selected,var(--ink));color:var(--ink)}
+html[data-chart-theme] #curve summary{color:var(--ink)}
+html[data-chart-theme] .handle:first-child::after,html[data-chart-theme] .handle:last-child::after{border-color:var(--paper)}
+html[data-chart-theme] #curve button:focus-visible{outline-color:var(--focus-ink);box-shadow:0 0 0 6px var(--focus-paper)}
+</style>
 <main>
 <div id="curve">
 <div class="chart" id="chart">
@@ -237,6 +243,16 @@ const moodNames={happy:"Happy",angry:"Angry",sad:"Sad",desire:"Desire",weird:"We
 window.addEventListener("message",event=>{
  if(event.source!==parent)return;
  const data=event.data;
+ if(data?.type==="ghg-chart-theme"){
+   const root=document.documentElement;
+   for(const token of ["--paper","--ink","--line","--focus-ink","--focus-paper","--atlas-selected"]){
+     const color=data.colors?.[token];
+     if(typeof color==="string"&&CSS.supports("color",color))root.style.setProperty(token,color);
+   }
+   root.dataset.chartTheme="";
+   draw();
+   return;
+ }
  if(data?.type!=="ghg-portrait-drop"||!Array.isArray(data.moods)||data.moods.length<1||data.moods.length>2)return;
  if(data.moods.some(name=>!Object.hasOwn(moodNames,name))||new Set(data.moods).size!==data.moods.length)return;
  if(!Number.isFinite(data.x)||!Number.isFinite(data.y)||!inside({clientX:data.x,clientY:data.y},{}))return;

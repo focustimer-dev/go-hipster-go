@@ -153,7 +153,7 @@ function pwaInspirationMetadata(reference){
 
 // The skill owns curation policy; GO sends only current creative inputs and service.
 function goPrompt(ai,service,mood){
- const parts=[goCommand(ai,service,mood)+(mixCurveTrialCode?", text only":"")];
+ const parts=[goCommand(ai,service,mood)];
  if(mixCurveTrialCode)parts.push(mixCurveTrialCode);
  /* PLATFORM_ROUTE_PROMPT */
 
@@ -636,11 +636,22 @@ function mountMixCurveTrial(){
    }
    if(!frame){
      frame=doc.createElement("iframe");
-     frame.title="Kingston tempo curve editor";
+     frame.title="Tempo curve editor";
      frame.setAttribute("sandbox","allow-scripts");
      frame.width="100%";
      frame.height="154";
      frame.style.border="0";
+     const sendChartTheme=()=>{
+       const style=getComputedStyle(panel);
+       const tokens=["--paper","--ink","--line","--focus-ink","--focus-paper","--atlas-selected"];
+       const colors=Object.fromEntries(tokens.map(token=>[token,style.getPropertyValue(token).trim()]));
+       frame.contentWindow?.postMessage({type:"ghg-chart-theme",colors},"*");
+     };
+     frame.addEventListener("load",sendChartTheme);
+     const themeObserver=new MutationObserver(sendChartTheme);
+     for(const element of [doc.documentElement,body]){
+       themeObserver.observe(element,{attributes:true});
+     }
      frame.src="/assets/mix-curve-trial.html";
      panel.append(frame);
    }
