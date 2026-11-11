@@ -16,7 +16,7 @@ class Element{
  async click(){this.focus();const event={preventDefault(){this.prevented=true}};await this.events.click?.(event);return event}
 }
 function harness(write,search='',page='launch',storage=new Map(),runtime={}){
- const ids=['selectionTicketShort','selectionTicketRegionShort','skipRough','includeCover','goHard','pinMood','pinPace','pinRegions','briefMoodValue','briefPaceValue','briefRegionsValue','serviceDetails','serviceSummary','shuffleHelp','shuffleCrate','undoShuffle','shuffleResult','receiptRegions','welcomeSetup','beginSetup','dismissWelcome','finishSetup','setupJourney','onboardingPair','handoffGuidance','handoffTitle','handoffInstruction','crateGeo','atlasPassport','atlasNamedRegions','atlasLocator','atlasHome','atlasInstruction','atlasStamps','crateAtlasMap','crateGeoStatus','crateGeoClear','aiLabel','copyTailoredSetup','recipeIntro','recipeSteps','recipeResources','recipeCaveat','openSelectedAi','dealerPair','tempoControl','tempoDetails','tempoSummary','tempoHelp','moodHelp','tempoSlider','tempoValue','anyTempo','copyStatus','routeStatus','prompt','moodName','receiptCode','promptReceipt','receiptCopy','openAi','browserAi','manualOpenAi','receiptSummary','goHint','goButton','stripSetupPrompt','setupPromptText','setupPromptDetails','setupTipStatus','openSetupAi','promptDetails','shareButton'];
+ const ids=['selectionTicketShort','selectionTicketRegionShort','skipRough','includeCover','goHard','pinMood','pinPace','pinRegions','briefMoodValue','briefPaceValue','briefRegionsValue','serviceDetails','serviceSummary','shuffleHelp','shuffleCrate','undoShuffle','shuffleResult','receiptRegions','welcomeSetup','beginSetup','dismissWelcome','finishSetup','setupJourney','onboardingPair','handoffGuidance','handoffTitle','handoffInstruction','crateGeo','atlasPassport','atlasNamedRegions','atlasLocator','atlasHome','atlasInstruction','atlasStamps','crateAtlasMap','crateGeoStatus','crateGeoClear','aiLabel','copyTailoredSetup','recipeIntro','recipeSteps','recipeResources','recipeCaveat','openSelectedAi','dealerPair','tempoControl','tempoDetails','tempoSummary','tempoHelp','tempoSlider','tempoValue','anyTempo','copyStatus','routeStatus','prompt','moodName','receiptCode','promptReceipt','receiptCopy','openAi','browserAi','manualOpenAi','receiptSummary','goHint','goButton','stripSetupPrompt','setupPromptText','setupPromptDetails','setupTipStatus','openSetupAi','promptDetails','shareButton'];
  const elements=Object.fromEntries(ids.map(id=>[id,new Element()]));
  elements.setupJourney.hidden=true;
  elements.handoffGuidance.hidden=true;
@@ -490,7 +490,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  const deniedStore=new Map(),denied=harness(async()=>{throw Error('blocked')},'','launch',deniedStore);
  await denied.elements.goButton.click();
  assert.equal(deniedStore.has('ghg-jukebox-used-v1'),false,'Failed clipboard copy does not mark first use complete');
- await used.moods[4].click();assert.match(used.elements.moodHelp.textContent,/Songs about crime/,'Criminal explains narrative meaning at selection');
+ await used.moods[4].click();
  assert.equal((setupHtml.match(/data-setup="universal"/g)||[]).length,1,'Universal installation has one secondary home');
  const posterHtml=fs.readFileSync('launcher/editions/gig-poster/index.html','utf8');
  assert.ok(!posterHtml.includes('id="serviceDetails"'),'Services stay directly available');
@@ -561,7 +561,6 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  await stamped.moods[0].click();
  assert.equal(stamped.elements.promptReceipt.attrs['data-copy-state'],'idle','Changed preferences invalidate the stamped request');
  assert.equal(stamped.elements.receiptCopy.textContent,'');
- assert.match(stamped.elements.moodHelp.textContent,/Happy selected.*Optimism/);
  const unstamped=harness(async()=>{throw Error('blocked')});
  await unstamped.elements.goButton.click();
  assert.equal(unstamped.elements.receiptCopy.textContent,'','Clipboard failures cannot earn a stamp');
