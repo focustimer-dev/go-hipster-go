@@ -16,6 +16,7 @@ on:
       - '.github/releases/pwa-theme-atlas-integration-2026-11-07'
       - '.github/releases/pwa-android-eight-themes-2026-11-10'
       - '.github/releases/pwa-michoacan-2026-11-10'
+      - '.github/releases/pwa-tempo-curve-2026-11-11'
 
 permissions:
   contents: read
