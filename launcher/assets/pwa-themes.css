@@ -846,3 +846,8 @@ html[data-pwa-theme=usiku] body.pwa-workspace .pwa-dialog-head{
  background:var(--lab-print-active-ink);border-color:var(--lab-ui-ink);
 }
 :root[data-pwa-theme=michoacan] body.pwa-workspace .pwa-guide-services{border-top:0}
+
+/* Pressed service keys share Michoacán's GO stock and gold ink. */
+:root[data-pwa-theme=michoacan] body.gig-poster.pwa-workspace[data-page=launch] .switch button[aria-pressed=true]{
+ background:var(--lab-ui-go);color:var(--lab-ui-go-ink);
+}
