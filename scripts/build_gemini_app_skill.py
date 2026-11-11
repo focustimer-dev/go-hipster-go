@@ -190,8 +190,9 @@ Follow the [reference index](references/reference-index.md) before choosing a th
 
 """
     curve = section_map(canonical)["Tempo and mood curve"].strip()
-    preface = preface.replace("For `Discovery route:", curve + "\n\nFor `Discovery route:", 1)
-    result = preface + common_sections(canonical) + "\n"
+    preface = preface.replace("For `Discovery route:", "For `c1:` briefs, follow the tempo and mood curve rules in the workflow before discovery.\n\nFor `Discovery route:", 1)
+    workflow = common_sections(canonical).replace("## Refresh: a different playlist, same brief", curve + "\n\n## Refresh: a different playlist, same brief", 1)
+    result = preface + workflow + "\n"
     forbidden = ("scripts/", "python ", "add_playlist_items", "--strict",
                  "Spotify is the default service", "Spotify by default",
                  "In ordinary **ChatGPT**", "Apple Music handoff",
