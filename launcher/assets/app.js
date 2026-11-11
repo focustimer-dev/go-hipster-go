@@ -154,11 +154,12 @@ function pwaInspirationMetadata(reference){
 // The skill owns curation policy; GO sends only current creative inputs and service.
 function goPrompt(ai,service,mood){
  const parts=[goCommand(ai,service,mood)];
+ if(mixCurveTrialCode)parts.push(mixCurveTrialCode);
  /* PLATFORM_ROUTE_PROMPT */
 
  if(crateSelected.size)parts.push(crateRegionPrompt());
  const brief=moodDiscoveryBrief(mood);if(brief)parts.push(brief.trim());
- if(tempo)parts.push("Tempo preference: "+tempoNames[tempo]+".");
+ if(tempo&&!mixCurveTrialCode)parts.push("Tempo preference: "+tempoNames[tempo]+".");
  if(skipRough)parts.push("Recording preference: Skip rough recordings.");
  /* PLATFORM_REFERENCE */
  if(pwaReference)parts.push(...inspirationPromptLines(pwaReference,pwaInspirationMetadata(pwaReference)));
@@ -504,6 +505,168 @@ function updateCrateMap(reframe=true){
  copiedPrompt=null;selectionChanged(false,true);if(reframe)frameSelectedAtlas();
 }
 const params=new URLSearchParams(location.search);
+// BEGIN optional mix-curve trial. Remove this block, its panel mount, and the two GO hooks to retire it.
+const mixCurveTrialAvailable=body.dataset.page==="launch"&&
+ (params.get("mixCurve")==="1"||Boolean(doc.querySelector?.(
+   'script[src="/assets/lab-themes.js"],script[src="/assets/pwa-workspace.js"]')));
+let mixCurveTrialCode="";
+function parseMixCurveTrial(value){
+ const lines=value.trim().split(/\r?\n/);
+ if(lines.length===2&&/^go, text only$/i.test(lines[0].trim()))lines.shift();
+ if(lines.length!==1)return null;
+ const code=lines[0].trim();
+ if(!code)return "";
+ const payload=code.slice(3);
+ if(!code.startsWith("c1:"))return null;
+ const slots=payload.match(/-?[0-2](?:[hasdwcft]{1,2}|x)?/g);
+ if(!slots||slots.length!==12||slots.join("")!==payload)return null;
+ if(slots.some(slot=>/^-0|([hasdwcft])\1$/.test(slot)))return null;
+ return code;
+}
+function mountMixCurveTrial(){
+ if(!mixCurveTrialAvailable)return;
+ const tempoControl=doc.getElementById("tempoControl");
+ if(!tempoControl)return;
+ const panel=doc.createElement("div");
+ const choices=doc.createElement("div");
+ choices.className="tempo-mode-switch";
+ choices.setAttribute("role","group");
+ choices.setAttribute("aria-label","Tempo control");
+ const simpleButton=doc.createElement("button");
+ const curveButton=doc.createElement("button");
+ for(const button of [simpleButton,curveButton])button.type="button";
+ simpleButton.textContent="Set the tempo";
+ curveButton.textContent="The curve";
+ simpleButton.setAttribute("aria-pressed","true");
+ curveButton.setAttribute("aria-pressed","false");
+ choices.append(simpleButton,curveButton);
+ panel.append(choices);
+ tempoControl.before(panel);
+ let curveActive=false;
+ let draftCode="";
+ const tempoDisplay=tempoControl.style.display;
+ let frame=null;
+ let drag=null;
+ let skipClick=null;
+ const portraits=[...doc.querySelectorAll("[data-mood]")];
+ const previousTouch=portraits.map(button=>button.style.touchAction);
+ const dragLabel=doc.createElement("span");
+ dragLabel.setAttribute("aria-hidden","true");
+ dragLabel.style.cssText="position:fixed;z-index:2147483647;pointer-events:none;padding:4px 8px;background:var(--ink);color:var(--paper);transform:translate(-50%,-125%);white-space:nowrap";
+ dragLabel.hidden=true;
+ panel.append(dragLabel);
+ for(const button of portraits){
+   button.addEventListener("pointerdown",event=>{
+     skipClick=null;
+     if(!curveActive||!frame||drag||event.button!==0||event.isPrimary===false)return;
+     const selected=moodParts(mood);
+     const value=button.dataset.mood;
+     const moods=selected.includes(value)?selected:[value];
+     drag={button,id:event.pointerId,x:event.clientX,y:event.clientY,moods,active:false};
+     // Capture before the finger can cross into the editor's separate document.
+     button.setPointerCapture(event.pointerId);
+   });
+   button.addEventListener("click",event=>{
+     if(skipClick!==button||event.detail===0)return;
+     skipClick=null;
+     event.preventDefault();
+     event.stopImmediatePropagation();
+   },true);
+ }
+ function clearPortraitDrag(){
+   drag=null;
+   dragLabel.hidden=true;
+   if(frame)frame.style.pointerEvents="";
+ }
+ doc.addEventListener("pointermove",event=>{
+   if(!frame||!drag||drag.id!==event.pointerId)return;
+   if(!drag.active){
+     if(Math.hypot(event.clientX-drag.x,event.clientY-drag.y)<8)return;
+     drag.active=true;
+     frame.style.pointerEvents="none";
+     dragLabel.textContent=moodLabel(drag.moods.join(" "));
+     dragLabel.hidden=false;
+   }
+   dragLabel.style.left=event.clientX+"px";
+   dragLabel.style.top=event.clientY+"px";
+ },true);
+ function endPortraitDrag(event){
+   if(!drag||drag.id!==event.pointerId)return;
+   const current=drag;
+   clearPortraitDrag();
+   if(!frame||!current.active||event.type!=="pointerup")return;
+   skipClick=current.button;
+   const bounds=frame.getBoundingClientRect();
+   if(event.clientX<bounds.left||event.clientX>bounds.right||
+      event.clientY<bounds.top||event.clientY>bounds.bottom)return;
+   frame.contentWindow?.postMessage({type:"ghg-portrait-drop",moods:current.moods,
+     x:event.clientX-bounds.left,y:event.clientY-bounds.top},"*");
+ }
+ doc.addEventListener("pointerup",endPortraitDrag,true);
+ doc.addEventListener("pointercancel",endPortraitDrag,true);
+ doc.addEventListener("lostpointercapture",endPortraitDrag,true);
+ function setCurve(code){
+   if(code===mixCurveTrialCode)return;
+   mixCurveTrialCode=code;
+   copiedPrompt=null;
+   renderLaunch();
+ }
+ window.addEventListener("message",event=>{
+   if(!frame||event.source!==frame.contentWindow||event.origin!=="null")return;
+   const data=event.data;
+   if(!data||data.type!=="ghg-mix-curve"||typeof data.code!=="string")return;
+   const parsed=parseMixCurveTrial(data.code);
+   if(parsed===null)return;
+   if(Number.isFinite(data.height))frame.height=Math.max(100,Math.min(900,Math.ceil(data.height)));
+   draftCode=parsed;
+   if(curveActive)setCurve(draftCode);
+ });
+ function selectCurve(active){
+   if(curveActive===active)return;
+   curveActive=active;
+   simpleButton.setAttribute("aria-pressed",String(!active));
+   curveButton.setAttribute("aria-pressed",String(active));
+   tempoControl.style.display=active?"none":tempoDisplay;
+   portraits.forEach((button,i)=>{button.style.touchAction=active?"none":previousTouch[i]});
+   clearPortraitDrag();
+   skipClick=null;
+   if(!active){
+     if(frame)frame.style.display="none";
+     doc.dispatchEvent(new Event("mixcurvegeometrychange"));
+     setCurve("");
+     return;
+   }
+   if(!frame){
+     frame=doc.createElement("iframe");
+     frame.id="mixCurveEditor";
+     frame.title="Tempo curve editor";
+     frame.setAttribute("sandbox","allow-scripts");
+     frame.width="100%";
+     frame.height="154";
+     frame.style.border="0";
+     const sendChartTheme=()=>{
+       const style=getComputedStyle(panel);
+       const tokens=["--paper","--ink","--line","--focus-ink","--focus-paper","--atlas-selected"];
+       const colors=Object.fromEntries(tokens.map(token=>[token,style.getPropertyValue(token).trim()]));
+       frame.contentWindow?.postMessage({type:"ghg-chart-theme",colors},"*");
+     };
+     frame.addEventListener("load",sendChartTheme);
+     const themeObserver=new MutationObserver(sendChartTheme);
+     for(const element of [doc.documentElement,body]){
+       themeObserver.observe(element,{attributes:true});
+     }
+     frame.src="/assets/mix-curve-trial.html";
+     panel.append(frame);
+   }
+   frame.style.display="block";
+   doc.dispatchEvent(new Event("mixcurvegeometrychange"));
+   setCurve(draftCode);
+ }
+ simpleButton.addEventListener("click",()=>selectCurve(false));
+ curveButton.addEventListener("click",()=>selectCurve(true));
+}
+// END optional mix-curve trial
+
 includeCover=params.get("cover")==="1";
 goHard=params.get("hard")==="1";
 skipRough=params.has("clean")?params.get("clean")==="1":stored("ghg-skip-rough-v1")==="1";
@@ -614,13 +777,14 @@ function renderLaunch(regionsOnly=false){
  e.mood.textContent=moodLabel(mood).toUpperCase();
  e.code.textContent=(ai==="chatgpt"?"CG":ai==="gemini"?"GM":ai==="claude"?"CL":"OTHER")+"-"+mood.slice(0,3).toUpperCase()+"-01";
  e.open.href=ai==="gemini"?geminiIntent:destinations[ai];e.open.textContent="↗ OPEN "+aiNames[ai].toUpperCase();
- const summary=doc.getElementById("receiptSummary");if(summary)summary.textContent=aiNames[ai]+" · "+serviceNames[service]+" · "+moodLabel(mood)+(tempo?" · "+tempoNames[tempo]:"")+" · 12 tracks"+(includeCover?" · cover art":"")+(goHard?" · deep crate":"")+(skipRough?" · skip rough recordings":"");
+ const summary=doc.getElementById("receiptSummary");if(summary)summary.textContent=aiNames[ai]+" · "+serviceNames[service]+" · "+moodLabel(mood)+(mixCurveTrialCode?" · Tempo curve":tempo?" · "+tempoNames[tempo]:"")+" · 12 tracks"+(includeCover?" · cover art":"")+(goHard?" · deep crate":"")+(skipRough?" · skip rough recordings":"");
  const regions=doc.getElementById("receiptRegions");if(regions)regions.textContent="CRATES / "+(crateSelected.size?crateRegions.filter(r=>crateSelected.has(r.id)).map(r=>r.label).join(" · "):"Worldwide");
  const ticketShort=doc.getElementById("selectionTicketShort");
- if(ticketShort)ticketShort.textContent=ticketAiCodes[ai]+" › "+ticketServiceCodes[service]+" · "+(moodParts(mood).map(m=>ticketMoodCodes[m]||({desire:"LOVE",triumphant:"WIN"})[m]).join("+")||"SURP")+" · "+(tempo?ticketTempoCodes[tempo]:"ANY");
+ if(ticketShort)ticketShort.textContent=ticketAiCodes[ai]+" › "+ticketServiceCodes[service]+" · "+(moodParts(mood).map(m=>ticketMoodCodes[m]||({desire:"LOVE",triumphant:"WIN"})[m]).join("+")||"SURP")+" · "+(mixCurveTrialCode?"CURVE":tempo?ticketTempoCodes[tempo]:"ANY");
  const ticketRegionShort=doc.getElementById("selectionTicketRegionShort");
  if(ticketRegionShort){
-  ticketRegionShort.textContent=shortTicketRegions()+" · ART:"+(includeCover?"ON":"OFF")+" · HARD:"+(goHard?"ON":"OFF")+(skipRough?" · SKIP ROUGH: ON":"");
+  const inspirationActive=Boolean((typeof labInspiration==="function"&&labInspiration())||pwaReference);
+  ticketRegionShort.textContent=shortTicketRegions()+(inspirationActive?" · INSP: ON":"")+" · ART:"+(includeCover?"ON":"OFF")+" · HARD:"+(goHard?"ON":"OFF")+(skipRough?" · SKIP ROUGH: ON":"");
   ticketRegionShort.title=crateSelected.size?crateRegions.filter(r=>crateSelected.has(r.id)).map(r=>r.label).join(", "):"Worldwide";
  }
  if(!regionsOnly){
@@ -1381,6 +1545,7 @@ if(tempoSlider){
 }
 const anyTempo=doc.getElementById("anyTempo");
 if(anyTempo)anyTempo.addEventListener("click",()=>{tempo="";copiedPrompt=null;selectionChanged()});
+mountMixCurveTrial();
 const go=doc.getElementById("goButton");if(go)go.addEventListener("click",copyGo);
 for(const id of ["openAi","browserAi"]){const a=doc.getElementById(id);if(a)a.addEventListener("click",event=>{
  if(copiedPrompt!==goPrompt(ai,service,mood)){event.preventDefault();status("Press GO to copy the current prompt before opening your AI.")}
@@ -1439,7 +1604,9 @@ if(ticket){
     ticket.classList.remove("is-docked");
     details.open=false;
    }
-   const hidden=choiceBottom>(lab?56:0);
+   const curveBounds=doc.getElementById("mixCurveEditor")?.getBoundingClientRect();
+   const viewingCurve=Boolean(curveBounds&&curveBounds.height>0&&curveBounds.bottom>(lab?64:0)&&curveBounds.top<window.innerHeight);
+   const hidden=viewingCurve||choiceBottom>(lab?56:0);
    if(ticket.hidden!==hidden)ticket.hidden=hidden;
    ticket.classList.toggle('is-compact',choosingMoods);
    if(ticket.hidden)details.open=false;
@@ -1452,6 +1619,7 @@ if(ticket){
  }
  window.addEventListener("scroll",queueSelectionTicketVisibility,{passive:true});
  window.addEventListener("resize",queueSelectionTicketVisibility,{passive:true});
+ doc.addEventListener("mixcurvegeometrychange",queueSelectionTicketVisibility);
  doc.addEventListener('focusin',event=>{
   if(!body.classList.contains('lab-workspace')||ticket.hidden||ticket.classList.contains('is-docked')||!event.target.closest?.('.mood-grid'))return;
   const bounds=event.target.getBoundingClientRect(),bottom=ticket.getBoundingClientRect().bottom;

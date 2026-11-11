@@ -41,7 +41,6 @@ s=s.replace('CHOOSE YOUR SERVICES','PICK YOUR SERVICES').replace('THE ROBOT','PI
 s=s.replace('<details class="crate-geo" id="crateGeo">','<details class="crate-geo" id="crateGeo" open>')
 s=s.replace('      <small>TAKE YOUR TASTE ABROAD</small>','')
 # The workflow is explained at the top; the real copy status handles the next step.
-s=s.replace('Start your search here. No regional quotas; blank means worldwide. We do allow records to travel.', 'No stamps? Worldwide. Pick regions to steer the search, not fence it in.')
 s=s.replace('Choose a mood, then press GO to copy your prompt.', 'Pick a mood, or press GO for a surprise.')
 s=re.sub(r'<p class="footnote">The AI and music apps.*?</p>', '<p class="footnote">Select the skill and music app in your AI. Playlist saving happens there. <a href="/setup/">Setup instructions →</a></p>', s, count=1)
 # Two-spot-color halftone from the guide's screenprint/gig-poster language.

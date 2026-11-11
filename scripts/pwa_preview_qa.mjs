@@ -46,6 +46,19 @@ for(const profile of profiles){
   assert.equal(await page.locator('.pwa-atlas-preview-link').count(),0,'Retired three-map trial link must not appear in the Jukebox');
   assert.equal(await page.locator('.pwa-add-inspiration').getAttribute('data-pwa-action'),'edit-reference');
   await page.screenshot({path:folder+'/'+profile.name+'-jukebox.png'});
+  const curveMode=page.getByRole('button',{name:'The curve',exact:true});
+  const tempoMode=page.getByRole('button',{name:'Set the tempo',exact:true});
+  await curveMode.click();
+  await page.locator('#tempoControl').waitFor({state:'hidden'});
+  const curve=page.frameLocator('#mixCurveEditor');
+  await curve.getByRole('button',{name:/^Start ·/}).press('ArrowUp');
+  await page.waitForFunction(()=>document.querySelector('#prompt')?.textContent.includes('c1:'));
+  assert.doesNotMatch(await page.locator('#prompt').textContent(),/text only/i);
+  assert.match(await page.locator('#selectionTicketShort').textContent(),/CURVE/);
+  await tempoMode.click();
+  await page.locator('#tempoControl').waitFor({state:'visible'});
+  assert.doesNotMatch(await page.locator('#prompt').textContent(),/^c1:/m);
+
   // Test the actual two-mood combination from the phone review: Desire + Funk.
   // A theme must recolor both independent portrait systems without rewriting them.
   await page.locator('[data-mood="happy"]').click();

@@ -169,7 +169,7 @@ class EngravedEditionChecks(unittest.TestCase):
             self.assertIn('id="receiptCopy" hidden',page)
             self.assertNotIn("REQUEST DRAFT",page)
         self.assertIn('body.classList.contains("lab-workspace")?".poster-go-trail":".service-counter .panel"',script)
-        self.assertIn('const hidden=choiceBottom>(lab?56:0)',script)
+        self.assertIn('const hidden=viewingCurve||choiceBottom>(lab?56:0)',script)
         self.assertNotIn('moodChoices.getBoundingClientRect().bottom<=0',script)
         self.assertIn('receiptTicketDock',script)
         self.assertIn('receipt.getBoundingClientRect().top<=window.innerHeight-88',script)

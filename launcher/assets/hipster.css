@@ -834,3 +834,8 @@ body[data-page=launch] .onboarding-ticket[hidden]{display:none!important}
 .recording-preference small{display:block;max-width:60ch;margin-top:3px;font-weight:400;font-size:.8125rem;line-height:1.5}
 .recording-preference input{flex:0 0 22px;width:22px;height:22px;margin:0;accent-color:var(--ink);cursor:pointer}
 .recording-preference input:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+
+/* Android Lab and opt-in browser curve trial */
+.tempo-mode-switch{display:flex;flex-wrap:wrap;gap:clamp(12px,4vw,28px)}
+.tempo-mode-switch button{min-height:44px;padding:4px 0;border:0;background:none;color:var(--ink);font:inherit;font-weight:800;text-align:left}
+.tempo-mode-switch button[aria-pressed=true]{text-decoration:underline;text-decoration-color:var(--atlas-accent,var(--ink));text-decoration-thickness:2px;text-underline-offset:5px}

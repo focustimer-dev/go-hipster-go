@@ -108,10 +108,6 @@ function renderLabInspiration(){
  const message=hasLink?(preview.loading?'Looking up link details…':
    preview.metadataStatus==='unavailable'?'Link details unavailable. Original link saved.':''):'';
  metaNote.textContent=message;metaNote.hidden=!message;
- let reminder=doc.getElementById('labInspirationGo');
- const options=doc.querySelector('.go-options');
- if(!reminder&&options){reminder=doc.createElement('p');reminder.id='labInspirationGo';reminder.textContent='INSPIRATION INCLUDED IN GO.';options.before(reminder)}
- if(reminder)reminder.hidden=!value;
 }
 window.HipsterLabRefresh=()=>{
  labRefreshState();
