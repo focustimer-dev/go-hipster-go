@@ -56,7 +56,7 @@ function renderLabInspiration(){
  const anchor=doc.querySelector('.refinements');if(!anchor)return;let card=doc.getElementById('labInspiration');
  if(!card){
   const controls=doc.createElement('div');
-  controls.innerHTML=`<button type="button" id="labAddInspiration"><span class="lab-inspiration-add-label"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="M6 10h8m-4-4v8"/></svg>Add inspiration</span><small>Song, artist, album, or link</small></button>
+  controls.innerHTML=`<button type="button" id="labAddInspiration"><span class="lab-inspiration-add-label"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="M6 10h8m-4-4v8"/></svg>Add inspiration</span></button>
    <form id="labInspirationEditor" hidden>
     <label for="labInspirationDraft">What’s inspiring this mix?</label>
     <textarea id="labInspirationDraft" rows="1" maxlength="2000" placeholder="Paste a link or describe the sound" required></textarea>
