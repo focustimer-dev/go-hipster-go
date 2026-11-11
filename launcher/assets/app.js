@@ -549,14 +549,21 @@ function mountMixCurveTrial(){
  let skipClick=null;
  const portraits=[...doc.querySelectorAll("[data-mood]")];
  const previousTouch=portraits.map(button=>button.style.touchAction);
+ const dragLabel=doc.createElement("span");
+ dragLabel.setAttribute("aria-hidden","true");
+ dragLabel.style.cssText="position:fixed;z-index:2147483647;pointer-events:none;padding:4px 8px;background:var(--ink);color:var(--paper);transform:translate(-50%,-125%);white-space:nowrap";
+ dragLabel.hidden=true;
+ panel.append(dragLabel);
  for(const button of portraits){
    button.addEventListener("pointerdown",event=>{
      skipClick=null;
-     if(!curveActive||!frame||drag||event.button!==0||!event.isPrimary)return;
+     if(!curveActive||!frame||drag||event.button!==0||event.isPrimary===false)return;
      const selected=moodParts(mood);
      const value=button.dataset.mood;
-     drag={button,id:event.pointerId,x:event.clientX,y:event.clientY,
-       moods:selected.includes(value)?selected:[value],active:false};
+     const moods=selected.includes(value)?selected:[value];
+     drag={button,id:event.pointerId,x:event.clientX,y:event.clientY,moods,active:false};
+     // Capture before the finger can cross into the editor's separate document.
+     button.setPointerCapture(event.pointerId);
    });
    button.addEventListener("click",event=>{
      if(skipClick!==button||event.detail===0)return;
@@ -565,25 +572,38 @@ function mountMixCurveTrial(){
      event.stopImmediatePropagation();
    },true);
  }
+ function clearPortraitDrag(){
+   drag=null;
+   dragLabel.hidden=true;
+   if(frame)frame.style.pointerEvents="";
+ }
  doc.addEventListener("pointermove",event=>{
-   if(!frame||!drag||drag.id!==event.pointerId||drag.active)return;
-   if(Math.hypot(event.clientX-drag.x,event.clientY-drag.y)<8)return;
-   drag.active=true;
-   drag.button.setPointerCapture(event.pointerId);
- });
+   if(!frame||!drag||drag.id!==event.pointerId)return;
+   if(!drag.active){
+     if(Math.hypot(event.clientX-drag.x,event.clientY-drag.y)<8)return;
+     drag.active=true;
+     frame.style.pointerEvents="none";
+     dragLabel.textContent=moodLabel(drag.moods.join(" "));
+     dragLabel.hidden=false;
+   }
+   dragLabel.style.left=event.clientX+"px";
+   dragLabel.style.top=event.clientY+"px";
+ },true);
  function endPortraitDrag(event){
    if(!drag||drag.id!==event.pointerId)return;
    const current=drag;
-   drag=null;
+   clearPortraitDrag();
    if(!frame||!current.active||event.type!=="pointerup")return;
    skipClick=current.button;
    const bounds=frame.getBoundingClientRect();
+   if(event.clientX<bounds.left||event.clientX>bounds.right||
+      event.clientY<bounds.top||event.clientY>bounds.bottom)return;
    frame.contentWindow?.postMessage({type:"ghg-portrait-drop",moods:current.moods,
      x:event.clientX-bounds.left,y:event.clientY-bounds.top},"*");
  }
- doc.addEventListener("pointerup",endPortraitDrag);
- doc.addEventListener("pointercancel",endPortraitDrag);
- doc.addEventListener("lostpointercapture",endPortraitDrag);
+ doc.addEventListener("pointerup",endPortraitDrag,true);
+ doc.addEventListener("pointercancel",endPortraitDrag,true);
+ doc.addEventListener("lostpointercapture",endPortraitDrag,true);
  function setCurve(code){
    if(code===mixCurveTrialCode)return;
    mixCurveTrialCode=code;
@@ -607,7 +627,7 @@ function mountMixCurveTrial(){
    curveButton.setAttribute("aria-pressed",String(active));
    tempoControl.style.display=active?"none":tempoDisplay;
    portraits.forEach((button,i)=>{button.style.touchAction=active?"none":previousTouch[i]});
-   drag=null;
+   clearPortraitDrag();
    skipClick=null;
    if(!active){
      if(frame)frame.style.display="none";
