@@ -113,7 +113,7 @@ def inspect(root: Path = ROOT, dist: Path | None = None) -> dict:
                      "references/global-scenes.md")
     }
     packages = {}
-    for filename, required in PUBLISHED_3115_ZIP_BYTES.items():
+    for filename, required in REQUIRED_ARCHIVE_MEMBERS.items():
         path = dist / filename
         if not path.is_file():
             errors.append("Missing locally built archive " + filename)
