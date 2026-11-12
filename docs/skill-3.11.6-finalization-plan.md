@@ -1,6 +1,6 @@
 # Go, Hipster, Go! — 3.11.6 finalization implementation plan
 
-**Status:** Gate 0 audit recorded; Gate 1 / PR A in progress, awaiting final-head CI and review.  
+**Status:** Gates 0 and 1 merged; Gate 2 / PR B in progress, pending final-head CI and review.  
 **Owner/source of truth:** this checklist; record results here after each gate.  
 **Created:** 2026-11-12. **Target:** maintenance release 3.11.6.  
 **Starting point:** PR #252 (`3c2f2a9d`) and documentation closeout PR #253 (`777891be`) merged into `main`. Public skill and `release/skill-prod` remain at 3.11.5. Private Lab rc.3 is an experimental snapshot, not the public release.
@@ -103,8 +103,8 @@ Use one internal, evidence-gated vocabulary, mapped to simple listener text:
 | --- | --- | --- | --- | --- |
 | Plan | This document | Docs-only PR and normal CI; no runtime changes | N/A | [x] Written and committed; PR merge recorded by GitHub |
 | Gate 0 | PR A audit: [contract snapshot](skill-3.11.6-gate0-contract-audit.md) | Sources, refs, four release assets and workflow boundaries inspected; external schema consumers N/T | No live host actions | [x] Inventory recorded; PR A CI required before merge |
-| PR A | `fix/skill-3116-gemini-exact-contract` | Exact-first Gem/install docs plus static regression; final-head CI pending | No writer tests or saves | [ ] Review/merge gate open |
-| PR B | — | — | — | [ ] |
+| PR A | [PR #255](https://github.com/focustimer-dev/go-hipster-go/pull/255), squash `1af39382` | Gemini exact-first contract; Python 3.10/3.12/3.13 green | Live writer N/T; no saves | [x] Merged; production unchanged |
+| PR B | `fix/skill-3116-gate2-status` | Read-only status report + evidence checks; format 1.0 untouched; CI pending | No provider write | [ ] Review/merge gate open |
 | PR C (only if warranted) | — | — | — | [ ] |
 | Candidate acceptance | — | — | — | [ ] |
 | PR D | — | — | — | [ ] |
