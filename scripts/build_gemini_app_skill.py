@@ -215,12 +215,9 @@ def modular_files(canonical: str, online: bool = False) -> dict[str, str]:
     curve = section_map(canonical)["Tempo and mood curve"].strip() + "\n"
     files = {"SKILL.md": entry, "references/workflow.md": workflow, "references/tempo-curve.md": curve}
     if online:
-        # Online adapter references point to a versioned tag, never moving /main/.
-        version_match = re.search(r'(?m)^  version: "([^"]+)"$', canonical)
-        if not version_match:
-            raise ValueError("Missing canonical skill version for online reference pinning")
-        version = version_match.group(1)
-        base = f"https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/gemini-skill-v{version}/"
+        # Published online references use a manually promoted production branch.
+        # Never point deployed Gemini instructions at the moving main branch.
+        base = "https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/release/skill-prod/"
         def link(match):
             path = match.group(1)
             target = "adapters/gemini/" + path if path in files else path
