@@ -84,6 +84,139 @@ def validate_playlist(data: object, strict: bool = False) -> list[str]:
 
 
 
+# A read-only evidence report, intentionally separate from playlist format 1.0.
+# The caller must actually inspect provider or saved-library results; this code
+# can reject incomplete evidence, but it cannot authenticate provider claims.
+PUBLICATION_LABELS = {
+    "curated_text_only": "CURATED — NOT PUBLISHED",
+    "not_created": "PLAYLIST NOT CREATED",
+    "created_save_required": "CREATED — SAVE REQUIRED",
+    "published_items_unverified": "SAVED — ITEMS UNVERIFIED",
+    "published_exact": "PUBLISHED — EXACT",
+    "published_approximate": "PUBLISHED — APPROXIMATE",
+}
+
+
+def publication_status_report(evidence: object) -> dict:
+    """Reconcile caller-observed playlist evidence without changing 1.0 exports.
+
+    'provider_count' is the confirmed TOTAL, never a count of preview tiles.
+    'positions' is position-by-position evidence, not an artist-deduplicated set.
+    Reporting exact tracks requires full readback *and* a verified recording
+    identity for every position. This function never performs provider writes.
+    """
+    if not isinstance(evidence, dict):
+        raise ValueError("evidence must be an object")
+    keys = {"requested_count", "curated_count", "text_only", "created",
+            "saved", "provider_count", "positions"}
+    extra = set(evidence) - keys
+    if extra:
+        raise ValueError("unsupported evidence keys: " + ", ".join(sorted(extra)))
+    requested = evidence.get("requested_count")
+    curated = evidence.get("curated_count")
+    if type(requested) is not int or requested < 1:
+        raise ValueError("requested_count must be a positive integer")
+    if type(curated) is not int or not 0 <= curated <= requested:
+        raise ValueError("curated_count must be an integer from 0 to requested_count")
+    text_only = evidence.get("text_only", False)
+    if type(text_only) is not bool:
+        raise ValueError("text_only must be boolean")
+    provider_count = evidence.get("provider_count")
+    if provider_count is not None and (type(provider_count) is not int or provider_count < 0):
+        raise ValueError("provider_count must be a nonnegative integer or null")
+
+    def confirmation(value, field, sources):
+        if value is None:
+            return False
+        if (not isinstance(value, dict) or set(value) != {"source", "reference"}
+                or value.get("source") not in sources
+                or not isinstance(value.get("reference"), str)
+                or not value["reference"].strip()):
+            raise ValueError(f"{field} requires a source and a nonempty evidence reference")
+        return True
+
+    created = confirmation(evidence.get("created"), "created",
+                           {"provider_response", "playlist_card", "library_observation"})
+    saved = confirmation(evidence.get("saved"), "saved",
+                         {"provider_save", "library_readback"})
+    items = evidence.get("positions", [])
+    if not isinstance(items, list):
+        raise ValueError("positions must be a list")
+    if text_only and (created or saved or provider_count is not None or items):
+        raise ValueError("text_only contradicts provider evidence; investigate an unauthorized write")
+    if not created and (saved or provider_count is not None or items):
+        raise ValueError("saved or item evidence requires a confirmed playlist object")
+
+    reviewed = {}
+    for item in items:
+        if not isinstance(item, dict) or set(item) - {
+                "position", "result", "source", "reference", "recording_verified", "note"}:
+            raise ValueError("each position must be a supported evidence object")
+        pos = item.get("position")
+        result = item.get("result")
+        if type(pos) is not int or pos < 1 or pos > requested or pos in reviewed:
+            raise ValueError("positions must be unique integers within requested_count")
+        if result not in {"exact", "substituted", "wrong_version", "wrong_order", "missing"}:
+            raise ValueError(f"position {pos}: unknown comparison result")
+        if (item.get("source") not in {"provider_readback", "listener_library_review"}
+                or not isinstance(item.get("reference"), str)
+                or not item["reference"].strip()):
+            raise ValueError(f"position {pos}: item-level evidence source and reference required")
+        if result == "exact" and item.get("recording_verified") is not True:
+            raise ValueError(f"position {pos}: exact requires independently verified recording identity")
+        if result != "exact" and (not isinstance(item.get("note"), str)
+                                  or not item["note"].strip()):
+            raise ValueError(f"position {pos}: state the observed difference")
+        if "recording_verified" in item and type(item["recording_verified"]) is not bool:
+            raise ValueError(f"position {pos}: recording_verified must be boolean")
+        reviewed[pos] = item
+    if provider_count is not None:
+        observed_present = sum(i["result"] != "missing" for i in items)
+        if observed_present > provider_count:
+            raise ValueError("confirmed items exceed confirmed total provider_count")
+
+    mismatch = [
+        {"position": pos, "result": item["result"], "note": item["note"]}
+        for pos, item in sorted(reviewed.items()) if item["result"] != "exact"
+    ]
+    if provider_count is not None and provider_count != requested:
+        mismatch.append({"result": "count_difference",
+                         "note": f"Requested {requested}; provider confirms {provider_count}"})
+    if curated != requested:
+        mismatch.append({"result": "curation_shortfall",
+                         "note": f"Requested {requested}; curated {curated}"})
+
+    unknown = [pos for pos in range(1, requested + 1) if pos not in reviewed]
+    exact_matches = sum(i["result"] == "exact" for i in reviewed.values())
+    if text_only:
+        status = "curated_text_only"
+    elif not created:
+        status = "not_created"
+    elif not saved:
+        status = "created_save_required"
+    elif mismatch:
+        status = "published_approximate"
+    elif (provider_count == requested and curated == requested
+          and exact_matches == requested and not unknown):
+        status = "published_exact"
+    else:
+        status = "published_items_unverified"
+
+    return {
+        "status": status,
+        "label": PUBLICATION_LABELS[status],
+        "counts": {
+            "requested": requested,
+            "curated": curated,
+            "provider_total": provider_count,
+            "reviewed_positions": len(reviewed),
+            "confirmed_exact_positions": exact_matches,
+        },
+        "unreviewed_positions": unknown,
+        "observed_differences": mismatch,
+    }
+
+
 def artist_spacing_issues(data: object) -> list[str]:
     """Editorial preflight warnings for ordinary playlists; not catalog verification.
 
@@ -157,6 +290,8 @@ def main(argv=None)->int:
     d=sub.add_parser('debarge',help='Create explicit 25-track joke payload')
     d.add_argument('--output',type=Path,required=True)
     sub.add_parser('check-skill',help='Check skill metadata and local references')
+    r=sub.add_parser('status-report',help='Read-only publishing evidence reconciliation; does not modify playlist 1.0')
+    r.add_argument('path',type=Path)
     a=p.parse_args(argv)
     if a.command=='roll':
         print(json.dumps(one_in_a_hundred()));return 0
@@ -170,6 +305,14 @@ def main(argv=None)->int:
         try: data=json.loads(a.path.read_text(encoding='utf-8-sig'))
         except (OSError,ValueError) as ex:
             print(f'ERROR: cannot read JSON: {ex}',file=sys.stderr);return 2
+        if a.command == 'status-report':
+            try:
+                report = publication_status_report(data)
+            except ValueError as ex:
+                print(f'FAIL: {ex}', file=sys.stderr)
+                return 1
+            print(json.dumps(report, ensure_ascii=False, indent=2))
+            return 0
         errs=artist_spacing_issues(data) if a.command=='lint-sequence' else validate_playlist(data,strict=a.strict)
     if errs:
         for e in errs: print('FAIL:',e,file=sys.stderr)
