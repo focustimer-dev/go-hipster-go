@@ -56,6 +56,7 @@ SOURCES = [
     "references/verification.md",
     "references/cover-art.md",
     "references/evaluation-smoke.md",
+    "references/claude-spotify-recovery.md",
 ]
 
 
