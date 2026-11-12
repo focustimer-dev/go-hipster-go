@@ -1,5 +1,6 @@
 """Offline release-qualification reporting; not a live music or provider test."""
 import json
+import re
 import tempfile
 import unittest
 from pathlib import Path
@@ -38,6 +39,40 @@ class ReleaseQualificationTests(unittest.TestCase):
         self.assertIn("no live host, catalog or music-quality measurements", text)
         self.assertIn("Separate approval obtained", text)
         self.assertNotIn("- [x] Live ChatGPT", text)
+
+    def test_chatgpt_public_links_and_artwork_are_present(self):
+        manifest = json.loads((ROOT / "plugin.json").read_text(encoding="utf-8"))
+        interface = manifest["extensions"]["com.openai"]["interface"]
+        base = "https://github.com/focustimer-dev/go-hipster-go/blob/main/"
+        for key, path in (
+            ("supportURL", "docs/support.md"),
+            ("privacyPolicyURL", "docs/privacy.md"),
+            ("termsOfServiceURL", "docs/terms.md"),
+        ):
+            self.assertEqual(interface[key], base + path)
+            self.assertTrue((ROOT / path).is_file(), path)
+        for key in ("composerIcon", "composerIconDark", "logo", "logoDark"):
+            asset = ROOT / interface[key].removeprefix("./")
+            self.assertTrue(asset.is_file(), asset)
+            self.assertIn("<svg", asset.read_text(encoding="utf-8"))
+
+    def test_no_obvious_secrets_in_public_skill_entries(self):
+        # A narrow signature check, not a comprehensive security scan.
+        examples = (
+            ROOT / "plugin.json",
+            ROOT / "SKILL.md",
+            ROOT / "skills/setup/SKILL.md",
+            ROOT / "adapters/gemini/SKILL.md",
+        )
+        patterns = (
+            r"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----",
+            r"ghp_[A-Za-z0-9]{30,}",
+            r"sk-proj-[A-Za-z0-9_-]{24,}",
+        )
+        for path in examples:
+            text = path.read_text(encoding="utf-8")
+            for pattern in patterns:
+                self.assertIsNone(re.search(pattern, text), str(path))
 
     def test_missing_archives_are_blockers_not_false_passes(self):
         with tempfile.TemporaryDirectory() as folder:
