@@ -46,3 +46,22 @@ jobs:
             dist/gate4-candidate-provenance.txt
           retention-days: 7
           if-no-files-found: error
+
+      - name: Build isolated ChatGPT rc.5 early-route probe and hash
+        if: ${{ github.event_name == 'pull_request' && matrix.python-version == '3.12' }}
+        run: |
+          python scripts/build_gate4_chatgpt_rc5_probe.py --output dist/ghg-gate4-chatgpt-probe-rc5.zip
+          printf 'frozen_rc4_source_sha=3f383f4ea1d91ba288b6d04de248e4904e76a809\n' > dist/gate4-chatgpt-probe-provenance.txt
+          printf 'probe_build_sha=%s\n' "$GITHUB_SHA" >> dist/gate4-chatgpt-probe-provenance.txt
+          printf 'probe_name=go-hipster-go-gate4-probe\nprobe_version=3.11.6-rc.5\n' >> dist/gate4-chatgpt-probe-provenance.txt
+          sha256sum dist/ghg-gate4-chatgpt-probe-rc5.zip >> dist/gate4-chatgpt-probe-provenance.txt
+      - name: Retain experimental ChatGPT-only route-probe ZIP
+        if: ${{ github.event_name == 'pull_request' && matrix.python-version == '3.12' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ghg-gate4-chatgpt-route-probe-rc5
+          path: |
+            dist/ghg-gate4-chatgpt-probe-rc5.zip
+            dist/gate4-chatgpt-probe-provenance.txt
+          retention-days: 7
+          if-no-files-found: error
