@@ -141,6 +141,15 @@ class PortableAgentTests(unittest.TestCase):
                 if "://" not in link:
                     self.assertIn(link, names)
 
+    def test_gemini_render_avoids_unavailable_sequence_cli(self):
+        from scripts.build_gemini_app_skill import render, modular_files
+        canonical = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        rendered = render(canonical)
+        online = modular_files(canonical, online=True)
+        for policy in (rendered, online["references/workflow.md"]):
+            self.assertNotIn("lint-sequence", policy)
+            self.assertIn("lint a manifest if available or check manually", policy)
+
     def test_gemini_publish_follow_up_contract(self):
         from scripts.build_gemini_app_skill import render, REFERENCES
         entry = (ROOT / "adapters/gemini/SKILL.md").read_text()
