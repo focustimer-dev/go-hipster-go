@@ -18,7 +18,7 @@ The generated GEM_KNOWLEDGE.md is an archival combined mirror, not an installati
 
 Gemini's installed Skill carries all the research, verification, sonic sequencing and publication rules. The Jukebox passes the destination, mood, optional tempo, sound-led discovery lens and crate spark. **Plain `go` now curates AND attempts to create one playable YouTube Music playlist by default.** `go live` remains a synonym for older prompts, not a required mode. There is no Curate only checkbox in the Jukebox. If requested explicitly, `go, text only` skips writing.
 
-The curator's intended 12 artist/title/version recordings are selected first, then the actual provider's **playlist** action is tried once. Google's theme generator may substitute tracks or ignore order/count. Do not silently call those exact: label the mix **APPROXIMATE** unless item-level read-back establishes fidelity. If the connected writer fails or is unavailable, return the original crate, mark **PLAYLIST NOT CREATED**, and offer one actionable next step. A playlist card is not necessarily saved; the user may need **Save to library**.
+The curator's intended 12 artist/title/version recordings are selected first. Ordinary GO attempts the provider's **playlist** action only if the authorized writer supports explicit ordered track entries. When only thematic generation is available, retain the exact list and report **PLAYLIST NOT CREATED — exact-track publishing unavailable**; do not silently generate an alternative mix. A separate thematic playlist is possible only after an explicit listener request and must be labeled **APPROXIMATE**, with observed substitutions and count/order differences distinguished from unknowns. A playlist card is not necessarily saved; the user may need **Save to library**.
 
 **Installing or refreshing the Skill:** save the small entry with the PWA prompt and confirm it persists in a new chat. If it only reads the repository, upload the [complete Gemini Skill ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip) from Gemini desktop/mobile web, not the native app.
 
@@ -30,7 +30,7 @@ After the clerk finishes a crate, say **`Publish`** or **`publish it`** in that 
 
 ## Historical two-stage experiment (v3.5.5, superseded)
 
-The previous two-stage flow was an experiment following observed mismatches between curated crates and provider-generated YouTube Music mixes. Current GO attempts one authorized playlist by default, while retaining the original curated list and clearly labeling provider mixes APPROXIMATE.
+The previous two-stage flow was an experiment following observed mismatches between curated crates and provider-generated YouTube Music mixes. Current GO attempts an authorized **exact-track-capable** playlist writer by default; the older automatic themed-generation approach is retired. Explicitly requested approximations remain separate from the original curated list.
 
 ## Gemini v3.7.2 cleanup
 
@@ -38,7 +38,7 @@ The five-file Gemini ZIP is built from host-filtered musical rules and one nativ
 
 ## If Gemini suddenly shows YouTube video search cards
 
-This is **not** a completed YouTube Music playlist. When exact song-name matching is requested but the Gemini connected app only exposes theme-based playlist creation, Gemini may search ordinary YouTube one recording at a time and never generate a playlist. The Jukebox now requests the original verified crate **and one playlist attempt on GO**. If Google responds with individual YouTube video results rather than a YouTube Music playlist, report **PLAYLIST NOT CREATED**.
+This is **not** a completed YouTube Music playlist. When exact song-name matching is requested but the Gemini connected app only exposes theme-based playlist creation, Gemini may search ordinary YouTube one recording at a time and never generate a playlist. The Jukebox requests the original verified crate **and one exact-capable playlist attempt on GO**, never a silent themed replacement. If Google responds with individual YouTube video results rather than a YouTube Music playlist, report **PLAYLIST NOT CREATED**.
 
 Google's documented app name is **`@YouTubeMusic`**, not `@youtube-music`. Merely pasting this text from the Jukebox does **not** create an active Connected App mention. In Gemini, type `@` and **select YouTube Music from the actual picker** if the app did not activate; similarly select the installed Go, Hipster, Go! skill from `/` or `@` where needed. Google currently documents **Create a playlist** by a mood, activity or artist; it does not document editing an arbitrary exact ordered recording list. Use **Save to library** if the generated playlist needs saving.
 
@@ -46,7 +46,7 @@ Google's documented app name is **`@YouTubeMusic`**, not `@youtube-music`. Merel
 
 A real Gemini playlist card is an improvement over video search cards, **not** proof that Go, Hipster, Go!'s curation survived the handoff. One observed 25-song *Anatolian Fuzz & Psych* card began with five Erkin Koray tracks, despite the intended default of twelve varied recordings. The v3.5.3 provider handoff allowed up to two artist anchors; Google's theme-based generator may prioritize these artists rather than the sonic thesis. Version 3.5.4 attempted to remove named artist anchors and request 12 distinct artists; the provider still produced a materially different 25-song playlist in a later field test. In v3.5.5, these limitations motivate making provider generation an **optional second stage**, not the automatic result of GO.
 
-If the resulting playlist ignores them, report **requested 12 vs. returned count**, and note the visible artist concentration. Keep the intended curated tracks distinct from the generated provider mix, and don't automatically create a second playlist to retry. If Gemini's playlist card provides a refinement flow, try `Keep the theme, but make it 12 songs by 12 different artists, no artist radio or repeated performers` once. Whether that refinement succeeds must be checked on the displayed result. Remember to distinguish a Gemini-generated card from **Save to library**.
+For an explicitly requested approximate playlist, if the resulting playlist ignores the intended tracks, report **requested 12 vs. returned count**, and note the visible artist concentration. Keep the intended curated tracks distinct from the generated provider mix, and don't automatically create a second playlist to retry. If Gemini's playlist card provides a refinement flow, try `Keep the theme, but make it 12 songs by 12 different artists, no artist radio or repeated performers` once. Whether that refinement succeeds must be checked on the displayed result. Remember to distinguish a Gemini-generated card from **Save to library**.
 
 ## If YouTube Music keeps playing the same records
 
@@ -103,7 +103,7 @@ Gemini can generate a music playlist from a mood, artist, activity or genre. Tha
 
 ## Music-service behavior (documented versus tested)
 
-Google currently documents that Gemini Apps with **YouTube Music** can generate playlists from a mood, activity, genre, artist or similar idea. This is our preferred destination for a provider-generated *approximation*. It does **not** prove the host can recreate an arbitrary exact ordered set of obscure tracks. If the interface offers **Save to library**, the listener may need to use it after generation; previewed is not necessarily saved.
+Google currently documents that Gemini Apps with **YouTube Music** can generate playlists from a mood, activity, genre, artist or similar idea. This is an option for a **separately and explicitly requested** provider-generated *approximation*, not the ordinary GO fallback. It does **not** prove the host can recreate an arbitrary exact ordered set of obscure tracks. If the interface offers **Save to library**, the listener may need to use it after generation; previewed is not necessarily saved.
 
 Google's current **Spotify** connected-media support in Gemini mobile covers searching/playing music and existing playlists; it expressly excludes creating playlists, radio, or saving tracks to playlists through that connection. Spotify remains a listening/search option, **not** a confirmed playlist writer.
 
