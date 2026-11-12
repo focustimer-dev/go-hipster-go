@@ -149,7 +149,7 @@ This audit does not establish measured host latency, live music quality, or publ
 
 | Scenario | Minimum acceptance check | Evidence |
 | --- | --- | --- |
-| Ordinary GO | Real coherent playlist; requested count; unique credited leads | [Two identical `go weird mid` audits](skill-pr5-rc2-ordinary-go-repeatability.md): 24 real selections, **3/12 exact song repeats** and **4/12 artist repeats**, both clustered in 1978–84 canon despite no era request. [Surgical freshness correction](../references/sonic-taxonomy.md) now tested offline, pending isolated rc.3 music output. No added search phase or app prompt. |
+| Ordinary GO | Real coherent playlist; requested count; unique credited leads | [Two identical `go weird mid` audits](skill-pr5-rc2-ordinary-go-repeatability.md): 3/12 exact song repeats, 4/12 artist repeats, repeated 1978–84 canon focus. [Small freshness correction](../references/sonic-taxonomy.md) passed offline and is now installed in **private Lab rc.3**; ordinary GO musical retest pending. No new user fields, quotas, or research phase. |
 | GO HARD | Deeper discovery, same constraints, no filler | [rc.2 Central America observed audit](skill-pr5-rc2-central-america-audit.md) documents **12/12 traceable tracks, 6 countries, 2/12 exact rc.1 overlaps** (previous A/B had 6/12) and **3/12** from one Soundway compilation. Qualitative discovery improvement, but version trace, audio, independent original issues and actual reference-file usage remain unverified. [Five static discovery tests](../tests/test_skill_discovery_exploration.py) passed; no release clearance. |
 | Single-region GO | Correct regional provenance and verified recording-level fit | [Three-version Central America comparison](skill-pr5-rc2-central-america-audit.md) supports much broader **user-reported rc.2** selection: 6 countries, 3/12 from one Soundway release, 2 exact rc.1 repeats and none from 3.11.5. All 12 artist/title pairs sourced; edition originals, transfer cleanliness and actual sound still pending. [Southern/Gulf Lab-only diagnostic](skill-pr5-south-gulf-funk-lab-diagnostic.md) preserved for separate regional contrast. |
 | Multi-region GO | Plausible musical bridges; no region leakage | Pending |
@@ -177,13 +177,14 @@ Fill these from reproducible tests. “Estimated tokens” is not a measurement 
 | Open-ended GO required files/bytes | Pending | Pending | |
 | GO HARD required files/bytes | Pending | Pending | |
 | Reference-retrieval calls (where observable) | Pending | Pending | |
-| Automated pass/fail count | Historical release not rerun | **193 Python tests per job, 3/3 CI green** at `5dc040ea` | PR #252 discovery gate; rc.2 live N/T |
+| Automated pass/fail count | Historical release not rerun | **194 Python tests per job, 3/3 CI green** at `b6b9ab78` | PR #252 discovery + ordinary freshness gate; rc.3 music N/T |
 | Musical-quality review | Pending | Pending | |
 
 ## Progress log
 
 | Date | Stage | Change / evidence | Status |
 | --- | --- | --- | --- |
+| 2026-11-12 | PR 5 private Lab rc.3 for ordinary GO | [Repeatability audit and test card](skill-pr5-rc2-ordinary-go-repeatability.md): single freshness-rule tweak and one regression test, all distributed skill mirrors updated, **194/194 tests per Python job** at [run 43280564958](https://github.com/focustimer-dev/go-hipster-go/actions/runs/43280564958); [private Lab rc.3](https://chatgpt.com/plugins/plugins_6af5b52ee0288191978cf11e3e9ba92f) updated and verified. | Static green, live rc.3 outcome pending; production unchanged |
 | 2026-11-12 | PR 5 ordinary GO repeatability / canon lane | [Second same-prompt audit](skill-pr5-rc2-ordinary-go-repeatability.md) found 3/12 repeated exact tracks, 4/12 repeated artists and the same 1978–84 post-punk/synth corridor. Updated **one existing taxonomy freshness step** and added **one static regression test**; no extra ordinary GO searches or Jukebox fields. | CI green for code commit; live rc.3 test pending, release held |
 | 2026-11-12 | PR 5 rc.2 ordinary GO sample | [Sourced 12-track review](skill-pr5-rc2-ordinary-go-audit.md) for `go weird mid`: accurate credits/count, dry voice and coherent post-punk/electro arc; all recordings released 1979–84, too dependent on familiar scene landmarks for broad unprompted weird discovery. Producing-session version/file-read and audible tempos unverified. | Conditional content pass; no skill changes, release still held |
 | 2026-11-12 | PR 5 rc.2 Central America observed playlist | [Complete 12-track audit](skill-pr5-rc2-central-america-audit.md): only 2/12 exact overlap with rc.1 (vs its prior 6/12 repeat baseline); Soundway collection reduced to 3/12; six countries and 12 traceable track identities. User did not supply generating-chat version readout; no transfer/audio or original single verification for Soundway trio. | Discovery gain documented; release held, ordinary GO still pending |
