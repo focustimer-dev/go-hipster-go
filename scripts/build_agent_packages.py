@@ -64,7 +64,7 @@ SOURCES = [
     "adapters/streaming/youtube.md",
     "adapters/streaming/spotify.md",
     "adapters/streaming/apple-music.md",
-    "tests/discovery-cases.md",
+    "references/evaluation-smoke.md",
 ]
 CHATGPT_BUNDLE = Path("adapters/chatgpt/CHATGPT_KNOWLEDGE.md")
 GEM_BUNDLE = Path("adapters/gemini/GEM_KNOWLEDGE.md")
@@ -125,8 +125,8 @@ def sync(check: bool):
 
 
 # Keep archive member order and metadata stable across checkout machines.
-# The discovery test corpus stays in runtime packages until its live SKILL.md
-# relative link is moved safely; a blanket tests/ exclusion would break it.
+# The full evaluation corpus stays in the repository. The runtime SKILL.md
+# links to a compact mirrored reference, so no test corpus is shipped.
 ZIP_EPOCH = (1980, 1, 1, 0, 0, 0)
 
 
