@@ -151,7 +151,7 @@ This audit does not establish measured host latency, live music quality, or publ
 | --- | --- | --- |
 | Ordinary GO | Real coherent playlist; requested count; unique credited leads | Pending |
 | GO HARD | Deeper discovery, same constraints, no filler | Pending |
-| Single-region GO | Correct regional provenance and verified recording-level fit | [Observed 12-track ChatGPT output](skill-pr5-central-america-funk-observed-audit.md): **conditional**, version unverified; performer-credit mismatch and skip-rough concern. Controlled A/B still pending. |
+| Single-region GO | Correct regional provenance and verified recording-level fit | [3.11.5 vs. 3.11.6-rc.1 Lab A/B](skill-pr5-central-america-funk-ab-comparison.md) **conditional / release held**: 12 real candidates each, 6 overlapping tracks; 9/12 from three compilations vs 10/12 from two; original credit error and skip-rough concern, audio unverified. |
 | Multi-region GO | Plausible musical bridges; no region leakage | Pending |
 | Two moods / c1 | Blended mood or correct ordered per-slot tempo and mood targets | Pending |
 | Refresh | New compatible crate without silent changes to old one | Pending |
@@ -184,6 +184,7 @@ Fill these from reproducible tests. “Estimated tokens” is not a measurement 
 
 | Date | Stage | Change / evidence | Status |
 | --- | --- | --- | --- |
+| 2026-11-12 | PR 5 ChatGPT A/B | [A/B comparison](skill-pr5-central-america-funk-ab-comparison.md) now records listener's public 3.11.5 versus private Lab 3.11.6-rc.1 output with identical brief. Both 12 real recordings; new candidate broadens geography but relies on one Soundway compilation for 6/12 and two compilations for 10/12; transfer fidelity unverified. | Conditional; release held |
 | 2026-11-12 | PR 5 ChatGPT one-output audit | [Central America Funk source audit](skill-pr5-central-america-funk-observed-audit.md): all 12 tracks found in catalog, one performer miscredit, high compilation concentration, possible skip-rough issue. Loaded skill version unavailable; not an A/B result. | Conditional; release held |
 | 2026-11-12 | PR 4 merged | [PR #251](https://github.com/focustimer-dev/go-hipster-go/pull/251) passed all three Python CI jobs at latest head and merged as `3f169c4ea6e9a2a88d0db505e0cc84c157d2f99f`; no release/deployment. | Complete |
 | 2026-11-12 | PR 5 initiated | Branched after PR 4; added offline ZIP/source measurement script, regression tests and controlled live-host qualification matrix. Version remains 3.11.5; live results N/T. | In progress |
