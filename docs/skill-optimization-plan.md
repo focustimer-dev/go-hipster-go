@@ -7,6 +7,8 @@
 **Last reviewed:** 2026-11-12  
 **Tracking convention:** Check a box only when the linked evidence exists. Each PR gets its own checklist and exit gate.
 
+**Authoritative next-step implementation plan:** [3.11.6 finalization runbook](skill-3.11.6-finalization-plan.md). This earlier tracker preserves completed Stages 0–5 and historical evidence; use the new checklist for the remaining contract, schema, host-audit, candidate and release gates. Publication remains separately approval-gated.
+
 > **Purpose:** Make the ChatGPT, Gemini, and Claude skill distributions smaller, faster to load, easier to maintain, and safer to publish **without changing what makes the playlists good**.
 
 ## Operating rules
