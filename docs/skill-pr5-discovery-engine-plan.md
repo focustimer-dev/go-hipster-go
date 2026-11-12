@@ -20,6 +20,14 @@ For GO HARD, build candidate hypotheses via a few **substantively different and 
 
 If a compilation supplies credible leads, follow it outward to **other independent sources** before filling most of the shortlist. Retain any strong compilation-origin track that survives musical comparison. No fixed number of independent labels, compulsory unpopular songs, artificial country quotas, banned canon names or compilation ceiling. The correction acts at **candidate generation**, not the final 12-track filter. Ordinary GO keeps its one-pass budget.
 
+### 1b. Vary the actual entry point across independent runs
+
+The tested prompts included **no `Discovery route: v1/Rxx` or supplied previous playlist**. The repository's 24 route IDs, occasional PWA/APK route selection and "compare three routes internally" text do not ensure that an isolated skill-only host begins a second run in a **different** part of the catalog.
+
+For runs without an explicit route, deliberately **evaluate independent compatible entry paths before committing to song names**, and use a different underexplored path when a recently visible crate already exhausted a familiar one. If the host exposes a genuine random facility, a private on-device Jukebox-generated route, or an authorized previous-crate history, use those facts to vary the starting branch. Do not fabricate randomness or silently pretend an isolated ChatGPT plugin can see earlier sessions. The **mechanism** must change candidate retrieval, not merely playlist title, order or stated "seed."
+
+To audit this, the final 12 can be inspected for source concentration, and any genuine host search/file-read trace can be checked for *different starting paths*. Do not equate source-album origin with proof of the actual web search that produced the song.
+
 ### 2. Separate provenance, exact recording and clean playable transfer
 
 Prefer establishing the **original single / album / EP recording identity** before copying metadata from a compilation; reissues remain valid and may provide the best evidence and best audio transfer. Do not assume a song was on the original LP simply because it appears as an expanded-reissue bonus (e.g. the Bar-Kays, 'Son of Shaft'). Treat release provenance, recording identity and preferred playable master as separate facts. `Skip rough recordings` requires actual transfer-specific evidence when available or an explicit unresolved status; "remastered"/named label alone is insufficient.
