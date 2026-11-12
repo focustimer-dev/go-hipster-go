@@ -12,10 +12,10 @@ Use `verification.status` on each entry: `verified` with a source URL, or `unver
 
 - Exact artist credit, title, featured artists, spelling/transliteration variants
 - Original versus cover, live, edit, remaster, demo, remix, extended 12-inch
-- Release/recording metadata when confidently sourced; avoid dates if uncertain
+- Confirm **original single/EP/album provenance** separately from the compilation, expanded-edition bonus track or later reissue containing it; don't label a bonus cut as part of the original LP. Keep recording identity distinct from the best available transfer and avoid uncertain dates.
 - Actual service URL and provider ID, not a general artist page or a generic search result
 - Country/scene provenance separately from a broad stylistic guess
-- Explicit handling when the exact track or mix is unavailable
+- Explicit handling when the exact track or mix is unavailable; a reissue name or “Remastered” badge alone does not verify a clean transfer for Skip rough recordings
 
 A partial or unverified discovery playlist is fine if openly labeled; a **strictly verified** or **publish-ready** playlist must not silently include unresolved candidates. The validator's `--strict` flag checks minimum verification metadata, not factual truth; independent listening/catalog validation is still needed.
 

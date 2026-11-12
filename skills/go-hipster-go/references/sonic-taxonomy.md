@@ -32,7 +32,7 @@ Source: expanded v2 axes, with the original v1 emphasis on audible qualities.
 
 ## Mood interpretation matrix
 
-These are listening hypotheses, never claims that an entire culture feels one way. Choose one main interpretation and a compatible secondary shade; vary them on the next open-ended request. User specifics and tempo win. A fast sad request can be cathartic; slow anger can be quietly menacing. Read the category index in global-scenes.md before defaulting to familiar examples.
+These are listening hypotheses, never claims that an entire culture feels one way. Choose one main interpretation and a compatible secondary shade; vary them on the next open-ended request. User specifics and tempo win. A fast sad request can be cathartic; slow anger can be quietly menacing. For open-ended GO, consult the category index in global-scenes.md before defaulting to familiar examples. For region-locked GO, begin with the regional atlas and selected region files; consult global scenes only for a genuine cross-scene or weak-candidate need.
 
 | Mood | Interpretations to rotate | Avoid the shortcut |
 |---|---|---|
@@ -67,11 +67,11 @@ Archival scarcity is not musical merit. A compilation excerpt or radio collage i
 
 ## Freshness procedure
 
-1. Choose a mood interpretation, an audible mechanism and a discovery category before searching artist names. Compare three genuinely different possible theses, then use the strongest; do not print an internal scoring system.
-2. For an unconstrained ordinary set, research beyond one label or compilation and beyond the named reference artists. Trace original releases, local contemporaries and collaborators. Do not swap twelve obvious compilation staples for twelve other staples from one compilation.
+1. Choose a mood interpretation, audible mechanism and discovery category **before** artist names. For open-ended ordinary GO (especially `go weird`), compare three **distinct sonic mechanisms or scene families** within the existing single pass, not three variations on a familiar canon lane. If the provisional shortlist clusters around famous tracks from one era/scene without a listener constraint, reconsider an already available less-explored route before final selection. Keep the musically stronger records; no forced era, nationality, obscurity or song quotas, extra research phase or printed scoring system.
+2. For an unconstrained ordinary set, research beyond one label or compilation and beyond named reference artists. Use compilation listings as leads, then check **original single/EP/album provenance** and trace artist discographies or local contemporaries; a clean reissue remains eligible. Do not swap twelve obvious compilation staples for twelve other staples from one compilation.
 3. When recent lists are accessible, exclude the last up to three sets' normalized artist/title/version recordings and prefer different artists. Also vary the dominant scene, source compilation and sonic thesis. Reissues, alternate uploads, aliases and featured credits do not reset a repeated recording.
 4. If a specific request needs an exception, honor it and explain briefly. No mandatory nation, language, era, label or genre quota; no arbitrary sacrifice of cohesion for obscurity.
-5. When history is unavailable, diversify the research and avoid named-example defaults, but never claim listener-specific novelty or persistent memory. The PWA stores only discovery cue IDs, not the resulting songs or listening history.
+5. When history is unavailable, **change the actual research starting path**, not only the title or sequence, and avoid named-example defaults; never claim listener-specific novelty or persistent memory. The PWA stores discovery cue IDs, not resulting songs or listening history.
 6. When the listener says stale, replace the discovery strategy and actual selections, not merely adjectives, title or ordering. Ask for prior lists only if essential to a precise exclusion request; do not block an ordinary GO.
 
 
@@ -83,6 +83,6 @@ Before accepting each ordinary selection, require:
 - Fit with the listener's selected regions, mood and tempo. Treat a regional scene as a research lead, not proof of a song's suitability. For Criminal, verify the explicit crime narrative at song level; do not weaken it to fill a regional quota. If the non-English preference materially limits a requested region, be candid rather than silently escaping the geography.
 - A concrete, supported musical reason: phrasing, arrangement, groove, melodic turn, texture or a persuasive transition. Generic genre adjectives do not suffice. Never invent listening evidence.
 - A useful contribution to the sequence beyond novelty or a funny backstory. A pop reference must remain pleasurable without the joke; do not use an ironic excuse for filler.
-- Search beyond predictable signature tracks and repeated compilation selections. Broader genres need narrower research angles, not blanket bans; known artists remain eligible when the recording earns its place or the user requests it.
+- Search beyond predictable signature tracks and repeated compilation selections. Scrutinize widely exposed songs against a plausible less familiar verified alternative **when available**; verified play counts are context, not an exclusion threshold, and unknown counts must stay unknown. Broader genres need narrower research angles, not blanket bans; known artists remain eligible when the recording earns its place or the user requests it.
 
 Use the region-tagged discovery catalog as a set of research doors. Regional entries are starting hypotheses with recording-level verification still required. Geography-neutral musical lenses remain available in every region; geographically specific lenses require a compatible selected region. With no region selection, the full worldwide pool is eligible. Local scenes and diaspora links must be independently documented for a specific release; language and artist identity alone do not establish the connection.

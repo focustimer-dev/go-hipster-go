@@ -178,6 +178,26 @@ class PortableAgentTests(unittest.TestCase):
             self.assertNotIn("lint-sequence", policy)
             self.assertIn("lint a manifest if available or check manually", policy)
 
+    def test_gemini_clean_track_matching_and_partial_preview(self):
+        canonical = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        entry = (ROOT / "adapters/gemini/SKILL.md").read_text(encoding="utf-8")
+        knowledge = (ROOT / "adapters/gemini/GEM_KNOWLEDGE.md").read_text(encoding="utf-8")
+        policy = (ROOT / "references/gemini-publish.md").read_text(encoding="utf-8")
+        self.assertIn("one plain `Artist - Track Title` string per slot in order", canonical)
+        self.assertIn("official artist/title spelling and diacritics", canonical)
+        self.assertIn("not generic `(Remastered)` tags", canonical)
+        self.assertIn("simplify accents or punctuation only after a particular match fails", canonical)
+        self.assertIn("Keep official artist/title spelling and essential mix tags", entry)
+        self.assertIn("no years, labels, notes or generic remaster suffixes", entry)
+        self.assertIn("A preview (even 8 of 12) proves neither count nor save", entry)
+        self.assertIn("Never save text-only crates", entry)
+        self.assertIn("Partial preview versus full saved list", policy)
+        self.assertIn("Google does not specify a universal eight-track preview limit", policy)
+        self.assertIn("mark unseen positions **unverified**", policy)
+        self.assertIn("Never save a text-only crate", policy)
+        self.assertIn("Partial preview versus full saved list", knowledge)
+        self.assertIn("A preview (even 8 of 12) proves neither count nor save", knowledge)
+
     def test_gemini_publish_follow_up_contract(self):
         from scripts.build_gemini_app_skill import render, REFERENCES
         entry = (ROOT / "adapters/gemini/SKILL.md").read_text()
