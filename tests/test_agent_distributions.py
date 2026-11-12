@@ -149,7 +149,7 @@ class PortableAgentTests(unittest.TestCase):
         gem = (ROOT / "adapters/gemini/GEM_INSTRUCTIONS.md").read_text()
         self.assertIn("references/gemini-publish.md", REFERENCES)
         self.assertIn("**Publish follow-up — EXECUTE BEFORE EXPLAINING:**", entry)
-        self.assertIn("raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/gemini-publish.md", entry)
+        self.assertIn("raw.githubusercontent.com/focustimer-dev/go-hipster-go/release/skill-prod/references/gemini-publish.md", entry)
         self.assertIn("**Publish follow-up — EXECUTE BEFORE EXPLAINING:**", render((ROOT / "SKILL.md").read_text()))
         self.assertEqual(knowledge.count("# BEGIN SOURCE: references/gemini-publish.md"), 1)
         self.assertIn("# Gemini Publish — finalization of an existing crate", knowledge)
