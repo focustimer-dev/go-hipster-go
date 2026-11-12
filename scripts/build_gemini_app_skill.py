@@ -147,6 +147,15 @@ def render_reference(relative: str, content: str) -> str:
         content = re.sub(
             r"The validator's .--strict. flag checks minimum verification metadata, not factual truth; independent listening/catalog validation is still needed\.",
             "A verified result needs actual trustworthy sources, not just well-formed metadata.", content)
+        # Strip developer-only CLI/schema details from Gemini's script-free
+        # verification reference; keep the six listener-facing evidence statuses.
+        content, n = re.subn(
+            r"\*\*Do not write these six values into playlist JSON format 1\.0\.\*\*.*?(?=\*\*Partial preview example:\*\*)",
+            "**Gemini runtime:** These six labels describe the actual user-facing outcome, not a claim that a generated card was saved. Compare requested, curated and full provider-confirmed totals separately; unknown or hidden positions are not missing tracks. Confirm library saving before reporting SAVED. Report PUBLISHED — EXACT only after saved-library confirmation, a fully known provider count and independently verified artist/title/version and order for every position. If the result differs, describe only observed mismatches. Match repeated recordings position by position, including all 25 DeBarge entries. Never guess item IDs or claim tool access from this guidance.\n\n",
+            content, count=1, flags=re.S,
+        )
+        if n != 1:
+            raise ValueError("Gemini verification status section changed")
         return content.replace("\n\n\n\n", "\n\n")
     if relative == "references/curation-examples.md":
         content = content.split("## Host-aware recovery", 1)[0].rstrip() + "\n"
