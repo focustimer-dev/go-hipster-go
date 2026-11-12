@@ -1,6 +1,6 @@
 # Go, Hipster, Go! — Skill Optimization & Publication Readiness Tracker
 
-**Status:** Planning — not yet implemented  
+**Status:** Stage 0 and PR 1 completed; PR 2 next  
 **Target release:** 3.11.6 (maintenance/polish)  
 **Baseline release:** 3.11.5 (reconfirm on PR 1)  
 **Repository:** focustimer-dev/go-hipster-go  
@@ -39,7 +39,7 @@
 | Stage | Deliverable | Risk | Status |
 | --- | --- | --- | --- |
 | Stage 0 | Protect GitHub release publishing and stable Gemini online refs | Low–medium | [x] Complete — PR #243 |
-| PR 1 | Baseline measurements + Gemini compatibility correction | Low | [ ] In progress |
+| PR 1 | Baseline measurements + Gemini compatibility correction | Low | [x] Complete — PR #244 |
 | PR 2 | Deduplicate shared regional research instructions | Low–medium | [ ] Not started |
 | PR 3 | Conditional reference loading + compact Gemini routing | Medium | [ ] Not started |
 | PR 4 | Consolidate canonical instructions + lean public packaging | Medium | [ ] Not started |
@@ -56,7 +56,7 @@ A checked PR means **merged with evidence**, not merely opened or green in one C
 - [x] Reviewed workflow triggers. Public skill release workflow is now manual-only; Cloudflare deploys require explicit marker or manual dispatch; Android Lab can run non-deploy CI on main pushes.
 - [x] Replaced executable-only `lint-sequence` wording **in generated Gemini workflow and knowledge bundle**, preserving canonical CLI checks in hosts that support them.
 - [x] Added Gemini-render regression check for unsupported `lint-sequence` command; distribution synchronization awaits CI confirmation.
-- [ ] Run baseline tests and log failures honestly; distinguish a real regression from unrelated or flaky checks.
+- [x] Validated [PR #244](https://github.com/focustimer-dev/go-hipster-go/pull/244) successfully on Python 3.10, 3.12, and 3.13, then merged as `dffaf69e67a854d9305e5b7bb36ceeaf179335d6`. The only observed Stage 0 failures were two obsolete tests expecting automatic releases; both were corrected before Stage 0 merged.
 
 **Exit gate:** Build succeeds, all relevant automated tests pass or known pre-existing failures are recorded and adjudicated; no unrelated generated-file differences.
 
@@ -160,7 +160,7 @@ Fill these from reproducible tests. “Estimated tokens” is not a measurement 
 | 2026-11-11 | Plan | Created the tracked implementation plan from combined ChatGPT/Gemini audits; no implementation or release performed. | Planning |
 | 2026-11-11 | Preflight | Confirmed `gemini-skill-v3.11.5` release and identified an automatic release-upload workflow on pushes to `main`; Stage 0 added. | Planning |
 | 2026-11-11 | Stage 0 | [PR #243](https://github.com/focustimer-dev/go-hipster-go/pull/243) passed validation and merged (`a99705fe`); published 3.11.5 assets unchanged. | Complete |
-| 2026-11-11 | PR 1 | Baseline measurements saved to `docs/skill-optimization-baseline-3.11.5.md`; Gemini portable sequence-lint correction and regression test written. | In progress |
+| 2026-11-11 | PR 1 | [PR #244](https://github.com/focustimer-dev/go-hipster-go/pull/244) merged (`dffaf69e`); 3 Python CI jobs passed; baseline documented and Gemini script-only linter removed from generated policy. | Complete |
 
 ## How we update this file
 
