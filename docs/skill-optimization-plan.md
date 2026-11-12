@@ -92,6 +92,16 @@ A checked PR means **merged with evidence**, not merely opened or green in one C
 
 **PR 3 measurement note:** Gemini's generated online entry increased from approximately 6.9k to 7.3k characters because of embedded dispatch information; the **portable** entry remains below its tested 6.5 KB cap. The full global-scenes and index files are still packaged. The optimization is on-demand *selection*, not a reduction in total research or proof of fewer host retrieval turns.
 
+## Post-PR 3 cohesion audit (pre-PR 4)
+
+- [x] Cross-checked canonical GO, reference-index routing, 27 atlas IDs, generated Gemini direct dispatch, and the 3.11.5 production-link boundary. Existing PR 3 tests enforce static sync; live host loading remains unmeasured.
+- [x] Corrected `adapters/chatgpt/SMOKE_TEST.md`: a normal six-track target does **not** suppress an eligible DeBarge random result; an explicitly rigid count does. Added a regression check and distinct manual scenario.
+- [x] Restored chronological PR 2 → PR 3 ordering in this log.
+- [ ] PR 4: clarify host-specific setup precedence. ChatGPT/Claude's Spotify preference and Gemini's documented YouTube Music default must not silently overwrite an explicit listener choice.
+- [ ] PR 4: review runtime links before removing packaged evaluation fixtures. `SKILL.md` currently links to `tests/discovery-cases.md`; removing it without redirecting that link would break the bundle.
+
+This audit does not establish measured host latency, live music quality, or publishing capability and does not approve release, branch promotion, or app deployment.
+
 ## PR 4 — Canonical instruction and package cleanup
 
 **Intent:** Reduce repeated operational instructions and ship only runtime-useful resources.
@@ -165,8 +175,8 @@ Fill these from reproducible tests. “Estimated tokens” is not a measurement 
 | 2026-11-11 | Preflight | Confirmed `gemini-skill-v3.11.5` release and identified an automatic release-upload workflow on pushes to `main`; Stage 0 added. | Planning |
 | 2026-11-11 | Stage 0 | [PR #243](https://github.com/focustimer-dev/go-hipster-go/pull/243) passed validation and merged (`a99705fe`); published 3.11.5 assets unchanged. | Complete |
 | 2026-11-11 | PR 1 | [PR #244](https://github.com/focustimer-dev/go-hipster-go/pull/244) merged (`dffaf69e`); 3 Python CI jobs passed; baseline documented and Gemini script-only linter removed from generated policy. | Complete |
-| 2026-11-11 | PR 3 | [PR #248](https://github.com/focustimer-dev/go-hipster-go/pull/248) merged (`3a6330ea`), all three Python CI environments green; Gemini direct route and conditional global scenes verified statically, full research retained. Real host latency and musical quality not measured. | Complete |
 | 2026-11-11 | PR 2 | [PR #246](https://github.com/focustimer-dev/go-hipster-go/pull/246) merged as `122fb3a28453873c65f2599f2d9be48b23ecb2c3`. All 920 source entries and source-section fingerprints preserved; Python 3.10/3.12/3.13 CI passed. 45,939 fewer characters in each generated ChatGPT and Gemini knowledge bundle. No live curation/publishing test. | Complete |
+| 2026-11-11 | PR 3 | [PR #248](https://github.com/focustimer-dev/go-hipster-go/pull/248) merged (`3a6330ea`), all three Python CI environments green; Gemini direct route and conditional global scenes verified statically, full research retained. Real host latency and musical quality not measured. | Complete |
 
 ## How we update this file
 
