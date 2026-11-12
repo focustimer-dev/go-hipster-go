@@ -1,6 +1,6 @@
 # Go, Hipster, Go! — 3.11.6 finalization implementation plan
 
-**Status:** Gates 0–2 merged. Gate 3 found two concrete Gemini host artifacts and is implementing the narrow PR C correction. Actual host acceptance remains Gate 4; public 3.11.6 release is not approved.  
+**Status:** Gates 0–3 engineering work merged; next Gate 4 candidate acceptance with fresh, version-confirmed host tests. Public 3.11.6 release remains unapproved.  
 **Owner/source of truth:** this checklist; record results here after each gate.  
 **Created:** 2026-11-12. **Target:** maintenance release 3.11.6.  
 **Starting point:** PR #252 (`3c2f2a9d`) and documentation closeout PR #253 (`777891be`) merged into `main`. Public skill and `release/skill-prod` remain at 3.11.5. Private Lab rc.3 is an experimental snapshot, not the public release.
@@ -74,6 +74,8 @@ Use one internal, evidence-gated vocabulary, mapped to simple listener text:
 - [ ] Check Gemini host text for ChatGPT-only composer controls; guard Spotify/Apple/Claude guidance from appearing in the wrong host. Remove generated whitespace artifacts only if the source generator causes a real issue.
 - **Audit before merge:** small mobile smoke matrix + hard/ordinary/regional/refresh/curve/de-cheese/non-Latin/recording-quality regression checks; measured additional calls only where observable; 920-lead and four-package preservation checks; full CI green. If no behavioral defect is reproducible, **skip PR C** and record the audit alone.
 
+**Gate 3 disposition:** [PR #258](https://github.com/focustimer-dev/go-hipster-go/pull/258) was merged as `17dff2cf0e0ad33894a2afe96af9844472569882` after [Validate skill run 43318973233](https://github.com/focustimer-dev/go-hipster-go/actions/runs/43318973233) passed on Python 3.10, 3.12 and 3.13. Static host/package audit and two narrow corrections are complete. The live-mobile example, real provider count, catalog and playback tasks in this Gate 3 checklist are **not checked off**: they require isolated installed-host evidence and remain explicit N/T Gate 4 acceptance items. No additional research pass, new writer or UI feature was added.
+
 ### Gate 4 — candidate qualification, not an automatic release
 
 - [ ] Freeze a candidate commit SHA; run the entire existing `Validate skill` matrix (Python 3.10/3.12/3.13), `python scripts/build_agent_packages.py --check` and `--zip`, `python scripts/playlist_cli.py check-skill`, fixture validation and `python scripts/qualify_skill_release.py --check`. Record outputs, not just a green badge.
@@ -108,7 +110,7 @@ Use one internal, evidence-gated vocabulary, mapped to simple listener text:
 | Gate 0 | PR A audit: [contract snapshot](skill-3.11.6-gate0-contract-audit.md) | Sources, refs, four release assets and workflow boundaries inspected; external schema consumers N/T | No live host actions | [x] Inventory recorded; PR A CI required before merge |
 | PR A | [PR #255](https://github.com/focustimer-dev/go-hipster-go/pull/255), squash `1af39382` | Gemini exact-first contract; Python 3.10/3.12/3.13 green | Live writer N/T; no saves | [x] Merged; production unchanged |
 | PR B | [PR #256](https://github.com/focustimer-dev/go-hipster-go/pull/256), squash `77d1c101` | Six evidence-gated outcomes; 1.0 preserved; Python 3.10/3.12/3.13 and generated mirror CI green | Actual provider readback N/T; no writes | [x] Merged; 1.1 not needed |
-| PR C (small correction required) | `fix/skill-3116-gate3-host-audit` | Gemini script-free verification, historical smoke-test clarity and focused regressions; CI pending | Live host and mobile output N/T | [ ] Final CI/diff |
+| PR C | [PR #258](https://github.com/focustimer-dev/go-hipster-go/pull/258), squash `17dff2cf` | Gemini developer CLI removed from script-free bundle, mobile test protocol updated, Python 3.10/3.12/3.13 and bundle/launcher CI green | Actual installed host/mobile, catalog/audio and writer readback N/T; carried to Gate 4 | [x] Engineering correction merged |
 | Candidate acceptance | — | — | — | [ ] |
 | PR D | — | — | — | [ ] |
 | Explicit publication | — | — | — | [ ] |
