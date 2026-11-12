@@ -1,6 +1,6 @@
 # Gate 4 — ChatGPT + Gemini candidate acceptance
 
-**Stage:** Active, not yet qualified. The ChatGPT private QA plugin has been created; the live ChatGPT behavior test is pending. Gemini QA installation is still pending. **Scope decision:** The listener explicitly limited hands-on testing to **ChatGPT and Gemini** on 2026-11-12. Claude is **out of scope (N/A by request)**, not failed or verified. The eventual public release must not claim completed Claude live-host tests.
+**Stage:** Active, on hold for ordinary-GO discovery failure pending Gemini comparison. The ChatGPT QA rc.4 skill was user-confirmed and its first ordinary 12-track text-only sample is [audited](skill-3.11.6-gate4-chatgpt-ordinary-qa.md): mechanics pass, freshness 0/2. Gemini QA installation/live output pending. **Scope decision:** The listener explicitly limited hands-on testing to **ChatGPT and Gemini** on 2026-11-12. Claude is **out of scope (N/A by request)**, not failed or verified. The eventual public release must not claim completed Claude live-host tests.
 
 **Frozen core-source snapshot:** `6b4dc11fd35eb6ccc0fa7016c58b1acab3e4f27a` — Gate 0–3 engineering closeout on `main`. Candidate artifacts from the Gate 4 PR were built by the **pull_request test-merge commit** `3f383f4ea1d91ba288b6d04de248e4904e76a809` recorded in their companion provenance file, which has the frozen baseline and PR head (`342dffe7fca4a5d38a17d1ac6e5ae97ba706897c`) as parents. The source skill and music references are unchanged by this test-preparation PR. Do not confuse an artifact produced by a PR with a published release.
 
@@ -81,7 +81,7 @@ Score **0 fail / 1 provisional / 2 verified pass / N/T not tested / N/A out of r
 | Item | ChatGPT | Gemini | Notes / evidence |
 | --- | --- | --- | --- |
 | Candidate loaded and source-correlated | N/T | N/T | Existing ChatGPT Lab rc.3 is stale; Gemini candidate not installed |
-| Ordinary 12-track text-only GO | N/T | N/T | Record title, exact list and unique-lead count |
+| Ordinary 12-track text-only GO | **0/2 discovery; 2/2 count and 12 distinct leads** | N/T | [The Meter Is Running audit](skill-3.11.6-gate4-chatgpt-ordinary-qa.md): 12 real artist/title pairs, all first issued ~1979–83, 99 Records corridor; correct text-only header. **Candidate release hold.** |
 | Regional GO HARD 12-track text-only | N/T | N/T | Record provenance and source/edition checks |
 | Non-Latin credit + mobile layout | N/T | N/T | Actual mobile output; not inferred from static rules |
 | No playlist write on text-only | N/T | N/T | Prefer actual tool/activity trace, not assistant claim alone |
@@ -100,7 +100,8 @@ Score **0 fail / 1 provisional / 2 verified pass / N/T not tested / N/A out of r
 - [x] Final-head [Gate 4 PR CI run 43322495506](https://github.com/focustimer-dev/go-hipster-go/actions/runs/43322495506) passed 215 tests per Python job and uploaded the provenance artifact. ChatGPT SHA-256 `a0d2088eef997cb2c68e117085e3af70d8e973122bdaa140bfe6cdf15baf9f2d`; Gemini SHA-256 `79997adc1dc5922c0e055f3215237786776bce332c4902eeb7675df1562af4d7`.
 - [x] **ChatGPT private QA plugin object created**, `plugins_6af644226744819181185374e8cd1341` at `3.11.6-rc.4` with 61 files; user-uploaded ZIP SHA-256 matched the [CI-produced ChatGPT QA ZIP](https://github.com/focustimer-dev/go-hipster-go/actions/runs/43322495506/artifacts/13991930529). **Not yet run or selected in fresh ChatGPT chat**.
 - [ ] Confirm the new candidate is actually invoked/readable in a fresh ChatGPT chat and install/verify the Gemini QA Skill.
-- [ ] Collect both ordinary text-only 12-track outputs, plus regional HARD samples and optional non-Latin output.
+- [x] Record first ChatGPT ordinary GO outcome: [observed 12-track list and independent catalog audit](skill-3.11.6-gate4-chatgpt-ordinary-qa.md). **Freshness 0/2**, 12 distinct credited leads, no actual publication; Gate 4 on hold for Gemini comparison.
+- [ ] Collect Gemini ordinary text-only 12-track output, plus regional HARD samples and optional non-Latin output once the freshness blocker is understood.
 - [ ] Review factual recording/edition/source evidence and actual mobile display; score evidence honestly.
 - [ ] Complete a read-only live writer capability check or keep N/T. No create/save test without separate approval.
 - [ ] Decide go/no-go; **do not bump 3.11.6, promote `release/skill-prod`, deploy Android/PWA or publish external playlists** at this stage.
@@ -111,3 +112,9 @@ Score **0 fail / 1 provisional / 2 verified pass / N/T not tested / N/A out of r
 - Package entry stamp is `3f383f4ea1d91ba288b6d04de248e4904e76a809`, the actual GitHub Actions PR-test merge commit (parents `6b4dc11fd35eb6ccc0fa7016c58b1acab3e4f27a` and `342dffe7fca4a5d38a17d1ac6e5ae97ba706897c`). This is **not** the final squash merge SHA `5dcc5473be992d246c61a8cff96b72a066cc421d`, but canonical skill and verification files were verified unchanged across the PR and squash merge.
 - Created **[private ChatGPT QA plugin](https://chatgpt.com/plugins/plugins_6af644226744819181185374e8cd1341)** via Plugin Creator. Exact ID `plugins_6af644226744819181185374e8cd1341`, private, current release `pluginrel_6af64423195881918874abf9f9b1ee70`; readback shows 61 files and correct version. This is separate from existing `go-hipster-go-lab` rc.3 and public `go-hipster-go` 3.11.5, neither of which was updated.
 - **Not yet done:** Selecting/invoking the plugin in a fresh ChatGPT conversation; candidate reference load trace; any output, mobile, audio/catalog, or provider capability test. Those remain **N/T**. Gemini QA ZIP is generated but not installed. No music service write was performed.
+
+## Gate 4A — first actual ChatGPT candidate output
+
+The listener supplied the complete **The Meter Is Running** crate from a previously confirmed separate ChatGPT private QA session. **Twelve distinct lead artists, correct status, compact prose, no false save claim, and historically traceable recordings**. Yet **every original song dates roughly 1979–1983**, returning to a no-wave/punk-funk/dub post-punk circuit with at least four 99 Records picks. The reference-read trace and original mobile rendering are unavailable; the pasted content includes repeated citation replacement characters and no visible numbered markers. Full [source-supported audit](skill-3.11.6-gate4-chatgpt-ordinary-qa.md).
+
+**Decision:** Score breadth **0/2**, candidate still **not qualified**. First run the exact same no-publish brief in the genuine Gemini QA candidate. No optimization patch until we can distinguish a cross-host failure from a ChatGPT-specific routing failure; then prefer a single bounded change in the canonical freshness path, not new quotas or a generic deeper search.
