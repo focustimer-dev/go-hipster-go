@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build isolated Gate 4 ChatGPT Lab and Gemini QA ZIPs from validated source.
+"""Build isolated Gate 4 ChatGPT QA and Gemini QA ZIPs from validated source.
 
 Developer test distribution only. Does not update any installed plugin, public
 manifest, tag, production branch, source skill, or music provider.
@@ -56,26 +56,26 @@ def build_chatgpt(source_sha: str, output: Path) -> None:
         plugin = json.loads(inp.read("plugin.json"))
         if plugin.get("name") != "go-hipster-go" or plugin.get("version") != "3.11.5":
             raise ValueError("Unexpected production plugin manifest")
-        plugin["name"] = "go-hipster-go-lab"
+        plugin["name"] = "go-hipster-go-gate4"
         plugin["version"] = VERSION
         plugin["description"] = ("Private Go, Hipster, Go! Gate 4 candidate "
                                  "for controlled ChatGPT/Gemini tests; not public.")
         ui = plugin["extensions"]["com.openai"]["interface"]
-        ui["displayName"] = "Go, Hipster, Go! Lab"
+        ui["displayName"] = "Go, Hipster, Go! QA"
         ui["shortDescription"] = "Private rc.4 Gate 4 test"
         ui["longDescription"] = (f"{PROVENANCE}. Content pinned to {source_sha}; "
                                  "no publishing tests authorized.")
         ui["defaultPrompt"] = [
-            "Use the Go, Hipster, Go! Lab skill. Report its exact candidate source SHA without making music.",
-            "Use Go, Hipster, Go! Lab: go weird mid; exactly 12 tracks, text only. Do not publish.",
+            "Use the Go, Hipster, Go! QA skill. Report its exact candidate source SHA without making music.",
+            "Use Go, Hipster, Go! QA: go weird mid; exactly 12 tracks, text only. Do not publish.",
         ]
         for name in inp.namelist():
-            dest = name.replace("skills/go-hipster-go/", "skills/go-hipster-go-lab/", 1)
+            dest = name.replace("skills/go-hipster-go/", "skills/go-hipster-go-gate4/", 1)
             payload = inp.read(name)
             if name == "plugin.json":
                 payload = (json.dumps(plugin, ensure_ascii=False, indent=2) + "\n").encode()
             elif name == "skills/go-hipster-go/SKILL.md":
-                payload = _stamp_skill(payload.decode("utf-8"), "go-hipster-go-lab",
+                payload = _stamp_skill(payload.decode("utf-8"), "go-hipster-go-gate4",
                                        source_sha, False).encode()
             _write(out, dest, payload)
         codex = {
@@ -118,7 +118,7 @@ def main() -> None:
         parser.error("--source-sha must be one full Git commit SHA")
     dist = ROOT / "dist"
     dist.mkdir(exist_ok=True)
-    chatgpt = dist / "ghg-gate4-chatgpt-lab-rc4.zip"
+    chatgpt = dist / "ghg-gate4-chatgpt-qa-rc4.zip"
     gemini = dist / "ghg-gate4-gemini-qa-rc4.zip"
     build_chatgpt(args.source_sha, chatgpt)
     build_gemini(args.source_sha, gemini)
