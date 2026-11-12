@@ -1,6 +1,6 @@
 # Go, Hipster, Go! — 3.11.6 finalization implementation plan
 
-**Status:** Gates 0 and 1 merged; Gate 2 / PR B in progress, pending final-head CI and review.  
+**Status:** Gates 0, 1 and 2 merged; next Gate 3 host/mobile audit. Public 3.11.6 release remains blocked on acceptance, version prep and explicit approval.  
 **Owner/source of truth:** this checklist; record results here after each gate.  
 **Created:** 2026-11-12. **Target:** maintenance release 3.11.6.  
 **Starting point:** PR #252 (`3c2f2a9d`) and documentation closeout PR #253 (`777891be`) merged into `main`. Public skill and `release/skill-prod` remain at 3.11.5. Private Lab rc.3 is an experimental snapshot, not the public release.
@@ -57,11 +57,14 @@ Use one internal, evidence-gated vocabulary, mapped to simple listener text:
 | `published_exact` | PUBLISHED — EXACT; verified requested count, positional artist/title/version and order |
 | `published_approximate` | PUBLISHED — APPROXIMATE; confirmed result with observed mismatch(es) itemized |
 
-- [ ] Keep **schema/validator 1.0 behavior** and examples valid. If persisting the new states, add format 1.1 as a separate compatible path with tests; do not silently reinterpret old `published` or `youtube` fields. Separate display words from machine status.
-- [ ] Represent **requested, curated, provider-resolved and item-confirmed counts** separately where evidence exists. Missing/hidden positions are *unknown*, never automatically zero; report substitutions and version changes by position.
-- [ ] Verify the DeBarge 25-identical-entry exception and explicit strict 12-track requests independently; do not let deduplication or a count linter break either.
-- [ ] Synchronize `references/verification.md` and only the required host references; create table-driven success/failure/preview fixtures. Strictly forbid a verified-published state on link-only acknowledgments.
+- [x] Keep **schema/validator 1.0 behavior** and examples valid. If persisting the new states, add format 1.1 as a separate compatible path with tests; do not silently reinterpret old `published` or `youtube` fields. Separate display words from machine status.
+- [x] Represent **requested, curated, provider-resolved and item-confirmed counts** separately where evidence exists. Missing/hidden positions are *unknown*, never automatically zero; report substitutions and version changes by position.
+- [x] Verify the DeBarge 25-identical-entry exception and explicit strict 12-track requests independently; do not let deduplication or a count linter break either.
+- [x] Synchronize `references/verification.md` and only the required host references; create table-driven success/failure/preview fixtures. Strictly forbid a verified-published state on link-only acknowledgments.
 - **Audit before merge:** 1.0 regression fixtures, 1.1 positive/negative fixtures (if introduced), CLI/JSON Schema agreement, no host overclaim, full CI green. **Stop** if a known consumer breaks.
+
+
+**Gate 2 disposition:** [PR #256](https://github.com/focustimer-dev/go-hipster-go/pull/256) passed the final-head [Validate skill run 43315184083](https://github.com/focustimer-dev/go-hipster-go/actions/runs/43315184083) (Python 3.10 / 3.12 / 3.13) and was squash-merged as `77d1c101d9dfd4f1bd992dd5b839209198d6c22a`. Schema 1.0 and the validator's legacy statuses are unchanged; no 1.1 required. Native host publishing and item readback remain N/T until Gate 4.
 
 ### Gate 3 — PR C: scoped mobile/host and availability review
 
@@ -104,7 +107,7 @@ Use one internal, evidence-gated vocabulary, mapped to simple listener text:
 | Plan | This document | Docs-only PR and normal CI; no runtime changes | N/A | [x] Written and committed; PR merge recorded by GitHub |
 | Gate 0 | PR A audit: [contract snapshot](skill-3.11.6-gate0-contract-audit.md) | Sources, refs, four release assets and workflow boundaries inspected; external schema consumers N/T | No live host actions | [x] Inventory recorded; PR A CI required before merge |
 | PR A | [PR #255](https://github.com/focustimer-dev/go-hipster-go/pull/255), squash `1af39382` | Gemini exact-first contract; Python 3.10/3.12/3.13 green | Live writer N/T; no saves | [x] Merged; production unchanged |
-| PR B | `fix/skill-3116-gate2-status` | Read-only status report + evidence checks; format 1.0 untouched; CI pending | No provider write | [ ] Review/merge gate open |
+| PR B | [PR #256](https://github.com/focustimer-dev/go-hipster-go/pull/256), squash `77d1c101` | Six evidence-gated outcomes; 1.0 preserved; Python 3.10/3.12/3.13 and generated mirror CI green | Actual provider readback N/T; no writes | [x] Merged; 1.1 not needed |
 | PR C (only if warranted) | — | — | — | [ ] |
 | Candidate acceptance | — | — | — | [ ] |
 | PR D | — | — | — | [ ] |
