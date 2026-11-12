@@ -1,6 +1,6 @@
 # Go, Hipster, Go! — 3.11.6 finalization implementation plan
 
-**Status:** Gates 0–3 engineering work merged; next Gate 4 candidate acceptance with fresh, version-confirmed host tests. Public 3.11.6 release remains unapproved.  
+**Status:** Gates 0–3 engineering merged. Gate 4 testing is scoped to **ChatGPT and Gemini** by listener request; Claude live testing is N/A, not verified. Candidate preparation underway; no public release approval.  
 **Owner/source of truth:** this checklist; record results here after each gate.  
 **Created:** 2026-11-12. **Target:** maintenance release 3.11.6.  
 **Starting point:** PR #252 (`3c2f2a9d`) and documentation closeout PR #253 (`777891be`) merged into `main`. Public skill and `release/skill-prod` remain at 3.11.5. Private Lab rc.3 is an experimental snapshot, not the public release.
@@ -80,8 +80,8 @@ Use one internal, evidence-gated vocabulary, mapped to simple listener text:
 
 - [ ] Freeze a candidate commit SHA; run the entire existing `Validate skill` matrix (Python 3.10/3.12/3.13), `python scripts/build_agent_packages.py --check` and `--zip`, `python scripts/playlist_cli.py check-skill`, fixture validation and `python scripts/qualify_skill_release.py --check`. Record outputs, not just a green badge.
 - [ ] Audit four ZIP member manifests/hashes/reproducibility, support/privacy/docs links, secret signatures, generator/mirror consistency, full 920 research entries, exact version parity and branch-target stability. Keep initial 3.11.5 published assets untouched.
-- [ ] Run **one version-confirmed fresh Lab ChatGPT** ordinary `go weird mid` (strict 12, text only), and one representative GO HARD regional sample or reuse a version-confirmed adequate sample. Compare with the two rc.2 canon-lane outputs and the provisional rc.3 output without declaring impossible cross-chat memory or invented audio listening.
-- [ ] Run **one text-only, 12-track** candidate smoke on Gemini portable and Claude skill/plugin where host installation is genuinely available; record whether references loaded (actual trace or N/T), artist/track truth, voice, count, original-script credits and no provider writes. Do not confuse the production-linked Gemini online entry with an isolated candidate.
+- [ ] Run **one fresh, source-correlated ChatGPT candidate** ordinary `go weird mid` (strict 12, text only) and one representative regional GO HARD sample; compare with prior rc.2/rc.3 only as historical evidence. The installed private ChatGPT Lab **3.11.6-rc.3 predates Gate 2** and must not be counted as the current candidate unless updated/verified. See [Gate 4 two-host packet](skill-3.11.6-gate4-chatgpt-gemini-acceptance.md).
+- [ ] Run **one text-only, 12-track** candidate smoke and one regional GO HARD sample on **Gemini portable** with a source-correlated package; capture reference access (actual trace or N/T), artist/track truth, count, original-script credits, mobile layout and no write. The online Gemini entry still reads frozen production files. **Claude live tests are N/A by listener scope**, not a pass; retain untested Claude limitations in public claims.
 - [ ] Check a publishing writer's *read-only capabilities* first. A real save/create test requires a **separate explicit opt-in**; absent permission, mark live publication N/T and never claim it passed. If advertised exact publishing cannot be tested, **hold release qualification or explicitly narrow the proposed release claim**.
 - [ ] Score critical invariants 0 fail / 1 provisional / 2 pass / N/T unavailable. Any factual fabrication, unauthorized write, silent replacement, material count regression, or new canonical concentration failure is a blocker. Audio quality, host fetch timing and readback remain N/T if not observed.
 - **Exit artifact:** an evidence table linking prompt, host, declared skill version, candidate SHA, source spot-checks, CI run, failures, and disposition. No extra optimization loop unless a reproducible defect warrants one narrow patch.
@@ -111,7 +111,7 @@ Use one internal, evidence-gated vocabulary, mapped to simple listener text:
 | PR A | [PR #255](https://github.com/focustimer-dev/go-hipster-go/pull/255), squash `1af39382` | Gemini exact-first contract; Python 3.10/3.12/3.13 green | Live writer N/T; no saves | [x] Merged; production unchanged |
 | PR B | [PR #256](https://github.com/focustimer-dev/go-hipster-go/pull/256), squash `77d1c101` | Six evidence-gated outcomes; 1.0 preserved; Python 3.10/3.12/3.13 and generated mirror CI green | Actual provider readback N/T; no writes | [x] Merged; 1.1 not needed |
 | PR C | [PR #258](https://github.com/focustimer-dev/go-hipster-go/pull/258), squash `17dff2cf` | Gemini developer CLI removed from script-free bundle, mobile test protocol updated, Python 3.10/3.12/3.13 and bundle/launcher CI green | Actual installed host/mobile, catalog/audio and writer readback N/T; carried to Gate 4 | [x] Engineering correction merged |
-| Candidate acceptance | — | — | — | [ ] |
+| Candidate acceptance | [Gate 4 ChatGPT/Gemini test packet](skill-3.11.6-gate4-chatgpt-gemini-acceptance.md) | Frozen core SHA `6b4dc11f`; existing 213-test × 3 Python CI passed; temporary isolated ZIP/provenance workflow in preparation | ChatGPT and Gemini live outputs N/T, private Lab rc.3 stale; Claude N/A by request | [ ] Candidate acceptance pending |
 | PR D | — | — | — | [ ] |
 | Explicit publication | — | — | — | [ ] |
 
