@@ -28,6 +28,18 @@ These are actual CI-built ZIP byte measurements compared with **published histor
 
 The 3.11.5 candidate version is intentional for pre-release testing. A new `3.11.6` tag, distribution upload, production branch promotion, external host installation or playlist creation would require separate approval.
 
+## Isolated ChatGPT RC experiment — created, not yet exercised
+
+On **2026-11-12**, a private personal plugin **Go, Hipster, Go! Lab** (`go-hipster-go-lab`) was created as version **3.11.6-rc.1** for controlled ChatGPT comparison. This is a **test identity**, not a released version, and it does not change canonical manifests or move `release/skill-prod`.
+
+- **Input:** the ChatGPT candidate ZIP assembled by the PR 5 CI workflow at source commit `d5e1092cf649936d87f759c8bbed2ed098e398dc`. The canonical skill blob matches the merged PR 4 source `2d5216500c6349dbb92b688c76f7b6bc6b00a4ca`.
+- **Transformation:** only test identity/metadata, label, onboarding name and skill directory namespace were changed; full research references, operational contracts and curation rules were retained. Local packaged test archive has **60 files**, **206,720 bytes**, SHA-256 `4c99c5052dceef3a60209cc46373189c1d12618b3d8bc62284c4ca3cfb4fa48c`.
+- **Verification:** the Plugin Creator returned a **PRIVATE** personal plugin and re-read manifest `name=go-hipster-go-lab`, `version=3.11.6-rc.1`, and the isolated `skills/go-hipster-go-lab/SKILL.md` with matching metadata. The private plugin identifier and private access URL are intentionally **not** checked into the public repository.
+- **Not proven:** user installation/selection in a ChatGPT session, actual skill retrieval, playback, catalog verification, playlist quality, or a baseline-vs-candidate difference. The user must explicitly select the **Lab** plugin in a fresh session and ask it to report its skill version before generating the crate. The original `go-hipster-go` plugin remains the 3.11.5 baseline.
+- **Test prompt:** `Use Go, Hipster, Go! Lab: go funky hard; Regional exploration: Central America; Tempo: Mid; Recording preference: Skip rough recordings; Exactly 12 tracks, no exceptions; Text only; Do not publish.` Use the same substantive instructions as the original baseline sample, retaining a fresh conversation and no publishing. Compare contents using the existing [sourced 3.11.5 baseline audit](skill-pr5-central-america-funk-observed-audit.md).
+
+This private test plugin does not replace, upload to, or promote the public skill. It must not be counted as a completed musical A/B until the full candidate output and loaded identity are observed.
+
 ## Host comparison protocol (not yet executed)
 
 Use separate clean conversations with **explicitly verified installed versions**, identical briefs and comparable catalog/research access. The baseline is the published 3.11.5 installation. A local branch candidate must be loaded explicitly, never assumed from the currently installed public skill. Avoid changing playlists or real user accounts during evaluation; use `text only` unless a separate authorized publishing test has been approved.
