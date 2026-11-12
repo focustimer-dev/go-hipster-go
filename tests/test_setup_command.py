@@ -46,6 +46,15 @@ class SetupContractTests(unittest.TestCase):
         self.assertIn("Spotify writer exposed and no prior preference",cases)
         self.assertIn("YouTube Music only authorized writer",cases)
 
+    def test_host_specific_defaults_do_not_override_preference(self):
+        setup=(ROOT/"skills/setup/SKILL.md").read_text(encoding="utf-8")
+        gemini=(ROOT/"adapters/gemini/SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("standalone setup skill is shipped with the ChatGPT and Claude", setup)
+        self.assertIn("Gemini uses its separately generated, YouTube Music-native workflow", setup)
+        self.assertIn("explicit listener choice", setup)
+        self.assertIn("YouTube Music (Gemini default)", gemini)
+        self.assertIn("Service precedence:", gemini)
+
     def test_plugin_promotes_setup(self):
         data=json.loads((ROOT/"plugin.json").read_text(encoding="utf-8"))
         self.assertEqual(data["version"],json.loads((ROOT/".claude-plugin/plugin.json").read_text())["version"])
