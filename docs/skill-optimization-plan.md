@@ -1,6 +1,6 @@
 # Go, Hipster, Go! — Skill Optimization & Publication Readiness Tracker
 
-**Status:** Stage 0 and PRs 1–3 completed; PR 4 next  
+**Status:** Stage 0 and PRs 1–3 completed; PR 4 in progress  
 **Target release:** 3.11.6 (maintenance/polish)  
 **Baseline release:** 3.11.5 (reconfirm on PR 1)  
 **Repository:** focustimer-dev/go-hipster-go  
@@ -42,7 +42,7 @@
 | PR 1 | Baseline measurements + Gemini compatibility correction | Low | [x] Complete — PR #244 |
 | PR 2 | Deduplicate shared regional research instructions | Low–medium | [x] Complete — PR #246 |
 | PR 3 | Conditional reference loading + compact Gemini routing | Medium | [x] Complete — PR #248 |
-| PR 4 | Consolidate canonical instructions + lean public packaging | Medium | [ ] Not started |
+| PR 4 | Consolidate canonical instructions + lean public packaging | Medium | [ ] In progress (setup/ZIP foundation) |
 | PR 5 | Regression review, reproducible bundles, release 3.11.6 | Release gate | [ ] Not started |
 
 A checked PR means **merged with evidence**, not merely opened or green in one CI job.
@@ -105,6 +105,8 @@ This audit does not establish measured host latency, live music quality, or publ
 ## PR 4 — Canonical instruction and package cleanup
 
 **Intent:** Reduce repeated operational instructions and ship only runtime-useful resources.
+
+**Preflight:** See [PR 4 runtime package inventory](skill-pr4-package-audit.md). The first increment clarifies Gemini vs. ChatGPT/Claude setup defaults and stabilizes portable ZIP metadata; it does **not** yet remove the referenced evaluation corpus or complete PR 4.
 
 - [ ] Consolidate DeBarge rules into one authoritative core section; retain eligibility, exact 25-track behavior, randomness, count exceptions, publication boundaries, and related tests.
 - [ ] Collapse repeated seeds/lenses/mood-angle explanation into compact, non-quota discovery policy.
