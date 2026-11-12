@@ -1,6 +1,6 @@
 # Go, Hipster, Go! — Skill Optimization & Publication Readiness Tracker
 
-**Status:** Stage 0 and PRs 1–2 completed; PR 3 next  
+**Status:** Stage 0 and PRs 1–3 completed; PR 4 next  
 **Target release:** 3.11.6 (maintenance/polish)  
 **Baseline release:** 3.11.5 (reconfirm on PR 1)  
 **Repository:** focustimer-dev/go-hipster-go  
@@ -41,7 +41,7 @@
 | Stage 0 | Protect GitHub release publishing and stable Gemini online refs | Low–medium | [x] Complete — PR #243 |
 | PR 1 | Baseline measurements + Gemini compatibility correction | Low | [x] Complete — PR #244 |
 | PR 2 | Deduplicate shared regional research instructions | Low–medium | [x] Complete — PR #246 |
-| PR 3 | Conditional reference loading + compact Gemini routing | Medium | [ ] In progress |
+| PR 3 | Conditional reference loading + compact Gemini routing | Medium | [x] Complete — PR #248 |
 | PR 4 | Consolidate canonical instructions + lean public packaging | Medium | [ ] Not started |
 | PR 5 | Regression review, reproducible bundles, release 3.11.6 | Release gate | [ ] Not started |
 
@@ -85,10 +85,12 @@ A checked PR means **merged with evidence**, not merely opened or green in one C
 - [x] Generated a compact direct routing contract from `scripts/build_gemini_app_skill.py`, using the existing atlas labels and deterministic label→ID normalization with explicit exceptions. All 27 atlas IDs are covered by tests, without duplicating the 27-row map in the entry.
 - [x] Direct Gemini routing names core workflow, taxonomy and verification; selected regions and additions; GO HARD, Antarctica, de-cheese, Publish, cover art, recording quality, Desire/Triumphant, funky and `c1:` curve; the full details remain in the workflow and references.
 - [x] Kept `reference-index.md` packaged as a fallback; the Gemini entry no longer requires it before each new GO. Moved creative/setup detail into the always-loaded workflow to retain the 6.5 KB entry budget.
-- [ ] Run full online-adapter synchronization, portable ZIP/link validation and 27-region routing tests in CI (not yet verified).
-- [ ] Record the predicted eliminated index/global-scenes reads; live Gemini retrieval calls/turns cannot be confirmed without host instrumentation. Do not claim a one-turn batch or reduced latency.
+- [x] [PR #248](https://github.com/focustimer-dev/go-hipster-go/pull/248) passed `Validate skill` on Python 3.10, 3.12 and 3.13, including generated-file synchronization, portable ZIP/link checks, Gemini entry length <6.5 KB and all 27 region-label routing cases. Merge SHA `3a6330ea8b2497787eb7a5a1fa4439766cb575dc`.
+- [x] Recorded *potential* eliminated reads: the original global-scenes file is 31,310 UTF-8 bytes / 3,555 words; an extra index lookup may also be avoided when direct routing is supported. These are **not measured** network fetches, token usage, elapsed time or one-turn batch performance. Live Gemini/ChatGPT observability is deferred to PR 5.
 
 **Exit gate:** Correct policy loaded for every tested command, no missing references, fewer unnecessary bytes/tokens in fixed regional scenarios, and no significant discovery regression.
+
+**PR 3 measurement note:** Gemini's generated online entry increased from approximately 6.9k to 7.3k characters because of embedded dispatch information; the **portable** entry remains below its tested 6.5 KB cap. The full global-scenes and index files are still packaged. The optimization is on-demand *selection*, not a reduction in total research or proof of fewer host retrieval turns.
 
 ## PR 4 — Canonical instruction and package cleanup
 
@@ -163,7 +165,7 @@ Fill these from reproducible tests. “Estimated tokens” is not a measurement 
 | 2026-11-11 | Preflight | Confirmed `gemini-skill-v3.11.5` release and identified an automatic release-upload workflow on pushes to `main`; Stage 0 added. | Planning |
 | 2026-11-11 | Stage 0 | [PR #243](https://github.com/focustimer-dev/go-hipster-go/pull/243) passed validation and merged (`a99705fe`); published 3.11.5 assets unchanged. | Complete |
 | 2026-11-11 | PR 1 | [PR #244](https://github.com/focustimer-dev/go-hipster-go/pull/244) merged (`dffaf69e`); 3 Python CI jobs passed; baseline documented and Gemini script-only linter removed from generated policy. | Complete |
-| 2026-11-11 | PR 3 | Conditional global-scenes routing, direct Gemini file dispatch and 27-region static tests added; CI and package verification pending. | In progress |
+| 2026-11-11 | PR 3 | [PR #248](https://github.com/focustimer-dev/go-hipster-go/pull/248) merged (`3a6330ea`), all three Python CI environments green; Gemini direct route and conditional global scenes verified statically, full research retained. Real host latency and musical quality not measured. | Complete |
 | 2026-11-11 | PR 2 | [PR #246](https://github.com/focustimer-dev/go-hipster-go/pull/246) merged as `122fb3a28453873c65f2599f2d9be48b23ecb2c3`. All 920 source entries and source-section fingerprints preserved; Python 3.10/3.12/3.13 CI passed. 45,939 fewer characters in each generated ChatGPT and Gemini knowledge bundle. No live curation/publishing test. | Complete |
 
 ## How we update this file
