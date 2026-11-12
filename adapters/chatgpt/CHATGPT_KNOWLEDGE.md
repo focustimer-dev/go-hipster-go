@@ -2366,7 +2366,7 @@ Explicit `go hard`, `go funky hard`, or PWA `Curation mode: GO HARD` enables edi
 
 ## Antarctica: thematic listening territory
 
-**Explicit opt-in only:** Include Antarctica only when the current request deliberately names it or selects its named PWA region. Never infer it from moods, pace, seeds, worldwide/all-region requests, surprise/random selection, prior listening or another selected region; exclude it from automatic pools. An explicitly pinned Antarctica selection may persist through PWA shuffle.
+**Explicit opt-in only:** Include Antarctica only when the current request deliberately names it or selects its named PWA region. Never infer it from plain `go`, moods, pace, seeds, worldwide/global/all-region requests, surprise/random selection, automatic regional shuffle or a prior Antarctica playlist. Other explicit region selections never imply Antarctica. Exclude it from automatic region pools; an explicitly pinned Antarctica selection may persist through PWA shuffle.
 
 On `go antarctica` or an explicit regional selection, read [the Antarctica route](references/regions/antarctica.md) before choosing tracks. This is a penguin-song theme, **not an invented local music scene**: Antarctica-only tracks must qualify; mixed-region crates combine verified penguin songs with valid music from each other selected region. Keep Jukebox prompts compact; preserve true track identities and honest publishing status. Skip the spontaneous DeBarge roll for any Antarctica request; all unrelated GO commands retain it.
 
