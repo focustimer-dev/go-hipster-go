@@ -110,12 +110,14 @@ This audit does not establish measured host latency, live music quality, or publ
 
 - [ ] Consolidate DeBarge rules into one authoritative core section; retain eligibility, exact 25-track behavior, randomness, count exceptions, publication boundaries, and related tests.
 - [ ] Collapse repeated seeds/lenses/mood-angle explanation into compact, non-quota discovery policy.
-- [ ] Shorten GO HARD and Antarctica dispatch summaries while keeping their full conditional references and critical exclusions.
-- [ ] Make setup's authoritative contract unambiguous between `SKILL.md` and `skills/setup/SKILL.md`; keep commands first-class.
+- [x] Kept GO HARD as a compact conditional dispatch and shortened Antarctica's canonical dispatch while preserving every opt-in, shuffle, global-selection and DeBarge exclusion; its full reference remains unchanged.
+- [x] Clarified the standalone ChatGPT/Claude Spotify setup boundary versus Gemini's generated YouTube Music default; all setup commands remain first-class and explicit listener choices override defaults.
 - [ ] Make the main ChatGPT entry a concise dispatcher where practical; move detailed examples to on-demand references, not to inaccessible files.
 - [x] Remove the mirrored 54 KB development acceptance corpus from ChatGPT/Claude runtime ZIPs after redirecting the canonical runtime link to `references/evaluation-smoke.md`; preserve the full test corpus in repository `tests/`.
-- [ ] Update `scripts/build_agent_packages.py` and other generators and package tests together. Preserve the Claude and Gemini deliverables.
+- [x] Updated ChatGPT/Claude/Gemini ZIP generators, manifests, knowledge mirrors and tests together; all four archives pass deterministic hash-rebuild checks.
 - [ ] Replace brittle exact-phrase tests with semantic/structural assertions where feasible; do not remove guardrails just to make tests green.
+
+**Current PR 4 evidence:** [Draft PR #251](https://github.com/focustimer-dev/go-hipster-go/pull/251) passed Validate skill on Python 3.10/3.12/3.13 at commit 38658ddbed553ffd8c9f83a239f9dad361141c62. The full evaluation corpus stays in repository tests, not runtime packages. Seed semantics are condensed; DeBarge consolidation, broader lens/mood-angle cleanup, and ChatGPT dispatcher improvements remain unchecked. The PR stays draft until these are addressed and revalidated.
 
 **Exit gate:** Commands, publishing, randomized exception, mood/tempo adherence, and source coverage remain correct. Generated package manifests and dependencies resolve.
 
