@@ -13,22 +13,22 @@ That last script produces uncommitted local-only `dist/skill-release-qualificati
 
 The following must remain true: canonical and mirror SKILL files match; all manifest versions agree; all four archives contain expected runtime files and stable timestamps, without Python caches or the long development-only acceptance corpus; Gemini remains script-free; generated Gemini URLs target the frozen `release/skill-prod` reference and never moving `main`. The public release workflow remains manual-only.
 
-## First candidate qualification — observed results (2026-11-12)
+## Candidate qualification — latest offline results (2026-11-12)
 
-The latest PR 5 CI run at `c5979c20a6df06f0870034a81b6af142e93aa94c` passed on Python **3.10, 3.12 and 3.13**, with **188 unit/contract tests per job**, including public support/privacy links and a basic secret-signature check, and the offline qualification report green. [latest PR run](https://github.com/focustimer-dev/go-hipster-go/actions/runs/43235715251) and [push run](https://github.com/focustimer-dev/go-hipster-go/actions/runs/43235702042).
+The latest discovery-source candidate CI run at `5dc040eada03cfbe35107f977a173dc3399cf3e4` passed on Python **3.10, 3.12 and 3.13**, with **193 unit/contract tests per job**, including five focused discovery-exploration assertions, generated package sync, support/privacy links and a basic secret-signature check, and the offline qualification report green. [PR run](https://github.com/focustimer-dev/go-hipster-go/actions/runs/43251042327) and [push run](https://github.com/focustimer-dev/go-hipster-go/actions/runs/43251029347).
 
 | Distribution | Published 3.11.5 asset bytes | Current candidate ZIP bytes | Difference |
 | --- | ---: | ---: | ---: |
-| ChatGPT plugin | 242,009 | 206,456 | −35,553 (−14.7%) |
-| Claude plugin | 239,639 | 204,086 | −35,553 (−14.8%) |
-| Claude skill | 236,252 | 200,496 | −35,756 (−15.1%) |
-| Gemini Apps skill | 196,447 | 179,850 | −16,597 (−8.4%) |
+| ChatGPT plugin | 242,009 | 207,064 | −34,945 (−14.4%) |
+| Claude plugin | 239,639 | 204,694 | −34,945 (−14.6%) |
+| Claude skill | 236,252 | 201,104 | −35,148 (−14.9%) |
+| Gemini Apps skill | 196,447 | 180,456 | −15,991 (−8.1%) |
 
 These are actual CI-built ZIP byte measurements compared with **published historical 3.11.5 release asset metadata** (not a bit-for-bit rebuilt historical archive). The GitHub [3.11.5 release](https://github.com/focustimer-dev/go-hipster-go/releases/tag/gemini-skill-v3.11.5) still points to commit `625941ab0e931230554393035df6b4b851783298`. The production-reference branch remains frozen at `41a3d17a4f0c9b2809d3a9077ed950cbc4d044f1`; PR 5 has not changed it. The source repository's [support](support.md), [privacy](privacy.md) and [terms](terms.md) files exist on `main`. Live hosting or real music-service access was **not** exercised.
 
 The 3.11.5 candidate version is intentional for pre-release testing. A new `3.11.6` tag, distribution upload, production branch promotion, external host installation or playlist creation would require separate approval.
 
-## Isolated ChatGPT RC experiment — created, not yet exercised
+## Isolated ChatGPT Lab RC1 — historical setup and completed A/B
 
 On **2026-11-12**, a private personal plugin **Go, Hipster, Go! Lab** (`go-hipster-go-lab`) was created as version **3.11.6-rc.1** for controlled ChatGPT comparison. This is a **test identity**, not a released version, and it does not change canonical manifests or move `release/skill-prod`.
 
@@ -38,7 +38,7 @@ On **2026-11-12**, a private personal plugin **Go, Hipster, Go! Lab** (`go-hipst
 - **Not proven:** user installation/selection in a ChatGPT session, actual skill retrieval, playback, catalog verification, playlist quality, or a baseline-vs-candidate difference. The user must explicitly select the **Lab** plugin in a fresh session and ask it to report its skill version before generating the crate. The original `go-hipster-go` plugin remains the 3.11.5 baseline.
 - **Test prompt:** `Use Go, Hipster, Go! Lab: go funky hard; Regional exploration: Central America; Tempo: Mid; Recording preference: Skip rough recordings; Exactly 12 tracks, no exceptions; Text only; Do not publish.` Use the same substantive instructions as the original baseline sample, retaining a fresh conversation and no publishing. Compare contents using the existing [sourced 3.11.5 baseline audit](skill-pr5-central-america-funk-observed-audit.md).
 
-This private test plugin does not replace, upload to, or promote the public skill. It must not be counted as a completed musical A/B until the full candidate output and loaded identity are observed.
+This private plugin did not replace or promote the public skill. The listener subsequently supplied the full rc.1 Central America and Southern & Gulf outputs, reviewed below. The Lab has now been updated to private **rc.2**; the rc.1 details above remain historical for comparison.
 
 ## Gemini matching refinement — PR 5, offline verified
 
@@ -47,6 +47,14 @@ The Gemini-to-YouTube Music contract now keeps **clean ordered `Artist - Track T
 An initial Gemini playlist card **may show a partial preview**, including a listener-observed eight-of-twelve example. This is *not* a documented universal eight-item limit. [Google's official Gemini + YouTube Music help](https://support.google.com/gemini/answer/15237118) describes saving playlists via **Save to library** but does not specify how many items must appear in the initial preview. For a user-authorized GO or standalone `Publish`, preserve the existing playlist URI, use the actual save capability once when present, and audit all stored positions afterward if the full saved list is accessible. Mark unseen positions `unverified` rather than `missing` or `confirmed`; a save acknowledgment does not prove item fidelity. **No save for a text-only crate and no duplicate playlist.**
 
 **Scope of proof:** Updated canonical policy, generated Gemini routing, on-demand Gemini Publish reference and one focused offline contract regression test. Python 3.10/3.12/3.13 completed **188 tests each**. No Gemini live create/save/readback was run here. This is a non-publishing candidate change; the public 3.11.5 and `release/skill-prod` references remain untouched.
+
+## Private Lab rc.2 — source-diverse discovery candidate ready to test
+
+The core discovery change follows the [discovery-engine plan](skill-pr5-discovery-engine-plan.md): GO HARD's **existing** candidate funnel now visits independent source paths before choosing finalists, looks back to original single/album recording identity, and makes widely exposed songs justify a slot against credible alternatives. It **does not** ban compilations, artists over a million plays or popular music, or create additional listener prompt fields, default research phases, source quotas or fake history. Five [new static regression tests](../tests/test_skill_discovery_exploration.py) protect these boundaries. Reference synchronization and four candidate package builds passed the full 193-test matrix.
+
+**Installed private test version:** [Go, Hipster, Go! Lab](https://chatgpt.com/plugins/plugins_6af5b52ee0288191978cf11e3e9ba92f) — `go-hipster-go-lab` **3.11.6-rc.2**, updated from the source candidate at `5dc040eada03cfbe35107f977a173dc3399cf3e4`. The generated isolated archive has **60 files**, **207,672 bytes**, SHA-256 `a215c34982c20e87e9e39e5e8855d426a53996cf1f7fc293403f4ee3eb97abb5`. Plugin Creator confirmed a **PRIVATE** plugin release and independently returned the new Lab SKILL.md, GO HARD, taxonomy and verification reference text. None of these reads prove which files a separate live ChatGPT instance opened during curation.
+
+[**Repeatable rc.2 test card**](skill-pr5-rc2-discovery-test.md): repeat the **exact same** Central America / GO HARD brief in a fresh Lab chat, confirming `3.11.6-rc.2` before starting, and run one ordinary `go weird mid` text-only regression. Compare real discography evidence, independently sourced selections, overlap, sequencing and honest recording-quality uncertainty with the 3.11.5 and rc.1 tracklists already recorded. **Live rc.2 results: N/T**; no playlist publication, no production changes.
 
 ## Host comparison protocol (not yet executed)
 
