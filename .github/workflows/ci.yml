@@ -27,3 +27,11 @@ jobs:
           python scripts/playlist_cli.py validate examples/example-playlist.json
           python -m unittest discover -s tests -v
           python scripts/qualify_skill_release.py --check
+      - name: Keep isolated ChatGPT RC source ZIP for controlled test
+        if: ${{ github.event_name == 'pull_request' && matrix.python-version == '3.12' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ghg-pr5-chatgpt-candidate-source
+          path: dist/go-hipster-go-chatgpt-plugin.zip
+          retention-days: 1
+          if-no-files-found: error
