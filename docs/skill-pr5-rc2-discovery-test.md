@@ -51,6 +51,8 @@ Text only. Do not publish.
 
 Check twelve real distinct selections, coherent strange-but-defensible sonic connections, dry voice, source honesty, and no extra mandatory questioning, work phases, hidden exclusion requirements or publishing. Actual host latency/reference calls can be measured only if the host exposes reliable timing/traces; do not infer them from archive size.
 
+**Observed ordinary GO sample:** The listener supplied *Please Remain on the Dance Floor* (12 credited recordings), audited at [ordinary GO rc.2 review](skill-pr5-rc2-ordinary-go-audit.md). All songs are catalog-traceable; exact count, uniqueness and dry voice preserved. The entire selection comes from 1979–84, however, and uses many established post-punk/dance touchstones; **discovery breadth conditional**, host speed and real reference reads not observed. Version identity was not separately pasted from the producing chat. This completes **one** ordinary-GO content test but not the performance/host instrumentation test.
+
 ## Optional Test 3 — independent-run repetition
 
 Run **Test 1 again in another clean Lab chat** with no prior playlist shown. Measure overlap with the first rc.2 result as a distribution check. A new chat cannot know songs from the previous chat. If reliable exclusion is desired across sessions, design a separate privately maintained recent-track history rather than pretending that a skill instruction is persistent storage.
