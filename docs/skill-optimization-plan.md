@@ -18,12 +18,26 @@
 - [ ] Implement the five PRs **sequentially**, each independently reviewable and reversible. No combining unrelated changes to bypass a failing gate.
 - [ ] Keep version 3.11.5 during PRs 1–4; update to 3.11.6 only in the final release PR.
 - [ ] Never intentionally deploy Android/PWA or publish a public skill release as part of an optimization PR. Before merging, inspect the relevant workflow triggers for side effects.
+- [ ] Preserve the 3.11.5 GitHub release and existing ZIP assets. Disable auto-publishing to that release before any skill/reference code changes on `main`.
 - [ ] Prefer evidence-backed performance improvements over arbitrary token/ZIP-size goals.
+
+## Stage 0 — Release safeguards (must be complete before PR 1)
+
+- [ ] Confirm the published **3.11.5** GitHub release/tag exists and records its underlying commit; treat that tag as the frozen baseline.
+- [ ] Convert `.github/workflows/publish-gemini-skill.yml` to **manual dispatch only**, with explicit publication confirmation. Remove automatic pushes to GitHub Releases and the existing-release `--clobber` replacement path.
+- [ ] Pin generated Gemini online-reference links to the **versioned release tag**, not the moving `main` branch; update the generator and generated files together.
+- [ ] Add tests that forbid online Gemini skill links to `main` and forbid unattended release publication.
+- [ ] Check resulting package/link and publishing-workflow validation. Do not execute the release workflow as a test.
+- [ ] Document the legacy-install caveat: previously installed instructions referring to `main` cannot be re-pointed retroactively.
+- [ ] Merge this safety change only after checks pass, and record its PR/commit here.
+
+**Stage 0 exit gate:** Published version remains unchanged; no automatic release write can be triggered by a skill PR merge; newly generated Gemini online references resolve against the frozen versioned tag. Keep the release workflow manually runnable only when explicitly authorized.
 
 ## Roadmap
 
 | Stage | Deliverable | Risk | Status |
 | --- | --- | --- | --- |
+| Stage 0 | Protect GitHub release publishing and pin Gemini online refs | Low–medium | [ ] Not started |
 | PR 1 | Baseline measurements + Gemini compatibility correction | Low | [ ] Not started |
 | PR 2 | Deduplicate shared regional research instructions | Low–medium | [ ] Not started |
 | PR 3 | Conditional reference loading + compact Gemini routing | Medium | [ ] Not started |
@@ -143,6 +157,7 @@ Fill these from reproducible tests. “Estimated tokens” is not a measurement 
 | Date | Stage | Change / evidence | Status |
 | --- | --- | --- | --- |
 | 2026-11-11 | Plan | Created the tracked implementation plan from combined ChatGPT/Gemini audits; no implementation or release performed. | Planning |
+| 2026-11-11 | Preflight | Confirmed `gemini-skill-v3.11.5` release and identified an automatic release-upload workflow on pushes to `main`; Stage 0 added. | Planning |
 
 ## How we update this file
 
