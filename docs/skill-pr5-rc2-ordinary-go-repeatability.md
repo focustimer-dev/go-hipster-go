@@ -35,6 +35,13 @@ After observing **two** independent ordinary-GO playlists converging on the same
 
 **Validation:** canonical taxonomy changed, portable mirror and ChatGPT/Gemini knowledge distributions updated. A new [offline regression assertion](../tests/test_skill_discovery_exploration.py) checks the intended constraints. CI green at the resulting PR head, if evidenced by the PR workflow run. **Tests validate instruction consistency, not the model's real behavior.**
 
+## Implementation and test packaging — 2026-11-12
+
+- **Code:** updated only the **first Freshness procedure step** in [canonical sonic taxonomy](../references/sonic-taxonomy.md). Added one [offline regression check](../tests/test_skill_discovery_exploration.py), then synced the portable skill mirror and generated ChatGPT/Gemini knowledge. No ordinary-GO reference expansion, additional research phase, app change or extra user prompt.
+- **Offline proof:** [Validate skill PR run 43280564958](https://github.com/focustimer-dev/go-hipster-go/actions/runs/43280564958) passed on **Python 3.10, 3.12 and 3.13 with 194 unit/contract tests per job**; all four ZIP builds and release-isolation qualification also passed. The CI source archive carried the updated taxonomy and was compared against the previous Lab package. These checks establish policy consistency, not quality of a newly generated playlist.
+- **Private Lab updated:** [Go, Hipster, Go! Lab](https://chatgpt.com/plugins/plugins_6af5b52ee0288191978cf11e3e9ba92f) is now **3.11.6-rc.3** (private plugin release `pluginrel_6af6069ba2d081919b32ec0fde7905c3`). Package: **60 files**, **207,712 bytes**, SHA-256 `a48f737ed0a5df6266e1593acb0cca9c4e1bfcae818cff2b0fc8796f8bb829f3`. Creator readback independently confirmed root/nested manifest version, Lab skill identity and new taxonomy rule.
+- **Live follow-up:** open a **fresh** Lab-selected chat; verify that its skill says `3.11.6-rc.3` (previous chats may retain stale snapshots); rerun the identical `go weird mid` text-only prompt. No rc.3 music output has been observed or scored yet. The public `3.11.5` plugin and `release/skill-prod` remain unchanged.
+
 ## Next gate
 
 Package the patch as a distinct **private Lab rc.3** (without touching the public skill) after CI passes. In a new chat confirm `3.11.6-rc.3`, then rerun *identical* `go weird mid` text-only twice on separate sessions (or at least once). Record counts, exact repeats, temporal concentration, unprompted scene diversity, genuine musical quality and citation/source trustworthiness. Never insist on zero overlap as a guarantee without an actually available prior-track history.
