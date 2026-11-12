@@ -15,7 +15,7 @@ The following must remain true: canonical and mirror SKILL files match; all mani
 
 ## First candidate qualification — observed results (2026-11-12)
 
-The first PR 5 CI run at `1a6da4489d79335779dbee781ca496ac67cc4247` passed on Python **3.10, 3.12 and 3.13**, with **185 unit/contract tests per job** and the offline qualification check green. [PR run](https://github.com/focustimer-dev/go-hipster-go/actions/runs/43213173780) and [push run](https://github.com/focustimer-dev/go-hipster-go/actions/runs/43213089365).
+The latest PR 5 CI run at `e72a5431772942a6f2615d1048ea7f1bc0309dc8` passed on Python **3.10, 3.12 and 3.13**, with **187 unit/contract tests per job**, including public support/privacy links and a basic secret-signature check, and the offline qualification report green. [PR run](https://github.com/focustimer-dev/go-hipster-go/actions/runs/43213737198) and [push run](https://github.com/focustimer-dev/go-hipster-go/actions/runs/43213730200).
 
 | Distribution | Published 3.11.5 asset bytes | Current candidate ZIP bytes | Difference |
 | --- | ---: | ---: | ---: |
