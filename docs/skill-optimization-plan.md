@@ -1,6 +1,6 @@
 # Go, Hipster, Go! — Skill Optimization & Publication Readiness Tracker
 
-**Status:** Stage 0 and PR 1 completed; PR 2 next  
+**Status:** Stage 0 and PRs 1–2 completed; PR 3 next  
 **Target release:** 3.11.6 (maintenance/polish)  
 **Baseline release:** 3.11.5 (reconfirm on PR 1)  
 **Repository:** focustimer-dev/go-hipster-go  
@@ -40,7 +40,7 @@
 | --- | --- | --- | --- |
 | Stage 0 | Protect GitHub release publishing and stable Gemini online refs | Low–medium | [x] Complete — PR #243 |
 | PR 1 | Baseline measurements + Gemini compatibility correction | Low | [x] Complete — PR #244 |
-| PR 2 | Deduplicate shared regional research instructions | Low–medium | [ ] In progress |
+| PR 2 | Deduplicate shared regional research instructions | Low–medium | [x] Complete — PR #246 |
 | PR 3 | Conditional reference loading + compact Gemini routing | Medium | [ ] Not started |
 | PR 4 | Consolidate canonical instructions + lean public packaging | Medium | [ ] Not started |
 | PR 5 | Regression review, reproducible bundles, release 3.11.6 | Release gate | [ ] Not started |
@@ -163,7 +163,7 @@ Fill these from reproducible tests. “Estimated tokens” is not a measurement 
 | 2026-11-11 | Preflight | Confirmed `gemini-skill-v3.11.5` release and identified an automatic release-upload workflow on pushes to `main`; Stage 0 added. | Planning |
 | 2026-11-11 | Stage 0 | [PR #243](https://github.com/focustimer-dev/go-hipster-go/pull/243) passed validation and merged (`a99705fe`); published 3.11.5 assets unchanged. | Complete |
 | 2026-11-11 | PR 1 | [PR #244](https://github.com/focustimer-dev/go-hipster-go/pull/244) merged (`dffaf69e`); 3 Python CI jobs passed; baseline documented and Gemini script-only linter removed from generated policy. | Complete |
-| 2026-11-11 | PR 2 | [Draft PR #246](https://github.com/focustimer-dev/go-hipster-go/pull/246): 24 shared blocks removed; 171 repeated warning cells shortened; all 920 research entries/fingerprints preserved; three CI jobs passed. Publication and live playlist behavior not tested. | Ready for merge review |
+| 2026-11-11 | PR 2 | [PR #246](https://github.com/focustimer-dev/go-hipster-go/pull/246) merged as `122fb3a28453873c65f2599f2d9be48b23ecb2c3`. All 920 source entries and source-section fingerprints preserved; Python 3.10/3.12/3.13 CI passed. 45,939 fewer characters in each generated ChatGPT and Gemini knowledge bundle. No live curation/publishing test. | Complete |
 
 ## How we update this file
 
