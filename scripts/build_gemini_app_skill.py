@@ -125,6 +125,14 @@ Antarctica requires deliberate naming or named PWA selection. Exclude it from pl
     if n != 1:
         raise ValueError("DeBarge random rule changed")
     parts["Deliberate irony and Easter egg"] = egg
+    # Gemini Apps cannot run local CLI lint commands. Preserve the sequence gate
+    # using a supported manifest check or explicit manual review.
+    old_lint = "run `lint-sequence` on a manifest when available"
+    if old_lint not in parts["Curate in seven steps"]:
+        raise ValueError("Sequence lint policy anchor changed")
+    parts["Curate in seven steps"] = parts["Curate in seven steps"].replace(
+        old_lint, "lint a manifest if available or check manually"
+    )
     return "\n\n".join(parts[k] for k in keys)
 
 
@@ -200,7 +208,7 @@ Follow the [reference index](references/reference-index.md) before choosing a th
     forbidden = ("scripts/", "python ", "add_playlist_items", "--strict",
                  "Spotify is the default service", "Spotify by default",
                  "In ordinary **ChatGPT**", "Apple Music handoff",
-                 "Real Claude field report", "\\n\\n##")
+                 "Real Claude field report", "lint-sequence", "\\n\\n##")
     if any(x.lower() in result.lower() for x in forbidden):
         raise ValueError("Gemini skill contains non-Gemini policy or malformed Markdown")
     return result
