@@ -13,6 +13,21 @@ That last script produces uncommitted local-only `dist/skill-release-qualificati
 
 The following must remain true: canonical and mirror SKILL files match; all manifest versions agree; all four archives contain expected runtime files and stable timestamps, without Python caches or the long development-only acceptance corpus; Gemini remains script-free; generated Gemini URLs target the frozen `release/skill-prod` reference and never moving `main`. The public release workflow remains manual-only.
 
+## First candidate qualification — observed results (2026-11-12)
+
+The first PR 5 CI run at `1a6da4489d79335779dbee781ca496ac67cc4247` passed on Python **3.10, 3.12 and 3.13**, with **185 unit/contract tests per job** and the offline qualification check green. [PR run](https://github.com/focustimer-dev/go-hipster-go/actions/runs/43213173780) and [push run](https://github.com/focustimer-dev/go-hipster-go/actions/runs/43213089365).
+
+| Distribution | Published 3.11.5 asset bytes | Current candidate ZIP bytes | Difference |
+| --- | ---: | ---: | ---: |
+| ChatGPT plugin | 242,009 | 206,222 | −35,787 (−14.8%) |
+| Claude plugin | 239,639 | 203,852 | −35,787 (−14.9%) |
+| Claude skill | 236,252 | 200,262 | −35,990 (−15.2%) |
+| Gemini Apps skill | 196,447 | 179,488 | −16,959 (−8.6%) |
+
+These are actual CI-built ZIP byte measurements compared with **published historical 3.11.5 release asset metadata** (not a bit-for-bit rebuilt historical archive). The GitHub [3.11.5 release](https://github.com/focustimer-dev/go-hipster-go/releases/tag/gemini-skill-v3.11.5) still points to commit `625941ab0e931230554393035df6b4b851783298`. The production-reference branch remains frozen at `41a3d17a4f0c9b2809d3a9077ed950cbc4d044f1`; PR 5 has not changed it. The source repository's [support](support.md), [privacy](privacy.md) and [terms](terms.md) files exist on `main`. Live hosting or real music-service access was **not** exercised.
+
+The 3.11.5 candidate version is intentional for pre-release testing. A new `3.11.6` tag, distribution upload, production branch promotion, external host installation or playlist creation would require separate approval.
+
 ## Host comparison protocol (not yet executed)
 
 Use separate clean conversations with **explicitly verified installed versions**, identical briefs and comparable catalog/research access. The baseline is the published 3.11.5 installation. A local branch candidate must be loaded explicitly, never assumed from the currently installed public skill. Avoid changing playlists or real user accounts during evaluation; use `text only` unless a separate authorized publishing test has been approved.
