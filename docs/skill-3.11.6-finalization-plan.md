@@ -1,6 +1,6 @@
 # Go, Hipster, Go! — 3.11.6 finalization implementation plan
 
-**Status:** Gates 0–3 engineering merged. Gate 4 scoped to ChatGPT and Gemini; Claude N/A. First ChatGPT QA rc.4 ordinary GO is **discovery freshness 0/2**, with mechanical count/identity pass; candidate release **on hold pending Gemini comparison**. No public release approval.  
+**Status:** Gates 0–3 engineering merged. Gate 4 scoped to ChatGPT and Gemini; Claude N/A. ChatGPT QA rc.4 ordinary GO **0/2 discovery breadth**, Gemini user-supplied ordinary GO **2/2 observed breadth but 1/2 editorial detail**. Source/version confirmation and fresh ChatGPT repeat still required; public 3.11.6 release **on hold**.  
 **Owner/source of truth:** this checklist; record results here after each gate.  
 **Created:** 2026-11-12. **Target:** maintenance release 3.11.6.  
 **Starting point:** PR #252 (`3c2f2a9d`) and documentation closeout PR #253 (`777891be`) merged into `main`. Public skill and `release/skill-prod` remain at 3.11.5. Private Lab rc.3 is an experimental snapshot, not the public release.
@@ -86,7 +86,7 @@ Use one internal, evidence-gated vocabulary, mapped to simple listener text:
 - [ ] Score critical invariants 0 fail / 1 provisional / 2 pass / N/T unavailable. Any factual fabrication, unauthorized write, silent replacement, material count regression, or new canonical concentration failure is a blocker. Audio quality, host fetch timing and readback remain N/T if not observed.
 - **Exit artifact:** an evidence table linking prompt, host, declared skill version, candidate SHA, source spot-checks, CI run, failures, and disposition. No extra optimization loop unless a reproducible defect warrants one narrow patch.
 
-**Gate 4A early result:** Listener-provided [ChatGPT QA ordinary GO](skill-3.11.6-gate4-chatgpt-ordinary-qa.md) passes 12-track count, uniqueness and catalog pairing, but fails open-ended discovery breadth: all twelve from ~1979–83 despite no era constraint. This repeats the older rc.2 learned canon corridor after an encouraging rc.3 output. **Do not advance to Gate 5** until a version-confirmed Gemini sample distinguishes shared instruction weakness from ChatGPT-specific routing. No new universal blacklist or era quota.
+**Gate 4A / 4B comparison:** Listener-provided [ChatGPT QA ordinary GO](skill-3.11.6-gate4-chatgpt-ordinary-qa.md) passes 12 tracks and artist/title identity, but fails breadth (12 tracks ~1979–83). The separately supplied [Gemini ordinary GO](skill-3.11.6-gate4-gemini-ordinary-qa.md) also has 12 traceable recordings but spans different scenes, geographies and years, sharing only Vivien Goldman's Launderette. Gemini QA installed version has **not been independently read back in the generating chat**; do not count host attribution as confirmed. **Do not advance Gate 5** before fresh-version confirmation and a single controlled ChatGPT repeat. No broad shared-policy optimization, quotas or blacklist on divergent samples.
 
 ### Gate 5 — PR D: version bump and release rehearsal
 
@@ -113,7 +113,7 @@ Use one internal, evidence-gated vocabulary, mapped to simple listener text:
 | PR A | [PR #255](https://github.com/focustimer-dev/go-hipster-go/pull/255), squash `1af39382` | Gemini exact-first contract; Python 3.10/3.12/3.13 green | Live writer N/T; no saves | [x] Merged; production unchanged |
 | PR B | [PR #256](https://github.com/focustimer-dev/go-hipster-go/pull/256), squash `77d1c101` | Six evidence-gated outcomes; 1.0 preserved; Python 3.10/3.12/3.13 and generated mirror CI green | Actual provider readback N/T; no writes | [x] Merged; 1.1 not needed |
 | PR C | [PR #258](https://github.com/focustimer-dev/go-hipster-go/pull/258), squash `17dff2cf` | Gemini developer CLI removed from script-free bundle, mobile test protocol updated, Python 3.10/3.12/3.13 and bundle/launcher CI green | Actual installed host/mobile, catalog/audio and writer readback N/T; carried to Gate 4 | [x] Engineering correction merged |
-| Candidate acceptance | [Gate 4 packet](skill-3.11.6-gate4-chatgpt-gemini-acceptance.md); [ChatGPT ordinary GO audit](skill-3.11.6-gate4-chatgpt-ordinary-qa.md) | PR #260 builds verified isolated QA rc.4 packages, 215 tests × Python 3.10/3.12/3.13 green | ChatGPT: 12/12 count, 12/12 distinct leads, text-only correct, but all tracks ~1979–83, discovery 0/2. Gemini not yet tested; Claude N/A | [ ] **Hold for Gemini; no release** |
+| Candidate acceptance | [Gate 4 packet](skill-3.11.6-gate4-chatgpt-gemini-acceptance.md); [ChatGPT audit](skill-3.11.6-gate4-chatgpt-ordinary-qa.md); [Gemini audit](skill-3.11.6-gate4-gemini-ordinary-qa.md) | PR #260 QA builds and 215 tests × 3 Python versions passed | ChatGPT: 12/12, breadth 0/2 (1979–83). Gemini: 12/12, breadth 2/2 with factual-detail cautions; **Gemini installed source/version trace N/T**, Claude N/A | [ ] Hold: confirm Gemini QA version, one independent ChatGPT repeat, then regional GO HARD |
 | PR D | — | — | — | [ ] |
 | Explicit publication | — | — | — | [ ] |
 
