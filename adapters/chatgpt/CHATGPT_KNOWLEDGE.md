@@ -4,7 +4,7 @@ A generated, text-forward snapshot of the **canonical** repository skill. This i
 
 **Source:** https://github.com/focustimer-dev/go-hipster-go
 
-**Files included:** `references/recording-quality.md`, `references/reference-index.md`, `references/de-cheese.md`, `references/discovery-routes.md`, `references/funky.md`, `references/desire-triumphant.md`, `references/regions/antarctica.md`, `references/go-hard.md`, `references/regional-review.md`, `references/regions/oceania-additions.md`, `references/regions/central-america-additions.md`, `references/regions/central-africa-additions.md`, `references/regions/southern-africa-additions.md`, `references/regional-atlas.md`, `references/regions/us-west.md`, `references/regions/us-east.md`, `references/regions/us-midwest.md`, `references/regions/us-south.md`, `references/regions/canada-west.md`, `references/regions/canada-east.md`, `references/regions/mexico.md`, `references/regions/central-america.md`, `references/regions/caribbean.md`, `references/regions/northern-south-america.md`, `references/regions/southern-south-america.md`, `references/regions/atlantic-europe.md`, `references/regions/mediterranean-europe.md`, `references/regions/balkans.md`, `references/regions/northern-europe.md`, `references/regions/eastern-europe.md`, `references/regions/north-africa.md`, `references/regions/west-africa.md`, `references/regions/east-africa.md`, `references/regions/central-southern-africa.md`, `references/regions/middle-east.md`, `references/regions/central-asia.md`, `references/regions/south-asia.md`, `references/regions/east-asia.md`, `references/regions/southeast-asia.md`, `references/regions/northern-asia.md`, `references/regions/oceania.md`, `SKILL.md`, `references/global-scenes.md`, `references/sonic-taxonomy.md`, `references/curation-examples.md`, `references/verification.md`, `references/cover-art.md`.
+**Files included:** `references/recording-quality.md`, `references/reference-index.md`, `references/de-cheese.md`, `references/discovery-routes.md`, `references/funky.md`, `references/desire-triumphant.md`, `references/regions/antarctica.md`, `references/go-hard.md`, `references/regional-review.md`, `references/regions/oceania-additions.md`, `references/regions/central-america-additions.md`, `references/regions/central-africa-additions.md`, `references/regions/southern-africa-additions.md`, `references/regional-atlas.md`, `references/regions/us-west.md`, `references/regions/us-east.md`, `references/regions/us-midwest.md`, `references/regions/us-south.md`, `references/regions/canada-west.md`, `references/regions/canada-east.md`, `references/regions/mexico.md`, `references/regions/central-america.md`, `references/regions/caribbean.md`, `references/regions/northern-south-america.md`, `references/regions/southern-south-america.md`, `references/regions/atlantic-europe.md`, `references/regions/mediterranean-europe.md`, `references/regions/balkans.md`, `references/regions/northern-europe.md`, `references/regions/eastern-europe.md`, `references/regions/north-africa.md`, `references/regions/west-africa.md`, `references/regions/east-africa.md`, `references/regions/central-southern-africa.md`, `references/regions/middle-east.md`, `references/regions/central-asia.md`, `references/regions/south-asia.md`, `references/regions/east-asia.md`, `references/regions/southeast-asia.md`, `references/regions/northern-asia.md`, `references/regions/oceania.md`, `SKILL.md`, `references/global-scenes.md`, `references/sonic-taxonomy.md`, `references/curation-examples.md`, `references/verification.md`, `references/cover-art.md`, `references/evaluation-smoke.md`.
 
 
 ---
@@ -2428,7 +2428,7 @@ A playlist recommendation is NOT a published playlist. For structured export, fo
 
 ## Test changes rather than accumulating rules
 
-Before expanding this skill, compare old and new on three fixed prompts (regional mashup, obscure artist alternatives, open-ended "go") with equal verification access. Check: real tracks/versions, sonic coherence, genuinely unfamiliar discoveries, and scene variety when appropriate. Use listener feedback; never invent quality metrics or claim validation that hasn't happened. See [evaluation prompts](tests/discovery-cases.md).
+Before expanding this skill, compare old and new on three fixed prompts (regional mashup, obscure artist alternatives, open-ended "go") with equal verification access. Check: real tracks/versions, sonic coherence, genuinely unfamiliar discoveries, and scene variety when appropriate. Use listener feedback; never invent quality metrics or claim validation that hasn't happened. See [compact evaluation guidance](references/evaluation-smoke.md).
 
 ## Scope
 
@@ -3084,3 +3084,19 @@ Only on `Cover art: yes` or an explicit sleeve request: after the final playlist
 **Execution and status:** Compose these four choices into **one coherent image prompt**, not four incompatible style effects. Use an available host image generator; otherwise output the complete ready-to-use prompt. Provide one original square sleeve with the exact final playlist title. Do not claim the art was uploaded or applied to Spotify, YouTube Music or any service unless a real tool confirms that separate operation. Skip all artwork work when not requested.
 
 # END SOURCE: references/cover-art.md
+
+---
+
+# BEGIN SOURCE: references/evaluation-smoke.md
+
+# Runtime skill evaluation — compact checks
+
+Use these checks when revising skill behavior, not as mandatory work during ordinary playlist requests. Detailed cases, evidence and historical regressions live in the repository-only [development acceptance corpus](https://github.com/focustimer-dev/go-hipster-go/blob/main/tests/discovery-cases.md); that corpus is not needed in a listener's runtime plugin archive.
+
+Compare representative briefs with equivalent evidence access: ordinary GO, region-locked GO, cross-scene GO, GO HARD, two moods, c1 tempo/mood curve, refresh, de-cheese, explicit Antarctica, skip rough recordings, non-Latin titles, publisher unavailable, and the DeBarge exception. Evaluate real recording identities, scene provenance, sonic fit, sequencing, unique leads, supported descriptions, publication status and the record-store voice. Different actual track choices are allowed; do not impose a fixed roster or scene quota.
+
+For DeBarge, a genuine eligible roll of 1 yields 25 consecutive identical recordings, and an ordinary six-track request is not itself an exclusion. Explicit non-overridable counts, explicit DeBarge exclusions, unique-tracks demands and Antarctica requests prevent the spontaneous roll. Never fabricate randomness or a saved playlist.
+
+Use offline lint, schema/package and distribution-sync checks when available. Live service writes and host instruction-loading need separate observation. Keep test evidence and manual scores outside the listener-facing result.
+
+# END SOURCE: references/evaluation-smoke.md
