@@ -27,9 +27,9 @@
 
 ## Implemented first increment
 
-- Portable ChatGPT and Claude archives use sorted source traversal, explicit fixed ZIP timestamps/permissions and deterministic compression. Local `__pycache__` and `.pyc` artifacts are never included.
+- Portable ChatGPT and Claude archives use sorted source traversal, explicit fixed ZIP timestamps/permissions and deterministic compression. Gemini's ZIP uses the same stable member rules. A bytewise rebuild check covers all four artifacts. Local `__pycache__` and `.pyc` artifacts are never included.
 - Replaced the mirrored 54 KB development test corpus with a short runtime reference. This reduces package source weight without deleting the actual development corpus. Actual generated ZIP byte savings still require final measured comparison.
-- ZIP membership/metadata tests check safety and repeatability; Gemini-specific generated ZIP behavior is left unchanged for separate examination.
+- ZIP membership/metadata tests check safety and repeatability; The Gemini builder now uses the same deterministic member metadata; an automated test rebuilds all four ZIPs twice and compares hashes.
 
 ## Remaining PR 4 work
 
