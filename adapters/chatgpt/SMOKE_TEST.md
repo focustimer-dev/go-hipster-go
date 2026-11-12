@@ -6,7 +6,13 @@
 
 Prompt: `Use the Go, Hipster, Go! skill: go. Make a 6-track playlist and identify the audible bridge between any distant scene choices.`
 
-Check: response uses a four-axis thesis; six actual artist–track pairs; sonic connections rather than a world-tour list; no made-up streaming playlist URL. If a real random facility is available, the DeBarge Protocol might replace the length only when eligibility permits; here the explicit 6-track count means it must **not** trigger.
+Check: response uses a four-axis thesis, credible sonic bridges rather than a world-tour list, and no invented streaming playlist URL. The ordinary six-track target does not by itself block the DeBarge Protocol: without a genuine eligible hit, expect six real artist–track pairs; on a genuine 1-in-100 hit, expect exactly 25 consecutive identical DeBarge entries. Do not simulate a hit when reliable randomness is unavailable.
+
+## Test 1b: Explicitly rigid six-track count
+
+Prompt: `Use the Go, Hipster, Go! skill: go exactly six tracks, no exceptions.`
+
+Check: six real tracks, no spontaneous DeBarge roll. This explicitly non-overridable count differs from the ordinary six-track target in Test 1.
 
 ## Test 2: Specific global mashup
 
