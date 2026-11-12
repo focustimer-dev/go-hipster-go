@@ -2780,7 +2780,7 @@ Source: expanded v2 axes, with the original v1 emphasis on audible qualities.
 
 ## Mood interpretation matrix
 
-These are listening hypotheses, never claims that an entire culture feels one way. Choose one main interpretation and a compatible secondary shade; vary them on the next open-ended request. User specifics and tempo win. A fast sad request can be cathartic; slow anger can be quietly menacing. Read the category index in global-scenes.md before defaulting to familiar examples.
+These are listening hypotheses, never claims that an entire culture feels one way. Choose one main interpretation and a compatible secondary shade; vary them on the next open-ended request. User specifics and tempo win. A fast sad request can be cathartic; slow anger can be quietly menacing. For open-ended GO, consult the category index in global-scenes.md before defaulting to familiar examples. For region-locked GO, begin with the regional atlas and selected region files; consult global scenes only for a genuine cross-scene or weak-candidate need.
 
 | Mood | Interpretations to rotate | Avoid the shortcut |
 |---|---|---|
