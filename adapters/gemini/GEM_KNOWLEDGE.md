@@ -48,7 +48,11 @@ On setup, setup status, or setup change inspect actual connected music tools and
 
 ## Resource routing
 
-Follow the [reference index](references/reference-index.md) before choosing a thesis. It specifies the required taxonomy, category discovery and verification sections, regional supplements and optional depth. Keep all four axes and the complete research map available. PWA angles, lenses and sparks remain hypotheses, not quotas or verified claims.
+**Direct GO routing (no index hop):** New GO reads [workflow](references/workflow.md), [taxonomy](references/sonic-taxonomy.md), and [verification](references/verification.md). If regions are selected, read [atlas](references/regional-atlas.md) safeguards and only `references/regions/<id>.md` for each selected region. Map PWA labels to IDs by lowercase hyphenation except: US Midwest & Great Lakes=`us-midwest`, US South & Gulf=`us-south`, Atlantic & Western Europe=`atlantic-europe`, Middle East & Caucasus=`middle-east`, Central & Southern Africa=`central-southern-africa`. Use the atlas for ambiguous labels.
+
+**Regional additions:** `oceania` → `references/regions/oceania-additions.md`; `central-america` → `references/regions/central-america-additions.md`; `central-southern-africa` → BOTH `references/regions/central-africa-additions.md` and `references/regions/southern-africa-additions.md`. For any of these also read `references/regional-review.md`. Antarctica is opt-in only: `references/regions/antarctica.md`.
+
+**Global scenes:** Open-ended/worldwide or broad cross-scene GO reads `references/global-scenes.md`; region-locked GO skips it unless research is weak or a cross-scene bridge needs it, never loosening regional constraints. **Modes:** hard → `references/go-hard.md`; funky → `references/funky.md`; Desire/Triumphant → `references/desire-triumphant.md`; Skip rough → `references/recording-quality.md`; cover art → `references/cover-art.md`. The `c1:` curve and discovery-route triggers have direct links above. De-cheese is read-only audit; Publish finalizes the current crate. Batch relevant files when supported; never preload every region. The [index](references/reference-index.md) is a fallback for ambiguity.
 
 ## Intent and activation
 
@@ -147,7 +151,7 @@ For a supplied seed, explore beyond familiar post-punk/dub/funk routes when musi
 
 When a PWA prompt supplies a **Fresh-crate discovery lens**, use it as a starting hypothesis for finding candidates, not as a mandatory genre, regional quota, verified instrumentation claim or reason to ignore the listener's mood/tempo. A new GO should explore a different sonically defensible corner of the catalog rather than cycle through the same reference artists and obvious compilation cuts. For an open-ended request, compare genuinely different rhythm, voice, texture and arrangement routes before selecting a thesis. Build a broader candidate shortlist than the final track count and look beyond named research leads to credible labelmates, overlooked collaborators, local contemporaries, original issues and alternate scenes. Verify the final recordings and preserve cohesion; novelty alone is not quality.
 
-**Regional discovery and recording quality:** Apply the recording-level selection gate in [sonic taxonomy](references/sonic-taxonomy.md). Selected regions take precedence over rotating lenses; verify scene connections rather than using geography as a sonic adjective. The [regional research routes](references/global-scenes.md) supplies research hypotheses, not established facts about recordings or a fixed artist roster. Skip incompatible hints; do not broaden geography just to use a seed.
+**Regional discovery and recording quality:** Apply the recording-level selection gate in [sonic taxonomy](references/sonic-taxonomy.md). Selected regions take precedence over rotating lenses; verify actual scene connections rather than using geography as a sonic adjective. Start with the [regional atlas](references/regional-atlas.md) and matching region files; consult [global scenes](references/global-scenes.md) for open-ended, worldwide, or genuinely needed cross-scene research, not routinely for region-locked Jukebox briefs. Both catalogs supply unverified leads, not a fixed artist roster. Never broaden requested geography to accommodate a seed.
 
 **Address regional research precisely:** Use the [regional atlas](references/regional-atlas.md) lookup for selected regions and deeper regional exploration, including matching supplementary files. The [focused regional review](references/regional-review.md) takes precedence for expanded Oceania, Central America and Central & Southern Africa. Treat all 920 imported source entries (including overlaps) as unverified search leads. Existing mood, geography, recording-quality and Criminal evidence rules take precedence.
 
@@ -221,11 +225,18 @@ Use this directory to reach the existing research, not to replace it with a smal
 
 ## Every new ordinary GO
 
-Before choosing a thesis, read these sections (exact headings):
+Before choosing a thesis, read these **core** references (relevant headings, not every section):
 
-1. [Sonic taxonomy](sonic-taxonomy.md): **Mood interpretation matrix**, **Peculiarity by audible mechanism**, **Freshness procedure**, and **Recording-level selection gate**. Consult **Era and sonic period**, **Sonic textures and instrumentation** and **Operating guidance** as the brief requires; keep all four discovery axes available.
-2. [Global scenes](global-scenes.md): Use the relevant rows of **Category discovery index — expand the search before choosing artists** to compare three distinct routes. For cross-scene playlists, consult **Responsible cross-scene reasoning**. Read only the relevant scene detail under **Geographic research map**, **Movement and microgenre touchstones**, **Further scene horizons — research leads, not default playlists**, or **US East and West discovery routes**. For unstructured GO, consider an under-covered route before settling on familiar choices.
-3. [Verification](verification.md): apply the recording and publishing evidence rules to every final selection. For Criminal, also apply **Criminal mood: verify the song's actual story**, using song-level narrative evidence rather than genre, reputation or title association.
+1. [Sonic taxonomy](sonic-taxonomy.md): **Mood interpretation matrix**, **Peculiarity by audible mechanism**, **Freshness procedure**, and **Recording-level selection gate**. Consult **Era and sonic period**, **Sonic textures and instrumentation**, and **Operating guidance** as needed. Keep all four discovery axes available.
+2. [Verification](verification.md): verify each final recording and apply publishing-evidence rules. For Criminal, also read **Criminal mood: verify the song's actual story**; genre, reputation, and title association are insufficient.
+
+Compare three genuinely compatible discovery routes internally. A selected region is a constraint, not a reason to load the entire global taxonomy.
+
+## Global scenes — conditional, not a default regional load
+
+For **open-ended, region-free, worldwide, or broadly cross-scene** GO, consult [Global scenes](global-scenes.md), especially **Category discovery index — expand the search before choosing artists**, to compare varied research directions. Read relevant sections only: **Responsible cross-scene reasoning**, **Geographic research map**, **Movement and microgenre touchstones**, **Further scene horizons — research leads, not default playlists**, and the optional **US East and West discovery routes**. For unstructured GO, consider an under-covered route rather than settling on familiar choices.
+
+For an explicit `Regional exploration:` or another **region-locked** GO, **do not preload** `global-scenes.md`. Start with the [regional atlas](regional-atlas.md), selected region files and their required supplements instead. Consult the global file later only when candidate research is thin or a specific, musically grounded cross-scene bridge needs wider context; **never relax the selected geography or substitute unverified examples**. The file remains available in every distribution.
 
 ## Optional discovery routes
 

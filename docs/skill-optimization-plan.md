@@ -41,7 +41,7 @@
 | Stage 0 | Protect GitHub release publishing and stable Gemini online refs | Low–medium | [x] Complete — PR #243 |
 | PR 1 | Baseline measurements + Gemini compatibility correction | Low | [x] Complete — PR #244 |
 | PR 2 | Deduplicate shared regional research instructions | Low–medium | [x] Complete — PR #246 |
-| PR 3 | Conditional reference loading + compact Gemini routing | Medium | [ ] Not started |
+| PR 3 | Conditional reference loading + compact Gemini routing | Medium | [ ] In progress |
 | PR 4 | Consolidate canonical instructions + lean public packaging | Medium | [ ] Not started |
 | PR 5 | Regression review, reproducible bundles, release 3.11.6 | Release gate | [ ] Not started |
 
@@ -80,13 +80,13 @@ A checked PR means **merged with evidence**, not merely opened or green in one C
 
 **Intent:** Reduce unnecessary retrieval and initial context on real Jukebox prompts.
 
-- [ ] Update `references/reference-index.md`: `global-scenes.md` is for unstructured, worldwide, or otherwise broad exploration; region-locked GO starts with the selected region files and sonic taxonomy, adding global scenes only when cross-scene research or weak candidates justify it.
-- [ ] Do **not** delete US discovery routes without verifying equivalent information and source links survive in regional files or an optional research reference.
-- [ ] Generate a compact trigger-to-filename table in the Gemini entry `SKILL.md`, sourced from the canonical routing rules rather than maintained as an independent copy.
-- [ ] Include core workflow, sonic taxonomy, verification, and exactly relevant region/mode files; route GO HARD, Antarctica, de-cheese, cover art, recording quality, desire/triumph, funky, and c1 curves correctly.
-- [ ] Keep `reference-index.md` packaged for compatibility; do not require an extra index hop when direct file routing is available.
-- [ ] Test both Gemini's online adapter and packaged ZIP. Confirm every generated reference path and its link rewrite works.
-- [ ] Compare observable retrieval calls/turns when possible; do not promise one-batch fetches when the host cannot batch.
+- [x] Updated `references/reference-index.md` and canonical `SKILL.md` so region-locked GO starts with taxonomy, verification, atlas and selected regions; `global-scenes.md` is conditional on open-ended/worldwide work, weak candidates or a genuinely needed cross-scene bridge.
+- [x] Preserved `references/global-scenes.md` unchanged, including its US routes and their research links. No region-specific source file was deleted or altered in PR 3.
+- [x] Generated a compact direct routing contract from `scripts/build_gemini_app_skill.py`, using the existing atlas labels and deterministic label→ID normalization with explicit exceptions. All 27 atlas IDs are covered by tests, without duplicating the 27-row map in the entry.
+- [x] Direct Gemini routing names core workflow, taxonomy and verification; selected regions and additions; GO HARD, Antarctica, de-cheese, Publish, cover art, recording quality, Desire/Triumphant, funky and `c1:` curve; the full details remain in the workflow and references.
+- [x] Kept `reference-index.md` packaged as a fallback; the Gemini entry no longer requires it before each new GO. Moved creative/setup detail into the always-loaded workflow to retain the 6.5 KB entry budget.
+- [ ] Run full online-adapter synchronization, portable ZIP/link validation and 27-region routing tests in CI (not yet verified).
+- [ ] Record the predicted eliminated index/global-scenes reads; live Gemini retrieval calls/turns cannot be confirmed without host instrumentation. Do not claim a one-turn batch or reduced latency.
 
 **Exit gate:** Correct policy loaded for every tested command, no missing references, fewer unnecessary bytes/tokens in fixed regional scenarios, and no significant discovery regression.
 
@@ -163,6 +163,7 @@ Fill these from reproducible tests. “Estimated tokens” is not a measurement 
 | 2026-11-11 | Preflight | Confirmed `gemini-skill-v3.11.5` release and identified an automatic release-upload workflow on pushes to `main`; Stage 0 added. | Planning |
 | 2026-11-11 | Stage 0 | [PR #243](https://github.com/focustimer-dev/go-hipster-go/pull/243) passed validation and merged (`a99705fe`); published 3.11.5 assets unchanged. | Complete |
 | 2026-11-11 | PR 1 | [PR #244](https://github.com/focustimer-dev/go-hipster-go/pull/244) merged (`dffaf69e`); 3 Python CI jobs passed; baseline documented and Gemini script-only linter removed from generated policy. | Complete |
+| 2026-11-11 | PR 3 | Conditional global-scenes routing, direct Gemini file dispatch and 27-region static tests added; CI and package verification pending. | In progress |
 | 2026-11-11 | PR 2 | [PR #246](https://github.com/focustimer-dev/go-hipster-go/pull/246) merged as `122fb3a28453873c65f2599f2d9be48b23ecb2c3`. All 920 source entries and source-section fingerprints preserved; Python 3.10/3.12/3.13 CI passed. 45,939 fewer characters in each generated ChatGPT and Gemini knowledge bundle. No live curation/publishing test. | Complete |
 
 ## How we update this file

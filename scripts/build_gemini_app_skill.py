@@ -199,7 +199,11 @@ On setup, setup status, or setup change inspect actual connected music tools and
 
 ## Resource routing
 
-Follow the [reference index](references/reference-index.md) before choosing a thesis. It specifies the required taxonomy, category discovery and verification sections, regional supplements and optional depth. Keep all four axes and the complete research map available. PWA angles, lenses and sparks remain hypotheses, not quotas or verified claims.
+**Direct GO routing (no index hop):** New GO reads [workflow](references/workflow.md), [taxonomy](references/sonic-taxonomy.md), and [verification](references/verification.md). If regions are selected, read [atlas](references/regional-atlas.md) safeguards and only `references/regions/<id>.md` for each selected region. Map PWA labels to IDs by lowercase hyphenation except: US Midwest & Great Lakes=`us-midwest`, US South & Gulf=`us-south`, Atlantic & Western Europe=`atlantic-europe`, Middle East & Caucasus=`middle-east`, Central & Southern Africa=`central-southern-africa`. Use the atlas for ambiguous labels.
+
+**Regional additions:** `oceania` → `references/regions/oceania-additions.md`; `central-america` → `references/regions/central-america-additions.md`; `central-southern-africa` → BOTH `references/regions/central-africa-additions.md` and `references/regions/southern-africa-additions.md`. For any of these also read `references/regional-review.md`. Antarctica is opt-in only: `references/regions/antarctica.md`.
+
+**Global scenes:** Open-ended/worldwide or broad cross-scene GO reads `references/global-scenes.md`; region-locked GO skips it unless research is weak or a cross-scene bridge needs it, never loosening regional constraints. **Modes:** hard → `references/go-hard.md`; funky → `references/funky.md`; Desire/Triumphant → `references/desire-triumphant.md`; Skip rough → `references/recording-quality.md`; cover art → `references/cover-art.md`. The `c1:` curve and discovery-route triggers have direct links above. De-cheese is read-only audit; Publish finalizes the current crate. Batch relevant files when supported; never preload every region. The [index](references/reference-index.md) is a fallback for ambiguity.
 
 """
     preface = preface.replace("For `Discovery route:", "For a new or retained `c1:` curve, read [tempo curve](references/tempo-curve.md) before choosing tracks.\n\nFor `Discovery route:", 1)
@@ -219,6 +223,17 @@ def modular_files(canonical: str, online: bool = False) -> dict[str, str]:
     full = render(canonical)
     split = full.index("## Intent and activation")
     entry, workflow = full[:split], full[split:]
+    # Keep the initial Gemini skill below the host's 6.5 KB limit. Move
+    # non-dispatch creative/setup detail into the always-read workflow.
+    creative_start = entry.index("## Creative cue and count safeguards")
+    setup_start = entry.index("## Gemini setup")
+    resource_start = entry.index("## Resource routing")
+    extra = entry[creative_start:resource_start]
+    entry = entry[:creative_start] + (
+        "## Gemini setup\n\nOn setup read the workflow; inspect real connected music tools, "
+        "ask only necessary preferences, never publish, roll DeBarge or assume a saved service.\n\n"
+    ) + entry[resource_start:]
+    workflow = extra + workflow
     entry += "## Detailed workflow\n\nRead [workflow.md](references/workflow.md) before curation. Only load relevant references; no installation preload or region crawling. Disclose missing files.\n"
     curve = section_map(canonical)["Tempo and mood curve"].strip() + "\n"
     files = {"SKILL.md": entry, "references/workflow.md": workflow, "references/tempo-curve.md": curve}
