@@ -43,7 +43,7 @@
 | PR 2 | Deduplicate shared regional research instructions | Low–medium | [x] Complete — PR #246 |
 | PR 3 | Conditional reference loading + compact Gemini routing | Medium | [x] Complete — PR #248 |
 | PR 4 | Consolidate canonical instructions + lean public packaging | Medium | [x] Complete — PR #251, merged `3f169c4` |
-| PR 5 | Regression review, reproducible bundles, release 3.11.6 | Release gate | [ ] Qualification in progress; publication held |
+| PR 5 | Regression review, reproducible bundles, release 3.11.6 | Release gate | [ ] Draft PR #252; offline gate green, live review pending |
 
 A checked PR means **merged with evidence**, not merely opened or green in one CI job.
 
@@ -130,7 +130,7 @@ This audit does not establish measured host latency, live music quality, or publ
 **PR 5 first gate (in progress):** [qualification protocol and live-host scorecard](skill-release-qualification-3.11.6.md), plus `scripts/qualify_skill_release.py` and its regression tests. Offline builds now report measured candidate ZIP sizes, SHA-256 hashes, version parity and release isolation, alongside published 3.11.5 **asset-metadata** comparisons. CI runs this measurement without any release/upload action. Live host/playlist quality checks remain **not tested**, and version stays **3.11.5** until later qualification.
 
 
-- [ ] Confirm final PR 5 Python 3.10/3.12/3.13 CI including the full suite, schema/playlist checks, package sync, ZIP builds, reference validation and local qualification report. Git whitespace validation is a separate review gate.
+- [x] Initial PR 5 offline matrix passed on Python 3.10/3.12/3.13: 185 tests per job, package sync, playlist/schema validation, four reproducible ZIP builds, reference validation and local qualification report (runs 43213173780 and 43213089365). **Recheck on the final head** after any version or test changes; Git whitespace review and live host testing remain separate gates.
 - [ ] Run host-specific Gemini, ChatGPT, and Claude compatibility tests; distinguish offline package checks from live host validation.
 - [ ] Compare representative musical cases *before vs. after*: ordinary GO, regional GO, multi-region GO, GO HARD, two moods, c1 curve, refresh, de-cheese, explicit Antarctica, rough-recording exclusion, transliteration, and publisher failure.
 - [ ] Score qualitative cases for factual accuracy, regional fit, recording identity, originality, sequencing, voice, and constraint compliance. **Different track choices are allowed.**
@@ -140,6 +140,8 @@ This audit does not establish measured host latency, live music quality, or publ
 - [ ] Obtain release approval before any intentional public submission, distribution publication, tag, Android build, or PWA deployment.
 
 **Exit gate:** All required checks pass, no material musical-quality regression, reproducible release bundles, explicit approval for publication.
+
+**First observed ZIP measurements:** Published 3.11.5 release assets → PR 5 candidate: ChatGPT 242,009 → 206,222 bytes (−14.8%); Claude plugin 239,639 → 203,852 (−14.9%); Claude skill 236,252 → 200,262 (−15.2%); Gemini Apps 196,447 → 179,488 (−8.6%). Source and ZIP sizes are not token/host-latency measurements. See [qualification evidence](skill-release-qualification-3.11.6.md). Gemini reference production branch is unchanged.
 
 **PR 5 hold point:** No automatic version bump, GitHub Release, tag, distribution asset upload, `release/skill-prod` branch update, Android/PWA deployment, or streaming-service write. A green offline report does **not** satisfy the live host and musical-quality gates.
 
@@ -168,14 +170,14 @@ Fill these from reproducible tests. “Estimated tokens” is not a measurement 
 | --- | --- | --- | --- |
 | Canonical `SKILL.md` bytes | ~54.6 KB (GitHub file size, remeasure) | Pending | |
 | Gemini entry size | ~6.8 KB (online adapter, remeasure) | Pending | |
-| ChatGPT plugin ZIP size | Pending | Pending | |
-| Gemini skill ZIP size | Pending | Pending | |
-| Claude skill/plugin ZIP sizes | Pending | Pending | |
+| ChatGPT plugin ZIP size | 242,009 B published asset | 206,222 B built candidate | −14.8%; published asset metadata vs fresh CI build |
+| Gemini skill ZIP size | 196,447 B published asset | 179,488 B built candidate | −8.6%; not host retrieval |
+| Claude skill/plugin ZIP sizes | 236,252 / 239,639 B published | 200,262 / 203,852 B candidate | −15.2% / −14.9% |
 | Regional GO required files/bytes | Pending | Pending | |
 | Open-ended GO required files/bytes | Pending | Pending | |
 | GO HARD required files/bytes | Pending | Pending | |
 | Reference-retrieval calls (where observable) | Pending | Pending | |
-| Automated pass/fail count | Pending | Pending | |
+| Automated pass/fail count | Historical release not rerun | 185 Python tests per job, 3/3 CI green | PR #252 initial gate; live N/T |
 | Musical-quality review | Pending | Pending | |
 
 ## Progress log
@@ -184,6 +186,7 @@ Fill these from reproducible tests. “Estimated tokens” is not a measurement 
 | --- | --- | --- | --- |
 | 2026-11-12 | PR 4 merged | [PR #251](https://github.com/focustimer-dev/go-hipster-go/pull/251) passed all three Python CI jobs at latest head and merged as `3f169c4ea6e9a2a88d0db505e0cc84c157d2f99f`; no release/deployment. | Complete |
 | 2026-11-12 | PR 5 initiated | Branched after PR 4; added offline ZIP/source measurement script, regression tests and controlled live-host qualification matrix. Version remains 3.11.5; live results N/T. | In progress |
+| 2026-11-12 | PR 5 offline first gate | [Draft PR #252](https://github.com/focustimer-dev/go-hipster-go/pull/252) passed Python 3.10/3.12/3.13 and local qualification report. Four candidate ZIPs measured vs preserved 3.11.5 asset metadata; real host tests remain N/T. | Offline passed; live pending |
 | 2026-11-11 | Plan | Created the tracked implementation plan from combined ChatGPT/Gemini audits; no implementation or release performed. | Planning |
 | 2026-11-11 | Preflight | Confirmed `gemini-skill-v3.11.5` release and identified an automatic release-upload workflow on pushes to `main`; Stage 0 added. | Planning |
 | 2026-11-11 | Stage 0 | [PR #243](https://github.com/focustimer-dev/go-hipster-go/pull/243) passed validation and merged (`a99705fe`); published 3.11.5 assets unchanged. | Complete |
