@@ -215,7 +215,7 @@ def modular_files(canonical: str, online: bool = False) -> dict[str, str]:
     curve = section_map(canonical)["Tempo and mood curve"].strip() + "\n"
     files = {"SKILL.md": entry, "references/workflow.md": workflow, "references/tempo-curve.md": curve}
     if online:
-        base = "https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/"
+        base = "https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/release/skill-prod/"
         import re
         def link(match):
             path = match.group(1)
