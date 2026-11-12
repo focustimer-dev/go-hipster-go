@@ -1,6 +1,6 @@
 # PR 4 — Skill Runtime Package Inventory
 
-**State:** Preflight inventory and deterministic archive-builder foundation; NOT a completed PR 4 exit gate.  
+**State:** Preflight plus safe removal of the repository-only test corpus; NOT a completed PR 4 exit gate.  
 **Version:** 3.11.5 unchanged.
 
 ## Ownership and host boundaries
@@ -21,14 +21,14 @@
 
 ## Retained links, not disposable debris
 
-- `skills/go-hipster-go/tests/discovery-cases.md` is **still linked** from the runtime `SKILL.md` as evaluation guidance, and existing packaging tests require it. Do not remove it just because its directory is named `tests`.
+- `tests/discovery-cases.md` stays in the source repository for complete regression and historical cases. Runtime `SKILL.md` now links to the short mirrored `references/evaluation-smoke.md`; the 54 KB corpus no longer appears in ChatGPT/Claude skill packages.
 - `scripts/playlist_cli.py` and `schemas/playlist.schema.json` are referenced by the canonical runtime for portable validation and a genuine random roll where a Python host exists.
-- A future lean-package change must first relocate optional evaluation guidance or deliberately replace the runtime link, then change generators, mirrors, ZIP tests and generated knowledge together.
+- This link migration was applied to the canonical skill, mirror, ChatGPT knowledge, package generators and tests together. Full reference access remains available in the repository; user runtime packages include the short in-skill guide.
 
 ## Implemented first increment
 
 - Portable ChatGPT and Claude archives use sorted source traversal, explicit fixed ZIP timestamps/permissions and deterministic compression. Local `__pycache__` and `.pyc` artifacts are never included.
-- No legitimate runtime file was removed; there is no claimed material ZIP-size reduction yet.
+- Replaced the mirrored 54 KB development test corpus with a short runtime reference. This reduces package source weight without deleting the actual development corpus. Actual generated ZIP byte savings still require final measured comparison.
 - ZIP membership/metadata tests check safety and repeatability; Gemini-specific generated ZIP behavior is left unchanged for separate examination.
 
 ## Remaining PR 4 work
@@ -36,7 +36,7 @@
 - [ ] Consolidate DeBarge and discovery-policy repetitions at the canonical source and safely regenerate the mirrors.
 - [ ] Shorten conditional GO HARD/Antarctica summaries and clarify the setup authority, without changing behavior.
 - [ ] Make the ChatGPT canonical entry a concise dispatcher where safe.
-- [ ] Remove development-only packaged material **after** all relative runtime links are safely redirected.
+- [x] Remove the mirrored development acceptance corpus after redirecting its runtime link to a compact reference; verify the rest of the ZIP resources for any other non-runtime material.
 - [ ] Update generated distributions and package checks together; pass complete CI and behavior regressions.
 
 No release, deployment, reference-branch promotion or music-service write is authorized by this inventory.
