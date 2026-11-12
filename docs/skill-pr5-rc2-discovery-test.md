@@ -10,7 +10,7 @@ Open a **fresh chat**, explicitly select **Go, Hipster, Go! Lab**, and first ask
 
 `What exact Go, Hipster, Go! skill name and version is loaded? Do not create a playlist.`
 
-Expected: `go-hipster-go-lab`, `3.11.6-rc.2`. If the response claims a different version, **stop and check selection**. This identification is a useful test, but does not reveal whether every reference file was opened.
+Expected: `go-hipster-go-lab`, `3.11.6-rc.2`. **Important observed cache behavior:** The plugin's stored release and manifests were verified as rc.2, but the skill-reading tool in the *conversation in which the upgrade occurred* still returned **rc.1**. This means updating a plugin does not prove the existing conversation has switched its installed skill snapshot. **Start a truly new chat and reselect the Lab plugin**; if its skill still reports rc.1, **do not run the musical comparison** until the host exposes rc.2. The reply is only a practical identity check, not a verifiable log of which reference files the model opened.
 
 Then paste **without adding new taste guardrails**:
 
