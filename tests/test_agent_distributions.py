@@ -37,6 +37,15 @@ class PortableAgentTests(unittest.TestCase):
             self.assertIn("go-hipster-go/scripts/playlist_cli.py", names)
             self.assertIn("go-hipster-go/adapters/README.md", names)
             self.assertIn("go-hipster-go/tests/discovery-cases.md", names)
+        with ZipFile(ROOT / "dist/go-hipster-go-claude-skill.zip") as z:
+            self.assertEqual(len(z.namelist()), len(set(z.namelist())))
+            self.assertTrue(all(i.date_time == (1980, 1, 1, 0, 0, 0) for i in z.infolist()))
+            self.assertFalse(any("__pycache__" in n or n.endswith(".pyc") for n in z.namelist()))
+        for archive in ("go-hipster-go-claude-plugin.zip", "go-hipster-go-chatgpt-plugin.zip"):
+            with ZipFile(ROOT / "dist" / archive) as z:
+                self.assertEqual(len(z.namelist()), len(set(z.namelist())))
+                self.assertTrue(all(i.date_time == (1980, 1, 1, 0, 0, 0) for i in z.infolist()))
+                self.assertFalse(any("__pycache__" in n or n.endswith(".pyc") for n in z.namelist()))
         with ZipFile(ROOT / "dist/go-hipster-go-claude-plugin.zip") as z:
             self.assertIn(".claude-plugin/plugin.json", z.namelist())
             self.assertIn("skills/setup/SKILL.md", z.namelist())
