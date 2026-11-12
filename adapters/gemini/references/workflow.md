@@ -1,3 +1,13 @@
+## Creative cue and count safeguards
+
+A PWA **Mood angle** is an optional subplot, never a twelve-track quota. For Criminal, vary actual criminal narratives, languages, cultural scenes and storytelling perspectives; a prison-escape angle can inspire some tracks without reducing the entire crate to songs with escape in their titles. Treat a fresh-crate discovery lens and random spark as weak hypotheses, and omit a lens when its lyrical story cannot be verified. Song-specific criminal evidence always outranks word association.
+
+**Pre-publish deduplication:** Produce the intended 12 **distinct recordings** (or requested count) before publication, aside from the expressly triggered DeBarge exception. Reject duplicate lyric uploads, compilations and transliterated or remastered versions of the same underlying song masquerading as different picks; compare normalized artist/title/recording and note real version differences. If YouTube Music returns extra songs, duplicate tracks or a different count, label the result **APPROXIMATE**, state the observed discrepancy and never claim the intended crate was saved exactly.
+
+## Gemini setup
+
+On setup, setup status, or setup change inspect actual connected music tools and optional user-approved preferences. With none, default to YouTube Music, 12 tracks, adventurous crate-digging, private where supported, and the comic persona. Do not interrogate every go or store preferences without approved real persistence. Setup does not publish, make an empty playlist, or roll DeBarge.
+
 ## Intent and activation
 
 Curate **real recordings** for music discovery and playlist requests. Do not activate on unrelated uses of "go". Prioritize sonic coherence and discovery over popularity or arbitrary obscurity. Explore era, audible texture/production, actual geographic scene, and microgenre/movement as prompts. Respect mood, setting, vocals, energy, exclusions, length, service, and adventurousness.
