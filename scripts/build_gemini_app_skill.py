@@ -215,8 +215,42 @@ def modular_files(canonical: str, online: bool = False) -> dict[str, str]:
     curve = section_map(canonical)["Tempo and mood curve"].strip() + "\n"
     files = {"SKILL.md": entry, "references/workflow.md": workflow, "references/tempo-curve.md": curve}
     if online:
-        base = "https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/"
-        import re
+        # Online adapter references are immutable per-release, unlike /main/.
+        version_match = re.search(r'(?m)^  version: "([^"]+)"
+            path = match.group(1)
+            target = "adapters/gemini/" + path if path in files else path
+            return "](" + base + target + ")"
+        for path, content in list(files.items()):
+            files[path] = re.sub(r"\]\((references/[^)]+)\)", link, content)
+    return files
+
+
+def build(root: Path, output: Path) -> None:
+    files = modular_files((root / "SKILL.md").read_text(encoding="utf-8"))
+    output.parent.mkdir(parents=True, exist_ok=True)
+    with ZipFile(output, "w", ZIP_DEFLATED) as bundle:
+        for path, text in files.items():
+            bundle.writestr(path, text)
+        for relative in REFERENCES:
+            bundle.writestr(relative, render_reference(relative, (root / relative).read_text(encoding="utf-8")))
+    print("Created", output)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path,
+                        default=ROOT / "dist/go-hipster-go-gemini-app-skill.zip")
+    args = parser.parse_args()
+    build(ROOT, args.output)
+
+
+if __name__ == "__main__":
+    main()
+, canonical)
+        if not version_match:
+            raise ValueError("Missing canonical skill version for online reference pinning")
+        version = version_match.group(1)
+        base = f"https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/gemini-skill-v{version}/"
         def link(match):
             path = match.group(1)
             target = "adapters/gemini/" + path if path in files else path
