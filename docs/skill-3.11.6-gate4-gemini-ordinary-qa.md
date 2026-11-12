@@ -37,7 +37,7 @@ Dates distinguish original recorded material, original issue, and modern reissue
 | --- | --- | --- |
 | Count, unique credited leads | 12/12, 12/12 | 12/12, 12/12 |
 | Visible no-publish status | Correct | Correct |
-| Original musical era | 12/12 concentrated ~1979–83 | 1973, 1980s, a 1994 taped performance, and a 2022 release; 2025 posthumous/archival issue separated |
+| Original musical era | 12/12 concentrated ~1979–83 | 1973, 1980s, a 1994 taped performance, and a 2022 release; 2025 archival issue separated |
 | Primary discovery route | Related NYC/UK post-punk, no-wave, dub; at least four 99 Records choices | Niger, French coldwave, German/Japanese studio experiments, Brazil, Belgian chamber-rock, Switzerland, Japan, Somali diaspora, Turkey, Sudan, Cameroon |
 | Exact song overlap | 1 shared with Gemini: Goldman — Launderette | 1 shared with ChatGPT |
 | Specific textual strengths | Punchy short liners; Goldman's laundry segue, dub arc | Distinct instrument/production mechanisms: organ and electronics, cut-up tango, Beja instrument, cassette diaspora |
