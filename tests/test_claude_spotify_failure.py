@@ -30,6 +30,16 @@ class ClaudeSpotifyFailureTests(unittest.TestCase):
         self.assertIn("do not invent saved urls",manual.lower())
         self.assertIn("claude.com/connectors/spotify",spotify)
 
+    def test_claude_recovery_is_on_demand_and_mirrored(self):
+        core=(ROOT/"SKILL.md").read_text(encoding="utf-8")
+        ref=(ROOT/"references/claude-spotify-recovery.md").read_text(encoding="utf-8")
+        self.assertIn("(references/claude-spotify-recovery.md)", core)
+        self.assertEqual(ref, (ROOT/"skills/go-hipster-go/references/claude-spotify-recovery.md").read_text(encoding="utf-8"))
+        for term in ("Reconcile all earlier", "which Spotify account Claude is using",
+                     "do **not** reroll", "25 identical entries", "rejected", "Premium-required"):
+            # The reference retains original incident-handling details, not a reduced paraphrase.
+            self.assertIn(term.lower() if term != "rejected" else "reject duplicates", ref.lower())
+
     def test_protected_debarge_result_and_mirror(self):
         skill=(ROOT/"SKILL.md").read_text(encoding="utf-8")
         self.assertIn("roll uniformly from 1 to 100; on **1**",skill)
