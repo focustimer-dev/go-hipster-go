@@ -1,6 +1,6 @@
 # Gate 4 — ChatGPT + Gemini candidate acceptance
 
-**Stage:** Active. ChatGPT ordinary discovery breadth 0/2; listener-provided Gemini ordinary output 2/2 observed breadth with factual caveats. Candidate remains **on hold** pending Gemini installed-version proof, one controlled ChatGPT repeat, and further regional tests. **Scope decision:** The listener explicitly limited hands-on testing to **ChatGPT and Gemini** on 2026-11-12. Claude is **out of scope (N/A by request)**, not failed or verified. The eventual public release must not claim completed Claude live-host tests.
+**Stage:** Active. ChatGPT ordinary discovery breadth 0/2; Gemini ordinary output 2/2 observed breadth with factual caveats. **Gemini SKILL.md version and source commit are now user-confirmed and match the QA artifact.** Candidate still on hold pending a controlled ChatGPT repeat, reference-read evidence where observable, and further regional tests. **Scope decision:** The listener explicitly limited hands-on testing to **ChatGPT and Gemini** on 2026-11-12. Claude is **out of scope (N/A by request)**, not failed or verified. The eventual public release must not claim completed Claude live-host tests.
 
 **Frozen core-source snapshot:** `6b4dc11fd35eb6ccc0fa7016c58b1acab3e4f27a` — Gate 0–3 engineering closeout on `main`. Candidate artifacts from the Gate 4 PR were built by the **pull_request test-merge commit** `3f383f4ea1d91ba288b6d04de248e4904e76a809` recorded in their companion provenance file, which has the frozen baseline and PR head (`342dffe7fca4a5d38a17d1ac6e5ae97ba706897c`) as parents. The source skill and music references are unchanged by this test-preparation PR. Do not confuse an artifact produced by a PR with a published release.
 
@@ -80,8 +80,8 @@ Score **0 fail / 1 provisional / 2 verified pass / N/T not tested / N/A out of r
 
 | Item | ChatGPT | Gemini | Notes / evidence |
 | --- | --- | --- | --- |
-| Candidate loaded and source-correlated | **1 provisional** | **N/T** | [ChatGPT private QA plugin](https://chatgpt.com/plugins/plugins_6af644226744819181185374e8cd1341) rc.4 verified and user confirmed setup; generating-session trace N/T. Gemini user supplied output of QA-named prompt, but actual installed SKILL.md metadata/source trace not shown |
-| Ordinary 12-track text-only GO | **0/2 discovery; 2/2 count and leads** | **2/2 observed breadth and song identities; factual details 1/2; version trace N/T** | [ChatGPT audit](skill-3.11.6-gate4-chatgpt-ordinary-qa.md): 12 originals ~1979–83. [Gemini audit](skill-3.11.6-gate4-gemini-ordinary-qa.md): 12 real song pairs across multiple global scenes and decades, one song overlap. Candidate still on release hold |
+| Candidate loaded and source-correlated | **1 provisional** | **1 provisional** | [ChatGPT private QA plugin](https://chatgpt.com/plugins/plugins_6af644226744819181185374e8cd1341) rc.4 independently packaged and user-confirmed. Gemini subsequently reported loaded SKILL.md as `go-hipster-go-gate4` / `3.11.6-rc.4` / `3f383f4ea1d91ba288b6d04de248e4904e76a809`, matching tested QA artifact; per-generation reference read traces remain N/T |
+| Ordinary 12-track text-only GO | **0/2 discovery; 2/2 count and leads** | **2/2 observed breadth and song identities; factual details 1/2; matching SKILL.md identity user-confirmed** | [ChatGPT audit](skill-3.11.6-gate4-chatgpt-ordinary-qa.md): 12 originals ~1979–83. [Gemini audit](skill-3.11.6-gate4-gemini-ordinary-qa.md): 12 real song pairs across multiple global scenes and decades, one song overlap. Candidate still on release hold |
 | Regional GO HARD 12-track text-only | N/T | N/T | Record provenance and source/edition checks |
 | Non-Latin credit + mobile layout | N/T | N/T | Actual mobile output; not inferred from static rules |
 | No playlist write on text-only | N/T | N/T | Prefer actual tool/activity trace, not assistant claim alone |
@@ -102,7 +102,8 @@ Score **0 fail / 1 provisional / 2 verified pass / N/T not tested / N/A out of r
 - [ ] Confirm the new candidate is actually invoked/readable in a fresh ChatGPT chat and install/verify the Gemini QA Skill.
 - [x] Record first ChatGPT ordinary GO outcome: [observed 12-track list and independent catalog audit](skill-3.11.6-gate4-chatgpt-ordinary-qa.md). **Freshness 0/2**, 12 distinct credited leads, no actual publication; Gate 4 on hold for Gemini comparison.
 - [x] Collect and independently [audit Gemini ordinary GO](skill-3.11.6-gate4-gemini-ordinary-qa.md): 12 distinct traceable song pairs, 12 artists, wide observed geography/era spread; some specific studio/equipment assertions not fully grounded.
-- [ ] Verify Gemini QA source/version from SKILL.md and run exactly one fresh independent ChatGPT GO repeat to distinguish sampling from a persistent host-specific weakness.
+- [x] Record listener-supplied Gemini QA `SKILL.md` identity: `go-hipster-go-gate4`, version `3.11.6-rc.4`, source commit `3f383f4ea1d91ba288b6d04de248e4904e76a809`. This matches QA artifact provenance; direct reference-read/tool trace N/T.
+- [ ] Run exactly one fresh independent ChatGPT GO repeat to distinguish sampling from a persistent host-specific weakness.
 - [ ] Collect regional HARD samples and optional non-Latin/mobile screenshots.
 - [ ] Review factual recording/edition/source evidence and actual mobile display; score evidence honestly.
 - [ ] Complete a read-only live writer capability check or keep N/T. No create/save test without separate approval.
@@ -125,8 +126,8 @@ The listener supplied the complete **The Meter Is Running** crate from a previou
 
 The listener supplied the complete Gemini response *Clockwork & Stray Voltage*. Both hosts delivered exactly 12 real artist/title recordings, 12 distinct leads, and a correct text-only/no-publish header. **The only exact song common to both** was Vivien Goldman — Launderette.
 
-Gemini selected independently rooted music from Niger, France, Japan, Brazil, Belgium, Switzerland, Somali diaspora recordings from Saudi Arabia, Turkey, Sudan and Cameroon. Compared with ChatGPT's 1979–83 post-punk corridor, the observed breadth is materially greater. **This is an observed output difference, not a proven causal difference between installed skill versions.** Gemini's original skill version/read trace remain unavailable.
+Gemini selected independently rooted music from Niger, France, Japan, Brazil, Belgium, Switzerland, Somali diaspora recordings from Saudi Arabia, Turkey, Sudan and Cameroon. Compared with ChatGPT's 1979–83 post-punk corridor, the observed breadth is materially greater. **This is an observed output difference, not a proven causal difference between installed skill versions.** Gemini's version and source SHA were subsequently supplied by the listener and match the QA artifact; the per-generation reference-read trace remains unavailable.
 
 Gemini's recording-specific prose is mostly plausible but the Mamman Sani Orla/BOSS session association and Fellini home-recorder claim require qualification; Aksak Maboul's scissors technique refers to the Tango section of the listed suite. Detailed source checks and a scorecard are in the [Gemini audit](skill-3.11.6-gate4-gemini-ordinary-qa.md).
 
-Do not implement a universal shared skill freshness patch on this contrast. Obtain actual Gemini QA metadata, run a single fresh ChatGPT ordinary-GO comparison, then inspect host-specific reference routing only if the narrow ChatGPT result repeats. The main version remains 3.11.5; no music provider write was made or authorized.
+Do not implement a universal shared skill freshness patch on this contrast. Gemini QA metadata now matches the source-pinned artifact by listener report. Run a single fresh ChatGPT ordinary-GO comparison, then inspect host-specific reference routing only if the narrow ChatGPT result repeats. The main version remains 3.11.5; no music provider write was made or authorized.

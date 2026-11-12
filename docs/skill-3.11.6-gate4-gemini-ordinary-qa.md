@@ -4,11 +4,11 @@
 
 **Title:** Clockwork & Stray Voltage — Global Mechanical Oddities & Studio Ghosts (Mid-Tempo).
 
-**Host evidence:** User identifies the transcript as Gemini. The prompt invokes the QA skill, but the generating conversation's actual loaded-skill version / SKILL.md commit stamp, reference-read trace and mobile screenshot were NOT supplied in this transcript. Score **QA-version attribution as provisional/N/T**, not verified simply because the prompt named the skill. Private Gemini rc.4 ZIP was created in the same CI build as the ChatGPT candidate; actual Gemini installation/readback still needs independent confirmation.
+**Host evidence (updated after the initial transcript):** The listener subsequently supplied the exact version and source commit that Gemini reported from its **loaded `go-hipster-go-gate4` SKILL.md**: `3.11.6-rc.4` (Private Gate 4 TEST build), source commit `3f383f4ea1d91ba288b6d04de248e4904e76a809`. Both match the independently generated QA artifact/provenance. Score **loaded-skill identity 1/2 provisional (listener-reported host readback, matching pinned package)**, rather than N/T. No independent tool trace proves the specific reference files Gemini used during playlist generation. Original mobile rendering and provider activity remain N/T.
 
 **Headline:** 12 songs, 12 distinct lead acts, correct CURATED — NOT PUBLISHED header and no claimed streaming save. Compared with the listener's [ChatGPT rc.4 ordinary-GO result](skill-3.11.6-gate4-chatgpt-ordinary-qa.md), only **one identical artist/title** appears (Vivien Goldman — Launderette). Gemini takes materially more independent sonic/geographic routes and includes releases/recordings spanning at least **1973–2022** (a recovered 1994 recording first released in 2025). It is **not** merely a more artfully worded recreation of the early post-punk/no-wave corridor.
 
-**Provisional verdict:** **Discovery breadth 2/2 on output; factual editorial fidelity 1/2 provisional; version-qualified live host pass pending.** This contrast means a blanket shared-skill freshness rewrite would be premature. It does not prove the Gemini reference was read or the same discovery mechanisms would reproduce consistently. Candidate Gate 4 and public 3.11.6 remain on hold because of the ChatGPT result and untested host capabilities.
+**Provisional verdict:** **Discovery breadth 2/2 on output; factual editorial fidelity 1/2 provisional; candidate identity user-confirmed and pinned to CI SHA, runtime reference trace N/T.** This contrast means a blanket shared-skill freshness rewrite would be premature. It does not prove the Gemini reference was read or the same discovery mechanisms would reproduce consistently. Candidate Gate 4 and public 3.11.6 remain on hold because of the ChatGPT result and untested host capabilities.
 
 ## Independent identity and liner-note check
 
@@ -33,7 +33,7 @@ Dates distinguish original recorded material, original issue, and modern reissue
 
 ## Comparison with Gate 4A ChatGPT
 
-| Dimension | ChatGPT QA rc.4 | Gemini, version load not yet independently read |
+| Dimension | ChatGPT QA rc.4 | Gemini QA rc.4 (listener-reported loaded SKILL.md identity) |
 | --- | --- | --- |
 | Count, unique credited leads | 12/12, 12/12 | 12/12, 12/12 |
 | Visible no-publish status | Correct | Correct |
@@ -61,15 +61,17 @@ Dates distinguish original recorded material, original issue, and modern reissue
 | Non-Latin credit handling | **2 for Mariah entry** | Correct original Japanese script, Latin rendering and supported translation |
 | Text-only status | **2 on reply** | Correct not-published header; actual provider tool activity N/T |
 | Numbered mobile output / directly inspectable citations | **1 provisional** | No visible numerals in pasted 12-entry list; sources by name only, original Gemini Android display N/T |
-| Candidate source loading proof | **N/T** | Prompt names skill, but cannot establish Gemini read specific installed rc.4 ZIP/reference |
+| Candidate source loading proof | **1 provisional** | Listener reported loaded `SKILL.md` version 3.11.6-rc.4 and exact source SHA 3f383f4…, matching packaged QA provenance; generating-chat reference access not independently traced |
 | Actual provider create/save/readback | **N/T** | No write test authorized |
 | Claude | **N/A** | Excluded at listener request |
 
 ## Controlled next steps
 
-1. **Gemini load proof:** in the generating conversation, ask it to read the installed SKILL.md and report the exact *name/version/source commit* and whether the six status outcomes can be accessed. Expect go-hipster-go-gate4 / 3.11.6-rc.4 / 3f383f4ea1d91ba288b6d04de248e4904e76a809, matching the QA artifact; unsupported claims should be marked provisional. The field check is not a new playlist.
+1. **Gemini load proof received:** listener subsequently reported the generating conversation's exact loaded `SKILL.md` version **3.11.6-rc.4** and source SHA **3f383f4ea1d91ba288b6d04de248e4904e76a809**. Both match the QA ZIP provenance. This is **user-reported matching identity**, not an independent trace of six verification reference outcomes or individual reference file reads; those remain N/T.
 2. **ChatGPT discrimination test:** run the same strict 12, text-only, no-publish ordinary weird/mid brief **once more in an independent fresh QA conversation** and collect the complete 12 tracks and self-reported reference availability. One ChatGPT regression plus one divergent Gemini output does not justify rewriting shared canonical rules; look for reproducibility and actual ChatGPT taxonomy/reference loading.
 3. If ChatGPT again collapses, inspect its exact packaged routing and runtime reference loading; its **QA ZIP does contain sonic-taxonomy.md with the three-family freshness instruction and a reference index routing to it**. Lack of observed compliance is an output-level failure, not evidence that the file is missing. Propose only one narrow host-specific fix if a reproducible mechanism is found.
 4. Continue regional GO HARD/mid/non-Latin live tests after source load proof and narrow ordinary-GO decision. Do not create or save streaming playlists without separate explicit authorization.
 
-**Gate 4 remains open.** Public 3.11.6 release, schema changes, Android/PWA deploys, and service writes remain unapproved.
+**Gate 4 remains open.** The next controlled experiment is the single fresh ChatGPT QA ordinary-GO repeat, not another Gemini playlist. Public 3.11.6 release, schema changes, Android/PWA deploys, and service writes remain unapproved.
+
+**Gemini SKILL.md readback record (same date, later listener message):** `go-hipster-go-gate4` / `3.11.6-rc.4` / `3f383f4ea1d91ba288b6d04de248e4904e76a809`. No new playlist was generated for this version check. Do not infer provider activity, source-file read sequence or mobile layout from this metadata alone.
