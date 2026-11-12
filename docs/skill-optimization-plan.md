@@ -113,7 +113,7 @@ This audit does not establish measured host latency, live music quality, or publ
 - [ ] Shorten GO HARD and Antarctica dispatch summaries while keeping their full conditional references and critical exclusions.
 - [ ] Make setup's authoritative contract unambiguous between `SKILL.md` and `skills/setup/SKILL.md`; keep commands first-class.
 - [ ] Make the main ChatGPT entry a concise dispatcher where practical; move detailed examples to on-demand references, not to inaccessible files.
-- [ ] Remove *development-only* files from the ChatGPT publication ZIP after checking no runtime imports, relative references, or package consumers require them.
+- [x] Remove the mirrored 54 KB development acceptance corpus from ChatGPT/Claude runtime ZIPs after redirecting the canonical runtime link to `references/evaluation-smoke.md`; preserve the full test corpus in repository `tests/`.
 - [ ] Update `scripts/build_agent_packages.py` and other generators and package tests together. Preserve the Claude and Gemini deliverables.
 - [ ] Replace brittle exact-phrase tests with semantic/structural assertions where feasible; do not remove guardrails just to make tests green.
 
