@@ -130,7 +130,7 @@ This audit does not establish measured host latency, live music quality, or publ
 **PR 5 first gate (in progress):** [qualification protocol and live-host scorecard](skill-release-qualification-3.11.6.md), plus `scripts/qualify_skill_release.py` and its regression tests. Offline builds now report measured candidate ZIP sizes, SHA-256 hashes, version parity and release isolation, alongside published 3.11.5 **asset-metadata** comparisons. CI runs this measurement without any release/upload action. Live host/playlist quality checks remain **not tested**, and version stays **3.11.5** until later qualification.
 
 
-- [x] Initial PR 5 offline matrix passed on Python 3.10/3.12/3.13: 188 tests per job, package sync, playlist/schema validation, four reproducible ZIP builds, reference validation and local qualification report (latest runs 43213737198 and 43213730200). **Recheck on the final head** after any version or test changes; Git whitespace review and live host testing remain separate gates.
+- [x] PR 5 offline matrix passed on Python 3.10/3.12/3.13: **193 tests per job** including five discovery-source contract checks, package sync, playlist/schema validation, four reproducible ZIP builds, reference validation and local qualification report ([PR run 43251042327](https://github.com/focustimer-dev/go-hipster-go/actions/runs/43251042327) and push run 43251029347 at source commit `5dc040ea`). **Recheck on the final head** after further changes; live host and listening tests remain separate gates.
 - [ ] Run host-specific Gemini, ChatGPT, and Claude compatibility tests; distinguish offline package checks from live host validation.
 - [ ] Compare representative musical cases *before vs. after*: ordinary GO, regional GO, multi-region GO, GO HARD, two moods, c1 curve, refresh, de-cheese, explicit Antarctica, rough-recording exclusion, transliteration, and publisher failure.
 - [ ] Score qualitative cases for factual accuracy, regional fit, recording identity, originality, sequencing, voice, and constraint compliance. **Different track choices are allowed.**
@@ -150,7 +150,7 @@ This audit does not establish measured host latency, live music quality, or publ
 | Scenario | Minimum acceptance check | Evidence |
 | --- | --- | --- |
 | Ordinary GO | Real coherent playlist; requested count; unique credited leads | Pending |
-| GO HARD | Deeper discovery, same constraints, no filler | Pending |
+| GO HARD | Deeper discovery, same constraints, no filler | [Source-path exploration implemented and 5 static checks passed](skill-pr5-discovery-engine-plan.md); [private rc.2 live prompt](skill-pr5-rc2-discovery-test.md) ready. Genuine source reads, music quality and repeat reduction **not yet tested**. |
 | Single-region GO | Correct regional provenance and verified recording-level fit | [3.11.5 vs. 3.11.6-rc.1 Lab A/B](skill-pr5-central-america-funk-ab-comparison.md) **conditional / release held**: 12 real candidates each, 6 overlapping tracks; 9/12 from three compilations vs 10/12 from two; original credit error and skip-rough concern, audio unverified. [Second Lab-only Southern/Gulf diagnostic](skill-pr5-south-gulf-funk-lab-diagnostic.md) found 4/12 from one Soul Jazz compilation, 8/12 elsewhere, plus a *Black Rock* bonus-track edition error; no same-region baseline. |
 | Multi-region GO | Plausible musical bridges; no region leakage | Pending |
 | Two moods / c1 | Blended mood or correct ordered per-slot tempo and mood targets | Pending |
@@ -177,13 +177,14 @@ Fill these from reproducible tests. “Estimated tokens” is not a measurement 
 | Open-ended GO required files/bytes | Pending | Pending | |
 | GO HARD required files/bytes | Pending | Pending | |
 | Reference-retrieval calls (where observable) | Pending | Pending | |
-| Automated pass/fail count | Historical release not rerun | 188 Python tests per job, 3/3 CI green | PR #252 initial gate; live N/T |
+| Automated pass/fail count | Historical release not rerun | **193 Python tests per job, 3/3 CI green** at `5dc040ea` | PR #252 discovery gate; rc.2 live N/T |
 | Musical-quality review | Pending | Pending | |
 
 ## Progress log
 
 | Date | Stage | Change / evidence | Status |
 | --- | --- | --- | --- |
+| 2026-11-12 | PR 5 discovery rc.2 test-ready | Three reference files strengthened without app/Jukebox fields; mirrors and knowledge bundles synchronized; [5 regression tests](../tests/test_skill_discovery_exploration.py) added. CI **193/193 tests per Python job** (3.10/3.12/3.13) at `5dc040ea`. [PRIVATE Lab 3.11.6-rc.2](https://chatgpt.com/plugins/plugins_6af5b52ee0288191978cf11e3e9ba92f) updated and package files verified; [identical-prompt test protocol](skill-pr5-rc2-discovery-test.md) ready. | Static green; live audition pending, release held |
 | 2026-11-12 | PR 5 discovery-engine reframe | [Discovery engine plan](skill-pr5-discovery-engine-plan.md) treats reference files, original-release provenance, exposure scrutiny, multi-path exploration and cross-session repeat state as **skill responsibilities**, not fields the listener must enter. Real host retrieval still unmeasured; no speculative source-usage claims. | Design documented; behavior not yet changed |
 | 2026-11-12 | PR 5 Gemini publish fidelity | [Gemini candidate contract](skill-release-qualification-3.11.6.md): exact ordered catalog spelling/version lookups, no theme-query substitution, preview-versus-save distinction, full-position audit only after authorized save, no duplicate/text-only write. 188 offline tests per Python version passed; live Gemini save remains N/T. | Offline green; live pending |
 | 2026-11-12 | PR 5 Southern & Gulf Lab diagnostic | [Second 12-track sourced audit](skill-pr5-south-gulf-funk-lab-diagnostic.md): broader source paths than Central America Lab, 4/12 songs on one Soul Jazz compilation, one *Black Rock* expanded-bonus attribution issue. Tempo/clean transfers not heard; no same-region baseline. | Candidate-only conditional; release held |
