@@ -50,7 +50,7 @@ class ReferenceRoutingTests(unittest.TestCase):
         self.assertEqual(len(rows), 27)
         direct = self.bundle["SKILL.md"]
         self.assertIn("lowercase hyphenation except", direct)
-        for label, expected, _, filename in rows:
+        for expected, label, _, filename in rows:
             with self.subTest(label=label):
                 # Static dispatch specification: default normalization + exceptions.
                 derived = EXCEPTIONS.get(label.strip(), label.strip().lower().replace(" ", "-"))
