@@ -1,10 +1,10 @@
 # Go, Hipster, Go! — Skill Optimization & Publication Readiness Tracker
 
-**Status:** Stage 0 and PRs 1–3 complete; PR 4 validated in draft PR #251, awaiting review/merge  
+**Status:** Stages 0 and PRs 1–4 merged; PR 5 release qualification in progress (no release authorized)  
 **Target release:** 3.11.6 (maintenance/polish)  
 **Baseline release:** 3.11.5 (reconfirm on PR 1)  
 **Repository:** focustimer-dev/go-hipster-go  
-**Last reviewed:** 2026-11-11  
+**Last reviewed:** 2026-11-12  
 **Tracking convention:** Check a box only when the linked evidence exists. Each PR gets its own checklist and exit gate.
 
 > **Purpose:** Make the ChatGPT, Gemini, and Claude skill distributions smaller, faster to load, easier to maintain, and safer to publish **without changing what makes the playlists good**.
@@ -42,8 +42,8 @@
 | PR 1 | Baseline measurements + Gemini compatibility correction | Low | [x] Complete — PR #244 |
 | PR 2 | Deduplicate shared regional research instructions | Low–medium | [x] Complete — PR #246 |
 | PR 3 | Conditional reference loading + compact Gemini routing | Medium | [x] Complete — PR #248 |
-| PR 4 | Consolidate canonical instructions + lean public packaging | Medium | [ ] Validated draft — PR #251 (not merged) |
-| PR 5 | Regression review, reproducible bundles, release 3.11.6 | Release gate | [ ] Not started |
+| PR 4 | Consolidate canonical instructions + lean public packaging | Medium | [x] Complete — PR #251, merged `3f169c4` |
+| PR 5 | Regression review, reproducible bundles, release 3.11.6 | Release gate | [ ] Qualification in progress; publication held |
 
 A checked PR means **merged with evidence**, not merely opened or green in one CI job.
 
@@ -97,8 +97,8 @@ A checked PR means **merged with evidence**, not merely opened or green in one C
 - [x] Cross-checked canonical GO, reference-index routing, 27 atlas IDs, generated Gemini direct dispatch, and the 3.11.5 production-link boundary. Existing PR 3 tests enforce static sync; live host loading remains unmeasured.
 - [x] Corrected `adapters/chatgpt/SMOKE_TEST.md`: a normal six-track target does **not** suppress an eligible DeBarge random result; an explicitly rigid count does. Added a regression check and distinct manual scenario.
 - [x] Restored chronological PR 2 → PR 3 ordering in this log.
-- [ ] PR 4: clarify host-specific setup precedence. ChatGPT/Claude's Spotify preference and Gemini's documented YouTube Music default must not silently overwrite an explicit listener choice.
-- [ ] PR 4: review runtime links before removing packaged evaluation fixtures. `SKILL.md` currently links to `tests/discovery-cases.md`; removing it without redirecting that link would break the bundle.
+- [x] PR 4 clarified host-specific setup precedence: ChatGPT/Claude Spotify preference versus Gemini's YouTube Music default; explicit listener choices remain authoritative.
+- [x] PR 4 redirected the runtime evaluation link to `references/evaluation-smoke.md` before removing the mirrored development-only corpus; full source tests remain in repository `tests/`.
 
 This audit does not establish measured host latency, live music quality, or publishing capability and does not approve release, branch promotion, or app deployment.
 
@@ -117,7 +117,7 @@ This audit does not establish measured host latency, live music quality, or publ
 - [x] Updated ChatGPT/Claude/Gemini ZIP generators, manifests, knowledge mirrors and tests together; all four archives pass deterministic hash-rebuild checks.
 - [x] Replaced the obsolete mirrored full-test-corpus equality check with package/reference-presence assertions, added a section-scoped central DeBarge check and verified recovery details in their actual on-demand source. Retained strict negative/eligibility test guards where relaxing them could hide regressions.
 
-**PR 4 offline evidence:** [PR #251](https://github.com/focustimer-dev/go-hipster-go/pull/251) passed `Validate skill` on Python 3.10, 3.12 and 3.13 at commit `5a5e4c9f240f1bbc06e3b2b681e01bfcf7770df5` (push and PR runs). Full portable package builds, reference/link checks, generated-file sync and deterministic two-build SHA-256 checks passed. No real host retrieval times, actual musical quality or music-service writes were measured.
+**PR 4 offline evidence:** [PR #251](https://github.com/focustimer-dev/go-hipster-go/pull/251) passed `Validate skill` on Python 3.10, 3.12 and 3.13 at final head `118ccd3719c113332d3e99128bdbd5aa6c097173` (push and PR runs) and merged to `main` as `3f169c4ea6e9a2a88d0db505e0cc84c157d2f99f`. Full portable package builds, reference/link checks, generated-file sync and deterministic two-build SHA-256 checks passed. No real host retrieval times, actual musical quality or music-service writes were measured.
 
 **Observed source bytes (main before PR 4 → PR #251 draft):** canonical `SKILL.md` 54,742 → 51,701 (**−3,041**, 5.6%); Gemini `GEM_KNOWLEDGE.md` 403,177 → 401,120 (**−2,057**, 0.5%); full ChatGPT Project snapshot 417,529 → 418,304 (**+775**, 0.2%) because it includes the newly separated recovery reference. Gemini online entry remains 7,284 bytes. Actual compressed ZIP sizes await PR 5 reproducible release comparison; a smaller runtime source is not proof of lower host latency.
 
@@ -127,7 +127,10 @@ This audit does not establish measured host latency, live music quality, or publ
 
 **Intent:** Prove the optimized release is at least as reliable as the baseline, then prepare publication.
 
-- [ ] Run the full Python test suite plus schema/playlist checks, package synchronization checks, ZIP builds, link validation, and Git whitespace checks.
+**PR 5 first gate (in progress):** [qualification protocol and live-host scorecard](skill-release-qualification-3.11.6.md), plus `scripts/qualify_skill_release.py` and its regression tests. Offline builds now report measured candidate ZIP sizes, SHA-256 hashes, version parity and release isolation, alongside published 3.11.5 **asset-metadata** comparisons. CI runs this measurement without any release/upload action. Live host/playlist quality checks remain **not tested**, and version stays **3.11.5** until later qualification.
+
+
+- [ ] Confirm final PR 5 Python 3.10/3.12/3.13 CI including the full suite, schema/playlist checks, package sync, ZIP builds, reference validation and local qualification report. Git whitespace validation is a separate review gate.
 - [ ] Run host-specific Gemini, ChatGPT, and Claude compatibility tests; distinguish offline package checks from live host validation.
 - [ ] Compare representative musical cases *before vs. after*: ordinary GO, regional GO, multi-region GO, GO HARD, two moods, c1 curve, refresh, de-cheese, explicit Antarctica, rough-recording exclusion, transliteration, and publisher failure.
 - [ ] Score qualitative cases for factual accuracy, regional fit, recording identity, originality, sequencing, voice, and constraint compliance. **Different track choices are allowed.**
@@ -137,6 +140,8 @@ This audit does not establish measured host latency, live music quality, or publ
 - [ ] Obtain release approval before any intentional public submission, distribution publication, tag, Android build, or PWA deployment.
 
 **Exit gate:** All required checks pass, no material musical-quality regression, reproducible release bundles, explicit approval for publication.
+
+**PR 5 hold point:** No automatic version bump, GitHub Release, tag, distribution asset upload, `release/skill-prod` branch update, Android/PWA deployment, or streaming-service write. A green offline report does **not** satisfy the live host and musical-quality gates.
 
 ## Mandatory behavior regression matrix
 
@@ -177,6 +182,8 @@ Fill these from reproducible tests. “Estimated tokens” is not a measurement 
 
 | Date | Stage | Change / evidence | Status |
 | --- | --- | --- | --- |
+| 2026-11-12 | PR 4 merged | [PR #251](https://github.com/focustimer-dev/go-hipster-go/pull/251) passed all three Python CI jobs at latest head and merged as `3f169c4ea6e9a2a88d0db505e0cc84c157d2f99f`; no release/deployment. | Complete |
+| 2026-11-12 | PR 5 initiated | Branched after PR 4; added offline ZIP/source measurement script, regression tests and controlled live-host qualification matrix. Version remains 3.11.5; live results N/T. | In progress |
 | 2026-11-11 | Plan | Created the tracked implementation plan from combined ChatGPT/Gemini audits; no implementation or release performed. | Planning |
 | 2026-11-11 | Preflight | Confirmed `gemini-skill-v3.11.5` release and identified an automatic release-upload workflow on pushes to `main`; Stage 0 added. | Planning |
 | 2026-11-11 | Stage 0 | [PR #243](https://github.com/focustimer-dev/go-hipster-go/pull/243) passed validation and merged (`a99705fe`); published 3.11.5 assets unchanged. | Complete |
