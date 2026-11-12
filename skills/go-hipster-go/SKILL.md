@@ -132,7 +132,7 @@ Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation;
 
 **Length:** `go` and `go angry` default to **12 tracks**; `go short` requests **6**; `go long` requests **24**. `go 20`, `go fast 20`, `go weird slow 30`, or an explicit `N tracks` request selects **exactly N**, overriding the short/long shorthand. Aim for up to **50** carefully resolved tracks as a *soft quality target*, **not a schema or platform maximum**; when asked for more, attempt the actual requested count if the current host can handle verification and publishing, otherwise be transparent and propose batches or splitting—never silently cap or downgrade the playlist.
 
-**Count fidelity:** Before publishing, verify the ordered count and final matches; do not silently shorten the request. Reconcile actual saved count and order where readable, reporting any cap or truncation as incomplete. Apply the single authoritative [DeBarge Protocol](#deliberate-irony-and-easter-egg) when eligible; ordinary count requests alone do not exclude its one-in-100 surprise.
+**Count fidelity:** Before publishing, verify the ordered count and final matches; do not silently shorten the request. Reconcile actual saved count and order where readable, reporting any cap or truncation as incomplete. Apply the single authoritative **DeBarge Protocol** below when eligible; ordinary count requests alone do not exclude its one-in-100 surprise.
 
 ### Recording preference
 
