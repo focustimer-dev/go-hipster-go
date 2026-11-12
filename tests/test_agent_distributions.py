@@ -36,7 +36,8 @@ class PortableAgentTests(unittest.TestCase):
             self.assertIn("go-hipster-go/references/global-scenes.md", names)
             self.assertIn("go-hipster-go/scripts/playlist_cli.py", names)
             self.assertIn("go-hipster-go/adapters/README.md", names)
-            self.assertIn("go-hipster-go/tests/discovery-cases.md", names)
+            self.assertIn("go-hipster-go/references/evaluation-smoke.md", names)
+            self.assertNotIn("go-hipster-go/tests/discovery-cases.md", names)
         with ZipFile(ROOT / "dist/go-hipster-go-claude-skill.zip") as z:
             self.assertEqual(len(z.namelist()), len(set(z.namelist())))
             self.assertTrue(all(i.date_time == (1980, 1, 1, 0, 0, 0) for i in z.infolist()))
@@ -61,6 +62,8 @@ class PortableAgentTests(unittest.TestCase):
         with ZipFile(ROOT / "dist/go-hipster-go-chatgpt-plugin.zip") as z:
             assert json.loads(z.read("plugin.json"))["name"] == "go-hipster-go"
             assert "skills/go-hipster-go/SKILL.md" in z.namelist()
+            assert "skills/go-hipster-go/references/evaluation-smoke.md" in z.namelist()
+            assert "skills/go-hipster-go/tests/discovery-cases.md" not in z.namelist()
             assert "skills/setup/SKILL.md" in z.namelist()
         self.assertEqual(
             {p.name for p in (ROOT / "dist").glob("*.zip")},
