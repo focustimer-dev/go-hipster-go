@@ -149,7 +149,7 @@ class PortableAgentTests(unittest.TestCase):
         gem = (ROOT / "adapters/gemini/GEM_INSTRUCTIONS.md").read_text()
         self.assertIn("references/gemini-publish.md", REFERENCES)
         self.assertIn("**Publish follow-up — EXECUTE BEFORE EXPLAINING:**", entry)
-        self.assertIn("raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/gemini-publish.md", entry)
+        self.assertIn("raw.githubusercontent.com/focustimer-dev/go-hipster-go/release/skill-prod/references/gemini-publish.md", entry)
         self.assertIn("**Publish follow-up — EXECUTE BEFORE EXPLAINING:**", render((ROOT / "SKILL.md").read_text()))
         self.assertEqual(knowledge.count("# BEGIN SOURCE: references/gemini-publish.md"), 1)
         self.assertIn("# Gemini Publish — finalization of an existing crate", knowledge)
@@ -194,7 +194,7 @@ class PortableAgentTests(unittest.TestCase):
         self.assertIn("Gemini-specific publishing recovery",gem)
         self.assertIn("Save to library",guide)
 
-    def test_gemini_zip_is_linked_and_release_automated(self):
+    def test_gemini_zip_is_linked_and_release_manually_published(self):
         url = "https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip"
         readme=(ROOT/"README.md").read_text(encoding="utf-8")
         gem=(ROOT/"adapters/gemini/README.md").read_text(encoding="utf-8")
@@ -203,7 +203,9 @@ class PortableAgentTests(unittest.TestCase):
         self.assertIn(url, gem)
         self.assertIn("Download the Gemini skill — no terminal required", gem)
         self.assertIn("gh release create", workflow)
-        self.assertIn("gh release upload", workflow)
+        self.assertNotIn("gh release upload", workflow)
+        self.assertIn("workflow_dispatch:", workflow)
+        self.assertIn("inputs.publish_approved", workflow)
         self.assertIn("gh release delete-asset", workflow)
         self.assertNotIn("dist/hipster-music-generator-", workflow)
 
@@ -247,7 +249,9 @@ class PortableAgentTests(unittest.TestCase):
         self.assertIn("muse skills install", muse)
         self.assertIn("not proof", muse)
         self.assertIn("spotify-meta-muse-agent", muse)
-        self.assertIn("gh release upload", workflow)
+        self.assertNotIn("gh release upload", workflow)
+        self.assertIn("workflow_dispatch:", workflow)
+        self.assertIn("inputs.publish_approved", workflow)
 
     def test_guardrails_survive(self):
         s=(ROOT/"skills/go-hipster-go/SKILL.md").read_text()

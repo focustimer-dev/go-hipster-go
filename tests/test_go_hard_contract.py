@@ -58,7 +58,7 @@ class GoHardContract(unittest.TestCase):
                      "adapters/chatgpt/CHATGPT_KNOWLEDGE.md",
                      "adapters/gemini/GEM_KNOWLEDGE.md",
                      "adapters/gemini/references/workflow.md"):
-            link = ("https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/main/references/cover-art.md"
+            link = ("https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/release/skill-prod/references/cover-art.md"
                     if path == "adapters/gemini/references/workflow.md"
                     else "references/cover-art.md")
             self.assertIn("[the four-layer period-authentic sleeve workflow](" + link + ")", read(path), path)
