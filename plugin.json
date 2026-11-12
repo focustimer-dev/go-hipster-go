@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "go-hipster-go",
-  "version": "3.11.3",
+  "version": "3.11.5",
   "description": "An insufferably smug music curator. Spotify is the default; setup checks your host and supports YouTube Music or other explicit alternatives. Go sad, weird, fast or chill.",
   "repository": "https://github.com/focustimer-dev/go-hipster-go",
   "homepage": "https://github.com/focustimer-dev/go-hipster-go",
@@ -20,9 +20,8 @@
       "onboardingSkill": "./skills/setup/SKILL.md",
       "interface": {
         "displayName": "Go, Hipster, Go!",
-        "shortDescription": "Artisanally obscure playlists served with unearned superiority.",
-        "longDescription": "A gloriously self-satisfied, passive-aggressive record-store clerk curates real international deep cuts and attempts to publish them in authorized connected music apps. Real track matching, playlist count and publishing verification come before the snark.",
-        "developerName": "Go, Hipster, Go!",
+        "shortDescription": "Global deep-cut playlists",
+        "longDescription": "Discover real recordings across scenes, eras, and genres. Go, Hipster, Go! curates ordered playlists from your moods, regions, and tempo preferences. Saving requires a supported music service connected to ChatGPT with playlist permissions.",
         "category": "Entertainment",
         "capabilities": [
           "Music discovery",
@@ -39,7 +38,10 @@
         "composerIcon": "./assets/icon.svg",
         "composerIconDark": "./assets/icon.svg",
         "logo": "./assets/logo.svg",
-        "logoDark": "./assets/logo.svg"
+        "logoDark": "./assets/logo.svg",
+        "supportURL": "https://github.com/focustimer-dev/go-hipster-go/blob/main/docs/support.md",
+        "privacyPolicyURL": "https://github.com/focustimer-dev/go-hipster-go/blob/main/docs/privacy.md",
+        "termsOfServiceURL": "https://github.com/focustimer-dev/go-hipster-go/blob/main/docs/terms.md"
       }
     }
   }
