@@ -1,5 +1,7 @@
 # PR 5 — Release qualification evidence and host checks
 
+**Engineering closure:** [PR #252](https://github.com/focustimer-dev/go-hipster-go/pull/252) merged to `main` as `3c2f2a9d7643c296c81da90a78b9f3a647185b3c` on 2026-11-12. Final head passed [Validate skill run 43298276885](https://github.com/focustimer-dev/go-hipster-go/actions/runs/43298276885) on Python 3.10, 3.12 and 3.13. This is an engineering qualification merge, **not** a 3.11.6 public release, production-reference promotion, or claim that all live-host gates passed. The source manifests intentionally remain at 3.11.5.
+
 **Candidate:** Go, Hipster, Go! after PR #251; still version **3.11.5** until the qualification gate.  
 **Target if approved:** 3.11.6.  
 **Baseline:** published `gemini-skill-v3.11.5` at `625941ab`.  
