@@ -62,7 +62,7 @@ class DiscoveryExplorationTests(unittest.TestCase):
             )
         self.assertIn("go-hard.md", self.core)
         self.assertIn("central-america-additions.md",
-                      (ROOT / "references/reference-index.md").read_text(encoding="utf-8"))
+                      (ROOT / "references/regional-atlas.md").read_text(encoding="utf-8"))
         generated = modular_files(self.core)
         self.assertIn("references/go-hard.md", generated)
         self.assertIn("references/sonic-taxonomy.md", REFERENCES)
