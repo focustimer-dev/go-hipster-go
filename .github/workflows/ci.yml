@@ -34,14 +34,14 @@ jobs:
           printf 'source_sha=%s\n' "$GITHUB_SHA" > dist/gate4-candidate-provenance.txt
           printf 'original_manifest_version=3.11.5 (not published candidate)\n' >> dist/gate4-candidate-provenance.txt
           printf 'private_test_version=3.11.6-rc.4 (not a public release)\n' >> dist/gate4-candidate-provenance.txt
-          sha256sum dist/ghg-gate4-chatgpt-lab-rc4.zip dist/ghg-gate4-gemini-qa-rc4.zip | tee -a dist/gate4-candidate-provenance.txt
+          sha256sum dist/ghg-gate4-chatgpt-qa-rc4.zip dist/ghg-gate4-gemini-qa-rc4.zip | tee -a dist/gate4-candidate-provenance.txt
       - name: Keep isolated Gate 4 ChatGPT and Gemini test ZIPs
         if: ${{ github.event_name == 'pull_request' && matrix.python-version == '3.12' }}
         uses: actions/upload-artifact@v4
         with:
           name: ghg-gate4-chatgpt-gemini-candidates
           path: |
-            dist/ghg-gate4-chatgpt-lab-rc4.zip
+            dist/ghg-gate4-chatgpt-qa-rc4.zip
             dist/ghg-gate4-gemini-qa-rc4.zip
             dist/gate4-candidate-provenance.txt
           retention-days: 7
