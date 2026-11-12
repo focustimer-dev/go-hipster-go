@@ -65,6 +65,7 @@ SOURCES = [
     "adapters/streaming/spotify.md",
     "adapters/streaming/apple-music.md",
     "references/evaluation-smoke.md",
+    "references/claude-spotify-recovery.md",
 ]
 CHATGPT_BUNDLE = Path("adapters/chatgpt/CHATGPT_KNOWLEDGE.md")
 GEM_BUNDLE = Path("adapters/gemini/GEM_KNOWLEDGE.md")
