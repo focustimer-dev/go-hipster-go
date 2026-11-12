@@ -106,7 +106,7 @@ This audit does not establish measured host latency, live music quality, or publ
 
 **Intent:** Reduce repeated operational instructions and ship only runtime-useful resources.
 
-**Preflight:** See [PR 4 runtime package inventory](skill-pr4-package-audit.md). The first increment clarifies Gemini vs. ChatGPT/Claude setup defaults and stabilizes portable ZIP metadata; it does **not** yet remove the referenced evaluation corpus or complete PR 4.
+**Preflight:** See [PR 4 runtime package inventory](skill-pr4-package-audit.md). Setup defaults and ZIP metadata are aligned; the linked 54 KB development acceptance corpus has been replaced in runtime ZIPs with `references/evaluation-smoke.md` while the full source corpus remains intact in the repository. Canonical rule consolidation and the PR 4 full exit gate remain outstanding.
 
 - [ ] Consolidate DeBarge rules into one authoritative core section; retain eligibility, exact 25-track behavior, randomness, count exceptions, publication boundaries, and related tests.
 - [ ] Collapse repeated seeds/lenses/mood-angle explanation into compact, non-quota discovery policy.
