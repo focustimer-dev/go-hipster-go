@@ -27,11 +27,20 @@ jobs:
           python scripts/playlist_cli.py validate examples/example-playlist.json
           python -m unittest discover -s tests -v
           python scripts/qualify_skill_release.py --check
-      - name: Keep isolated ChatGPT RC source ZIP for controlled test
+      - name: Record Gate 4 candidate source and ZIP digests
+        if: ${{ github.event_name == 'pull_request' && matrix.python-version == '3.12' }}
+        run: |
+          printf 'source_sha=%s\n' "$GITHUB_SHA" > dist/gate4-candidate-provenance.txt
+          printf 'metadata_version=3.11.5 (test artifact, not published candidate version)\n' >> dist/gate4-candidate-provenance.txt
+          sha256sum dist/go-hipster-go-chatgpt-plugin.zip dist/go-hipster-go-gemini-app-skill.zip | tee -a dist/gate4-candidate-provenance.txt
+      - name: Keep isolated Gate 4 ChatGPT/Gemini source ZIPs for controlled test
         if: ${{ github.event_name == 'pull_request' && matrix.python-version == '3.12' }}
         uses: actions/upload-artifact@v4
         with:
-          name: ghg-pr5-chatgpt-candidate-source
-          path: dist/go-hipster-go-chatgpt-plugin.zip
-          retention-days: 1
+          name: ghg-gate4-chatgpt-gemini-candidates
+          path: |
+            dist/go-hipster-go-chatgpt-plugin.zip
+            dist/go-hipster-go-gemini-app-skill.zip
+            dist/gate4-candidate-provenance.txt
+          retention-days: 7
           if-no-files-found: error
