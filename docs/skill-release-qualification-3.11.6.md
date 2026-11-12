@@ -15,14 +15,14 @@ The following must remain true: canonical and mirror SKILL files match; all mani
 
 ## First candidate qualification — observed results (2026-11-12)
 
-The latest PR 5 CI run at `e72a5431772942a6f2615d1048ea7f1bc0309dc8` passed on Python **3.10, 3.12 and 3.13**, with **187 unit/contract tests per job**, including public support/privacy links and a basic secret-signature check, and the offline qualification report green. [PR run](https://github.com/focustimer-dev/go-hipster-go/actions/runs/43213737198) and [push run](https://github.com/focustimer-dev/go-hipster-go/actions/runs/43213730200).
+The latest PR 5 CI run at `c5979c20a6df06f0870034a81b6af142e93aa94c` passed on Python **3.10, 3.12 and 3.13**, with **188 unit/contract tests per job**, including public support/privacy links and a basic secret-signature check, and the offline qualification report green. [latest PR run](https://github.com/focustimer-dev/go-hipster-go/actions/runs/43235715251) and [push run](https://github.com/focustimer-dev/go-hipster-go/actions/runs/43235702042).
 
 | Distribution | Published 3.11.5 asset bytes | Current candidate ZIP bytes | Difference |
 | --- | ---: | ---: | ---: |
-| ChatGPT plugin | 242,009 | 206,222 | −35,787 (−14.8%) |
-| Claude plugin | 239,639 | 203,852 | −35,787 (−14.9%) |
-| Claude skill | 236,252 | 200,262 | −35,990 (−15.2%) |
-| Gemini Apps skill | 196,447 | 179,488 | −16,959 (−8.6%) |
+| ChatGPT plugin | 242,009 | 206,456 | −35,553 (−14.7%) |
+| Claude plugin | 239,639 | 204,086 | −35,553 (−14.8%) |
+| Claude skill | 236,252 | 200,496 | −35,756 (−15.1%) |
+| Gemini Apps skill | 196,447 | 179,850 | −16,597 (−8.4%) |
 
 These are actual CI-built ZIP byte measurements compared with **published historical 3.11.5 release asset metadata** (not a bit-for-bit rebuilt historical archive). The GitHub [3.11.5 release](https://github.com/focustimer-dev/go-hipster-go/releases/tag/gemini-skill-v3.11.5) still points to commit `625941ab0e931230554393035df6b4b851783298`. The production-reference branch remains frozen at `41a3d17a4f0c9b2809d3a9077ed950cbc4d044f1`; PR 5 has not changed it. The source repository's [support](support.md), [privacy](privacy.md) and [terms](terms.md) files exist on `main`. Live hosting or real music-service access was **not** exercised.
 
@@ -39,6 +39,14 @@ On **2026-11-12**, a private personal plugin **Go, Hipster, Go! Lab** (`go-hipst
 - **Test prompt:** `Use Go, Hipster, Go! Lab: go funky hard; Regional exploration: Central America; Tempo: Mid; Recording preference: Skip rough recordings; Exactly 12 tracks, no exceptions; Text only; Do not publish.` Use the same substantive instructions as the original baseline sample, retaining a fresh conversation and no publishing. Compare contents using the existing [sourced 3.11.5 baseline audit](skill-pr5-central-america-funk-observed-audit.md).
 
 This private test plugin does not replace, upload to, or promote the public skill. It must not be counted as a completed musical A/B until the full candidate output and loaded identity are observed.
+
+## Gemini matching refinement — PR 5, offline verified
+
+The Gemini-to-YouTube Music contract now keeps **clean ordered `Artist - Track Title` lookups**, official catalog spelling and diacritics, only essential mix/live/instrumental identifiers, and excludes release years, editorial annotations and generic `(Remastered)` suffixes. An altered spelling is a verified fallback only **after** a documented matching failure. Never substitute mood/genre-query generation for an exact requested track list. All these rules apply conditionally on an actually exposed exact-track playlist action, not an invented provider schema.
+
+An initial Gemini playlist card **may show a partial preview**, including a listener-observed eight-of-twelve example. This is *not* a documented universal eight-item limit. [Google's official Gemini + YouTube Music help](https://support.google.com/gemini/answer/15237118) describes saving playlists via **Save to library** but does not specify how many items must appear in the initial preview. For a user-authorized GO or standalone `Publish`, preserve the existing playlist URI, use the actual save capability once when present, and audit all stored positions afterward if the full saved list is accessible. Mark unseen positions `unverified` rather than `missing` or `confirmed`; a save acknowledgment does not prove item fidelity. **No save for a text-only crate and no duplicate playlist.**
+
+**Scope of proof:** Updated canonical policy, generated Gemini routing, on-demand Gemini Publish reference and one focused offline contract regression test. Python 3.10/3.12/3.13 completed **188 tests each**. No Gemini live create/save/readback was run here. This is a non-publishing candidate change; the public 3.11.5 and `release/skill-prod` references remain untouched.
 
 ## Host comparison protocol (not yet executed)
 
