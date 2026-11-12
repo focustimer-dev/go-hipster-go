@@ -43,6 +43,17 @@ class DiscoveryExplorationTests(unittest.TestCase):
         self.assertIn("best available transfer", self.verify)
         self.assertIn("does not verify a clean transfer", self.verify)
 
+    def test_open_ended_ordinary_go_resists_canon_lane_collapse(self):
+        fresh = self.taxonomy.split("## Freshness procedure", 1)[1].split("## Recording-level selection gate", 1)[0]
+        self.assertIn("open-ended ordinary GO", fresh)
+        self.assertIn("distinct sonic mechanisms or scene families", fresh)
+        self.assertIn("famous tracks from one era/scene", fresh)
+        self.assertIn("already available less-explored route", fresh)
+        self.assertIn("no forced era, nationality, obscurity or song quotas", fresh)
+        self.assertIn("extra research phase", fresh)
+        self.assertIn("When history is unavailable", fresh)
+        self.assertIn("normal GO rule against extra music research", self.hard)
+
     def test_no_fake_memory_and_ordinary_go_remains_fast(self):
         self.assertIn("When history is unavailable", self.taxonomy)
         self.assertIn("change the actual research starting path", self.taxonomy)
