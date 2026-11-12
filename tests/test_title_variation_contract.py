@@ -30,7 +30,10 @@ class TitleVariationContract(unittest.TestCase):
 
     def test_manual_case_and_benchmark_title_are_updated(self):
         docs = read("tests/discovery-cases.md")
-        self.assertEqual(docs, read("skills/go-hipster-go/tests/discovery-cases.md"))
+        # The full acceptance corpus is repository-only, not bundled at runtime.
+        self.assertIn("compact evaluation guidance", read("SKILL.md"))
+        self.assertIn("Detailed cases, evidence and historical regressions",
+                      read("skills/go-hipster-go/references/evaluation-smoke.md"))
         self.assertIn("The Pocket Has No Passport", docs)
         self.assertIn("Offbeat Correspondence — West African & Nordic Funk", docs)
         fixture = json.loads(read("research/pwa-ab-2026-10-29/fixture.json"))
