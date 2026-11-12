@@ -51,10 +51,9 @@ class ChatGPTRouteProbeTests(unittest.TestCase):
                 self.assertIn("not a compulsory era, country", skill)
                 self.assertIn("Do not add a second research round", skill)
                 self.assertIn("Never claim file access", skill)
-                self.assertIn("No", "No")
-                self.assertIn("references/global-scenes.md", names)
-                self.assertIn("references/sonic-taxonomy.md", names)
-                self.assertIn("references/reference-index.md", names)
+                self.assertIn("skills/" + PROBE_NAME + "/references/global-scenes.md", names)
+                self.assertIn("skills/" + PROBE_NAME + "/references/sonic-taxonomy.md", names)
+                self.assertIn("skills/" + PROBE_NAME + "/references/reference-index.md", names)
                 self.assertIn("publication_status_report",
                               zip.read("skills/" + PROBE_NAME + "/scripts/playlist_cli.py").decode())
 
