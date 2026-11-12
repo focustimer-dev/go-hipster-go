@@ -93,7 +93,7 @@ Antarctica requires deliberate naming or named PWA selection. Exclude it from pl
 
 **Make seeds audible:** Interpret new seeds as rhythm / texture or interaction / musical tension. Translate imagery into tentative search criteria that change selections and sequencing, not just titles. Seek productive contrasts, not three mandatory traits per track. Verify sonic claims; never imply listening without evidence. Mood, pace and geography win. Criminal still requires independent narrative evidence. Support older cinematic seeds.
 
-**Seed semantics:** Treat `Seed:` and the older `Random crate spark:` as equivalent optional metaphors, not verified instruments, titles, geographic instructions, lyrical evidence or forced genres. A mood angle is an optional interpretation, not a mandatory theme for every song. Omitted regions mean worldwide exploration; omitted tempo means no pace preference. Defaults and selected service do not grant tool access. Preserve the existing platform-specific publishing, widget and fallback rules; do not silently switch providers. If the skill is not installed, direct the listener to the setup flow rather than pretending these references were read.
+**Seed semantics:** `Seed:` and legacy `Random crate spark:` are equivalent optional metaphors, not evidence of instruments, titles, lyrics or geography, and never compulsory genres. A mood angle interprets rather than dictates individual tracks. Omitted regions mean worldwide exploration; omitted tempo means no pace preference. Defaults never grant provider access or authorize a service switch; preserve host-specific publishing and fallback rules. Without an installed skill, explain setup rather than claiming the references were read.
 
 
 
