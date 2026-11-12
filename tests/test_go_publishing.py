@@ -7,12 +7,12 @@ ROOT=Path(__file__).resolve().parents[1]
 class DefaultGoBehaviorTests(unittest.TestCase):
     def test_go_means_publish(self):
         skill=(ROOT/"SKILL.md").read_text(encoding="utf-8")
-        for term in ['"go" means curate + publish by default',
-                     'Spotify by default',
+        for term in ['curate **and attempt to publish** a playlist',
+                     'Spotify as the default preference',
                      'setup change YouTube Music',
                      'go, text only',
-                     'nothing was published or saved',
-                     'If no authorized writer was exposed']:
+                     'Text-only skips writer preflight and publication',
+                     'check the actual writer once before research']:
             self.assertIn(term.lower(),skill.lower())
 
     def test_setup_supports_automatic_writer(self):
@@ -43,9 +43,9 @@ class DefaultGoBehaviorTests(unittest.TestCase):
         skill=(ROOT/"SKILL.md").read_text(encoding="utf-8")
         self.assertLess(skill.index("## Default go: one-command playlist creation"),
                         skill.index("## Curate in seven steps"))
-        self.assertIn("Preflight the actual writer first",skill)
-        self.assertIn("do not create an empty test playlist",skill)
-        self.assertIn("Only then curate, resolve and save",skill)
+        self.assertIn("check the actual writer once before research",skill)
+        self.assertIn("Never create a test playlist",skill)
+        self.assertIn("Curate and match before writing",skill)
         preamble=skill.split("## Intent and activation")[0]
         self.assertIn("Spotify",preamble)
         self.assertIn("YouTube Music",preamble)
