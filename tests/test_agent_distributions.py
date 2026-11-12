@@ -37,6 +37,7 @@ class PortableAgentTests(unittest.TestCase):
             self.assertIn("go-hipster-go/scripts/playlist_cli.py", names)
             self.assertIn("go-hipster-go/adapters/README.md", names)
             self.assertIn("go-hipster-go/references/evaluation-smoke.md", names)
+            self.assertIn("go-hipster-go/references/claude-spotify-recovery.md", names)
             self.assertNotIn("go-hipster-go/tests/discovery-cases.md", names)
         with ZipFile(ROOT / "dist/go-hipster-go-claude-skill.zip") as z:
             self.assertEqual(len(z.namelist()), len(set(z.namelist())))
@@ -63,6 +64,7 @@ class PortableAgentTests(unittest.TestCase):
             assert json.loads(z.read("plugin.json"))["name"] == "go-hipster-go"
             assert "skills/go-hipster-go/SKILL.md" in z.namelist()
             assert "skills/go-hipster-go/references/evaluation-smoke.md" in z.namelist()
+            assert "skills/go-hipster-go/references/claude-spotify-recovery.md" in z.namelist()
             assert "skills/go-hipster-go/tests/discovery-cases.md" not in z.namelist()
             assert "skills/setup/SKILL.md" in z.namelist()
         self.assertEqual(
