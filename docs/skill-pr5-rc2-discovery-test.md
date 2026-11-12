@@ -27,7 +27,7 @@ Text only. Do not publish.
 Comparison datasets (already supplied by the listener):
 - [Public 3.11.5 *Horns on the Offbeat*](skill-pr5-central-america-funk-observed-audit.md)
 - [Private 3.11.6-rc.1 *The Horns Can Wait*](skill-pr5-central-america-funk-ab-comparison.md)
-- **Private rc.2 output: pending**
+- **Private rc.2 output: [listener-supplied, catalog-audited](skill-pr5-rc2-central-america-audit.md)** — *Second Shift at the Social Club*, 12/12 source-traceable artist/song pairs, 6 countries, 3/12 from one Soundway compilation, only 2/12 exact overlaps with rc.1 and none with the 3.11.5 output. **Version-confirmation text from the generating chat was not supplied**, so rc.2 attribution is user-reported rather than independently logged. Audio/transfer checks unresolved.
 
 Evaluate:
 1. All 12 artist/title/version identities trace to trustworthy artist/label/catalog sources, with correct original single/album provenance and separately named expanded/reissued editions.
@@ -36,7 +36,7 @@ Evaluate:
 4. Familiar/exposed selections must have musical reasons and plausible alternatives where they exist. If play counts are unavailable, mark them unknown; do not pretend a one-million-play threshold was measured.
 5. Dry clerk persona, coherent sequencing, exactly 12 distinct leads and no unauthorized write.
 
-**Prior observed comparison:** 3.11.5 vs rc.1 shared 6/12 exact recordings; rc.1 contained 10/12 tracks from just two compilations. Only this new run can tell us whether rc.2 meaningfully improved matters.
+**Observed output-level change:** 3.11.5 vs rc.1 shared 6/12 exact recordings; rc.1 contained 10/12 tracks from just two compilations. The user-reported rc.2 now has only 2/12 exact overlaps with rc.1 and three tracks from one Soundway collection. This is strong descriptive improvement, **not proof** of live reference loading, original-master fidelity, audio fit or reliable zero-repeat behavior across fresh chats.
 
 ## Test 2 — ordinary GO regression (fast path)
 
