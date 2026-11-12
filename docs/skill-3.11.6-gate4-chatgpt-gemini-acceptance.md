@@ -8,11 +8,11 @@
 
 On [`main` Validate skill run 43319500132](https://github.com/focustimer-dev/go-hipster-go/actions/runs/43319500132), the normal push CI passed **Python 3.10, 3.12, and 3.13**. Each job ran **213 unit tests**, built all four archives, checked source/distribution mirrors, validated the example, checked canonical skill references, and ran `qualify_skill_release.py --check` with **`offline_checks_passed`**. The Python 3.12 job reported locally built archive sizes (bytes): ChatGPT 210,474; Claude plugin 208,104; Claude skill 204,514; Gemini 181,547. These are CI-generated test archives, **not** downloaded or independently recomputed hashes and **not** host acceptance.
 
-The Gate 4 PR workflow now records its own source SHA and SHA-256 digests, and uploads the **ChatGPT and Gemini candidate ZIPs** with `gate4-candidate-provenance.txt` as one seven-day `ghg-gate4-chatgpt-gemini-candidates` artifact (Python 3.12, PR only). Download it from that PR's green `Validate skill` run; unzip **the Actions artifact** first, then use the provider-specific ZIP.
+The Gate 4 PR workflow builds two **isolated, version-stamped QA ZIPs** and a `gate4-candidate-provenance.txt` containing their **PR-head source SHA and SHA-256 hashes**. The seven-day `ghg-gate4-chatgpt-gemini-candidates` artifact appears on the green PR `Validate skill` workflow's Python 3.12 job. Download and unzip the **outer GitHub Actions artifact** once, then use `ghg-gate4-chatgpt-qa-rc4.zip` for a **new private ChatGPT QA plugin** and `ghg-gate4-gemini-qa-rc4.zip` for a **new Gemini web Skill**. They are different uploaders; do not interchange the ZIPs.
 
-**Version/identity warning:** The source manifests intentionally still say **3.11.5** until Gate 5. A test ZIP with metadata 3.11.5 is **not** evidence that the current public 3.11.5 copy was loaded; corroborate the artifact's SHA-256, extraction/installation route and the six-outcome verification reference. The existing private ChatGPT `go-hipster-go-lab` is confirmed **3.11.6-rc.3** and its bundled verification/CLI files **predate Gate 2**: its results are historical comparisons only, **not** live acceptance of this frozen Gate 4 snapshot.
+**Version/identity warning:** Main source manifests intentionally still say **3.11.5** until Gate 5, but the two **QA-only** archives change only their installation identity, test version and a build-source stamp: **`go-hipster-go-gate4` / `3.11.6-rc.4`**, with the exact PR-head SHA in each packaged `SKILL.md`. This does **not** bump production or public 3.11.5. Confirm the extracted artifact SHA-256 against the provenance, and the loaded `SKILL.md` name, rc.4 version and source stamp. The existing ChatGPT Lab `go-hipster-go-lab` is **rc.3** and predates Gates 1–3; it remains unchanged and is a historical comparison, **not** valid acceptance for the current snapshot.
 
-**Installation guard:** Do **not** replace the user's 3.11.5 public or private Lab plugin/skill automatically. Use a separate disposable test installation or a fresh chat explicitly loading the pinned candidate; if the host cannot distinguish that package from the existing installed skill, mark version verification **N/T** and stop rather than manufacture a pass. Gemini's published online entry reads `release/skill-prod` and therefore does **not** independently load this candidate. Use the **portable candidate ZIP** or verified commit-specific source with actual references. Changes to an installed host or its account remain under the user's control.
+**Installation guard:** Do **not** replace the user's public 3.11.5 skill, existing ChatGPT Lab rc.3, or a saved Gemini production skill. The QA packages have a different skill name precisely to permit isolated installations; users must approve/install the QA packages in their respective hosts. On Gemini web, use **Customize → Skills → Create → Upload** for the Gemini QA ZIP, not Replace skill on production. In ChatGPT, use the private Plugin Creator workflow for the ChatGPT QA ZIP. If a host cannot install or expose an independent QA skill, mark the host loading check **N/T**, stop, and ask before overwriting anything. The public Gemini online entry still points to `release/skill-prod` and cannot substitute for the candidate ZIP.
 
 ## Minimal live protocol — both hosts, text only
 
@@ -21,15 +21,16 @@ Carry the same two prompts into **fresh candidate-loaded conversations** for com
 ### A. Candidate load proof — no music yet
 
 ```text
-Identify the exact Go, Hipster, Go! skill name and displayed version you have
-actually loaded in this conversation. Read its verification reference and
-report whether it defines all six publication outcomes, including
+Identify the exact installed skill name, displayed version and Gate 4 source
+commit stamped in its SKILL.md. Expect go-hipster-go-gate4, 3.11.6-rc.4, and
+the SHA from the QA package's provenance file. Read its verification reference
+and report whether it defines all six publication outcomes, including
 created_save_required and published_items_unverified. State which references
-you could actually access; do not invent a Git SHA or file-read trace.
+you actually accessed; do not invent tool calls or file-read traces.
 Do not create a playlist, call a music writer, or generate music yet.
 ```
 
-Record: host, fresh chat, installation method, artifact provenance SHA/hash, actual reported skill version, which references really loaded, and any unknowns. A model's claim without matching package/host evidence is **provisional**, not version confirmation. Stop on a stale public/rc.3 installation.
+Record: host, fresh chat, installation method, artifact provenance SHA/hash, actual reported skill version, which references really loaded, and any unknowns. A model's claim without matching package/host evidence is **provisional**, not version confirmation. Stop on a stale public/rc.3 installation or a mismatched QA SHA.
 
 ### B. Ordinary GO — ChatGPT and Gemini
 
