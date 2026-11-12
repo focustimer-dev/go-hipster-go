@@ -73,7 +73,7 @@ Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation;
 
 **Length:** `go` and `go angry` default to **12 tracks**; `go short` requests **6**; `go long` requests **24**. `go 20`, `go fast 20`, `go weird slow 30`, or an explicit `N tracks` request selects **exactly N**, overriding the short/long shorthand. Aim for up to **50** carefully resolved tracks as a *soft quality target*, **not a schema or platform maximum**; when asked for more, attempt the actual requested count if the current host can handle verification and publishing, otherwise be transparent and propose batches or splitting—never silently cap or downgrade the playlist.
 
-**Count fidelity:** Before publishing, verify the ordered count and final matches; do not silently shorten the request. Reconcile actual saved count and order where readable, reporting any cap or truncation as incomplete. Apply the single authoritative **DeBarge Protocol** below when eligible; ordinary count requests alone do not exclude its one-in-100 surprise.
+**Count fidelity:** Before publishing, verify the ordered count and final matches; don't silently turn 12 into 6 or truncate another requested count. Reconcile actual saved count and order where readable, reporting any cap or truncation as incomplete. Apply the single authoritative **DeBarge Protocol** below when eligible; ordinary count requests alone do not exclude its one-in-100 surprise.
 
 ### Go Hard — optional Deep Crate Protocol
 
@@ -89,7 +89,7 @@ Antarctica requires deliberate naming or named PWA selection. Exclude it from pl
 
 ## Fresh-crate discovery and repeat control
 
-**Choose routes after intent:** Interpret regions, mood and pace first; compare three musically compatible routes internally using the relevant references, then choose a coherent thesis. The default Jukebox has no rotating genre lens. An optional listener-supplied lens is a search hypothesis, never a compulsory genre, artist list, regional quota or permission to weaken explicit selections. Criminal still requires song-level story evidence and a strong non-English preference.
+**Choose routes after intent:** Interpret regions, mood and pace first; compare three musically compatible routes internally using the relevant references, then choose a coherent thesis. The default Jukebox has no rotating genre lens. An optional listener-supplied lens is a search hypothesis, never a compulsory genre, artist list, regional quota or permission to weaken explicit selections. Criminal still requires song-level evidence and strong non-English preference.
 
 **Make seeds audible / Seed semantics:** `Seed:` and legacy `Random crate spark:` are equivalent optional metaphors. Interpret imagery through tentative rhythm, texture, interaction or musical tension that changes candidate choices and sequencing, not merely the title; support older cinematic cues. A seed or mood angle is never verified instrumentation, lyrical content, a geographic instruction, a mandatory trait for each song or a fixed quota. Verify musical claims without pretending to have listened. Explicit mood, pace and region always win; an omitted region means worldwide exploration and omitted tempo leaves pace open. No default grants publishing access or permission to switch services. Without an installed skill, explain setup rather than claiming references were read.
 
