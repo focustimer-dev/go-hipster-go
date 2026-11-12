@@ -46,30 +46,30 @@ copy. Use them for the listener-facing status after an authorized publishing act
 
 | Internal status | Listener-facing label | Required proof |
 | --- | --- | --- |
-| \`curated_text_only\` | CURATED — NOT PUBLISHED | Explicit text-only request, no provider write |
-| \`not_created\` | PLAYLIST NOT CREATED | No provider-confirmed playlist object |
-| \`created_save_required\` | CREATED — SAVE REQUIRED | Actual created object/card, no confirmed library save |
-| \`published_items_unverified\` | SAVED — ITEMS UNVERIFIED | Confirmed library save; insufficient full item/order/edition readback |
-| \`published_exact\` | PUBLISHED — EXACT | Confirmed saved playlist, confirmed full provider count, every requested recording/version and position independently verified |
-| \`published_approximate\` | PUBLISHED — APPROXIMATE | Confirmed save with an observed count, version, substitution, order or curation mismatch; describe each observed difference |
+| `curated_text_only` | CURATED — NOT PUBLISHED | Explicit text-only request, no provider write |
+| `not_created` | PLAYLIST NOT CREATED | No provider-confirmed playlist object |
+| `created_save_required` | CREATED — SAVE REQUIRED | Actual created object/card, no confirmed library save |
+| `published_items_unverified` | SAVED — ITEMS UNVERIFIED | Confirmed library save; insufficient full item/order/edition readback |
+| `published_exact` | PUBLISHED — EXACT | Confirmed saved playlist, confirmed full provider count, every requested recording/version and position independently verified |
+| `published_approximate` | PUBLISHED — APPROXIMATE | Confirmed save with an observed count, version, substitution, order or curation mismatch; describe each observed difference |
 
 **Do not write these six values into playlist JSON format 1.0.** Its
-\`publishing.status\` remains exactly \`not_attempted\`, \`dry_run\`, \`published\`,
-or \`failed\`. The read-only reconciler in \`scripts/playlist_cli.py\` produces a
+`publishing.status` remains exactly `not_attempted`, `dry_run`, `published`,
+or `failed`. The read-only reconciler in `scripts/playlist_cli.py` produces a
 *separate* report, not a schema 1.1 migration. A historical format-1.0
-\`published\` value with a playlist URL does **not** prove \`published_exact\`.
+`published` value with a playlist URL does **not** prove `published_exact`.
 
 Reconcile with a separate evidence JSON via
-\`python scripts/playlist_cli.py status-report evidence.json\`. It accepts
-\`requested_count\`, \`curated_count\`, optional \`text_only\`,
-\`created: {source, reference}\`, \`saved: {source, reference}\`,
-\`provider_count\` (confirmed **full playlist total**, or null/omitted), and
-\`positions: [{position, result, source, reference, recording_verified, note}]\`.
+`python scripts/playlist_cli.py status-report evidence.json`. It accepts
+`requested_count`, `curated_count`, optional `text_only`,
+`created: {source, reference}`, `saved: {source, reference}`,
+`provider_count` (confirmed **full playlist total**, or null/omitted), and
+`positions: [{position, result, source, reference, recording_verified, note}]`.
 A created card is not a save. A save confirmation does not verify its items.
-\`result: "exact"\` requires \`recording_verified: true\` based on independently
+`result: "exact"` requires `recording_verified: true` based on independently
 checked artist/title/version/recording identity, not an unexamined title match.
-Mismatch values are \`substituted\`, \`wrong_version\`, \`wrong_order\`, and
-\`missing\`, each with a factual \`note\`.
+Mismatch values are `substituted`, `wrong_version`, `wrong_order`, and
+`missing`, each with a factual `note`.
 
 The caller must acquire authentic tool/library evidence; this offline function
 cannot prove that a claimed source/reference is genuine. It rejects structural
@@ -78,9 +78,9 @@ evidence separate even when the same recording occurs at multiple positions,
 including all 25 DeBarge Protocol positions. Do not auto-deduplicate.
 
 **Partial preview example:** if 8 of 12 requested entries are visible, report
-eight observed positions and \`provider_count: null\` until the full provider
+eight observed positions and `provider_count: null` until the full provider
 list is actually known. Positions 9–12 remain **unreviewed**, not missing.
-\`provider_count: 8\` is appropriate *only* after confirming that the actual
+`provider_count: 8` is appropriate *only* after confirming that the actual
 complete provider playlist contains eight tracks. A link-only acknowledgement
 cannot establish per-position matches, and unknown is never zero.
 
