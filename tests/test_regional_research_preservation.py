@@ -72,7 +72,7 @@ class RegionalResearchPreservationTests(unittest.TestCase):
         for name in HASHES:
             text = (REGIONS / name).read_text(encoding="utf-8")
             ids = re.findall(r"^\| `([a-z0-9-]+:(?:\d{2}|add-\d{2}))` \|", text, re.M)
-            region = name.removesuffix(".md")
+            region = name.removesuffix("-additions.md") if name.endswith("-additions.md") else name.removesuffix(".md")
             if name.endswith("-additions.md"):
                 self.assertEqual(ids, [f"{region}:add-{n:02}" for n in range(1, 51)])
                 additions_count += len(ids)
