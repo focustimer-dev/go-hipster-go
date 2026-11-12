@@ -101,7 +101,7 @@ Use one internal, evidence-gated vocabulary, mapped to simple listener text:
 
 | Stage | PR / SHA | CI and focused audit | Live host evidence | Result |
 | --- | --- | --- | --- | --- |
-| Plan | This document | Docs-only PR to validate and merge | N/A | In preparation |
+| Plan | This document | Docs-only PR and normal CI; no runtime changes | N/A | [x] Written and committed; PR merge recorded by GitHub |
 | Gate 0 | — | — | — | [ ] |
 | PR A | — | — | — | [ ] |
 | PR B | — | — | — | [ ] |
