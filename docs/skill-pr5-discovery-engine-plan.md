@@ -1,7 +1,15 @@
-# PR 5 — Discovery engine: exploration before verification (design and acceptance gate)
+# PR 5 — Discovery engine: exploration before verification (candidate and acceptance gate)
 
-**Status:** design review only; no skill behavior or app UI changes yet.  
+**Status:** small discovery-policy update implemented on draft PR #252; private Lab **3.11.6-rc.2** updated for behavioral testing. App/Jukebox prompt and production remain unchanged.  
 **Motivation:** Listener testing of 3.11.5 baseline vs private 3.11.6-rc.1 Lab, [Central America A/B](skill-pr5-central-america-funk-ab-comparison.md), found six repeated artist-recordings (half of the twelve) and 10/12 RC tracks sourced on two prominent reissue compilations; [Southern & Gulf Lab diagnostic](skill-pr5-south-gulf-funk-lab-diagnostic.md) showed far wider independent sources. These playlists were generated in distinct host sessions, so cross-session exclusion from inaccessible history could not be expected. Documentary overlap is evidence of a narrow resulting **selection pool**, not proof of an actual external search route or how many references the model read.
+
+## Implementation checkpoint — 2026-11-12
+
+- **Core change (three canonical references):** [GO HARD](../references/go-hard.md) now explores two or more independent **source pathways within the existing funnel** before its final shortlist; [sonic taxonomy](../references/sonic-taxonomy.md) checks original-release provenance and scrutinizes overexposed selections without banning popular music; [verification](../references/verification.md) distinguishes original single/album from reissue bonus and clean transfer evidence.
+- **No app UI or Jukebox brief change; no ordinary GO extra research phase.** Existing source/region reference files and publication permissions were not removed or relaxed. No arbitrary label-country-compilation or one-million-play exclusion quota.
+- **Distribution/test gate:** ChatGPT/Gemini knowledge bundles and portable skill mirrors synchronized, plus five new [offline tests](../tests/test_skill_discovery_exploration.py). [CI on source commit `5dc040ea`](https://github.com/focustimer-dev/go-hipster-go/actions/runs/43251042327) passed **193 tests per Python job on 3.10, 3.12, 3.13**, ZIP integrity and release-isolation checks. Offline packaging proves availability, **not live model file reads or musical quality**.
+- **Private testable candidate:** [Go, Hipster, Go! Lab](https://chatgpt.com/plugins/plugins_6af5b52ee0288191978cf11e3e9ba92f) updated to `3.11.6-rc.2`, release kept **PRIVATE**. [Exact comparison prompts and scorecard](skill-pr5-rc2-discovery-test.md). The old Lab rc.1 results and public 3.11.5 baseline are preserved as evidence.
+- **Not yet established:** in-session reference-read traces, song discovery expansion, fewer repeat selections, clean audio transfers, actual host latency and Gemini/Claude live parity. These remain human/live test gates before any 3.11.6 release.
 
 ## Diagnosis and hypothesis
 
