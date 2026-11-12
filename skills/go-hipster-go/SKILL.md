@@ -208,7 +208,7 @@ A playlist recommendation is NOT a published playlist. For structured export, fo
 
 ## Test changes rather than accumulating rules
 
-Before expanding this skill, compare old and new on three fixed prompts (regional mashup, obscure artist alternatives, open-ended "go") with equal verification access. Check: real tracks/versions, sonic coherence, genuinely unfamiliar discoveries, and scene variety when appropriate. Use listener feedback; never invent quality metrics or claim validation that hasn't happened. See [evaluation prompts](tests/discovery-cases.md).
+Before expanding this skill, compare old and new on three fixed prompts (regional mashup, obscure artist alternatives, open-ended "go") with equal verification access. Check: real tracks/versions, sonic coherence, genuinely unfamiliar discoveries, and scene variety when appropriate. Use listener feedback; never invent quality metrics or claim validation that hasn't happened. See [compact evaluation guidance](references/evaluation-smoke.md).
 
 ## Scope
 
