@@ -130,7 +130,7 @@ This audit does not establish measured host latency, live music quality, or publ
 **PR 5 first gate (in progress):** [qualification protocol and live-host scorecard](skill-release-qualification-3.11.6.md), plus `scripts/qualify_skill_release.py` and its regression tests. Offline builds now report measured candidate ZIP sizes, SHA-256 hashes, version parity and release isolation, alongside published 3.11.5 **asset-metadata** comparisons. CI runs this measurement without any release/upload action. Live host/playlist quality checks remain **not tested**, and version stays **3.11.5** until later qualification.
 
 
-- [x] Initial PR 5 offline matrix passed on Python 3.10/3.12/3.13: 187 tests per job, package sync, playlist/schema validation, four reproducible ZIP builds, reference validation and local qualification report (latest runs 43213737198 and 43213730200). **Recheck on the final head** after any version or test changes; Git whitespace review and live host testing remain separate gates.
+- [x] Initial PR 5 offline matrix passed on Python 3.10/3.12/3.13: 188 tests per job, package sync, playlist/schema validation, four reproducible ZIP builds, reference validation and local qualification report (latest runs 43213737198 and 43213730200). **Recheck on the final head** after any version or test changes; Git whitespace review and live host testing remain separate gates.
 - [ ] Run host-specific Gemini, ChatGPT, and Claude compatibility tests; distinguish offline package checks from live host validation.
 - [ ] Compare representative musical cases *before vs. after*: ordinary GO, regional GO, multi-region GO, GO HARD, two moods, c1 curve, refresh, de-cheese, explicit Antarctica, rough-recording exclusion, transliteration, and publisher failure.
 - [ ] Score qualitative cases for factual accuracy, regional fit, recording identity, originality, sequencing, voice, and constraint compliance. **Different track choices are allowed.**
@@ -177,19 +177,20 @@ Fill these from reproducible tests. “Estimated tokens” is not a measurement 
 | Open-ended GO required files/bytes | Pending | Pending | |
 | GO HARD required files/bytes | Pending | Pending | |
 | Reference-retrieval calls (where observable) | Pending | Pending | |
-| Automated pass/fail count | Historical release not rerun | 187 Python tests per job, 3/3 CI green | PR #252 initial gate; live N/T |
+| Automated pass/fail count | Historical release not rerun | 188 Python tests per job, 3/3 CI green | PR #252 initial gate; live N/T |
 | Musical-quality review | Pending | Pending | |
 
 ## Progress log
 
 | Date | Stage | Change / evidence | Status |
 | --- | --- | --- | --- |
+| 2026-11-12 | PR 5 Gemini publish fidelity | [Gemini candidate contract](skill-release-qualification-3.11.6.md): exact ordered catalog spelling/version lookups, no theme-query substitution, preview-versus-save distinction, full-position audit only after authorized save, no duplicate/text-only write. 188 offline tests per Python version passed; live Gemini save remains N/T. | Offline green; live pending |
 | 2026-11-12 | PR 5 Southern & Gulf Lab diagnostic | [Second 12-track sourced audit](skill-pr5-south-gulf-funk-lab-diagnostic.md): broader source paths than Central America Lab, 4/12 songs on one Soul Jazz compilation, one *Black Rock* expanded-bonus attribution issue. Tempo/clean transfers not heard; no same-region baseline. | Candidate-only conditional; release held |
 | 2026-11-12 | PR 5 ChatGPT A/B | [A/B comparison](skill-pr5-central-america-funk-ab-comparison.md) now records listener's public 3.11.5 versus private Lab 3.11.6-rc.1 output with identical brief. Both 12 real recordings; new candidate broadens geography but relies on one Soundway compilation for 6/12 and two compilations for 10/12; transfer fidelity unverified. | Conditional; release held |
 | 2026-11-12 | PR 5 ChatGPT one-output audit | [Central America Funk source audit](skill-pr5-central-america-funk-observed-audit.md): all 12 tracks found in catalog, one performer miscredit, high compilation concentration, possible skip-rough issue. Loaded skill version unavailable; not an A/B result. | Conditional; release held |
 | 2026-11-12 | PR 4 merged | [PR #251](https://github.com/focustimer-dev/go-hipster-go/pull/251) passed all three Python CI jobs at latest head and merged as `3f169c4ea6e9a2a88d0db505e0cc84c157d2f99f`; no release/deployment. | Complete |
 | 2026-11-12 | PR 5 initiated | Branched after PR 4; added offline ZIP/source measurement script, regression tests and controlled live-host qualification matrix. Version remains 3.11.5; live results N/T. | In progress |
-| 2026-11-12 | PR 5 offline first gate | [Draft PR #252](https://github.com/focustimer-dev/go-hipster-go/pull/252) passed Python 3.10/3.12/3.13 (187 tests each) and local qualification report. Four candidate ZIPs measured vs preserved 3.11.5 asset metadata; real host tests remain N/T. | Offline passed; live pending |
+| 2026-11-12 | PR 5 offline first gate | [Draft PR #252](https://github.com/focustimer-dev/go-hipster-go/pull/252) passed Python 3.10/3.12/3.13 (188 tests each) and local qualification report. Four candidate ZIPs measured vs preserved 3.11.5 asset metadata; real host tests remain N/T. | Offline passed; live pending |
 | 2026-11-11 | Plan | Created the tracked implementation plan from combined ChatGPT/Gemini audits; no implementation or release performed. | Planning |
 | 2026-11-11 | Preflight | Confirmed `gemini-skill-v3.11.5` release and identified an automatic release-upload workflow on pushes to `main`; Stage 0 added. | Planning |
 | 2026-11-11 | Stage 0 | [PR #243](https://github.com/focustimer-dev/go-hipster-go/pull/243) passed validation and merged (`a99705fe`); published 3.11.5 assets unchanged. | Complete |
