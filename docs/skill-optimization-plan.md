@@ -40,7 +40,7 @@
 | --- | --- | --- | --- |
 | Stage 0 | Protect GitHub release publishing and stable Gemini online refs | Low–medium | [x] Complete — PR #243 |
 | PR 1 | Baseline measurements + Gemini compatibility correction | Low | [x] Complete — PR #244 |
-| PR 2 | Deduplicate shared regional research instructions | Low–medium | [ ] Not started |
+| PR 2 | Deduplicate shared regional research instructions | Low–medium | [ ] In progress |
 | PR 3 | Conditional reference loading + compact Gemini routing | Medium | [ ] Not started |
 | PR 4 | Consolidate canonical instructions + lean public packaging | Medium | [ ] Not started |
 | PR 5 | Regression review, reproducible bundles, release 3.11.6 | Release gate | [ ] Not started |
@@ -64,15 +64,17 @@ A checked PR means **merged with evidence**, not merely opened or green in one C
 
 **Intent:** Load a regional brief with less repeated text, while keeping all research data and provenance.
 
-- [ ] Inventory baseline region files and the four addition files. Capture original row counts, IDs, source URLs, boundary notes, and file hashes where useful.
-- [ ] Promote their identical regional safeguard prose into one authoritative shared policy in `references/regional-atlas.md`.
-- [ ] Replace each repeated block with a short, unambiguous pointer, **retaining unique local boundary notes in place** (especially US East/West/Midwest/South).
-- [ ] Consolidate repeated `Unreviewed; check semantic overlap before treating as a distinct route.` table notes; preserve individual overlap/relationship findings.
-- [ ] Confirm that all **920 imported source entries** (720 baseline plus 200 additions, including overlaps) remain addressable under their stable handles.
-- [ ] Verify all citation/source URLs and regional cross-references still resolve.
-- [ ] Update tests to assert source-entry preservation rather than exact duplicated prose.
+- [x] Inventoried 32 regional files: 24 baseline × 30 leads, four additions × 50 leads, plus four special guides. Recorded reproducible research-section fingerprints in `tests/test_regional_research_preservation.py`.
+- [x] Retained the complete shared safeguards in `references/regional-atlas.md` and explicitly made them authoritative for all regional guides.
+- [x] Replaced the identical 217-word block in 24 baseline files with a short atlas pointer; preserved unique regional boundary notes, including US East/West and separate Midwest/South guides.
+- [x] Replaced 171 identical relationship-cell warnings across four additions tables with `Unreviewed`; preserved individually documented overlaps and defined the status once in the atlas.
+- [x] Preservation tests confirm **920 imported source entries** remain addressable: 720 baseline + 200 additions. Frozen fingerprints also verify all 32 research/source sections (including Drive URLs) are unchanged.
+- [x] Existing regional reference/link checks passed in `Validate skill` (Python 3.10, 3.12, 3.13). Research sections and source links match frozen fingerprints. Live external URL availability was not checked.
+- [x] Added `tests/test_regional_research_preservation.py` for original research content, 920 stable IDs and centralized safeguard policy; the revised test passed all three Python CI jobs.
 
 **Exit gate:** No lost research row, handle, link, boundary condition, or verified/unverified distinction; one- and multi-region regression cases pass.
+
+**Measured cleanup:** Each generated ChatGPT/Gemini knowledge bundle went from 461,104 → 415,165 and 445,360 → 399,421 characters respectively (**45,939 characters removed per bundle**, ~10.0% and ~10.3%). These are text-length measurements, **not measured model tokens, latency, or host retrieval-call reductions**. Cross-platform package ZIP size will be measured in the final release stage.
 
 ## PR 3 — Load only the relevant references
 
@@ -161,6 +163,7 @@ Fill these from reproducible tests. “Estimated tokens” is not a measurement 
 | 2026-11-11 | Preflight | Confirmed `gemini-skill-v3.11.5` release and identified an automatic release-upload workflow on pushes to `main`; Stage 0 added. | Planning |
 | 2026-11-11 | Stage 0 | [PR #243](https://github.com/focustimer-dev/go-hipster-go/pull/243) passed validation and merged (`a99705fe`); published 3.11.5 assets unchanged. | Complete |
 | 2026-11-11 | PR 1 | [PR #244](https://github.com/focustimer-dev/go-hipster-go/pull/244) merged (`dffaf69e`); 3 Python CI jobs passed; baseline documented and Gemini script-only linter removed from generated policy. | Complete |
+| 2026-11-11 | PR 2 | [Draft PR #246](https://github.com/focustimer-dev/go-hipster-go/pull/246): 24 shared blocks removed; 171 repeated warning cells shortened; all 920 research entries/fingerprints preserved; three CI jobs passed. Publication and live playlist behavior not tested. | Ready for merge review |
 
 ## How we update this file
 
