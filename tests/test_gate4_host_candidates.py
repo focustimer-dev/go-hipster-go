@@ -31,16 +31,16 @@ class IsolatedGate4CandidateTests(unittest.TestCase):
                 names = z.namelist()
                 self.assertEqual(len(names), len(set(names)))
                 self.assertIn(".codex-plugin/plugin.json", names)
-                self.assertIn("skills/go-hipster-go-lab/SKILL.md", names)
+                self.assertIn("skills/go-hipster-go-gate4/SKILL.md", names)
                 self.assertNotIn("skills/go-hipster-go/SKILL.md", names)
                 manifest = json.loads(z.read("plugin.json"))
                 codex = json.loads(z.read(".codex-plugin/plugin.json"))
                 self.assertEqual(manifest["name"], codex["name"])
-                self.assertEqual(manifest["name"], "go-hipster-go-lab")
+                self.assertEqual(manifest["name"], "go-hipster-go-gate4")
                 self.assertEqual(manifest["version"], VERSION)
                 self.assertEqual(codex["version"], VERSION)
-                skill = z.read("skills/go-hipster-go-lab/SKILL.md").decode("utf-8")
-                self.assertIn("name: go-hipster-go-lab", skill)
+                skill = z.read("skills/go-hipster-go-gate4/SKILL.md").decode("utf-8")
+                self.assertIn("name: go-hipster-go-gate4", skill)
                 self.assertIn('version: "' + VERSION + '"', skill)
                 self.assertIn(DUMMY_SHA, skill)
                 self.assertIn("text-only acceptance", skill)
@@ -48,7 +48,7 @@ class IsolatedGate4CandidateTests(unittest.TestCase):
                 self.assertIn("references/verification.md", names[0] if not names else
                               "\n".join(names))
                 self.assertIn("publication_status_report",
-                              z.read("skills/go-hipster-go-lab/scripts/playlist_cli.py").decode("utf-8"))
+                              z.read("skills/go-hipster-go-gate4/scripts/playlist_cli.py").decode("utf-8"))
         self.assertEqual(digest(original), before)
 
     def test_gemini_qa_is_script_free_deterministic_and_versioned(self):
