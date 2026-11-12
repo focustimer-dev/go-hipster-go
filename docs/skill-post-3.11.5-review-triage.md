@@ -9,7 +9,7 @@
 - **Gemini extra reference-index fetch:** PR #248 supplied direct trigger-to-reference routing; do not restore a global preload for region-locked GO.
 - **A2 Jukebox lens discrepancy:** Default launcher does not inject a rotating genre lens; optional hints and Android Lab route decks are separately scoped. No speculative patch.
 - **A6 development test link:** `references/evaluation-smoke.md` intentionally links the repository-only corpus on `main`; it is not a runtime production-reference fetch.
-- **A3 taxonomy default:** Narrow the unconditional global-scene mood instruction to open-ended GO; region-locked begins with the atlas and relevant region references. Keep the four mirrored source/knowledge locations synchronized.
+- **A3 taxonomy default (completed in PR #252):** Narrowed the unconditional global-scene mood instruction to open-ended GO; region-locked begins with the atlas and relevant region references. Keep the four mirrored source/knowledge locations synchronized.
 
 ## Still to qualify before an actual public release
 
@@ -26,4 +26,4 @@ No familiarity F0–F3 quotas, `go abyss` control, fixed per-country/per-label/p
 
 ## Release boundary
 
-PR #252 may be merged as **qualification infrastructure plus private candidate improvements** after its final head passes relevant CI; this **does not** mean the entire 3.11.6 public release gate passed. Keep `release/skill-prod` and the 3.11.5 public plugin unchanged. A separate explicitly approved release PR must resolve critical host-contract issues, record actual host checks or explicit N/T blockers, synchronize 3.11.6 version metadata, and obtain permission before tagging or publishing.
+PR #252 **was merged** as qualification infrastructure plus private candidate improvements (squash SHA `3c2f2a9d`) after final-head CI passed on Python 3.10, 3.12 and 3.13. This **does not** mean the entire 3.11.6 public release gate passed. Keep `release/skill-prod` and the 3.11.5 public plugin unchanged. A separate explicitly approved release PR must resolve critical host-contract issues, record actual host checks or explicit N/T blockers, synchronize 3.11.6 version metadata, and obtain permission before tagging or publishing.
