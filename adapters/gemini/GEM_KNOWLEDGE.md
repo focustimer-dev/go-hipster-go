@@ -3006,29 +3006,7 @@ copy. Use them for the listener-facing status after an authorized publishing act
 | `published_exact` | PUBLISHED — EXACT | Confirmed saved playlist, confirmed full provider count, every requested recording/version and position independently verified |
 | `published_approximate` | PUBLISHED — APPROXIMATE | Confirmed save with an observed count, version, substitution, order or curation mismatch; describe each observed difference |
 
-**Do not write these six values into playlist JSON format 1.0.** Its
-`publishing.status` remains exactly `not_attempted`, `dry_run`, `published`,
-or `failed`. The read-only reconciler in `scripts/playlist_cli.py` produces a
-*separate* report, not a schema 1.1 migration. A historical format-1.0
-`published` value with a playlist URL does **not** prove `published_exact`.
-
-Reconcile with a separate evidence JSON via
-`python scripts/playlist_cli.py status-report evidence.json`. It accepts
-`requested_count`, `curated_count`, optional `text_only`,
-`created: {source, reference}`, `saved: {source, reference}`,
-`provider_count` (confirmed **full playlist total**, or null/omitted), and
-`positions: [{position, result, source, reference, recording_verified, note}]`.
-A created card is not a save. A save confirmation does not verify its items.
-`result: "exact"` requires `recording_verified: true` based on independently
-checked artist/title/version/recording identity, not an unexamined title match.
-Mismatch values are `substituted`, `wrong_version`, `wrong_order`, and
-`missing`, each with a factual `note`.
-
-The caller must acquire authentic tool/library evidence; this offline function
-cannot prove that a claimed source/reference is genuine. It rejects structural
-contradictions and never contacts or writes to a provider. Keep positional
-evidence separate even when the same recording occurs at multiple positions,
-including all 25 DeBarge Protocol positions. Do not auto-deduplicate.
+**Gemini runtime:** These six labels describe the actual user-facing outcome, not a claim that a generated card was saved. Compare requested, curated and full provider-confirmed totals separately; unknown or hidden positions are not missing tracks. Confirm library saving before reporting SAVED. Report PUBLISHED — EXACT only after saved-library confirmation, a fully known provider count and independently verified artist/title/version and order for every position. If the result differs, describe only observed mismatches. Match repeated recordings position by position, including all 25 DeBarge entries. Never guess item IDs or claim tool access from this guidance.
 
 **Partial preview example:** if 8 of 12 requested entries are visible, report
 eight observed positions and `provider_count: null` until the full provider

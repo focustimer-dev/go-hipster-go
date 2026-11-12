@@ -1,6 +1,6 @@
 # Go, Hipster, Go! — 3.11.6 finalization implementation plan
 
-**Status:** Gates 0, 1 and 2 merged; next Gate 3 host/mobile audit. Public 3.11.6 release remains blocked on acceptance, version prep and explicit approval.  
+**Status:** Gates 0–2 merged. Gate 3 found two concrete Gemini host artifacts and is implementing the narrow PR C correction. Actual host acceptance remains Gate 4; public 3.11.6 release is not approved.  
 **Owner/source of truth:** this checklist; record results here after each gate.  
 **Created:** 2026-11-12. **Target:** maintenance release 3.11.6.  
 **Starting point:** PR #252 (`3c2f2a9d`) and documentation closeout PR #253 (`777891be`) merged into `main`. Public skill and `release/skill-prod` remain at 3.11.5. Private Lab rc.3 is an experimental snapshot, not the public release.
@@ -108,7 +108,7 @@ Use one internal, evidence-gated vocabulary, mapped to simple listener text:
 | Gate 0 | PR A audit: [contract snapshot](skill-3.11.6-gate0-contract-audit.md) | Sources, refs, four release assets and workflow boundaries inspected; external schema consumers N/T | No live host actions | [x] Inventory recorded; PR A CI required before merge |
 | PR A | [PR #255](https://github.com/focustimer-dev/go-hipster-go/pull/255), squash `1af39382` | Gemini exact-first contract; Python 3.10/3.12/3.13 green | Live writer N/T; no saves | [x] Merged; production unchanged |
 | PR B | [PR #256](https://github.com/focustimer-dev/go-hipster-go/pull/256), squash `77d1c101` | Six evidence-gated outcomes; 1.0 preserved; Python 3.10/3.12/3.13 and generated mirror CI green | Actual provider readback N/T; no writes | [x] Merged; 1.1 not needed |
-| PR C (only if warranted) | — | — | — | [ ] |
+| PR C (small correction required) | `fix/skill-3116-gate3-host-audit` | Gemini script-free verification, historical smoke-test clarity and focused regressions; CI pending | Live host and mobile output N/T | [ ] Final CI/diff |
 | Candidate acceptance | — | — | — | [ ] |
 | PR D | — | — | — | [ ] |
 | Explicit publication | — | — | — | [ ] |
