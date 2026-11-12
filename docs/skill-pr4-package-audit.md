@@ -1,6 +1,6 @@
 # PR 4 — Skill Runtime Package Inventory
 
-**State:** Preflight plus safe removal of the repository-only test corpus; NOT a completed PR 4 exit gate.  
+**State:** Offline PR 4 checks passed; PR #251 still requires review/merge.  
 **Version:** 3.11.5 unchanged.
 
 ## Ownership and host boundaries
@@ -28,15 +28,26 @@
 ## Implemented first increment
 
 - Portable ChatGPT and Claude archives use sorted source traversal, explicit fixed ZIP timestamps/permissions and deterministic compression. Gemini's ZIP uses the same stable member rules. A bytewise rebuild check covers all four artifacts. Local `__pycache__` and `.pyc` artifacts are never included.
-- Replaced the mirrored 54 KB development test corpus with a short runtime reference. This reduces package source weight without deleting the actual development corpus. Actual generated ZIP byte savings still require final measured comparison.
+- Replaced the mirrored 54 KB development test corpus with a short runtime reference. This reduces package source weight without deleting the actual development corpus. Actual compressed ZIP byte savings still require final measured comparison in PR 5.
 - ZIP membership/metadata tests check safety and repeatability; The Gemini builder now uses the same deterministic member metadata; an automated test rebuilds all four ZIPs twice and compares hashes.
 
-## Remaining PR 4 work
+## PR 4 completed implementation
 
-- [ ] Consolidate DeBarge and discovery-policy repetitions at the canonical source and safely regenerate the mirrors.
-- [ ] Shorten conditional GO HARD/Antarctica summaries and clarify the setup authority, without changing behavior.
-- [ ] Make the ChatGPT canonical entry a concise dispatcher where safe.
+- [x] Consolidated DeBarge count dispatch and repeated seed/lens/mood-angle policy at the canonical source; synchronized generated distribution mirrors and kept exact roll/exclusion semantics.
+- [x] Kept GO HARD conditional, shortened Antarctica without losing opt-in exclusions, and clarified standalone Spotify versus Gemini YouTube Music setup defaults.
+- [x] Shortened canonical source by 3,041 bytes and moved detailed Claude Spotify recovery into a mirrored on-demand reference. The complete ChatGPT Project knowledge snapshot is intentionally concatenated, not on-demand.
 - [x] Remove the mirrored development acceptance corpus after redirecting its runtime link to a compact reference; verify the rest of the ZIP resources for any other non-runtime material.
-- [ ] Update generated distributions and package checks together; pass complete CI and behavior regressions.
+- [x] Synchronized generated distributions and package checks; Validate skill passed on Python 3.10/3.12/3.13, including four deterministic ZIP double-build checks and package/link integrity.
 
 No release, deployment, reference-branch promotion or music-service write is authorized by this inventory.
+
+## Verified source-size movement before PR 5
+
+| Source | `main` before PR 4 | PR #251 draft | Interpretation |
+| --- | ---: | ---: | --- |
+| Canonical `SKILL.md` | 54,742 bytes | 51,701 bytes | 3,041 bytes smaller; detailed Claude recovery moved on demand |
+| Gemini `GEM_KNOWLEDGE.md` | 403,177 bytes | 401,120 bytes | 2,057 bytes smaller |
+| ChatGPT `CHATGPT_KNOWLEDGE.md` | 417,529 bytes | 418,304 bytes | 775 bytes larger because full Project snapshot embeds new recovery source |
+| Gemini online `SKILL.md` | 7,284 bytes | 7,284 bytes | Size unchanged; the portable entry retains the tested 6.5 KB cap |
+
+These are repository UTF-8 source byte sizes, not tokens or host-fetch measurements. No Android/PWA deployment, skill publication, production promotion or playlist creation occurred.
