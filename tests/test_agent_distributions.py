@@ -36,7 +36,18 @@ class PortableAgentTests(unittest.TestCase):
             self.assertIn("go-hipster-go/references/global-scenes.md", names)
             self.assertIn("go-hipster-go/scripts/playlist_cli.py", names)
             self.assertIn("go-hipster-go/adapters/README.md", names)
-            self.assertIn("go-hipster-go/tests/discovery-cases.md", names)
+            self.assertIn("go-hipster-go/references/evaluation-smoke.md", names)
+            self.assertIn("go-hipster-go/references/claude-spotify-recovery.md", names)
+            self.assertNotIn("go-hipster-go/tests/discovery-cases.md", names)
+        with ZipFile(ROOT / "dist/go-hipster-go-claude-skill.zip") as z:
+            self.assertEqual(len(z.namelist()), len(set(z.namelist())))
+            self.assertTrue(all(i.date_time == (1980, 1, 1, 0, 0, 0) for i in z.infolist()))
+            self.assertFalse(any("__pycache__" in n or n.endswith(".pyc") for n in z.namelist()))
+        for archive in ("go-hipster-go-claude-plugin.zip", "go-hipster-go-chatgpt-plugin.zip"):
+            with ZipFile(ROOT / "dist" / archive) as z:
+                self.assertEqual(len(z.namelist()), len(set(z.namelist())))
+                self.assertTrue(all(i.date_time == (1980, 1, 1, 0, 0, 0) for i in z.infolist()))
+                self.assertFalse(any("__pycache__" in n or n.endswith(".pyc") for n in z.namelist()))
         with ZipFile(ROOT / "dist/go-hipster-go-claude-plugin.zip") as z:
             self.assertIn(".claude-plugin/plugin.json", z.namelist())
             self.assertIn("skills/setup/SKILL.md", z.namelist())
@@ -52,6 +63,9 @@ class PortableAgentTests(unittest.TestCase):
         with ZipFile(ROOT / "dist/go-hipster-go-chatgpt-plugin.zip") as z:
             assert json.loads(z.read("plugin.json"))["name"] == "go-hipster-go"
             assert "skills/go-hipster-go/SKILL.md" in z.namelist()
+            assert "skills/go-hipster-go/references/evaluation-smoke.md" in z.namelist()
+            assert "skills/go-hipster-go/references/claude-spotify-recovery.md" in z.namelist()
+            assert "skills/go-hipster-go/tests/discovery-cases.md" not in z.namelist()
             assert "skills/setup/SKILL.md" in z.namelist()
         self.assertEqual(
             {p.name for p in (ROOT / "dist").glob("*.zip")},
@@ -65,6 +79,8 @@ class PortableAgentTests(unittest.TestCase):
         archive = ROOT / "dist/go-hipster-go-gemini-app-skill.zip"
         with ZipFile(archive) as z:
             names = set(z.namelist())
+            self.assertEqual(len(names), len(z.namelist()))
+            self.assertTrue(all(i.date_time == (1980, 1, 1, 0, 0, 0) for i in z.infolist()))
             self.assertEqual(names, set(__import__("scripts.build_gemini_app_skill", fromlist=["REFERENCES"]).REFERENCES) | {
                 "SKILL.md",
                 "references/workflow.md",
@@ -140,6 +156,18 @@ class PortableAgentTests(unittest.TestCase):
             for link in re.findall(r"\]\(([^)]+)\)", text):
                 if "://" not in link:
                     self.assertIn(link, names)
+
+    def test_all_four_archives_reproduce_byte_for_byte(self):
+        import hashlib
+        def hashes():
+            return {p.name: hashlib.sha256(p.read_bytes()).hexdigest()
+                    for p in (ROOT / "dist").glob("go-hipster-go-*.zip")}
+        cmd = [sys.executable, "scripts/build_agent_packages.py", "--zip"]
+        subprocess.run(cmd, check=True, cwd=ROOT, capture_output=True, text=True)
+        before = hashes()
+        self.assertEqual(len(before), 4)
+        subprocess.run(cmd, check=True, cwd=ROOT, capture_output=True, text=True)
+        self.assertEqual(before, hashes())
 
     def test_gemini_render_avoids_unavailable_sequence_cli(self):
         from scripts.build_gemini_app_skill import render, modular_files

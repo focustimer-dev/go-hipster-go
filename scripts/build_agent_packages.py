@@ -3,7 +3,7 @@
 from __future__ import annotations
 import argparse
 from pathlib import Path
-from zipfile import ZipFile, ZIP_DEFLATED
+from zipfile import ZipFile, ZIP_DEFLATED, ZipInfo
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILL_PATH = Path("skills/go-hipster-go")
@@ -64,7 +64,8 @@ SOURCES = [
     "adapters/streaming/youtube.md",
     "adapters/streaming/spotify.md",
     "adapters/streaming/apple-music.md",
-    "tests/discovery-cases.md",
+    "references/evaluation-smoke.md",
+    "references/claude-spotify-recovery.md",
 ]
 CHATGPT_BUNDLE = Path("adapters/chatgpt/CHATGPT_KNOWLEDGE.md")
 GEM_BUNDLE = Path("adapters/gemini/GEM_KNOWLEDGE.md")
@@ -124,31 +125,51 @@ def sync(check: bool):
     print("Portable distributions synchronized" if not check else "Portable distributions are up to date")
 
 
+# Keep archive member order and metadata stable across checkout machines.
+# The full evaluation corpus stays in the repository. The runtime SKILL.md
+# links to a compact mirrored reference, so no test corpus is shipped.
+ZIP_EPOCH = (1980, 1, 1, 0, 0, 0)
+
+
+def package_sources(folder: Path):
+    """Enumerate only actual source files; ignore local Python cache artifacts."""
+    return sorted(
+        (p for p in folder.rglob("*")
+         if p.is_file() and "__pycache__" not in p.parts and p.suffix != ".pyc"),
+        key=lambda p: p.as_posix(),
+    )
+
+
+def write_archive_file(archive: ZipFile, source: Path, name: str):
+    """Use deterministic timestamps, permissions and compression per member."""
+    info = ZipInfo(name, ZIP_EPOCH)
+    info.compress_type = ZIP_DEFLATED
+    info.external_attr = 0o644 << 16
+    archive.writestr(info, source.read_bytes())
+
+
 def make_zips():
     output = ROOT / "dist"
     output.mkdir(exist_ok=True)
     skill_zip = output / "go-hipster-go-claude-skill.zip"
     with ZipFile(skill_zip, "w", ZIP_DEFLATED) as z:
-        for src in (ROOT / SKILL_PATH).rglob("*"):
-            if src.is_file():
-                z.write(src, "go-hipster-go/" + str(src.relative_to(ROOT / SKILL_PATH)))
+        for src in package_sources(ROOT / SKILL_PATH):
+            write_archive_file(z, src, "go-hipster-go/" + str(src.relative_to(ROOT / SKILL_PATH)))
     plugin_zip = output / "go-hipster-go-claude-plugin.zip"
     with ZipFile(plugin_zip, "w", ZIP_DEFLATED) as z:
         for src in (ROOT / ".claude-plugin" / "plugin.json",):
-            z.write(src, str(src.relative_to(ROOT)))
+            write_archive_file(z, src, str(src.relative_to(ROOT)))
         for folder in ("skills/go-hipster-go", "skills/setup"):
-            for src in (ROOT / folder).rglob("*"):
-                if src.is_file():
-                    z.write(src, str(src.relative_to(ROOT)))
+            for src in package_sources(ROOT / folder):
+                write_archive_file(z, src, str(src.relative_to(ROOT)))
     # ChatGPT personal plugin upload needs the root manifest and complete skill.
     chatgpt_zip = output / "go-hipster-go-chatgpt-plugin.zip"
     with ZipFile(chatgpt_zip, "w", ZIP_DEFLATED) as z:
         for rel in ("plugin.json", "assets/icon.svg", "assets/logo.svg"):
-            z.write(ROOT / rel, rel)
+            write_archive_file(z, ROOT / rel, rel)
         for folder in ("skills/go-hipster-go", "skills/setup"):
-            for src in (ROOT / folder).rglob("*"):
-                if src.is_file():
-                    z.write(src, str(src.relative_to(ROOT)))
+            for src in package_sources(ROOT / folder):
+                write_archive_file(z, src, str(src.relative_to(ROOT)))
     # Gemini web Skills uploader expects SKILL.md at the archive root.
     gemini_zip = output / "go-hipster-go-gemini-app-skill.zip"
     # Gemini Apps cannot rely on code execution. Ship text-only skill + references.

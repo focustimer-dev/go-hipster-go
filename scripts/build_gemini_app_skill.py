@@ -8,7 +8,7 @@ from __future__ import annotations
 import argparse
 import re
 from pathlib import Path
-from zipfile import ZipFile, ZIP_DEFLATED
+from zipfile import ZipFile, ZIP_DEFLATED, ZipInfo
 
 ROOT = Path(__file__).resolve().parents[1]
 REFERENCES = (
@@ -253,11 +253,19 @@ def modular_files(canonical: str, online: bool = False) -> dict[str, str]:
 def build(root: Path, output: Path) -> None:
     files = modular_files((root / "SKILL.md").read_text(encoding="utf-8"))
     output.parent.mkdir(parents=True, exist_ok=True)
+    # Match the portable ChatGPT/Claude ZIP determinism contract: stable
+    # member paths, timestamps, permissions, compression and UTF-8 bytes.
+    def add_text(bundle: ZipFile, name: str, content: str):
+        info = ZipInfo(name, (1980, 1, 1, 0, 0, 0))
+        info.compress_type = ZIP_DEFLATED
+        info.external_attr = 0o644 << 16
+        bundle.writestr(info, content.encode("utf-8"))
+
     with ZipFile(output, "w", ZIP_DEFLATED) as bundle:
-        for path, text in files.items():
-            bundle.writestr(path, text)
-        for relative in REFERENCES:
-            bundle.writestr(relative, render_reference(relative, (root / relative).read_text(encoding="utf-8")))
+        for path in sorted(files):
+            add_text(bundle, path, files[path])
+        for relative in sorted(REFERENCES):
+            add_text(bundle, relative, render_reference(relative, (root / relative).read_text(encoding="utf-8")))
     print("Created", output)
 
 
