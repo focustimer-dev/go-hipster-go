@@ -1,6 +1,6 @@
 # Go, Hipster, Go! — 3.11.6 finalization implementation plan
 
-**Status:** committed plan only; implementation not started.  
+**Status:** Gate 0 audit recorded; Gate 1 / PR A in progress, awaiting final-head CI and review.  
 **Owner/source of truth:** this checklist; record results here after each gate.  
 **Created:** 2026-11-12. **Target:** maintenance release 3.11.6.  
 **Starting point:** PR #252 (`3c2f2a9d`) and documentation closeout PR #253 (`777891be`) merged into `main`. Public skill and `release/skill-prod` remain at 3.11.5. Private Lab rc.3 is an experimental snapshot, not the public release.
@@ -30,10 +30,10 @@
 
 ### Gate 0 — snapshot and conflict audit (no feature PR)
 
-- [ ] Record exact current `main`, `release/skill-prod` and `gemini-skill-v3.11.5` references; preserve prior production SHA and all four published ZIP metadata/hashes where verifiable.
-- [ ] Map canonical `SKILL.md`, Gemini `SKILL.md` + `GEM_INSTRUCTIONS.md` + generated workflow, setup skill, `references/gemini-publish.md`, `references/verification.md`, schema/CLI, relevant tests and actual launcher prompt contracts.
-- [ ] Identify real external consumers of playlist schema 1.0 before selecting the smallest backward-compatible migration.
-- [ ] Confirm `.github/workflows/ci.yml` is validation-only on PR/push and `publish-gemini-skill.yml` is manual, approval-boolean gated, main-only, no overwriting published assets. Flag any unexpected workflow write side effect.
+- [x] Record the pre-PR-A `main`, `release/skill-prod` and `gemini-skill-v3.11.5` SHAs; preserve prior production SHA and the four release-reported ZIP metadata/digests. See [Gate 0 audit](skill-3.11.6-gate0-contract-audit.md).
+- [x] Map canonical, Gemini entry/Gem/workflow, setup, publishing and verification paths, schema/CLI, release tests and historical host cases in the [Gate 0 audit](skill-3.11.6-gate0-contract-audit.md).
+- [x] Identify known **repository** consumers of playlist schema 1.0; external consumers are **N/T**, not assumed absent. Gate 2 must retain 1.0 behavior and avoid a silent breaking migration.
+- [x] Inspect `.github/workflows/ci.yml`: validation and ephemeral PR artifact only; release workflow is manual, approval-boolean gated, main-only and refuses existing tags. No release action invoked.
 - **Gate output:** a brief file/contract matrix in PR A; no blanket refactor or repeated baseline measurement.
 
 ### Gate 1 — PR A: exact first, approximation only by explicit choice
@@ -102,8 +102,8 @@ Use one internal, evidence-gated vocabulary, mapped to simple listener text:
 | Stage | PR / SHA | CI and focused audit | Live host evidence | Result |
 | --- | --- | --- | --- | --- |
 | Plan | This document | Docs-only PR and normal CI; no runtime changes | N/A | [x] Written and committed; PR merge recorded by GitHub |
-| Gate 0 | — | — | — | [ ] |
-| PR A | — | — | — | [ ] |
+| Gate 0 | PR A audit: [contract snapshot](skill-3.11.6-gate0-contract-audit.md) | Sources, refs, four release assets and workflow boundaries inspected; external schema consumers N/T | No live host actions | [x] Inventory recorded; PR A CI required before merge |
+| PR A | `fix/skill-3116-gemini-exact-contract` | Exact-first Gem/install docs plus static regression; final-head CI pending | No writer tests or saves | [ ] Review/merge gate open |
 | PR B | — | — | — | [ ] |
 | PR C (only if warranted) | — | — | — | [ ] |
 | Candidate acceptance | — | — | — | [ ] |
