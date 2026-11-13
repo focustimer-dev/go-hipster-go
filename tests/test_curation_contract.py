@@ -20,8 +20,21 @@ class CurationContractTests(unittest.TestCase):
             with self.subTest(host=name):
                 for rule in ("Recording preference: Skip rough recordings.", "Default OFF when absent",
                              "Keep clean older recordings", "intentional lo-fi", "same performance",
-                             "Never silently relax", "without actual audio access"):
+                             "Never silently relax", "without actual audio access",
+                             "Clean ≠ Mainstream", "Top 40 hits"):
                     self.assertIn(rule, text)
+
+    def test_clean_not_mainstream_is_explicit_at_gemini_entry(self):
+        canonical = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        gemini = (ROOT / "adapters/gemini/SKILL.md").read_text(encoding="utf-8")
+        reference = (ROOT / "references/recording-quality.md").read_text(encoding="utf-8")
+        self.assertIn("Clean ≠ Mainstream", canonical)
+        self.assertIn("Clean ≠ Mainstream", gemini)
+        self.assertIn("not** a filter for popularity", reference)
+        self.assertIn("Top 40 hits", reference)
+        self.assertIn("cleaner transfer of the same performance", reference)
+        self.assertIn("intentional lo-fi", reference)
+        self.assertIn("Default OFF", canonical)
 
     def test_fresh_crate_and_recent_repeat_rules_present(self):
         skill=(ROOT / "SKILL.md").read_text(encoding="utf-8")

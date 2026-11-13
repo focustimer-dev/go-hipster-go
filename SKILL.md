@@ -138,6 +138,8 @@ Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation;
 
 On `Recording preference: Skip rough recordings.` or an equivalent explicit request, read [Recording quality](references/recording-quality.md) before selecting or matching recordings. Default OFF; older app prompts invoke the same rule.
 
+**Clean ≠ Mainstream:** this excludes genuinely damaged/noisy transfers, not obscure or unpolished music. Never substitute familiar hits for deep cuts simply because Skip rough is ON.
+
 ### Go Hard — optional Deep Crate Protocol
 
 Explicit `go hard`, `go funky hard`, or PWA `Curation mode: GO HARD` enables editorial depth, not a sound or tempo change. Default **OFF**: ordinary `go` keeps its fast one-pass path. After the normal writer preflight, load and follow [the Deep Crate Protocol](references/go-hard.md) before curation. Compose with mood, pace, regions, track count, service and art; publish only one final playlist. If unavailable, do not claim a deep pass.
