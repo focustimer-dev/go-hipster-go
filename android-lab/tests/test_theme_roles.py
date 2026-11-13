@@ -199,7 +199,7 @@ class AndroidThemeRoles(unittest.TestCase):
         inspiration=css.split("#labAddInspiration {",1)[1].split("/* Three compact projection keys",1)[0]
         # Strip CSS variable fallbacks: an intentional Libéri default is
         # fine, but no raw historical #103135 may survive outside var().
-        without_fallback=re.sub(r"var\\([^)]*\\)","",inspiration)
+        without_fallback=re.sub(r"var\([^)]*\)","",inspiration)
         self.assertNotIn("#103135",without_fallback)
         self.assertNotIn("#dfb045",without_fallback)
         self.assertIn("var(--lab-ui-link-ink,#103135)",inspiration)
