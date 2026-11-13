@@ -44,14 +44,26 @@ final class SkillUpdates {
             .put("download",r.download).put("id",r.assetId).put("updated",r.updated)
             .put("digest",r.digest).put("prerelease",r.prerelease);
     }
+    // Dismissal applies to one package identity and one channel, never to
+    // the entire app. A new release asset becomes actionable again.
+    static boolean actionable(ReleasePolicy.Release release,String confirmed,String dismissed) {
+        return release!=null&&!release.identity().equals(confirmed)&&!release.identity().equals(dismissed);
+    }
     boolean available() {
-        ReleasePolicy.Release r=cached(channel());
-        return r!=null&&!r.identity().equals(prefs.getString(key("confirmed",channel()),""));
+        final String channel=channel();
+        return actionable(cached(channel),prefs.getString(key("confirmed",channel),""),
+            prefs.getString(key("dismissed",channel),""));
     }
     String summary() {
-        ReleasePolicy.Release r=cached(channel());
-        return r==null?"No release checked yet":available()?"Package available · "+r.tag:"Installation recorded · "+r.tag;
+        final String channel=channel();
+        ReleasePolicy.Release r=cached(channel);
+        if(r==null)return "No release checked yet";
+        if(r.identity().equals(prefs.getString(key("confirmed",channel),"")))return "Installation recorded · "+r.tag;
+        if(r.identity().equals(prefs.getString(key("dismissed",channel),"")))return "Update dismissed · "+r.tag;
+        return "Package available · "+r.tag;
     }
+    String latestVersion(){ReleasePolicy.Release r=cached(channel());return r==null?"Not checked":r.tag;}
+    String recordedVersion(){return prefs.getString(key("confirmedLabel",channel()),"Not recorded");}
     String detail() {
         long time=prefs.getLong(key("checked",channel()),0);
         return ("stable".equals(channel())?"Stable":"Lab")+" · Last successful check: "+
@@ -64,7 +76,7 @@ final class SkillUpdates {
     void show() {
         final String channel=channel();
         final ReleasePolicy.Release release=cached(channel);
-        String confirmed=prefs.getString(key("confirmedLabel",channel),"Not recorded");
+        String confirmed=recordedVersion();
         long time=prefs.getLong(key("checked",channel),0);
         String message="Channel: "+("stable".equals(channel)?"Stable":"Lab (includes prereleases)")+
             "\nYou confirmed: "+confirmed+"\nLatest checked package: "+(release==null?"Not checked":release.tag)+
@@ -76,14 +88,28 @@ final class SkillUpdates {
             .setNegativeButton("Close",null).create();
         add(panel,checking?"Checking…":"Check for updates",()->{dialog.dismiss();check(true);});
         if(release!=null) {
-            add(panel,"View changes",()->opener.open(release.page));
-            add(panel,"Download & update instructions",()->instructions(release));
+            add(panel,"View release changes",()->opener.open(release.page));
+            add(panel,"Download ZIP & replacement steps",()->instructions(release));
+            if(!release.identity().equals(prefs.getString(key("confirmed",channel),""))) {
+                if(release.identity().equals(prefs.getString(key("dismissed",channel),""))) {
+                    add(panel,"Show this update again",()->{
+                        prefs.edit().remove(key("dismissed",channel)).apply();
+                        changed.run();dialog.dismiss();show();
+                    });
+                }else{
+                    add(panel,"Not now — hide this package's badge",()->{
+                        prefs.edit().putString(key("dismissed",channel),release.identity()).apply();
+                        changed.run();dialog.dismiss();show();
+                    });
+                }
+            }
             add(panel,"I installed this package",()->dialogs.show(new AlertDialog.Builder(activity)
                 .setTitle("Record your installation?")
                 .setMessage("Confirm only after replacing the skill in Gemini with "+release.tag+". This records your confirmation; it does not verify Gemini or install anything.")
                 .setPositiveButton("I installed it",(d,n)->{
                     prefs.edit().putString(key("confirmed",channel),release.identity())
-                        .putString(key("confirmedLabel",channel),release.tag).apply();changed.run();dialog.dismiss();show();
+                        .putString(key("confirmedLabel",channel),release.tag)
+                        .remove(key("dismissed",channel)).apply();changed.run();dialog.dismiss();show();
                 }).setNegativeButton("Cancel",null)));
         }
         add(panel,"Release channel: "+channel,()->{
@@ -103,7 +129,7 @@ final class SkillUpdates {
     }
     private void instructions(ReleasePolicy.Release release) {
         dialogs.show(new AlertDialog.Builder(activity).setTitle("Update "+release.tag)
-            .setMessage("1. Open the release page to review changes.\n2. Download the Gemini skill ZIP.\n3. In Gemini web: Customize → Skills → Go, Hipster, Go! → More → Replace skill.\n4. Choose the downloaded ZIP and Save.\n5. Return here and choose ‘I installed this package’.\n\nThe APK and your GO prompt stay unchanged. Downloads alone never mark an update as installed.")
+            .setMessage("1. Review the release changes.\n2. Download the Gemini Skill ZIP.\n3. In Gemini web: Customize → Skills → Go, Hipster, Go! → More → Replace skill.\n4. Upload the ZIP and Save.\n5. Return here; choose ‘I installed this package’ only after confirming the replacement.\n\n‘Not now’ hides only this exact package's badge. A newer release will alert you again. Downloads alone never prove installation.")
             .setPositiveButton("Download ZIP",(d,n)->opener.open(release.download))
             .setNeutralButton("Gemini web",(d,n)->opener.open("https://gemini.google.com/app"))
             .setNegativeButton("Back",(d,n)->show()));

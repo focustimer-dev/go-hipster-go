@@ -1057,3 +1057,21 @@ body.gig-poster.lab-workspace[data-page=launch] :is(
  body.gig-poster.lab-workspace[data-page=launch] #promptReceipt .receipt-ticket-dock .ticket-region-short{
  color:var(--lab-ui-receipt-meta-ink);
 }
+
+/* Compact Gemini-only update action; derived from existing theme roles. */
+body.gig-poster.lab-workspace #labSkillNotice{
+ display:flex;align-items:center;justify-content:space-between;gap:10px;
+ margin:0 0 7px;padding:6px 8px;
+ background:var(--lab-ui-panel,#dfb045);color:var(--lab-ui-on-panel,#103135);
+ border-bottom:2px solid var(--lab-ui-control-outline,#103135);
+}
+body.gig-poster.lab-workspace #labSkillNotice[hidden]{display:none}
+body.gig-poster.lab-workspace #labSkillNotice strong{
+ flex:1;min-width:0;font:700 .75rem/1.3 'Courier New',monospace;overflow-wrap:anywhere;
+}
+body.gig-poster.lab-workspace #labSkillNotice button{
+ flex-shrink:0;min-height:44px;padding:5px 9px;
+ background:var(--lab-ui-primary-bg,#103135);color:var(--lab-ui-primary-ink,#dfb045);
+ border:1px solid var(--lab-ui-primary-rule,#103135);
+ font:400 .94rem/1.1 Poster,sans-serif;
+}

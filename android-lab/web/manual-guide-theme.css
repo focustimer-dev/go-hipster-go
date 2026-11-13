@@ -162,3 +162,16 @@
 }
 :root[data-ghg-theme-profile=print] .manual-index{border-bottom-color:var(--lab-ui-rule)}
 :root[data-ghg-theme-profile=print] .manual-liner>summary{border-bottom:1px solid var(--lab-ui-rule)}
+
+/* Gemini Setup ends with a real review/record action. Native dialogs
+   use the current shared theme; no guessed installation state. */
+.skill-checkin-disclaimer{font:400 .78rem/1.35 Arial,sans-serif;margin:8px 0;color:var(--ink)}
+#setupConfirm .finish [data-review-skill-updates]{
+ display:block;width:100%;min-height:48px;margin:12px 0;padding:9px 11px;
+ background:var(--ink);color:var(--paper);border:1px solid var(--ink);
+ font:400 clamp(1rem,4.5vw,1.3rem)/1.2 Poster,sans-serif;cursor:pointer;
+}
+:root[data-ghg-theme-profile=print] #setupConfirm .finish [data-review-skill-updates]{
+ background:var(--lab-ui-primary-bg);color:var(--lab-ui-primary-ink);
+ border-color:var(--lab-ui-primary-rule);
+}

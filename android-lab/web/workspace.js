@@ -96,8 +96,14 @@ function renderLabWorkspace(){
   doc.getElementById('labSetupStatus').textContent='Setup changed. Copy a fresh connection check for your chosen AI and music service.';
  }
  const state=labState(),reference=labInspiration(),entries=Array.isArray(state.saved)?state.saved.filter(e=>e&&typeof e==='object'&&typeof e.id==='string'&&e.id.length>0&&typeof e.prompt==='string').slice(-10):[];
- const dot=doc.getElementById('labUpdateDot');dot.hidden=!state.updateAvailable;dot.setAttribute('aria-hidden','true');
- doc.querySelector('[data-lab-tab="manual"]').setAttribute('aria-label',state.updateAvailable?'Manual, Gemini skill update available':'Manual');
+ const geminiUpdate=ai==='gemini'&&state.updateAvailable===true;
+ const dot=doc.getElementById('labUpdateDot');dot.hidden=!geminiUpdate;dot.setAttribute('aria-hidden','true');
+ doc.querySelector('[data-lab-tab="manual"]').setAttribute('aria-label',geminiUpdate?'Manual, Gemini skill update available':'Manual');
+ const notice=doc.getElementById('labSkillNotice');
+ if(notice){notice.hidden=!geminiUpdate;doc.getElementById('labSkillNoticeText').textContent=
+  'Gemini Skill update'+(state.updateLatest&&state.updateLatest!=='Not checked'?' · '+state.updateLatest:'')+' available';}
+ const updateSection=doc.getElementById('labUpdatesTitle')?.closest('section');
+ if(updateSection)updateSection.hidden=ai!=='gemini';
  doc.getElementById('labCrateHeaderSummary').textContent=reference?labInspirationTitle(state.inspirationPreview?.title,reference):'Inspiration and exact requests, saved on this device.';
  doc.getElementById('labCrateReference').textContent=reference?'Reference ready':'No reference yet';
  doc.getElementById('labCrateReferenceHelp').textContent=reference?'Use it in Jukebox, or review the full reference.':'Share a song link to Lab, or add an idea.';
@@ -135,7 +141,16 @@ function renderLabWorkspace(){
   }
  }
  doc.getElementById('labServicePair').textContent=aiNames[ai]+' → '+serviceNames[service];doc.getElementById('labUpdateState').textContent=state.updateSummary||'Check your installed skill';doc.getElementById('labUpdateDetail').textContent=state.updateDetail||'Review the release, download deliberately, then record your installation.';
+ labSendSkillStatus(state);
  doc.getElementById('labHandoffDescription').textContent=ai==='other'?'GO copies your request. Open your AI yourself, paste and send.':state.oneTap===false?'GO copies your request. Then choose OPEN to launch your selected AI.':state.mode==='share'?'GO copies the request and tries sharing it to your selected AI. If unavailable, choose an app from Android’s share menu.':state.mode==='browser'?'GO copies your request and opens your selected AI in the browser. Paste and send when ready.':'GO copies your request and opens the selected AI app. Paste and send when ready. If the app is unavailable, Lab opens its website.';renderLabHandoff();
+}
+function labSendSkillStatus(state=labState()){
+ const frame=doc.getElementById('labManualFrame');
+ if(!frame?.contentWindow)return;
+ frame.contentWindow.postMessage({type:'lab-skill-status',
+  available:ai==='gemini'&&state.updateAvailable===true,
+  latest:String(state.updateLatest||'Not checked'),recorded:String(state.updateConfirmed||'Not recorded')
+ },location.origin);
 }
 function labPreferences(){
  const state=labState(),dialog=doc.getElementById('labPreferences');if(dialog.open)return;dialog.querySelectorAll('[name="labHandoff"]').forEach(i=>i.checked=i.value===(state.mode||'open'));dialog.querySelectorAll('[data-lab-pref]').forEach(i=>i.checked=state[i.dataset.labPref]!==false);dialog.querySelector('.lab-dialog-body').scrollTop=0;dialog.showModal();body.classList.add('lab-modal-open');
@@ -188,6 +203,7 @@ window.addEventListener('message',event=>{if(event.source===doc.getElementById('
 doc.getElementById('labManualReturn').onclick=()=>labShowManualResources(false);
 
 window.addEventListener('message',event=>{if(event.source===doc.getElementById('labManualFrame')?.contentWindow&&event.origin===location.origin&&event.data?.type==='lab-gemini-updates')window.HipsterLab?.showUpdates?.()});
+doc.getElementById('labManualFrame')?.addEventListener('load',()=>labSendSkillStatus());
 // External Manual links are never loaded in the embedded frame; forward only
 // explicit https links to the native system browser after origin/source checks.
 window.addEventListener('message',event=>{
