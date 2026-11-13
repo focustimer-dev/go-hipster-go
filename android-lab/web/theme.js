@@ -308,7 +308,8 @@ function setTheme(next,persist){
 }
 document.addEventListener('click',event=>{
  const choice=event.target.closest?.('[data-lab-theme]');
- if(choice)setTheme(choice.dataset.labTheme,true);
+ if(choice&&choice.dataset.labTheme!==theme&&setTheme(choice.dataset.labTheme,true))
+  window.HipsterLab?.haptic?.("click");
 });
 document.addEventListener('DOMContentLoaded',()=>{
  // A dormant print stylesheet may finish loading after the first paint.
