@@ -36,7 +36,18 @@ class PortableAgentTests(unittest.TestCase):
             self.assertIn("go-hipster-go/references/global-scenes.md", names)
             self.assertIn("go-hipster-go/scripts/playlist_cli.py", names)
             self.assertIn("go-hipster-go/adapters/README.md", names)
-            self.assertIn("go-hipster-go/tests/discovery-cases.md", names)
+            self.assertIn("go-hipster-go/references/evaluation-smoke.md", names)
+            self.assertIn("go-hipster-go/references/claude-spotify-recovery.md", names)
+            self.assertNotIn("go-hipster-go/tests/discovery-cases.md", names)
+        with ZipFile(ROOT / "dist/go-hipster-go-claude-skill.zip") as z:
+            self.assertEqual(len(z.namelist()), len(set(z.namelist())))
+            self.assertTrue(all(i.date_time == (1980, 1, 1, 0, 0, 0) for i in z.infolist()))
+            self.assertFalse(any("__pycache__" in n or n.endswith(".pyc") for n in z.namelist()))
+        for archive in ("go-hipster-go-claude-plugin.zip", "go-hipster-go-chatgpt-plugin.zip"):
+            with ZipFile(ROOT / "dist" / archive) as z:
+                self.assertEqual(len(z.namelist()), len(set(z.namelist())))
+                self.assertTrue(all(i.date_time == (1980, 1, 1, 0, 0, 0) for i in z.infolist()))
+                self.assertFalse(any("__pycache__" in n or n.endswith(".pyc") for n in z.namelist()))
         with ZipFile(ROOT / "dist/go-hipster-go-claude-plugin.zip") as z:
             self.assertIn(".claude-plugin/plugin.json", z.namelist())
             self.assertIn("skills/setup/SKILL.md", z.namelist())
@@ -52,6 +63,9 @@ class PortableAgentTests(unittest.TestCase):
         with ZipFile(ROOT / "dist/go-hipster-go-chatgpt-plugin.zip") as z:
             assert json.loads(z.read("plugin.json"))["name"] == "go-hipster-go"
             assert "skills/go-hipster-go/SKILL.md" in z.namelist()
+            assert "skills/go-hipster-go/references/evaluation-smoke.md" in z.namelist()
+            assert "skills/go-hipster-go/references/claude-spotify-recovery.md" in z.namelist()
+            assert "skills/go-hipster-go/tests/discovery-cases.md" not in z.namelist()
             assert "skills/setup/SKILL.md" in z.namelist()
         self.assertEqual(
             {p.name for p in (ROOT / "dist").glob("*.zip")},
@@ -65,6 +79,8 @@ class PortableAgentTests(unittest.TestCase):
         archive = ROOT / "dist/go-hipster-go-gemini-app-skill.zip"
         with ZipFile(archive) as z:
             names = set(z.namelist())
+            self.assertEqual(len(names), len(z.namelist()))
+            self.assertTrue(all(i.date_time == (1980, 1, 1, 0, 0, 0) for i in z.infolist()))
             self.assertEqual(names, set(__import__("scripts.build_gemini_app_skill", fromlist=["REFERENCES"]).REFERENCES) | {
                 "SKILL.md",
                 "references/workflow.md",
@@ -141,6 +157,47 @@ class PortableAgentTests(unittest.TestCase):
                 if "://" not in link:
                     self.assertIn(link, names)
 
+    def test_all_four_archives_reproduce_byte_for_byte(self):
+        import hashlib
+        def hashes():
+            return {p.name: hashlib.sha256(p.read_bytes()).hexdigest()
+                    for p in (ROOT / "dist").glob("go-hipster-go-*.zip")}
+        cmd = [sys.executable, "scripts/build_agent_packages.py", "--zip"]
+        subprocess.run(cmd, check=True, cwd=ROOT, capture_output=True, text=True)
+        before = hashes()
+        self.assertEqual(len(before), 4)
+        subprocess.run(cmd, check=True, cwd=ROOT, capture_output=True, text=True)
+        self.assertEqual(before, hashes())
+
+    def test_gemini_render_avoids_unavailable_sequence_cli(self):
+        from scripts.build_gemini_app_skill import render, modular_files
+        canonical = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        rendered = render(canonical)
+        online = modular_files(canonical, online=True)
+        for policy in (rendered, online["references/workflow.md"]):
+            self.assertNotIn("lint-sequence", policy)
+            self.assertIn("lint a manifest if available or check manually", policy)
+
+    def test_gemini_clean_track_matching_and_partial_preview(self):
+        canonical = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        entry = (ROOT / "adapters/gemini/SKILL.md").read_text(encoding="utf-8")
+        knowledge = (ROOT / "adapters/gemini/GEM_KNOWLEDGE.md").read_text(encoding="utf-8")
+        policy = (ROOT / "references/gemini-publish.md").read_text(encoding="utf-8")
+        self.assertIn("one plain `Artist - Track Title` string per slot in order", canonical)
+        self.assertIn("official artist/title spelling and diacritics", canonical)
+        self.assertIn("not generic `(Remastered)` tags", canonical)
+        self.assertIn("simplify accents or punctuation only after a particular match fails", canonical)
+        self.assertIn("Keep official artist/title spelling and essential mix tags", entry)
+        self.assertIn("no years, labels, notes or generic remaster suffixes", entry)
+        self.assertIn("A preview (even 8 of 12) proves neither count nor save", entry)
+        self.assertIn("Never save text-only crates", entry)
+        self.assertIn("Partial preview versus full saved list", policy)
+        self.assertIn("Google does not specify a universal eight-track preview limit", policy)
+        self.assertIn("mark unseen positions **unverified**", policy)
+        self.assertIn("Never save a text-only crate", policy)
+        self.assertIn("Partial preview versus full saved list", knowledge)
+        self.assertIn("A preview (even 8 of 12) proves neither count nor save", knowledge)
+
     def test_gemini_publish_follow_up_contract(self):
         from scripts.build_gemini_app_skill import render, REFERENCES
         entry = (ROOT / "adapters/gemini/SKILL.md").read_text()
@@ -194,7 +251,7 @@ class PortableAgentTests(unittest.TestCase):
         self.assertIn("Gemini-specific publishing recovery",gem)
         self.assertIn("Save to library",guide)
 
-    def test_gemini_zip_is_linked_and_release_automated(self):
+    def test_gemini_zip_is_linked_and_release_manually_published(self):
         url = "https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip"
         readme=(ROOT/"README.md").read_text(encoding="utf-8")
         gem=(ROOT/"adapters/gemini/README.md").read_text(encoding="utf-8")
@@ -203,7 +260,9 @@ class PortableAgentTests(unittest.TestCase):
         self.assertIn(url, gem)
         self.assertIn("Download the Gemini skill — no terminal required", gem)
         self.assertIn("gh release create", workflow)
-        self.assertIn("gh release upload", workflow)
+        self.assertNotIn("gh release upload", workflow)
+        self.assertIn("workflow_dispatch:", workflow)
+        self.assertIn("inputs.publish_approved", workflow)
         self.assertIn("gh release delete-asset", workflow)
         self.assertNotIn("dist/hipster-music-generator-", workflow)
 
@@ -247,7 +306,9 @@ class PortableAgentTests(unittest.TestCase):
         self.assertIn("muse skills install", muse)
         self.assertIn("not proof", muse)
         self.assertIn("spotify-meta-muse-agent", muse)
-        self.assertIn("gh release upload", workflow)
+        self.assertNotIn("gh release upload", workflow)
+        self.assertIn("workflow_dispatch:", workflow)
+        self.assertIn("inputs.publish_approved", workflow)
 
     def test_guardrails_survive(self):
         s=(ROOT/"skills/go-hipster-go/SKILL.md").read_text()

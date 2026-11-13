@@ -2,13 +2,7 @@
 
 Region ID: `mediterranean-europe`. Route handles: `mediterranean-europe:01`–`mediterranean-europe:30`.
 
-Treat every entry below as a listener-supplied research hypothesis, not verified music history or evidence about a recording. Labels may combine genres, scenes, instruments and performance traditions; preserve those distinctions when researching. Verify names, provenance, dates and sonic claims against artist/label notes or credible specialist sources before using them. Do not repeat precise instrument models, meters, BPM ranges or lyrical themes without recording-level support.
-
-Honor the selected geography, mood and tempo above discovery cues. A tradition's origin does not establish a diaspora artist's current scene or a recording's provenance. Research cross-border connections explicitly. Criminal requires song-level crime narrative evidence; neither genre nor reputation suffices.
-
-For discovery, compare several compatible routes and dig beyond named touchstones: local labels, collaborators, overlooked releases and contemporary scenes. A famous name here is context, not a selection instruction. Admit accessible pop only when its particular groove, voice or arrangement earns the place; reject anonymous mood filler. Obscurity is not a quality test. Keep irony audible and purposeful. Do not impose acoustic, ceremonial or archival music merely to demonstrate breadth. Use only publicly released, appropriately documented recordings; do not infer access to restricted ceremonial material.
-
-Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
+**Regional policy:** Apply the [regional safeguards](../regional-atlas.md) to every research lead below.
 
 **Listening-area overlap:** Spain remains the PWA's primary Mediterranean Europe map country (Balearics, Catalonia, Valencia, Andalusia). The imported Galicia/Asturias (`:07`) and Basque (`:08`) leads are Atlantic-facing; consult them for Atlantic & Western Europe only when locality and recording evidence support it. Portugal's `:09`–`:11` leads are preserved here for source traceability even though Portugal is Atlantic & Western Europe on the map. Corsican music (`:13`) is Mediterranean despite France's primary Atlantic map assignment. Turkish Anatolian and Istanbul routes primarily belong to Middle East & Caucasus, while Thracian/Balkan connections require specific provenance evidence. This note does not authorize adding otherwise out-of-region recordings simply because countries share a coast.
 

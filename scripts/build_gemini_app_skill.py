@@ -8,7 +8,7 @@ from __future__ import annotations
 import argparse
 import re
 from pathlib import Path
-from zipfile import ZipFile, ZIP_DEFLATED
+from zipfile import ZipFile, ZIP_DEFLATED, ZipInfo
 
 ROOT = Path(__file__).resolve().parents[1]
 REFERENCES = (
@@ -16,6 +16,8 @@ REFERENCES = (
     "references/reference-index.md",
     "references/de-cheese.md",
     "references/discovery-routes.md",
+    "references/seed-cues.json",
+    "references/mood-spark-bank.json",
     "references/funky.md",
     "references/desire-triumphant.md",
     "references/regions/antarctica.md",
@@ -125,6 +127,14 @@ Antarctica requires deliberate naming or named PWA selection. Exclude it from pl
     if n != 1:
         raise ValueError("DeBarge random rule changed")
     parts["Deliberate irony and Easter egg"] = egg
+    # Gemini Apps cannot run local CLI lint commands. Preserve the sequence gate
+    # using a supported manifest check or explicit manual review.
+    old_lint = "run `lint-sequence` on a manifest when available"
+    if old_lint not in parts["Curate in seven steps"]:
+        raise ValueError("Sequence lint policy anchor changed")
+    parts["Curate in seven steps"] = parts["Curate in seven steps"].replace(
+        old_lint, "lint a manifest if available or check manually"
+    )
     return "\n\n".join(parts[k] for k in keys)
 
 
@@ -139,6 +149,15 @@ def render_reference(relative: str, content: str) -> str:
         content = re.sub(
             r"The validator's .--strict. flag checks minimum verification metadata, not factual truth; independent listening/catalog validation is still needed\.",
             "A verified result needs actual trustworthy sources, not just well-formed metadata.", content)
+        # Strip developer-only CLI/schema details from Gemini's script-free
+        # verification reference; keep the six listener-facing evidence statuses.
+        content, n = re.subn(
+            r"\*\*Do not write these six values into playlist JSON format 1\.0\.\*\*.*?(?=\*\*Partial preview example:\*\*)",
+            "**Gemini runtime:** These six labels describe the actual user-facing outcome, not a claim that a generated card was saved. Compare requested, curated and full provider-confirmed totals separately; unknown or hidden positions are not missing tracks. Confirm library saving before reporting SAVED. Report PUBLISHED — EXACT only after saved-library confirmation, a fully known provider count and independently verified artist/title/version and order for every position. If the result differs, describe only observed mismatches. Match repeated recordings position by position, including all 25 DeBarge entries. Never guess item IDs or claim tool access from this guidance.\n\n",
+            content, count=1, flags=re.S,
+        )
+        if n != 1:
+            raise ValueError("Gemini verification status section changed")
         return content.replace("\n\n\n\n", "\n\n")
     if relative == "references/curation-examples.md":
         content = content.split("## Host-aware recovery", 1)[0].rstrip() + "\n"
@@ -177,7 +196,7 @@ For `Discovery route: v1/Rxx`, read [routes](references/discovery-routes.md) bef
 
 **Publish-first GO:** An ordinary go or go live curates 12 real, verified, ordered artist/title/version recordings by default (or the requested count), then attempts ONE connected and authorized YouTube Music playlist when selected and actually available. Non-mutating capability preflight happens before costly discovery; missing writer never blocks curation. Only explicit go, text only skips publishing. No saved account or typed @mention proves tool availability; setup never triggers a playlist.
 
-**Fidelity and status:** Retain the exact intended ordered crate FIRST. When the connected playlist writer exposes explicit track-list input (for example `video_titles`), submit the full ordered `Artist - Track Title` list on the FIRST attempt, not a freeform mood/genre `query`. Omit label/catalog/year and editorial notes from lookup strings, while retaining necessary live/mix/instrumental distinctions; simplify punctuation only on a failed match. Preserve the original verified recording metadata and check available item-level results. If only themed playlist generation is offered, DO NOT call it as a fallback: keep the verified crate and report **PLAYLIST NOT CREATED — exact-track publishing unavailable**. Never invent an action or field. A generated card is not automatically saved: distinguish **Save to library**, user confirmation, writer-confirmed creation, and item-level readback. If no playlist exists, return the original crate and **PLAYLIST NOT CREATED**. Never invent matches, saved counts, order or URLs, generate individual YouTube video search cards instead of a playlist, reroll DeBarge or auto-retry. Offer one genuine next step such as selecting the real @YouTubeMusic connected app.
+**Fidelity and status:** Retain the exact intended ordered crate FIRST. When the connected playlist writer exposes explicit track-list input (for example `video_titles`), submit the full ordered `Artist - Track Title` list on the FIRST attempt, not a freeform mood/genre `query`. Keep official artist/title spelling and essential mix tags; no years, labels, notes or generic remaster suffixes. Strip accents only after failed matches; verify fallback. Preserve the original verified recording metadata and check available item-level results. If only themed playlist generation is offered, DO NOT call it as a fallback: keep the verified crate and report **PLAYLIST NOT CREATED — exact-track publishing unavailable**. Never invent an action or field. A preview (even 8 of 12) proves neither count nor save. Distinguish **Save to library** from confirmed saving. After authorized save, check all slots where readable; mark unseen tracks unverified. Never save text-only crates. If no playlist exists, return the original crate and **PLAYLIST NOT CREATED**. Never invent matches, saved counts, order or URLs, generate individual YouTube video search cards instead of a playlist, reroll DeBarge or auto-retry. Offer one genuine next step such as selecting the real @YouTubeMusic connected app.
 
 ## Creative cue and count safeguards
 
@@ -191,7 +210,11 @@ On setup, setup status, or setup change inspect actual connected music tools and
 
 ## Resource routing
 
-Follow the [reference index](references/reference-index.md) before choosing a thesis. It specifies the required taxonomy, category discovery and verification sections, regional supplements and optional depth. Keep all four axes and the complete research map available. PWA angles, lenses and sparks remain hypotheses, not quotas or verified claims.
+**Direct GO routing (no index hop):** New GO reads [workflow](references/workflow.md), [taxonomy](references/sonic-taxonomy.md), and [verification](references/verification.md). If regions are selected, read [atlas](references/regional-atlas.md) safeguards and only `references/regions/<id>.md` for each selected region. Map PWA labels to IDs by lowercase hyphenation except: US Midwest & Great Lakes=`us-midwest`, US South & Gulf=`us-south`, Atlantic & Western Europe=`atlantic-europe`, Middle East & Caucasus=`middle-east`, Central & Southern Africa=`central-southern-africa`. Use the atlas for ambiguous labels.
+
+**Regional additions:** `oceania` → `references/regions/oceania-additions.md`; `central-america` → `references/regions/central-america-additions.md`; `central-southern-africa` → BOTH `references/regions/central-africa-additions.md` and `references/regions/southern-africa-additions.md`. For any of these also read `references/regional-review.md`. Antarctica is opt-in only: `references/regions/antarctica.md`.
+
+**Global scenes:** Open-ended/worldwide or broad cross-scene GO reads `references/global-scenes.md`; region-locked GO skips it unless research is weak or a cross-scene bridge needs it, never loosening regional constraints. **Modes:** hard → `references/go-hard.md`; funky → `references/funky.md`; Desire/Triumphant → `references/desire-triumphant.md`; Skip rough (**Clean ≠ Mainstream**) → `references/recording-quality.md`; cover art → `references/cover-art.md`. The `c1:` curve and discovery-route triggers have direct links above. De-cheese is read-only audit; Publish finalizes the current crate. Batch relevant files when supported; never preload every region. The [index](references/reference-index.md) is a fallback for ambiguity.
 
 """
     preface = preface.replace("For `Discovery route:", "For a new or retained `c1:` curve, read [tempo curve](references/tempo-curve.md) before choosing tracks.\n\nFor `Discovery route:", 1)
@@ -200,7 +223,7 @@ Follow the [reference index](references/reference-index.md) before choosing a th
     forbidden = ("scripts/", "python ", "add_playlist_items", "--strict",
                  "Spotify is the default service", "Spotify by default",
                  "In ordinary **ChatGPT**", "Apple Music handoff",
-                 "Real Claude field report", "\\n\\n##")
+                 "Real Claude field report", "lint-sequence", "\\n\\n##")
     if any(x.lower() in result.lower() for x in forbidden):
         raise ValueError("Gemini skill contains non-Gemini policy or malformed Markdown")
     return result
@@ -211,12 +234,24 @@ def modular_files(canonical: str, online: bool = False) -> dict[str, str]:
     full = render(canonical)
     split = full.index("## Intent and activation")
     entry, workflow = full[:split], full[split:]
+    # Keep the initial Gemini skill below the host's 6.5 KB limit. Move
+    # non-dispatch creative/setup detail into the always-read workflow.
+    creative_start = entry.index("## Creative cue and count safeguards")
+    setup_start = entry.index("## Gemini setup")
+    resource_start = entry.index("## Resource routing")
+    extra = entry[creative_start:resource_start]
+    entry = entry[:creative_start] + (
+        "## Gemini setup\n\nOn setup read the workflow; inspect real connected music tools, "
+        "ask only necessary preferences, never publish, roll DeBarge or assume a saved service.\n\n"
+    ) + entry[resource_start:]
+    workflow = extra + workflow
     entry += "## Detailed workflow\n\nRead [workflow.md](references/workflow.md) before curation. Only load relevant references; no installation preload or region crawling. Disclose missing files.\n"
     curve = section_map(canonical)["Tempo and mood curve"].strip() + "\n"
     files = {"SKILL.md": entry, "references/workflow.md": workflow, "references/tempo-curve.md": curve}
     if online:
+        # Published online references use a manually promoted production branch.
+        # Never point deployed Gemini instructions at the moving main branch.
         base = "https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/release/skill-prod/"
-        import re
         def link(match):
             path = match.group(1)
             target = "adapters/gemini/" + path if path in files else path
@@ -229,11 +264,19 @@ def modular_files(canonical: str, online: bool = False) -> dict[str, str]:
 def build(root: Path, output: Path) -> None:
     files = modular_files((root / "SKILL.md").read_text(encoding="utf-8"))
     output.parent.mkdir(parents=True, exist_ok=True)
+    # Match the portable ChatGPT/Claude ZIP determinism contract: stable
+    # member paths, timestamps, permissions, compression and UTF-8 bytes.
+    def add_text(bundle: ZipFile, name: str, content: str):
+        info = ZipInfo(name, (1980, 1, 1, 0, 0, 0))
+        info.compress_type = ZIP_DEFLATED
+        info.external_attr = 0o644 << 16
+        bundle.writestr(info, content.encode("utf-8"))
+
     with ZipFile(output, "w", ZIP_DEFLATED) as bundle:
-        for path, text in files.items():
-            bundle.writestr(path, text)
-        for relative in REFERENCES:
-            bundle.writestr(relative, render_reference(relative, (root / relative).read_text(encoding="utf-8")))
+        for path in sorted(files):
+            add_text(bundle, path, files[path])
+        for relative in sorted(REFERENCES):
+            add_text(bundle, relative, render_reference(relative, (root / relative).read_text(encoding="utf-8")))
     print("Created", output)
 
 

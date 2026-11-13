@@ -4,7 +4,7 @@ A generated, text-forward snapshot of the **canonical** repository skill. This i
 
 **Source:** https://github.com/focustimer-dev/go-hipster-go
 
-**Files included:** `references/recording-quality.md`, `references/reference-index.md`, `references/de-cheese.md`, `references/discovery-routes.md`, `references/funky.md`, `references/desire-triumphant.md`, `references/regions/antarctica.md`, `references/go-hard.md`, `references/regional-review.md`, `references/regions/oceania-additions.md`, `references/regions/central-america-additions.md`, `references/regions/central-africa-additions.md`, `references/regions/southern-africa-additions.md`, `references/regional-atlas.md`, `references/regions/us-west.md`, `references/regions/us-east.md`, `references/regions/us-midwest.md`, `references/regions/us-south.md`, `references/regions/canada-west.md`, `references/regions/canada-east.md`, `references/regions/mexico.md`, `references/regions/central-america.md`, `references/regions/caribbean.md`, `references/regions/northern-south-america.md`, `references/regions/southern-south-america.md`, `references/regions/atlantic-europe.md`, `references/regions/mediterranean-europe.md`, `references/regions/balkans.md`, `references/regions/northern-europe.md`, `references/regions/eastern-europe.md`, `references/regions/north-africa.md`, `references/regions/west-africa.md`, `references/regions/east-africa.md`, `references/regions/central-southern-africa.md`, `references/regions/middle-east.md`, `references/regions/central-asia.md`, `references/regions/south-asia.md`, `references/regions/east-asia.md`, `references/regions/southeast-asia.md`, `references/regions/northern-asia.md`, `references/regions/oceania.md`, `SKILL.md`, `references/global-scenes.md`, `references/sonic-taxonomy.md`, `references/curation-examples.md`, `references/verification.md`, `references/cover-art.md`.
+**Files included:** `references/recording-quality.md`, `references/reference-index.md`, `references/de-cheese.md`, `references/discovery-routes.md`, `references/seed-cues.json`, `references/mood-spark-bank.json`, `references/funky.md`, `references/desire-triumphant.md`, `references/regions/antarctica.md`, `references/go-hard.md`, `references/regional-review.md`, `references/regions/oceania-additions.md`, `references/regions/central-america-additions.md`, `references/regions/central-africa-additions.md`, `references/regions/southern-africa-additions.md`, `references/regional-atlas.md`, `references/regions/us-west.md`, `references/regions/us-east.md`, `references/regions/us-midwest.md`, `references/regions/us-south.md`, `references/regions/canada-west.md`, `references/regions/canada-east.md`, `references/regions/mexico.md`, `references/regions/central-america.md`, `references/regions/caribbean.md`, `references/regions/northern-south-america.md`, `references/regions/southern-south-america.md`, `references/regions/atlantic-europe.md`, `references/regions/mediterranean-europe.md`, `references/regions/balkans.md`, `references/regions/northern-europe.md`, `references/regions/eastern-europe.md`, `references/regions/north-africa.md`, `references/regions/west-africa.md`, `references/regions/east-africa.md`, `references/regions/central-southern-africa.md`, `references/regions/middle-east.md`, `references/regions/central-asia.md`, `references/regions/south-asia.md`, `references/regions/east-asia.md`, `references/regions/southeast-asia.md`, `references/regions/northern-asia.md`, `references/regions/oceania.md`, `SKILL.md`, `references/global-scenes.md`, `references/sonic-taxonomy.md`, `references/curation-examples.md`, `references/verification.md`, `references/cover-art.md`, `references/evaluation-smoke.md`, `references/claude-spotify-recovery.md`.
 
 
 ---
@@ -14,6 +14,8 @@ A generated, text-forward snapshot of the **canonical** repository skill. This i
 ## Recording preference: Skip rough recordings
 
 Treat `Recording preference: Skip rough recordings.` or an equivalent explicit request as an opt-in recording-quality filter. Default OFF when absent; an explicit off overrides a saved preference. Accept older, longer app prompts using the same preference. Apply in ordinary GO and GO HARD before sequencing and exact-version matching.
+
+**Clean ≠ Mainstream.** This is a recording/transfer-condition filter, **not** a filter for popularity, chart success, commercial polish or familiarity. Keep obscure, regional, independent and archival deep cuts eligible when credible evidence supports a listenable version. Never replace them with Top 40 hits or familiar canon merely to satisfy “Skip rough”; seek a cleaner transfer of the same performance first.
 
 Exclude recordings dominated by heavy hiss, crackle, accidental clipping/distortion or muffled, damaged transfers. Keep clean older recordings and good restorations eligible; age, mono, archival provenance, region and genre alone never establish poor quality. Do not automatically exclude intentional lo-fi, fuzz or musical distortion. Judge the particular recording/version against available evidence, not release labels such as “remastered.”
 
@@ -31,11 +33,18 @@ Use this directory to reach the existing research, not to replace it with a smal
 
 ## Every new ordinary GO
 
-Before choosing a thesis, read these sections (exact headings):
+Before choosing a thesis, read these **core** references (relevant headings, not every section):
 
-1. [Sonic taxonomy](sonic-taxonomy.md): **Mood interpretation matrix**, **Peculiarity by audible mechanism**, **Freshness procedure**, and **Recording-level selection gate**. Consult **Era and sonic period**, **Sonic textures and instrumentation** and **Operating guidance** as the brief requires; keep all four discovery axes available.
-2. [Global scenes](global-scenes.md): Use the relevant rows of **Category discovery index — expand the search before choosing artists** to compare three distinct routes. For cross-scene playlists, consult **Responsible cross-scene reasoning**. Read only the relevant scene detail under **Geographic research map**, **Movement and microgenre touchstones**, **Further scene horizons — research leads, not default playlists**, or **US East and West discovery routes**. For unstructured GO, consider an under-covered route before settling on familiar choices.
-3. [Verification](verification.md): apply the recording and publishing evidence rules to every final selection. For Criminal, also apply **Criminal mood: verify the song's actual story**, using song-level narrative evidence rather than genre, reputation or title association.
+1. [Sonic taxonomy](sonic-taxonomy.md): **Mood interpretation matrix**, **Peculiarity by audible mechanism**, **Freshness procedure**, and **Recording-level selection gate**. Consult **Era and sonic period**, **Sonic textures and instrumentation**, and **Operating guidance** as needed. Keep all four discovery axes available.
+2. [Verification](verification.md): verify each final recording and apply publishing-evidence rules. For Criminal, also read **Criminal mood: verify the song's actual story**; genre, reputation, and title association are insufficient.
+
+Compare three genuinely compatible discovery routes internally. A selected region is a constraint, not a reason to load the entire global taxonomy.
+
+## Global scenes — conditional, not a default regional load
+
+For **open-ended, region-free, worldwide, or broadly cross-scene** GO, consult [Global scenes](global-scenes.md), especially **Category discovery index — expand the search before choosing artists**, to compare varied research directions. Read relevant sections only: **Responsible cross-scene reasoning**, **Geographic research map**, **Movement and microgenre touchstones**, **Further scene horizons — research leads, not default playlists**, and the optional **US East and West discovery routes**. For unstructured GO, consider an under-covered route rather than settling on familiar choices.
+
+For an explicit `Regional exploration:` or another **region-locked** GO, **do not preload** `global-scenes.md`. Start with the [regional atlas](regional-atlas.md), selected region files and their required supplements instead. Consult the global file later only when candidate research is thin or a specific, musically grounded cross-scene bridge needs wider context; **never relax the selected geography or substitute unverified examples**. The file remains available in every distribution.
 
 ## Optional discovery routes
 
@@ -262,6 +271,280 @@ Family: arrangement. Explore recordings where supported ensemble density changes
 
 ---
 
+# BEGIN SOURCE: references/seed-cues.json
+
+{
+  "rhythm": [
+    {
+      "text": "interlocking accents",
+      "pace": "any"
+    },
+    {
+      "text": "a pulse with missing footsteps",
+      "pace": "any"
+    },
+    {
+      "text": "drums answering the melody",
+      "pace": "any"
+    },
+    {
+      "text": "a rhythm leaning behind the beat",
+      "pace": "any"
+    },
+    {
+      "text": "offbeats pulling against the downbeat",
+      "pace": "any"
+    },
+    {
+      "text": "percussion leaving the centre open",
+      "pace": "any"
+    },
+    {
+      "text": "a repeating figure changing its emphasis",
+      "pace": "any"
+    },
+    {
+      "text": "bass and drums taking different paths",
+      "pace": "any"
+    },
+    {
+      "text": "handclaps cutting across the pulse",
+      "pace": "any"
+    },
+    {
+      "text": "phrases spilling over the bar line",
+      "pace": "any"
+    },
+    {
+      "text": "a patient pulse with restless details",
+      "pace": "slow"
+    },
+    {
+      "text": "widely spaced beats with busy ornaments",
+      "pace": "slow"
+    },
+    {
+      "text": "a slow tread with sharp syncopation",
+      "pace": "slow"
+    },
+    {
+      "text": "a loping rhythm with sudden gaps",
+      "pace": "slow"
+    },
+    {
+      "text": "a quick pulse with room to breathe",
+      "pace": "fast"
+    },
+    {
+      "text": "racing accents around a steady centre",
+      "pace": "fast"
+    },
+    {
+      "text": "brisk footsteps interrupted by silence",
+      "pace": "fast"
+    },
+    {
+      "text": "rapid figures trading places",
+      "pace": "fast"
+    },
+    {
+      "text": "a melody doing the percussion’s work",
+      "pace": "any"
+    },
+    {
+      "text": "a pulse emerging from overlapping loops",
+      "pace": "any"
+    },
+    {
+      "text": "short phrases answering long ones",
+      "pace": "any"
+    },
+    {
+      "text": "a rhythm gathering extra layers",
+      "pace": "any"
+    },
+    {
+      "text": "a steady ground beneath uneven phrases",
+      "pace": "any"
+    },
+    {
+      "text": "an insistent pulse that keeps shedding notes",
+      "pace": "any"
+    }
+  ],
+  "texture": [
+    "a close voice in a distant room",
+    "dry attacks trailing long shadows",
+    "soft edges around a hard centre",
+    "a melody fraying into overtones",
+    "breath and grain left in the foreground",
+    "bright notes against a dark sustained bed",
+    "small sounds filling a wide space",
+    "a rough surface around a clear melody",
+    "plucked notes leaving long empty spaces",
+    "voices passing a phrase between them",
+    "a low register carrying a fragile upper line",
+    "sharp transients beneath blurred harmonies",
+    "unison lines slowly separating",
+    "a thin melody above a crowded floor",
+    "resonance hanging after each strike",
+    "contrasting registers refusing to blend",
+    "a warm centre with brittle edges",
+    "brief ornaments interrupting held notes",
+    "a voice half hidden inside the ensemble",
+    "acoustic grain beside clean electronic tones",
+    "a melody answered by wordless voices",
+    "dense detail with no dominant soloist",
+    "exposed vocals against restless accompaniment",
+    "a narrow sound opening into a wide room"
+  ]
+}
+
+# END SOURCE: references/seed-cues.json
+
+---
+
+# BEGIN SOURCE: references/mood-spark-bank.json
+
+{
+  "happy": [
+    "celebration with unresolved harmony",
+    "quiet pleasure over restless detail",
+    "playful phrases with a serious pulse",
+    "relief arriving one layer at a time",
+    "a restrained opening that learns to dance",
+    "rough voices carrying a buoyant melody",
+    "a bright refrain above a heavy foundation",
+    "communal answers to a solitary voice",
+    "joy held just below the surface",
+    "a loose ensemble finding its centre",
+    "tenderness with rhythmic mischief",
+    "a small motif growing into shared release",
+    "laughter suggested by instrumental replies",
+    "a light melody over stubborn repetition",
+    "warmth interrupted by surprising silences",
+    "a simple refrain with intricate surroundings",
+    "euphoria carried by accumulating voices",
+    "a graceful line over unruly accents",
+    "a celebratory rhythm with bittersweet chords",
+    "contentment without losing forward motion"
+  ],
+  "angry": [
+    "soft vocals against punishing accents",
+    "tension building without speeding up",
+    "cold restraint with sudden eruptions",
+    "an insistent figure refusing resolution",
+    "a calm surface with abrasive interruptions",
+    "clipped phrases against sustained pressure",
+    "a collective refrain answering a lone voice",
+    "friction gathering beneath a steady pulse",
+    "a melody straining against its accompaniment",
+    "sharp attacks followed by uncomfortable space",
+    "an intimate voice growing harder to ignore",
+    "controlled repetition pushed toward rupture",
+    "dense passages breaking into exposed voices",
+    "a heavy foundation beneath restless detail",
+    "a withheld release that finally arrives",
+    "brittle harmonies over grounded percussion",
+    "a quiet threat carried by rhythmic insistence",
+    "a graceful phrase repeatedly interrupted",
+    "raw vocal grain against precise accompaniment",
+    "defiance through unison and repetition"
+  ],
+  "sad": [
+    "a buoyant rhythm carrying unresolved harmony",
+    "a close voice against indifferent motion",
+    "a melody reaching upward and falling back",
+    "warm timbres around a bare arrangement",
+    "a refrain returning with something missing",
+    "busy accompaniment beneath a withdrawn voice",
+    "a graceful pulse with hesitant entrances",
+    "a bright register over a descending line",
+    "distance growing between answering phrases",
+    "a dance rhythm with no harmonic release",
+    "layers disappearing rather than building",
+    "a fragile lead held by a steady ensemble",
+    "yearning stretched across repeated figures",
+    "restrained delivery with widening harmonies",
+    "a melody continuing after the rhythm drops out",
+    "a shared refrain that ends in a single voice",
+    "small ornaments against an unchanging ground",
+    "tender phrasing against rough textures",
+    "a full arrangement thinning to resonance",
+    "forward motion with a lingering final phrase"
+  ],
+  "weird": [
+    "a familiar pulse with an unfamiliar centre",
+    "phrases of unequal lengths finding a meeting point",
+    "a melody changing shape on every return",
+    "tuning friction inside a gentle arrangement",
+    "silence interrupting an otherwise regular form",
+    "a foreground detail becoming the main structure",
+    "voices behaving like percussion",
+    "a repeating pattern gradually losing a note",
+    "a stable bass beneath unstable upper lines",
+    "an acoustic gesture answered by an altered copy",
+    "a refrain arriving where a verse should be",
+    "tiny edits disturbing a patient surface",
+    "a graceful melody with awkward shadows",
+    "dense detail suddenly revealing empty space",
+    "a rhythm implied before it is played",
+    "a held tone changing colour rather than pitch",
+    "a looping figure that slips against itself",
+    "an ordinary sound taking an unexpected musical role",
+    "a convincing groove with one misplaced accent",
+    "a tidy form unraveling at its edges"
+  ],
+  "criminal": [
+    "an unhurried pulse beneath urgent narration",
+    "a smooth surface interrupted by sharp accents",
+    "a refrain tightening around the narrator",
+    "a sparse opening gathering pressure",
+    "boastful delivery against uneasy harmony",
+    "a steady accompaniment beneath a changing account",
+    "a confident entrance ending in exposed silence",
+    "narrative verses interrupted by collective replies",
+    "a recurring figure suggesting consequences",
+    "intimate narration against a distant ensemble",
+    "a bright melody shadowed by a darker register",
+    "controlled delivery over restless percussion",
+    "a refrain returning with altered emphasis",
+    "brief instrumental replies between narrative phrases",
+    "an even pulse beneath escalating tension",
+    "a spacious arrangement closing around the voice",
+    "a polished surface with audible rough edges",
+    "a repeating accompaniment refusing release",
+    "a solitary voice giving way to a crowd",
+    "a final verse stripped of its earlier swagger"
+  ],
+  "funky": [
+    "bass anticipating the downbeat",
+    "clipped guitar answering rolling percussion",
+    "a spacious pocket with displaced accents",
+    "interlocking parts leaving room for the voice",
+    "a low ostinato against restless hand drums",
+    "offbeat chords over a patient foundation",
+    "a refrain riding behind the beat",
+    "short horn replies inside a steady groove",
+    "percussion trading accents with the bass",
+    "a lean rhythm growing through ensemble interplay",
+    "a repeating figure with elastic phrasing",
+    "rhythmic voices answering a sparse accompaniment",
+    "a keyboard pulse interrupted by guitar stabs",
+    "a grounded beat with springy upper lines",
+    "a relaxed phrase over tightly woven percussion",
+    "electronic bass conversing with dry drum accents",
+    "tiny silences making the next entrance count",
+    "a dance-band groove thinning to bass and drums",
+    "an insistent pattern opening into collective replies",
+    "a propulsive pocket beneath bittersweet harmony"
+  ]
+}
+
+# END SOURCE: references/mood-spark-bank.json
+
+---
+
 # BEGIN SOURCE: references/funky.md
 
 # Funky: worldwide groove discovery
@@ -375,10 +658,10 @@ Use the normal service preflight, verified recording matches, count reconciliati
 **Activation:** Only explicit `go hard`, `go funky hard`, `go hard slow`, a clear natural-language request for Go Hard, or the PWA's `Curation mode: GO HARD` activates this mode. Treat `hard` as a **curation-effort** modifier, not a mood, genre, tempo or loudness cue. It composes with regions, mood, tempo, count, service, and optional cover art. **Default OFF:** Ordinary `go` and all other requests keep the existing fast single-pass selection/sequencing, source budget and publishing path. A text mention of "hard rock" does not activate the mode.
 
 **After the same cheap writer preflight**, expend additional effort on editorial quality, not filler:
-1. **Selective candidate funnel:** For a normal twelve-track playlist, **skim roughly 36–50 plausible recording leads** when discovery access allows, using inexpensive identity, region, mood, pace and distinctiveness checks first; reject poor fits without deep research. **Investigate approximately 16–20 survivors** for recording/version evidence and useful sonic comparisons, then choose twelve. Counts are flexible targets, not quotas: smaller credible pools are better than padded or invented catalogs. Do not spend the deep-research budget on doomed candidates or repeat the same catalog lookup.
+1. **Explore before verifying:** For a normal twelve-track playlist, **skim roughly 36–50 plausible recording leads** when access allows, using the selected regional references to open **at least two independent research paths** (for example original singles/artist albums and a distinct local-label, collaborator or adjacent-scene path) before fixing the shortlist. A famous compilation is a lead, not the candidate pool: follow its artists outward to independent releases, rather than counting two mirrors of one tracklist as different research. **Investigate approximately 16–20 survivors**, then select twelve. These counts and pathways are flexible targets, **not final song/label quotas**: use a smaller credible pool rather than inventing finds, redundant searches or a fabricated research diary. Keep this inside the existing GO HARD budget.
 2. **Evidence-backed fingerprints:** For the 16–20 survivors, record concise sourced or explicitly tentative observations about groove/pulse, rhythm, instrumentation, ensemble/vocal role, texture, production density, dynamics and (when supported) harmonic color. Exact tempo, meter, key, and intro/outro behavior require trustworthy track-specific evidence or actual available audio analysis; **never pretend to have listened**. Avoid expensive audio feature extraction unless the host genuinely exposes it and it meaningfully helps the decision.
 3. **Competing journeys and two-part handoffs:** Select the requested number of verified final recordings, draft **up to three distinct orders**. With a tempo/mood curve, compare slot-fitting selections or orders that preserve all position targets, and compare all adjacent handoffs. For each handoff identify **(a) one defensible carryover** (rhythmic role, vocal/instrumental contour, timbre, pulse, phrase shape, production space or story), and **(b) one purposeful change** (energy, density, ensemble, geography or mood). The two parts describe a hypothesis about adjacent recordings, not measured acoustic similarity. If either cannot be supported, mark the link unproven and prefer an honest contrast or different order. Do not manufacture a 'shared flute' or exact key from metadata; an observed voice-to-instrument echo is a useful *listener report*, not evidence for every other transition. Prefer a convincing worst transition, a satisfying arc and genuine discovery over sameness or an artificial energy graph. Do not present the drafts as separate playlists.
-4. **Adversarial edit:** Challenge the weakest handoff by its actual carryover/change evidence, not a genre-name match, and check for familiar artists, repetitive textures or unearned contrasts. If an exciting cross-scene jump needs a bridge, allow **one targeted bridge-track search** and a supported replacement; never impose bridge quotas. Make **at most two targeted revision rounds**, checking every newly created neighbor and lead-artist uniqueness, count, region, and curve targets. Stop early when evidence cannot support an improvement. Keep purposeful surprises that survive scrutiny.
+4. **Adversarial edit:** Challenge the weakest handoff by its actual carryover/change evidence, not a genre-name match, and check for familiar artists, repetitive textures or unearned contrasts. For a signature, heavily exposed or compilation-staple recording, compare a credible less familiar alternative from the explored paths before retaining it; choose the better musical fit, not automatic obscurity. Use a reported million-plus play count only when verifiable on the actual service, as a **review flag, never a ban**; do not infer or invent play counts. Check any accessible recent crates for repeat recordings; when history is unavailable, vary the research path without promising cross-session uniqueness. If an exciting cross-scene jump needs a bridge, allow **one targeted bridge-track search** and a supported replacement; never impose bridge quotas. Make **at most two targeted revision rounds**, checking every newly created neighbor and lead-artist uniqueness, count, region, and curve targets. Stop early when evidence cannot support an improvement. Keep purposeful surprises that survive scrutiny.
 5. **Publish once, honestly:** Deliver and attempt to publish the **single best final sequence**, retaining the requested track count and exact verified recordings/order when the music-service writer permits. Perform normal count/readback checks. If the provider cannot write a precise list, disclose that limitation; never claim a playlist was saved solely because the deep editorial pass succeeded.
 
 ## North Star anti-drift guardrail (GO HARD only)
@@ -455,55 +738,55 @@ These are listener-supplied, unverified research leads, not 50 independently ver
 | Entry ID | Source label | Source description — verify | Existing relationship |
 | --- | --- | --- | --- |
 | `oceania:add-01` | Māori haka chant | Spoken-sung group challenge or ceremonial performance with precise rhythmic declamation; context matters. | Compare [oceania:11](oceania.md): overlapping or narrower lead; do not count twice or use as independent variety. |
-| `oceania:add-02` | Māori waiata aroha | Māori songs of love, longing or grief, a text-defined song repertoire rather than one beat. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `oceania:add-03` | Māori waiata tangi | Māori lament-song repertory; preserve occasion and whakapapa/context where available. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `oceania:add-04` | Māori pao | Short Māori sung verses often used for expressive or topical commentary. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `oceania:add-05` | Māori poi-song accompaniment | Music composed for Māori poi performance; not the same as every kapa haka item. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `oceania:add-06` | Māori karanga | Formal welcoming call between voices at a pōwhiri; ceremonial vocal art, not dance-pop. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-02` | Māori waiata aroha | Māori songs of love, longing or grief, a text-defined song repertoire rather than one beat. | Unreviewed |
+| `oceania:add-03` | Māori waiata tangi | Māori lament-song repertory; preserve occasion and whakapapa/context where available. | Unreviewed |
+| `oceania:add-04` | Māori pao | Short Māori sung verses often used for expressive or topical commentary. | Unreviewed |
+| `oceania:add-05` | Māori poi-song accompaniment | Music composed for Māori poi performance; not the same as every kapa haka item. | Unreviewed |
+| `oceania:add-06` | Māori karanga | Formal welcoming call between voices at a pōwhiri; ceremonial vocal art, not dance-pop. | Unreviewed |
 | `oceania:add-07` | Aotearoa Māori reggae | Māori-language and identity-centered reggae scene in New Zealand. | Compare [oceania:12](oceania.md): overlapping or narrower lead; do not count twice or use as independent variety. |
 | `oceania:add-08` | Aotearoa Pacific dub | New Zealand's bass-heavy dub and reggae-rooted production scene with Pasifika influence. | Compare [oceania:13](oceania.md): overlapping or narrower lead; do not count twice or use as independent variety. |
-| `oceania:add-09` | Aotearoa Pasifika hip-hop | Rap from Pacific communities in New Zealand, including multilingual identity narratives. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-09` | Aotearoa Pasifika hip-hop | Rap from Pacific communities in New Zealand, including multilingual identity narratives. | Unreviewed |
 | `oceania:add-10` | Australian pub rock | Loud, direct, live-circuit Australian rock bands associated with pub venues. | Compare [oceania:05](oceania.md): overlapping or narrower lead; do not count twice or use as independent variety. |
 | `oceania:add-11` | Australian desert reggae | Central Australian Aboriginal community reggae with localized languages and concerns. | Compare [oceania:03](oceania.md): overlapping or narrower lead; do not count twice or use as independent variety. |
 | `oceania:add-12` | Australian desert rock | Rock recorded by bands from remote Central Australian communities, distinct from generic stoner/desert rock. | Compare [oceania:03](oceania.md): overlapping or narrower lead; do not count twice or use as independent variety. |
-| `oceania:add-13` | First Nations Australian hip-hop | Rap rooted in Aboriginal and Torres Strait Islander communities and experiences. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-13` | First Nations Australian hip-hop | Rap rooted in Aboriginal and Torres Strait Islander communities and experiences. | Unreviewed |
 | `oceania:add-14` | Torres Strait Islander ailan-style songs | Torres Strait community harmonies and danceable local song, often with guitars or island-band backing. | Compare [oceania:04](oceania.md): overlapping or narrower lead; do not count twice or use as independent variety. |
-| `oceania:add-15` | Torres Strait Islander gospel | Islander-language Christian vocal repertoire in the Torres Strait's distinctive church-music scene. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `oceania:add-16` | Australian bush-dance tunes | Reels, jigs and other country-dance repertoire for Australian community bush dances, distinct from sung ballads. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `oceania:add-17` | Hawaiian mele oli | Unaccompanied Hawaiian chant repertoire for historical, genealogical and ceremonial narratives. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `oceania:add-18` | Hawaiian hula kahiko music | Chant and percussion accompanying older hula practices; context and stewardship are important. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `oceania:add-19` | Hawaiian hula ʻauana music | Hula-associated modern sung song with later harmonic and string-instrument influences. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `oceania:add-20` | Hawaiian hapa-haole music | Hawaiian popular music combining English and Hawaiian words and Western popular styles. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `oceania:add-21` | Hawaiian leo kiʻekiʻe falsetto | Distinct Hawaiian high-voice/falsetto song practice, often emphasizing a register break. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `oceania:add-22` | Hawaiian steel-guitar music | Hawaiian-origin slide/steel-string instrumental and song accompaniment style. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `oceania:add-23` | Hawaiian himeni | Hawaiian-language hymn and congregational choral traditions rooted in nineteenth-century adaptations. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `oceania:add-24` | Hawaiian Jawaiian | Hawaiʻi local reggae/pop hybrid; distinguish from any broad claim about all Pacific reggae. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-15` | Torres Strait Islander gospel | Islander-language Christian vocal repertoire in the Torres Strait's distinctive church-music scene. | Unreviewed |
+| `oceania:add-16` | Australian bush-dance tunes | Reels, jigs and other country-dance repertoire for Australian community bush dances, distinct from sung ballads. | Unreviewed |
+| `oceania:add-17` | Hawaiian mele oli | Unaccompanied Hawaiian chant repertoire for historical, genealogical and ceremonial narratives. | Unreviewed |
+| `oceania:add-18` | Hawaiian hula kahiko music | Chant and percussion accompanying older hula practices; context and stewardship are important. | Unreviewed |
+| `oceania:add-19` | Hawaiian hula ʻauana music | Hula-associated modern sung song with later harmonic and string-instrument influences. | Unreviewed |
+| `oceania:add-20` | Hawaiian hapa-haole music | Hawaiian popular music combining English and Hawaiian words and Western popular styles. | Unreviewed |
+| `oceania:add-21` | Hawaiian leo kiʻekiʻe falsetto | Distinct Hawaiian high-voice/falsetto song practice, often emphasizing a register break. | Unreviewed |
+| `oceania:add-22` | Hawaiian steel-guitar music | Hawaiian-origin slide/steel-string instrumental and song accompaniment style. | Unreviewed |
+| `oceania:add-23` | Hawaiian himeni | Hawaiian-language hymn and congregational choral traditions rooted in nineteenth-century adaptations. | Unreviewed |
+| `oceania:add-24` | Hawaiian Jawaiian | Hawaiʻi local reggae/pop hybrid; distinguish from any broad claim about all Pacific reggae. | Unreviewed |
 | `oceania:add-25` | Tahitian hīmene tārava | Complex Tahitian multipart choral style with interlocking voice parts. | Compare [oceania:24](oceania.md): overlapping or narrower lead; do not count twice or use as independent variety. |
-| `oceania:add-26` | Tahitian hīmene rūʻau | Tahitian choral style traditionally presented in seated formations and layered voices. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `oceania:add-27` | Tahitian ʻūtē | Tahitian topical, sometimes humorous call-and-response or alternating lead-song genre. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-26` | Tahitian hīmene rūʻau | Tahitian choral style traditionally presented in seated formations and layered voices. | Unreviewed |
+| `oceania:add-27` | Tahitian ʻūtē | Tahitian topical, sometimes humorous call-and-response or alternating lead-song genre. | Unreviewed |
 | `oceania:add-28` | Tahitian ʻaparima music | Song-led Tahitian gestural dance with lyrics mirrored by hand movements. | Compare [oceania:24](oceania.md): overlapping or narrower lead; do not count twice or use as independent variety. |
-| `oceania:add-29` | Tahitian pāʻōʻā music | Chant, thigh-slapping and percussion associated with a Tahitian communal performance genre. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `oceania:add-30` | Tahitian hivināu music | Rhythmic Tahitian circle-dance and responsive vocal performance. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `oceania:add-31` | Cook Islands īmene tuki | Distinct a cappella Polynesian hymn style with dramatic short vocal interjections. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `oceania:add-32` | Cook Islands īmene metua | Cook Islands older traditional song and hymn repertoire. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-29` | Tahitian pāʻōʻā music | Chant, thigh-slapping and percussion associated with a Tahitian communal performance genre. | Unreviewed |
+| `oceania:add-30` | Tahitian hivināu music | Rhythmic Tahitian circle-dance and responsive vocal performance. | Unreviewed |
+| `oceania:add-31` | Cook Islands īmene tuki | Distinct a cappella Polynesian hymn style with dramatic short vocal interjections. | Unreviewed |
+| `oceania:add-32` | Cook Islands īmene metua | Cook Islands older traditional song and hymn repertoire. | Unreviewed |
 | `oceania:add-33` | Cook Islands ʻura paʻu drumming | Cook Islands dance music driven by interlocking slit-drum and skin-drum rhythms. | Compare [oceania:25](oceania.md): overlapping or narrower lead; do not count twice or use as independent variety. |
-| `oceania:add-34` | Samoan sasa music | Seated or standing coordinated slap-dance rhythmic accompaniment and sung cues. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `oceania:add-35` | Samoan maʻuluʻulu songs | Group dance-song repertoire with synchronized actions, distinct from the slap-dance sasa. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `oceania:add-36` | Samoan pese lotu | Samoan-language congregational and choral hymn repertory. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `oceania:add-37` | Tongan tauʻolunga songs | Graceful solo-dance sung poetry and ensemble backing distinct from lakalaka. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `oceania:add-38` | Tongan meʻetuʻupaki music | Tongan paddle-dance song with drum-led accompaniment. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `oceania:add-39` | Tongan ʻotuhaka music | Traditional Tongan group dance-song form with older poetic and movement conventions. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `oceania:add-40` | Tongan kailao accompaniment | Drum/chant patterns accompanying Tongan coordinated martial display. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `oceania:add-41` | Tongan soke music | Rhythmic song and percussion for Tongan stick-dance performance. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `oceania:add-42` | Niuean takalo chant | Niuean formal challenge/war-dance chant; check occasion before reuse. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `oceania:add-43` | Tokelauan fatele | Tokelau massed vocal and percussive dance-song tradition, historically connected to but distinct from Tuvaluan fatele. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `oceania:add-44` | Tuvaluan fakaseasea | Tuvalu gentle group dance and song form, different from the faster fatele. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-34` | Samoan sasa music | Seated or standing coordinated slap-dance rhythmic accompaniment and sung cues. | Unreviewed |
+| `oceania:add-35` | Samoan maʻuluʻulu songs | Group dance-song repertoire with synchronized actions, distinct from the slap-dance sasa. | Unreviewed |
+| `oceania:add-36` | Samoan pese lotu | Samoan-language congregational and choral hymn repertory. | Unreviewed |
+| `oceania:add-37` | Tongan tauʻolunga songs | Graceful solo-dance sung poetry and ensemble backing distinct from lakalaka. | Unreviewed |
+| `oceania:add-38` | Tongan meʻetuʻupaki music | Tongan paddle-dance song with drum-led accompaniment. | Unreviewed |
+| `oceania:add-39` | Tongan ʻotuhaka music | Traditional Tongan group dance-song form with older poetic and movement conventions. | Unreviewed |
+| `oceania:add-40` | Tongan kailao accompaniment | Drum/chant patterns accompanying Tongan coordinated martial display. | Unreviewed |
+| `oceania:add-41` | Tongan soke music | Rhythmic song and percussion for Tongan stick-dance performance. | Unreviewed |
+| `oceania:add-42` | Niuean takalo chant | Niuean formal challenge/war-dance chant; check occasion before reuse. | Unreviewed |
+| `oceania:add-43` | Tokelauan fatele | Tokelau massed vocal and percussive dance-song tradition, historically connected to but distinct from Tuvaluan fatele. | Unreviewed |
+| `oceania:add-44` | Tuvaluan fakaseasea | Tuvalu gentle group dance and song form, different from the faster fatele. | Unreviewed |
 | `oceania:add-45` | CHamoru kantan chamorrita | Guam/Marianas improvised dialogic verse-song tradition in CHamoru. | Compare [oceania:28](oceania.md): overlapping or narrower lead; do not count twice or use as independent variety. |
-| `oceania:add-46` | CHamoru batsu | Marianas adaptation of waltz-like dance-band music in CHamoru repertoire. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `oceania:add-47` | CHamoru cha-cha | Guam's locally performed CHamoru-language cha-cha dance-song scene. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `oceania:add-48` | Marshallese roro | Marshall Islands expressive solo-song traditions, frequently associated with personal stories and emotion. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-46` | CHamoru batsu | Marianas adaptation of waltz-like dance-band music in CHamoru repertoire. | Unreviewed |
+| `oceania:add-47` | CHamoru cha-cha | Guam's locally performed CHamoru-language cha-cha dance-song scene. | Unreviewed |
+| `oceania:add-48` | Marshallese roro | Marshall Islands expressive solo-song traditions, frequently associated with personal stories and emotion. | Unreviewed |
 | `oceania:add-49` | Tolai stringband | Papua New Guinea Tolai-region stringband song scene, narrower than the pan-PNG stringband umbrella. | Compare [oceania:14](oceania.md): overlapping or narrower lead; do not count twice or use as independent variety. |
-| `oceania:add-50` | Kwaio panpipe ensembles | Malaita Solomon Islands Kwaio-community bamboo-panpipe repertory distinct from ʻAreʻare ensembles. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `oceania:add-50` | Kwaio panpipe ensembles | Malaita Solomon Islands Kwaio-community bamboo-panpipe repertory distinct from ʻAreʻare ensembles. | Unreviewed |
 
 ## Supplied reference routes
 
@@ -532,56 +815,56 @@ These are listener-supplied, unverified research leads, not 50 independently ver
 
 | Entry ID | Source label | Source description — verify | Existing relationship |
 | --- | --- | --- | --- |
-| `central-america:add-01` | Garifuna abaimahani | Garifuna women's unaccompanied or lightly accompanied narrative-song repertoire in Belize, Honduras and Guatemala. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-02` | Garifuna arumahani | Garifuna men's song repertoire, often preserving stories of place, kinship and experience. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-03` | Garifuna gunchei | Garifuna paired social-dance music with its own step and rhythmic vocabulary. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-04` | Garifuna chumba | Garifuna dance-song and drum tradition; research the specific community performance before tagging tracks. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-05` | Garifuna dügü songs and drumming | Garifuna ancestral ritual music; sacred context requires permission and is not a generic dance-playlist category. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-06` | Garifuna chügü songs and drumming | Garifuna ancestral-remembrance repertoire associated with a distinct ritual gathering; do not conflate with punta. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-07` | Garifuna afeduani | Named Garifuna song type heard in archival Honduran recordings; find a specific credited performance. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-08` | Belizean Kriol mento | Belizean vernacular Caribbean acoustic dance-song practice, separate from the more explicitly local brukdown label. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-09` | Belizean steelpan ensembles | Belize-based steelband performance of Caribbean dance repertoire, a local scene rather than a Belize-invented genre. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-10` | Belizean Maya marimba | Mopan and Q'eqchi' community marimba performance in southern Belize; repertoire varies locally. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-11` | Guatemalan guarimba | Distinct Guatemalan marimba composition/dance style associated with local arranged repertoire. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-12` | Guatemalan Rabinal Achí music | Achi Maya dance-drama sung and accompanied in a formal cultural setting; contextual listening rather than casual sampling. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-13` | Guatemalan son del torito | Highland dance-drama's son repertoire associated with the bull figure and community festivities. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-14` | Guatemalan son de los venados | Musical accompaniment of the Maya deer-dance tradition; performance practices differ by locality. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-15` | Guatemalan Paabank sones | Q'eqchi' Alta Verapaz festive-ceremonial music during Paabank gatherings. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-16` | Guatemalan son de las guacamayas | Music for the macaw-dance sequence documented in Alta Verapaz's Paabank repertories. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-17` | Guatemalan moros y cristianos sones | Reed, percussion or marimba-backed music for local Moros y Cristianos dance-drama versions. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-18` | Honduran Miskitu King Pulanka songs | Music around the Miskitu King Pulanka festive performance, distinct from Garifuna traditions. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-19` | Honduran Lenca guancasco music | Songs and instrumental accompaniment associated with inter-community Lenca guancasco observances. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-20` | Honduran folk marimba ensembles | Regional Honduran marimba dance repertoire, distinct in provenance from Guatemalan orchestras. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-21` | Honduran Miskitu hymnody | Miskitu-language church singing rooted in Honduras's Caribbean coast; scene/repertory, not a newly coined genre. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-22` | Salvadoran historiantes music | Instrumental and vocal music for El Salvador's Historiantes/Moros y Cristianos dramatic dances. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-23` | Salvadoran baile de los cumpas music | Festive music performed for the cross-community dance of Los Cumpas. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-24` | Salvadoran pito y tambor repertory | Local flute-and-drum music for traditional dances and religious processions. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-25` | Nicaraguan mazurca segoviana | Northern Nicaraguan mazurka repertoire for accordion and string ensembles. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-26` | Nicaraguan jamaquello | Northern Nicaragua's named partner-dance rhythm and its associated instrumental pieces. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-27` | Nicaraguan vals norteño | Local waltz repertoire of the northern departments, heard with accordion and strings. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-28` | Nicaraguan zapateado norteño | Northern Nicaraguan footwork-linked instrumental dance repertory. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-29` | Nicaraguan sones del Toro Huaco | Music of the Toro Huaco folk-dance procession in Diriamba. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-30` | Nicaraguan sones del Güegüense | Historical musical numbers from the Nicaraguan satirical dance-drama El Güegüense. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-31` | Nicaraguan sones del Gigante | Music of El Gigante dance-drama tradition in Diriamba. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-32` | Nicaraguan Miskitu vernacular song | Miskitu-language vocal traditions of Nicaragua's Caribbean coast, distinct from Spanish-language folk forms. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-33` | Costa Rican cimarrona music | Brass-and-percussion village street-band repertory for festivities and mascaradas. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-34` | Costa Rican jota guanacasteca | Costa Rican adaptation of jota in local band and marimba music. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-35` | Costa Rican contradanza | Adapted contra-dance repertory preserved in Costa Rican civic and traditional band music. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-36` | Costa Rican danza guanacasteca | Guanacaste's named dance-music form, distinct from its faster parrandera rhythm. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-37` | Costa Rican vals-jota | Local hybrid waltz-jota dance form in Guanacaste traditional band repertoire. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-38` | Costa Rican pasillo | Costa Rican regional adaptation of the Andean-derived pasillo for ensembles and singers. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-39` | Costa Rican son de toros | Festive Guanacaste instrumental music associated with bull-event traditions. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-40` | Costa Rican chiqui-chiqui | Distinct Costa Rican 1980s dance-pop phenomenon with Caribbean and tropical influences. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-41` | Panamanian cumbia chorrerana | La Chorrera-region drummed/played cumbia with identifiable local performance tradition. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-42` | Panamanian cumbia santeña | Los Santos cumbia repertoire and distinctive folk-ensemble/dance context. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-43` | Panamanian cumbia darienita | Darién-region cumbia grounded in Afro-Darién communal practice. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-44` | Panamanian danzón-cumbia | Historically documented combination of danzón phrasing and Panamanian cumbia. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-45` | Panamanian cumbia zapateada | Footwork-centered subtype of Panamanian cumbia, distinct from cumbia atravesá. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-46` | Panamanian congo music | Afro-Colonense drum, call-and-response and song used in congo performance traditions. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-47` | Panamanian bullerengue | Afro-Darién song-and-drum repertory, not interchangeable with Colombian bullerengue. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-48` | Panamanian bunde | Darién-region sung/percussive Afro-descendant communal and devotional tradition. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-49` | Panamanian saloma | Distinctive melodic rural vocal calls used in local song and musical storytelling. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-america:add-50` | Panamanian cantadera de décima | Improvised or composed sung ten-line stanzas in Panama's interior folk practice. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-america:add-01` | Garifuna abaimahani | Garifuna women's unaccompanied or lightly accompanied narrative-song repertoire in Belize, Honduras and Guatemala. | Unreviewed |
+| `central-america:add-02` | Garifuna arumahani | Garifuna men's song repertoire, often preserving stories of place, kinship and experience. | Unreviewed |
+| `central-america:add-03` | Garifuna gunchei | Garifuna paired social-dance music with its own step and rhythmic vocabulary. | Unreviewed |
+| `central-america:add-04` | Garifuna chumba | Garifuna dance-song and drum tradition; research the specific community performance before tagging tracks. | Unreviewed |
+| `central-america:add-05` | Garifuna dügü songs and drumming | Garifuna ancestral ritual music; sacred context requires permission and is not a generic dance-playlist category. | Unreviewed |
+| `central-america:add-06` | Garifuna chügü songs and drumming | Garifuna ancestral-remembrance repertoire associated with a distinct ritual gathering; do not conflate with punta. | Unreviewed |
+| `central-america:add-07` | Garifuna afeduani | Named Garifuna song type heard in archival Honduran recordings; find a specific credited performance. | Unreviewed |
+| `central-america:add-08` | Belizean Kriol mento | Belizean vernacular Caribbean acoustic dance-song practice, separate from the more explicitly local brukdown label. | Unreviewed |
+| `central-america:add-09` | Belizean steelpan ensembles | Belize-based steelband performance of Caribbean dance repertoire, a local scene rather than a Belize-invented genre. | Unreviewed |
+| `central-america:add-10` | Belizean Maya marimba | Mopan and Q'eqchi' community marimba performance in southern Belize; repertoire varies locally. | Unreviewed |
+| `central-america:add-11` | Guatemalan guarimba | Distinct Guatemalan marimba composition/dance style associated with local arranged repertoire. | Unreviewed |
+| `central-america:add-12` | Guatemalan Rabinal Achí music | Achi Maya dance-drama sung and accompanied in a formal cultural setting; contextual listening rather than casual sampling. | Unreviewed |
+| `central-america:add-13` | Guatemalan son del torito | Highland dance-drama's son repertoire associated with the bull figure and community festivities. | Unreviewed |
+| `central-america:add-14` | Guatemalan son de los venados | Musical accompaniment of the Maya deer-dance tradition; performance practices differ by locality. | Unreviewed |
+| `central-america:add-15` | Guatemalan Paabank sones | Q'eqchi' Alta Verapaz festive-ceremonial music during Paabank gatherings. | Unreviewed |
+| `central-america:add-16` | Guatemalan son de las guacamayas | Music for the macaw-dance sequence documented in Alta Verapaz's Paabank repertories. | Unreviewed |
+| `central-america:add-17` | Guatemalan moros y cristianos sones | Reed, percussion or marimba-backed music for local Moros y Cristianos dance-drama versions. | Unreviewed |
+| `central-america:add-18` | Honduran Miskitu King Pulanka songs | Music around the Miskitu King Pulanka festive performance, distinct from Garifuna traditions. | Unreviewed |
+| `central-america:add-19` | Honduran Lenca guancasco music | Songs and instrumental accompaniment associated with inter-community Lenca guancasco observances. | Unreviewed |
+| `central-america:add-20` | Honduran folk marimba ensembles | Regional Honduran marimba dance repertoire, distinct in provenance from Guatemalan orchestras. | Unreviewed |
+| `central-america:add-21` | Honduran Miskitu hymnody | Miskitu-language church singing rooted in Honduras's Caribbean coast; scene/repertory, not a newly coined genre. | Unreviewed |
+| `central-america:add-22` | Salvadoran historiantes music | Instrumental and vocal music for El Salvador's Historiantes/Moros y Cristianos dramatic dances. | Unreviewed |
+| `central-america:add-23` | Salvadoran baile de los cumpas music | Festive music performed for the cross-community dance of Los Cumpas. | Unreviewed |
+| `central-america:add-24` | Salvadoran pito y tambor repertory | Local flute-and-drum music for traditional dances and religious processions. | Unreviewed |
+| `central-america:add-25` | Nicaraguan mazurca segoviana | Northern Nicaraguan mazurka repertoire for accordion and string ensembles. | Unreviewed |
+| `central-america:add-26` | Nicaraguan jamaquello | Northern Nicaragua's named partner-dance rhythm and its associated instrumental pieces. | Unreviewed |
+| `central-america:add-27` | Nicaraguan vals norteño | Local waltz repertoire of the northern departments, heard with accordion and strings. | Unreviewed |
+| `central-america:add-28` | Nicaraguan zapateado norteño | Northern Nicaraguan footwork-linked instrumental dance repertory. | Unreviewed |
+| `central-america:add-29` | Nicaraguan sones del Toro Huaco | Music of the Toro Huaco folk-dance procession in Diriamba. | Unreviewed |
+| `central-america:add-30` | Nicaraguan sones del Güegüense | Historical musical numbers from the Nicaraguan satirical dance-drama El Güegüense. | Unreviewed |
+| `central-america:add-31` | Nicaraguan sones del Gigante | Music of El Gigante dance-drama tradition in Diriamba. | Unreviewed |
+| `central-america:add-32` | Nicaraguan Miskitu vernacular song | Miskitu-language vocal traditions of Nicaragua's Caribbean coast, distinct from Spanish-language folk forms. | Unreviewed |
+| `central-america:add-33` | Costa Rican cimarrona music | Brass-and-percussion village street-band repertory for festivities and mascaradas. | Unreviewed |
+| `central-america:add-34` | Costa Rican jota guanacasteca | Costa Rican adaptation of jota in local band and marimba music. | Unreviewed |
+| `central-america:add-35` | Costa Rican contradanza | Adapted contra-dance repertory preserved in Costa Rican civic and traditional band music. | Unreviewed |
+| `central-america:add-36` | Costa Rican danza guanacasteca | Guanacaste's named dance-music form, distinct from its faster parrandera rhythm. | Unreviewed |
+| `central-america:add-37` | Costa Rican vals-jota | Local hybrid waltz-jota dance form in Guanacaste traditional band repertoire. | Unreviewed |
+| `central-america:add-38` | Costa Rican pasillo | Costa Rican regional adaptation of the Andean-derived pasillo for ensembles and singers. | Unreviewed |
+| `central-america:add-39` | Costa Rican son de toros | Festive Guanacaste instrumental music associated with bull-event traditions. | Unreviewed |
+| `central-america:add-40` | Costa Rican chiqui-chiqui | Distinct Costa Rican 1980s dance-pop phenomenon with Caribbean and tropical influences. | Unreviewed |
+| `central-america:add-41` | Panamanian cumbia chorrerana | La Chorrera-region drummed/played cumbia with identifiable local performance tradition. | Unreviewed |
+| `central-america:add-42` | Panamanian cumbia santeña | Los Santos cumbia repertoire and distinctive folk-ensemble/dance context. | Unreviewed |
+| `central-america:add-43` | Panamanian cumbia darienita | Darién-region cumbia grounded in Afro-Darién communal practice. | Unreviewed |
+| `central-america:add-44` | Panamanian danzón-cumbia | Historically documented combination of danzón phrasing and Panamanian cumbia. | Unreviewed |
+| `central-america:add-45` | Panamanian cumbia zapateada | Footwork-centered subtype of Panamanian cumbia, distinct from cumbia atravesá. | Unreviewed |
+| `central-america:add-46` | Panamanian congo music | Afro-Colonense drum, call-and-response and song used in congo performance traditions. | Unreviewed |
+| `central-america:add-47` | Panamanian bullerengue | Afro-Darién song-and-drum repertory, not interchangeable with Colombian bullerengue. | Unreviewed |
+| `central-america:add-48` | Panamanian bunde | Darién-region sung/percussive Afro-descendant communal and devotional tradition. | Unreviewed |
+| `central-america:add-49` | Panamanian saloma | Distinctive melodic rural vocal calls used in local song and musical storytelling. | Unreviewed |
+| `central-america:add-50` | Panamanian cantadera de décima | Improvised or composed sung ten-line stanzas in Panama's interior folk practice. | Unreviewed |
 
 ## Supplied reference routes
 
@@ -610,55 +893,55 @@ These are listener-supplied, unverified research leads, not 50 independently ver
 
 | Entry ID | Source label | Source description — verify | Existing relationship |
 | --- | --- | --- | --- |
-| `central-africa:add-01` | Cameroonian mangambeu | Bamileke social dance-music style known for its strongly marked, shifting dance accents. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-01` | Cameroonian mangambeu | Bamileke social dance-music style known for its strongly marked, shifting dance accents. | Unreviewed |
 | `central-africa:add-02` | Cameroonian bend-skin | Popular Cameroonian dance-band style rooted in western highlands/Bamileke rhythms. | Compare [central-southern-africa:07](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
-| `central-africa:add-03` | Cameroonian mbolé | Yaoundé-rooted youth street-music scene featuring communal chant and percussion-derived grooves. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-04` | Cameroonian njang | Northwest Cameroon Grassfields dance and musical ensemble tradition. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-05` | Cameroonian ngoso | Coastal Sawa/Douala call-and-response songs linked to community celebrations and dance. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-06` | Cameroonian tchamassi | Bamileke-linked dance-music rhythm, a named traditional repertoire rather than pan-Cameroonian pop. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-07` | Cameroonian bottle-dance music | Northwest Grassfields celebratory music with bottle sounds and percussion; regional performance style. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-08` | Cameroonian mvet epic singing | Beti/Fang poetic storytelling accompanied by the mvet harp-zither; performance protocol varies. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-09` | Cameroonian gospel makossa | Christian music scenes arranging hymns and praise songs in makossa's dance-band vocabulary. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-10` | Cameroonian hip-hop 237 | French, English and local-language rap scene marked by Cameroon’s +237 country code. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-11` | Gabonese Punu ikokou | Punu community dance-song tradition, rhythmically distinct from Congolese guitar pop. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-03` | Cameroonian mbolé | Yaoundé-rooted youth street-music scene featuring communal chant and percussion-derived grooves. | Unreviewed |
+| `central-africa:add-04` | Cameroonian njang | Northwest Cameroon Grassfields dance and musical ensemble tradition. | Unreviewed |
+| `central-africa:add-05` | Cameroonian ngoso | Coastal Sawa/Douala call-and-response songs linked to community celebrations and dance. | Unreviewed |
+| `central-africa:add-06` | Cameroonian tchamassi | Bamileke-linked dance-music rhythm, a named traditional repertoire rather than pan-Cameroonian pop. | Unreviewed |
+| `central-africa:add-07` | Cameroonian bottle-dance music | Northwest Grassfields celebratory music with bottle sounds and percussion; regional performance style. | Unreviewed |
+| `central-africa:add-08` | Cameroonian mvet epic singing | Beti/Fang poetic storytelling accompanied by the mvet harp-zither; performance protocol varies. | Unreviewed |
+| `central-africa:add-09` | Cameroonian gospel makossa | Christian music scenes arranging hymns and praise songs in makossa's dance-band vocabulary. | Unreviewed |
+| `central-africa:add-10` | Cameroonian hip-hop 237 | French, English and local-language rap scene marked by Cameroon’s +237 country code. | Unreviewed |
+| `central-africa:add-11` | Gabonese Punu ikokou | Punu community dance-song tradition, rhythmically distinct from Congolese guitar pop. | Unreviewed |
 | `central-africa:add-12` | Gabonese ngombi harp songs | Gabonese plucked-harp-associated vocal repertories; ceremonial uses require contextual care. | Compare [central-southern-africa:08](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
 | `central-africa:add-13` | Gabonese Bwiti songs | Religious songs associated with Bwiti communities; do not treat restricted performances as public samples. | Compare [central-southern-africa:08](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
-| `central-africa:add-14` | Gabonese urban rap | Rap from Gabonese cities, a documented local scene rather than a claim of genre invention. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-15` | Equatoguinean Fang mvet narrative | Equatorial Guinea Fang sung epic storytelling with a mvet harp-zither. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-16` | Equatoguinean balélé | Communal song/dance performances in Equatorial Guinea; local instrumentation can vary. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-17` | Equatoguinean ibanga | Dance-song repertory documented among Equatorial Guinea’s folk traditions. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-18` | Equatoguinean Fang endondom | Named Fang dance and associated music tradition in Equatorial Guinea. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-19` | Equatoguinean Fang mendjang | Named Fang dance-music tradition; not a general substitute for all Fang songs. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-20` | Equatoguinean Bubi buleló | Named Bubi dance-song form from Bioko Island. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-21` | Equatoguinean Ndowe mecuyo | Ndowe coastal masked-dance-associated music; ceremonial setting matters. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-22` | Equatoguinean Annobonese cumbe | Annobón dance-music form reflecting the island’s separate Afro-Atlantic history. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-23` | São Toméan ússua | São Tomé formal partner-dance music with locally developed syncopated rhythmic patterns. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-24` | São Toméan socopé | Organized São Toméan communal song/dance performance with percussion and ensemble roles. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-25` | São Toméan puíta | São Tomé friction-drum-centered dance-song repertory, sometimes linked to remembrance contexts. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-26` | São Toméan bulawê | São Tomé singing-and-percussion dance style with responsive choral phrasing. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-27` | São Toméan danço-congo | São Tomé musical theatre/dance cycle with percussion and dramatic figures. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-28` | São Toméan tchiloli | São Tomé's historical music-theatre form with drums, voices and theatrical scenes. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-29` | Príncipe Auto de Floripes | Príncipe Island's local musical theatre procession, distinct from São Tomé tchiloli. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-30` | Príncipe dêxa | Príncipe song/dance genre often moving with a rolling compound-meter pulse. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-31` | São Toméan puxa | São Tomé and Príncipe's electric dance-band genre with guitars, bass and Creole vocals. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-32` | São Toméan kimbamba | Locally named performance/dance style documented in island music overviews. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-33` | São Toméan lundum | São Tomé Afro-Atlantic lundum-related song/dance repertoire with specific local history. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-34` | Chadian algheita dance music | Chadian reed-horn-and-percussion accompaniment documented in folk field recordings. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-35` | Chadian balafon-orchestra music | Interlocking Chadian xylophone ensemble tradition with percussion. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-36` | Chadian coucouma performance | Bowed string and song tradition documented in central Chad. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-37` | Chadian N’Gambaye guitar songs | Logone-region Ngambay string-song repertory documented by Smithsonian recordings. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-38` | Chadian Sara-Kabba m’belle dance | Song and percussion music documented with Sara Kaba dancers. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-39` | Chadian Sara-Mbaye klague dance | Southern Chad dance-music form recorded in the Moïssala area. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-40` | Chadian Nancere kouroum dance | Tandjilé-region communal dance-and-drum style heard in Chad field recordings. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-41` | Central African Banda-Linda horn polyphony | Interlocking large horn-ensemble music of Banda-Linda musicians in the CAR. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-42` | Central African Gbaya sanza songs | Gbaya lamellophone and voice repertoire from the Central African Republic. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-43` | Central African Baka vocal polyphony | Baka forest-community polyphonic song tradition; distinct from the original Aka entry. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `central-africa:add-44` | Central African Ngbaka lamellophone songs | Ngbaka thumb-piano-and-voice local tradition, not a Congolese-rumba offshoot. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-14` | Gabonese urban rap | Rap from Gabonese cities, a documented local scene rather than a claim of genre invention. | Unreviewed |
+| `central-africa:add-15` | Equatoguinean Fang mvet narrative | Equatorial Guinea Fang sung epic storytelling with a mvet harp-zither. | Unreviewed |
+| `central-africa:add-16` | Equatoguinean balélé | Communal song/dance performances in Equatorial Guinea; local instrumentation can vary. | Unreviewed |
+| `central-africa:add-17` | Equatoguinean ibanga | Dance-song repertory documented among Equatorial Guinea’s folk traditions. | Unreviewed |
+| `central-africa:add-18` | Equatoguinean Fang endondom | Named Fang dance and associated music tradition in Equatorial Guinea. | Unreviewed |
+| `central-africa:add-19` | Equatoguinean Fang mendjang | Named Fang dance-music tradition; not a general substitute for all Fang songs. | Unreviewed |
+| `central-africa:add-20` | Equatoguinean Bubi buleló | Named Bubi dance-song form from Bioko Island. | Unreviewed |
+| `central-africa:add-21` | Equatoguinean Ndowe mecuyo | Ndowe coastal masked-dance-associated music; ceremonial setting matters. | Unreviewed |
+| `central-africa:add-22` | Equatoguinean Annobonese cumbe | Annobón dance-music form reflecting the island’s separate Afro-Atlantic history. | Unreviewed |
+| `central-africa:add-23` | São Toméan ússua | São Tomé formal partner-dance music with locally developed syncopated rhythmic patterns. | Unreviewed |
+| `central-africa:add-24` | São Toméan socopé | Organized São Toméan communal song/dance performance with percussion and ensemble roles. | Unreviewed |
+| `central-africa:add-25` | São Toméan puíta | São Tomé friction-drum-centered dance-song repertory, sometimes linked to remembrance contexts. | Unreviewed |
+| `central-africa:add-26` | São Toméan bulawê | São Tomé singing-and-percussion dance style with responsive choral phrasing. | Unreviewed |
+| `central-africa:add-27` | São Toméan danço-congo | São Tomé musical theatre/dance cycle with percussion and dramatic figures. | Unreviewed |
+| `central-africa:add-28` | São Toméan tchiloli | São Tomé's historical music-theatre form with drums, voices and theatrical scenes. | Unreviewed |
+| `central-africa:add-29` | Príncipe Auto de Floripes | Príncipe Island's local musical theatre procession, distinct from São Tomé tchiloli. | Unreviewed |
+| `central-africa:add-30` | Príncipe dêxa | Príncipe song/dance genre often moving with a rolling compound-meter pulse. | Unreviewed |
+| `central-africa:add-31` | São Toméan puxa | São Tomé and Príncipe's electric dance-band genre with guitars, bass and Creole vocals. | Unreviewed |
+| `central-africa:add-32` | São Toméan kimbamba | Locally named performance/dance style documented in island music overviews. | Unreviewed |
+| `central-africa:add-33` | São Toméan lundum | São Tomé Afro-Atlantic lundum-related song/dance repertoire with specific local history. | Unreviewed |
+| `central-africa:add-34` | Chadian algheita dance music | Chadian reed-horn-and-percussion accompaniment documented in folk field recordings. | Unreviewed |
+| `central-africa:add-35` | Chadian balafon-orchestra music | Interlocking Chadian xylophone ensemble tradition with percussion. | Unreviewed |
+| `central-africa:add-36` | Chadian coucouma performance | Bowed string and song tradition documented in central Chad. | Unreviewed |
+| `central-africa:add-37` | Chadian N’Gambaye guitar songs | Logone-region Ngambay string-song repertory documented by Smithsonian recordings. | Unreviewed |
+| `central-africa:add-38` | Chadian Sara-Kabba m’belle dance | Song and percussion music documented with Sara Kaba dancers. | Unreviewed |
+| `central-africa:add-39` | Chadian Sara-Mbaye klague dance | Southern Chad dance-music form recorded in the Moïssala area. | Unreviewed |
+| `central-africa:add-40` | Chadian Nancere kouroum dance | Tandjilé-region communal dance-and-drum style heard in Chad field recordings. | Unreviewed |
+| `central-africa:add-41` | Central African Banda-Linda horn polyphony | Interlocking large horn-ensemble music of Banda-Linda musicians in the CAR. | Unreviewed |
+| `central-africa:add-42` | Central African Gbaya sanza songs | Gbaya lamellophone and voice repertoire from the Central African Republic. | Unreviewed |
+| `central-africa:add-43` | Central African Baka vocal polyphony | Baka forest-community polyphonic song tradition; distinct from the original Aka entry. | Unreviewed |
+| `central-africa:add-44` | Central African Ngbaka lamellophone songs | Ngbaka thumb-piano-and-voice local tradition, not a Congolese-rumba offshoot. | Unreviewed |
 | `central-africa:add-45` | Congolese sebene | Extended guitar-led dance-break portion in Congolese rumba and soukous arrangements. | Compare [central-southern-africa:01](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
 | `central-africa:add-46` | Congolese odemba rumba | Guitar-driven Franco/OK Jazz-associated rumba approach, historically distinct from later soukous. | Compare [central-southern-africa:01](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
-| `central-africa:add-47` | Congolese tcha tcho | Slower, intimate Congolese popular song/dance style associated with Koffi Olomidé's repertoire. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-47` | Congolese tcha tcho | Slower, intimate Congolese popular song/dance style associated with Koffi Olomidé's repertoire. | Unreviewed |
 | `central-africa:add-48` | Congolese four-time soukous | Fast, lean late-century soukous dance-band form known as soukous quatre temps. | Compare [central-southern-africa:01](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
-| `central-africa:add-49` | DRC Luba kasala praise singing | Kasai-area Luba praise-poetry performance, often declaimed; not synonymous with mutuashi. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `central-africa:add-49` | DRC Luba kasala praise singing | Kasai-area Luba praise-poetry performance, often declaimed; not synonymous with mutuashi. | Unreviewed |
 | `central-africa:add-50` | DRC likembe song repertory | Congolese lamellophone-led vocal traditions preceding and coexisting with amplified dance bands. | Compare [central-southern-africa:02](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
 
 ## Supplied reference routes
@@ -688,55 +971,55 @@ These are listener-supplied, unverified research leads, not 50 independently ver
 
 | Entry ID | Source label | Source description — verify | Existing relationship |
 | --- | --- | --- | --- |
-| `southern-africa:add-01` | Angolan kilapanga | Angolan dance-music rhythm and band repertoire separate from semba. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-01` | Angolan kilapanga | Angolan dance-music rhythm and band repertoire separate from semba. | Unreviewed |
 | `southern-africa:add-02` | Angolan kazukuta | Historic Luanda carnival and neighbourhood dance-song rhythm. | Compare [central-southern-africa:12](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
-| `southern-africa:add-03` | Angolan tarraxinha | Slow, close-dance-oriented electronic kizomba descendant; distinct from straight kizomba. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-04` | Angolan afro-house | Angola's producer-led house scene with syncopated local percussion and bass grooves. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-05` | Angolan rap | Luanda and wider Angola Portuguese-language hip-hop scene. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-06` | Angolan semba lamento | Slower, lyrically mournful named branch of semba. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-07` | Angolan semba cadenciado | Measured, cadenced branch of semba performance, distinct from generic fast party arrangements. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-03` | Angolan tarraxinha | Slow, close-dance-oriented electronic kizomba descendant; distinct from straight kizomba. | Unreviewed |
+| `southern-africa:add-04` | Angolan afro-house | Angola's producer-led house scene with syncopated local percussion and bass grooves. | Unreviewed |
+| `southern-africa:add-05` | Angolan rap | Luanda and wider Angola Portuguese-language hip-hop scene. | Unreviewed |
+| `southern-africa:add-06` | Angolan semba lamento | Slower, lyrically mournful named branch of semba. | Unreviewed |
+| `southern-africa:add-07` | Angolan semba cadenciado | Measured, cadenced branch of semba performance, distinct from generic fast party arrangements. | Unreviewed |
 | `southern-africa:add-08` | South African mbube | Earlier powerful Zulu male-vocal harmony style related to, but distinct from, soft isicathamiya. | Compare [central-southern-africa:20](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
 | `southern-africa:add-09` | South African bubblegum | 1980s township disco-pop with bright synthesizers, often named township bubblegum. | Compare [central-southern-africa:24](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
 | `southern-africa:add-10` | Tsonga disco | South African Tsonga-language disco-pop era associated with local electric bands; older than Shangaan electro. | Compare [central-southern-africa:24](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
-| `southern-africa:add-11` | South African Bacardi house | Pretoria's percussion-oriented township house antecedent to some amapiano scenes. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-11` | South African Bacardi house | Pretoria's percussion-oriented township house antecedent to some amapiano scenes. | Unreviewed |
 | `southern-africa:add-12` | South African sgija | Amapiano dance-floor substyle with rougher percussion and driving low end. | Compare [central-southern-africa:27](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
 | `southern-africa:add-13` | South African private-school amapiano | Jazzier, melodic, keyboard-forward amapiano substyle. | Compare [central-southern-africa:27](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
-| `southern-africa:add-14` | South African three-step | Regional house rhythm emphasizing a three-step feel, associated with KwaZulu-Natal club production. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-14` | South African three-step | Regional house rhythm emphasizing a three-step feel, associated with KwaZulu-Natal club production. | Unreviewed |
 | `southern-africa:add-15` | South African Cape jazz | Cape Town jazz idiom with local dance and melody influence. | Compare [central-southern-africa:22](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
 | `southern-africa:add-16` | Cape ghoema / goema | Cape Town carnival-associated syncopated drum and song tradition. | Compare [central-southern-africa:22](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
-| `southern-africa:add-17` | Cape Malay choir music | Cape Muslim community choral repertory combining local, sacred and competition traditions. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-18` | Boeremusiek | Afrikaans accordion/concertina-led country-dance instrumental music. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-19` | Afrikaans sokkie music | Danceable Afrikaans popular-song scene for partner social dancing. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-20` | South African riel dance music | Khoi/San-influenced Northern Cape dance and associated rhythmic/string accompaniment. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-21` | Zulu indlamu music | Songs and drum rhythms for Zulu indlamu dance; repertory rather than streaming genre. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-22` | Xhosa umngqokolo singing | Xhosa women's distinctive overtone singing technique and song tradition. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-23` | Xhosa uhadi songs | Xhosa musical-bow vocal repertory with overtone-rich accompaniment. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-24` | Botswana borankana | Botswana singing, clapping and vigorous group-dance tradition. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-25` | Botswana setapa | Ngwaketse-associated 6/8 social song-and-dance genre. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-26` | Botswana phathisi | Botswana communal song-and-step dance tradition with strong footwork. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-27` | Botswana tsutsube | Kgalagadi-area dance-song tradition with vigorous movement and responsive singing. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-28` | Botswana mokomoto | Botswana regional traditional song/dance form documented in ethnomusicology. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-29` | Botswana gumba-gumba | Botswana party-oriented popular music combining regional rhythms and jazz-band elements. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-30` | Botswana motswako | Setswana-centered rap and hip-hop scene spanning Botswana and South Africa. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-31` | Botswana dikhwaere | Botswana local choral song-and-dance style with organized group performances. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-32` | Namibian oviritje | Namibian Otjiherero-language energetic guitar/keyboard popular-music style. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-33` | Namibian shambo | Oshiwambo-region contemporary dance music with vernacular melodic roots. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-34` | Namibian ma/gaisa | Nama/Damara vernacular dance-pop sound, a distinct national award genre. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-35` | Namibian langarm | Namibian partner-dance band music, historically associated with mixed ballroom and local styles. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-36` | Namibian epera | Named local traditional-pop genre recognized in Namibia music-award classifications. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-37` | Namibian sikokoshi | Namibian regional musical category recognized in national awards; research artist and locality case by case. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-17` | Cape Malay choir music | Cape Muslim community choral repertory combining local, sacred and competition traditions. | Unreviewed |
+| `southern-africa:add-18` | Boeremusiek | Afrikaans accordion/concertina-led country-dance instrumental music. | Unreviewed |
+| `southern-africa:add-19` | Afrikaans sokkie music | Danceable Afrikaans popular-song scene for partner social dancing. | Unreviewed |
+| `southern-africa:add-20` | South African riel dance music | Khoi/San-influenced Northern Cape dance and associated rhythmic/string accompaniment. | Unreviewed |
+| `southern-africa:add-21` | Zulu indlamu music | Songs and drum rhythms for Zulu indlamu dance; repertory rather than streaming genre. | Unreviewed |
+| `southern-africa:add-22` | Xhosa umngqokolo singing | Xhosa women's distinctive overtone singing technique and song tradition. | Unreviewed |
+| `southern-africa:add-23` | Xhosa uhadi songs | Xhosa musical-bow vocal repertory with overtone-rich accompaniment. | Unreviewed |
+| `southern-africa:add-24` | Botswana borankana | Botswana singing, clapping and vigorous group-dance tradition. | Unreviewed |
+| `southern-africa:add-25` | Botswana setapa | Ngwaketse-associated 6/8 social song-and-dance genre. | Unreviewed |
+| `southern-africa:add-26` | Botswana phathisi | Botswana communal song-and-step dance tradition with strong footwork. | Unreviewed |
+| `southern-africa:add-27` | Botswana tsutsube | Kgalagadi-area dance-song tradition with vigorous movement and responsive singing. | Unreviewed |
+| `southern-africa:add-28` | Botswana mokomoto | Botswana regional traditional song/dance form documented in ethnomusicology. | Unreviewed |
+| `southern-africa:add-29` | Botswana gumba-gumba | Botswana party-oriented popular music combining regional rhythms and jazz-band elements. | Unreviewed |
+| `southern-africa:add-30` | Botswana motswako | Setswana-centered rap and hip-hop scene spanning Botswana and South Africa. | Unreviewed |
+| `southern-africa:add-31` | Botswana dikhwaere | Botswana local choral song-and-dance style with organized group performances. | Unreviewed |
+| `southern-africa:add-32` | Namibian oviritje | Namibian Otjiherero-language energetic guitar/keyboard popular-music style. | Unreviewed |
+| `southern-africa:add-33` | Namibian shambo | Oshiwambo-region contemporary dance music with vernacular melodic roots. | Unreviewed |
+| `southern-africa:add-34` | Namibian ma/gaisa | Nama/Damara vernacular dance-pop sound, a distinct national award genre. | Unreviewed |
+| `southern-africa:add-35` | Namibian langarm | Namibian partner-dance band music, historically associated with mixed ballroom and local styles. | Unreviewed |
+| `southern-africa:add-36` | Namibian epera | Named local traditional-pop genre recognized in Namibia music-award classifications. | Unreviewed |
+| `southern-africa:add-37` | Namibian sikokoshi | Namibian regional musical category recognized in national awards; research artist and locality case by case. | Unreviewed |
 | `southern-africa:add-38` | Mozambican marrabenta | Maputo urban electric-guitar dance music with brisk repeating figures. | Compare [central-southern-africa:18](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
-| `southern-africa:add-39` | Mozambican pandza | Urban youth dance-pop made from local rhythms and modern electronic production. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-40` | Mozambican Chopi timbila | Chopi orchestral xylophone music with sung and danced suites. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-41` | Mozambican Makonde mapiko | Makonde masked dance-theatre music with drums and vocal interaction. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-42` | Mozambican tufo | Northern Mozambican women's group song-and-drum tradition, often Muslim-associated. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-43` | Mozambican xigubo | Southern Mozambican vigorous group dance and percussion repertoire. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-44` | Mozambican xingomana | Documented Mozambican traditional song/dance genre with regional repertories. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-45` | Mozambican mandowa | Named Mozambican vernacular song/dance style documented by the country's music portal. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-46` | Zimbabwean mbakumba | Karanga-associated Zimbabwean group dance-music tradition. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-47` | Zimbabwean jerusarema / mbende | Zezuru Shona polyrhythmic dance music with distinct performance convention. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-48` | Zimbabwean muchongoyo | Ndau/Shangani-region vigorous communal dance-and-drum music. | Unreviewed; check semantic overlap before treating as a distinct route. |
-| `southern-africa:add-49` | Zimbabwean amabhiza | Kalanga/Ndebele-community song-and-dance tradition. | Unreviewed; check semantic overlap before treating as a distinct route. |
+| `southern-africa:add-39` | Mozambican pandza | Urban youth dance-pop made from local rhythms and modern electronic production. | Unreviewed |
+| `southern-africa:add-40` | Mozambican Chopi timbila | Chopi orchestral xylophone music with sung and danced suites. | Unreviewed |
+| `southern-africa:add-41` | Mozambican Makonde mapiko | Makonde masked dance-theatre music with drums and vocal interaction. | Unreviewed |
+| `southern-africa:add-42` | Mozambican tufo | Northern Mozambican women's group song-and-drum tradition, often Muslim-associated. | Unreviewed |
+| `southern-africa:add-43` | Mozambican xigubo | Southern Mozambican vigorous group dance and percussion repertoire. | Unreviewed |
+| `southern-africa:add-44` | Mozambican xingomana | Documented Mozambican traditional song/dance genre with regional repertories. | Unreviewed |
+| `southern-africa:add-45` | Mozambican mandowa | Named Mozambican vernacular song/dance style documented by the country's music portal. | Unreviewed |
+| `southern-africa:add-46` | Zimbabwean mbakumba | Karanga-associated Zimbabwean group dance-music tradition. | Unreviewed |
+| `southern-africa:add-47` | Zimbabwean jerusarema / mbende | Zezuru Shona polyrhythmic dance music with distinct performance convention. | Unreviewed |
+| `southern-africa:add-48` | Zimbabwean muchongoyo | Ndau/Shangani-region vigorous communal dance-and-drum music. | Unreviewed |
+| `southern-africa:add-49` | Zimbabwean amabhiza | Kalanga/Ndebele-community song-and-dance tradition. | Unreviewed |
 | `southern-africa:add-50` | Lesotho famo | Basotho accordion-driven song style with elaborate vocal declamation and social narratives. | Compare [central-southern-africa:29](central-southern-africa.md): overlapping or narrower lead; do not count twice or use as independent variety. |
 
 ## Supplied reference routes
@@ -763,6 +1046,8 @@ Honor the selected geography, mood and tempo above discovery cues. A tradition's
 For discovery, compare several compatible routes and dig beyond named touchstones: local labels, collaborators, overlooked releases and contemporary scenes. A famous name here is context, not a selection instruction. Admit accessible pop only when its particular groove, voice or arrangement earns the place; reject anonymous mood filler. Obscurity is not a quality test. Keep irony audible and purposeful. Do not impose acoustic, ceremonial or archival music merely to demonstrate breadth. Use only publicly released, appropriately documented recordings; do not infer access to restricted ceremonial material.
 
 Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
+
+**Mandatory shared policy:** The verification, consent, provenance, mood, tempo, cultural-boundary and reviewed-lens safeguards above apply to every regional research file, including additions. Individual files link here rather than repeating these rules. In addition tables, **Unreviewed** means “check semantic overlap before treating as an independent route,” not evidence that a new genre or distinct route exists.
 
 See the [focused regional review](regional-review.md) for the source-supported shortlist, overlap decisions and material not ready for automatic discovery.
 
@@ -862,13 +1147,7 @@ The atlas preserves **920 source entries**: 720 baseline rows plus 200 additions
 
 Region ID: `us-west`. Route handles: `us-west:01`–`us-west:30`.
 
-Treat every entry below as a listener-supplied research hypothesis, not verified music history or evidence about a recording. Labels may combine genres, scenes, instruments and performance traditions; preserve those distinctions when researching. Verify names, provenance, dates and sonic claims against artist/label notes or credible specialist sources before using them. Do not repeat precise instrument models, meters, BPM ranges or lyrical themes without recording-level support.
-
-Honor the selected geography, mood and tempo above discovery cues. A tradition's origin does not establish a diaspora artist's current scene or a recording's provenance. Research cross-border connections explicitly. Criminal requires song-level crime narrative evidence; neither genre nor reputation suffices.
-
-For discovery, compare several compatible routes and dig beyond named touchstones: local labels, collaborators, overlooked releases and contemporary scenes. A famous name here is context, not a selection instruction. Admit accessible pop only when its particular groove, voice or arrangement earns the place; reject anonymous mood filler. Obscurity is not a quality test. Keep irony audible and purposeful. Do not impose acoustic, ceremonial or archival music merely to demonstrate breadth. Use only publicly released, appropriately documented recordings; do not infer access to restricted ceremonial material.
-
-Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
+**Regional policy:** Apply the [regional safeguards](../regional-atlas.md) to every research lead below.
 
 **New map boundary:** US West remains the Pacific states, Mountain West, Alaska and Hawaiʻi. Original Texas and Oklahoma source handles remain here for traceability but now primarily belong to [US South & Gulf](us-south.md). Borderland and cross-regional musical connections need recording evidence.
 
@@ -921,13 +1200,7 @@ Imported from listener-supplied regional survey, [Drive source](https://drive.go
 
 Region ID: `us-east`. Route handles: `us-east:01`–`us-east:30`.
 
-Treat every entry below as a listener-supplied research hypothesis, not verified music history or evidence about a recording. Labels may combine genres, scenes, instruments and performance traditions; preserve those distinctions when researching. Verify names, provenance, dates and sonic claims against artist/label notes or credible specialist sources before using them. Do not repeat precise instrument models, meters, BPM ranges or lyrical themes without recording-level support.
-
-Honor the selected geography, mood and tempo above discovery cues. A tradition's origin does not establish a diaspora artist's current scene or a recording's provenance. Research cross-border connections explicitly. Criminal requires song-level crime narrative evidence; neither genre nor reputation suffices.
-
-For discovery, compare several compatible routes and dig beyond named touchstones: local labels, collaborators, overlooked releases and contemporary scenes. A famous name here is context, not a selection instruction. Admit accessible pop only when its particular groove, voice or arrangement earns the place; reject anonymous mood filler. Obscurity is not a quality test. Keep irony audible and purposeful. Do not impose acoustic, ceremonial or archival music merely to demonstrate breadth. Use only publicly released, appropriately documented recordings; do not infer access to restricted ceremonial material.
-
-Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
+**Regional policy:** Apply the [regional safeguards](../regional-atlas.md) to every research lead below.
 
 **New map boundary:** US East now means primarily the Atlantic Northeast and Mid-Atlantic. The old 30 source handles remain unchanged for traceability; Chicago/Detroit leads are now researched under [US Midwest & Great Lakes](us-midwest.md), while Memphis, Atlanta, Florida, Louisiana and Appalachia are primarily [US South & Gulf](us-south.md). Only use these old rows for an East selection when an actual recording-level East connection is documented.
 
@@ -1048,13 +1321,7 @@ This new guide uses **unverified leads** from the existing survey, preserving it
 
 Region ID: `canada-west`. Route handles: `canada-west:01`–`canada-west:30`.
 
-Treat every entry below as a listener-supplied research hypothesis, not verified music history or evidence about a recording. Labels may combine genres, scenes, instruments and performance traditions; preserve those distinctions when researching. Verify names, provenance, dates and sonic claims against artist/label notes or credible specialist sources before using them. Do not repeat precise instrument models, meters, BPM ranges or lyrical themes without recording-level support.
-
-Honor the selected geography, mood and tempo above discovery cues. A tradition's origin does not establish a diaspora artist's current scene or a recording's provenance. Research cross-border connections explicitly. Criminal requires song-level crime narrative evidence; neither genre nor reputation suffices.
-
-For discovery, compare several compatible routes and dig beyond named touchstones: local labels, collaborators, overlooked releases and contemporary scenes. A famous name here is context, not a selection instruction. Admit accessible pop only when its particular groove, voice or arrangement earns the place; reject anonymous mood filler. Obscurity is not a quality test. Keep irony audible and purposeful. Do not impose acoustic, ceremonial or archival music merely to demonstrate breadth. Use only publicly released, appropriately documented recordings; do not infer access to restricted ceremonial material.
-
-Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
+**Regional policy:** Apply the [regional safeguards](../regional-atlas.md) to every research lead below.
 
 ## Source and status
 
@@ -1105,13 +1372,7 @@ Imported from listener-supplied regional survey, [Drive source](https://drive.go
 
 Region ID: `canada-east`. Route handles: `canada-east:01`–`canada-east:30`.
 
-Treat every entry below as a listener-supplied research hypothesis, not verified music history or evidence about a recording. Labels may combine genres, scenes, instruments and performance traditions; preserve those distinctions when researching. Verify names, provenance, dates and sonic claims against artist/label notes or credible specialist sources before using them. Do not repeat precise instrument models, meters, BPM ranges or lyrical themes without recording-level support.
-
-Honor the selected geography, mood and tempo above discovery cues. A tradition's origin does not establish a diaspora artist's current scene or a recording's provenance. Research cross-border connections explicitly. Criminal requires song-level crime narrative evidence; neither genre nor reputation suffices.
-
-For discovery, compare several compatible routes and dig beyond named touchstones: local labels, collaborators, overlooked releases and contemporary scenes. A famous name here is context, not a selection instruction. Admit accessible pop only when its particular groove, voice or arrangement earns the place; reject anonymous mood filler. Obscurity is not a quality test. Keep irony audible and purposeful. Do not impose acoustic, ceremonial or archival music merely to demonstrate breadth. Use only publicly released, appropriately documented recordings; do not infer access to restricted ceremonial material.
-
-Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
+**Regional policy:** Apply the [regional safeguards](../regional-atlas.md) to every research lead below.
 
 ## Source and status
 
@@ -1162,13 +1423,7 @@ Imported from listener-supplied regional survey, [Drive source](https://drive.go
 
 Region ID: `mexico`. Route handles: `mexico:01`–`mexico:30`.
 
-Treat every entry below as a listener-supplied research hypothesis, not verified music history or evidence about a recording. Labels may combine genres, scenes, instruments and performance traditions; preserve those distinctions when researching. Verify names, provenance, dates and sonic claims against artist/label notes or credible specialist sources before using them. Do not repeat precise instrument models, meters, BPM ranges or lyrical themes without recording-level support.
-
-Honor the selected geography, mood and tempo above discovery cues. A tradition's origin does not establish a diaspora artist's current scene or a recording's provenance. Research cross-border connections explicitly. Criminal requires song-level crime narrative evidence; neither genre nor reputation suffices.
-
-For discovery, compare several compatible routes and dig beyond named touchstones: local labels, collaborators, overlooked releases and contemporary scenes. A famous name here is context, not a selection instruction. Admit accessible pop only when its particular groove, voice or arrangement earns the place; reject anonymous mood filler. Obscurity is not a quality test. Keep irony audible and purposeful. Do not impose acoustic, ceremonial or archival music merely to demonstrate breadth. Use only publicly released, appropriately documented recordings; do not infer access to restricted ceremonial material.
-
-Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
+**Regional policy:** Apply the [regional safeguards](../regional-atlas.md) to every research lead below.
 
 ## Source and status
 
@@ -1219,13 +1474,7 @@ Imported from listener-supplied regional survey, [Drive source](https://drive.go
 
 Region ID: `central-america`. Route handles: `central-america:01`–`central-america:30`.
 
-Treat every entry below as a listener-supplied research hypothesis, not verified music history or evidence about a recording. Labels may combine genres, scenes, instruments and performance traditions; preserve those distinctions when researching. Verify names, provenance, dates and sonic claims against artist/label notes or credible specialist sources before using them. Do not repeat precise instrument models, meters, BPM ranges or lyrical themes without recording-level support.
-
-Honor the selected geography, mood and tempo above discovery cues. A tradition's origin does not establish a diaspora artist's current scene or a recording's provenance. Research cross-border connections explicitly. Criminal requires song-level crime narrative evidence; neither genre nor reputation suffices.
-
-For discovery, compare several compatible routes and dig beyond named touchstones: local labels, collaborators, overlooked releases and contemporary scenes. A famous name here is context, not a selection instruction. Admit accessible pop only when its particular groove, voice or arrangement earns the place; reject anonymous mood filler. Obscurity is not a quality test. Keep irony audible and purposeful. Do not impose acoustic, ceremonial or archival music merely to demonstrate breadth. Use only publicly released, appropriately documented recordings; do not infer access to restricted ceremonial material.
-
-Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
+**Regional policy:** Apply the [regional safeguards](../regional-atlas.md) to every research lead below.
 
 ## Source and status
 
@@ -1280,13 +1529,7 @@ Read [central-america-additions.md](central-america-additions.md) for 50 additio
 
 Region ID: `caribbean`. Route handles: `caribbean:01`–`caribbean:30`.
 
-Treat every entry below as a listener-supplied research hypothesis, not verified music history or evidence about a recording. Labels may combine genres, scenes, instruments and performance traditions; preserve those distinctions when researching. Verify names, provenance, dates and sonic claims against artist/label notes or credible specialist sources before using them. Do not repeat precise instrument models, meters, BPM ranges or lyrical themes without recording-level support.
-
-Honor the selected geography, mood and tempo above discovery cues. A tradition's origin does not establish a diaspora artist's current scene or a recording's provenance. Research cross-border connections explicitly. Criminal requires song-level crime narrative evidence; neither genre nor reputation suffices.
-
-For discovery, compare several compatible routes and dig beyond named touchstones: local labels, collaborators, overlooked releases and contemporary scenes. A famous name here is context, not a selection instruction. Admit accessible pop only when its particular groove, voice or arrangement earns the place; reject anonymous mood filler. Obscurity is not a quality test. Keep irony audible and purposeful. Do not impose acoustic, ceremonial or archival music merely to demonstrate breadth. Use only publicly released, appropriately documented recordings; do not infer access to restricted ceremonial material.
-
-Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
+**Regional policy:** Apply the [regional safeguards](../regional-atlas.md) to every research lead below.
 
 ## Source and status
 
@@ -1337,13 +1580,7 @@ Imported from listener-supplied regional survey, [Drive source](https://drive.go
 
 Region ID: `northern-south-america`. Route handles: `northern-south-america:01`–`northern-south-america:30`.
 
-Treat every entry below as a listener-supplied research hypothesis, not verified music history or evidence about a recording. Labels may combine genres, scenes, instruments and performance traditions; preserve those distinctions when researching. Verify names, provenance, dates and sonic claims against artist/label notes or credible specialist sources before using them. Do not repeat precise instrument models, meters, BPM ranges or lyrical themes without recording-level support.
-
-Honor the selected geography, mood and tempo above discovery cues. A tradition's origin does not establish a diaspora artist's current scene or a recording's provenance. Research cross-border connections explicitly. Criminal requires song-level crime narrative evidence; neither genre nor reputation suffices.
-
-For discovery, compare several compatible routes and dig beyond named touchstones: local labels, collaborators, overlooked releases and contemporary scenes. A famous name here is context, not a selection instruction. Admit accessible pop only when its particular groove, voice or arrangement earns the place; reject anonymous mood filler. Obscurity is not a quality test. Keep irony audible and purposeful. Do not impose acoustic, ceremonial or archival music merely to demonstrate breadth. Use only publicly released, appropriately documented recordings; do not infer access to restricted ceremonial material.
-
-Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
+**Regional policy:** Apply the [regional safeguards](../regional-atlas.md) to every research lead below.
 
 ## Source and status
 
@@ -1394,13 +1631,7 @@ Imported from listener-supplied regional survey, [Drive source](https://drive.go
 
 Region ID: `southern-south-america`. Route handles: `southern-south-america:01`–`southern-south-america:30`.
 
-Treat every entry below as a listener-supplied research hypothesis, not verified music history or evidence about a recording. Labels may combine genres, scenes, instruments and performance traditions; preserve those distinctions when researching. Verify names, provenance, dates and sonic claims against artist/label notes or credible specialist sources before using them. Do not repeat precise instrument models, meters, BPM ranges or lyrical themes without recording-level support.
-
-Honor the selected geography, mood and tempo above discovery cues. A tradition's origin does not establish a diaspora artist's current scene or a recording's provenance. Research cross-border connections explicitly. Criminal requires song-level crime narrative evidence; neither genre nor reputation suffices.
-
-For discovery, compare several compatible routes and dig beyond named touchstones: local labels, collaborators, overlooked releases and contemporary scenes. A famous name here is context, not a selection instruction. Admit accessible pop only when its particular groove, voice or arrangement earns the place; reject anonymous mood filler. Obscurity is not a quality test. Keep irony audible and purposeful. Do not impose acoustic, ceremonial or archival music merely to demonstrate breadth. Use only publicly released, appropriately documented recordings; do not infer access to restricted ceremonial material.
-
-Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
+**Regional policy:** Apply the [regional safeguards](../regional-atlas.md) to every research lead below.
 
 ## Source and status
 
@@ -1451,13 +1682,7 @@ Imported from listener-supplied regional survey, [Drive source](https://drive.go
 
 Region ID: `atlantic-europe`. Route handles: `atlantic-europe:01`–`atlantic-europe:30`.
 
-Treat every entry below as a listener-supplied research hypothesis, not verified music history or evidence about a recording. Labels may combine genres, scenes, instruments and performance traditions; preserve those distinctions when researching. Verify names, provenance, dates and sonic claims against artist/label notes or credible specialist sources before using them. Do not repeat precise instrument models, meters, BPM ranges or lyrical themes without recording-level support.
-
-Honor the selected geography, mood and tempo above discovery cues. A tradition's origin does not establish a diaspora artist's current scene or a recording's provenance. Research cross-border connections explicitly. Criminal requires song-level crime narrative evidence; neither genre nor reputation suffices.
-
-For discovery, compare several compatible routes and dig beyond named touchstones: local labels, collaborators, overlooked releases and contemporary scenes. A famous name here is context, not a selection instruction. Admit accessible pop only when its particular groove, voice or arrangement earns the place; reject anonymous mood filler. Obscurity is not a quality test. Keep irony audible and purposeful. Do not impose acoustic, ceremonial or archival music merely to demonstrate breadth. Use only publicly released, appropriately documented recordings; do not infer access to restricted ceremonial material.
-
-Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
+**Regional policy:** Apply the [regional safeguards](../regional-atlas.md) to every research lead below.
 
 **Listening-area overlap:** Spain is painted primarily in Mediterranean & Balkans because of its Balearic, Catalan, Valencian and Andalusian scenes. For an explicit Atlantic & Western Europe request, Galicia/Asturias (source handle `mediterranean-europe:07`) and the Basque Country (`mediterranean-europe:08`) are legitimate *locality-specific* search leads, not permission to choose any Spanish recording. Portugal is Atlantic on the map even though fado, Alentejo and Lisbon batida were imported as `mediterranean-europe:09`–`:11`; check those origins rather than the historical source-file grouping. Mainland France is primarily Atlantic; Corsica (`mediterranean-europe:13`) is a geographically specific Mediterranean exception. Confirm the actual recording's scene before counting a cross-reference.
 
@@ -1510,13 +1735,7 @@ Imported from listener-supplied regional survey, [Drive source](https://drive.go
 
 Region ID: `mediterranean-europe`. Route handles: `mediterranean-europe:01`–`mediterranean-europe:30`.
 
-Treat every entry below as a listener-supplied research hypothesis, not verified music history or evidence about a recording. Labels may combine genres, scenes, instruments and performance traditions; preserve those distinctions when researching. Verify names, provenance, dates and sonic claims against artist/label notes or credible specialist sources before using them. Do not repeat precise instrument models, meters, BPM ranges or lyrical themes without recording-level support.
-
-Honor the selected geography, mood and tempo above discovery cues. A tradition's origin does not establish a diaspora artist's current scene or a recording's provenance. Research cross-border connections explicitly. Criminal requires song-level crime narrative evidence; neither genre nor reputation suffices.
-
-For discovery, compare several compatible routes and dig beyond named touchstones: local labels, collaborators, overlooked releases and contemporary scenes. A famous name here is context, not a selection instruction. Admit accessible pop only when its particular groove, voice or arrangement earns the place; reject anonymous mood filler. Obscurity is not a quality test. Keep irony audible and purposeful. Do not impose acoustic, ceremonial or archival music merely to demonstrate breadth. Use only publicly released, appropriately documented recordings; do not infer access to restricted ceremonial material.
-
-Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
+**Regional policy:** Apply the [regional safeguards](../regional-atlas.md) to every research lead below.
 
 **Listening-area overlap:** Spain remains the PWA's primary Mediterranean Europe map country (Balearics, Catalonia, Valencia, Andalusia). The imported Galicia/Asturias (`:07`) and Basque (`:08`) leads are Atlantic-facing; consult them for Atlantic & Western Europe only when locality and recording evidence support it. Portugal's `:09`–`:11` leads are preserved here for source traceability even though Portugal is Atlantic & Western Europe on the map. Corsican music (`:13`) is Mediterranean despite France's primary Atlantic map assignment. Turkish Anatolian and Istanbul routes primarily belong to Middle East & Caucasus, while Thracian/Balkan connections require specific provenance evidence. This note does not authorize adding otherwise out-of-region recordings simply because countries share a coast.
 
@@ -1604,13 +1823,7 @@ This new guide uses **unverified leads** from the existing survey, preserving it
 
 Region ID: `northern-europe`. Route handles: `northern-europe:01`–`northern-europe:30`.
 
-Treat every entry below as a listener-supplied research hypothesis, not verified music history or evidence about a recording. Labels may combine genres, scenes, instruments and performance traditions; preserve those distinctions when researching. Verify names, provenance, dates and sonic claims against artist/label notes or credible specialist sources before using them. Do not repeat precise instrument models, meters, BPM ranges or lyrical themes without recording-level support.
-
-Honor the selected geography, mood and tempo above discovery cues. A tradition's origin does not establish a diaspora artist's current scene or a recording's provenance. Research cross-border connections explicitly. Criminal requires song-level crime narrative evidence; neither genre nor reputation suffices.
-
-For discovery, compare several compatible routes and dig beyond named touchstones: local labels, collaborators, overlooked releases and contemporary scenes. A famous name here is context, not a selection instruction. Admit accessible pop only when its particular groove, voice or arrangement earns the place; reject anonymous mood filler. Obscurity is not a quality test. Keep irony audible and purposeful. Do not impose acoustic, ceremonial or archival music merely to demonstrate breadth. Use only publicly released, appropriately documented recordings; do not infer access to restricted ceremonial material.
-
-Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
+**Regional policy:** Apply the [regional safeguards](../regional-atlas.md) to every research lead below.
 
 ## Source and status
 
@@ -1661,13 +1874,7 @@ Imported from listener-supplied regional survey, [Drive source](https://drive.go
 
 Region ID: `eastern-europe`. Route handles: `eastern-europe:01`–`eastern-europe:30`.
 
-Treat every entry below as a listener-supplied research hypothesis, not verified music history or evidence about a recording. Labels may combine genres, scenes, instruments and performance traditions; preserve those distinctions when researching. Verify names, provenance, dates and sonic claims against artist/label notes or credible specialist sources before using them. Do not repeat precise instrument models, meters, BPM ranges or lyrical themes without recording-level support.
-
-Honor the selected geography, mood and tempo above discovery cues. A tradition's origin does not establish a diaspora artist's current scene or a recording's provenance. Research cross-border connections explicitly. Criminal requires song-level crime narrative evidence; neither genre nor reputation suffices.
-
-For discovery, compare several compatible routes and dig beyond named touchstones: local labels, collaborators, overlooked releases and contemporary scenes. A famous name here is context, not a selection instruction. Admit accessible pop only when its particular groove, voice or arrangement earns the place; reject anonymous mood filler. Obscurity is not a quality test. Keep irony audible and purposeful. Do not impose acoustic, ceremonial or archival music merely to demonstrate breadth. Use only publicly released, appropriately documented recordings; do not infer access to restricted ceremonial material.
-
-Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
+**Regional policy:** Apply the [regional safeguards](../regional-atlas.md) to every research lead below.
 
 ## Source and status
 
@@ -1718,13 +1925,7 @@ Imported from listener-supplied regional survey, [Drive source](https://drive.go
 
 Region ID: `north-africa`. Route handles: `north-africa:01`–`north-africa:30`.
 
-Treat every entry below as a listener-supplied research hypothesis, not verified music history or evidence about a recording. Labels may combine genres, scenes, instruments and performance traditions; preserve those distinctions when researching. Verify names, provenance, dates and sonic claims against artist/label notes or credible specialist sources before using them. Do not repeat precise instrument models, meters, BPM ranges or lyrical themes without recording-level support.
-
-Honor the selected geography, mood and tempo above discovery cues. A tradition's origin does not establish a diaspora artist's current scene or a recording's provenance. Research cross-border connections explicitly. Criminal requires song-level crime narrative evidence; neither genre nor reputation suffices.
-
-For discovery, compare several compatible routes and dig beyond named touchstones: local labels, collaborators, overlooked releases and contemporary scenes. A famous name here is context, not a selection instruction. Admit accessible pop only when its particular groove, voice or arrangement earns the place; reject anonymous mood filler. Obscurity is not a quality test. Keep irony audible and purposeful. Do not impose acoustic, ceremonial or archival music merely to demonstrate breadth. Use only publicly released, appropriately documented recordings; do not infer access to restricted ceremonial material.
-
-Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
+**Regional policy:** Apply the [regional safeguards](../regional-atlas.md) to every research lead below.
 
 ## Source and status
 
@@ -1775,13 +1976,7 @@ Imported from listener-supplied regional survey, [Drive source](https://drive.go
 
 Region ID: `west-africa`. Route handles: `west-africa:01`–`west-africa:30`.
 
-Treat every entry below as a listener-supplied research hypothesis, not verified music history or evidence about a recording. Labels may combine genres, scenes, instruments and performance traditions; preserve those distinctions when researching. Verify names, provenance, dates and sonic claims against artist/label notes or credible specialist sources before using them. Do not repeat precise instrument models, meters, BPM ranges or lyrical themes without recording-level support.
-
-Honor the selected geography, mood and tempo above discovery cues. A tradition's origin does not establish a diaspora artist's current scene or a recording's provenance. Research cross-border connections explicitly. Criminal requires song-level crime narrative evidence; neither genre nor reputation suffices.
-
-For discovery, compare several compatible routes and dig beyond named touchstones: local labels, collaborators, overlooked releases and contemporary scenes. A famous name here is context, not a selection instruction. Admit accessible pop only when its particular groove, voice or arrangement earns the place; reject anonymous mood filler. Obscurity is not a quality test. Keep irony audible and purposeful. Do not impose acoustic, ceremonial or archival music merely to demonstrate breadth. Use only publicly released, appropriately documented recordings; do not infer access to restricted ceremonial material.
-
-Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
+**Regional policy:** Apply the [regional safeguards](../regional-atlas.md) to every research lead below.
 
 ## Source and status
 
@@ -1832,13 +2027,7 @@ Imported from listener-supplied regional survey, [Drive source](https://drive.go
 
 Region ID: `east-africa`. Route handles: `east-africa:01`–`east-africa:30`.
 
-Treat every entry below as a listener-supplied research hypothesis, not verified music history or evidence about a recording. Labels may combine genres, scenes, instruments and performance traditions; preserve those distinctions when researching. Verify names, provenance, dates and sonic claims against artist/label notes or credible specialist sources before using them. Do not repeat precise instrument models, meters, BPM ranges or lyrical themes without recording-level support.
-
-Honor the selected geography, mood and tempo above discovery cues. A tradition's origin does not establish a diaspora artist's current scene or a recording's provenance. Research cross-border connections explicitly. Criminal requires song-level crime narrative evidence; neither genre nor reputation suffices.
-
-For discovery, compare several compatible routes and dig beyond named touchstones: local labels, collaborators, overlooked releases and contemporary scenes. A famous name here is context, not a selection instruction. Admit accessible pop only when its particular groove, voice or arrangement earns the place; reject anonymous mood filler. Obscurity is not a quality test. Keep irony audible and purposeful. Do not impose acoustic, ceremonial or archival music merely to demonstrate breadth. Use only publicly released, appropriately documented recordings; do not infer access to restricted ceremonial material.
-
-Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
+**Regional policy:** Apply the [regional safeguards](../regional-atlas.md) to every research lead below.
 
 ## Source and status
 
@@ -1889,13 +2078,7 @@ Imported from listener-supplied regional survey, [Drive source](https://drive.go
 
 Region ID: `central-southern-africa`. Route handles: `central-southern-africa:01`–`central-southern-africa:30`.
 
-Treat every entry below as a listener-supplied research hypothesis, not verified music history or evidence about a recording. Labels may combine genres, scenes, instruments and performance traditions; preserve those distinctions when researching. Verify names, provenance, dates and sonic claims against artist/label notes or credible specialist sources before using them. Do not repeat precise instrument models, meters, BPM ranges or lyrical themes without recording-level support.
-
-Honor the selected geography, mood and tempo above discovery cues. A tradition's origin does not establish a diaspora artist's current scene or a recording's provenance. Research cross-border connections explicitly. Criminal requires song-level crime narrative evidence; neither genre nor reputation suffices.
-
-For discovery, compare several compatible routes and dig beyond named touchstones: local labels, collaborators, overlooked releases and contemporary scenes. A famous name here is context, not a selection instruction. Admit accessible pop only when its particular groove, voice or arrangement earns the place; reject anonymous mood filler. Obscurity is not a quality test. Keep irony audible and purposeful. Do not impose acoustic, ceremonial or archival music merely to demonstrate breadth. Use only publicly released, appropriately documented recordings; do not infer access to restricted ceremonial material.
-
-Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
+**Regional policy:** Apply the [regional safeguards](../regional-atlas.md) to every research lead below.
 
 ## Source and status
 
@@ -1954,13 +2137,7 @@ Read [southern-africa-additions.md](southern-africa-additions.md) for 50 additio
 
 Region ID: `middle-east`. Route handles: `middle-east:01`–`middle-east:30`.
 
-Treat every entry below as a listener-supplied research hypothesis, not verified music history or evidence about a recording. Labels may combine genres, scenes, instruments and performance traditions; preserve those distinctions when researching. Verify names, provenance, dates and sonic claims against artist/label notes or credible specialist sources before using them. Do not repeat precise instrument models, meters, BPM ranges or lyrical themes without recording-level support.
-
-Honor the selected geography, mood and tempo above discovery cues. A tradition's origin does not establish a diaspora artist's current scene or a recording's provenance. Research cross-border connections explicitly. Criminal requires song-level crime narrative evidence; neither genre nor reputation suffices.
-
-For discovery, compare several compatible routes and dig beyond named touchstones: local labels, collaborators, overlooked releases and contemporary scenes. A famous name here is context, not a selection instruction. Admit accessible pop only when its particular groove, voice or arrangement earns the place; reject anonymous mood filler. Obscurity is not a quality test. Keep irony audible and purposeful. Do not impose acoustic, ceremonial or archival music merely to demonstrate breadth. Use only publicly released, appropriately documented recordings; do not infer access to restricted ceremonial material.
-
-Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
+**Regional policy:** Apply the [regional safeguards](../regional-atlas.md) to every research lead below.
 
 ## Source and status
 
@@ -2011,13 +2188,7 @@ Imported from listener-supplied regional survey, [Drive source](https://drive.go
 
 Region ID: `central-asia`. Route handles: `central-asia:01`–`central-asia:30`.
 
-Treat every entry below as a listener-supplied research hypothesis, not verified music history or evidence about a recording. Labels may combine genres, scenes, instruments and performance traditions; preserve those distinctions when researching. Verify names, provenance, dates and sonic claims against artist/label notes or credible specialist sources before using them. Do not repeat precise instrument models, meters, BPM ranges or lyrical themes without recording-level support.
-
-Honor the selected geography, mood and tempo above discovery cues. A tradition's origin does not establish a diaspora artist's current scene or a recording's provenance. Research cross-border connections explicitly. Criminal requires song-level crime narrative evidence; neither genre nor reputation suffices.
-
-For discovery, compare several compatible routes and dig beyond named touchstones: local labels, collaborators, overlooked releases and contemporary scenes. A famous name here is context, not a selection instruction. Admit accessible pop only when its particular groove, voice or arrangement earns the place; reject anonymous mood filler. Obscurity is not a quality test. Keep irony audible and purposeful. Do not impose acoustic, ceremonial or archival music merely to demonstrate breadth. Use only publicly released, appropriately documented recordings; do not infer access to restricted ceremonial material.
-
-Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
+**Regional policy:** Apply the [regional safeguards](../regional-atlas.md) to every research lead below.
 
 ## Source and status
 
@@ -2068,13 +2239,7 @@ Imported from listener-supplied regional survey, [Drive source](https://drive.go
 
 Region ID: `south-asia`. Route handles: `south-asia:01`–`south-asia:30`.
 
-Treat every entry below as a listener-supplied research hypothesis, not verified music history or evidence about a recording. Labels may combine genres, scenes, instruments and performance traditions; preserve those distinctions when researching. Verify names, provenance, dates and sonic claims against artist/label notes or credible specialist sources before using them. Do not repeat precise instrument models, meters, BPM ranges or lyrical themes without recording-level support.
-
-Honor the selected geography, mood and tempo above discovery cues. A tradition's origin does not establish a diaspora artist's current scene or a recording's provenance. Research cross-border connections explicitly. Criminal requires song-level crime narrative evidence; neither genre nor reputation suffices.
-
-For discovery, compare several compatible routes and dig beyond named touchstones: local labels, collaborators, overlooked releases and contemporary scenes. A famous name here is context, not a selection instruction. Admit accessible pop only when its particular groove, voice or arrangement earns the place; reject anonymous mood filler. Obscurity is not a quality test. Keep irony audible and purposeful. Do not impose acoustic, ceremonial or archival music merely to demonstrate breadth. Use only publicly released, appropriately documented recordings; do not infer access to restricted ceremonial material.
-
-Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
+**Regional policy:** Apply the [regional safeguards](../regional-atlas.md) to every research lead below.
 
 ## Source and status
 
@@ -2125,13 +2290,7 @@ Imported from listener-supplied regional survey, [Drive source](https://drive.go
 
 Region ID: `east-asia`. Route handles: `east-asia:01`–`east-asia:30`.
 
-Treat every entry below as a listener-supplied research hypothesis, not verified music history or evidence about a recording. Labels may combine genres, scenes, instruments and performance traditions; preserve those distinctions when researching. Verify names, provenance, dates and sonic claims against artist/label notes or credible specialist sources before using them. Do not repeat precise instrument models, meters, BPM ranges or lyrical themes without recording-level support.
-
-Honor the selected geography, mood and tempo above discovery cues. A tradition's origin does not establish a diaspora artist's current scene or a recording's provenance. Research cross-border connections explicitly. Criminal requires song-level crime narrative evidence; neither genre nor reputation suffices.
-
-For discovery, compare several compatible routes and dig beyond named touchstones: local labels, collaborators, overlooked releases and contemporary scenes. A famous name here is context, not a selection instruction. Admit accessible pop only when its particular groove, voice or arrangement earns the place; reject anonymous mood filler. Obscurity is not a quality test. Keep irony audible and purposeful. Do not impose acoustic, ceremonial or archival music merely to demonstrate breadth. Use only publicly released, appropriately documented recordings; do not infer access to restricted ceremonial material.
-
-Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
+**Regional policy:** Apply the [regional safeguards](../regional-atlas.md) to every research lead below.
 
 ## Source and status
 
@@ -2182,13 +2341,7 @@ Imported from listener-supplied regional survey, [Drive source](https://drive.go
 
 Region ID: `southeast-asia`. Route handles: `southeast-asia:01`–`southeast-asia:30`.
 
-Treat every entry below as a listener-supplied research hypothesis, not verified music history or evidence about a recording. Labels may combine genres, scenes, instruments and performance traditions; preserve those distinctions when researching. Verify names, provenance, dates and sonic claims against artist/label notes or credible specialist sources before using them. Do not repeat precise instrument models, meters, BPM ranges or lyrical themes without recording-level support.
-
-Honor the selected geography, mood and tempo above discovery cues. A tradition's origin does not establish a diaspora artist's current scene or a recording's provenance. Research cross-border connections explicitly. Criminal requires song-level crime narrative evidence; neither genre nor reputation suffices.
-
-For discovery, compare several compatible routes and dig beyond named touchstones: local labels, collaborators, overlooked releases and contemporary scenes. A famous name here is context, not a selection instruction. Admit accessible pop only when its particular groove, voice or arrangement earns the place; reject anonymous mood filler. Obscurity is not a quality test. Keep irony audible and purposeful. Do not impose acoustic, ceremonial or archival music merely to demonstrate breadth. Use only publicly released, appropriately documented recordings; do not infer access to restricted ceremonial material.
-
-Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
+**Regional policy:** Apply the [regional safeguards](../regional-atlas.md) to every research lead below.
 
 ## Source and status
 
@@ -2239,13 +2392,7 @@ Imported from listener-supplied regional survey, [Drive source](https://drive.go
 
 Region ID: `northern-asia`. Route handles: `northern-asia:01`–`northern-asia:30`.
 
-Treat every entry below as a listener-supplied research hypothesis, not verified music history or evidence about a recording. Labels may combine genres, scenes, instruments and performance traditions; preserve those distinctions when researching. Verify names, provenance, dates and sonic claims against artist/label notes or credible specialist sources before using them. Do not repeat precise instrument models, meters, BPM ranges or lyrical themes without recording-level support.
-
-Honor the selected geography, mood and tempo above discovery cues. A tradition's origin does not establish a diaspora artist's current scene or a recording's provenance. Research cross-border connections explicitly. Criminal requires song-level crime narrative evidence; neither genre nor reputation suffices.
-
-For discovery, compare several compatible routes and dig beyond named touchstones: local labels, collaborators, overlooked releases and contemporary scenes. A famous name here is context, not a selection instruction. Admit accessible pop only when its particular groove, voice or arrangement earns the place; reject anonymous mood filler. Obscurity is not a quality test. Keep irony audible and purposeful. Do not impose acoustic, ceremonial or archival music merely to demonstrate breadth. Use only publicly released, appropriately documented recordings; do not infer access to restricted ceremonial material.
-
-Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
+**Regional policy:** Apply the [regional safeguards](../regional-atlas.md) to every research lead below.
 
 ## Source and status
 
@@ -2296,13 +2443,7 @@ Imported from listener-supplied regional survey, [Drive source](https://drive.go
 
 Region ID: `oceania`. Route handles: `oceania:01`–`oceania:30`.
 
-Treat every entry below as a listener-supplied research hypothesis, not verified music history or evidence about a recording. Labels may combine genres, scenes, instruments and performance traditions; preserve those distinctions when researching. Verify names, provenance, dates and sonic claims against artist/label notes or credible specialist sources before using them. Do not repeat precise instrument models, meters, BPM ranges or lyrical themes without recording-level support.
-
-Honor the selected geography, mood and tempo above discovery cues. A tradition's origin does not establish a diaspora artist's current scene or a recording's provenance. Research cross-border connections explicitly. Criminal requires song-level crime narrative evidence; neither genre nor reputation suffices.
-
-For discovery, compare several compatible routes and dig beyond named touchstones: local labels, collaborators, overlooked releases and contemporary scenes. A famous name here is context, not a selection instruction. Admit accessible pop only when its particular groove, voice or arrangement earns the place; reject anonymous mood filler. Obscurity is not a quality test. Keep irony audible and purposeful. Do not impose acoustic, ceremonial or archival music merely to demonstrate breadth. Use only publicly released, appropriately documented recordings; do not infer access to restricted ceremonial material.
-
-Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
+**Regional policy:** Apply the [regional safeguards](../regional-atlas.md) to every research lead below.
 
 ## Source and status
 
@@ -2359,7 +2500,7 @@ description: "Real global deep cuts; setup services, then go or go antarctica; d
 license: MIT
 compatibility: Requires file-reading capability. Optional web/catalog lookup for track verification and Python 3.10+ to run included validation/randomness scripts. Streaming accounts and OAuth are NOT bundled.
 metadata:
-  version: "3.11.5"
+  version: "3.11.6"
 ---
 
 # Go, Hipster, Go! — Agent Skill v3
@@ -2465,7 +2606,7 @@ These are **tone examples, not research evidence**. Never attach invented produc
 3. **Reconcile the result.** Follow [verification and reconciliation](references/verification.md). Report the real link if returned, requested versus confirmed count, order and substitutions where readable, description status, and any later error. Keep previews separate from confirmed saved playlists. For a creation acknowledgment without item data, report “Playlist created, with exact recordings and order not independently confirmed.”
 4. **Recover from an unavailable or uncertain write.** Deliver the original crate and one relevant next step. For an uncertain write, inspect existing results before any retry. Reuse the existing crate without re-curating or rerolling. When both Go, Hipster, Go! and Spotify can be selected in ChatGPT, suggest publishing the existing selections with both apps. Ask for a link if needed to verify an uncertain result. Avoid duplicate creation and silent service switches.
 
-**Claude + Spotify: distinguish capability from eligibility.** Spotify documents catalog discovery for Free and Premium listeners, but personalized prompt-generated playlists through Claude require **Spotify Premium**. The official Claude connector publicly lists `create_playlist`, `search`, `fetch_tracks` and library/playback tools; it does **not** list `add_playlist_items`. A name on that public tool list is not proof of an actionable tool in the current chat, and a prompt-generated playlist is not documented as exact ordered-track insertion. If a provider returns a Premium-required error, identify **which specific operation** was refused and mark the listener’s actual subscription tier **unverified** unless independently established. **Reconcile all earlier created or user-observed playlists before reporting the saved total**: a later denial does not undo a separately verified durable save, but neither does an on-screen preview prove one occurred. Don't pretend that a reconnect will fix the tier restriction; if the listener says they have Premium, suggest verifying *which Spotify account Claude is using*, without declaring it disconnected. Never present unexposed tools as available, retry a confirmed block in a loop, or give compulsory manual duplicate-addition instructions. When the already chosen result is the DeBarge Protocol, preserve the exact **25 identical entries** of the original recording for portable export—do **not** reroll, change selection, invent publishing success or ask the listener to manually build it unless they want to. A provider may reject duplicates even when a normal playlist works. Status first; one useful next step at most.
+**Claude + Spotify: distinguish capability from eligibility.** Spotify's personalized prompt-generated playlist capability through Claude may require **Spotify Premium** even when catalog discovery works. The public action list omits `add_playlist_items`; it does not establish exact ordered insertion or writer access here. For a Premium-required error, identify the refused operation and mark the listener's subscription tier **unverified** unless independently established. Read [Claude Spotify recovery](references/claude-spotify-recovery.md) for account uncertainty, previously observed saved states, safe follow-ups and duplicates. For a DeBarge outcome preserve **25 identical entries**; a provider may reject duplicates. Never reroll, invent a save, or silently switch services.
 
 ## Go modifiers and playlist length
 
@@ -2487,11 +2628,13 @@ Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation;
 
 **Length:** `go` and `go angry` default to **12 tracks**; `go short` requests **6**; `go long` requests **24**. `go 20`, `go fast 20`, `go weird slow 30`, or an explicit `N tracks` request selects **exactly N**, overriding the short/long shorthand. Aim for up to **50** carefully resolved tracks as a *soft quality target*, **not a schema or platform maximum**; when asked for more, attempt the actual requested count if the current host can handle verification and publishing, otherwise be transparent and propose batches or splitting—never silently cap or downgrade the playlist.
 
-**Count fidelity:** before publishing, check the number of distinct ordered selections against the requested count; don't silently turn 12 into 6. After writing, reconcile the saved count and track order where provider results allow it. If the host has a fixed cap or truncates output, report the actual result as incomplete rather than claiming the requested list was published. **DeBarge eligibility applies to every `go` variant**: `go fast`, `go angry`, `go chill`, `go slow`, `go weird`, **`go sad`**, their combinations, `go short`, `go long`, and numeric requests such as `go fast 20` or `go weird slow 30`. Ordinary length targets, even numeric ones, **must not suppress the one-in-100 roll**; on a genuine hit, the Protocol's 25 entries intentionally override the ordinary requested count, energy, mood and diversity. Only a listener's **explicit no-surprises/no-overrides strict length**, `no DeBarge`, or `unique songs only` constraint excludes the random surprise. Run the single eligibility check/roll once per *new* playlist, not per modifier, candidate theme, publication retry or follow-up.
+**Count fidelity:** Before publishing, verify the ordered count and final matches; don't silently turn 12 into 6 or truncate another requested count. Reconcile actual saved count and order where readable, reporting any cap or truncation as incomplete. Apply the single authoritative **DeBarge Protocol** below when eligible; ordinary count requests alone do not exclude its one-in-100 surprise.
 
 ### Recording preference
 
 On `Recording preference: Skip rough recordings.` or an equivalent explicit request, read [Recording quality](references/recording-quality.md) before selecting or matching recordings. Default OFF; older app prompts invoke the same rule.
+
+**Clean ≠ Mainstream:** this excludes genuinely damaged/noisy transfers, not obscure or unpolished music. Never substitute familiar hits for deep cuts simply because Skip rough is ON.
 
 ### Go Hard — optional Deep Crate Protocol
 
@@ -2501,31 +2644,34 @@ Explicit `go hard`, `go funky hard`, or PWA `Curation mode: GO HARD` enables edi
 
 ## Antarctica: thematic listening territory
 
-**Explicit opt-in only:** Include Antarctica only when the user deliberately names Antarctica in the current request or explicitly selects its named PWA region. Never infer it from plain `go`, moods, pace, seeds, worldwide/global/all-region requests, surprise/random instructions, or automatic regional shuffle. Exclude Antarctica and its thematic contribution from every automatic region pool. A prior Antarctica playlist or an incidental mention is not consent for a new unspecified request. Other explicit region selections never imply Antarctica. A deliberately selected and pinned Antarctica region may remain selected during PWA shuffle.
+**Explicit opt-in only:** Include Antarctica only when the current request deliberately names it or selects its named PWA region. Never infer it from plain `go`, moods, pace, seeds, worldwide/global/all-region requests, surprise/random selection, automatic regional shuffle or a prior Antarctica playlist. Other explicit region selections never imply Antarctica. Exclude it from automatic region pools; an explicitly pinned Antarctica selection may persist through PWA shuffle.
 
-When the command includes **`go antarctica`**, or Antarctica is listed in regional exploration, read [the Antarctica route](references/regions/antarctica.md) before selecting songs. Antarctica contributes verified songs about penguins, rather than an invented local music scene. Alone, every track must qualify; mixed with other selected regions, blend its thematic contribution with geographically valid tracks from those regions. Keep the copied PWA prompt compact: the trigger and region names are sufficient, without spelling out the subject. Preserve real song titles and truthful count/publishing status. This is a strict thematic inclusion: skip the spontaneous DeBarge roll for Antarctica requests, including mixed-region ones. All unrelated GO commands retain their existing behavior.
+On `go antarctica` or an explicit regional selection, read [the Antarctica route](references/regions/antarctica.md) before choosing tracks. This is a penguin-song theme, **not an invented local music scene**: Antarctica-only tracks must qualify; mixed-region crates combine verified penguin songs with valid music from each other selected region. Keep Jukebox prompts compact; preserve true track identities and honest publishing status. Skip the spontaneous DeBarge roll for any Antarctica request; all unrelated GO commands retain it.
 
 ## Fresh-crate discovery and repeat control
 
+### Unified discovery checkpoint
+
+This is one early decision inside the existing discovery budget—not a new research pass, random tool, public input, or replacement for musical judgment.
+
+1. **Lock the brief first.** Parse moods and blends, every `c1:` slot, regions, exclusions, recording quality, GO HARD, count, inspiration, supplied seed, route, and publishing permissions. A curve overrides the global mood/pace for its slots. Explicit `Seed:` or `Inspiration:` outranks internal seeding; supplied `Discovery route: v1/Rxx` wins the search start.
+2. **Use a quiet compound seed only for a genuinely new GO without a supplied seed or inspiration.** Read the actual `references/seed-cues.json` and `references/mood-spark-bank.json` once. Reject the single most predictable compatible rhythm/sonic start, choosing a different pace-compatible cue; reject its automatic texture partner, choosing a compatible texture; then reject the automatic emotional consequence, choosing a compatible mood tension. At most one rejection per component. Stop rather than weaken fit. On a `c1:` curve, the cues are the unifying thread, never a single imposed tempo or mood. This is model variation, **not uniform RNG**; never claim a random draw, extra execution, or unseen listening history. If the banks are unavailable, skip internal seeding rather than inventing their contents.
+3. **Route before artists.** Read the reference index, sonic taxonomy and verification rules. For explicit regions, begin with the regional atlas, selected region files and mandatory review/additions; do not preload worldwide `global-scenes.md` for novelty. For open/global GO consult global scenes. Honor any explicit `v1/Rxx` route through `references/discovery-routes.md`. Compare three genuinely distinct *compatible* directions across era, audible production/texture, actual scene, and microgenre/movement. A seed or route must change candidate discovery, not merely the title or commentary. Never stretch geography for surprise.
+4. **Select, sequence, verify.** Ordinary GO stays single-pass; GO HARD retains its bounded independent-path funnel. Verify real exact recordings, song-specific Criminal narratives, slot-by-slot curve fit, provenance, versions and clean-transfer evidence where possible. Do not enforce obscurity, country, era, instrument, or artist quotas. Listener constraints and explicit text-only/no-publish requests always win. State unresolved audio/BPM/transfer/catalog evidence; never invent source reads, listening, publication, or item-level readback.
+
+Do not run this checkpoint for de-cheese, setup, or a retry to publish an existing crate. A genuine refresh can make fresh internal choices while preserving the visible brief and no-publish preference.
+
 **Lean Jukebox contract:** The normal copied request is a compact invocation plus run-specific selections: mood, optional region list, optional mood angle, optional tempo, one optional `Seed:` and destination service. Default to 12 tracks when no count is supplied; honor an explicit count. `go` retains its ordinary curate-and-attempt-publication meaning. The installed skill owns verification, recording quality, geography, mood interpretation, sequencing, personality, provider capability checks and honest publication reporting even when the prompt repeats none of those rules. Do not ask the listener to paste the longer policy back in.
 
-**Choose routes after intent:** Interpret region, mood and tempo first; then compare compatible routes from the regional references and select a sonic thesis. The default Jukebox does not supply a rotating genre lens. A listener-supplied lens remains optional and subordinate to explicit selections. Discard any conflicting cue without widening geography or weakening the requested mood/pace to accommodate it. For Criminal, apply the full song-level evidence and strong non-English preference even when the copied prompt says only `go criminal`.
+**Choose routes after intent:** Interpret regions, mood and pace first; compare three musically compatible routes internally using the relevant references, then choose a coherent thesis. The default Jukebox has no rotating genre lens. An optional listener-supplied lens is a search hypothesis, never a compulsory genre, artist list, regional quota or permission to weaken explicit selections. Criminal still requires song-level evidence and strong non-English preference.
 
-**Make seeds audible:** Interpret new seeds as rhythm / texture or interaction / musical tension. Translate imagery into tentative search criteria that change selections and sequencing, not just titles. Seek productive contrasts, not three mandatory traits per track. Verify sonic claims; never imply listening without evidence. Mood, pace and geography win. Criminal still requires independent narrative evidence. Support older cinematic seeds.
-
-**Seed semantics:** Treat `Seed:` and the older `Random crate spark:` as equivalent optional metaphors, not verified instruments, titles, geographic instructions, lyrical evidence or forced genres. A mood angle is an optional interpretation, not a mandatory theme for every song. Omitted regions mean worldwide exploration; omitted tempo means no pace preference. Defaults and selected service do not grant tool access. Preserve the existing platform-specific publishing, widget and fallback rules; do not silently switch providers. If the skill is not installed, direct the listener to the setup flow rather than pretending these references were read.
+**Make seeds audible / Seed semantics:** `Seed:` and legacy `Random crate spark:` are equivalent optional metaphors. Interpret imagery through tentative rhythm, texture, interaction or musical tension that changes candidate choices and sequencing, not merely the title; support older cinematic cues. A seed or mood angle is never verified instrumentation, lyrical content, a geographic instruction, a mandatory trait for each song or a fixed quota. Verify musical claims without pretending to have listened. Explicit mood, pace and region always win; an omitted region means worldwide exploration and omitted tempo leaves pace open. No default grants publishing access or permission to switch services. Without an installed skill, explain setup rather than claiming references were read.
 
 **Apple Music handoff:** In ChatGPT, an actually connected Apple Music playlist widget with a user-operated save control is a valid destination even when a direct playlist-writing tool isn't exposed. Resolve real catalog recordings where possible and preserve the intended order. Search and playlist generation do not themselves require an Apple Music subscription; saving to the listener's library does. Label a generated widget **ready to save** until the listener or tool confirms it saved. Distinguish user confirmation from independent read-back, do not assume library/history access, and never invent exact saved items or order. If neither a saveable widget nor an authorized writer exists, return the verified original crate and explain the limitation.
 
-**Load before choosing a thesis:** follow the [reference index](references/reference-index.md) for every ordinary mood and freeform GO, not just Weird. Compare three distinct routes internally, then choose a coherent thesis. The taxonomy is an expandable research map, not a fixed menu; named examples are context, not automatic selections. Honor a supplied mood interpretation beneath explicit user preferences.
+**Load before choosing a thesis:** Follow the [reference index](references/reference-index.md) for ordinary and freeform GO. Use taxonomy and any PWA **Fresh-crate discovery lens** as expandable search leads, not fixed menus. For open-ended briefs, compare routes differing in rhythm, voice, texture or arrangement. Build a candidate pool wider than the requested count; explore labelmates, collaborators, local contemporaries, small releases and defensible alternate scenes instead of recycling reference artists or obvious compilations. A supplied seed may justify less familiar routes; without a seed or genuine randomness, never claim to have rolled one. Verify the final recordings and sonic bridges; novelty alone is not quality.
 
-
-For a supplied seed, explore beyond familiar post-punk/dub/funk routes when musically justified. Without a supplied seed or genuine randomness, never claim to have rolled one.
-
-
-When a PWA prompt supplies a **Fresh-crate discovery lens**, use it as a starting hypothesis for finding candidates, not as a mandatory genre, regional quota, verified instrumentation claim or reason to ignore the listener's mood/tempo. A new GO should explore a different sonically defensible corner of the catalog rather than cycle through the same reference artists and obvious compilation cuts. For an open-ended request, compare genuinely different rhythm, voice, texture and arrangement routes before selecting a thesis. Build a broader candidate shortlist than the final track count and look beyond named research leads to credible labelmates, overlooked collaborators, local contemporaries, original issues and alternate scenes. Verify the final recordings and preserve cohesion; novelty alone is not quality.
-
-**Regional discovery and recording quality:** Apply the recording-level selection gate in [sonic taxonomy](references/sonic-taxonomy.md). Selected regions take precedence over rotating lenses; verify scene connections rather than using geography as a sonic adjective. The [regional research routes](references/global-scenes.md) supplies research hypotheses, not established facts about recordings or a fixed artist roster. Skip incompatible hints; do not broaden geography just to use a seed.
+**Regional discovery and recording quality:** Apply the recording-level selection gate in [sonic taxonomy](references/sonic-taxonomy.md). Selected regions take precedence over rotating lenses; verify actual scene connections rather than using geography as a sonic adjective. Start with the [regional atlas](references/regional-atlas.md) and matching region files; consult [global scenes](references/global-scenes.md) for open-ended, worldwide, or genuinely needed cross-scene research, not routinely for region-locked Jukebox briefs. Both catalogs supply unverified leads, not a fixed artist roster. Never broaden requested geography to accommodate a seed.
 
 **Address regional research precisely:** Use the [regional atlas](references/regional-atlas.md) lookup for selected regions and deeper regional exploration, including matching supplementary files. The [focused regional review](references/regional-review.md) takes precedence for expanded Oceania, Central America and Central & Southern Africa. Treat all 920 imported source entries (including overlaps) as unverified search leads. Existing mood, geography, recording-quality and Criminal evidence rules take precedence.
 
@@ -2533,7 +2679,7 @@ When a PWA prompt supplies a **Fresh-crate discovery lens**, use it as a startin
 
 **Gemini + YouTube Music — publication is the default, not an optional second feature.** The installed Skill owns research, recording/version verification, sequence, personality and the default 12 tracks. The Jukebox supplies only the selected service, mood, tempo, optional discovery lens and crate spark. These are creative hints, not evidence of instrumentation or a requirement to repeat the long workflow prompt.
 
-**Plain `go` (also `go live`):** Treat this as authorization to curate **and attempt to generate one playable YouTube Music playlist in the same request**, subject to actual connected-app access. First select and verify the intended ordered artist/title/version list, title, sonic thesis and liner notes; keep it in the response as the authoritative crate. Then use the actual connected **YouTube Music PLAYLIST** action, **not** separate YouTube video searches. If the authorized playlist action supports explicit track entries (for example, a `video_titles` field), supply all curated artist–title pairs in their intended order **on the first publishing attempt**, without a broad mood/genre `query`. Format lookup strings as `Artist - Track Title`, omitting label/catalog/year and editorial notes while preserving distinguishing live/mix/instrumental details when necessary; simplify punctuation only if a match fails. Retain verified recording metadata separately and check the resulting items where readable. If it does not support explicit track entries, **do not** generate a theme-based substitute: preserve the verified crate and report **PLAYLIST NOT CREATED — exact-track publishing unavailable**. Never invent a tool or input field. A creation acknowledgment alone cannot establish an exact item count or order. Report observed differences honestly. Never silently replace the original crate with the provider's mix, automatically retry or claim it was saved to the library without evidence. A playlist preview is not a confirmed save; the listener may need **Save to library**. A pasted `@YouTubeMusic` does not prove the connected app was activated.
+**Plain `go` (also `go live`):** Treat this as authorization to curate **and attempt to generate one playable YouTube Music playlist in the same request**, subject to actual connected-app access. First select and verify the intended ordered artist/title/version list, title, sonic thesis and liner notes; keep it in the response as the authoritative crate. Then use the actual connected **YouTube Music PLAYLIST** action, **not** separate YouTube video searches. If the authorized playlist action supports explicit track entries (for example, a `video_titles` field), supply all curated artist–title pairs in their intended order **on the first publishing attempt**, without a broad mood/genre `query`. For the writer, send one plain `Artist - Track Title` string per slot in order, without years, labels, catalog IDs or editorial notes. Start with official artist/title spelling and diacritics; retain only essential version qualifiers (a named remix, Live or Instrumental), not generic `(Remastered)` tags unless needed to identify the exact recording. Include featured credits only where officially billed; simplify accents or punctuation only after a particular match fails, then verify any fallback. Retain verified recording metadata separately and check the resulting items where readable. If it does not support explicit track entries, **do not** generate a theme-based substitute: preserve the verified crate and report **PLAYLIST NOT CREATED — exact-track publishing unavailable**. Never invent a tool or input field. A creation acknowledgment alone cannot establish an exact item count or order. Report observed differences honestly. Never silently replace the original crate with the provider's mix, automatically retry or claim it was saved to the library without evidence. A playlist preview is not a confirmed save; the listener may need **Save to library**. A preview may show only some tracks (for example 8 of 12), which proves neither full insertion nor truncation. After an authorized save of the **same** playlist, inspect every saved position when available, especially the unseen tail; otherwise mark those tracks unverified. Do not save a text-only crate or create a second playlist merely to audit. A pasted `@YouTubeMusic` does not prove the connected app was activated.
 
 **Failure handling:** If no authorized playlist writer is exposed or playlist generation fails, **still return the finished verified crate**, explicitly state **PLAYLIST NOT CREATED** (or **not saved**, if created but persistence is unconfirmed), and give one concrete native-app step where useful. Curation is a successful partial result, not a replacement for the publishing goal. If Gemini returns ordinary YouTube video-search cards, do not call that a playlist. Do not claim success solely because the curator listed twelve tracks.
 
@@ -2553,7 +2699,7 @@ When a PWA prompt supplies a **Fresh-crate discovery lens**, use it as a startin
 
 Glossy late-period Motown/Motown-adjacent pop-soul, synth-funk, adult-contemporary crossover, and unlikely crowd-pleasers are **valid ingredients**. An obvious hit may earn its place by providing a funny yet persuasive sonic transition. Usually zero to two per 12-track set unless the listener wants more. Don't force comedy onto solemn or narrow briefs.
 
-**DeBarge Protocol:** Once per eligible *new playlist request*, if a genuine random-number tool exists, roll uniformly from 1 to 100; on **1**, replace the ordinary list with exactly **25 consecutive entries** of **DeBarge — "Rhythm of the Night"**. Treat this as a deliberate exception to variety, length, duplication, **all `go` moods and speeds**, and the ordinary numeric count—including `go short`, `go long`, `go fast 20`, and `go weird slow 30`. Each eligible new playlist receives **one roll total**; never reroll for each modifier, suggested concept, save attempt, or publication retry. A requested number of tracks is a normal target, not itself a rigid exclusion: the Antarctica thematic inclusion, an **explicit prohibition of DeBarge**, a **unique-tracks requirement**, or an **explicitly non-overridable count** (e.g. "exactly 12, no exceptions") blocks the spontaneous surprise. An explicit request for "DeBarge Protocol" runs it without a roll, except when it directly conflicts with another explicit exclusion that must first be clarified. Never claim 1% without using a true random facility; when Python is available run `python scripts/playlist_cli.py roll` once and read the result. If reliable randomness is unavailable, omit the spontaneous roll rather than inventing it. A service might reject duplicates; never falsely claim publishing succeeded.
+**DeBarge Protocol:** Once per eligible *new playlist request*, if a genuine random-number tool exists, roll uniformly from 1 to 100; on **1**, replace the ordinary list with exactly **25 consecutive entries** of **DeBarge — "Rhythm of the Night"**. Treat this as a deliberate exception to variety, length, duplication, **all `go` moods and speeds**, and the ordinary numeric count—including `go short`, `go long`, `go fast 20`, and `go weird slow 30`. Each eligible new playlist receives **one roll total**; never reroll for each modifier, suggested concept, save attempt, or publication retry. A requested number of tracks is a normal target, not itself a rigid exclusion: the Antarctica thematic inclusion, an **explicit prohibition of DeBarge**, a **unique-tracks requirement**, or an **explicitly non-overridable count** (e.g. "exactly 12, no exceptions") blocks the spontaneous surprise. An explicit request for "DeBarge Protocol" runs it without a roll, except when it directly conflicts with another explicit exclusion that must first be clarified. This is a genuine one-in-100 exception. Never claim 1% without using a true random facility; when Python is available run `python scripts/playlist_cli.py roll` once and read the result. If reliable randomness is unavailable, omit the spontaneous roll rather than inventing it. A service might reject duplicates; never falsely claim publishing succeeded.
 
 **Non-trigger isolation (especially for Gemini):** If the roll is not a genuine hit, or no reliable random facility is available, treat the special artist/title as **protocol instructions, not a candidate, reference artist, genre hint, wildcard, punchline, or sequencing destination**. Do not insert one copy into an ordinary 12-track playlist to be ironically disruptive, to show genre breadth, or to wink at these instructions. Normal playlists must be selected on their own independently established sonic merits. DeBarge and 1980s pop-soul are **not generally banned**: they can appear when the listener explicitly asks for them or when the specific recording is independently musically justified, never merely because the protocol named it. A genuine hit remains **exactly 25 consecutive identical entries**, not 11 themed tracks plus one DeBarge track.
 
@@ -2563,7 +2709,7 @@ A playlist recommendation is NOT a published playlist. For structured export, fo
 
 ## Test changes rather than accumulating rules
 
-Before expanding this skill, compare old and new on three fixed prompts (regional mashup, obscure artist alternatives, open-ended "go") with equal verification access. Check: real tracks/versions, sonic coherence, genuinely unfamiliar discoveries, and scene variety when appropriate. Use listener feedback; never invent quality metrics or claim validation that hasn't happened. See [evaluation prompts](tests/discovery-cases.md).
+Before expanding this skill, compare old and new on three fixed prompts (regional mashup, obscure artist alternatives, open-ended "go") with equal verification access. Check: real tracks/versions, sonic coherence, genuinely unfamiliar discoveries, and scene variety when appropriate. Use listener feedback; never invent quality metrics or claim validation that hasn't happened. See [compact evaluation guidance](references/evaluation-smoke.md).
 
 ## Scope
 
@@ -2951,7 +3097,7 @@ Source: expanded v2 axes, with the original v1 emphasis on audible qualities.
 
 ## Mood interpretation matrix
 
-These are listening hypotheses, never claims that an entire culture feels one way. Choose one main interpretation and a compatible secondary shade; vary them on the next open-ended request. User specifics and tempo win. A fast sad request can be cathartic; slow anger can be quietly menacing. Read the category index in global-scenes.md before defaulting to familiar examples.
+These are listening hypotheses, never claims that an entire culture feels one way. Choose one main interpretation and a compatible secondary shade; vary them on the next open-ended request. User specifics and tempo win. A fast sad request can be cathartic; slow anger can be quietly menacing. For open-ended GO, consult the category index in global-scenes.md before defaulting to familiar examples. For region-locked GO, begin with the regional atlas and selected region files; consult global scenes only for a genuine cross-scene or weak-candidate need.
 
 | Mood | Interpretations to rotate | Avoid the shortcut |
 |---|---|---|
@@ -2986,11 +3132,11 @@ Archival scarcity is not musical merit. A compilation excerpt or radio collage i
 
 ## Freshness procedure
 
-1. Choose a mood interpretation, an audible mechanism and a discovery category before searching artist names. Compare three genuinely different possible theses, then use the strongest; do not print an internal scoring system.
-2. For an unconstrained ordinary set, research beyond one label or compilation and beyond the named reference artists. Trace original releases, local contemporaries and collaborators. Do not swap twelve obvious compilation staples for twelve other staples from one compilation.
+1. Choose a mood interpretation, audible mechanism and discovery category **before** artist names. For open-ended ordinary GO (especially `go weird`), compare three **distinct sonic mechanisms or scene families** within the existing single pass, not three variations on a familiar canon lane. If the provisional shortlist clusters around famous tracks from one era/scene without a listener constraint, reconsider an already available less-explored route before final selection. Keep the musically stronger records; no forced era, nationality, obscurity or song quotas, extra research phase or printed scoring system.
+2. For an unconstrained ordinary set, research beyond one label or compilation and beyond named reference artists. Use compilation listings as leads, then check **original single/EP/album provenance** and trace artist discographies or local contemporaries; a clean reissue remains eligible. Do not swap twelve obvious compilation staples for twelve other staples from one compilation.
 3. When recent lists are accessible, exclude the last up to three sets' normalized artist/title/version recordings and prefer different artists. Also vary the dominant scene, source compilation and sonic thesis. Reissues, alternate uploads, aliases and featured credits do not reset a repeated recording.
 4. If a specific request needs an exception, honor it and explain briefly. No mandatory nation, language, era, label or genre quota; no arbitrary sacrifice of cohesion for obscurity.
-5. When history is unavailable, diversify the research and avoid named-example defaults, but never claim listener-specific novelty or persistent memory. The PWA stores only discovery cue IDs, not the resulting songs or listening history.
+5. When history is unavailable, **change the actual research starting path**, not only the title or sequence, and avoid named-example defaults; never claim listener-specific novelty or persistent memory. The PWA stores discovery cue IDs, not resulting songs or listening history.
 6. When the listener says stale, replace the discovery strategy and actual selections, not merely adjectives, title or ordering. Ask for prior lists only if essential to a precise exclusion request; do not block an ordinary GO.
 
 
@@ -3002,7 +3148,7 @@ Before accepting each ordinary selection, require:
 - Fit with the listener's selected regions, mood and tempo. Treat a regional scene as a research lead, not proof of a song's suitability. For Criminal, verify the explicit crime narrative at song level; do not weaken it to fill a regional quota. If the non-English preference materially limits a requested region, be candid rather than silently escaping the geography.
 - A concrete, supported musical reason: phrasing, arrangement, groove, melodic turn, texture or a persuasive transition. Generic genre adjectives do not suffice. Never invent listening evidence.
 - A useful contribution to the sequence beyond novelty or a funny backstory. A pop reference must remain pleasurable without the joke; do not use an ironic excuse for filler.
-- Search beyond predictable signature tracks and repeated compilation selections. Broader genres need narrower research angles, not blanket bans; known artists remain eligible when the recording earns its place or the user requests it.
+- Search beyond predictable signature tracks and repeated compilation selections. Scrutinize widely exposed songs against a plausible less familiar verified alternative **when available**; verified play counts are context, not an exclusion threshold, and unknown counts must stay unknown. Broader genres need narrower research angles, not blanket bans; known artists remain eligible when the recording earns its place or the user requests it.
 
 Use the region-tagged discovery catalog as a set of research doors. Regional entries are starting hypotheses with recording-level verification still required. Geography-neutral musical lenses remain available in every region; geographically specific lenses require a compatible selected region. With no region selection, the full worldwide pool is eligible. Local scenes and diaspora links must be independently documented for a specific release; language and artist identity alone do not establish the connection.
 
@@ -3163,10 +3309,10 @@ Use `verification.status` on each entry: `verified` with a source URL, or `unver
 
 - Exact artist credit, title, featured artists, spelling/transliteration variants
 - Original versus cover, live, edit, remaster, demo, remix, extended 12-inch
-- Release/recording metadata when confidently sourced; avoid dates if uncertain
+- Confirm **original single/EP/album provenance** separately from the compilation, expanded-edition bonus track or later reissue containing it; don't label a bonus cut as part of the original LP. Keep recording identity distinct from the best available transfer and avoid uncertain dates.
 - Actual service URL and provider ID, not a general artist page or a generic search result
 - Country/scene provenance separately from a broad stylistic guess
-- Explicit handling when the exact track or mix is unavailable
+- Explicit handling when the exact track or mix is unavailable; a reissue name or “Remastered” badge alone does not verify a clean transfer for Skip rough recordings
 
 A partial or unverified discovery playlist is fine if openly labeled; a **strictly verified** or **publish-ready** playlist must not silently include unresolved candidates. The validator's `--strict` flag checks minimum verification metadata, not factual truth; independent listening/catalog validation is still needed.
 
@@ -3189,6 +3335,51 @@ For each Criminal pick, require **song-specific** lyrics or credible song-level 
 ## After a service reports playlist creation
 
 Keep the original ordered selections intact for comparison. If a streaming app offers a returned item list or playlist read-back, line up entries by **position, artist, title, and requested version**; compare repeated tracks positionally rather than collapsing duplicates. State requested count, confirmed added count, exact matches, substitutions, omissions, and order changes **only to the extent supported by provider data**. A remix, live version, cover, or ambiguous title is not an exact match merely because it plays. If a provider returns only a playlist URL or acknowledgement, do **not** claim item-level matches; say the saved sequence still needs a check. Reconcile earlier durable saves before reporting “0 published.” If the user confirms previews never persisted, report zero confirmed saves separately from preview count. Report unknown results as **unknown**, not missing or confirmed. Never silently substitute an alternate version; ask when the alternative materially affects the user's intent.
+
+## Publication outcome reconciliation — format 1.0 remains unchanged
+
+These labels describe **evidence**, not optimistic estimates or a provider's marketing
+copy. Use them for the listener-facing status after an authorized publishing action:
+
+| Internal status | Listener-facing label | Required proof |
+| --- | --- | --- |
+| `curated_text_only` | CURATED — NOT PUBLISHED | Explicit text-only request, no provider write |
+| `not_created` | PLAYLIST NOT CREATED | No provider-confirmed playlist object |
+| `created_save_required` | CREATED — SAVE REQUIRED | Actual created object/card, no confirmed library save |
+| `published_items_unverified` | SAVED — ITEMS UNVERIFIED | Confirmed library save; insufficient full item/order/edition readback |
+| `published_exact` | PUBLISHED — EXACT | Confirmed saved playlist, confirmed full provider count, every requested recording/version and position independently verified |
+| `published_approximate` | PUBLISHED — APPROXIMATE | Confirmed save with an observed count, version, substitution, order or curation mismatch; describe each observed difference |
+
+**Do not write these six values into playlist JSON format 1.0.** Its
+`publishing.status` remains exactly `not_attempted`, `dry_run`, `published`,
+or `failed`. The read-only reconciler in `scripts/playlist_cli.py` produces a
+*separate* report, not a schema 1.1 migration. A historical format-1.0
+`published` value with a playlist URL does **not** prove `published_exact`.
+
+Reconcile with a separate evidence JSON via
+`python scripts/playlist_cli.py status-report evidence.json`. It accepts
+`requested_count`, `curated_count`, optional `text_only`,
+`created: {source, reference}`, `saved: {source, reference}`,
+`provider_count` (confirmed **full playlist total**, or null/omitted), and
+`positions: [{position, result, source, reference, recording_verified, note}]`.
+A created card is not a save. A save confirmation does not verify its items.
+`result: "exact"` requires `recording_verified: true` based on independently
+checked artist/title/version/recording identity, not an unexamined title match.
+Mismatch values are `substituted`, `wrong_version`, `wrong_order`, and
+`missing`, each with a factual `note`.
+
+The caller must acquire authentic tool/library evidence; this offline function
+cannot prove that a claimed source/reference is genuine. It rejects structural
+contradictions and never contacts or writes to a provider. Keep positional
+evidence separate even when the same recording occurs at multiple positions,
+including all 25 DeBarge Protocol positions. Do not auto-deduplicate.
+
+**Partial preview example:** if 8 of 12 requested entries are visible, report
+eight observed positions and `provider_count: null` until the full provider
+list is actually known. Positions 9–12 remain **unreviewed**, not missing.
+`provider_count: 8` is appropriate *only* after confirming that the actual
+complete provider playlist contains eight tracks. A link-only acknowledgement
+cannot establish per-position matches, and unknown is never zero.
 
 ## Optional cover art
 
@@ -3219,3 +3410,31 @@ Only on `Cover art: yes` or an explicit sleeve request: after the final playlist
 **Execution and status:** Compose these four choices into **one coherent image prompt**, not four incompatible style effects. Use an available host image generator; otherwise output the complete ready-to-use prompt. Provide one original square sleeve with the exact final playlist title. Do not claim the art was uploaded or applied to Spotify, YouTube Music or any service unless a real tool confirms that separate operation. Skip all artwork work when not requested.
 
 # END SOURCE: references/cover-art.md
+
+---
+
+# BEGIN SOURCE: references/evaluation-smoke.md
+
+# Runtime skill evaluation — compact checks
+
+Use these checks when revising skill behavior, not as mandatory work during ordinary playlist requests. Detailed cases, evidence and historical regressions live in the repository-only [development acceptance corpus](https://github.com/focustimer-dev/go-hipster-go/blob/main/tests/discovery-cases.md); that corpus is not needed in a listener's runtime plugin archive.
+
+Compare representative briefs with equivalent evidence access: ordinary GO, region-locked GO, cross-scene GO, GO HARD, two moods, c1 tempo/mood curve, refresh, de-cheese, explicit Antarctica, skip rough recordings, non-Latin titles, publisher unavailable, and the DeBarge exception. Evaluate real recording identities, scene provenance, sonic fit, sequencing, unique leads, supported descriptions, publication status and the record-store voice. Different actual track choices are allowed; do not impose a fixed roster or scene quota.
+
+For DeBarge, a genuine eligible roll of 1 yields 25 consecutive identical recordings, and an ordinary six-track request is not itself an exclusion. Explicit non-overridable counts, explicit DeBarge exclusions, unique-tracks demands and Antarctica requests prevent the spontaneous roll. Never fabricate randomness or a saved playlist.
+
+Use offline lint, schema/package and distribution-sync checks when available. Live service writes and host instruction-loading need separate observation. Keep test evidence and manual scores outside the listener-facing result.
+
+# END SOURCE: references/evaluation-smoke.md
+
+---
+
+# BEGIN SOURCE: references/claude-spotify-recovery.md
+
+# Claude + Spotify — authorized writer and Premium failure recovery
+
+Read this reference only when handling a Claude-to-Spotify playlist action, Premium-related refusal, uncertain saved status or a previously chosen duplicate-heavy playlist. These are behavior constraints, not proof of any tools present in the current chat.
+
+**Claude + Spotify: distinguish capability from eligibility.** Spotify documents catalog discovery for Free and Premium listeners, but personalized prompt-generated playlists through Claude require **Spotify Premium**. The official Claude connector publicly lists `create_playlist`, `search`, `fetch_tracks` and library/playback tools; it does **not** list `add_playlist_items`. A name on that public tool list is not proof of an actionable tool in the current chat, and a prompt-generated playlist is not documented as exact ordered-track insertion. If a provider returns a Premium-required error, identify **which specific operation** was refused and mark the listener’s actual subscription tier **unverified** unless independently established. **Reconcile all earlier created or user-observed playlists before reporting the saved total**: a later denial does not undo a separately verified durable save, but neither does an on-screen preview prove one occurred. Don't pretend that a reconnect will fix the tier restriction; if the listener says they have Premium, suggest verifying *which Spotify account Claude is using*, without declaring it disconnected. Never present unexposed tools as available, retry a confirmed block in a loop, or give compulsory manual duplicate-addition instructions. When the already chosen result is the DeBarge Protocol, preserve the exact **25 identical entries** of the original recording for portable export—do **not** reroll, change selection, invent publishing success or ask the listener to manually build it unless they want to. A provider may reject duplicates even when a normal playlist works. Status first; one useful next step at most.
+
+# END SOURCE: references/claude-spotify-recovery.md

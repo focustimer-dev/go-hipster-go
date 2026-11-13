@@ -2,13 +2,7 @@
 
 Region ID: `atlantic-europe`. Route handles: `atlantic-europe:01`–`atlantic-europe:30`.
 
-Treat every entry below as a listener-supplied research hypothesis, not verified music history or evidence about a recording. Labels may combine genres, scenes, instruments and performance traditions; preserve those distinctions when researching. Verify names, provenance, dates and sonic claims against artist/label notes or credible specialist sources before using them. Do not repeat precise instrument models, meters, BPM ranges or lyrical themes without recording-level support.
-
-Honor the selected geography, mood and tempo above discovery cues. A tradition's origin does not establish a diaspora artist's current scene or a recording's provenance. Research cross-border connections explicitly. Criminal requires song-level crime narrative evidence; neither genre nor reputation suffices.
-
-For discovery, compare several compatible routes and dig beyond named touchstones: local labels, collaborators, overlooked releases and contemporary scenes. A famous name here is context, not a selection instruction. Admit accessible pop only when its particular groove, voice or arrangement earns the place; reject anonymous mood filler. Obscurity is not a quality test. Keep irony audible and purposeful. Do not impose acoustic, ceremonial or archival music merely to demonstrate breadth. Use only publicly released, appropriately documented recordings; do not infer access to restricted ceremonial material.
-
-Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
+**Regional policy:** Apply the [regional safeguards](../regional-atlas.md) to every research lead below.
 
 **Listening-area overlap:** Spain is painted primarily in Mediterranean & Balkans because of its Balearic, Catalan, Valencian and Andalusian scenes. For an explicit Atlantic & Western Europe request, Galicia/Asturias (source handle `mediterranean-europe:07`) and the Basque Country (`mediterranean-europe:08`) are legitimate *locality-specific* search leads, not permission to choose any Spanish recording. Portugal is Atlantic on the map even though fado, Alentejo and Lisbon batida were imported as `mediterranean-europe:09`–`:11`; check those origins rather than the historical source-file grouping. Mainland France is primarily Atlantic; Corsica (`mediterranean-europe:13`) is a geographically specific Mediterranean exception. Confirm the actual recording's scene before counting a cross-reference.
 

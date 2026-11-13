@@ -10,6 +10,8 @@ SOURCES = [
     "references/reference-index.md",
     "references/de-cheese.md",
     "references/discovery-routes.md",
+    "references/seed-cues.json",
+    "references/mood-spark-bank.json",
     "references/funky.md",
     "references/desire-triumphant.md",
     "references/regions/antarctica.md",
@@ -55,6 +57,8 @@ SOURCES = [
     "references/curation-examples.md",
     "references/verification.md",
     "references/cover-art.md",
+    "references/evaluation-smoke.md",
+    "references/claude-spotify-recovery.md",
 ]
 
 

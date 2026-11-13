@@ -26,3 +26,66 @@ jobs:
           python scripts/build_agent_packages.py --zip
           python scripts/playlist_cli.py validate examples/example-playlist.json
           python -m unittest discover -s tests -v
+          python scripts/qualify_skill_release.py --check
+      - name: Build isolated Gate 4 private QA packages and provenance
+        if: ${{ github.event_name == 'pull_request' && matrix.python-version == '3.12' && github.head_ref == 'test/skill-3116-gate4-two-host' }}
+        run: |
+          python scripts/build_gate4_host_candidates.py --source-sha "$GITHUB_SHA"
+          printf 'source_sha=%s\n' "$GITHUB_SHA" > dist/gate4-candidate-provenance.txt
+          printf 'original_manifest_version=3.11.5 (not published candidate)\n' >> dist/gate4-candidate-provenance.txt
+          printf 'private_test_version=3.11.6-rc.4 (not a public release)\n' >> dist/gate4-candidate-provenance.txt
+          sha256sum dist/ghg-gate4-chatgpt-qa-rc4.zip dist/ghg-gate4-gemini-qa-rc4.zip | tee -a dist/gate4-candidate-provenance.txt
+      - name: Keep isolated Gate 4 ChatGPT and Gemini test ZIPs
+        if: ${{ github.event_name == 'pull_request' && matrix.python-version == '3.12' && github.head_ref == 'test/skill-3116-gate4-two-host' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ghg-gate4-chatgpt-gemini-candidates
+          path: |
+            dist/ghg-gate4-chatgpt-qa-rc4.zip
+            dist/ghg-gate4-gemini-qa-rc4.zip
+            dist/gate4-candidate-provenance.txt
+          retention-days: 7
+          if-no-files-found: error
+
+      - name: Build isolated ChatGPT rc.5 early-route probe and hash
+        if: ${{ github.event_name == 'pull_request' && matrix.python-version == '3.12' && github.head_ref == 'test/skill-3116-chatgpt-rc5-route-probe' }}
+        run: |
+          python scripts/build_gate4_chatgpt_rc5_probe.py --output dist/ghg-gate4-chatgpt-probe-rc5.zip
+          printf 'frozen_rc4_source_sha=3f383f4ea1d91ba288b6d04de248e4904e76a809\n' > dist/gate4-chatgpt-probe-provenance.txt
+          printf 'probe_build_sha=%s\n' "$GITHUB_SHA" >> dist/gate4-chatgpt-probe-provenance.txt
+          printf 'probe_name=go-hipster-go-gate4-probe\nprobe_version=3.11.6-rc.5\n' >> dist/gate4-chatgpt-probe-provenance.txt
+          sha256sum dist/ghg-gate4-chatgpt-probe-rc5.zip >> dist/gate4-chatgpt-probe-provenance.txt
+      - name: Retain experimental ChatGPT-only route-probe ZIP
+        if: ${{ github.event_name == 'pull_request' && matrix.python-version == '3.12' && github.head_ref == 'test/skill-3116-chatgpt-rc5-route-probe' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ghg-gate4-chatgpt-route-probe-rc5
+          path: |
+            dist/ghg-gate4-chatgpt-probe-rc5.zip
+            dist/gate4-chatgpt-probe-provenance.txt
+          retention-days: 7
+          if-no-files-found: error
+
+      - name: Verify private 3.11.6 ZIP reproducibility and SHA-256
+        if: ${{ github.event_name == 'pull_request' && matrix.python-version == '3.12' && github.head_ref == 'release/skill-3116-candidate-prep' }}
+        run: |
+          set -euo pipefail
+          sha256sum dist/go-hipster-go-*.zip | sort > dist/skill-3116-sha256.txt
+          test "$(wc -l < dist/skill-3116-sha256.txt)" -eq 4
+          python scripts/build_agent_packages.py --zip
+          sha256sum -c dist/skill-3116-sha256.txt
+          printf 'candidate_version=3.11.6\nsource_sha=%s\npublic_release=no\n' "$GITHUB_SHA" > dist/skill-3116-provenance.txt
+          cat dist/skill-3116-sha256.txt
+
+      - name: Retain private 3.11.6 candidate packages for review
+        if: ${{ github.event_name == 'pull_request' && matrix.python-version == '3.12' && github.head_ref == 'release/skill-3116-candidate-prep' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ghg-skill-3116-private-candidate
+          path: |
+            dist/go-hipster-go-*.zip
+            dist/skill-3116-sha256.txt
+            dist/skill-3116-provenance.txt
+            dist/skill-release-qualification.json
+          retention-days: 7
+          if-no-files-found: error

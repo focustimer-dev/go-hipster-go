@@ -8,6 +8,8 @@ For discovery, compare several compatible routes and dig beyond named touchstone
 
 Do not promote these unreviewed entries into the PWA's automatic lens pool. Keep the existing reviewed lens catalog separate. Final track verification and sequencing still decide what survives.
 
+**Mandatory shared policy:** The verification, consent, provenance, mood, tempo, cultural-boundary and reviewed-lens safeguards above apply to every regional research file, including additions. Individual files link here rather than repeating these rules. In addition tables, **Unreviewed** means “check semantic overlap before treating as an independent route,” not evidence that a new genre or distinct route exists.
+
 See the [focused regional review](regional-review.md) for the source-supported shortlist, overlap decisions and material not ready for automatic discovery.
 
 ## Map regions and musical overlap

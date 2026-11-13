@@ -4,11 +4,18 @@ Use this directory to reach the existing research, not to replace it with a smal
 
 ## Every new ordinary GO
 
-Before choosing a thesis, read these sections (exact headings):
+Before choosing a thesis, read these **core** references (relevant headings, not every section):
 
-1. [Sonic taxonomy](sonic-taxonomy.md): **Mood interpretation matrix**, **Peculiarity by audible mechanism**, **Freshness procedure**, and **Recording-level selection gate**. Consult **Era and sonic period**, **Sonic textures and instrumentation** and **Operating guidance** as the brief requires; keep all four discovery axes available.
-2. [Global scenes](global-scenes.md): Use the relevant rows of **Category discovery index — expand the search before choosing artists** to compare three distinct routes. For cross-scene playlists, consult **Responsible cross-scene reasoning**. Read only the relevant scene detail under **Geographic research map**, **Movement and microgenre touchstones**, **Further scene horizons — research leads, not default playlists**, or **US East and West discovery routes**. For unstructured GO, consider an under-covered route before settling on familiar choices.
-3. [Verification](verification.md): apply the recording and publishing evidence rules to every final selection. For Criminal, also apply **Criminal mood: verify the song's actual story**, using song-level narrative evidence rather than genre, reputation or title association.
+1. [Sonic taxonomy](sonic-taxonomy.md): **Mood interpretation matrix**, **Peculiarity by audible mechanism**, **Freshness procedure**, and **Recording-level selection gate**. Consult **Era and sonic period**, **Sonic textures and instrumentation**, and **Operating guidance** as needed. Keep all four discovery axes available.
+2. [Verification](verification.md): verify each final recording and apply publishing-evidence rules. For Criminal, also read **Criminal mood: verify the song's actual story**; genre, reputation, and title association are insufficient.
+
+Compare three genuinely compatible discovery routes internally. A selected region is a constraint, not a reason to load the entire global taxonomy.
+
+## Global scenes — conditional, not a default regional load
+
+For **open-ended, region-free, worldwide, or broadly cross-scene** GO, consult [Global scenes](global-scenes.md), especially **Category discovery index — expand the search before choosing artists**, to compare varied research directions. Read relevant sections only: **Responsible cross-scene reasoning**, **Geographic research map**, **Movement and microgenre touchstones**, **Further scene horizons — research leads, not default playlists**, and the optional **US East and West discovery routes**. For unstructured GO, consider an under-covered route rather than settling on familiar choices.
+
+For an explicit `Regional exploration:` or another **region-locked** GO, **do not preload** `global-scenes.md`. Start with the [regional atlas](regional-atlas.md), selected region files and their required supplements instead. Consult the global file later only when candidate research is thin or a specific, musically grounded cross-scene bridge needs wider context; **never relax the selected geography or substitute unverified examples**. The file remains available in every distribution.
 
 ## Optional discovery routes
 

@@ -19,15 +19,20 @@ The four save fields above come from a user-reported Gemini session and may vary
 
 These are **manual Gemini runtime tests**. Static packaging tests do not establish live playlist saving, edit access or image-upload availability.
 
-## Acceptance: GO actually tries to produce a playlist (v3.6.2)
+## Current candidate acceptance: exact-first GO and mobile result clarity (3.11.6 pre-release)
 
-1. In a fresh Gemini conversation with verified v3.6.2 Skill and YouTube Music connection, issue **`go`** from the Jukebox. Confirm it first curates a verified 12-track list, then attempts **one YouTube Music playlist generation** without any extra command or publishing toggle.
-2. When Google generates a card, inspect the actual track count and visible matches. Treat unmatched or unverified provider entries as **APPROXIMATE**, not as the exact curated crate. Record whether Save to library was actually used.
-3. If the connected app cannot publish, expect the complete curated set **plus an explicit PLAYLIST NOT CREATED status** and a single actionable next step. A text tracklist alone must not be reported as successful publication.
-4. An explicit `go, text only` must not call any provider action. `go live` remains a compatible synonym, not a necessary selection.
-5. Regression: the Jukebox has no Curate only checkbox; other service pairings and the protected DeBarge Protocol remain unchanged.
+1. In a fresh Gemini session **confirm the loaded candidate version**. Issue `go` from the Jukebox on Android. Expect a numbered **12-track** crate, concise title/description and truthful publishing status. Do not mistake public 3.11.5 for the candidate.
+2. With a connected authorized **explicit ordered-track writer**, GO may make **one** create attempt using the entire ordered list. Check provider results and saved-library confirmation separately. Eight visible preview items cannot establish a full count or matching order.
+3. With **only a thematic-generation writer or no writer**, ordinary GO retains the intended crate and reports **PLAYLIST NOT CREATED — exact-track publishing unavailable**. A thematic approximation requires a **separate explicit listener request**, must say APPROXIMATE and must preserve the original list for comparison.
+4. On Android-sized output, check original-script artist and title credits, credible romanization and qualified English meanings are **readable**. Check concise liner notes and track numbering. Screenshots, loaded-version evidence and actual tool trace are needed; absent those, host UI is **N/T**.
+5. Explicit `go, text only` does not publish. `Publish` only finalizes the existing provider-created URI; it never creates a duplicate, changes the requested service or rerolls DeBarge.
+6. Test 12 positions and the exceptional **25 DeBarge** positions, with no silent truncation to six and no invented matches.
 
-The older two-stage cases below are **historical failure investigations**, not current default requirements.
+**These are manual acceptance cases, not a passed live-host test.**
+
+## Historical Gemini field investigations (archive, v3.5.x–v3.6.x)
+
+The cases below record older regressions, including now-retired bare-`go` two-stage behavior. They are **not current 3.11.6 pass conditions**. Do not treat historical `CURATED — NOT PUBLISHED` for plain GO as the 3.11.6 default; follow exact-first writer availability and the explicit text-only opt-out above.
 
 # Gemini Android acceptance test — YouTube Music first
 

@@ -1,21 +1,14 @@
 name: Publish portable skill ZIPs
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'SKILL.md'
-      - 'references/**'
-      - 'scripts/build_gemini_app_skill.py'
-      - 'scripts/build_agent_packages.py'
-      - 'plugin.json'
-      - '.claude-plugin/**'
-      - 'skills/setup/**'
-      - 'adapters/streaming/**'
-      - 'schemas/**'
-      - 'scripts/playlist_cli.py'
-      - '.github/workflows/publish-gemini-skill.yml'
+  # Never republish a released ZIP because a development PR merged.
   workflow_dispatch:
+    inputs:
+      publish_approved:
+        description: 'I approve publishing a NEW versioned GitHub release (not an OpenAI submission)'
+        type: boolean
+        required: true
+        default: false
 
 permissions:
   contents: write
@@ -26,6 +19,8 @@ concurrency:
 
 jobs:
   publish:
+    # Approved manual runs from main only; never run on PRs or pushes.
+    if: ${{ github.ref == 'refs/heads/main' && inputs.publish_approved }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -110,14 +105,15 @@ jobs:
             dist/go-hipster-go-chatgpt-plugin.zip
           )
           if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
-            gh release upload "$RELEASE_TAG" "${files[@]}" --clobber
-          else
-            gh release create "$RELEASE_TAG" "${files[@]}" \
-              --target "$GITHUB_SHA" \
-              --title "Go, Hipster, Go! platform packages (${RELEASE_TAG})" \
-              --notes 'Ready-to-upload Gemini, Claude and ChatGPT plugin/skill ZIPs; each requires the music-service authorization separately.' \
-              --latest
+            echo "::error::Release $RELEASE_TAG already exists. Refusing to overwrite previously published ZIP assets."
+            exit 1
           fi
+          gh release create "$RELEASE_TAG" "${files[@]}" \
+            --target "$GITHUB_SHA" \
+            --title "Go, Hipster, Go! platform packages (${RELEASE_TAG})" \
+            --notes 'Ready-to-upload Gemini, Claude and ChatGPT plugin/skill ZIPs; each requires the music-service authorization separately.' \
+            --latest
+
           # Only retire the four known pre-rename aliases from this version's release.
           # Historical releases and the four current Go, Hipster, Go! ZIPs are untouched.
           for legacy in \
