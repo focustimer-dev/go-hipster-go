@@ -23,9 +23,31 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.addInitScript(()=>{
    window.labCalls=[];window.labState={saved:[],mode:'open',oneTap:true,haptics:true,updateAvailable:false};
-   window.HipsterLab={openExternal(url){labCalls.push(['external',url])},state(){return JSON.stringify(window.labState)},setPreference(k,v){window.labState[k]=k==='mode'?v:v==='true';window.HipsterLabStateChanged()},saveRequest(a,t){labCalls.push(['save',a,t])},showUpdates(){labCalls.push(['updates'])},copy(t){labCalls.push(['copy',t]);return true},go(a,t){labCalls.push(['go',a,t])},open(a,t){labCalls.push(['open',a,t])},share(t){labCalls.push(['share',t])},haptic(kind){labCalls.push(['haptic',kind])}};
+   window.HipsterLab={openExternal(url){labCalls.push(['external',url])},state(){return JSON.stringify(window.labState)},setPreference(k,v){window.labState[k]=k==='mode'?v:v==='true';window.HipsterLabStateChanged()},saveRequest(a,t){labCalls.push(['save',a,t])},showUpdates(){labCalls.push(['updates'])},copy(t){labCalls.push(['copy',t]);return true},go(a,t){labCalls.push(['go',a,t])},open(a,t){labCalls.push(['open',a,t])},share(t){labCalls.push(['share',t])},haptic(kind){labCalls.push(['haptic',kind])},setDialogPalette(){},syncSystemPalette(theme,status,navigation){labCalls.push(['systemPalette',theme,status,navigation])}};
   });
   await page.goto('http://127.0.0.1:'+server.address().port+'/?ai=chatgpt&service=spotify&atlas=legacy');
+  // All nine themes synchronize two validated native paint roles.
+  // A local navigation override proves the bottom icon mode can differ.
+  const themes=['liberi','bosque','usiku','kingston','detroit','addis','polish','beirut','michoacan'];
+  for(const theme of themes){
+   await page.evaluate(t=>window.HipsterLabTheme.set(t,false),theme);
+   const last=await page.evaluate(()=>labCalls.filter(c=>c[0]==='systemPalette').at(-1));
+   assert(last,'Theme-to-native palette bridge did not run');
+   assert.equal(last[1],theme);
+   assert.match(last[2],/^#[0-9a-f]{6}$/i);
+   assert.match(last[3],/^#[0-9a-f]{6}$/i);
+  }
+  await page.evaluate(()=>{
+   document.documentElement.style.setProperty('--lab-ui-system-navigation','#f5f0e6');
+   window.HipsterLabTheme.set('bosque',false);
+  });
+  const split=await page.evaluate(()=>labCalls.filter(c=>c[0]==='systemPalette').at(-1));
+  assert.equal(split[2],'#003018','Status bar remains Bosque rail');
+  assert.equal(split[3],'#f5f0e6','Navigation bar has independent light surface');
+  await page.evaluate(()=>{
+   document.documentElement.style.removeProperty('--lab-ui-system-navigation');
+   window.HipsterLabTheme.set('liberi',false);
+  });
   // Tempo haptics fire on distinct detents only; identical input and renders stay quiet.
   await page.locator('#tempoSlider').evaluate(slider=>{
    slider.value='4';slider.dispatchEvent(new Event('input',{bubbles:true}));
