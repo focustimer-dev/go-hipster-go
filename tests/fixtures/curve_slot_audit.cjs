@@ -17,7 +17,7 @@ const expected=['-2sw','-1','0','1','1sf','1','1','2','2f','2','0','-2ts'];
 assert.deepEqual(Array.from(scope.mixCurveSlots(code)),expected,
  '12 tracks: identical adjacent tempo digits must never collapse');
 const audit=scope.mixCurveSlotAudit(code);
-assert.match(audit,/Curve slots \\(12 in order;/);
+assert.match(audit,/Curve slots \(12 in order;/);
 assert.equal(audit.split(' | ').length,12);
 assert.ok(audit.includes('06=1 | 07=1 | 08=2'),
  'the exact pair skipped by Gemini must remain explicitly numbered');
