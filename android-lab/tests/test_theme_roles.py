@@ -148,6 +148,17 @@ class AndroidThemeRoles(unittest.TestCase):
         self.assertIn('feComponentTransfer',pwa)
         self.assertIn('--lab-mood-selected-edge:#49232b',raw)
 
+    def test_michoacan_android_preferences_and_empty_crate_use_theme_ink(self):
+        css=source("android-lab/web/workspace.css")
+        tokens=source("android-lab/web/theme-tokens.css")
+        self.assertIn("--lab-theme-selected-bg:var(--lab-ui-go);--lab-theme-selected-ink:var(--lab-ui-go-ink)",css)
+        for selector in ("#labCrateEmpty{", "#labCrateEmpty .lab-wide-button{"):
+            self.assertIn(":root[data-pwa-theme=michoacan] body.gig-poster.lab-workspace "+selector,css)
+        self.assertIn("background:var(--lab-ui-go);\n color:var(--lab-ui-go-ink);\n border-color:var(--lab-ui-go);",css)
+        # Keep the existing tested Michoacán burgundy/gold pair; no new color.
+        self.assertGreaterEqual(contrast("#24191b","#e5b653"),4.5)
+        self.assertIn("--lab-ui-go:#24191b;--lab-ui-go-ink:#e5b653;",tokens)
+
     def test_kingston_android_theme_contrast_safe(self):
         js=source("android-lab/web/theme.js")
         roles=source("android-lab/web/theme-tokens.css")

@@ -154,7 +154,11 @@ function pwaInspirationMetadata(reference){
 // The skill owns curation policy; GO sends only current creative inputs and service.
 function goPrompt(ai,service,mood){
  const parts=[goCommand(ai,service,mood)];
- if(mixCurveTrialCode)parts.push(mixCurveTrialCode);
+ if(mixCurveTrialCode){
+  parts.push(mixCurveTrialCode);
+  const audit=mixCurveSlotAudit(mixCurveTrialCode);
+  if(audit)parts.push(audit);
+ }
  /* PLATFORM_ROUTE_PROMPT */
 
  if(crateSelected.size)parts.push(crateRegionPrompt());
@@ -510,18 +514,28 @@ const mixCurveTrialAvailable=body.dataset.page==="launch"&&
  (params.get("mixCurve")==="1"||Boolean(doc.querySelector?.(
    'script[src="/assets/lab-themes.js"],script[src="/assets/pwa-workspace.js"]')));
 let mixCurveTrialCode="";
+// Parse every tempo as exactly one track, including adjacent identical digits.
+// Gemini previously miscounted a valid 12-slot compact sequence as 11.
+function mixCurveSlots(code){
+ if(!code.startsWith("c1:"))return null;
+ const payload=code.slice(3);
+ const slots=payload.match(/-?[0-2](?:[hasdwcft]{1,2}|x)?/g);
+ if(!slots||slots.length!==12||slots.join("")!==payload)return null;
+ if(slots.some(slot=>/^-0|([hasdwcft])\1$/.test(slot)))return null;
+ return slots;
+}
+function mixCurveSlotAudit(code){
+ const slots=mixCurveSlots(code);
+ return slots?"Curve slots (12 in order; repeated numbers are separate tracks): "+
+  slots.map((slot,i)=>String(i+1).padStart(2,"0")+"="+slot).join(" | "):"";
+}
 function parseMixCurveTrial(value){
  const lines=value.trim().split(/\r?\n/);
  if(lines.length===2&&/^go, text only$/i.test(lines[0].trim()))lines.shift();
  if(lines.length!==1)return null;
  const code=lines[0].trim();
  if(!code)return "";
- const payload=code.slice(3);
- if(!code.startsWith("c1:"))return null;
- const slots=payload.match(/-?[0-2](?:[hasdwcft]{1,2}|x)?/g);
- if(!slots||slots.length!==12||slots.join("")!==payload)return null;
- if(slots.some(slot=>/^-0|([hasdwcft])\1$/.test(slot)))return null;
- return code;
+ return mixCurveSlots(code)?code:null;
 }
 function mountMixCurveTrial(){
  if(!mixCurveTrialAvailable)return;

@@ -358,6 +358,8 @@ body.gig-poster .crate-map-frame.lab-globe-frame .atlas-radial-field{display:non
 .lab-theme-choice[data-lab-theme=usiku] .lab-theme-swatches i:nth-child(3){background:#b77b4d}
 :root{--lab-theme-selected-bg:#103135;--lab-theme-selected-ink:#dfb045}
 :root[data-pwa-theme=bosque],:root[data-pwa-theme=usiku]{--lab-theme-selected-bg:#004225;--lab-theme-selected-ink:#f5f0e6}
+/* Michoacán preferences selection must not inherit Libéri's teal plate. */
+:root[data-pwa-theme=michoacan]{--lab-theme-selected-bg:var(--lab-ui-go);--lab-theme-selected-ink:var(--lab-ui-go-ink)}
 .lab-dialog .lab-theme-choice[aria-pressed=true]{background:var(--lab-theme-selected-bg);color:var(--lab-theme-selected-ink);outline:2px solid currentColor;outline-offset:1px}
 :root[data-pwa-theme] body.gig-poster.lab-workspace .lab-dialog .lab-theme-choice[aria-pressed=true]{background:var(--lab-theme-selected-bg)!important;color:var(--lab-theme-selected-ink)!important;border-color:currentColor}
 .lab-theme-choice:focus-visible{outline:3px solid currentColor;outline-offset:3px}
@@ -647,6 +649,15 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
  background:var(--lab-ui-action);
  color:var(--lab-ui-on-action);
  border-color:var(--lab-ui-rule);
+}
+/* Michoacán's empty Crate used to display Libéri's petrol invitation. */
+:root[data-pwa-theme=michoacan] body.gig-poster.lab-workspace #labCrateEmpty{
+ border-color:var(--lab-ui-rule);
+}
+:root[data-pwa-theme=michoacan] body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
+ background:var(--lab-ui-go);
+ color:var(--lab-ui-go-ink);
+ border-color:var(--lab-ui-go);
 }
 
 /* Release polish: Bosque uses one clean, flat paper surface across Jukebox,
