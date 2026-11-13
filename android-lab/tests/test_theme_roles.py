@@ -221,8 +221,8 @@ class AndroidThemeRoles(unittest.TestCase):
         def blend(a,b,share):
             return "#"+"".join(f"{round(int(a[i:i+2],16)*share+int(b[i:i+2],16)*(1-share)):02x}" for i in (1,3,5))
         palettes={}
-        for name,body in re.findall(r":root\\[data-pwa-theme=([a-z]+)\\]\\{([^}]*)\\}",raw,re.S):
-            values=dict(re.findall(r"(--lab-[a-z-]+):\\s*(#[0-9a-f]{6})\\s*;",body))
+        for name,body in re.findall(r":root\[data-pwa-theme=([a-z]+)\]\{([^}]*)\}",raw,re.S):
+            values=dict(re.findall(r"(--lab-[a-z-]+):\s*(#[0-9a-f]{6})\s*;",body))
             if "--lab-ui-surface" in values:
                 palettes[name]=values
         self.assertEqual(set(palettes),{"bosque","usiku","kingston","detroit","addis","polish","beirut","michoacan"})
