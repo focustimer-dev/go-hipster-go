@@ -13,7 +13,10 @@ import tempfile
 from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
-from scripts.build_gate4_host_candidates import build_chatgpt
+try:
+    from scripts.build_gate4_host_candidates import build_chatgpt
+except ModuleNotFoundError:  # CLI execution: python scripts/build_gate4_chatgpt_rc5_probe.py
+    from build_gate4_host_candidates import build_chatgpt
 
 ROOT = Path(__file__).resolve().parents[1]
 FROZEN_SOURCE_SHA = "3f383f4ea1d91ba288b6d04de248e4904e76a809"
