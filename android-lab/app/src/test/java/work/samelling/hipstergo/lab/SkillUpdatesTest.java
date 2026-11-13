@@ -42,6 +42,15 @@ public class SkillUpdatesTest {
         assertTrue(ReleasePolicy.compareVersions("3.8.1-lab.10","3.8.1-lab.2")>0);
         assertEquals(0,ReleasePolicy.compareVersions("3.8.1+build.2","3.8.1+build.1"));
     }
+    @Test public void dismissalTargetsExactReleaseAssetAndNewAssetNotifies()throws Exception {
+        ReleasePolicy.Release old=SkillUpdates.selectJson(new JSONArray().put(release("3.11.6",11,false,false)).toString(),"stable");
+        ReleasePolicy.Release updated=SkillUpdates.selectJson(new JSONArray().put(release("3.11.6",12,false,false)).toString(),"stable");
+        assertTrue(SkillUpdates.actionable(old,"",""));
+        assertFalse(SkillUpdates.actionable(old,"",old.identity()));
+        assertFalse(SkillUpdates.actionable(old,old.identity(),""));
+        assertTrue(SkillUpdates.actionable(updated,"",old.identity()));
+        assertFalse(SkillUpdates.actionable(null,"",""));
+    }
     @Test public void replacedAssetChangesIdentityAtSameVersion()throws Exception {
         ReleasePolicy.Release old=SkillUpdates.selectJson(new JSONArray().put(release("3.8.1",1,false,false)).toString(),"stable");
         ReleasePolicy.Release changed=SkillUpdates.selectJson(new JSONArray().put(release("3.8.1",2,false,false)).toString(),"stable");

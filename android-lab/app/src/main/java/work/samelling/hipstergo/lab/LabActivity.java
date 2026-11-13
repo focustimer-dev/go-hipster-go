@@ -230,7 +230,8 @@ public class LabActivity extends Activity {
                 .put("activeInspiration",inspiration.value()).put("recentInspirations",inspiration.recent()).put("inspirationPreview",inspiration.preview())
                 .put("mode",prefs.getString("mode","open")).put("oneTap",prefs.getBoolean("oneTap",true))
                 .put("haptics",prefs.getBoolean("haptics",true)).put("updateAvailable",updates.available())
-                .put("updateSummary",updates.summary()).put("updateDetail",updates.detail()).toString();
+                .put("updateSummary",updates.summary()).put("updateDetail",updates.detail())
+                .put("updateLatest",updates.latestVersion()).put("updateConfirmed",updates.recordedVersion()).toString();
         }catch(org.json.JSONException e){return "{}";}
     }
     public final class Bridge {
