@@ -41,7 +41,7 @@ class CanonicalUnifiedDiscoveryTests(unittest.TestCase):
 
     def test_version_and_scope_isolation(self):
         source = self.read("SKILL.md")
-        self.assertIn('  version: "3.11.5"', source)
+        self.assertIn('  version: "3.11.6"', source)
         self.assertNotIn("3.11.6-rc.9", source)
         self.assertIn("GO HARD retains", source)
         self.assertIn("song-specific Criminal narratives", source)

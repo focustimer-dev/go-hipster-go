@@ -1,4 +1,11 @@
 
+## 3.11.6 release candidate — not yet published (2026-11-13)
+
+- Promote the user-accepted private RC9 discovery checkpoint into canonical GO without stacked experimental rules; preserve region-first candidate discovery, 24 optional Rxx routes and bounded ordinary/GO HARD research.
+- Package original rhythm/texture and mood-tension seed JSON sources in ChatGPT, Claude and script-free Gemini distributions; preserve all regional additions and verification boundaries.
+- Keep Gemini exact-first publishing, explicit no-publish overrides and playlist schema 1.0 unchanged.
+- Synchronize release candidate versions and require reproducible four-platform archives. Release branch, public plugin, catalog, stores and music services remain unchanged until separately approved.
+
 ## Gemini Publish save-first correction — 2026-11-04
 
 - On `Publish`, prioritize the user-observed `youtube_music:save` call using the existing `create` URI, playlist title, complete description/liner notes and `PERSONAL_PLAYLIST` where supported by the active tool schema. Do this before a manual publishing explanation.
