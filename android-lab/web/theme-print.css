@@ -114,7 +114,8 @@
   background:transparent;color:var(--lab-ui-receipt-title-ink);border-bottom:1px solid var(--lab-ui-rule);
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .receipt-heading .lab-save-button{
-  background:transparent;color:var(--lab-ui-secondary-ink);border:1px solid var(--lab-ui-secondary-rule);
+  background:transparent;color:var(--lab-ui-receipt-accent-ink);border:1px solid var(--lab-ui-secondary-rule);
+  text-decoration:underline;text-underline-offset:3px;
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #firstCrateSetup .ticket{
   --ink:var(--lab-ui-ticket-ink);--paper:var(--lab-ui-ticket-stock);
