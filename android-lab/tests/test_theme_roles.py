@@ -206,6 +206,43 @@ class AndroidThemeRoles(unittest.TestCase):
         self.assertIn("var(--lab-ui-focus,#103135)",inspiration)
         self.assertNotIn(":root[data-pwa-theme=michoacan] body.gig-poster.lab-workspace #labCrateEmpty",css)
 
+    def test_079_semantic_hierarchy_role_contrast_all_eight_palettes(self):
+        """Small accent type, secondary copy and functional borders remain AA."""
+        raw=source("android-lab/web/theme-tokens.css")
+        css=source("android-lab/web/workspace.css")
+        theme_css=source("android-lab/web/theme-print.css")
+        self.assertIn("--lab-ui-accent-text:color-mix(in srgb,var(--lab-print-active-ink,var(--lab-ui-focus)) 75%,var(--lab-ui-ink))",raw)
+        self.assertIn("--lab-ui-muted-ink:color-mix(in srgb,var(--lab-ui-ink) 83%,var(--lab-ui-surface))",raw)
+        self.assertIn("--lab-ui-disabled-ink:color-mix(in srgb,var(--lab-ui-ink) 78%,var(--lab-ui-surface))",raw)
+        self.assertIn("--lab-ui-secondary-rule:var(--lab-ui-control-outline)",raw)
+        self.assertIn("--lab-ui-receipt-accent-ink:var(--lab-ui-accent-text)",raw)
+        self.assertIn("--lab-ui-trail-label-ink:var(--lab-ui-muted-ink)",raw)
+        self.assertIn("--lab-ui-trail-mark-ink:var(--lab-ui-accent-text)",raw)
+        def blend(a,b,share):
+            return "#"+"".join(f"{round(int(a[i:i+2],16)*share+int(b[i:i+2],16)*(1-share)):02x}" for i in (1,3,5))
+        palettes={}
+        for name,body in re.findall(r":root\\[data-pwa-theme=([a-z]+)\\]\\{([^}]*)\\}",raw,re.S):
+            values=dict(re.findall(r"(--lab-[a-z-]+):\\s*(#[0-9a-f]{6})\\s*;",body))
+            if "--lab-ui-surface" in values:
+                palettes[name]=values
+        self.assertEqual(set(palettes),{"bosque","usiku","kingston","detroit","addis","polish","beirut","michoacan"})
+        for theme,v in palettes.items():
+            paper=v["--lab-ui-surface"]
+            ink=v["--lab-ui-ink"]
+            active=v.get("--lab-print-active-ink",v["--lab-ui-focus"])
+            accent=blend(active,ink,.75)
+            muted=blend(ink,paper,.83)
+            disabled=blend(ink,paper,.78)
+            for role,color in (("accent",accent),("muted",muted),("disabled",disabled)):
+                self.assertGreaterEqual(contrast(paper,color),4.5,theme+" "+role)
+            self.assertGreaterEqual(contrast(paper,v["--lab-ui-control-outline"]),3,
+                                    theme+" functional outline")
+        for needle in ("--lab-ui-receipt-accent-ink","--lab-ui-receipt-meta-ink",
+                       "--lab-ui-disabled-ink","--lab-ui-link-ink","--lab-ui-trail-mark-ink"):
+            self.assertIn("var("+needle,css)
+        self.assertIn("color:var(--lab-ui-receipt-accent-ink)",theme_css)
+        self.assertNotIn(":root[data-pwa-theme=michoacan] body.gig-poster.lab-workspace #labCrateEmpty",css)
+
     def test_kingston_android_theme_contrast_safe(self):
         js=source("android-lab/web/theme.js")
         roles=source("android-lab/web/theme-tokens.css")
