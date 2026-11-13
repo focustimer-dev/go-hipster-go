@@ -34,16 +34,22 @@ REQUIRED_ARCHIVE_MEMBERS = {
     "go-hipster-go-chatgpt-plugin.zip": {
         "plugin.json", "skills/setup/SKILL.md",
         "skills/go-hipster-go/SKILL.md",
+        "skills/go-hipster-go/references/seed-cues.json",
+        "skills/go-hipster-go/references/mood-spark-bank.json",
         "skills/go-hipster-go/references/evaluation-smoke.md",
         "skills/go-hipster-go/references/claude-spotify-recovery.md",
     },
     "go-hipster-go-claude-plugin.zip": {
         ".claude-plugin/plugin.json", "skills/setup/SKILL.md",
         "skills/go-hipster-go/SKILL.md",
+        "skills/go-hipster-go/references/seed-cues.json",
+        "skills/go-hipster-go/references/mood-spark-bank.json",
         "skills/go-hipster-go/references/claude-spotify-recovery.md",
     },
     "go-hipster-go-claude-skill.zip": {
         "go-hipster-go/SKILL.md",
+        "go-hipster-go/references/seed-cues.json",
+        "go-hipster-go/references/mood-spark-bank.json",
         "go-hipster-go/references/claude-spotify-recovery.md",
         "go-hipster-go/references/evaluation-smoke.md",
     },
@@ -52,6 +58,8 @@ REQUIRED_ARCHIVE_MEMBERS = {
         "references/tempo-curve.md", "references/go-hard.md",
         "references/regional-atlas.md", "references/regions/antarctica.md",
         "references/gemini-publish.md",
+        "references/seed-cues.json",
+        "references/mood-spark-bank.json",
     },
 }
 # Full-file size illustration only: it is not host telemetry or actual token use.
@@ -138,6 +146,17 @@ def inspect(root: Path = ROOT, dist: Path | None = None) -> dict:
                     n.startswith("scripts/") or n.endswith(".py") for n in names
                 ):
                     errors.append("Executable/script member in Gemini skill ZIP")
+                # Source banks are data-only and must survive every host package
+                # byte-for-byte; malformed or unexpected material is a blocker.
+                for bank in ("references/seed-cues.json", "references/mood-spark-bank.json"):
+                    if filename == "go-hipster-go-claude-skill.zip":
+                        member = "go-hipster-go/" + bank
+                    elif filename == "go-hipster-go-gemini-app-skill.zip":
+                        member = bank
+                    else:
+                        member = "skills/go-hipster-go/" + bank
+                    if member in names and archive.read(member) != (root / bank).read_bytes():
+                        errors.append(filename + " altered source data " + member)
         except Exception as exc:
             errors.append(filename + " unreadable: " + type(exc).__name__)
         actual = path.stat().st_size
@@ -205,7 +224,7 @@ def render_markdown(result: dict) -> str:
         "- [ ] Live ChatGPT, Gemini and Claude host loading/behavior checked",
         "- [ ] Baseline-vs-candidate musical quality reviewed with real recording evidence",
         "- [ ] Track matching, saved state and live publishing limitations evaluated without making unauthorized playlists",
-        "- [ ] Version 3.11.6 synchronized *after qualification*",
+        "- [x] Candidate version 3.11.6 synchronized offline; live host and publication approval pending",
         "- [ ] Separate approval obtained before public release/tag/reference promotion",
         "",
         "**No publication, deployment, tag or production-reference promotion was performed.**",

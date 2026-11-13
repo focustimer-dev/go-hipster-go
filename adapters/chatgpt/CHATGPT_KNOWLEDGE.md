@@ -2498,7 +2498,7 @@ description: "Real global deep cuts; setup services, then go or go antarctica; d
 license: MIT
 compatibility: Requires file-reading capability. Optional web/catalog lookup for track verification and Python 3.10+ to run included validation/randomness scripts. Streaming accounts and OAuth are NOT bundled.
 metadata:
-  version: "3.11.5"
+  version: "3.11.6"
 ---
 
 # Go, Hipster, Go! — Agent Skill v3

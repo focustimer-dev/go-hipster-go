@@ -65,3 +65,27 @@ jobs:
             dist/gate4-chatgpt-probe-provenance.txt
           retention-days: 7
           if-no-files-found: error
+
+      - name: Verify private 3.11.6 ZIP reproducibility and SHA-256
+        if: ${{ github.event_name == 'pull_request' && matrix.python-version == '3.12' && github.head_ref == 'release/skill-3116-candidate-prep' }}
+        run: |
+          set -euo pipefail
+          sha256sum dist/go-hipster-go-*.zip | sort > dist/skill-3116-sha256.txt
+          test "$(wc -l < dist/skill-3116-sha256.txt)" -eq 4
+          python scripts/build_agent_packages.py --zip
+          sha256sum -c dist/skill-3116-sha256.txt
+          printf 'candidate_version=3.11.6\nsource_sha=%s\npublic_release=no\n' "$GITHUB_SHA" > dist/skill-3116-provenance.txt
+          cat dist/skill-3116-sha256.txt
+
+      - name: Retain private 3.11.6 candidate packages for review
+        if: ${{ github.event_name == 'pull_request' && matrix.python-version == '3.12' && github.head_ref == 'release/skill-3116-candidate-prep' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ghg-skill-3116-private-candidate
+          path: |
+            dist/go-hipster-go-*.zip
+            dist/skill-3116-sha256.txt
+            dist/skill-3116-provenance.txt
+            dist/skill-release-qualification.json
+          retention-days: 7
+          if-no-files-found: error

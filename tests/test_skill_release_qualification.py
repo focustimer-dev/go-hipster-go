@@ -20,7 +20,7 @@ class ReleaseQualificationTests(unittest.TestCase):
         self.assertEqual(len(PUBLISHED_3115_ZIP_BYTES), 4)
         result = inspect()
         self.assertEqual(result["status"], "offline_checks_passed", result["errors"])
-        self.assertEqual(set(result["versions"].values()), {"3.11.5"})
+        self.assertEqual(set(result["versions"].values()), {"3.11.6"})
         self.assertEqual(set(result["packages"]), set(PUBLISHED_3115_ZIP_BYTES))
         self.assertEqual(result["live_host_tests"], "not_performed")
         self.assertEqual(result["music_quality_comparison"], "not_performed")

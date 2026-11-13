@@ -23,6 +23,16 @@ class ChatGPTRouteProbeTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as t:
             root = Path(t)
             base, p1, p2 = (root / x for x in ("rc4.zip", "probe1.zip", "probe2.zip"))
+            if json.loads((ROOT / "plugin.json").read_text())["version"] != "3.11.5":
+                # Historical rc.4 cannot be reconstructed from the new release
+                # candidate; verify rejection rather than rewriting the baseline.
+                with self.assertRaisesRegex(ValueError, "Unexpected production plugin manifest"):
+                    build_chatgpt(FROZEN_SOURCE_SHA, base)
+                # A rejected historical builder may leave an empty ZIP.
+                if base.exists():
+                    with ZipFile(base) as unused:
+                        self.assertNotIn("plugin.json", unused.namelist())
+                return
             build_chatgpt(FROZEN_SOURCE_SHA, base)
             actual = hashlib.sha256(base.read_bytes()).hexdigest()
             if actual != FROZEN_RC4_SHA256:
