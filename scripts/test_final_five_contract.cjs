@@ -155,6 +155,35 @@ const specs=[
    assert.equal(ornament.heroText,'YOUR TASTE IS A PROBLEM');
    console.log('PASS: '+spec.id+' print tokens, neutral/selected Funk, map palette, Manual and hero');
   }
+
+  // Isolated QA evidence, not a production change: capture the NEW token
+  // consumers across all nine Android themes at actual 390px phone width.
+  // These images are bundled with the unsigned CI artifact for review.
+  const reviewDir=path.resolve(__dirname,'../android-lab/build/switch-review');
+  fs.mkdirSync(reviewDir,{recursive:true});
+  const sweepThemes=['liberi','bosque','usiku','kingston','detroit','addis','polish','beirut','michoacan'];
+  await page.evaluate(()=>{
+   const initial=document.querySelector('#firstCrateSetup');
+   if(initial) initial.hidden=true; // simulated completion of first-use setup
+  });
+  for(const theme of sweepThemes){
+   await page.evaluate(id=>window.HipsterLabTheme.set(id,false),theme);
+   await page.waitForTimeout(300);
+   for(const [selector,label] of [
+    ['#labAddInspiration','inspiration'],
+    ['#promptReceipt','receipt'],
+    ['.poster-go-trail','trail']
+   ]){
+    const locator=page.locator(selector).first();
+    if(await locator.count()&&await locator.isVisible()){
+     const out=path.join(reviewDir,'token-audit-'+theme+'-'+label+'.png');
+     await locator.screenshot({path:out,timeout:6000,animations:'disabled'});
+    }else{
+     throw new Error('Missing visible audit component '+theme+' '+selector);
+    }
+   }
+   console.log('AUDIT_SNAPSHOT: '+theme+' controls captured');
+  }
   assert.deepEqual(errors,[],'No theme runtime errors');
   await page.close();
  }finally{
