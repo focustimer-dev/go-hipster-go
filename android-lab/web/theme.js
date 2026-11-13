@@ -279,7 +279,12 @@ function syncNativeDialogPalette(){
  const fieldInk=base?'#103135':token('--lab-ui-on-field',ink);
  const rule=base?'#103135':token('--lab-ui-rule',ink);
  bridge.setDialogPalette(theme,surface,ink,accent,field,fieldInk,rule);
- bridge.syncSystemPalette?.(token("--lab-ui-rail","#103135"));
+ // Independent roles: the current nine themes use their rail stock for both
+ // edges, but either inset can use a different opaque surface in a future theme.
+ const rail=base?'#103135':token('--lab-ui-rail','#103135');
+ const statusBar=base?'#103135':token('--lab-ui-system-status',rail);
+ const navigationBar=base?'#103135':token('--lab-ui-system-navigation',rail);
+ bridge.syncSystemPalette?.(theme,statusBar,navigationBar);
 }
 function setTheme(next,persist){
  if(!THEMES.includes(next)&&!PILOTS.includes(next))return false;
