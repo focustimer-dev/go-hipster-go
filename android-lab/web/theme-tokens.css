@@ -137,6 +137,8 @@
    coverage-only pass; future hierarchy can tune roles in the palette,
    not by adding theme-name selectors to components. Libéri is unchanged. */
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print]){
+ --lab-theme-selected-bg:var(--lab-ui-action);
+ --lab-theme-selected-ink:var(--lab-ui-on-action);
  --lab-ui-link-ink:var(--lab-ui-ink);
  --lab-ui-link-rule:var(--lab-ui-rule);
  --lab-ui-secondary-ink:var(--lab-ui-ink);
@@ -163,4 +165,6 @@
  --lab-ui-primary-bg:var(--lab-ui-go);
  --lab-ui-primary-ink:var(--lab-ui-go-ink);
  --lab-ui-primary-rule:var(--lab-ui-go);
+ --lab-theme-selected-bg:var(--lab-ui-go);
+ --lab-theme-selected-ink:var(--lab-ui-go-ink);
 }
