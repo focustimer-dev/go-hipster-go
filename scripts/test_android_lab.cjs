@@ -82,6 +82,11 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   const position=await page.evaluate(()=>window.scrollY);
   await page.locator('[data-lab-tab="crate"]').click();await page.locator('#labCrate').waitFor({state:'visible'});
   await page.locator('[data-lab-tab="manual"]').click();await page.locator('#labManual').waitFor({state:'visible'});
+  await page.evaluate(()=>{labState.updateAvailable=true;labState.updateLatest='gemini-skill-v3.11.6';window.HipsterLabStateChanged()});
+  assert(await page.locator('#labSkillNotice').isVisible(),'Gemini update is actionable directly in Manual');
+  assert.match(await page.locator('#labSkillNoticeText').textContent(),/3\.11\.6/);
+  await page.locator('#labSkillNotice [data-lab-action=updates]').click();
+  assert((await page.evaluate(()=>labCalls)).some(c=>c[0]==='updates'));
   // Artwork guide is not the active tab. Exercise its delegated navigation
   // handler without Playwright requiring an intentionally hidden panel.
   await page.frameLocator('#labManualFrame').locator('a[href="https://music.youtube.com"]').evaluate(el=>el.click());
@@ -98,7 +103,8 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert.equal(await page.evaluate(()=>location.host.startsWith('127.0.0.1')),true,'Manual must remain on local origin');
   await page.locator('#labManualReturn').click();
   await page.locator('#labManualGuide').waitFor({state:'visible'});
-  await page.frameLocator('#labManualFrame').locator('#cratePicker > summary').click();await page.frameLocator('#labManualFrame').locator('[data-crate-tab=setup]').click();await page.frameLocator('#labManualFrame').locator('.crate-dividers a[href="#setup"]').click();await page.frameLocator('#labManualFrame').locator('#reviewGeminiUpdates').click();await page.waitForFunction(()=>labCalls.some(c=>c[0]==='updates'));
+  await page.frameLocator('#labManualFrame').locator('#cratePicker > summary').click();await page.frameLocator('#labManualFrame').locator('[data-crate-tab=setup]').click();await page.frameLocator('#labManualFrame').locator('.crate-dividers a[href="#setup"]').click();await page.frameLocator('#labManualFrame').locator('#setupConfirm .finish [data-review-skill-updates]').click();
+  await page.waitForFunction(()=>labCalls.some(c=>c[0]==='updates'));
   await page.locator('[data-lab-tab="jukebox"]').click();assert(Math.abs((await page.evaluate(()=>window.scrollY))-position)<2);
   await page.locator('.lab-rail [data-lab-action="preferences"]').click();await page.locator('#labPreferences').waitFor({state:'visible'});
   await page.locator('[name="labHandoff"][value="share"]').check();await page.locator('[data-lab-action="close-preferences"]').click();await page.locator('#labPreferences').waitFor({state:'hidden'});
