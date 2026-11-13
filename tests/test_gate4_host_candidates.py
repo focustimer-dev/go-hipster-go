@@ -66,7 +66,17 @@ class IsolatedGate4CandidateTests(unittest.TestCase):
                 self.assertEqual(len(names), len(set(names)))
                 self.assertIn("SKILL.md", names)
                 self.assertIn("references/verification.md", names)
-                self.assertFalse(any(n.endswith((".py", ".json")) for n in names))
+                # Only the two curated, data-only JSON seed banks are
+                # permitted; Gemini runtime must still ship no executable code.
+                self.assertFalse(any(n.endswith((".py", ".js", ".mjs", ".cjs",
+                                                   ".sh", ".exe")) for n in names))
+                json_files = {n for n in names if n.endswith(".json")}
+                self.assertEqual(json_files, {
+                    "references/seed-cues.json",
+                    "references/mood-spark-bank.json",
+                })
+                for filename in json_files:
+                    self.assertIsInstance(json.loads(z.read(filename)), dict)
                 skill = z.read("SKILL.md").decode("utf-8")
                 self.assertIn("name: go-hipster-go-gate4", skill)
                 self.assertIn("version: " + VERSION, skill)
