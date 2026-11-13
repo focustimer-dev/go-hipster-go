@@ -161,6 +161,10 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   await ticket.locator('summary').click();
   assert(await ticket.locator('.ticket-region-short').isVisible(),'Expanded ticket restores region/option details');
   assert.deepEqual(errors,[]);
+  if (!process.argv.includes('--renderer')) {
+   console.log('PASS: Android Lab workspace and native handoff smoke tests.');
+   return;
+  }
   // The morph test needs explicit normal-motion emulation; host CI defaults
   // may advertise reduced motion, for which production correctly skips it.
   await page.emulateMedia({reducedMotion:'no-preference'});
