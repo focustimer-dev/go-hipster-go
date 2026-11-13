@@ -144,6 +144,13 @@ public class LabActivity extends Activity {
         if(state==null)receiveSharedText(getIntent());
     }
 
+    @Override protected void onResume() {
+        super.onResume();
+        if (layout != null) layout.post(() -> applySystemPalette(
+            prefs.getString(STATUS_PREF, SystemBarTheme.DEFAULT_COLOR),
+            prefs.getString(NAV_PREF, SystemBarTheme.DEFAULT_COLOR)));
+    }
+
     @Override protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);setIntent(intent);
         if(Intent.ACTION_SEND.equals(intent.getAction()))receiveSharedText(intent);
