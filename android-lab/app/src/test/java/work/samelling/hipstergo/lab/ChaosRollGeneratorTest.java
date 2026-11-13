@@ -64,6 +64,16 @@ public class ChaosRollGeneratorTest {
         }
     }
 
+    @Test public void otherAiKeepsTheBriefManualAndUsesConfiguredService() throws Exception {
+        JSONObject config=catalog();
+        String prompt=ChaosRollGenerator.generate(config,new Random(51),"other","apple",true);
+        assertTrue(prompt.startsWith("Use Go, Hipster, Go!: go "));
+        assertTrue(prompt.contains("\\nService: Apple Music."));
+        assertTrue(prompt.contains("Recording preference: Skip rough recordings."));
+        assertFalse(prompt.contains("@go-hipster-go"));
+        assertFalse(prompt.contains("Inspiration:"));
+    }
+
     @Test public void unknownCatalogFailsClosed() {
         try {
             ChaosRollGenerator.generate(new JSONObject(),new Random(1),"chatgpt","spotify",false);
