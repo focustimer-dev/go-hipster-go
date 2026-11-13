@@ -189,7 +189,7 @@ class AndroidThemeRoles(unittest.TestCase):
                      "--lab-ui-status-ink","--lab-ui-disabled-ink",
                      "--lab-ui-receipt-meta-ink","--lab-ui-trail-mark-ink"):
             self.assertIn("var("+role,css)
-        for role in ("--lab-ui-primary-bg","--lab-ui-secondary-ink",
+        for role in ("--lab-ui-primary-bg","--lab-ui-receipt-accent-ink",
                      "--lab-ui-receipt-title-ink","--lab-theme-selected-bg"):
             self.assertIn("var("+role,print_css)
         # Every original palette remains defined independently; these
