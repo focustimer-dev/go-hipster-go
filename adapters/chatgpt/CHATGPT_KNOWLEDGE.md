@@ -4,7 +4,7 @@ A generated, text-forward snapshot of the **canonical** repository skill. This i
 
 **Source:** https://github.com/focustimer-dev/go-hipster-go
 
-**Files included:** `references/recording-quality.md`, `references/reference-index.md`, `references/de-cheese.md`, `references/discovery-routes.md`, `references/funky.md`, `references/desire-triumphant.md`, `references/regions/antarctica.md`, `references/go-hard.md`, `references/regional-review.md`, `references/regions/oceania-additions.md`, `references/regions/central-america-additions.md`, `references/regions/central-africa-additions.md`, `references/regions/southern-africa-additions.md`, `references/regional-atlas.md`, `references/regions/us-west.md`, `references/regions/us-east.md`, `references/regions/us-midwest.md`, `references/regions/us-south.md`, `references/regions/canada-west.md`, `references/regions/canada-east.md`, `references/regions/mexico.md`, `references/regions/central-america.md`, `references/regions/caribbean.md`, `references/regions/northern-south-america.md`, `references/regions/southern-south-america.md`, `references/regions/atlantic-europe.md`, `references/regions/mediterranean-europe.md`, `references/regions/balkans.md`, `references/regions/northern-europe.md`, `references/regions/eastern-europe.md`, `references/regions/north-africa.md`, `references/regions/west-africa.md`, `references/regions/east-africa.md`, `references/regions/central-southern-africa.md`, `references/regions/middle-east.md`, `references/regions/central-asia.md`, `references/regions/south-asia.md`, `references/regions/east-asia.md`, `references/regions/southeast-asia.md`, `references/regions/northern-asia.md`, `references/regions/oceania.md`, `SKILL.md`, `references/global-scenes.md`, `references/sonic-taxonomy.md`, `references/curation-examples.md`, `references/verification.md`, `references/cover-art.md`, `references/evaluation-smoke.md`, `references/claude-spotify-recovery.md`.
+**Files included:** `references/recording-quality.md`, `references/reference-index.md`, `references/de-cheese.md`, `references/discovery-routes.md`, `references/seed-cues.json`, `references/mood-spark-bank.json`, `references/funky.md`, `references/desire-triumphant.md`, `references/regions/antarctica.md`, `references/go-hard.md`, `references/regional-review.md`, `references/regions/oceania-additions.md`, `references/regions/central-america-additions.md`, `references/regions/central-africa-additions.md`, `references/regions/southern-africa-additions.md`, `references/regional-atlas.md`, `references/regions/us-west.md`, `references/regions/us-east.md`, `references/regions/us-midwest.md`, `references/regions/us-south.md`, `references/regions/canada-west.md`, `references/regions/canada-east.md`, `references/regions/mexico.md`, `references/regions/central-america.md`, `references/regions/caribbean.md`, `references/regions/northern-south-america.md`, `references/regions/southern-south-america.md`, `references/regions/atlantic-europe.md`, `references/regions/mediterranean-europe.md`, `references/regions/balkans.md`, `references/regions/northern-europe.md`, `references/regions/eastern-europe.md`, `references/regions/north-africa.md`, `references/regions/west-africa.md`, `references/regions/east-africa.md`, `references/regions/central-southern-africa.md`, `references/regions/middle-east.md`, `references/regions/central-asia.md`, `references/regions/south-asia.md`, `references/regions/east-asia.md`, `references/regions/southeast-asia.md`, `references/regions/northern-asia.md`, `references/regions/oceania.md`, `SKILL.md`, `references/global-scenes.md`, `references/sonic-taxonomy.md`, `references/curation-examples.md`, `references/verification.md`, `references/cover-art.md`, `references/evaluation-smoke.md`, `references/claude-spotify-recovery.md`.
 
 
 ---
@@ -266,6 +266,280 @@ Family: catalog. Explore documented side projects or short-lived ensembles with 
 Family: arrangement. Explore recordings where supported ensemble density changes while the underlying musical intent remains coherent.
 
 # END SOURCE: references/discovery-routes.md
+
+---
+
+# BEGIN SOURCE: references/seed-cues.json
+
+{
+  "rhythm": [
+    {
+      "text": "interlocking accents",
+      "pace": "any"
+    },
+    {
+      "text": "a pulse with missing footsteps",
+      "pace": "any"
+    },
+    {
+      "text": "drums answering the melody",
+      "pace": "any"
+    },
+    {
+      "text": "a rhythm leaning behind the beat",
+      "pace": "any"
+    },
+    {
+      "text": "offbeats pulling against the downbeat",
+      "pace": "any"
+    },
+    {
+      "text": "percussion leaving the centre open",
+      "pace": "any"
+    },
+    {
+      "text": "a repeating figure changing its emphasis",
+      "pace": "any"
+    },
+    {
+      "text": "bass and drums taking different paths",
+      "pace": "any"
+    },
+    {
+      "text": "handclaps cutting across the pulse",
+      "pace": "any"
+    },
+    {
+      "text": "phrases spilling over the bar line",
+      "pace": "any"
+    },
+    {
+      "text": "a patient pulse with restless details",
+      "pace": "slow"
+    },
+    {
+      "text": "widely spaced beats with busy ornaments",
+      "pace": "slow"
+    },
+    {
+      "text": "a slow tread with sharp syncopation",
+      "pace": "slow"
+    },
+    {
+      "text": "a loping rhythm with sudden gaps",
+      "pace": "slow"
+    },
+    {
+      "text": "a quick pulse with room to breathe",
+      "pace": "fast"
+    },
+    {
+      "text": "racing accents around a steady centre",
+      "pace": "fast"
+    },
+    {
+      "text": "brisk footsteps interrupted by silence",
+      "pace": "fast"
+    },
+    {
+      "text": "rapid figures trading places",
+      "pace": "fast"
+    },
+    {
+      "text": "a melody doing the percussion’s work",
+      "pace": "any"
+    },
+    {
+      "text": "a pulse emerging from overlapping loops",
+      "pace": "any"
+    },
+    {
+      "text": "short phrases answering long ones",
+      "pace": "any"
+    },
+    {
+      "text": "a rhythm gathering extra layers",
+      "pace": "any"
+    },
+    {
+      "text": "a steady ground beneath uneven phrases",
+      "pace": "any"
+    },
+    {
+      "text": "an insistent pulse that keeps shedding notes",
+      "pace": "any"
+    }
+  ],
+  "texture": [
+    "a close voice in a distant room",
+    "dry attacks trailing long shadows",
+    "soft edges around a hard centre",
+    "a melody fraying into overtones",
+    "breath and grain left in the foreground",
+    "bright notes against a dark sustained bed",
+    "small sounds filling a wide space",
+    "a rough surface around a clear melody",
+    "plucked notes leaving long empty spaces",
+    "voices passing a phrase between them",
+    "a low register carrying a fragile upper line",
+    "sharp transients beneath blurred harmonies",
+    "unison lines slowly separating",
+    "a thin melody above a crowded floor",
+    "resonance hanging after each strike",
+    "contrasting registers refusing to blend",
+    "a warm centre with brittle edges",
+    "brief ornaments interrupting held notes",
+    "a voice half hidden inside the ensemble",
+    "acoustic grain beside clean electronic tones",
+    "a melody answered by wordless voices",
+    "dense detail with no dominant soloist",
+    "exposed vocals against restless accompaniment",
+    "a narrow sound opening into a wide room"
+  ]
+}
+
+# END SOURCE: references/seed-cues.json
+
+---
+
+# BEGIN SOURCE: references/mood-spark-bank.json
+
+{
+  "happy": [
+    "celebration with unresolved harmony",
+    "quiet pleasure over restless detail",
+    "playful phrases with a serious pulse",
+    "relief arriving one layer at a time",
+    "a restrained opening that learns to dance",
+    "rough voices carrying a buoyant melody",
+    "a bright refrain above a heavy foundation",
+    "communal answers to a solitary voice",
+    "joy held just below the surface",
+    "a loose ensemble finding its centre",
+    "tenderness with rhythmic mischief",
+    "a small motif growing into shared release",
+    "laughter suggested by instrumental replies",
+    "a light melody over stubborn repetition",
+    "warmth interrupted by surprising silences",
+    "a simple refrain with intricate surroundings",
+    "euphoria carried by accumulating voices",
+    "a graceful line over unruly accents",
+    "a celebratory rhythm with bittersweet chords",
+    "contentment without losing forward motion"
+  ],
+  "angry": [
+    "soft vocals against punishing accents",
+    "tension building without speeding up",
+    "cold restraint with sudden eruptions",
+    "an insistent figure refusing resolution",
+    "a calm surface with abrasive interruptions",
+    "clipped phrases against sustained pressure",
+    "a collective refrain answering a lone voice",
+    "friction gathering beneath a steady pulse",
+    "a melody straining against its accompaniment",
+    "sharp attacks followed by uncomfortable space",
+    "an intimate voice growing harder to ignore",
+    "controlled repetition pushed toward rupture",
+    "dense passages breaking into exposed voices",
+    "a heavy foundation beneath restless detail",
+    "a withheld release that finally arrives",
+    "brittle harmonies over grounded percussion",
+    "a quiet threat carried by rhythmic insistence",
+    "a graceful phrase repeatedly interrupted",
+    "raw vocal grain against precise accompaniment",
+    "defiance through unison and repetition"
+  ],
+  "sad": [
+    "a buoyant rhythm carrying unresolved harmony",
+    "a close voice against indifferent motion",
+    "a melody reaching upward and falling back",
+    "warm timbres around a bare arrangement",
+    "a refrain returning with something missing",
+    "busy accompaniment beneath a withdrawn voice",
+    "a graceful pulse with hesitant entrances",
+    "a bright register over a descending line",
+    "distance growing between answering phrases",
+    "a dance rhythm with no harmonic release",
+    "layers disappearing rather than building",
+    "a fragile lead held by a steady ensemble",
+    "yearning stretched across repeated figures",
+    "restrained delivery with widening harmonies",
+    "a melody continuing after the rhythm drops out",
+    "a shared refrain that ends in a single voice",
+    "small ornaments against an unchanging ground",
+    "tender phrasing against rough textures",
+    "a full arrangement thinning to resonance",
+    "forward motion with a lingering final phrase"
+  ],
+  "weird": [
+    "a familiar pulse with an unfamiliar centre",
+    "phrases of unequal lengths finding a meeting point",
+    "a melody changing shape on every return",
+    "tuning friction inside a gentle arrangement",
+    "silence interrupting an otherwise regular form",
+    "a foreground detail becoming the main structure",
+    "voices behaving like percussion",
+    "a repeating pattern gradually losing a note",
+    "a stable bass beneath unstable upper lines",
+    "an acoustic gesture answered by an altered copy",
+    "a refrain arriving where a verse should be",
+    "tiny edits disturbing a patient surface",
+    "a graceful melody with awkward shadows",
+    "dense detail suddenly revealing empty space",
+    "a rhythm implied before it is played",
+    "a held tone changing colour rather than pitch",
+    "a looping figure that slips against itself",
+    "an ordinary sound taking an unexpected musical role",
+    "a convincing groove with one misplaced accent",
+    "a tidy form unraveling at its edges"
+  ],
+  "criminal": [
+    "an unhurried pulse beneath urgent narration",
+    "a smooth surface interrupted by sharp accents",
+    "a refrain tightening around the narrator",
+    "a sparse opening gathering pressure",
+    "boastful delivery against uneasy harmony",
+    "a steady accompaniment beneath a changing account",
+    "a confident entrance ending in exposed silence",
+    "narrative verses interrupted by collective replies",
+    "a recurring figure suggesting consequences",
+    "intimate narration against a distant ensemble",
+    "a bright melody shadowed by a darker register",
+    "controlled delivery over restless percussion",
+    "a refrain returning with altered emphasis",
+    "brief instrumental replies between narrative phrases",
+    "an even pulse beneath escalating tension",
+    "a spacious arrangement closing around the voice",
+    "a polished surface with audible rough edges",
+    "a repeating accompaniment refusing release",
+    "a solitary voice giving way to a crowd",
+    "a final verse stripped of its earlier swagger"
+  ],
+  "funky": [
+    "bass anticipating the downbeat",
+    "clipped guitar answering rolling percussion",
+    "a spacious pocket with displaced accents",
+    "interlocking parts leaving room for the voice",
+    "a low ostinato against restless hand drums",
+    "offbeat chords over a patient foundation",
+    "a refrain riding behind the beat",
+    "short horn replies inside a steady groove",
+    "percussion trading accents with the bass",
+    "a lean rhythm growing through ensemble interplay",
+    "a repeating figure with elastic phrasing",
+    "rhythmic voices answering a sparse accompaniment",
+    "a keyboard pulse interrupted by guitar stabs",
+    "a grounded beat with springy upper lines",
+    "a relaxed phrase over tightly woven percussion",
+    "electronic bass conversing with dry drum accents",
+    "tiny silences making the next entrance count",
+    "a dance-band groove thinning to bass and drums",
+    "an insistent pattern opening into collective replies",
+    "a propulsive pocket beneath bittersweet harmony"
+  ]
+}
+
+# END SOURCE: references/mood-spark-bank.json
 
 ---
 
@@ -2371,6 +2645,17 @@ Explicit `go hard`, `go funky hard`, or PWA `Curation mode: GO HARD` enables edi
 On `go antarctica` or an explicit regional selection, read [the Antarctica route](references/regions/antarctica.md) before choosing tracks. This is a penguin-song theme, **not an invented local music scene**: Antarctica-only tracks must qualify; mixed-region crates combine verified penguin songs with valid music from each other selected region. Keep Jukebox prompts compact; preserve true track identities and honest publishing status. Skip the spontaneous DeBarge roll for any Antarctica request; all unrelated GO commands retain it.
 
 ## Fresh-crate discovery and repeat control
+
+### Unified discovery checkpoint
+
+This is one early decision inside the existing discovery budget—not a new research pass, random tool, public input, or replacement for musical judgment.
+
+1. **Lock the brief first.** Parse moods and blends, every `c1:` slot, regions, exclusions, recording quality, GO HARD, count, inspiration, supplied seed, route, and publishing permissions. A curve overrides the global mood/pace for its slots. Explicit `Seed:` or `Inspiration:` outranks internal seeding; supplied `Discovery route: v1/Rxx` wins the search start.
+2. **Use a quiet compound seed only for a genuinely new GO without a supplied seed or inspiration.** Read the actual `references/seed-cues.json` and `references/mood-spark-bank.json` once. Reject the single most predictable compatible rhythm/sonic start, choosing a different pace-compatible cue; reject its automatic texture partner, choosing a compatible texture; then reject the automatic emotional consequence, choosing a compatible mood tension. At most one rejection per component. Stop rather than weaken fit. On a `c1:` curve, the cues are the unifying thread, never a single imposed tempo or mood. This is model variation, **not uniform RNG**; never claim a random draw, extra execution, or unseen listening history. If the banks are unavailable, skip internal seeding rather than inventing their contents.
+3. **Route before artists.** Read the reference index, sonic taxonomy and verification rules. For explicit regions, begin with the regional atlas, selected region files and mandatory review/additions; do not preload worldwide `global-scenes.md` for novelty. For open/global GO consult global scenes. Honor any explicit `v1/Rxx` route through `references/discovery-routes.md`. Compare three genuinely distinct *compatible* directions across era, audible production/texture, actual scene, and microgenre/movement. A seed or route must change candidate discovery, not merely the title or commentary. Never stretch geography for surprise.
+4. **Select, sequence, verify.** Ordinary GO stays single-pass; GO HARD retains its bounded independent-path funnel. Verify real exact recordings, song-specific Criminal narratives, slot-by-slot curve fit, provenance, versions and clean-transfer evidence where possible. Do not enforce obscurity, country, era, instrument, or artist quotas. Listener constraints and explicit text-only/no-publish requests always win. State unresolved audio/BPM/transfer/catalog evidence; never invent source reads, listening, publication, or item-level readback.
+
+Do not run this checkpoint for de-cheese, setup, or a retry to publish an existing crate. A genuine refresh can make fresh internal choices while preserving the visible brief and no-publish preference.
 
 **Lean Jukebox contract:** The normal copied request is a compact invocation plus run-specific selections: mood, optional region list, optional mood angle, optional tempo, one optional `Seed:` and destination service. Default to 12 tracks when no count is supplied; honor an explicit count. `go` retains its ordinary curate-and-attempt-publication meaning. The installed skill owns verification, recording quality, geography, mood interpretation, sequencing, personality, provider capability checks and honest publication reporting even when the prompt repeats none of those rules. Do not ask the listener to paste the longer policy back in.
 

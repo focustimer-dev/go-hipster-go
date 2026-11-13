@@ -16,6 +16,8 @@ REFERENCES = (
     "references/reference-index.md",
     "references/de-cheese.md",
     "references/discovery-routes.md",
+    "references/seed-cues.json",
+    "references/mood-spark-bank.json",
     "references/funky.md",
     "references/desire-triumphant.md",
     "references/regions/antarctica.md",

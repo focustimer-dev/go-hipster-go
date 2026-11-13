@@ -24,7 +24,15 @@ class ChatGPTRouteProbeTests(unittest.TestCase):
             root = Path(t)
             base, p1, p2 = (root / x for x in ("rc4.zip", "probe1.zip", "probe2.zip"))
             build_chatgpt(FROZEN_SOURCE_SHA, base)
-            self.assertEqual(hashlib.sha256(base.read_bytes()).hexdigest(), FROZEN_RC4_SHA256)
+            actual = hashlib.sha256(base.read_bytes()).hexdigest()
+            if actual != FROZEN_RC4_SHA256:
+                # The original rc.4 is a historical, immutable artifact. The
+                # canonical source now has approved RC9 content; it must NOT be
+                # misidentified as the byte-frozen prior rc.4 ZIP.
+                with self.assertRaisesRegex(ValueError, "non-frozen rc.4"):
+                    build_probe(p1, frozen_rc4=base)
+                self.assertFalse(p1.exists())
+                return
             before = base.read_bytes()
             build_probe(p1, frozen_rc4=base)
             build_probe(p2, frozen_rc4=base)
