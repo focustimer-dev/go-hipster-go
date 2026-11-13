@@ -23,6 +23,13 @@ class IsolatedGate4CandidateTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             p1 = Path(folder) / "candidate1.zip"
             p2 = Path(folder) / "candidate2.zip"
+            if json.loads((ROOT / "plugin.json").read_text())["version"] != "3.11.5":
+                # Frozen rc.4 builder must reject the new canonical 3.11.6.
+                with self.assertRaisesRegex(ValueError, "Unexpected production plugin manifest"):
+                    build_chatgpt(DUMMY_SHA, p1)
+                self.assertFalse(p1.exists())
+                self.assertEqual(digest(original), before)
+                return
             build_chatgpt(DUMMY_SHA, p1)
             build_chatgpt(DUMMY_SHA, p2)
             self.assertEqual(digest(p1), digest(p2))
@@ -57,6 +64,13 @@ class IsolatedGate4CandidateTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             p1 = Path(folder) / "gemini1.zip"
             p2 = Path(folder) / "gemini2.zip"
+            if json.loads((ROOT / "plugin.json").read_text())["version"] != "3.11.5":
+                # Frozen rc.4 Gemini staging must never relabel 3.11.6 as rc.4.
+                with self.assertRaisesRegex(ValueError, "Unexpected candidate source version"):
+                    build_gemini(DUMMY_SHA, p1)
+                self.assertFalse(p1.exists())
+                self.assertEqual(digest(original), before)
+                return
             build_gemini(DUMMY_SHA, p1)
             build_gemini(DUMMY_SHA, p2)
             self.assertEqual(digest(p1), digest(p2))
