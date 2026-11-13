@@ -59,7 +59,7 @@ class UnifiedDiscoveryCandidateTests(unittest.TestCase):
             "Discovery route: v1/Rxx", "regional-atlas.md",
             "discovery-routes.md", "global-scenes.md",
             "ordinary GO remains single-pass", "mood-tension",
-            "not uniform", "Do not preload", "no extra",
+            "not uniform", "Do not preload", "new research pass",
         ):
             self.assertIn(token.lower(), POLICY.lower())
 
