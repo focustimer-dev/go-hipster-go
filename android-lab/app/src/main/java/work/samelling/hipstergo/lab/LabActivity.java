@@ -276,6 +276,19 @@ public class LabActivity extends Activity {
                     ? HapticFeedbackConstants.CLOCK_TICK : HapticFeedbackConstants.CONTEXT_CLICK);
             });
         }
+        /** Mirror only supported widget inputs; the WebView remains the settings owner. */
+        @JavascriptInterface public void setChaosPrefs(String ai, String service, boolean skipRough) {
+            if (!Arrays.asList("chatgpt", "gemini", "claude", "other").contains(ai)) return;
+            if (!Arrays.asList("spotify", "youtube", "apple").contains(service)) return;
+            runOnUiThread(() -> {
+                if (ai.equals(prefs.getString("chaosAi", ""))
+                    && service.equals(prefs.getString("chaosService", ""))
+                    && skipRough == prefs.getBoolean("chaosSkipRough", false)) return;
+                prefs.edit().putString("chaosAi", ai)
+                    .putString("chaosService", service)
+                    .putBoolean("chaosSkipRough", skipRough).apply();
+            });
+        }
         @JavascriptInterface public void offerSetupShare(String ai,String text){if(url(ai)!=null&&validText(text))runOnUiThread(()->LabActivity.this.offerSetupShare(ai,text));}
         @JavascriptInterface public void showUpdates(){runOnUiThread(()->updates.show());}
         @JavascriptInterface public void saveRequest(String ai,String text){if(SavedRequestPolicy.canSave(ai,text))runOnUiThread(()->shelf.save(ai,text));}
