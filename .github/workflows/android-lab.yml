@@ -79,6 +79,14 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - name: Final Five print palette and Funk contract (100s watchdog)
         run: timeout --signal=TERM --kill-after=10s 100s node scripts/test_final_five_contract.cjs
+      # QA-only: preserve theme captures before unrelated MapLibre drag diagnostics.
+      - name: Retain nine-theme UI captures immediately after palette test
+        uses: actions/upload-artifact@v4
+        with:
+          name: hierarchy-079-phone-screenshots
+          path: android-lab/build/switch-review/hierarchy-079-*.png
+          retention-days: 7
+          if-no-files-found: error
       - run: node scripts/test_cahill_region_fit.cjs
       # Gate on functional projection state, geometry, touch and routes,
       # not timing of SwiftShader's headless renderer callback.
