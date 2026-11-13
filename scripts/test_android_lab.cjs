@@ -251,7 +251,10 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
 
 
   await page.evaluate(()=>{const f=labAtlasGlobe.getSource('land')._data.features.find(f=>f.properties.country==='GRL');const points=f.geometry.coordinates.flat(2);const xs=points.map(p=>p[0]),ys=points.map(p=>p[1]);labAtlasGlobe.fitBounds([[Math.min(...xs),Math.min(...ys)],[Math.max(...xs),Math.max(...ys)]],{padding:16,maxZoom:3,duration:0})});
-  await page.waitForFunction(()=>!labAtlasGlobe.isMoving()&&labAtlasGlobe.loaded());
+  // The next assertion uses source geometry and project(), not rendered tiles.
+  // Software-WebGL can leave loaded() false after an immediate camera jump;
+  // don't turn a delayed redraw into a false Greenland-geometry regression.
+  await page.waitForFunction(()=>!labAtlasGlobe.isMoving());
   const northernCrown=await page.evaluate(()=>{const f=labAtlasGlobe.getSource('land')._data.features.find(f=>f.properties.country==='GRL');const north=f.geometry.coordinates.flat(2).reduce((a,b)=>a[1]>b[1]?a:b);const p=labAtlasGlobe.project(north);return {x:p.x,y:p.y,width:labAtlasGlobe.getContainer().clientWidth,height:labAtlasGlobe.getContainer().clientHeight}});
   assert(northernCrown.y>=0&&northernCrown.y<=northernCrown.height&&northernCrown.x>=0&&northernCrown.x<=northernCrown.width,'Complete Greenland crown remains in the close-up frame');
   try{await page.locator('#labAtlasGlobe').screenshot({path:'android-lab/build/switch-review/northern-coastline-closeup.png',timeout:9000})}
