@@ -3,6 +3,8 @@ package work.samelling.hipstergo.lab;
 import android.app.*;
 import android.content.*;
 import android.graphics.Color;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.*;
 import android.view.*;
@@ -16,7 +18,35 @@ public class LabActivity extends Activity {
     private static final String HOST = "lab.hipster.invalid";
     private static final String HOME = "https://" + HOST + "/";
     private WebView web;
-    private LinearLayout layout;
+    private PaletteInsetLayout layout;
+    private static final String STATUS_PREF = "systemStatusColor";
+    private static final String NAV_PREF = "systemNavigationColor";
+    private static final String THEME_PREF = "systemTheme";
+
+    /** Draw one native-owned protective surface in each system inset. */
+    private static final class PaletteInsetLayout extends LinearLayout {
+        private final Paint paint = new Paint();
+        private int status = Color.rgb(16,49,53);
+        private int navigation = Color.rgb(16,49,53);
+
+        PaletteInsetLayout(android.content.Context context) {
+            super(context);
+            setWillNotDraw(false);
+        }
+        void setSurfaceColors(int top, int bottom) {
+            status = top;
+            navigation = bottom;
+            setBackgroundColor(bottom);
+            invalidate();
+        }
+        @Override protected void onDraw(Canvas canvas) {
+            super.onDraw(canvas);
+            paint.setColor(status);
+            canvas.drawRect(0, 0, getWidth(), getPaddingTop(), paint);
+            paint.setColor(navigation);
+            canvas.drawRect(0, getHeight()-getPaddingBottom(), getWidth(), getHeight(), paint);
+        }
+    }
     private SkillUpdates updates;
     private SavedRequests shelf;
     private SharedInspiration inspiration;
@@ -30,19 +60,39 @@ public class LabActivity extends Activity {
         inspiration = new SharedInspiration(this,prefs,this::refreshInspiration,dialogs);
         updates = new SkillUpdates(this,prefs,this::browser,this::updateBadge,dialogs);
         shelf = new SavedRequests(this,prefs,this::handoff,this::copy,text->share(text,null),this::refreshWorkspace,dialogs);
-        getWindow().setStatusBarColor(Color.rgb(16,49,53));
-        getWindow().setNavigationBarColor(Color.rgb(16,49,53));
-        layout = new LinearLayout(this);
+        layout = new PaletteInsetLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setBackgroundColor(Color.rgb(16,49,53));
         layout.setOnApplyWindowInsetsListener((v, insets) -> {
-            v.setPadding(insets.getSystemWindowInsetLeft(), insets.getSystemWindowInsetTop(),
-                insets.getSystemWindowInsetRight(), insets.getSystemWindowInsetBottom());
+            // One native insets owner. Keep the WebView clear of bars and display cutouts.
+            int left = insets.getSystemWindowInsetLeft();
+            int top = insets.getSystemWindowInsetTop();
+            int right = insets.getSystemWindowInsetRight();
+            int bottom = insets.getSystemWindowInsetBottom();
+            if (Build.VERSION.SDK_INT >= 30) {
+                android.graphics.Insets safe = insets.getInsets(
+                    WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
+                left = Math.max(left, safe.left);
+                top = Math.max(top, safe.top);
+                right = Math.max(right, safe.right);
+                bottom = Math.max(bottom, safe.bottom);
+            } else if (Build.VERSION.SDK_INT >= 28 && insets.getDisplayCutout() != null) {
+                DisplayCutout cutout = insets.getDisplayCutout();
+                left = Math.max(left, cutout.getSafeInsetLeft());
+                top = Math.max(top, cutout.getSafeInsetTop());
+                right = Math.max(right, cutout.getSafeInsetRight());
+                bottom = Math.max(bottom, cutout.getSafeInsetBottom());
+            }
+            v.setPadding(left, top, right, bottom);
             return insets.consumeSystemWindowInsets();
         });
         web = new WebView(this);
         layout.addView(web,new LinearLayout.LayoutParams(-1,0,1));
         setContentView(layout);
+        applySystemPalette(prefs.getString(STATUS_PREF, SystemBarTheme.DEFAULT_COLOR),
+            prefs.getString(NAV_PREF, SystemBarTheme.DEFAULT_COLOR));
+        // Controller attachment can follow onCreate. Restore icon appearance once attached.
+        layout.post(() -> applySystemPalette(prefs.getString(STATUS_PREF, SystemBarTheme.DEFAULT_COLOR),
+            prefs.getString(NAV_PREF, SystemBarTheme.DEFAULT_COLOR)));
         WebSettings s = web.getSettings();
         s.setJavaScriptEnabled(true);
         s.setDomStorageEnabled(true);
@@ -170,26 +220,41 @@ public class LabActivity extends Activity {
             return true;
         } catch (RuntimeException failure) { return false; }
     }
-    private void applySystemPalette(String surface) {
-        if (surface == null || !surface.matches("#[0-9a-fA-F]{6}")) return;
-        int color = Color.parseColor(surface);
-        layout.setBackgroundColor(color);
-        if (Build.VERSION.SDK_INT < 35) {
-            getWindow().setStatusBarColor(color);
-            getWindow().setNavigationBarColor(color);
+    private void applySystemPalette(String statusHex, String navigationHex) {
+        if (!SystemBarTheme.validColor(statusHex) || !SystemBarTheme.validColor(navigationHex)) {
+            statusHex = SystemBarTheme.DEFAULT_COLOR;
+            navigationHex = SystemBarTheme.DEFAULT_COLOR;
         }
-        boolean darkIcons = Color.luminance(color) > 0.179;
+        int statusColor = Color.parseColor(statusHex);
+        int navigationColor = Color.parseColor(navigationHex);
+        layout.setSurfaceColors(statusColor, navigationColor);
+        // The native inset surface supplies a precise theme color, so no OS scrim is needed.
+        // This also covers Android 15+ where the three-button bar is translucent by default.
+        if (Build.VERSION.SDK_INT >= 29) getWindow().setNavigationBarContrastEnforced(false);
+        if (Build.VERSION.SDK_INT < 35) {
+            getWindow().setStatusBarColor(statusColor);
+            getWindow().setNavigationBarColor(navigationColor);
+        }
+        int statusFlags = SystemBarTheme.darkIcons(statusHex)
+            ? View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR : 0;
+        int navigationFlags = Build.VERSION.SDK_INT >= 26 && SystemBarTheme.darkIcons(navigationHex)
+            ? View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR : 0;
         if (Build.VERSION.SDK_INT >= 30) {
-            WindowInsetsController controller = layout.getWindowInsetsController();
-            if (controller == null) return;
-            int mask = WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
-                | WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS;
-            controller.setSystemBarsAppearance(darkIcons ? mask : 0, mask);
+            WindowInsetsController controller = getWindow().getDecorView().getWindowInsetsController();
+            if (controller != null) {
+                int mask = WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+                    | WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS;
+                int appearance = (SystemBarTheme.darkIcons(statusHex)
+                    ? WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS : 0)
+                    | (SystemBarTheme.darkIcons(navigationHex)
+                    ? WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS : 0);
+                controller.setSystemBarsAppearance(appearance, mask);
+            }
         } else {
+            View decor = getWindow().getDecorView();
             int mask = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
             if (Build.VERSION.SDK_INT >= 26) mask |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
-            View decor = getWindow().getDecorView();
-            decor.setSystemUiVisibility((decor.getSystemUiVisibility() & ~mask) | (darkIcons ? mask : 0));
+            decor.setSystemUiVisibility((decor.getSystemUiVisibility() & ~mask) | statusFlags | navigationFlags);
         }
     }
 
@@ -265,8 +330,14 @@ public class LabActivity extends Activity {
             String accent,String field,String fieldInk,String rule){
             runOnUiThread(()->dialogs.update(theme,surface,ink,accent,field,fieldInk,rule));
         }
-        @JavascriptInterface public void syncSystemPalette(String surface) {
-            runOnUiThread(() -> applySystemPalette(surface));
+        @JavascriptInterface public void syncSystemPalette(String theme, String status, String navigation) {
+            if (!SystemBarTheme.knownTheme(theme)
+                || !SystemBarTheme.validColor(status) || !SystemBarTheme.validColor(navigation)) return;
+            runOnUiThread(() -> {
+                prefs.edit().putString(THEME_PREF, theme)
+                    .putString(STATUS_PREF, status).putString(NAV_PREF, navigation).apply();
+                applySystemPalette(status, navigation);
+            });
         }
         @JavascriptInterface public void haptic(String kind) {
             if (!"tick".equals(kind) && !"click".equals(kind)) return;
