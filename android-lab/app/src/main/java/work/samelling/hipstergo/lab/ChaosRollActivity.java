@@ -70,7 +70,8 @@ public final class ChaosRollActivity extends Activity {
                 notifyUser("Chaos Roll copied. Review the shared request in your AI.");
                 return;
             } catch (ActivityNotFoundException | SecurityException unavailable) {
-                notifyUser("Direct share unavailable; opening the AI website instead.");
+                // Fall through to an installed AI app first, then its web address.
+                // Do not announce a destination until one actually opens.
             }
         }
         if (!"browser".equals(mode)) {
