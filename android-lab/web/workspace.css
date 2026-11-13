@@ -1008,8 +1008,9 @@ body.gig-poster.lab-workspace[data-page=launch] :is(
    Accent and hierarchy tuning is a separate reviewed change. */
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .receipt-heading .lab-save-button{
- color:var(--lab-ui-secondary-ink);
+ color:var(--lab-ui-receipt-accent-ink);
  border-color:var(--lab-ui-secondary-rule);
+ text-decoration:underline;text-decoration-color:currentColor;text-underline-offset:3px;
 }
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] #promptReceipt :is(.receipt-top,.receipt-regions){
@@ -1025,6 +1026,7 @@ body.gig-poster.lab-workspace[data-page=launch] :is(
 }
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .handoff #openAi[aria-disabled=true]{
+ background:transparent;
  color:var(--lab-ui-disabled-ink);
  border-color:var(--lab-ui-disabled-rule);
 }
@@ -1038,4 +1040,20 @@ body.gig-poster.lab-workspace[data-page=launch] :is(
  body.gig-poster.lab-workspace[data-page=launch] .handoff .foot-tools :is(#shareButton,#browserAi,#manualOpenAi){
  color:var(--lab-ui-link-ink);
  text-decoration-color:var(--lab-ui-link-ink);
+}
+
+/* 0.9.79 hierarchy: an inked left registration mark identifies the active
+   recipe without turning the entire receipt into a second GO card. Both
+   metadata and the title stay legible when the ticket is expanded. */
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
+ body.gig-poster.lab-workspace[data-page=launch] #promptReceipt .receipt-ticket-dock .selection-ticket.is-docked{
+ border-left:3px solid var(--lab-ui-receipt-accent-ink);
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
+ body.gig-poster.lab-workspace[data-page=launch] #promptReceipt .receipt-ticket-dock .ticket-short{
+ color:var(--lab-ui-receipt-accent-ink);
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
+ body.gig-poster.lab-workspace[data-page=launch] #promptReceipt .receipt-ticket-dock .ticket-region-short{
+ color:var(--lab-ui-receipt-meta-ink);
 }

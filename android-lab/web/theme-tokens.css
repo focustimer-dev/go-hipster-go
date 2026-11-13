@@ -139,25 +139,28 @@
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print]){
  --lab-theme-selected-bg:var(--lab-ui-action);
  --lab-theme-selected-ink:var(--lab-ui-on-action);
- --lab-ui-link-ink:var(--lab-ui-ink);
- --lab-ui-link-rule:var(--lab-ui-rule);
+ /* A real printable accent: preserve fluorescent/muted original pigments
+    for graphics, but blend toward body ink for accessible small text. */
+ --lab-ui-accent-text:color-mix(in srgb,var(--lab-print-active-ink,var(--lab-ui-focus)) 75%,var(--lab-ui-ink));
+ --lab-ui-link-ink:var(--lab-ui-accent-text);
+ --lab-ui-link-rule:var(--lab-ui-control-outline);
  --lab-ui-secondary-ink:var(--lab-ui-ink);
- --lab-ui-secondary-rule:var(--lab-ui-rule);
+ --lab-ui-secondary-rule:var(--lab-ui-control-outline);
  --lab-ui-primary-bg:var(--lab-ui-action);
  --lab-ui-primary-ink:var(--lab-ui-on-action);
  --lab-ui-primary-rule:var(--lab-ui-rule);
  --lab-ui-handoff-ready-bg:var(--lab-ui-action);
  --lab-ui-handoff-ready-ink:var(--lab-ui-on-action);
  --lab-ui-handoff-ready-rule:var(--lab-ui-rule);
- --lab-ui-disabled-ink:var(--lab-ui-ink);
- --lab-ui-disabled-rule:var(--lab-ui-rule);
- --lab-ui-status-ink:var(--lab-ui-ink);
- --lab-ui-muted-ink:var(--lab-ui-ink);
+ --lab-ui-disabled-ink:color-mix(in srgb,var(--lab-ui-ink) 78%,var(--lab-ui-surface));
+ --lab-ui-disabled-rule:var(--lab-ui-control-outline);
+ --lab-ui-status-ink:var(--lab-ui-muted-ink);
+ --lab-ui-muted-ink:color-mix(in srgb,var(--lab-ui-ink) 83%,var(--lab-ui-surface));
  --lab-ui-receipt-title-ink:var(--lab-ui-ink);
- --lab-ui-receipt-meta-ink:var(--lab-ui-ink);
- --lab-ui-receipt-accent-ink:var(--lab-print-active-ink,var(--lab-ui-focus));
- --lab-ui-trail-label-ink:var(--lab-ui-ink);
- --lab-ui-trail-mark-ink:var(--lab-ui-ink);
+ --lab-ui-receipt-meta-ink:var(--lab-ui-muted-ink);
+ --lab-ui-receipt-accent-ink:var(--lab-ui-accent-text);
+ --lab-ui-trail-label-ink:var(--lab-ui-muted-ink);
+ --lab-ui-trail-mark-ink:var(--lab-ui-accent-text);
 }
 /* Existing lacquer/gold action pairing belongs to Michoacán's tokens,
    not an isolated empty-Crate CSS override. */

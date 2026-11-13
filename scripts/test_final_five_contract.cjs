@@ -74,21 +74,32 @@ const specs=[
     const root=getComputedStyle(document.documentElement);
     const role=n=>root.getPropertyValue(n).trim();
     const style=s=>getComputedStyle(document.querySelector(s));
-    return {
-     linkRole:role('--lab-ui-link-ink'),link:style('#labAddInspiration').color,
-     statusRole:role('--lab-ui-status-ink'),status:style('#copyStatus').color,
-     metaRole:role('--lab-ui-receipt-meta-ink'),meta:style('#promptReceipt .receipt-top').color,
-     secondaryRole:role('--lab-ui-secondary-ink'),save:style('.receipt-heading .lab-save-button').color,
-     trailRole:role('--lab-ui-trail-mark-ink'),trail:style('.poster-go-trail-mark').color,
+    const probe=document.createElement('span');
+    probe.style.cssText='position:absolute;visibility:hidden;pointer-events:none';
+    document.body.appendChild(probe);
+    const coloredRole=n=>{probe.style.color='var('+n+')';return getComputedStyle(probe).color;};
+    const report={
+     linkRole:coloredRole('--lab-ui-link-ink'),link:style('#labAddInspiration').color,
+     statusRole:coloredRole('--lab-ui-status-ink'),status:style('#copyStatus').color,
+     metaRole:coloredRole('--lab-ui-receipt-meta-ink'),meta:style('#promptReceipt .receipt-top').color,
+     accentRole:coloredRole('--lab-ui-receipt-accent-ink'),save:style('.receipt-heading .lab-save-button').color,
+     trailRole:coloredRole('--lab-ui-trail-mark-ink'),trail:style('.poster-go-trail-mark').color,
+     trailLabelRole:coloredRole('--lab-ui-trail-label-ink'),trailLabel:style('.poster-go-trail-word').color,
+     disabledRole:coloredRole('--lab-ui-disabled-ink'),
      primaryRole:role('--lab-ui-primary-bg'),baseActionRole:role('--lab-ui-action'),
      crate:style('#labCrateEmpty .lab-wide-button').backgroundColor,
      selectedRole:role('--lab-theme-selected-bg'),themeChoice:style('.lab-theme-choice[aria-pressed=true]').backgroundColor
     };
+    probe.remove();
+    return report;
    });
    const rgbRole=hex=>'rgb('+hex.slice(1).match(/.{2}/g).map(v=>parseInt(v,16)).join(', ')+')';
    for(const [role,value] of [['linkRole','link'],['statusRole','status'],['metaRole','meta'],
-     ['secondaryRole','save'],['trailRole','trail'],['primaryRole','crate'],
-     ['selectedRole','themeChoice']]){
+     ['accentRole','save'],['trailRole','trail'],['trailLabelRole','trailLabel']]){
+    assert(controls[role],spec.id+' missing computed '+role);
+    assert.equal(controls[value],controls[role],spec.id+' '+value+' bypasses semantic token '+role);
+   }
+   for(const [role,value] of [['primaryRole','crate'],['selectedRole','themeChoice']]){
     assert.match(controls[role],/^#[0-9a-f]{6}$/,spec.id+' missing concrete '+role);
     assert.equal(controls[value],rgbRole(controls[role]),spec.id+' '+value+' bypasses semantic token '+role);
    }
