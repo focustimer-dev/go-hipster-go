@@ -88,7 +88,7 @@
   outline-color:var(--lab-ui-focus);
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .lab-dialog .lab-theme-choice[aria-pressed=true]{
-  background:var(--lab-ui-action)!important;color:var(--lab-ui-on-action)!important;
+  background:var(--lab-theme-selected-bg)!important;color:var(--lab-theme-selected-ink)!important;
 }
 /* Preserve the existing compact Jukebox structure, not a second card UI. */
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .go-options .go-button{
@@ -111,10 +111,10 @@
   border-bottom:0;
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .receipt-heading{
-  background:transparent;color:var(--lab-ui-ink);border-bottom:1px solid var(--lab-ui-rule);
+  background:transparent;color:var(--lab-ui-receipt-title-ink);border-bottom:1px solid var(--lab-ui-rule);
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace[data-page=launch] .receipt-heading .lab-save-button{
-  background:transparent;color:var(--lab-ui-ink);border:1px solid var(--lab-ui-rule);
+  background:transparent;color:var(--lab-ui-secondary-ink);border:1px solid var(--lab-ui-secondary-rule);
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #firstCrateSetup .ticket{
   --ink:var(--lab-ui-ticket-ink);--paper:var(--lab-ui-ticket-stock);
@@ -239,7 +239,7 @@
  border-color:var(--lab-ui-rule);
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
- background:var(--lab-ui-action);color:var(--lab-ui-on-action);border-color:var(--lab-ui-rule);
+ background:var(--lab-ui-primary-bg);color:var(--lab-ui-primary-ink);border-color:var(--lab-ui-primary-rule);
 }
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace #goButton .star-glyph{
  filter:var(--lab-print-stamp-filter,none);
