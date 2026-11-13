@@ -67,7 +67,7 @@ jobs:
           if-no-files-found: error
 
       - name: Verify private 3.11.6 ZIP reproducibility and SHA-256
-        if: ${{ github.event_name == 'pull_request' && matrix.python-version == '3.12' && github.head_ref == 'release/skill-3116-candidate-prep' }}
+        if: ${{ github.event_name == 'pull_request' && matrix.python-version == '3.12' && (github.head_ref == 'release/skill-3116-candidate-prep' || github.head_ref == 'qa/skill-3116-final-smoke') }}
         run: |
           set -euo pipefail
           sha256sum dist/go-hipster-go-*.zip | sort > dist/skill-3116-sha256.txt
@@ -78,7 +78,7 @@ jobs:
           cat dist/skill-3116-sha256.txt
 
       - name: Retain private 3.11.6 candidate packages for review
-        if: ${{ github.event_name == 'pull_request' && matrix.python-version == '3.12' && github.head_ref == 'release/skill-3116-candidate-prep' }}
+        if: ${{ github.event_name == 'pull_request' && matrix.python-version == '3.12' && (github.head_ref == 'release/skill-3116-candidate-prep' || github.head_ref == 'qa/skill-3116-final-smoke') }}
         uses: actions/upload-artifact@v4
         with:
           name: ghg-skill-3116-private-candidate
