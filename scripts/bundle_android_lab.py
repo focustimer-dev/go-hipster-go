@@ -114,54 +114,23 @@ def bundle(destination=None):
 ''')
     setup_script.write_text(setup_text)
     script.write_text(text)
-    # The widget reads a compact, versioned catalog directly from canonical
-    # Jukebox sources; generated files never become independently edited inputs.
+    # A versioned widget catalog derived from canonical Jukebox definitions.
+    # Bundled assets are outputs only, never a second prompt specification.
     catalog = (ROOT / 'launcher/assets/app.js').read_text()
     def literal(pattern, label):
         match = re.search(pattern, catalog, re.M)
         if not match:
             raise ValueError('Chaos Roll source contract changed: ' + label)
         return json.loads(match.group(1))
-    regions = literal(r'^const crateRegions=(\[.*\]);
-    runpy.run_path(str(ROOT/'scripts/bundle_maplibre_lab.py'))['bundle_maplibre'](destination)
-    # Only the packaged Android copies are compressed. Originals in launcher/
-    # remain lossless and can be re-encoded for future visual revisions.
-    runpy.run_path(str(ROOT/'scripts/optimize_android_artwork.py'))['optimize'](destination)
-    return destination
-
-if __name__ == '__main__':
-    print(bundle())
-, 'regions')
-    moods = [x for x in literal(r'^const moods=new Set\((\[.*\])\);
-    runpy.run_path(str(ROOT/'scripts/bundle_maplibre_lab.py'))['bundle_maplibre'](destination)
-    # Only the packaged Android copies are compressed. Originals in launcher/
-    # remain lossless and can be re-encoded for future visual revisions.
-    runpy.run_path(str(ROOT/'scripts/optimize_android_artwork.py'))['optimize'](destination)
-    return destination
-
-if __name__ == '__main__':
-    print(bundle())
-, 'moods') if x != 'go']
-    rhythm_and_texture = literal(r'^const seedCueBank=(\{.*\});
-    runpy.run_path(str(ROOT/'scripts/bundle_maplibre_lab.py'))['bundle_maplibre'](destination)
-    # Only the packaged Android copies are compressed. Originals in launcher/
-    # remain lossless and can be re-encoded for future visual revisions.
-    runpy.run_path(str(ROOT/'scripts/optimize_android_artwork.py'))['optimize'](destination)
-    return destination
-
-if __name__ == '__main__':
-    print(bundle())
-, 'sparks')
-    tensions = literal(r'^const moodSparkBank=(\{.*\});
-    runpy.run_path(str(ROOT/'scripts/bundle_maplibre_lab.py'))['bundle_maplibre'](destination)
-    # Only the packaged Android copies are compressed. Originals in launcher/
-    # remain lossless and can be re-encoded for future visual revisions.
-    runpy.run_path(str(ROOT/'scripts/optimize_android_artwork.py'))['optimize'](destination)
-    return destination
-
-if __name__ == '__main__':
-    print(bundle())
-, 'mood sparks')
+    regions = literal(r'^const crateRegions=(\[.*\]);$', 'regions')
+    moods = [x for x in literal(r'^const moods=new Set\((\[.*\])\);$', 'moods') if x != 'go']
+    rhythm_and_texture = literal(r'^const seedCueBank=(\{.*\});$', 'sparks')
+    tensions = literal(r'^const moodSparkBank=(\{.*\});$', 'mood sparks')
+    for mood in moods:
+        if mood not in tensions:
+            tensions[mood] = literal(
+                r'^moodInterpretations\.' + re.escape(mood) + r'=(\[.*\]);$',
+                'mood ' + mood)
     route_index = json.loads((ROOT / 'android-lab/web/discovery-route-index.json').read_text())
     if len(moods) != 8 or not regions or len(route_index['routes']) != 24:
         raise ValueError('Unexpected Chaos Roll catalog shape; review sources')
