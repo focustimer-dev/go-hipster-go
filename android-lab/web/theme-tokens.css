@@ -131,3 +131,40 @@
  --lab-print-substrate-texture:radial-gradient(ellipse at 50% 30%,transparent 35%,#24191b33 100%);
  --lab-print-stamp-filter:brightness(0) saturate(100%) invert(92%) sepia(18%) saturate(388%) hue-rotate(350deg) brightness(101%) contrast(90%);
 }
+
+/* Android shared-control semantic contract (Bosque, Usiku and six print
+   themes). Aliases deliberately preserve existing pigments for this
+   coverage-only pass; future hierarchy can tune roles in the palette,
+   not by adding theme-name selectors to components. Libéri is unchanged. */
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print]){
+ --lab-theme-selected-bg:var(--lab-ui-action);
+ --lab-theme-selected-ink:var(--lab-ui-on-action);
+ --lab-ui-link-ink:var(--lab-ui-ink);
+ --lab-ui-link-rule:var(--lab-ui-rule);
+ --lab-ui-secondary-ink:var(--lab-ui-ink);
+ --lab-ui-secondary-rule:var(--lab-ui-rule);
+ --lab-ui-primary-bg:var(--lab-ui-action);
+ --lab-ui-primary-ink:var(--lab-ui-on-action);
+ --lab-ui-primary-rule:var(--lab-ui-rule);
+ --lab-ui-handoff-ready-bg:var(--lab-ui-action);
+ --lab-ui-handoff-ready-ink:var(--lab-ui-on-action);
+ --lab-ui-handoff-ready-rule:var(--lab-ui-rule);
+ --lab-ui-disabled-ink:var(--lab-ui-ink);
+ --lab-ui-disabled-rule:var(--lab-ui-rule);
+ --lab-ui-status-ink:var(--lab-ui-ink);
+ --lab-ui-muted-ink:var(--lab-ui-ink);
+ --lab-ui-receipt-title-ink:var(--lab-ui-ink);
+ --lab-ui-receipt-meta-ink:var(--lab-ui-ink);
+ --lab-ui-receipt-accent-ink:var(--lab-print-active-ink,var(--lab-ui-focus));
+ --lab-ui-trail-label-ink:var(--lab-ui-ink);
+ --lab-ui-trail-mark-ink:var(--lab-ui-ink);
+}
+/* Existing lacquer/gold action pairing belongs to Michoacán's tokens,
+   not an isolated empty-Crate CSS override. */
+:root[data-pwa-theme=michoacan]{
+ --lab-ui-primary-bg:var(--lab-ui-go);
+ --lab-ui-primary-ink:var(--lab-ui-go-ink);
+ --lab-ui-primary-rule:var(--lab-ui-go);
+ --lab-theme-selected-bg:var(--lab-ui-go);
+ --lab-theme-selected-ink:var(--lab-ui-go-ink);
+}

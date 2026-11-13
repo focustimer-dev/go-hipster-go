@@ -9,6 +9,8 @@ const root=path.resolve(__dirname,'../android-lab/app/src/main/assets/site');
 const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css',
  '.webp':'image/webp','.svg':'image/svg+xml','.png':'image/png','.woff':'font/woff'};
 const specs=[
+ {id:'kingston',ocean:'#273d3b',stock:'rgb(227, 217, 194)'},
+ {id:'detroit',ocean:'#151515',stock:'rgb(231, 229, 219)'},
  {id:'michoacan',ocean:'#24191b',stock:'rgb(209, 173, 145)'},
  {id:'addis',ocean:'#0f4a48',stock:'rgb(242, 232, 206)'},
  {id:'polish',ocean:'#172c40',stock:'rgb(246, 242, 230)'},
@@ -66,6 +68,32 @@ const specs=[
    const rgb='rgb('+spec.ocean.slice(1).match(/.{2}/g).map(v=>parseInt(v,16)).join(', ')+')';
    assert.equal(neutral.cahill,rgb,'Cahill and Robinson share the palette');
    assert.match(neutral.heading,/Poster/);
+   // Real computed styles must bind to the shared semantic roles for all
+   // six printed palettes. Test the historical controls, not just token strings.
+   const controls=await page.evaluate(()=>{
+    const root=getComputedStyle(document.documentElement);
+    const role=n=>root.getPropertyValue(n).trim();
+    const style=s=>getComputedStyle(document.querySelector(s));
+    return {
+     linkRole:role('--lab-ui-link-ink'),link:style('#labAddInspiration').color,
+     statusRole:role('--lab-ui-status-ink'),status:style('#copyStatus').color,
+     metaRole:role('--lab-ui-receipt-meta-ink'),meta:style('#promptReceipt .receipt-top').color,
+     secondaryRole:role('--lab-ui-secondary-ink'),save:style('.receipt-heading .lab-save-button').color,
+     trailRole:role('--lab-ui-trail-mark-ink'),trail:style('.poster-go-trail-mark').color,
+     primaryRole:role('--lab-ui-primary-bg'),baseActionRole:role('--lab-ui-action'),
+     crate:style('#labCrateEmpty .lab-wide-button').backgroundColor,
+     selectedRole:role('--lab-theme-selected-bg'),themeChoice:style('.lab-theme-choice[aria-pressed=true]').backgroundColor
+    };
+   });
+   const rgbRole=hex=>'rgb('+hex.slice(1).match(/.{2}/g).map(v=>parseInt(v,16)).join(', ')+')';
+   for(const [role,value] of [['linkRole','link'],['statusRole','status'],['metaRole','meta'],
+     ['secondaryRole','save'],['trailRole','trail'],['primaryRole','crate'],
+     ['selectedRole','themeChoice']]){
+    assert.match(controls[role],/^#[0-9a-f]{6}$/,spec.id+' missing concrete '+role);
+    assert.equal(controls[value],rgbRole(controls[role]),spec.id+' '+value+' bypasses semantic token '+role);
+   }
+   assert.equal(controls.primaryRole,spec.id==='michoacan'?'#24191b':controls.baseActionRole,
+    'Michoacán retains its special approved Crate gold-on-lacquer plate');
    // CSS transitions briefly retain the old neutral tile and 0-opacity
    // lasers even while the selected artwork and gold text have switched.
    // Assert the SETTLED selected performance, not its first animation frame.

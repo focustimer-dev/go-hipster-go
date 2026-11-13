@@ -193,33 +193,33 @@ body.gig-poster.lab-workspace[data-page=launch] .go-options{margin-bottom:0}
 body.gig-poster.lab-workspace[data-page=launch] .go-options .go-button{border-radius:0}
 #labAddInspiration {
  width:100%;min-height:44px;display:flex;align-items:center;justify-content:space-between;
- gap:8px;padding:6px 0;border:0;border-bottom:1px solid #10313566;
- background:transparent;color:#103135;text-align:left;
+ gap:8px;padding:6px 0;border:0;border-bottom:1px solid var(--lab-ui-link-rule,#10313566);
+ background:transparent;color:var(--lab-ui-link-ink,#103135);text-align:left;
 }
 #labAddInspiration[hidden]{display:none}
 .lab-inspiration-add-label{display:flex;align-items:center;gap:8px;font:400 1.125rem/1.1 Poster,sans-serif}
 .lab-inspiration-add-label svg{flex:none}
-#labInspirationEditor{padding:8px 0;border-block:1px solid #10313566;color:#103135}
-#labInspirationEditor label{display:block;color:#103135;font:400 1.125rem/1.15 Poster,sans-serif}
+#labInspirationEditor{padding:8px 0;border-block:1px solid var(--lab-ui-link-rule,#10313566);color:var(--lab-ui-secondary-ink,#103135)}
+#labInspirationEditor label{display:block;color:var(--lab-ui-secondary-ink,#103135);font:400 1.125rem/1.15 Poster,sans-serif}
 #labInspirationEditor textarea {
  display:block;box-sizing:border-box;width:100%;margin:8px 0;padding:9px 10px;
- border:1px solid #103135;border-radius:0;background:transparent;min-height:44px;color:#103135;
- caret-color:#103135;font:1rem/1.35 Arial,sans-serif;resize:vertical;
+ border:1px solid var(--lab-ui-secondary-rule,#103135);border-radius:0;background:transparent;min-height:44px;color:var(--lab-ui-secondary-ink,#103135);
+ caret-color:var(--lab-ui-secondary-ink,#103135);font:1rem/1.35 Arial,sans-serif;resize:vertical;
 }
-#labInspirationEditor textarea::placeholder{color:#103135;opacity:1}
+#labInspirationEditor textarea::placeholder{color:var(--lab-ui-muted-ink,#103135);opacity:1}
 .lab-inspiration-editor-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
 #labInspirationEditor button{min-height:44px;border:0;border-radius:0;background:transparent;color:inherit;font:inherit}
-#labInspirationEditor button[type=submit]{padding:6px 14px;background:#103135;color:#dfb045;font:400 1.125rem/1.1 Poster,sans-serif}
-#labInspirationEditor button[type=submit]:active{background:#103135;color:#edc65d}
+#labInspirationEditor button[type=submit]{padding:6px 14px;background:var(--lab-ui-primary-bg,#103135);color:var(--lab-ui-primary-ink,#dfb045);font:400 1.125rem/1.1 Poster,sans-serif}
+#labInspirationEditor button[type=submit]:active{background:var(--lab-ui-primary-bg,#103135);color:var(--lab-ui-primary-ink,#edc65d)}
 #labInspirationEditor [data-cancel]{padding:6px 10px;text-decoration:underline;text-underline-offset:3px}
-#labLatestInspiration{margin-top:4px;border-top:1px dashed #10313566}
+#labLatestInspiration{margin-top:4px;border-top:1px dashed var(--lab-ui-link-rule,#10313566)}
 #labLatestInspiration button{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 0;text-align:left}
 .lab-inspiration-recent-copy{min-width:0;display:grid;gap:3px}
-.lab-inspiration-recent-copy span{color:#103135;font:700 .6875rem/1.25 'Courier New',monospace;text-transform:uppercase;letter-spacing:.05em}
+.lab-inspiration-recent-copy span{color:var(--lab-ui-receipt-meta-ink,#103135);font:700 .6875rem/1.25 'Courier New',monospace;text-transform:uppercase;letter-spacing:.05em}
 .lab-inspiration-recent-copy strong{font:700 .875rem/1.3 Arial,sans-serif;overflow-wrap:anywhere}
 #labLatestInspiration svg{flex:none}
-#labInspirationEditor :is(button,textarea):focus-visible{outline:2px solid #103135;outline-offset:2px}
-#labAddInspiration:focus-visible{outline:2px solid #103135;outline-offset:2px}
+#labInspirationEditor :is(button,textarea):focus-visible{outline:2px solid var(--lab-ui-focus,#103135);outline-offset:2px}
+#labAddInspiration:focus-visible{outline:2px solid var(--lab-ui-focus,#103135);outline-offset:2px}
 
 /* Three compact projection keys in the same petrol/mustard selection language. */
 .lab-atlas-modes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;max-width:100%;margin:8px 0;border:1px solid #103135}
@@ -605,9 +605,9 @@ body.gig-poster.lab-workspace[data-page=launch] #promptReceipt .receipt-copy{dis
  --receipt-ink:var(--lab-ui-action);
 }
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku]) body.gig-poster.lab-workspace[data-page=launch] .handoff #openAi[aria-disabled=false]{
- background:var(--lab-ui-action);
- color:var(--lab-ui-on-action);
- border-color:var(--lab-ui-rule);
+ background:var(--lab-ui-handoff-ready-bg);
+ color:var(--lab-ui-handoff-ready-ink);
+ border-color:var(--lab-ui-handoff-ready-rule);
 }
 /* Give inherited native controls the same focus role as the selected theme. */
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku]) body.gig-poster.lab-workspace :is(button,a,summary,select,textarea,input):focus-visible{
@@ -640,24 +640,15 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
  color:#dfb045;
  border-color:#103135;
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace #labCrateEmpty{
  border-color:var(--lab-ui-rule);
 }
-:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku])
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
- background:var(--lab-ui-action);
- color:var(--lab-ui-on-action);
- border-color:var(--lab-ui-rule);
-}
-/* Michoacán's empty Crate used to display Libéri's petrol invitation. */
-:root[data-pwa-theme=michoacan] body.gig-poster.lab-workspace #labCrateEmpty{
- border-color:var(--lab-ui-rule);
-}
-:root[data-pwa-theme=michoacan] body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
- background:var(--lab-ui-go);
- color:var(--lab-ui-go-ink);
- border-color:var(--lab-ui-go);
+ background:var(--lab-ui-primary-bg);
+ color:var(--lab-ui-primary-ink);
+ border-color:var(--lab-ui-primary-rule);
 }
 
 /* Release polish: Bosque uses one clean, flat paper surface across Jukebox,
@@ -709,14 +700,14 @@ body.gig-poster.lab-workspace #labCrateEmpty .lab-wide-button{
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .poster-go-trail-word{
  font:400 1rem/1.15 Poster,sans-serif;
- letter-spacing:0;
+ letter-spacing:0;color:var(--lab-ui-trail-label-ink);
 }
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
  body.gig-poster.lab-workspace[data-page=launch] .poster-go-trail-mark{
  font-size:1.35rem;
  padding:3px 5px;
  transform:none;animation:none;
- background:transparent;color:var(--jukebox-ink);
+ background:transparent;color:var(--lab-ui-trail-mark-ink);
  border:0;box-shadow:none;
 }
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
@@ -1011,3 +1002,40 @@ body.gig-poster.lab-workspace[data-page=launch] :is(
  .hero-purpose,.crate-geo-identity small,#tempoHelp,.footnote,
  .crate-shuffle:has(#shuffleCrate:not(:disabled)) #shuffleHelp
 ){display:none}
+
+/* Android shared-control roles: the same selectors for Bosque, Usiku and
+   all print themes. Libéri keeps its locked, original poster rules. 
+   Accent and hierarchy tuning is a separate reviewed change. */
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
+ body.gig-poster.lab-workspace[data-page=launch] .receipt-heading .lab-save-button{
+ color:var(--lab-ui-secondary-ink);
+ border-color:var(--lab-ui-secondary-rule);
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
+ body.gig-poster.lab-workspace[data-page=launch] #promptReceipt :is(.receipt-top,.receipt-regions){
+ color:var(--lab-ui-receipt-meta-ink);
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
+ body.gig-poster.lab-workspace[data-page=launch] #promptReceipt .receipt-summary{
+ color:var(--lab-ui-receipt-title-ink);
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
+ body.gig-poster.lab-workspace[data-page=launch] #copyStatus{
+ color:var(--lab-ui-status-ink);
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
+ body.gig-poster.lab-workspace[data-page=launch] .handoff #openAi[aria-disabled=true]{
+ color:var(--lab-ui-disabled-ink);
+ border-color:var(--lab-ui-disabled-rule);
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
+ body.gig-poster.lab-workspace[data-page=launch] .handoff #openAi[aria-disabled=false]{
+ background:var(--lab-ui-handoff-ready-bg);
+ color:var(--lab-ui-handoff-ready-ink);
+ border-color:var(--lab-ui-handoff-ready-rule);
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
+ body.gig-poster.lab-workspace[data-page=launch] .handoff .foot-tools :is(#shareButton,#browserAi,#manualOpenAi){
+ color:var(--lab-ui-link-ink);
+ text-decoration-color:var(--lab-ui-link-ink);
+}

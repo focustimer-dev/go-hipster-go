@@ -152,12 +152,59 @@ class AndroidThemeRoles(unittest.TestCase):
         css=source("android-lab/web/workspace.css")
         tokens=source("android-lab/web/theme-tokens.css")
         self.assertIn("--lab-theme-selected-bg:var(--lab-ui-go);--lab-theme-selected-ink:var(--lab-ui-go-ink)",css)
-        for selector in ("#labCrateEmpty{", "#labCrateEmpty .lab-wide-button{"):
-            self.assertIn(":root[data-pwa-theme=michoacan] body.gig-poster.lab-workspace "+selector,css)
-        self.assertIn("background:var(--lab-ui-go);\n color:var(--lab-ui-go-ink);\n border-color:var(--lab-ui-go);",css)
+        self.assertNotIn(":root[data-pwa-theme=michoacan] body.gig-poster.lab-workspace #labCrateEmpty",css)
+        for role in ("--lab-ui-primary-bg:var(--lab-ui-go)",
+                     "--lab-ui-primary-ink:var(--lab-ui-go-ink)",
+                     "--lab-ui-primary-rule:var(--lab-ui-go)",
+                     "--lab-theme-selected-bg:var(--lab-ui-go)",
+                     "--lab-theme-selected-ink:var(--lab-ui-go-ink)"):
+            self.assertIn(role,tokens)
+        self.assertIn("background:var(--lab-ui-primary-bg);\n color:var(--lab-ui-primary-ink);",css)
         # Keep the existing tested Michoacán burgundy/gold pair; no new color.
         self.assertGreaterEqual(contrast("#24191b","#e5b653"),4.5)
         self.assertIn("--lab-ui-go:#24191b;--lab-ui-go-ink:#e5b653;",tokens)
+
+    def test_shared_android_control_tokens_cover_all_themed_profiles(self):
+        tokens=source("android-lab/web/theme-tokens.css")
+        css=source("android-lab/web/workspace.css")
+        print_css=source("android-lab/web/theme-print.css")
+        # Eight distinct palettes share role names. The ninth, Libéri,
+        # intentionally retains its historically locked fallback palette.
+        self.assertIn(":root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print]){",tokens)
+        required=(
+            "--lab-ui-link-ink","--lab-ui-link-rule",
+            "--lab-ui-primary-bg","--lab-ui-primary-ink","--lab-ui-primary-rule",
+            "--lab-ui-secondary-ink","--lab-ui-secondary-rule",
+            "--lab-ui-handoff-ready-bg","--lab-ui-handoff-ready-ink","--lab-ui-handoff-ready-rule",
+            "--lab-ui-disabled-ink","--lab-ui-disabled-rule",
+            "--lab-ui-status-ink","--lab-ui-muted-ink",
+            "--lab-ui-receipt-title-ink","--lab-ui-receipt-meta-ink",
+            "--lab-ui-receipt-accent-ink",
+            "--lab-ui-trail-label-ink","--lab-ui-trail-mark-ink",
+            "--lab-theme-selected-bg","--lab-theme-selected-ink",
+        )
+        for role in required:
+            self.assertIn(role+":",tokens,role+" missing from shared palette bridge")
+        for role in ("--lab-ui-link-ink","--lab-ui-primary-bg","--lab-ui-secondary-ink",
+                     "--lab-ui-status-ink","--lab-ui-disabled-ink",
+                     "--lab-ui-receipt-meta-ink","--lab-ui-trail-mark-ink"):
+            self.assertIn("var("+role,css)
+        for role in ("--lab-ui-primary-bg","--lab-ui-secondary-ink",
+                     "--lab-ui-receipt-title-ink","--lab-theme-selected-bg"):
+            self.assertIn("var("+role,print_css)
+        # Every original palette remains defined independently; these
+        # component aliases may not smuggle hardcoded Libéri into print skins.
+        for theme in ("bosque","usiku","kingston","detroit","addis","polish","beirut","michoacan"):
+            self.assertIn(":root[data-pwa-theme="+theme+"]",tokens)
+        inspiration=css.split("#labAddInspiration {",1)[1].split("/* Three compact projection keys",1)[0]
+        # Strip CSS variable fallbacks: an intentional Libéri default is
+        # fine, but no raw historical #103135 may survive outside var().
+        without_fallback=re.sub(r"var\([^)]*\)","",inspiration)
+        self.assertNotIn("#103135",without_fallback)
+        self.assertNotIn("#dfb045",without_fallback)
+        self.assertIn("var(--lab-ui-link-ink,#103135)",inspiration)
+        self.assertIn("var(--lab-ui-focus,#103135)",inspiration)
+        self.assertNotIn(":root[data-pwa-theme=michoacan] body.gig-poster.lab-workspace #labCrateEmpty",css)
 
     def test_kingston_android_theme_contrast_safe(self):
         js=source("android-lab/web/theme.js")
