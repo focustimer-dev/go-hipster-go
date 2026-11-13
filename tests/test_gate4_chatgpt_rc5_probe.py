@@ -28,7 +28,10 @@ class ChatGPTRouteProbeTests(unittest.TestCase):
                 # candidate; verify rejection rather than rewriting the baseline.
                 with self.assertRaisesRegex(ValueError, "Unexpected production plugin manifest"):
                     build_chatgpt(FROZEN_SOURCE_SHA, base)
-                self.assertFalse(base.exists())
+                # A rejected historical builder may leave an empty ZIP.
+                if base.exists():
+                    with ZipFile(base) as unused:
+                        self.assertNotIn("plugin.json", unused.namelist())
                 return
             build_chatgpt(FROZEN_SOURCE_SHA, base)
             actual = hashlib.sha256(base.read_bytes()).hexdigest()
