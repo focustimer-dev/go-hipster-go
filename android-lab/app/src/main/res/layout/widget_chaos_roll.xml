@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/chaos_roll_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="12dp"
+    android:orientation="vertical"
+    android:gravity="center_vertical"
+    android:background="@drawable/widget_chaos_roll_bg">
+    <TextView
+        android:id="@+id/chaos_roll_open"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="HIPSTER GO  /  LAB"
+        android:textSize="11sp"
+        android:fontFamily="monospace"
+        android:textStyle="bold"
+        android:textColor="#E6BA59"
+        android:contentDescription="Open Go, Hipster, Go!" />
+    <TextView
+        android:id="@+id/chaos_roll_action"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:minHeight="42dp"
+        android:fontFamily="sans-serif-condensed"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:textSize="25sp"
+        android:text="CHAOS ROLL"
+        android:contentDescription="Chaos Roll. Make a new twelve-track brief and open your AI." />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="12 TRACKS  •  NO INSPIRATION"
+        android:textSize="10sp"
+        android:fontFamily="monospace"
+        android:textColor="#D6DDD6"/>
+</LinearLayout>
