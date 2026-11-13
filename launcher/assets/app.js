@@ -1553,7 +1553,7 @@ doc.querySelectorAll("[data-crate-continent]").forEach(b=>b.addEventListener("cl
 const atlasHome=doc.getElementById("atlasHome");if(atlasHome)atlasHome.addEventListener("click",()=>{atlasFocus=null;atlasUserNavigated=false;renderCrateMap();animateAtlasView(null)});
 const crateClear=doc.getElementById("crateGeoClear");if(crateClear)crateClear.addEventListener("click",()=>{crateSelected.clear();lastCrateStamp=null;updateCrateMap(false)});
 const tempoSlider=doc.getElementById("tempoSlider");
-function selectTempo(){const next=tempoSteps[Number(tempoSlider.value)-1]||"";if(next===tempo)return;tempo=next;copiedPrompt=null;selectionChanged()}
+function selectTempo(){const next=tempoSteps[Number(tempoSlider.value)-1]||"";if(next===tempo)return;tempo=next;copiedPrompt=null;globalThis.HipsterLab?.haptic?.("tick");selectionChanged()}
 if(tempoSlider){
  tempoSlider.addEventListener("input",selectTempo);
  // Pointer and keyboard selection use the same six positions, including Any.
