@@ -23,9 +23,21 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.addInitScript(()=>{
    window.labCalls=[];window.labState={saved:[],mode:'open',oneTap:true,haptics:true,updateAvailable:false};
-   window.HipsterLab={openExternal(url){labCalls.push(['external',url])},state(){return JSON.stringify(window.labState)},setPreference(k,v){window.labState[k]=k==='mode'?v:v==='true';window.HipsterLabStateChanged()},saveRequest(a,t){labCalls.push(['save',a,t])},showUpdates(){labCalls.push(['updates'])},copy(t){labCalls.push(['copy',t]);return true},go(a,t){labCalls.push(['go',a,t])},open(a,t){labCalls.push(['open',a,t])},share(t){labCalls.push(['share',t])}};
+   window.HipsterLab={openExternal(url){labCalls.push(['external',url])},state(){return JSON.stringify(window.labState)},setPreference(k,v){window.labState[k]=k==='mode'?v:v==='true';window.HipsterLabStateChanged()},saveRequest(a,t){labCalls.push(['save',a,t])},showUpdates(){labCalls.push(['updates'])},copy(t){labCalls.push(['copy',t]);return true},go(a,t){labCalls.push(['go',a,t])},open(a,t){labCalls.push(['open',a,t])},share(t){labCalls.push(['share',t])},haptic(kind){labCalls.push(['haptic',kind])}};
   });
   await page.goto('http://127.0.0.1:'+server.address().port+'/?ai=chatgpt&service=spotify&atlas=legacy');
+  // Tempo haptics fire on distinct detents only; identical input and renders stay quiet.
+  await page.locator('#tempoSlider').evaluate(slider=>{
+   slider.value='4';slider.dispatchEvent(new Event('input',{bubbles:true}));
+   slider.dispatchEvent(new Event('input',{bubbles:true}));
+   slider.value='5';slider.dispatchEvent(new Event('input',{bubbles:true}));
+   slider.value='3';slider.dispatchEvent(new Event('input',{bubbles:true}));
+  });
+  assert.deepEqual((await page.evaluate(()=>labCalls)).filter(c=>c[0]==='haptic').map(c=>c[1]),
+   ['tick','tick','tick'],'Exactly one tempo tick for each changed detent');
+  await page.locator('#anyTempo').click();
+  assert.equal((await page.evaluate(()=>labCalls)).filter(c=>c[0]==='haptic').length,3,
+   'Clearing the slider to Any does not add a phantom tick');
   await page.locator('#goButton').click();
   await page.waitForFunction(()=>labCalls.some(c=>c[0]==='go'));
   let calls=await page.evaluate(()=>labCalls);
