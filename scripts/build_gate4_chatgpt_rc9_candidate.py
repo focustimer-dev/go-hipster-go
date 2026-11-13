@@ -43,29 +43,29 @@ This is ONE early decision within the existing discovery budget, not a new
 research pass, random tool, public input or replacement for musical judgment.
 
 1. **Lock the listener brief first.** Parse mood and blend, every position in
-   any \`c1:\` tempo/mood curve, explicit regions, exclusions, recording quality,
+   any `c1:` tempo/mood curve, explicit regions, exclusions, recording quality,
    GO HARD, count, inspiration, supplied seed, discovery route and publishing
    permissions. A curve overrides global pace/mood at its individual slots.
-   Explicit \`Seed:\` or \`Inspiration:\` takes priority over internal seed selection;
-   a supplied \`Discovery route: v1/Rxx\` takes priority as the search start.
+   Explicit `Seed:` or `Inspiration:` takes priority over internal seed selection;
+   a supplied `Discovery route: v1/Rxx` takes priority as the search start.
 2. **Choose a quiet compound seed only for genuinely new GO requests without
-   supplied seed/inspiration.** Load the *actual* \`references/seed-cues.json\`
-   and \`references/mood-spark-bank.json\` once. First, reject the single most
+   supplied seed/inspiration.** Load the *actual* `references/seed-cues.json`
+   and `references/mood-spark-bank.json` once. First, reject the single most
    predictable compatible rhythm/sonic start and choose a different rhythm cue
    allowed by requested pace. Next, reject its most predictable texture partner
    and choose a compatible texture cue. Finally, reject the automatic emotional
    consequence and choose a compatible mood-tension cue. Use at most one such
-   rejection per component; stop if alternatives would harm fit. For a \`c1:\`
+   rejection per component; stop if alternatives would harm fit. For a `c1:`
    curve, these cues guide the *unifying sonic thread*, not an imposed single
    tempo or mood on all twelve tracks. This is model variation, **not uniform
    RNG**; never claim a random draw, extra code execution or unseen history.
    If the banks cannot be read, skip the seed rather than inventing their data.
 3. **Route before naming artists.** Read the reference index, relevant sonic
    taxonomy and verification rules. If regions are specified, start from
-   \`regional-atlas.md\`, the selected region files and mandatory supplements;
-   do NOT preload worldwide \`global-scenes.md\` just to increase novelty. On
+   `regional-atlas.md`, the selected region files and mandatory supplements;
+   do NOT preload worldwide `global-scenes.md` just to increase novelty. On
    region-free/worldwide GO, consult global scenes. Respect a supplied v1/Rxx
-   route by reading \`discovery-routes.md\` and exploring it within the regions.
+   route by reading `discovery-routes.md` and exploring it within the regions.
    Compare three genuinely distinct *compatible* candidate-search directions
    using the existing four axes (era, audible texture/production, actual scene,
    microgenre/movement); not three variants of one familiar artist roster.
