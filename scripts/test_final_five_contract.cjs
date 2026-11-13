@@ -80,7 +80,8 @@ const specs=[
      metaRole:role('--lab-ui-receipt-meta-ink'),meta:style('#promptReceipt .receipt-top').color,
      secondaryRole:role('--lab-ui-secondary-ink'),save:style('.receipt-heading .lab-save-button').color,
      trailRole:role('--lab-ui-trail-mark-ink'),trail:style('.poster-go-trail-mark').color,
-     primaryRole:role('--lab-ui-primary-bg'),crate:style('#labCrateEmpty .lab-wide-button').backgroundColor,
+     primaryRole:role('--lab-ui-primary-bg'),baseActionRole:role('--lab-ui-action'),
+     crate:style('#labCrateEmpty .lab-wide-button').backgroundColor,
      selectedRole:role('--lab-theme-selected-bg'),themeChoice:style('.lab-theme-choice[aria-pressed=true]').backgroundColor
     };
    });
@@ -91,8 +92,7 @@ const specs=[
     assert.match(controls[role],/^#[0-9a-f]{6}$/,spec.id+' missing concrete '+role);
     assert.equal(controls[value],rgbRole(controls[role]),spec.id+' '+value+' bypasses semantic token '+role);
    }
-   assert.equal(controls.primaryRole,spec.id==='michoacan'?'#24191b':
-    getComputedStyle(document.documentElement).getPropertyValue('--lab-ui-action').trim(),
+   assert.equal(controls.primaryRole,spec.id==='michoacan'?'#24191b':controls.baseActionRole,
     'Michoacán retains its special approved Crate gold-on-lacquer plate');
    // CSS transitions briefly retain the old neutral tile and 0-opacity
    // lasers even while the selected artwork and gold text have switched.
