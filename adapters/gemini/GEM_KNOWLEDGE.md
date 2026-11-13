@@ -52,7 +52,7 @@ On setup, setup status, or setup change inspect actual connected music tools and
 
 **Regional additions:** `oceania` → `references/regions/oceania-additions.md`; `central-america` → `references/regions/central-america-additions.md`; `central-southern-africa` → BOTH `references/regions/central-africa-additions.md` and `references/regions/southern-africa-additions.md`. For any of these also read `references/regional-review.md`. Antarctica is opt-in only: `references/regions/antarctica.md`.
 
-**Global scenes:** Open-ended/worldwide or broad cross-scene GO reads `references/global-scenes.md`; region-locked GO skips it unless research is weak or a cross-scene bridge needs it, never loosening regional constraints. **Modes:** hard → `references/go-hard.md`; funky → `references/funky.md`; Desire/Triumphant → `references/desire-triumphant.md`; Skip rough → `references/recording-quality.md`; cover art → `references/cover-art.md`. The `c1:` curve and discovery-route triggers have direct links above. De-cheese is read-only audit; Publish finalizes the current crate. Batch relevant files when supported; never preload every region. The [index](references/reference-index.md) is a fallback for ambiguity.
+**Global scenes:** Open-ended/worldwide or broad cross-scene GO reads `references/global-scenes.md`; region-locked GO skips it unless research is weak or a cross-scene bridge needs it, never loosening regional constraints. **Modes:** hard → `references/go-hard.md`; funky → `references/funky.md`; Desire/Triumphant → `references/desire-triumphant.md`; Skip rough (**Clean ≠ Mainstream**) → `references/recording-quality.md`; cover art → `references/cover-art.md`. The `c1:` curve and discovery-route triggers have direct links above. De-cheese is read-only audit; Publish finalizes the current crate. Batch relevant files when supported; never preload every region. The [index](references/reference-index.md) is a fallback for ambiguity.
 
 ## Intent and activation
 
@@ -211,6 +211,8 @@ Example: `c1:-2wd-1012a210-1s-2-10` is twelve tracks. Slow Weird + Desire opens,
 ## Recording preference: Skip rough recordings
 
 Treat `Recording preference: Skip rough recordings.` or an equivalent explicit request as an opt-in recording-quality filter. Default OFF when absent; an explicit off overrides a saved preference. Accept older, longer app prompts using the same preference. Apply in ordinary GO and GO HARD before sequencing and exact-version matching.
+
+**Clean ≠ Mainstream.** This is a recording/transfer-condition filter, **not** a filter for popularity, chart success, commercial polish or familiarity. Keep obscure, regional, independent and archival deep cuts eligible when credible evidence supports a listenable version. Never replace them with Top 40 hits or familiar canon merely to satisfy “Skip rough”; seek a cleaner transfer of the same performance first.
 
 Exclude recordings dominated by heavy hiss, crackle, accidental clipping/distortion or muffled, damaged transfers. Keep clean older recordings and good restorations eligible; age, mono, archival provenance, region and genre alone never establish poor quality. Do not automatically exclude intentional lo-fi, fuzz or musical distortion. Judge the particular recording/version against available evidence, not release labels such as “remastered.”
 
