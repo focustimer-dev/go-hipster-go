@@ -65,3 +65,21 @@ jobs:
             dist/gate4-chatgpt-probe-provenance.txt
           retention-days: 7
           if-no-files-found: error
+
+      - name: Build unified ChatGPT rc.9 candidate with source provenance
+        if: ${{ github.event_name == 'pull_request' && matrix.python-version == '3.12' }}
+        run: |
+          python scripts/build_gate4_chatgpt_rc9_candidate.py --source-sha "$GITHUB_SHA" --output dist/ghg-gate4-chatgpt-release-probe-rc9.zip
+          printf 'candidate_source_sha=%s\n' "$GITHUB_SHA" > dist/gate4-chatgpt-rc9-provenance.txt
+          printf 'candidate_name=go-hipster-go-gate4-release-probe\ncandidate_version=3.11.6-rc.9\n' >> dist/gate4-chatgpt-rc9-provenance.txt
+          sha256sum dist/ghg-gate4-chatgpt-release-probe-rc9.zip >> dist/gate4-chatgpt-rc9-provenance.txt
+      - name: Retain private unified RC9 candidate (no publishing)
+        if: ${{ github.event_name == 'pull_request' && matrix.python-version == '3.12' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ghg-gate4-chatgpt-release-probe-rc9
+          path: |
+            dist/ghg-gate4-chatgpt-release-probe-rc9.zip
+            dist/gate4-chatgpt-rc9-provenance.txt
+          retention-days: 7
+          if-no-files-found: error
