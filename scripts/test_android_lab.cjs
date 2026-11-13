@@ -23,7 +23,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.addInitScript(()=>{
    window.labCalls=[];window.labState={saved:[],mode:'open',oneTap:true,haptics:true,updateAvailable:false};
-   window.HipsterLab={openExternal(url){labCalls.push(['external',url])},state(){return JSON.stringify(window.labState)},setPreference(k,v){window.labState[k]=k==='mode'?v:v==='true';window.HipsterLabStateChanged()},saveRequest(a,t){labCalls.push(['save',a,t])},showUpdates(){labCalls.push(['updates'])},copy(t){labCalls.push(['copy',t]);return true},go(a,t){labCalls.push(['go',a,t])},open(a,t){labCalls.push(['open',a,t])},share(t){labCalls.push(['share',t])},haptic(kind){labCalls.push(['haptic',kind])},setDialogPalette(){},syncSystemPalette(theme,status,navigation){labCalls.push(['systemPalette',theme,status,navigation])}};
+   window.HipsterLab={openExternal(url){labCalls.push(['external',url])},state(){return JSON.stringify(window.labState)},setPreference(k,v){window.labState[k]=k==='mode'?v:v==='true';window.HipsterLabStateChanged()},saveRequest(a,t){labCalls.push(['save',a,t])},showUpdates(){labCalls.push(['updates'])},copy(t){labCalls.push(['copy',t]);return true},go(a,t){labCalls.push(['go',a,t])},open(a,t){labCalls.push(['open',a,t])},share(t){labCalls.push(['share',t])},haptic(kind){labCalls.push(['haptic',kind])},setDialogPalette(){},syncSystemPalette(theme,status,navigation){labCalls.push(['systemPalette',theme,status,navigation])},setChaosPrefs(ai,service,skipRough){labCalls.push(['chaosPrefs',ai,service,skipRough])}};
   });
   await page.goto('http://127.0.0.1:'+server.address().port+'/?ai=chatgpt&service=spotify&atlas=legacy');
   // All nine themes synchronize two validated native paint roles.
@@ -60,6 +60,10 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   await page.locator('#anyTempo').click();
   assert.equal((await page.evaluate(()=>labCalls)).filter(c=>c[0]==='haptic').length,3,
    'Clearing the slider to Any does not add a phantom tick');
+  // Native widget settings follow AI/service and recording preferences,
+  // without depending on whether the user has saved an Inspiration draft.
+  assert.deepEqual(await page.evaluate(()=>labCalls.filter(c=>c[0]==='chaosPrefs').at(-1)),
+   ['chaosPrefs','chatgpt','spotify',false]);
   await page.locator('#goButton').click();
   await page.waitForFunction(()=>labCalls.some(c=>c[0]==='go'));
   let calls=await page.evaluate(()=>labCalls);
@@ -93,6 +97,9 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   // Verify the native switch's state, selection colors and narrow-phone layout.
   const rough=page.locator('#skipRough');
   await rough.check();
+  assert.deepEqual(await page.evaluate(()=>labCalls.filter(c=>c[0]==='chaosPrefs').at(-1)),
+   ['chaosPrefs','chatgpt','spotify',true],'Widget mirrors skip-rough setting');
+
   await page.waitForFunction(()=>document.querySelector('#skipRough').checked&&getComputedStyle(document.querySelector('.recording-metal-lever')).transform==='matrix(1, 0, 0, 1, 0, 0)');
   assert.equal(await page.locator('.recording-on').evaluate(e=>getComputedStyle(e).backgroundColor),'rgb(16, 49, 53)');
   assert.equal(await page.locator('.recording-metal-lever').evaluate(e=>getComputedStyle(e).transform),'matrix(1, 0, 0, 1, 0, 0)');
@@ -106,6 +113,9 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   await page.setViewportSize({width:412,height:915});
   await page.locator('[data-ai="gemini"]').first().click();
   await page.locator('[data-service="youtube"]').first().click();
+  assert.deepEqual(await page.evaluate(()=>labCalls.filter(c=>c[0]==='chaosPrefs').at(-1)),
+   ['chaosPrefs','gemini','youtube',false],'Widget mirrors selected AI and music');
+
   await page.locator('[data-lab-action="close-preferences"]').click();
   await page.locator('#goButton').click();
   await page.waitForFunction(()=>labCalls.some(c=>c[0]==='go'&&c[1]==='gemini'));
