@@ -5,7 +5,11 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.SizeF;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import android.widget.RemoteViews;
 
 /** One responsive, idle widget. No network, polling, repeating animation or WebView. */
@@ -21,37 +25,48 @@ public final class ChaosRollWidgetProvider extends AppWidgetProvider {
     }
 
     private int layoutId(String variant) {
-        switch(variant) {
-            case "mini": return R.layout.widget_chaos_roll_mini;
-            case "tall2": return R.layout.widget_chaos_roll_tall2;
-            case "wide3": return R.layout.widget_chaos_roll_wide3;
-            case "wide": return R.layout.widget_chaos_roll_wide;
-            case "hero": return R.layout.widget_chaos_roll_hero;
-            default: return R.layout.widget_chaos_roll_square;
-        }
+        return "mini".equals(variant)
+            ? R.layout.widget_chaos_roll_mini : R.layout.widget_chaos_roll_hero;
     }
 
     private void render(Context context, AppWidgetManager manager, int id, Bundle options) {
+        if (Build.VERSION.SDK_INT >= 31 && options != null) {
+            java.util.ArrayList<SizeF> sizes = options.<SizeF>getParcelableArrayList(AppWidgetManager.OPTION_APPWIDGET_SIZES);
+            if (sizes != null && !sizes.isEmpty() && sizes.size() <= 16) {
+                Map<SizeF, RemoteViews> layouts = new LinkedHashMap<>();
+                for (SizeF size : sizes) {
+                    // Use each actual width/height pair. Legacy minimums can come from
+                    // different orientations and understate the available space.
+                    boolean cassette = size.getWidth() >= 160 && size.getHeight() >= 104;
+                    layouts.put(size, createViews(context, id, cassette ? "hero" : "mini"));
+                }
+                manager.updateAppWidget(id, new RemoteViews(layouts));
+                return;
+            }
+        }
         int width = options == null ? 0 :
             options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH,0);
         int height = options == null ? 0 :
             options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT,0);
-        String variant = ChaosWidgetSizes.select(width,height);
+        manager.updateAppWidget(id, createViews(context, id, ChaosWidgetSizes.select(width, height)));
+    }
+
+    private RemoteViews createViews(Context context, int id, String variant) {
         RemoteViews views = new RemoteViews(context.getPackageName(),layoutId(variant));
         Intent roll = new Intent(context,ChaosRollActivity.class)
             .setAction("work.samelling.hipstergo.lab.CHAOS_ROLL");
         PendingIntent rollTap = PendingIntent.getActivity(context,id*2,roll,
             PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-        // The full cassette is the primary, accessible action at every size.
+        // The artwork is the primary roll action at every size.
         views.setOnClickPendingIntent(android.R.id.background,rollTap);
 
         if (!"mini".equals(variant)) {
-            // Header is a separate 48dp app-opening target, except at 1x1.
+            // Header is a separate 48dp app-opening target, on the cassette.
             Intent home = new Intent(context,LabActivity.class);
             PendingIntent homeTap = PendingIntent.getActivity(context,id*2+1,home,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             views.setOnClickPendingIntent(R.id.chaos_roll_open,homeTap);
         }
-        manager.updateAppWidget(id,views);
+        return views;
     }
 }
