@@ -14,8 +14,32 @@ final class LinkPreview {
   return url;
  }
  static boolean publicAddress(InetAddress a){
-  byte[] b=a.getAddress();int first=b[0]&255,second=b.length>1?b[1]&255:0;
-  return !(a.isAnyLocalAddress()||a.isLoopbackAddress()||a.isLinkLocalAddress()||a.isSiteLocalAddress()||a.isMulticastAddress()||(b.length==4&&(first==0||first>=224||(first==100&&second>=64&&second<=127)))||(b.length==16&&(first&254)==252));
+  byte[] b=a.getAddress();
+  int first=b[0]&255,second=b.length>1?b[1]&255:0;
+  if(a.isAnyLocalAddress()||a.isLoopbackAddress()||a.isLinkLocalAddress()||
+     a.isSiteLocalAddress()||a.isMulticastAddress())return false;
+  if(b.length==4){
+   int third=b[2]&255;
+   // The JVM's site-local check does not cover all non-public special-use
+   // ranges. Reject benchmark, documentation and deprecated relay networks as
+   // well as CGNAT. See IANA IPv4 Special-Purpose Address Registry.
+   return first!=0&&first<224
+    &&!(first==100&&second>=64&&second<=127)
+    &&!(first==192&&second==0&&(third==0||third==2))
+    &&!(first==192&&second==88&&third==99)
+    &&!(first==198&&(second==18||second==19||(second==51&&third==100)))
+    &&!(first==203&&second==0&&third==113);
+  }
+  if(b.length==16){
+   int third=b[2]&255,fourth=b[3]&255;
+   // Deny non-public documentation and 6to4 tunnel endpoints without
+   // rejecting ordinary carrier NAT64 addresses used on IPv6-only phones.
+   return (first&254)!=252
+    &&!(first==0x20&&second==0x01&&third==0x0d&&fourth==0xb8)
+    &&!(first==0x20&&second==0x02)
+    &&!(first==0x3f&&second==0xff&&(third&0xf0)==0);
+  }
+  return false;
  }
  static URL allowedUrl(String value)throws IOException {
   URL u=new URL(value);String host=u.getHost().toLowerCase(Locale.ROOT);
