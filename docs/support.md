@@ -6,4 +6,4 @@ For help with the Android Jukebox, Manual, Your Crate, Chaos Roll widget, ChatGP
 
 For privacy inquiries about data the app or support channel handles, use that same address. The live HTML policy is intended to be `https://hipster-go.samelling.workers.dev/privacy/`; the repository's Android policy draft remains an internal technical review document, not the governing public page.
 
-**Release gate:** Do not treat these URLs as verified live until the explicit public legal-pages deploy and anonymous HTTPS smoke checks succeed. No Google Play filing is made by this repository change.
+**Publication verified:** The privacy and support pages were deployed to the existing public Cloudflare website on November 14, 2026 and independently loaded over anonymous HTTPS. This does **not** mean the Google Play Data safety form or Play app submission has been completed.

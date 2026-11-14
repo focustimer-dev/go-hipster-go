@@ -45,7 +45,7 @@ On **2026-11-14**, the deployed `hipster-go` Worker script settings returned `lo
 | Data collected / shared | **Undecided** | Full user-submitted URLs and request/network metadata must be evaluated; do not file a blanket “No” |
 | Data encrypted in transit | **Candidate: Yes for app's explicit requests** | HTTPS-only outbound paths; verify final SDKs/network stack |
 | Data deletion available | **Local deletion/uninstall described** | Verify on device; no server-side deletion promise until Cloudflare retention is confirmed |
-| Privacy policy | **Not approved / not hosted** | Public ordinary HTTPS page, app-specific, worldwide accessible without login, linked inside app and Play Store |
+| Privacy policy | **Public HTML hosted, owner/data-safety review open** | Verified https://hipster-go.samelling.workers.dev/privacy/ on Nov 14, 2026; source in Android Manual and Preferences, pending device/Play Console link checks |
 | Digital goods / paid features | **Owner decision** | No in-app billing evident; free/paid choice in Console can have lasting consequences |
 | Access instructions | **No first-party login** | Tell reviewers core app works without connecting external AI; optional handoffs need their own app/account |
 

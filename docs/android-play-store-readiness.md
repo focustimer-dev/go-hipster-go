@@ -1,6 +1,6 @@
 # Android 1.0 — Google Play submission readiness
 
-**Status: pre-registration, review required.** Developer verification is pending; no Google Play app entry or permanent Play upload key has been confirmed. **No signing, upload, listing submission, public PWA deployment or publication is authorized by this plan.**
+**Status: pre-registration, review required.** The public privacy/support pages were published on the existing PWA after authorization. Developer verification is pending; no Google Play app entry or permanent Play upload key has been confirmed. **No Android signing, Google Play upload, listing submission or app publication is authorized by this plan.**
 
 This checklist applies to the native production variant of **Go, Hipster, Go!**, not the old Trusted Web Activity or Android Lab installation.
 
@@ -32,7 +32,8 @@ Official Google Play preview-asset specs: https://support.google.com/googleplay/
 
 - [ ] Cloudflare infrastructure/CDN logs, analytics, query-string handling and retention verified, **especially full first-party preview URLs**; data-safety types/ephemeral processing/optional use approved
 - [ ] Android SDK/third-party dependencies and merged manifest audited; confirm no tracking, advertising or undisclosed user/device data transfers
-- [ ] Approve and date final Android privacy policy, with security, retention/deletion, developer contact and third-party disclosure; publish at a **real public, non-editable HTTPS webpage**, worldwide accessible without login
+- [x] Publish app-specific ordinary HTML privacy policy at **https://hipster-go.samelling.workers.dev/privacy/**, anonymously accessible over HTTPS; support page at **https://hipster-go.samelling.workers.dev/support/**. Legal owner review and final Cloudflare retention accuracy are **still open**.
+- [ ] Final privacy wording, service-provider retention details and the Data safety answers receive explicit owner approval before Google Play submission.
 - [ ] Add that exact policy URL **inside the installed native app** and in Play Console; verify both links open. A GitHub Markdown document is **not** the published policy page
 - [ ] Ads declaration (candidate: no), audience/age ranges and official content-rating questionnaire answered by owner in Play Console; do not infer age rating from themes or external content
 - [ ] App-access instructions: no first-party account; external AI/music assistants may require the user's own accounts or skills
@@ -81,4 +82,4 @@ Official personal-account testing: https://support.google.com/googleplay/android
 - Confirm target audience/content-rating responses, app access, ads and Data safety disclosures.
 - Approve final screenshots/feature graphic after installed release evidence.
 
-**Current outcome:** Store copy and policy evidence can be reviewed now; the app is **not Play-submission-ready** until identity, privacy publication, image assets, console declarations and installed-device checks are completed.
+**Current outcome:** The public privacy and support HTML pages are deployed; the app is **not Play-submission-ready** until developer identity, final privacy/retention accuracy, approved data-safety and other Console declarations, image assets, and installed-device checks are completed.
