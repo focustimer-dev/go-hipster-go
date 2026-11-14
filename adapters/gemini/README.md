@@ -10,7 +10,7 @@ Verify the saved skill appears in Customize → Skills and is selectable in a ne
 
 ## Download the Gemini skill — no terminal required
 
-Upload [the release ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip) through Gemini web → Customize → Skills → Create → Upload (or Replace skill). It contains a root SKILL.md, deferred workflow and all regional/taxonomy references. It needs no scripts. Native app upload availability varies; use web when missing.
+Upload [the release ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.11.6/go-hipster-go-gemini-app-skill.zip) through Gemini web → Customize → Skills → Create → Upload (or Replace skill). It contains a root SKILL.md, deferred workflow and all regional/taxonomy references. It needs no scripts. Native app upload availability varies; use web when missing.
 
 The generated GEM_KNOWLEDGE.md is an archival combined mirror, not an installation entry. Do not ask Gemini to save that entire document. Repository changes do not refresh existing saved skills automatically.
 
@@ -20,7 +20,7 @@ Gemini's installed Skill carries all the research, verification, sonic sequencin
 
 The curator's intended 12 artist/title/version recordings are selected first. Ordinary GO attempts the provider's **playlist** action only if the authorized writer supports explicit ordered track entries. When only thematic generation is available, retain the exact list and report **PLAYLIST NOT CREATED — exact-track publishing unavailable**; do not silently generate an alternative mix. A separate thematic playlist is possible only after an explicit listener request and must be labeled **APPROXIMATE**, with observed substitutions and count/order differences distinguished from unknowns. A playlist card is not necessarily saved; the user may need **Save to library**.
 
-**Installing or refreshing the Skill:** save the small entry with the PWA prompt and confirm it persists in a new chat. If it only reads the repository, upload the [complete Gemini Skill ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip) from Gemini desktop/mobile web, not the native app.
+**Installing or refreshing the Skill:** save the small entry with the PWA prompt and confirm it persists in a new chat. If it only reads the repository, upload the [complete Gemini Skill ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.11.6/go-hipster-go-gemini-app-skill.zip) from Gemini desktop/mobile web, not the native app.
 
 ## `Publish` — finish a Gemini playlist without another GO
 
@@ -70,13 +70,13 @@ Keep the dry, smug, passive-aggressive clerk voice in the opening,
 the actual musical commentary and the sign-off; don't make up facts.
 ```
 
-**If you saved or uploaded it as a Gemini Skill:** use [Gemini web](https://gemini.google.com/) in a desktop or mobile browser (not the native mobile app) → **Customize → Skills**, open the existing Go, Hipster, Go!, and select **Replace skill** to upload the **[latest complete ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip)** with its references. Gemini documents [replacing a skill](https://support.google.com/gemini/answer/17094296). Merely restarting the Android app doesn't refresh an old saved skill.
+**If you saved or uploaded it as a Gemini Skill:** use [Gemini web](https://gemini.google.com/) in a desktop or mobile browser (not the native mobile app) → **Customize → Skills**, open the existing Go, Hipster, Go!, and select **Replace skill** to upload the **[latest complete ZIP](https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.11.6/go-hipster-go-gemini-app-skill.zip)** with its references. Gemini documents [replacing a skill](https://support.google.com/gemini/answer/17094296). Merely restarting the Android app doesn't refresh an old saved skill.
 
 Test with **`go weird, 6 tracks, text only`** first to isolate the curator's own voice. When publishing through YouTube Music, the provider card may remain neutral; the curator's surrounding prose should not. A bland response after a confirmed refresh is a genuine Gemini tone-compliance regression.
 
 ## Build the ZIP yourself — optional developer path
 
-You don't need Python to install the skill: **[download the ready-to-upload package](https://github.com/focustimer-dev/go-hipster-go/releases/latest/download/go-hipster-go-gemini-app-skill.zip)** instead. For local builds or modifications, run `python scripts/build_agent_packages.py --zip`, which creates `dist/go-hipster-go-gemini-app-skill.zip` with `SKILL.md` and its complete plain-text regional and verification references.
+You don't need Python to install the skill: **[download the ready-to-upload package](https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.11.6/go-hipster-go-gemini-app-skill.zip)** instead. For local builds or modifications, run `python scripts/build_agent_packages.py --zip`, which creates `dist/go-hipster-go-gemini-app-skill.zip` with `SKILL.md` and its complete plain-text regional and verification references.
 
 Upload it through **Gemini web → Customize → Skills → Create → Upload**. The ZIP route is the supported app-skills upload workflow; GitHub-chat loading is user-observed and may only last for the current session. Existing uploaded skills must be replaced to pick up changes. Enable **Keep Activity** where Google requires it for skills or connected media.
 

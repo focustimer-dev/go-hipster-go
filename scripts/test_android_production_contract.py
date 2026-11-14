@@ -51,6 +51,17 @@ class AndroidProductionContract(unittest.TestCase):
         js = (APP / "src/main/assets/site/assets/app.js").read_text()
         self.assertIn("GO, HIPSTER, GO! ·", page)
         self.assertIn("1.0.0-rc.1", page)
+        self.assertIn("Verify version 3.11.6", manual)
+        self.assertIn("Verify version 3.11.6", js)
+        self.assertNotIn("Verify version 3.11.5", js)
+        self.assertNotIn("Verify version 3.11.1", manual)
+        for surface in (page, manual, js):
+            self.assertNotIn("releases/latest/download/go-hipster-go-", surface)
+        release = "releases/download/gemini-skill-v3.11.6/"
+        self.assertIn(release + "go-hipster-go-gemini-app-skill.zip", manual)
+        self.assertIn(release + "go-hipster-go-gemini-app-skill.zip", js)
+        self.assertIn("gemini-skill-v3.11.6/adapters/gemini/SKILL.md", manual)
+        self.assertIn("gemini-skill-v3.11.6/adapters/gemini/SKILL.md", js)
         self.assertNotIn("ANDROID LAB", page)
         self.assertNotIn("Hipster GO Lab", page)
         self.assertNotIn("Lab Preferences", manual)
@@ -59,6 +70,23 @@ class AndroidProductionContract(unittest.TestCase):
         self.assertIn("mark.hidden=true", js)
         self.assertNotIn("Share a song link to Lab,", js)
         self.assertNotIn("Lab opens its website.", js)
+
+    def test_production_widget_picker_label_is_not_lab(self):
+        prod = (APP / "build/production-res/values/strings.xml").read_text()
+        lab = (LAB / "src/main/res/values/strings.xml").read_text()
+        qa = (APP / "src/qa/res/values/strings.xml").read_text()
+        self.assertIn('name="chaos_roll_widget_name">Chaos Roll</string>', prod)
+        self.assertNotIn("Chaos Roll (Lab)", prod)
+        self.assertIn('name="chaos_roll_widget_name">Chaos Roll (Lab)', lab)
+        self.assertIn('name="chaos_roll_widget_name">Chaos Roll RC', qa)
+        for path in (
+            APP / "src/main/AndroidManifest.xml",
+            LAB / "src/main/AndroidManifest.xml",
+        ):
+            root = ET.fromstring(path.read_text())
+            receiver = root.find("application").find("receiver")
+            self.assertEqual(receiver.get(ANDROID + "label"),
+                             "@string/chaos_roll_widget_name")
 
     def test_native_code_checks_package_aware_shortcuts_and_widget_intent(self):
         java = (LAB / "src/main/java/work/samelling/hipstergo/lab")
