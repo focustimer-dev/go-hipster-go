@@ -6,18 +6,18 @@ import static org.junit.Assert.assertEquals;
 public class ChaosWidgetSizesTest {
     @Test public void supportsEveryGridSpanFromOneByOneThroughTwoByThree() {
         assertEquals("mini",ChaosWidgetSizes.select(74,79));
-        assertEquals("tall2",ChaosWidgetSizes.select(80,161));
-        assertEquals("tall3",ChaosWidgetSizes.select(80,258));
-        assertEquals("wide",ChaosWidgetSizes.select(179,82));
-        assertEquals("square",ChaosWidgetSizes.select(179,161));
-        assertEquals("hero",ChaosWidgetSizes.select(179,258));
+        assertEquals("tall2",ChaosWidgetSizes.select(80,135));
+        assertEquals("tall3",ChaosWidgetSizes.select(80,197));
+        assertEquals("wide",ChaosWidgetSizes.select(138,82));
+        assertEquals("square",ChaosWidgetSizes.select(138,135));
+        assertEquals("hero",ChaosWidgetSizes.select(138,197));
     }
     @Test public void borderChangesArePredictableAndInvalidOptionsAreSafe() {
         assertEquals("square",ChaosWidgetSizes.select(0,0));
-        assertEquals("mini",ChaosWidgetSizes.select(121,119));
-        assertEquals("wide",ChaosWidgetSizes.select(122,119));
-        assertEquals("tall2",ChaosWidgetSizes.select(121,120));
-        assertEquals("tall3",ChaosWidgetSizes.select(121,225));
-        assertEquals("hero",ChaosWidgetSizes.select(122,225));
+        assertEquals("mini",ChaosWidgetSizes.select(107,111));
+        assertEquals("wide",ChaosWidgetSizes.select(108,111));
+        assertEquals("tall2",ChaosWidgetSizes.select(107,112));
+        assertEquals("tall3",ChaosWidgetSizes.select(107,184));
+        assertEquals("hero",ChaosWidgetSizes.select(108,184));
     }
 }
