@@ -38,9 +38,9 @@ tasks.register('bundleProduction', Exec) {
     workingDir rootProject.projectDir.parentFile
     commandLine 'python3', 'scripts/bundle_android_production.py'
     inputs.dir '../../launcher'
-    inputs.dir '../android-lab/web'
-    inputs.dir '../android-lab/app/src/main/res'
-    inputs.dir '../android-lab/artwork/chaos-roll'
+    inputs.dir '../../android-lab/web'
+    inputs.dir '../../android-lab/app/src/main/res'
+    inputs.dir '../../android-lab/artwork/chaos-roll'
     inputs.dir 'config'
     inputs.file '../../scripts/bundle_android_lab.py'
     inputs.file '../../scripts/bundle_android_production.py'
