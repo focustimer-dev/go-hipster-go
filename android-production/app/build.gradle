@@ -25,6 +25,7 @@ android {
         }
         test {
             java.srcDirs = ['../../android-lab/app/src/test/java']
+            resources.srcDirs = ['../../android-lab/app/src/test/resources']
         }
     }
     compileOptions {
