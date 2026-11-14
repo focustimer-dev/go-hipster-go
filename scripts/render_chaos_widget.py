@@ -22,7 +22,7 @@ def remove_release_lab_mark(image):
     from PIL import ImageDraw
     w, h = image.size
     # Suffix '/ LAB' on the black title panel, clear of 'HIPSTER GO'.
-    x1, x2 = round(w * .775), round(w * .904)
+    x1, x2 = round(w * .805), round(w * .904)
     y1, y2 = round(h * .167), round(h * .252)
     # Sample the unlettered black region just below the suffix.
     # Keep original alpha intact at every pixel, including sleeve edges.
