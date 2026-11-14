@@ -1,0 +1,11 @@
+# One-shot public deployment approval: privacy and support pages
+#
+# Used only by .github/workflows/deploy-cloudflare.yml on a push to main.
+# Do not reuse this release marker for another deployment.
+# The existing workflow deploys the full PWA, tests the exact release,
+# and now verifies privacy/support pages publicly over HTTPS.
+#
+# Google Play account, signing, Data safety form, and Play submission remain
+# separate outstanding decisions.
+Date: 2026-11-14
+Release: Play privacy and support web pages
