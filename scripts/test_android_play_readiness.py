@@ -4,6 +4,7 @@ Privacy claims and screenshots still require owner/device/provider verification.
 """
 from pathlib import Path
 import re
+import json
 import unittest
 import xml.etree.ElementTree as ET
 
@@ -83,19 +84,71 @@ class AndroidPlayReadiness(unittest.TestCase):
         self.assertIn("inside the Android app", draft)
         self.assertIn("Cloudflare Worker access logs/analytics", draft)
 
-    def test_play_listing_does_not_overpromise_and_requirements_remain_open(self):
+    def test_store_listing_copy_is_versioned_and_meets_play_character_limits(self):
+        manifest = json.loads((ROOT / "config/google-play-listing.en-US.json").read_text())
+        self.assertEqual(manifest["schema_version"], 1)
+        self.assertEqual(manifest["status"], "draft_owner_review_not_submitted")
+        self.assertEqual(manifest["locale"], "en-US")
+        store, limits = manifest["store"], manifest["limits"]
+        self.assertEqual(limits, {
+            "app_name": 30, "short_description": 80, "full_description": 4000
+        })
+        for field, limit in limits.items():
+            value = store[field]
+            self.assertIsInstance(value, str)
+            self.assertGreater(len(value.strip()), 0)
+            self.assertLessEqual(len(value), limit, field)
+            self.assertNotIn("<", value, field)
+            self.assertNotIn(">", value, field)
+        self.assertEqual(store["app_name"], "Go, Hipster, Go!")
+        self.assertIsNone(store["privacy_policy_url"],
+                          "Do not invent a live public policy URL")
+        self.assertEqual(store["pricing"], "owner_decision_required")
+        self.assertEqual(store["support_email"], "gohipstergosupport@proton.me")
+        for claim in (
+            "twelve-track", "tempo and mood curve", "nine visual themes",
+            "Chaos Roll", "Your Crate", "does not itself stream music",
+            "create and save playlists automatically",
+            "external AI or music services",
+        ):
+            self.assertIn(claim.lower(), store["full_description"].lower())
+        self.assertTrue(manifest["approval"])
+        self.assertTrue(all(value is False for value in manifest["approval"].values()),
+                        "Owner and Play approval must not be pre-certified in source")
+
+    def test_play_requirements_and_unverified_data_flow_are_visible(self):
         doc = (ROOT / "docs/android-play-store-readiness.md").read_text()
+        image = (ROOT / "docs/android-play-asset-shotlist.md").read_text()
+        flow = (ROOT / "docs/android-play-data-safety-review.md").read_text()
         for expected in (
-            "not** submitted", "developer", "does not stream songs",
-            "or guarantee playlist publication",
-            "policy", "12-slot", "nine themes",
-            "widget", "1×1", "3×2", "Data safety",
-            "Cloudflare", "internal testing", "first-party",
+            "config/google-play-listing.en-US.json", "not Play-submission-ready",
+            "does not stream songs or guarantee playlist publication",
+            "12-slot", "nine themes", "widget",
+            "Privacy", "Data safety", "Cloudflare", "first-party",
+            "internal testing", "12 opted-in", "14 continuous days",
         ):
             self.assertIn(expected.lower(), doc.lower())
-        self.assertRegex(doc, r"- \[ \] .*Privacy policy")
-        self.assertRegex(doc, r"- \[ \] .*app entry")
+        self.assertRegex(doc, r"- \[ \] .*privacy")
         self.assertRegex(doc, r"- \[ \] .*approved")
+        for expected in (
+            "512 × 512", "1024 × 500", "1080 × 1920",
+            "32-bit PNG", "24-bit PNG", "minimum two",
+            "genuine", "source SHA",
+        ):
+            # The artwork plan must reflect exact Play image sizes, not placeholders.
+            if expected == "genuine":
+                continue
+            self.assertIn(expected.lower(), image.lower())
+        for expected in (
+            "Full user-submitted URL", "off-device", "GitHub API",
+            "Logpush", "Data safety", "account-level analytics",
+            "not owner-approved", "retention",
+        ):
+            self.assertIn(expected.lower(), flow.lower())
+        self.assertIn("DRAFT, not published",
+                      (ROOT / "docs/android-privacy-policy-draft.md").read_text())
+        self.assertIn("Unresolved before publication",
+                      (ROOT / "docs/android-privacy-policy-draft.md").read_text())
 
     def test_network_disclosures_track_native_features(self):
         # Static inventory only; final Data safety truth also depends on deploy config and SDKs.
