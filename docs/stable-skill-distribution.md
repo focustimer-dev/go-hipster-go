@@ -6,12 +6,12 @@
 
 | Host / install type | Release archive |
 |---|---|
-| ChatGPT plugin | [go-hipster-go-chatgpt-plugin.zip](https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.11.6/go-hipster-go-chatgpt-plugin.zip) |
-| Gemini Apps Skill | [go-hipster-go-gemini-app-skill.zip](https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.11.6/go-hipster-go-gemini-app-skill.zip) |
-| Claude Skill | [go-hipster-go-claude-skill.zip](https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.11.6/go-hipster-go-claude-skill.zip) |
-| Claude Plugin | [go-hipster-go-claude-plugin.zip](https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.11.6/go-hipster-go-claude-plugin.zip) |
+| ChatGPT plugin | [go-hipster-go-chatgpt-plugin.zip](https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.11.7/go-hipster-go-chatgpt-plugin.zip) |
+| Gemini Apps Skill | [go-hipster-go-gemini-app-skill.zip](https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.11.7/go-hipster-go-gemini-app-skill.zip) |
+| Claude Skill | [go-hipster-go-claude-skill.zip](https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.11.7/go-hipster-go-claude-skill.zip) |
+| Claude Plugin | [go-hipster-go-claude-plugin.zip](https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.11.7/go-hipster-go-claude-plugin.zip) |
 
-**Current selection:** `3.11.6` (tag `gemini-skill-v3.11.6`, published 2026-11-13 UTC). GitHub release notes explicitly say this includes the unified RC9 checkpoint and recording-quality clarification. The exact source commit and SHA-256 digests for **each** archive are in the canonical JSON. A successful zip build from today's `main` is **not** proof that a prior published archive contains the same files: use its tag and digest.
+**Current selection:** `3.11.7` (tag `gemini-skill-v3.11.7`, published 2026-11-14 UTC). This release includes the tested GO HARD and Refresh changes. The exact source commit and SHA-256 digests for **each** archive are in the canonical JSON. A successful zip build from today's `main` is **not** proof that a prior published archive contains the same files: use its tag and digest.
 
 **Installation:** reading a repository URL or a GitHub `SKILL.md` doesn't install a persistent skill. Gemini users should save/upload the complete version-matched Gemini Skill in the supported Gemini web Skills interface and verify it persists in a new conversation. ChatGPT and Claude use their respective platform-specific ZIP. The Android and PWA apps prepare prompts/links; they don't install a skill on another AI service.
 
@@ -30,7 +30,7 @@
 
 - [ ] `python scripts/sync_stable_skill_links.py` exits 0; CI skill/Android checks pass on the final head
 - [ ] Manifest version, source commit, published tag and all four asset URLs/digests match the live GitHub release
-- [ ] Native Jukebox and Manual both show 3.11.6 in setup checks; all downloads resolve to that tag
+- [ ] Native Jukebox and Manual both show 3.11.7 in setup checks; all downloads resolve to that tag
 - [ ] No ZIP install link in active UI uses `releases/latest/download`; no setup prompt points Gemini's entry at mutable `main`
 - [ ] Installed RC device shows the correct versioned setup text and preserves GO/prompt behavior
 - [ ] Test against an actually saved Skill in Gemini web; do not interpret a link read as successful installation
