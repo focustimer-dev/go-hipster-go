@@ -7,6 +7,7 @@ export default {
     if (path === '/api/inspiration-preview') return respondMetadata(request);
     // Static Assets owns /pwa-atlas/ clean URL canonicalization; no rewrite.
     if (path === "/setup") return Response.redirect(new URL("/setup/", url), 308);
+    if (path === "/privacy" || path === "/support") return Response.redirect(new URL(path + "/", url), 308);
     if (path === "/gemini" || path === "/gemini/" || path === "/gemini/index.html") {
       const target = new URL("/", url);
       target.search = url.search;
@@ -17,6 +18,7 @@ export default {
     if (path === "/gemini/manifest.webmanifest") url.pathname = "/gemini-manifest.webmanifest";
     else if (path === "/" || path === "/index.html") url.pathname = "/editions/gig-poster/index.html";
     else if (path === "/setup/") url.pathname = "/editions/gig-poster/setup/";
+    else if (path === "/privacy/" || path === "/support/") url.pathname = path + "index.html";
     // Use a canonical directory URL; /setup/index.html is redirected back to /setup/.
     // The poster edition setup page includes the release CSS expected by live smoke.
     const response = await env.ASSETS.fetch(new Request(url, request));
