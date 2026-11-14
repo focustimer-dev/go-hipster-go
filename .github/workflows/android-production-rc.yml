@@ -11,6 +11,7 @@ on:
       - 'scripts/bundle_android_lab.py'
       - 'scripts/bundle_android_production.py'
       - 'scripts/test_android_production_contract.py'
+      - 'scripts/android_release_evidence.py'
       - 'scripts/sync_stable_skill_links.py'
       - 'config/stable-skill-release.json'
       - 'scripts/test_android_play_readiness.py'
@@ -26,6 +27,7 @@ on:
       - 'scripts/bundle_android_lab.py'
       - 'scripts/bundle_android_production.py'
       - 'scripts/test_android_production_contract.py'
+      - 'scripts/android_release_evidence.py'
       - 'scripts/sync_stable_skill_links.py'
       - 'config/stable-skill-release.json'
       - 'scripts/test_android_play_readiness.py'
@@ -97,6 +99,39 @@ jobs:
           printf 'QA ONLY, NOT FOR GOOGLE PLAY\npackage: work.samelling.hipstergo.qa\nversion: 1.0.0-rc.1 (100000)\nsource commit: %s\nsigning: temporary runner debug key; uninstall before upgrading\n' "$GITHUB_SHA" \
             > android-production/app/build/outputs/apk/qa/qa-build-info.txt
           sha256sum "$qa"
+      - name: Verify production APK is unsigned and create keyless artifact evidence
+        shell: bash
+        env:
+          SOURCE_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          tools="$ANDROID_HOME/build-tools/35.0.0"
+          prod=android-production/app/build/outputs/apk/release/app-release-unsigned.apk
+          qa=android-production/app/build/outputs/apk/qa/app-qa.apk
+          if "$tools/apksigner" verify "$prod" > /dev/null 2>&1; then
+            echo "::error::Production APK was signed before M0/M5 approval"
+            exit 1
+          fi
+          fingerprint=$("$tools/apksigner" verify --print-certs "$qa" | sed -n 's/^Signer #1 certificate SHA-256 digest: //p' | head -n 1)
+          python scripts/android_release_evidence.py \
+            --output android-production/app/build/release-evidence.json \
+            --source-head "$SOURCE_HEAD" \
+            --qa-certificate-sha256 "$fingerprint"
+          mkdir -p android-production/app/build/release-evidence
+          (
+            cd android-production/app/build/outputs
+            sha256sum apk/release/app-release-unsigned.apk \
+                      bundle/release/app-release.aab \
+                      apk/qa/app-qa.apk
+          ) > android-production/app/build/release-evidence/SHA256SUMS
+          cp android-production/app/build/release-evidence.json \
+            android-production/app/build/release-evidence/release-evidence.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hipster-go-android-rc-evidence
+          path: android-production/app/build/release-evidence/
+          if-no-files-found: error
+          retention-days: 14
       - uses: actions/upload-artifact@v4
         with:
           name: hipster-go-android-qa-sideload
