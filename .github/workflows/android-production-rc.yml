@@ -12,6 +12,7 @@ on:
       - 'scripts/bundle_android_production.py'
       - 'scripts/test_android_production_contract.py'
       - 'scripts/android_release_evidence.py'
+      - 'scripts/audit_android_release_package.py'
       - 'scripts/sync_stable_skill_links.py'
       - 'config/stable-skill-release.json'
       - 'scripts/test_android_play_readiness.py'
@@ -34,6 +35,7 @@ on:
       - 'scripts/bundle_android_production.py'
       - 'scripts/test_android_production_contract.py'
       - 'scripts/android_release_evidence.py'
+      - 'scripts/audit_android_release_package.py'
       - 'scripts/sync_stable_skill_links.py'
       - 'config/stable-skill-release.json'
       - 'scripts/test_android_play_readiness.py'
@@ -111,6 +113,23 @@ jobs:
           printf 'QA ONLY, NOT FOR GOOGLE PLAY\npackage: work.samelling.hipstergo.qa\nversion: 1.0.0-rc.1 (100000)\nsource commit: %s\nsigning: temporary runner debug key; uninstall before upgrading\n' "$GITHUB_SHA" \
             > android-production/app/build/outputs/apk/qa/qa-build-info.txt
           sha256sum "$qa"
+      - name: Audit compiled package privacy, manifest and native-library surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          report=android-production/app/build/release-evidence
+          mkdir -p "$report"
+          python scripts/audit_android_release_package.py \
+            --aapt "$ANDROID_HOME/build-tools/35.0.0/aapt" \
+            --production-apk android-production/app/build/outputs/apk/release/app-release-unsigned.apk \
+            --production-aab android-production/app/build/outputs/bundle/release/app-release.aab \
+            --qa-apk android-production/app/build/outputs/apk/qa/app-qa.apk \
+            --output "$report/compiled-package-audit.json"
+          # Capture the resolved *release* library tree for the Data safety / SDK audit.
+          # This is evidence to review, not a claim that Google approved the SDKs.
+          bash android/gradlew -p android-production :app:dependencies \
+            --configuration releaseRuntimeClasspath --no-daemon \
+            > "$report/runtime-dependencies.txt"
       - name: Verify production APK is unsigned and create keyless artifact evidence
         shell: bash
         env:
