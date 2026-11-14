@@ -18,7 +18,8 @@ export default {
     if (path === "/gemini/manifest.webmanifest") url.pathname = "/gemini-manifest.webmanifest";
     else if (path === "/" || path === "/index.html") url.pathname = "/editions/gig-poster/index.html";
     else if (path === "/setup/") url.pathname = "/editions/gig-poster/setup/";
-    else if (path === "/privacy/" || path === "/support/") url.pathname = path + "index.html";
+    // Static Assets serves /privacy/ and /support/ index files directly.
+    // Rewriting these clean URLs to index.html creates canonical redirect loops.
     // Use a canonical directory URL; /setup/index.html is redirected back to /setup/.
     // The poster edition setup page includes the release CSS expected by live smoke.
     const response = await env.ASSETS.fetch(new Request(url, request));
