@@ -63,7 +63,8 @@ def make_evidence(
         ("checkout SHA", checkout_sha),
         ("QA certificate fingerprint", qa_certificate_sha256),
     ):
-        if not re.fullmatch(r"[a-fA-F0-9]{40 if label != 'QA certificate fingerprint' else 64}", value):
+        length = 64 if label == "QA certificate fingerprint" else 40
+        if not re.fullmatch(r"[a-fA-F0-9]{" + str(length) + r"}", value):
             raise ValueError(f"Invalid {label}")
 
     version_code, version_name = version_info()
