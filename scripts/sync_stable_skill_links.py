@@ -17,6 +17,7 @@ MANIFEST = ROOT / "config/stable-skill-release.json"
 REPO = "https://github.com/focustimer-dev/go-hipster-go"
 RAW = "https://raw.githubusercontent.com/focustimer-dev/go-hipster-go"
 FILES = [
+    "README.md",
     "launcher/assets/app.js",
     "launcher/setup/index.html",
     "launcher/editions/gig-poster/setup/index.html",
@@ -121,7 +122,7 @@ def main():
             print("ERROR:", error, file=sys.stderr)
         sys.exit(1)
     print("Stable skill release aligned:", m["version"], m["tag"],
-          "— 4 published ZIPs, 7 installation surfaces")
+          "— 4 published ZIPs, 8 installation surfaces")
 
 if __name__ == "__main__":
     main()
