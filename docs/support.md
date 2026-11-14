@@ -1,5 +1,9 @@
 # Go, Hipster, Go! Support
 
-For help with the ChatGPT plugin, email [gohipstergosupport@proton.me](mailto:gohipstergosupport@proton.me). For playlist or publishing problems, tell us which music service you used, what you expected, and what happened. Include the error message if you have it. Remove passwords, access tokens, and private account details.
+The **public support-page source** for the native Android app and companion PWA is [`launcher/support/index.html`](../launcher/support/index.html). When published, the canonical support URL is `https://hipster-go.samelling.workers.dev/support/`.
 
-For privacy questions or requests about a support email you sent us, use the same address.
+For help with the Android Jukebox, Manual, Your Crate, Chaos Roll widget, ChatGPT plugin or AI music-service setup, email [gohipstergosupport@proton.me](mailto:gohipstergosupport@proton.me). Share the app version, device, selected service and steps to reproduce. Never send passwords, authentication tokens or sensitive account details.
+
+For privacy inquiries about data the app or support channel handles, use that same address. The live HTML policy is intended to be `https://hipster-go.samelling.workers.dev/privacy/`; the repository's Android policy draft remains an internal technical review document, not the governing public page.
+
+**Release gate:** Do not treat these URLs as verified live until the explicit public legal-pages deploy and anonymous HTTPS smoke checks succeed. No Google Play filing is made by this repository change.
