@@ -1,0 +1,13 @@
+# One-shot public deployment approval: privacy and support pages
+#
+# This marker is intentionally used ONLY by .github/workflows/deploy-cloudflare.yml
+# on a push to main. Do not re-use it for another deployment.
+#
+# Scope: publish app-specific ordinary HTML /privacy/ and /support/ pages,
+# linked from the Android app and website. The existing deployment workflow
+# deploys the full main PWA; keep it behind preview and smoke success.
+#
+# Google Play account, Data safety form, signing and public app publication
+# remain separate unapproved steps.
+Date: 2026-11-14
+Release: Play privacy and support web pages
