@@ -83,14 +83,14 @@
 
 /* Polish Jazz Modernism: graphic navy, vermilion and golden paper ink. */
 :root[data-pwa-theme=polish]{
- --lab-ui-surface:#f6f2e6;--lab-ui-ink:#172c40;
- --lab-ui-panel:#f6f2e6;--lab-ui-on-panel:#172c40;
- --lab-ui-rail:#172c40;--lab-ui-on-rail:#f6f2e6;
- --lab-ui-action:#172c40;--lab-ui-on-action:#f6f2e6;
- --lab-ui-rule:#8a8a83;--lab-ui-field:#fffaf0;--lab-ui-on-field:#172c40;
- --lab-ui-focus:#c13b28;--lab-ui-control-outline:#172c40;
- --lab-ui-ticket-stock:#fffaf0;--lab-ui-ticket-ink:#172c40;
- --lab-ui-go:#172c40;--lab-ui-highlight:#d8bd67;--lab-ui-on-highlight:#172c40;
+ --lab-ui-surface:#f1e1c7;--lab-ui-ink:#103135;
+ --lab-ui-panel:#f1e1c7;--lab-ui-on-panel:#103135;
+ --lab-ui-rail:#103135;--lab-ui-on-rail:#f1e1c7;
+ --lab-ui-action:#103135;--lab-ui-on-action:#f1e1c7;
+ --lab-ui-rule:#8a8a83;--lab-ui-field:#fffaf0;--lab-ui-on-field:#103135;
+ --lab-ui-focus:#c13b28;--lab-ui-control-outline:#103135;
+ --lab-ui-ticket-stock:#fffaf0;--lab-ui-ticket-ink:#103135;
+ --lab-ui-go:#103135;--lab-ui-highlight:#d8bd67;--lab-ui-on-highlight:#103135;
  --lab-print-muted:#e3dcd2;--lab-print-stamp:#b64b36;
  --lab-print-active-ink:#c13b28;--lab-print-stamp-border-style:solid;
  --lab-print-substrate-texture:none;

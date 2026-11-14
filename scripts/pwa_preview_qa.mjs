@@ -236,7 +236,7 @@ for(const profile of profiles){
   // Five approved Android print themes: behavior and storage stay unchanged.
   const printPapers={
    kingston:'rgb(227, 217, 194)',detroit:'rgb(231, 229, 219)',
-   addis:'rgb(242, 232, 206)',polish:'rgb(246, 242, 230)',
+   addis:'rgb(242, 232, 206)',polish:'rgb(241, 225, 199)',
    beirut:'rgb(227, 216, 191)',michoacan:'rgb(106, 36, 48)'
   };
   for(const [name,paper] of Object.entries(printPapers)){

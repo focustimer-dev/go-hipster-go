@@ -47,11 +47,11 @@ const ATLAS=Object.freeze({
   oceanStroke:'#2d251f',oceanStrokeOpacity:.85
  }),
  polish:Object.freeze({
-  paper:'#f6f2e6',land:'#f6f2e6',ocean:'#172c40',ink:'#172c40',
-  selected:'#e34c2f',route:'#d8bd67',routeOpacity:.78,routeWidth:1.08,
-  routeDash:[2.5,4],backdrop:'#f6f2e6',field:'#f6f2e6',
+  paper:'#f1e1c7',land:'#f1e1c7',ocean:'#103135',ink:'#103135',
+  selected:'#d83c2d',route:'#d8bd67',routeOpacity:.78,routeWidth:1.08,
+  routeDash:[2.5,4],backdrop:'#f1e1c7',field:'#f1e1c7',
   graticule:'#b6a88b',graticuleOpacity:.22,
-  oceanStroke:'#172c40',oceanStrokeOpacity:1
+  oceanStroke:'#103135',oceanStrokeOpacity:1
  }),
  beirut:Object.freeze({
   paper:'#e3d8bf',land:'#d9c9ad',ocean:'#1c3240',ink:'#1c3240',
@@ -105,9 +105,9 @@ const MOODS=Object.freeze({
   desireHeart:'#a84950'
  }),
  polish:Object.freeze({
-  neutralPaper:'#f6f2e6',neutralInk:'#172c40',
-  selectedPaper:'#eed5ab',selectedInk:'#172c40',
-  desireHeart:'#e34c2f'
+  neutralPaper:'#f1e1c7',neutralInk:'#103135',
+  selectedPaper:'#eed5ab',selectedInk:'#103135',
+  desireHeart:'#d83c2d'
  }),
  beirut:Object.freeze({
   neutralPaper:'#e3d8bf',neutralInk:'#1c3240',
@@ -189,8 +189,8 @@ function applyThemeTokens(){
  syncPortraitInk();
 }
 function saved(){
- try{const value=localStorage.getItem(KEY);return THEMES.includes(value)?value:'liberi'}
- catch(_){return 'liberi'}
+ try{const value=localStorage.getItem(KEY);return THEMES.includes(value)?value:'polish'}
+ catch(_){return 'polish'}
 }
 let theme=PILOTS.includes(preview)?preview:saved(),atlas=null,defaults=null,frame=0;
 document.documentElement.dataset.pwaTheme=theme;
