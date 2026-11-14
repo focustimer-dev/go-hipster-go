@@ -21,14 +21,8 @@ public final class ChaosRollWidgetProvider extends AppWidgetProvider {
     }
 
     private int layoutId(String variant) {
-        switch(variant) {
-            case "mini": return R.layout.widget_chaos_roll_mini;
-            case "tall2": return R.layout.widget_chaos_roll_tall2;
-            case "wide3": return R.layout.widget_chaos_roll_wide3;
-            case "wide": return R.layout.widget_chaos_roll_wide;
-            case "hero": return R.layout.widget_chaos_roll_hero;
-            default: return R.layout.widget_chaos_roll_square;
-        }
+        return "mini".equals(variant)
+            ? R.layout.widget_chaos_roll_mini : R.layout.widget_chaos_roll_hero;
     }
 
     private void render(Context context, AppWidgetManager manager, int id, Bundle options) {

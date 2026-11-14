@@ -6,8 +6,8 @@ android {
         applicationId 'work.samelling.hipstergo.lab'
         minSdkVersion 24
         targetSdkVersion 36
-        versionCode 90
-        versionName '0.9.80'
+        versionCode 91
+        versionName '0.9.81'
     }
     buildTypes { release { minifyEnabled false } }
     compileOptions {
@@ -22,6 +22,7 @@ tasks.register('bundleLab', Exec) {
     inputs.dir '../../launcher'
     inputs.file '../../scripts/bundle_android_lab.py'
     inputs.file '../../scripts/render_chaos_widget.py'
+    inputs.dir '../artwork/chaos-roll'
     outputs.dir 'src/main/res/drawable-nodpi'
     inputs.file 'build.gradle'
     inputs.dir '../web'

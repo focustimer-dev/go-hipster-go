@@ -5,3 +5,5 @@ app/build/
 app/src/main/assets/
 *.keystore
 *.jks
+
+app/src/main/res/drawable-nodpi/widget_chaos_*.png

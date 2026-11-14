@@ -8,8 +8,8 @@
     android:maxResizeHeight="180dp"
     android:targetCellWidth="3"
     android:targetCellHeight="2"
-    android:initialLayout="@layout/widget_chaos_roll_square"
-    android:previewLayout="@layout/widget_chaos_roll_square"
+    android:initialLayout="@layout/widget_chaos_roll_hero"
+    android:previewLayout="@layout/widget_chaos_roll_hero"
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen"
     android:updatePeriodMillis="0" />
