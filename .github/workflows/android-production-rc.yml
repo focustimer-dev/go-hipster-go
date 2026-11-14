@@ -2,6 +2,17 @@ name: Android production RC (unsigned, no deployment)
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'android-production/**'
+      - 'android-lab/**'
+      - 'launcher/**'
+      - 'scripts/bundle_android_lab.py'
+      - 'scripts/bundle_android_production.py'
+      - 'scripts/test_android_production_contract.py'
+      - 'scripts/render_chaos_widget.py'
+      - '.github/workflows/android-production-rc.yml'
   pull_request:
     paths:
       - 'android-production/**'
