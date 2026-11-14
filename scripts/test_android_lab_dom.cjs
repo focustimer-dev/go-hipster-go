@@ -140,6 +140,10 @@ const root=path.resolve(__dirname,'../android-lab/app/src/main/assets/site');
  assert.equal(w.document.querySelector('#labUpdateDot').hidden,false);
  assert.equal(w.document.querySelector('#labSkillNotice').hidden,false);
  assert.match(w.document.querySelector('#labSkillNoticeText').textContent,/3\.11\.6/);
+ const beforeNoticeClick=calls.filter(c=>c[0]==='updates').length;
+ click('#labSkillNotice [data-lab-action="updates"]');
+ assert.equal(calls.filter(c=>c[0]==='updates').length,beforeNoticeClick+1,
+  'The existing Manual callout still opens the native skill-update check-in');
  w.HipsterSetup.setPair({ai:'chatgpt',service:'spotify'});
  assert.equal(w.document.querySelector('#labUpdateDot').hidden,true,'Only Gemini gets the native update badge');
  assert.equal(w.document.querySelector('#labSkillNotice').hidden,true);
