@@ -22,7 +22,7 @@
     </activity>
     <activity android:name="work.samelling.hipstergo.lab.ChaosRollActivity"
         android:exported="false" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-    <receiver android:name="work.samelling.hipstergo.lab.ChaosRollWidgetProvider" android:exported="true">
+    <receiver android:name="work.samelling.hipstergo.lab.ChaosRollWidgetProvider" android:label="@string/chaos_roll_widget_name" android:exported="true">
       <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter>
       <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_chaos_roll_info" />
     </receiver>
