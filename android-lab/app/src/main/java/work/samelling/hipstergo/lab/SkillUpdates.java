@@ -66,7 +66,7 @@ final class SkillUpdates {
     String recordedVersion(){return prefs.getString(key("confirmedLabel",channel()),"Not recorded");}
     String detail() {
         long time=prefs.getLong(key("checked",channel()),0);
-        return ("stable".equals(channel())?"Stable":"Lab")+" · Last successful check: "+
+        return ("stable".equals(channel())?"Stable":"Preview")+" · Last successful check: "+
             (time==0?"Never":DateFormat.format("MMM d, h:mm a",new Date(time)))+". Confirmations are self-reported.";
     }
     void onLaunch() {
@@ -78,10 +78,10 @@ final class SkillUpdates {
         final ReleasePolicy.Release release=cached(channel);
         String confirmed=recordedVersion();
         long time=prefs.getLong(key("checked",channel),0);
-        String message="Channel: "+("stable".equals(channel)?"Stable":"Lab (includes prereleases)")+
+        String message="Channel: "+("stable".equals(channel)?"Stable":"Preview (includes prereleases)")+
             "\nYou confirmed: "+confirmed+"\nLatest checked package: "+(release==null?"Not checked":release.tag)+
             "\nLast successful check: "+(time==0?"Never":DateFormat.format("MMM d, h:mm a",new Date(time)))+
-            (status.isEmpty()?"":"\n\n"+status)+"\n\nLab checks public GitHub release metadata. Nothing is downloaded or installed automatically. Gemini's installed version cannot be read by this app.";
+            (status.isEmpty()?"":"\n\n"+status)+"\n\nThis app checks public GitHub release metadata. Nothing is downloaded or installed automatically. Gemini's installed version cannot be read by this app.";
         LinearLayout panel=new LinearLayout(activity);panel.setOrientation(1);panel.setPadding(32,16,32,16);
         TextView info=new TextView(activity);info.setText(message);panel.addView(info);
         AlertDialog dialog=new AlertDialog.Builder(activity).setTitle("Gemini skill updates")
@@ -114,7 +114,7 @@ final class SkillUpdates {
         }
         add(panel,"Release channel: "+channel,()->{
             dialogs.show(new AlertDialog.Builder(activity).setTitle("Choose release channel")
-                .setSingleChoiceItems(new String[]{"Stable — approved releases","Lab — includes experimental prereleases"},"stable".equals(channel)?0:1,(d,n)->{
+                .setSingleChoiceItems(new String[]{"Stable — approved releases","Preview — includes experimental prereleases"},"stable".equals(channel)?0:1,(d,n)->{
                     prefs.edit().putString("skillChannel",n==0?"stable":"lab").apply();status="";d.dismiss();dialog.dismiss();changed.run();show();
                 }).setNegativeButton("Cancel",null));
         });
@@ -162,7 +162,7 @@ final class SkillUpdates {
         HttpsURLConnection c=(HttpsURLConnection)endpoint.openConnection();
         c.setConnectTimeout(10000);c.setReadTimeout(10000);c.setInstanceFollowRedirects(false);
         c.setRequestProperty("Accept","application/vnd.github+json");
-        c.setRequestProperty("User-Agent","Hipster-Go-Lab/0.4.0");
+        c.setRequestProperty("User-Agent","Hipster-Go-Android/1.0");
         c.setRequestProperty("X-GitHub-Api-Version","2022-11-28");
         c.setUseCaches(false);
         try {
