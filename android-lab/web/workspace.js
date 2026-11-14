@@ -146,7 +146,7 @@ function renderLabWorkspace(){
    const b=doc.createElement('button');b.type='button';b.className='lab-text-button';b.dataset.labSaved=String(entry.id);b.textContent='OPTIONS';b.setAttribute('aria-label','Options for saved request: '+h.textContent);row.append(main,b);rows.append(row);
   }
  }
- doc.getElementById('labServicePair').textContent=aiNames[ai]+' → '+serviceNames[service];doc.getElementById('labUpdateState').textContent=state.updateSummary||'Check your installed skill';doc.getElementById('labUpdateDetail').textContent=state.updateDetail||'Review the release, download deliberately, then record your installation.';
+ doc.getElementById('labServicePair').textContent=aiNames[ai]+' → '+serviceNames[service];doc.getElementById('labUpdateState').textContent=state.updateSummary||'Check your installed skill';doc.getElementById('labUpdateDetail').textContent=state.updateDetail||'Check GitHub for the latest Gemini Skill ZIP.';
  labSendSkillStatus(state);
  doc.getElementById('labHandoffDescription').textContent=ai==='other'?'GO copies your request. Open your AI yourself, paste and send.':state.oneTap===false?'GO copies your request. Then choose OPEN to launch your selected AI.':state.mode==='share'?'GO copies the request and tries sharing it to your selected AI. If unavailable, choose an app from Android’s share menu.':state.mode==='browser'?'GO copies your request and opens your selected AI in the browser. Paste and send when ready.':'GO copies your request and opens the selected AI app. Paste and send when ready. If the app is unavailable, Lab opens its website.';renderLabHandoff();
 }
@@ -194,7 +194,7 @@ function initLabWorkspace(){
   if(b.dataset.labTab){labNavigate(b.dataset.labTab);return}if(b.dataset.labSaved){window.HipsterLab?.savedRequest?.(b.dataset.labSaved);return}
   const action=b.dataset.labAction;
   if(action==='preferences')labPreferences();else if(action==='close-preferences')doc.getElementById('labPreferences').close();
-  else if(action==='inspiration')labOpenInspirationEditor();else if(action==='save')window.HipsterLab?.saveRequest?.(ai,goPrompt(ai,service,mood));else if(action==='updates')window.HipsterLab?.showUpdates?.();else if(action==='jukebox')labNavigate('jukebox');
+  else if(action==='inspiration')labOpenInspirationEditor();else if(action==='save')window.HipsterLab?.saveRequest?.(ai,goPrompt(ai,service,mood));else if(action==='check-updates')window.HipsterLab?.checkSkillUpdates?.();else if(action==='updates')window.HipsterLab?.showUpdates?.();else if(action==='jukebox')labNavigate('jukebox');
   else if(action==='services')labPreferences();
   else if(action==='shape-inspiration')labShapeInspiration();
   else if(action==='setup')labCopySetup(b);
