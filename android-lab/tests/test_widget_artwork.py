@@ -18,7 +18,7 @@ class WidgetArtwork(unittest.TestCase):
             untouched.thumbnail((960, 960), Image.Resampling.LANCZOS)
         result = redaction(untouched.copy())
         w, h = untouched.size
-        x1, x2 = round(w * .775), round(w * .904)
+        x1, x2 = round(w * .805), round(w * .904)
         y1, y2 = round(h * .167), round(h * .252)
         assert result.getchannel('A').tobytes() == untouched.getchannel('A').tobytes()
         # No change to the outer sleeve, reels, typography, art outside the
