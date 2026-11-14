@@ -75,7 +75,9 @@ public final class ChaosRollActivity extends Activity {
             }
         }
         if (!"browser".equals(mode)) {
-            Intent launch = getPackageManager().getLaunchIntentForPackage(pkg);
+            Intent launch = null;
+            try { launch = getPackageManager().getLaunchIntentForPackage(pkg); }
+            catch (SecurityException ignored) { /* Keep the browser fallback. */ }
             if (launch != null) {
                 try {
                     startActivity(launch);

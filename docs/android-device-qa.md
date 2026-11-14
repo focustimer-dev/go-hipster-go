@@ -31,6 +31,8 @@ The QA signing step does not read or use any existing Lab, TWA, Google Drive or 
 - [ ] Launch shortcuts: Funky and Weird open the **QA** installation, not Lab or old TWA
 - [ ] Native settings: system bars change with all nine themes; font contrast and haptics; first-run dialog works
 - [ ] Copy and open: ChatGPT, Gemini, Claude, Other. Verify **copy ≠ automatic send or playlist publication**
+- [ ] Missing/restricted AI handler: choose an AI not installed, GO and widget Chaos Roll still copy the request, fall back to an available HTTPS browser or an actionable paste message; no crash or false 'submitted' claim
+- [ ] Share handling: if the target AI cannot accept a text share, the ordinary Android chooser still opens, or clearly explains that the already-copied prompt must be pasted manually
 - [ ] Incoming music/text share: review before use, cancel and remove; link preview recovers on slow/offline connections
 - [ ] Your Crate: recent inspirations, save/reuse/remove request; restart retains QA-only data
 - [ ] Tempo/mood curve: drag 12 slots, no missing or extra tracks, regional selections and recording flags preserved
