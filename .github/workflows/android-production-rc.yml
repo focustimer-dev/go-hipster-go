@@ -1,4 +1,4 @@
-name: Android production RC (unsigned, no deployment)
+name: Android production RC + isolated QA APK (no deployment)
 
 on:
   workflow_dispatch:
@@ -39,7 +39,7 @@ concurrency:
 
 jobs:
   unsigned-preflight:
-    name: Validate native production and produce unsigned APK/AAB
+    name: Validate native production, unsigned APK/AAB and signed QA-only APK
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -62,8 +62,8 @@ jobs:
           python -m unittest discover -s android-lab/tests -v
           python scripts/test_android_production_contract.py
           python scripts/test_android_play_readiness.py
-      - name: Native production release unit tests, lint, APK and AAB
-        run: bash android/gradlew -p android-production testReleaseUnitTest lintVitalRelease assembleRelease bundleRelease --no-daemon
+      - name: Native production and isolated QA tests, lint, APK and AAB
+        run: bash android/gradlew -p android-production testReleaseUnitTest testQaUnitTest lintVitalRelease assembleRelease bundleRelease assembleQa --no-daemon
       - name: Verify unsigned production package identity
         run: |
           set -euo pipefail
@@ -73,6 +73,33 @@ jobs:
           "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$apk" | grep -F "name='work.samelling.hipstergo' versionCode='100000' versionName='1.0.0-rc.1'"
           test "$(unzip -p "$aab" BundleConfig.pb | wc -c)" -gt 0
           sha256sum "$apk" "$aab"
+      - name: Verify installable, non-debuggable, isolated QA APK
+        shell: bash
+        run: |
+          set -euo pipefail
+          qa=android-production/app/build/outputs/apk/qa/app-qa.apk
+          tools="$ANDROID_HOME/build-tools/35.0.0"
+          test -s "$qa"
+          "$tools/aapt" dump badging "$qa" | grep -F "name='work.samelling.hipstergo.qa' versionCode='100000' versionName='1.0.0-rc.1'"
+          "$tools/aapt" dump badging "$qa" | grep -F "application-label:'Go, Hipster, Go! RC'"
+          if "$tools/aapt" dump badging "$qa" | grep -q '^application-debuggable'; then
+            echo "::error::QA APK must not be debuggable"
+            exit 1
+          fi
+          "$tools/apksigner" verify --verbose --print-certs "$qa"
+          # Signing via the GitHub runner's temporary debug key is for
+          # app-ID-isolated phone QA ONLY, never a Play upload or future upgrade.
+          printf 'QA ONLY, NOT FOR GOOGLE PLAY\npackage: work.samelling.hipstergo.qa\nversion: 1.0.0-rc.1 (100000)\nsource commit: %s\nsigning: temporary runner debug key; uninstall before upgrading\n' "$GITHUB_SHA" \
+            > android-production/app/build/outputs/apk/qa/qa-build-info.txt
+          sha256sum "$qa"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hipster-go-android-qa-sideload
+          path: |
+            android-production/app/build/outputs/apk/qa/app-qa.apk
+            android-production/app/build/outputs/apk/qa/qa-build-info.txt
+          if-no-files-found: error
+          retention-days: 14
       - uses: actions/upload-artifact@v4
         with:
           name: hipster-go-production-rc-unsigned

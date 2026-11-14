@@ -14,7 +14,21 @@ android {
         versionName '1.0.0-rc.1'
     }
     buildTypes {
+        // The genuine production release/AAB is intentionally unsigned until
+        // Play Console package ownership and upload certificate are confirmed.
         release { minifyEnabled false }
+
+        // Installable, isolated device QA build; never ship to Google Play.
+        // GitHub runners create a fresh debug certificate each run, so this
+        // artifact is NOT upgrade-compatible and must not hold lasting data.
+        qa {
+            initWith release
+            applicationIdSuffix '.qa'
+            signingConfig signingConfigs.debug
+            debuggable false
+            minifyEnabled false
+            matchingFallbacks = ['release']
+        }
     }
     sourceSets {
         main {
