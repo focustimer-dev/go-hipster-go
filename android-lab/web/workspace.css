@@ -1064,6 +1064,7 @@ body.gig-poster.lab-workspace[data-page=launch] :is(
    every other theme uses dark ink on its lighter selected pigment. */
 :root[data-pwa-theme=liberi],
 :root[data-pwa-theme=beirut]{--lab-skill-notice-ink:#ffffff}
+:root[data-pwa-theme=polish]{--lab-skill-notice-ink:#000000}
 body.gig-poster.lab-workspace #labSkillNotice{
  display:flex;align-items:center;justify-content:space-between;gap:10px;
  margin:0 0 7px;padding:6px 8px;

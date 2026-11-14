@@ -541,7 +541,7 @@ class AndroidThemeRoles(unittest.TestCase):
                     themes, re.S,
                 )
             self.assertIsNotNone(color, theme + " has a selected-region token")
-            ink = "#ffffff" if theme in ("liberi", "beirut") else "#111111"
+            ink = {"liberi": "#ffffff", "beirut": "#ffffff", "polish": "#000000"}.get(theme, "#111111")
             self.assertGreaterEqual(
                 contrast(color.group(1), ink), 4.5,
                 theme + ": notice text should be readable on actual map selection",
