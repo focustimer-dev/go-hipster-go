@@ -7,7 +7,9 @@ These PNGs are the user-approved generated artwork from the November 13, 2026 de
 
 The build copies these files verbatim into drawable-nodpi. Both layouts use fitCenter on a transparent container. Intermediate launcher sizes use the record until there is enough width and height for the cassette. Launcher cell dimensions vary; grid metadata is a preference, not an exact pixel measurement.
 
-The printed text is deliberately baked into the approved art. The existing generator always requests 12 tracks and excludes Inspiration. If that contract changes, create a clean label asset before adding dynamic typography; do not stack duplicate text bars over this image.
+The printed text is deliberately baked into the approved art. **The cassette source also contains `HIPSTER GO / LAB` on its black upper-right band.** The Lab rendition preserves the original pixels and SHA-256 exactly. The separate production/QA packaging path now removes only the printed `/ LAB` suffix from that band's pixels before compressing its private `widget_chaos_cassette.webp`, retaining `HIPSTER GO` and everything else (case, screws, spools, alpha, headline). No replacement SVG, enlarged overlay or change to the source PNG is involved. A narrow pixel-level regression test protects the original and the masked region; a new installed-app screenshot is still required for final visual acceptance.
+
+The existing generator always requests 12 tracks and excludes Inspiration. If that contract changes, create a clean label asset before adding dynamic typography; do not stack duplicate text bars over this image.
 
 Static release first. Reel/record animation is not implemented. The entire widget rolls; the cassette retains an invisible 48dp top app-opening target.
 
