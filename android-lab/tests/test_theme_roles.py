@@ -498,6 +498,56 @@ class AndroidThemeRoles(unittest.TestCase):
         self.assertIn("body.gig-poster.lab-workspace", atlas)
         self.assertNotIn("body.pwa-workspace", source("android-lab/web/theme-tokens.css"))
 
+    def test_manual_skill_notice_uses_selected_atlas_color_with_readable_ink(self):
+        """No parallel update UI: reuse the theme's actual selected-region fill."""
+        css = source("android-lab/web/workspace.css")
+        html = source("android-lab/web/workspace.html")
+        js = source("android-lab/web/workspace.js")
+        self.assertIn(
+            "background:var(--lab-atlas-selected,var(--atlas-selected,#a83223));",
+            css,
+        )
+        self.assertIn("color:var(--lab-skill-notice-ink,#111111);", css)
+        self.assertIn(
+            ":root[data-pwa-theme=liberi],\n"
+            ":root[data-pwa-theme=beirut]{--lab-skill-notice-ink:#ffffff}",
+            css,
+        )
+        self.assertIn("const geminiUpdate=ai==='gemini'&&state.updateAvailable===true;", js)
+        self.assertIn("notice.hidden=!geminiUpdate;", js)
+        self.assertIn('id="labUpdateDot"', html)
+        self.assertIn('id="labSkillNotice"', html)
+        self.assertIn('data-lab-action="updates"', html)
+
+        base = source("launcher/editions/gig-poster/edition.css")
+        atlas = source("launcher/assets/pwa-atlas-themes.css")
+        themes = source("launcher/assets/pwa-themes.css")
+        for theme in (
+            "liberi", "bosque", "usiku", "kingston", "detroit",
+            "addis", "polish", "beirut", "michoacan",
+        ):
+            if theme == "liberi":
+                color = re.search(r"--atlas-selected:(#[0-9a-f]{6})", base)
+            elif theme in ("bosque", "usiku"):
+                color = re.search(
+                    rf":root\[data-pwa-theme={theme}\] body\.gig-poster"
+                    rf"\.lab-workspace\{{[^}}]*--atlas-selected:(#[0-9a-f]{{6}})",
+                    atlas, re.S,
+                )
+            else:
+                color = re.search(
+                    rf":root\[data-pwa-theme={theme}\]\{{[^}}]*"
+                    rf"--lab-atlas-selected:(#[0-9a-f]{{6}})",
+                    themes, re.S,
+                )
+            self.assertIsNotNone(color, theme + " has a selected-region token")
+            ink = "#ffffff" if theme in ("liberi", "beirut") else "#111111"
+            self.assertGreaterEqual(
+                contrast(color.group(1), ink), 4.5,
+                theme + ": notice text should be readable on actual map selection",
+            )
+
+
 
 if __name__ == "__main__":
     unittest.main()
