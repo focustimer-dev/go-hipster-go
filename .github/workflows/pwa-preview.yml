@@ -10,6 +10,13 @@ on:
       - 'launcher/assets/pwa-atlas-themes.css'
       - 'launcher/assets/app.js'
       - 'cloudflare/worker.js'
+      - 'launcher/privacy/**'
+      - 'launcher/support/**'
+      - 'launcher/assets/legal.css'
+      - 'launcher/index.html'
+      - 'launcher/setup/index.html'
+      - 'tests/test_legal_pages.py'
+      - 'scripts/verify_legal_pages.mjs'
       - 'cloudflare/link-preview.js'
       - 'tests/link_preview_worker.test.mjs'
       - 'docs/pwa-*'
@@ -79,6 +86,8 @@ jobs:
         env:
           PWA_PREVIEW_URL: https://hipster-go-pwa-theme-atlas-rc.samelling.workers.dev
         run: node scripts/pwa_inline_atlas_qa.mjs
+      - name: Verify public legal pages on isolated preview
+        run: node scripts/verify_legal_pages.mjs --base=https://hipster-go-pwa-theme-atlas-rc.samelling.workers.dev
       - name: Test deployed preview in Chromium
         env:
           PWA_PREVIEW_URL: https://hipster-go-pwa-theme-atlas-rc.samelling.workers.dev

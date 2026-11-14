@@ -69,6 +69,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Verify public legal pages after deployment
+        run: node scripts/verify_legal_pages.mjs --base=https://hipster-go.samelling.workers.dev
       - name: Verify live site matches release
         run: |
           npm install --no-save --package-lock=false playwright@1.62.1

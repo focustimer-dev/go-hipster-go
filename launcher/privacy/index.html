@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow"><meta name="color-scheme" content="light">
+<meta name="description" content="Go, Hipster, Go! Android app and website privacy policy: local storage, music-link previews, AI handoffs, deletion and contact information.">
+<title>Privacy Policy — Go, Hipster, Go!</title><link rel="stylesheet" href="/assets/legal.css">
+<link rel="canonical" href="https://hipster-go.samelling.workers.dev/privacy/">
+</head>
+<body><a class="skip" href="#main">Skip to privacy policy</a>
+<header class="mast"><a class="wordmark" href="/">GO, HIPSTER, GO!</a><nav aria-label="Site navigation"><a href="/">Jukebox</a><a href="/setup/">Manual</a><a href="/support/">Support</a></nav></header>
+<main id="main">
+<div class="intro"><span class="stamp">Privacy Policy</span><h1>YOUR TASTE IS YOUR BUSINESS.</h1>
+<p class="lead">This policy explains how the <strong>Go, Hipster, Go!</strong> native Android app and accompanying website handle information. The app creates music discovery prompts; it does not itself stream songs or log in to your AI or music accounts.</p>
+<p class="small"><strong>Effective date:</strong> November 14, 2026 · <strong>Contact:</strong> <a href="mailto:gohipstergosupport@proton.me">gohipstergosupport@proton.me</a></p></div>
+<section aria-labelledby="local"><h2 id="local">1. What stays on your device</h2>
+<p>The Android app stores your chosen AI and music service, themes, moods, tempo and region selections, recording preferences, saved requests, recent inspirations, and skill-update status in local app storage. The Chaos Roll widget reads local app preferences. The website may save choices and recent session state in your browser's local storage.</p>
+<p>We do not require a Go, Hipster, Go! account, access your music library or listening history, or synchronize your saved Crate to a Go, Hipster, Go! user-account server. A prompt you copy goes to the Android clipboard or browser clipboard; you decide whether and where to paste it. Apps with access to pasted or shared text handle it under their own privacy practices.</p>
+</section>
+<section aria-labelledby="preview"><h2 id="preview">2. Music-link previews and network requests</h2>
+<p>If you add or share a public music or video link as inspiration, the Android app can look up the page title and description. For supported providers, it sends <strong>the full URL you supplied</strong> via HTTPS to our link-preview endpoint at <code>hipster-go.samelling.workers.dev/api/inspiration-preview</code>, hosted by Cloudflare. That URL may contain identifying information or tokens in its query string. Please do not submit private, password-protected, or token-bearing links.</p>
+<p>The endpoint may contact the original public provider or its metadata/oEmbed service (such as Spotify, YouTube, SoundCloud or other supported music/video/catalog providers) to retrieve publicly available metadata. If the first-party lookup fails or a link is outside the supported list, the Android app may request public page metadata directly from that website. These requests can disclose the link and normal connection data to Cloudflare, the linked site's operator and their infrastructure providers. We do not use the link-preview feature to download or stream media.</p>
+<p>The Android app can also check public GitHub release information for Gemini skill updates, at most about once per day by default. You may turn automatic checks off in the update settings. This does not inspect your Gemini account, install skills, or send your saved Crate to GitHub.</p>
+<p>Visiting this website or using the connected features also results in standard HTTPS requests. The hosting service and linked external services may process IP addresses, timestamps and request details for delivery, security and diagnostics.</p>
+</section>
+<section aria-labelledby="handoff"><h2 id="handoff">3. AI and music services you choose</h2>
+<p>When you choose to open or share a music discovery request with ChatGPT, Gemini, Claude, another AI, or a music service, text you explicitly submit to that service is processed by that provider under its own terms and privacy policy. Go, Hipster, Go! does not automatically send a generated playlist, verify that an external playlist was saved, or operate your external accounts.</p>
+<p>Downloading a skill ZIP or opening an instruction link from our Manual does not mean the skill was installed. Those downloads and GitHub links are handled by the relevant host or browser.</p>
+</section>
+<section aria-labelledby="security"><h2 id="security">4. Security, retention and deletion</h2>
+<p>Our app-controlled preview and release-check requests use HTTPS. The Android release disables cleartext network traffic and Android app backup. The link-preview Worker processes the request to return metadata; the application code does not write preview links to a persistent first-party user database. However, <strong>Cloudflare and the external destinations may process and retain network or request metadata</strong> under their own security, operational and retention practices; we cannot delete copies held solely by those independent providers.</p>
+<p>Locally saved prompts, inspirations and settings remain on the device until removed in the app where controls are offered, cleared through Android app settings, or erased by uninstalling the Android app. The website's browser-stored data can be cleared through your browser's site-data controls. Deleting a local Crate entry does not delete information you previously chose to send to an AI or music provider.</p>
+<p>If you email support, we use your email address and message to respond to the request. We retain correspondence only as needed for support, security or applicable obligations; contact us to ask about access, correction or deletion of support correspondence we control.</p>
+<div class="note"><p><strong>No user-account deletion login is needed:</strong> the current Android app does not provide first-party account creation. If this changes, we will update these controls and this policy.</p></div>
+</section>
+<section aria-labelledby="choices"><h2 id="choices">5. Your choices and other services</h2>
+<p>Link preview is optional: you can write a musical idea without providing a URL. AI handoff is user-directed. You can disable automatic skill-update checks in the app. We do not operate in-app advertising or sell your personal data. If you navigate to an external service, its privacy terms apply.</p>
+<p>Infrastructure and services relevant to the app include <a href="https://www.cloudflare.com/privacypolicy/" rel="noopener">Cloudflare</a> (website and preview hosting), <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">GitHub</a> (public update metadata and package downloads), and the music/video/AI services you choose to use. We do not claim that those providers have no network logs.</p>
+</section>
+<section aria-labelledby="changes"><h2 id="changes">6. Contact and changes to this policy</h2>
+<p>For questions about Go, Hipster, Go! privacy, the information we handle, or deletion of support correspondence, email <a class="contact" href="mailto:gohipstergosupport@proton.me">gohipstergosupport@proton.me</a>. Do not send passwords, API tokens or private account credentials.</p>
+<p>We will update this page if the app's functionality or data handling materially changes. The effective date at the top identifies the current policy.</p>
+</section>
+</main>
+<footer><a href="/">Jukebox</a><a href="/setup/">Manual</a><a href="/support/">Support</a><span>Go, Hipster, Go! · Privacy policy</span></footer>
+</body></html>
