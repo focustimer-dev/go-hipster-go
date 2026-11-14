@@ -7,3 +7,4 @@ app/src/main/assets/
 *.jks
 
 app/src/main/res/drawable-nodpi/widget_chaos_*.png
+app/src/main/res/drawable-nodpi/widget_chaos_*.webp

@@ -31,7 +31,7 @@ public final class ChaosRollWidgetProvider extends AppWidgetProvider {
 
     private void render(Context context, AppWidgetManager manager, int id, Bundle options) {
         if (Build.VERSION.SDK_INT >= 31 && options != null) {
-            var sizes = options.<SizeF>getParcelableArrayList(AppWidgetManager.OPTION_APPWIDGET_SIZES);
+            java.util.ArrayList<SizeF> sizes = options.<SizeF>getParcelableArrayList(AppWidgetManager.OPTION_APPWIDGET_SIZES);
             if (sizes != null && !sizes.isEmpty() && sizes.size() <= 16) {
                 Map<SizeF, RemoteViews> layouts = new LinkedHashMap<>();
                 for (SizeF size : sizes) {
