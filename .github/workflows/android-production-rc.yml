@@ -11,6 +11,9 @@ on:
       - 'scripts/bundle_android_lab.py'
       - 'scripts/bundle_android_production.py'
       - 'scripts/test_android_production_contract.py'
+      - 'scripts/test_android_play_readiness.py'
+      - 'docs/android-privacy-policy-draft.md'
+      - 'docs/android-play-store-readiness.md'
       - 'scripts/render_chaos_widget.py'
       - '.github/workflows/android-production-rc.yml'
   pull_request:
@@ -21,6 +24,9 @@ on:
       - 'scripts/bundle_android_lab.py'
       - 'scripts/bundle_android_production.py'
       - 'scripts/test_android_production_contract.py'
+      - 'scripts/test_android_play_readiness.py'
+      - 'docs/android-privacy-policy-draft.md'
+      - 'docs/android-play-store-readiness.md'
       - 'scripts/render_chaos_widget.py'
       - '.github/workflows/android-production-rc.yml'
 
@@ -55,6 +61,7 @@ jobs:
         run: |
           python -m unittest discover -s android-lab/tests -v
           python scripts/test_android_production_contract.py
+          python scripts/test_android_play_readiness.py
       - name: Native production release unit tests, lint, APK and AAB
         run: bash android/gradlew -p android-production testReleaseUnitTest lintVitalRelease assembleRelease bundleRelease --no-daemon
       - name: Verify unsigned production package identity
