@@ -66,7 +66,7 @@ class AndroidPlayReadiness(unittest.TestCase):
         doc = (ROOT / "docs/android-play-store-readiness.md").read_text()
         for expected in (
             "not** submitted", "developer", "does not stream songs",
-            "does not guarantee playlist publication",
+            "or guarantee playlist publication",
             "policy", "12-slot", "nine themes",
             "widget", "1×1", "3×2", "Data safety",
             "Cloudflare", "internal testing", "first-party",
