@@ -12,7 +12,7 @@
     "pricing": "owner_decision_required",
     "website": "https://hipster-go.samelling.workers.dev/",
     "support_email": "gohipstergosupport@proton.me",
-    "privacy_policy_url": null
+    "privacy_policy_url": "https://hipster-go.samelling.workers.dev/privacy/"
   },
   "limits": {
     "app_name": 30,
