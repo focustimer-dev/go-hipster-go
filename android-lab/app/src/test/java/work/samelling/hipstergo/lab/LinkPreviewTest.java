@@ -23,6 +23,34 @@ public class LinkPreviewTest {
  @Test public void doesNotDecodeEntitiesTwice(){
   assertEquals("Literal &amp;",LinkPreview.parse("https://example.com/","<title>Literal &amp;amp;</title>").title);
  }
+ @Test public void deniesSpecialUseIpv4OutsideSiteLocalRanges()throws Exception {
+  for(String address:new String[]{
+   "100.64.0.1","100.127.255.254",
+   "192.0.0.1","192.0.2.25","192.88.99.2",
+   "198.18.0.1","198.19.255.250","198.51.100.3","203.0.113.24"
+  }){
+   assertFalse("Allowed reserved endpoint: "+address,
+    LinkPreview.publicAddress(java.net.InetAddress.getByName(address)));
+  }
+  for(String address:new String[]{"8.8.8.8","1.1.1.1","9.9.9.9"}){
+   assertTrue("Rejected public DNS endpoint: "+address,
+    LinkPreview.publicAddress(java.net.InetAddress.getByName(address)));
+  }
+  for(String address:new String[]{"https://192.0.2.1/","https://198.18.0.1/",
+   "https://203.0.113.25/"}) {
+   try{LinkPreview.allowedUrl(address);fail("Accepted reserved literal "+address);}
+   catch(java.io.IOException expected){}
+  }
+ }
+ @Test public void deniesSpecialUseIpv6DocsAndTunnels()throws Exception {
+  for(String address:new String[]{"2001:db8::1","2002:c0a8:0101::1",
+    "3fff:0000::42","fc00::42","fe80::1"}){
+   assertFalse("Allowed nonpublic IPv6 "+address,
+    LinkPreview.publicAddress(java.net.InetAddress.getByName(address)));
+  }
+  assertTrue(LinkPreview.publicAddress(java.net.InetAddress.getByName("2606:4700:4700::1111")));
+ }
+
  @Test public void rejectsMixedPublicAndPrivateDnsResults()throws Exception {
   okhttp3.Dns mixed=host->java.util.Arrays.asList(java.net.InetAddress.getByName("8.8.8.8"),java.net.InetAddress.getByName("127.0.0.1"));
   try{LinkPreview.resolvePublic("example.com",mixed,1000);fail("Mixed DNS accepted");}catch(java.net.UnknownHostException expected){}
