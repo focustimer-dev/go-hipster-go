@@ -51,6 +51,7 @@ The release build — **not Android Lab** — must supply:
 - [ ] Native signed AAB built and its package/manifest/certificate/SDK versions verified
 - [ ] Privacy policy: approved Android-specific publicly hosted HTTPS page, linked in app **and** store
 - [ ] Data safety: verified actual collection/transmission for full inspiration URLs sent to first-party preview endpoint and public hosts, GitHub update requests, external AI handoff, third-party dependencies, and any logs
+- [ ] Cloudflare Worker preview routing, analytics/log retention and any sub-processors reviewed; document findings in the final Android privacy policy
 - [ ] Advertising declaration validated
 - [ ] Audience/target age/content rating questionnaire answered truthfully
 - [ ] App-access instructions provided (no first-party account needed; explain optional external AI/music accounts)
