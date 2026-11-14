@@ -20,6 +20,14 @@ def prepare() -> None:
     if resources.exists():
         shutil.rmtree(resources)
     shutil.copytree(NATIVE_RES, resources)
+    # Lab's widget-picker label must never appear in the production build.
+    strings = resources / "values/strings.xml"
+    original = strings.read_text()
+    source = '<string name="chaos_roll_widget_name">Chaos Roll (Lab)</string>'
+    if original.count(source) != 1:
+        raise ValueError("Unexpected widget label template; audit production branding")
+    strings.write_text(original.replace(source,
+        '<string name="chaos_roll_widget_name">Chaos Roll</string>'))
     shortcuts = APP / "config/shortcuts.xml"
     shutil.copyfile(shortcuts, resources / "xml/shortcuts.xml")
 
