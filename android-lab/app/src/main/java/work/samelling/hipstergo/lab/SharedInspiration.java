@@ -81,6 +81,13 @@ final class SharedInspiration {
         input.setFilters(new InputFilter[]{new InputFilter.LengthFilter(InspirationText.LIMIT)});
         LinearLayout content=new LinearLayout(activity);content.setOrientation(1);content.setPadding(32,16,32,0);
         content.addView(input);
+        // Link preview is optional. Disclose the full-URL network request
+        // directly at the point where a user chooses to add a link.
+        TextView privacyNote=new TextView(activity);
+        privacyNote.setText("If you add a link, its full URL is sent to our Cloudflare preview service and may be sent to the linked provider. Avoid private or token-bearing links.");
+        privacyNote.setTextSize(12);
+        privacyNote.setPadding(0,12,0,12);
+        content.addView(privacyNote);
         AlertDialog.Builder dialog=new AlertDialog.Builder(activity).setTitle(incoming?"Shared inspiration":"Your inspiration")
             .setView(content).setPositiveButton("Use in Jukebox",(d,n)->{
                 String value=InspirationText.normalize(null,input.getText().toString());
