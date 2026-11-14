@@ -21,7 +21,7 @@ class DiscoveryExplorationTests(unittest.TestCase):
 
     def test_hard_explores_independent_paths_before_finalists(self):
         self.assertIn("Explore before verifying", self.hard)
-        self.assertIn("at least two independent research paths", self.hard)
+        self.assertIn("at least three independent research paths", self.hard)
         self.assertIn("selected regional references", self.hard)
         self.assertIn("original singles/artist albums", self.hard)
         self.assertIn("two mirrors of one tracklist", self.hard)

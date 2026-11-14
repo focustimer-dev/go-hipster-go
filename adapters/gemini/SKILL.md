@@ -1,6 +1,6 @@
 ---
 name: go-hipster-go
-version: 3.11.6
+version: 3.11.7
 description: Go, Hipster, Go! moods, discovery routes, de-cheese and setup; verified global playlists with authorized YouTube Music publishing.
 ---
 

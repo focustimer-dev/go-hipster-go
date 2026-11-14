@@ -1,3 +1,7 @@
+## 3.11.7 — GO HARD skill update
+
+- Explore three independent paths when source access supports them and include verified crate provenance beside each track’s musical hook.
+- Audit signature staples and brief-specific outliers while preserving the existing candidate budget and requested count.
 
 ## 3.11.6 release candidate — not yet published (2026-11-13)
 
