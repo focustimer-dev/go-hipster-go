@@ -552,7 +552,7 @@ html[data-pwa-theme=usiku] body.pwa-workspace .pwa-dialog-head{
  --lab-ui-focus:#c13b28;--lab-ui-control-outline:#103135;
  --lab-ui-ticket-stock:#fffaf0;--lab-ui-ticket-ink:#103135;
  --lab-ui-go:#103135;--lab-ui-highlight:#d8bd67;--lab-ui-on-highlight:#103135;
- --lab-print-muted:#e3dcd2;--lab-print-stamp:#b64b36;
+ --lab-print-muted:#e3dcd2;--lab-print-stamp:#d83c2d;
  --lab-print-active-ink:#c13b28;--lab-print-stamp-border-style:solid;
  --lab-print-substrate-texture:none;
  --lab-print-stamp-filter:brightness(0) saturate(100%) invert(38%) sepia(72%) saturate(960%) hue-rotate(331deg) brightness(94%) contrast(90%);
