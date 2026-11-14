@@ -18,6 +18,7 @@ on:
       - '.github/releases/pwa-michoacan-2026-11-10'
       - '.github/releases/pwa-tempo-curve-2026-11-11'
       - '.github/releases/pwa-michoacan-contrast-2026-11-11'
+      - '.github/releases/play-legal-pages-2026-11-14'
 
 permissions:
   contents: read
