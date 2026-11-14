@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "channel": "stable",
+  "version": "3.11.6",
+  "tag": "gemini-skill-v3.11.6",
+  "published_at": "2026-11-13T05:30:49Z",
+  "source_commit": "a384a76721f39d5e0bb0ef26d641bf0798d72558",
+  "release_page": "https://github.com/focustimer-dev/go-hipster-go/releases/tag/gemini-skill-v3.11.6",
+  "status": "GitHub published stable; 3.11.6 release notes include unified RC9 checkpoint. Stable does not mean a fresh Gemini model behavior test.",
+  "artifacts": {
+    "chatgpt_plugin": {
+      "filename": "go-hipster-go-chatgpt-plugin.zip",
+      "url": "https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.11.6/go-hipster-go-chatgpt-plugin.zip",
+      "sha256": "fd564943b7e86727aa7a2d8db7120e30a71ddeaaa65726af6c407f422761a421"
+    },
+    "gemini_skill": {
+      "filename": "go-hipster-go-gemini-app-skill.zip",
+      "url": "https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.11.6/go-hipster-go-gemini-app-skill.zip",
+      "sha256": "50a78b479a065ba97cc39a07a3445eb08f170a67a52f84faa801243ef6d6aa76"
+    },
+    "claude_skill": {
+      "filename": "go-hipster-go-claude-skill.zip",
+      "url": "https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.11.6/go-hipster-go-claude-skill.zip",
+      "sha256": "621b973f1a3f9dcead39e2ed03f824c3cd2cbdf38dc6d1f2c6e7751b45f16f73"
+    },
+    "claude_plugin": {
+      "filename": "go-hipster-go-claude-plugin.zip",
+      "url": "https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.11.6/go-hipster-go-claude-plugin.zip",
+      "sha256": "7f8df04a4dffa1bb195e2de21fda7c314dbedb1455417e8030fa9f2daf5646dd"
+    }
+  }
+}
