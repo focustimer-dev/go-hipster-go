@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "status": "draft_owner_review_not_submitted",
+  "locale": "en-US",
+  "store": {
+    "app_name": "Go, Hipster, Go!",
+    "short_description": "Shape 12-track music discovery with moods, tempo curves and world maps",
+    "full_description": "Go, Hipster, Go! helps turn a mood, a place or an unusual musical idea into a twelve-track discovery brief.\n\nBuild your listening journey in the Jukebox:\n• Combine moods and shape the pace with a draggable tempo and mood curve.\n• Explore regional music scenes through an interactive Atlas.\n• Add an artist, song link or unexpected idea as inspiration.\n• Keep useful requests and recent inspirations in Your Crate.\n• Switch among nine visual themes.\n• Use the Chaos Roll home-screen widget to start with a new prompt.\n\nWhen your brief is ready, copy it or share it with a supported AI assistant. The Manual explains how to install and update a compatible AI skill and how to review the resulting discovery request.\n\nThe core Jukebox, Atlas and saved-request workspace are packaged for offline use. Link previews, skill-update checks and external AI or music services need an internet connection.\n\nGo, Hipster, Go! does not itself stream music, research recordings, sign in to your AI or music accounts, or create and save playlists automatically. Those actions depend on the assistant, skills and connected services you choose. Review a result before sending or publishing it.",
+    "release_notes": "First native Android release: mood and tempo curve, regional Atlas, Your Crate, Manual, nine themes and Chaos Roll widget.",
+    "category_candidate": "Music & Audio",
+    "app_type_candidate": "app",
+    "pricing": "owner_decision_required",
+    "website": "https://hipster-go.samelling.workers.dev/",
+    "support_email": "gohipstergosupport@proton.me",
+    "privacy_policy_url": null
+  },
+  "limits": {
+    "app_name": 30,
+    "short_description": 80,
+    "full_description": 4000
+  },
+  "approval": {
+    "store_copy": false,
+    "free_or_paid": false,
+    "category": false,
+    "target_audience": false,
+    "content_rating": false,
+    "ads_declaration": false,
+    "privacy_and_data_safety": false,
+    "play_submission": false,
+    "public_release": false
+  }
+}
