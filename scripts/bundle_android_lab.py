@@ -151,6 +151,9 @@ def bundle(destination=None):
     widget_asset.write_text(json.dumps(chaos_config, ensure_ascii=False, separators=(',', ':')))
     import runpy
     runpy.run_path(str(ROOT/'scripts/bundle_maplibre_lab.py'))['bundle_maplibre'](destination)
+    # Generate resize-aware raster crops from one reproducible, layered cassette.
+    runpy.run_path(str(ROOT/'scripts/render_chaos_widget.py'))['render'](
+        ROOT / 'android-lab/app/src/main/res/drawable-nodpi')
     # Only the packaged Android copies are compressed. Originals in launcher/
     # remain lossless and can be re-encoded for future visual revisions.
     runpy.run_path(str(ROOT/'scripts/optimize_android_artwork.py'))['optimize'](destination)
