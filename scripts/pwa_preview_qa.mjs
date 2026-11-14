@@ -31,7 +31,16 @@ for(const profile of profiles){
  const page=await context.newPage();
  page.setDefaultTimeout(20000);
  const errors=[];
- page.on('pageerror',e=>errors.push(e.message));
+ const sandboxWarnings=[];
+ // The curve editor deliberately runs in a restrictive allow-scripts sandbox.
+ // Chromium sometimes reports this exact blocked service-worker access while
+ // the editor is active. Keep the diagnostic visible, never waive other errors.
+ page.on('pageerror',e=>{
+  const sandboxServiceWorkerWarning=e.message==="Failed to read the 'serviceWorker' property from 'Navigator': Service worker is disabled because the context is sandboxed and lacks the 'allow-same-origin' flag.";
+  const curveIsolated=page.frames().some(frame=>frame.url().includes('/assets/mix-curve-trial'));
+  if(sandboxServiceWorkerWarning&&curveIsolated)sandboxWarnings.push(e.message);
+  else errors.push(e.message);
+ });
  page.on('response',res=>{if(res.url().startsWith(base)&&res.status()>=400)errors.push('HTTP '+res.status()+' '+res.url())});
  const result={profile:profile.name,passed:false};
  try{
@@ -402,6 +411,7 @@ for(const profile of profiles){
 
   await page.locator('[data-pwa-action="cancel-reference"]').click();
   assert.deepEqual(errors,[],errors.join('; '));
+  if(sandboxWarnings.length)result.sandboxWarnings=sandboxWarnings;
   result.passed=true;
  }catch(e){failed=true;result.error=String(e.stack||e);result.browserErrors=errors;
    try{await page.screenshot({path:folder+'/'+profile.name+'-failure.png',fullPage:true})}catch(ignore){}
