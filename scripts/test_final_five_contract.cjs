@@ -13,7 +13,7 @@ const specs=[
  {id:'detroit',ocean:'#151515',stock:'rgb(231, 229, 219)'},
  {id:'michoacan',ocean:'#24191b',stock:'rgb(209, 173, 145)'},
  {id:'addis',ocean:'#0f4a48',stock:'rgb(242, 232, 206)'},
- {id:'polish',ocean:'#172c40',stock:'rgb(246, 242, 230)'},
+ {id:'polish',ocean:'#103135',stock:'rgb(241, 225, 199)'},
  {id:'beirut',ocean:'#1c3240',stock:'rgb(227, 216, 191)'}
 ];
 (async()=>{

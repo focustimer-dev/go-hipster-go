@@ -31,6 +31,9 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
      savedRequest(id){auditCalls.push(['saved',id])},reviewInspiration(){auditCalls.push(['review'])},clearInspiration(){auditReference='';window.HipsterLabRefresh()},showUpdates(){auditCalls.push(['updates'])},offerSetupShare(a,t){auditCalls.push(['offerSetupShare',a,t])}};
    });
    await page.goto('http://127.0.0.1:'+server.address().port+'/');
+   assert.equal(await page.evaluate(()=>document.documentElement.dataset.pwaTheme),'polish','Fresh Android installs default to Katowice');
+   await page.evaluate(()=>localStorage.setItem('ghg-lab-theme-v1','liberi'));
+   await page.reload();
    if(profile.scale)await page.addStyleTag({content:'html{font-size:200% !important}'});
    await page.evaluate(()=>document.fonts.ready);
    const capture=async name=>{
