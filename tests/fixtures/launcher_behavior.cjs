@@ -406,8 +406,8 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  const fallbackStorage=new Map([['ghg-pwa-reference-v1',referenceUrl]]);
  assert.match(harness(async()=>{},'?ai=gemini&service=youtube','launch',fallbackStorage).elements.prompt.textContent,/Inspiration: "https:\/\/youtu\.be\/OMaycNcPsHI\?is=12EKA3QNVlegPKpV"/,'Without metadata preserve the exact link and invent no title');
  const geminiSetup=harness(async()=>{},'?ai=gemini&service=youtube','setup').elements.setupPromptText.textContent;
- // Installed PWA is still on public 3.11.5 until release/skill-prod is promoted.
- assert.ok(geminiSetup.includes('3.11.5'),'Setup verifies published 3.11.5, not the staged candidate');
+ // The public setup prompt must match the single pinned, published stable release manifest.
+ assert.ok(geminiSetup.includes('3.11.6'),'Setup verifies published stable 3.11.6, not a staged candidate');
  assert.match(geminiSetup,/persistent Skill/,'Setup distinguishes reading a repo from installation');
  assert.match(geminiSetup,/go-hipster-go-gemini-app-skill\.zip/,'Setup installs the Gemini-specific release ZIP');
  assert.match(geminiSetup,/adapters\/gemini\/SKILL\.md/,'Setup saves only the small Gemini entry');
