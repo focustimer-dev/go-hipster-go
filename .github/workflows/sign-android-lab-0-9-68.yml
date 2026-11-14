@@ -1,17 +1,11 @@
 name: Sign canonical Android Lab 0.9.69 (approved one-shot)
 
-# One-shot signed release from this workflow edit. The release job independently
-# verifies the app build and fast deterministic tests; flaky headless screenshots
-# are NOT a release gate. Ordinary main commits cannot trigger this signer.
+# RETIRED one-shot Lab 0.9.69 signer. Historical record only.
+# No automatic triggers: completed Android Lab builds must never re-run this
+# obsolete fixed-version signer. Its package guard prevents signing current
+# versions. A new production signing workflow belongs to the M5 release gate.
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/sign-android-lab-0-9-68.yml'
-  workflow_run:
-    workflows: ["Android Lab (no deployment)"]
-    types: [completed]
 
 permissions:
   contents: read
