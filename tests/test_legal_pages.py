@@ -73,7 +73,8 @@ class LegalPages(unittest.TestCase):
         worker = (ROOT / "cloudflare/worker.js").read_text()
         self.assertIn('path === "/privacy"', worker)
         self.assertIn('path === "/support"', worker)
-        self.assertIn('path + "index.html"', worker)
+        self.assertIn("Static Assets serves /privacy/", worker)
+        self.assertNotIn('url.pathname = path + "index.html"', worker)
         self.assertTrue((ROOT / "launcher/assets/legal.css").is_file())
         for path in (
             "launcher/index.html", "launcher/setup/index.html",
