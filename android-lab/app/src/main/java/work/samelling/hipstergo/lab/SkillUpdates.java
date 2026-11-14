@@ -139,7 +139,7 @@ final class SkillUpdates {
             .setNeutralButton("Gemini web",(d,n)->opener.open("https://gemini.google.com/app"))
             .setNegativeButton("Back",(d,n)->show()));
     }
-    private void check(boolean display) {
+    void check(boolean display) {
         if(checking)return;
         checking=true;final String selected=channel();
         prefs.edit().putLong(key("attempt",selected),System.currentTimeMillis()).apply();
