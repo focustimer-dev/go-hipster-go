@@ -54,7 +54,7 @@ public final class ChaosRollWidgetProvider extends AppWidgetProvider {
     private RemoteViews createViews(Context context, int id, String variant) {
         RemoteViews views = new RemoteViews(context.getPackageName(),layoutId(variant));
         Intent roll = new Intent(context,ChaosRollActivity.class)
-            .setAction("work.samelling.hipstergo.lab.CHAOS_ROLL");
+            .setAction(context.getPackageName() + ".CHAOS_ROLL");
         PendingIntent rollTap = PendingIntent.getActivity(context,id*2,roll,
             PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         // The artwork is the primary roll action at every size.
