@@ -32,7 +32,7 @@ Official Google Play preview-asset specs: https://support.google.com/googleplay/
 
 - [ ] Cloudflare infrastructure/CDN logs, analytics, query-string handling and retention verified, **especially full first-party preview URLs**; data-safety types/ephemeral processing/optional use approved
 - [ ] Android SDK/third-party dependencies and merged manifest audited; confirm no tracking, advertising or undisclosed user/device data transfers
-- [ ] Approve and date final Android privacy policy, with security, retention/deletion, developer contact and third-party disclosure; publish at a **real public, non-editable HTTPS webpage**, worldwide accessible without login
+- [x] Publish app-specific ordinary HTML privacy policy at **https://hipster-go.samelling.workers.dev/privacy/**, anonymously accessible over HTTPS; support page at **https://hipster-go.samelling.workers.dev/support/**. Legal owner review and final Cloudflare retention accuracy are **still open**.
 - [ ] Add that exact policy URL **inside the installed native app** and in Play Console; verify both links open. A GitHub Markdown document is **not** the published policy page
 - [ ] Ads declaration (candidate: no), audience/age ranges and official content-rating questionnaire answered by owner in Play Console; do not infer age rating from themes or external content
 - [ ] App-access instructions: no first-party account; external AI/music assistants may require the user's own accounts or skills
