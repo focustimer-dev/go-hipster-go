@@ -11,10 +11,12 @@ final class ChaosWidgetSizes {
         if (singleColumn) {
             if (heightDp < 112) return "mini";
             if (heightDp < 184) return "tall2";
-            return "tall3";
+            return "tall2";
         }
-        if (heightDp < 112) return "wide";
-        if (heightDp < 184) return "square";
-        return "hero";
+        boolean threeColumns = widthDp >= 190;
+        if (heightDp < 112) return threeColumns ? "wide3" : "wide";
+        // Two rows is our maximum presentation height. Oversized hosts keep
+        // the full-width cassette instead of inventing a vertical third row.
+        return threeColumns ? "hero" : "square";
     }
 }
