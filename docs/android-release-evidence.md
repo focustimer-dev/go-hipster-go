@@ -8,11 +8,16 @@ A green workflow now publishes three artifacts:
 |---|---|---|
 | `hipster-go-production-rc-unsigned` | `app-release-unsigned.apk`, `app-release.aab` | Inspect only; **not installable/distributable** until M0/M5 approval |
 | `hipster-go-android-qa-sideload` | `app-qa.apk`, `qa-build-info.txt` | Disposable Pixel installation; **never** for Google Play |
-| `hipster-go-android-rc-evidence` | `release-evidence.json`, `SHA256SUMS` | Source/package/version/hash/signing-lane audit |
+| `hipster-go-android-rc-evidence` | `release-evidence.json`, `SHA256SUMS`, `compiled-package-audit.json`, `runtime-dependencies.txt` | Hashes, identities, compiled privacy/permission/native-library audit and resolved runtime SDK tree |
 
 The evidence JSON includes the **actual GitHub checkout commit**, as distinct from the original PR head for pull-request builds, and each file's SHA-256 and size. It also records the QA signing certificate SHA-256 fingerprint, which is a **public certificate fingerprint, not a signing key**. Every Actions runner can generate a different temporary QA debug certificate; Android may refuse installing one QA APK over another. This is expected and unrelated to the eventual Play upload certificate.
 
-The workflow checks package/version identity via `aapt`, confirms that the QA APK verifies with `apksigner`, and rejects any production APK that already verifies as signed before the owner explicitly approves an M5 signing pipeline. It **does not** call Play Console, download any keys, access Google Drive or publish an app.
+The workflow checks package/version identity via `aapt`, confirms that the QA APK verifies with `apksigner`, and rejects any production APK that already verifies as signed before the owner explicitly approves an M5 signing pipeline.
+
+The **compiled-package audit** reads the actual unsigned production APK, unsigned AAB and signed QA APK after Gradle finishes. It verifies that the final APK's *merged* permission set is exactly `INTERNET`, package names and target SDK match the RC, and the packaged offline UI contains the real public privacy and support HTTPS links. It inspects all three archives for native `.so` libraries; if one appears, the CI job **fails closed** until that dependency's 16 KB ELF and packaging alignment are reviewed, rather than assuming the bundle is compatible. This audit does **not** replace a 16 KB device/emulator test or Play's AAB inspection.
+
+`runtime-dependencies.txt` lists Gradle's **resolved release runtime dependencies** from that exact build. Compare it with the SDK/provider inventory and Play SDK rules before finalizing Data safety. Resolved dependencies alone cannot prove that an SDK never transmits data at runtime; device/network review remains an M6 gate.
+ It **does not** call Play Console, download any keys, access Google Drive or publish an app.
 
 ## Verify a build before giving it to testers
 
