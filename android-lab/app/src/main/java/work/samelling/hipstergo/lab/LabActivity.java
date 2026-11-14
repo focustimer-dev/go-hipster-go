@@ -275,21 +275,35 @@ public class LabActivity extends Activity {
     }
     private void browser(String url) {
         Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        Intent selector = Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_BROWSER);
-        android.content.ComponentName b = selector.resolveActivity(getPackageManager());
-        if (b != null && !"android".equals(b.getPackageName())) i.setPackage(b.getPackageName());
-        try { startActivity(i); }
-        catch (ActivityNotFoundException e) { toast("No browser available to open this link."); }
+        // Prefer a real browser, not an installed AI app's URL interception.
+        // Some managed devices restrict package visibility or individual launches.
+        // Retry the ordinary HTTPS VIEW route before telling the user to paste.
+        try {
+            Intent selector = Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_BROWSER);
+            android.content.ComponentName b = selector.resolveActivity(getPackageManager());
+            if (b != null && !"android".equals(b.getPackageName())) i.setPackage(b.getPackageName());
+        } catch (SecurityException ignored) {
+            // A normal ACTION_VIEW can still succeed with a different browser.
+        }
+        try { startActivity(i); return; }
+        catch (ActivityNotFoundException | SecurityException unavailable) {
+            if (i.getPackage() != null) {
+                i.setPackage(null);
+                try { startActivity(i); return; }
+                catch (ActivityNotFoundException | SecurityException ignored) { }
+            }
+            toast("No browser available to open this link. Your request remains copied.");
+        }
     }
     private void share(String text, String target) {
         Intent i = new Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT,text);
         if (target != null) {
             i.setPackage(target);
             try { startActivity(i); return; }
-            catch (ActivityNotFoundException e) { i.setPackage(null); toast("Choose your AI from the share menu, or paste the copied prompt."); }
+            catch (ActivityNotFoundException | SecurityException e) { i.setPackage(null); toast("Choose your AI from the share menu, or paste the copied prompt."); }
         }
         try { startActivity(Intent.createChooser(i,"Share your playlist request")); }
-        catch (ActivityNotFoundException e) { toast("No sharing app available. Open Go, Hipster, Go! to copy the request manually."); }
+        catch (ActivityNotFoundException | SecurityException e) { toast("No sharing app available. Your request remains copied; paste it manually."); }
     }
     private String aiPackage(String ai) {
         return "chatgpt".equals(ai)?"com.openai.chatgpt":"gemini".equals(ai)?"com.google.android.apps.bard":"claude".equals(ai)?"com.anthropic.claude":null;
@@ -312,10 +326,12 @@ public class LabActivity extends Activity {
         if ("browser".equals(mode)) { browser(destination); return; }
         if ("share".equals(mode)) { share(text,pkg); return; }
         if (pkg != null) {
-            Intent launch = getPackageManager().getLaunchIntentForPackage(pkg);
+            Intent launch = null;
+            try { launch = getPackageManager().getLaunchIntentForPackage(pkg); }
+            catch (SecurityException ignored) { /* Browser fallback remains available. */ }
             if (launch != null) {
                 try { startActivity(launch); toast("Prompt copied — paste it in your AI app."); return; }
-                catch (ActivityNotFoundException ignored) { }
+                catch (ActivityNotFoundException | SecurityException ignored) { }
             }
         }
         toast("AI app unavailable. Opening its website; your prompt is copied.");
