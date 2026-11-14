@@ -45,8 +45,7 @@ public final class ChaosRollWidgetProvider extends AppWidgetProvider {
         // The full cassette is the primary, accessible action at every size.
         views.setOnClickPendingIntent(android.R.id.background,rollTap);
 
-        if (!"mini".equals(variant) && !"wide".equals(variant)
-            || "wide".equals(variant)) {
+        if (!"mini".equals(variant)) {
             // Header is a separate 48dp app-opening target, except at 1x1.
             Intent home = new Intent(context,LabActivity.class);
             PendingIntent homeTap = PendingIntent.getActivity(context,id*2+1,home,
