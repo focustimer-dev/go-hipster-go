@@ -132,7 +132,7 @@ class AndroidPlayReadiness(unittest.TestCase):
         self.assertRegex(doc, r"- \[ \] .*approved")
         for expected in (
             "512 × 512", "1024 × 500", "1080 × 1920",
-            "32-bit PNG", "24-bit PNG", "Minimum 2",
+            "32-bit PNG", "24-bit PNG", "Minimum **2**",
             "source SHA",
         ):
             # The artwork plan must reflect exact Play image sizes, not placeholders.
