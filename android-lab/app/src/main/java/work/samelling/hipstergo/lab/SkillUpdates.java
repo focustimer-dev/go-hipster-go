@@ -112,7 +112,7 @@ final class SkillUpdates {
                         .remove(key("dismissed",channel)).apply();changed.run();dialog.dismiss();show();
                 }).setNegativeButton("Cancel",null)));
         }
-        add(panel,"Release channel: "+channel,()->{
+        add(panel,"Release channel: "+("stable".equals(channel)?"Stable":"Preview"),()->{
             dialogs.show(new AlertDialog.Builder(activity).setTitle("Choose release channel")
                 .setSingleChoiceItems(new String[]{"Stable — approved releases","Preview — includes experimental prereleases"},"stable".equals(channel)?0:1,(d,n)->{
                     prefs.edit().putString("skillChannel",n==0?"stable":"lab").apply();status="";d.dismiss();dialog.dismiss();changed.run();show();
