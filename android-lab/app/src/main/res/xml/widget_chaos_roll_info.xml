@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:minWidth="180dp"
-    android:minHeight="100dp"
-    android:targetCellWidth="3"
+    android:minWidth="40dp"
+    android:minHeight="40dp"
+    android:targetCellWidth="2"
     android:targetCellHeight="2"
-    android:initialLayout="@layout/widget_chaos_roll"
-    android:previewLayout="@layout/widget_chaos_roll"
+    android:initialLayout="@layout/widget_chaos_roll_square"
+    android:previewLayout="@layout/widget_chaos_roll_square"
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen"
-    android:updatePeriodMillis="0"/>
+    android:updatePeriodMillis="0" />
