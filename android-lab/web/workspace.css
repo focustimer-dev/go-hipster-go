@@ -1058,11 +1058,17 @@ body.gig-poster.lab-workspace[data-page=launch] :is(
  color:var(--lab-ui-receipt-meta-ink);
 }
 
-/* Compact Gemini-only update action; derived from existing theme roles. */
+/* Manual skill update: the SAME pigment as a selected Atlas region.
+   Keep the existing Gemini-only visibility and REVIEW / RECORD action.
+   The two darker selected inks need light lettering for readable contrast;
+   every other theme uses dark ink on its lighter selected pigment. */
+:root[data-pwa-theme=liberi],
+:root[data-pwa-theme=beirut]{--lab-skill-notice-ink:#fff}
 body.gig-poster.lab-workspace #labSkillNotice{
  display:flex;align-items:center;justify-content:space-between;gap:10px;
  margin:0 0 7px;padding:6px 8px;
- background:var(--lab-ui-panel,#dfb045);color:var(--lab-ui-on-panel,#103135);
+ background:var(--lab-atlas-selected,var(--atlas-selected,#a83223));
+ color:var(--lab-skill-notice-ink,#111111);
  border-bottom:2px solid var(--lab-ui-control-outline,#103135);
 }
 body.gig-poster.lab-workspace #labSkillNotice[hidden]{display:none}
