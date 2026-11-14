@@ -51,17 +51,17 @@ class AndroidProductionContract(unittest.TestCase):
         js = (APP / "src/main/assets/site/assets/app.js").read_text()
         self.assertIn("GO, HIPSTER, GO! ·", page)
         self.assertIn("1.0.0-rc.1", page)
-        self.assertIn("Verify version 3.11.6", manual)
-        self.assertIn("Verify version 3.11.6", js)
+        self.assertIn("Verify version 3.11.7", manual)
+        self.assertIn("Verify version 3.11.7", js)
         self.assertNotIn("Verify version 3.11.5", js)
         self.assertNotIn("Verify version 3.11.1", manual)
         for surface in (page, manual, js):
             self.assertNotIn("releases/latest/download/go-hipster-go-", surface)
-        release = "releases/download/gemini-skill-v3.11.6/"
+        release = "releases/download/gemini-skill-v3.11.7/"
         self.assertIn(release + "go-hipster-go-gemini-app-skill.zip", manual)
         self.assertIn(release + "go-hipster-go-gemini-app-skill.zip", js)
-        self.assertIn("gemini-skill-v3.11.6/adapters/gemini/SKILL.md", manual)
-        self.assertIn("gemini-skill-v3.11.6/adapters/gemini/SKILL.md", js)
+        self.assertIn("gemini-skill-v3.11.7/adapters/gemini/SKILL.md", manual)
+        self.assertIn("gemini-skill-v3.11.7/adapters/gemini/SKILL.md", js)
         self.assertNotIn("ANDROID LAB", page)
         self.assertNotIn("Hipster GO Lab", page)
         self.assertNotIn("Lab Preferences", manual)
