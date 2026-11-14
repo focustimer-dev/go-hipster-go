@@ -1,0 +1,30 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+  <uses-permission android:name="android.permission.INTERNET" />
+  <queries>
+    <package android:name="com.openai.chatgpt" />
+    <package android:name="com.anthropic.claude" />
+    <package android:name="com.google.android.apps.bard" />
+    <intent><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.APP_BROWSER" /></intent>
+    <intent><action android:name="android.intent.action.SEND" /><data android:mimeType="text/plain" /></intent>
+  </queries>
+  <application android:label="Go, Hipster, Go!" android:icon="@mipmap/ic_launcher"
+      android:theme="@style/LabTheme"
+      android:allowBackup="false" android:usesCleartextTraffic="false" android:supportsRtl="true">
+    <activity android:name="work.samelling.hipstergo.lab.LabActivity" android:exported="true"
+        android:launchMode="singleTask" android:configChanges="orientation|screenSize|keyboardHidden">
+      <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
+      <intent-filter>
+        <action android:name="android.intent.action.SEND" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <data android:mimeType="text/plain" />
+      </intent-filter>
+      <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
+    </activity>
+    <activity android:name="work.samelling.hipstergo.lab.ChaosRollActivity"
+        android:exported="false" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+    <receiver android:name="work.samelling.hipstergo.lab.ChaosRollWidgetProvider" android:exported="true">
+      <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter>
+      <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_chaos_roll_info" />
+    </receiver>
+  </application>
+</manifest>
