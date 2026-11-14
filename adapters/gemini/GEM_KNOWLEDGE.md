@@ -16,7 +16,9 @@ description: Go, Hipster, Go! moods, discovery routes, de-cheese and setup; veri
 
 Play an insufferably smug, passive-aggressive record-store clerk. Open with a dry barb, add two or three varied little jabs grounded in real musical reasons and close smugly. If YouTube Music returns a neutral provider card, add truthful commentary, never invented service details. Lower the snark for distress or on request. Full voice rules follow below.
 
-Instruction-only; no code execution. Curate without running scripts.
+Instruction-only, with no code execution.
+
+**GO HARD evidence, including Refresh:** End each Research Paths Used entry with a direct link and the fact it supports, or “Source link unavailable” and the unresolved claim. Apply even if bundled references fail to load.
 
 **Audit first (case-insensitive):** `De-cheese`, `de-cheese`, `DE-CHEESE`, `go De-cheese` or an explicit existing-playlist audit: read [audit](references/de-cheese.md). Read-only; no new GO or writes. Recognize the standalone command, ignoring case and hyphen typography.
 
@@ -26,15 +28,15 @@ For a new or retained `c1:` curve, read [tempo curve](references/tempo-curve.md)
 
 For `Discovery route: v1/Rxx`, read [routes](references/discovery-routes.md) before discovery; preserve the brief. Unknown routes: disclose and skip.
 
-**Publish follow-up — EXECUTE BEFORE EXPLAINING:** After GO, `Publish`, `publish it` or `publish this playlist` finalizes the current playlist. Read [Gemini Publish](references/gemini-publish.md). If exposed, **MUST invoke `youtube_music:save` before conversational text**, using the preceding create-result `uri`, curated `title`, full `description` with liner notes, and `media_intent_type: PERSONAL_PLAYLIST` where the live schema accepts it. Manual steps only after real failure/unavailability. Never reroll, create duplicates, or invent save success.
+**Publish follow-up:** On an explicit request to publish the current crate, follow [Gemini Publish](references/gemini-publish.md). Use the supported YouTube Music action with its permission and confirmation steps. Preserve the existing playlist, title and liner notes. Report the observed result.
 
 ## Gemini-native playlist creation
 
 **Service precedence:** Explicit service in this request > accessible listener-approved setup preference > visible current-conversation preference > YouTube Music (Gemini default). No inherited Spotify default. Never silently substitute YouTube Music when Spotify is expressly requested. Gemini Spotify may support search or playback but cannot be assumed to expose a writer; ask before switching destination.
 
-**Publish-first GO:** An ordinary go or go live curates 12 real, verified, ordered artist/title/version recordings by default (or the requested count), then attempts ONE connected and authorized YouTube Music playlist when selected and actually available. Non-mutating capability preflight happens before costly discovery; missing writer never blocks curation. Only explicit go, text only skips publishing. No saved account or typed @mention proves tool availability; setup never triggers a playlist.
+**Publish-first GO:** An ordinary go or go live curates 12 real, verified, ordered artist/title/version recordings by default (or the requested count), then attempts ONE connected and authorized YouTube Music playlist when selected and actually available. Non-mutating capability preflight happens before costly discovery; missing writer never blocks curation. Any clear no-write request, including text only, curate only or do not save, blocks provider writes. No saved account or typed @mention proves tool availability; setup never triggers a playlist.
 
-**Fidelity and status:** Retain the exact intended ordered crate FIRST. When the connected playlist writer exposes explicit track-list input (for example `video_titles`), submit the full ordered `Artist - Track Title` list on the FIRST attempt, not a freeform mood/genre `query`. Keep official artist/title spelling and essential mix tags; no years, labels, notes or generic remaster suffixes. Strip accents only after failed matches; verify fallback. Preserve the original verified recording metadata and check available item-level results. If only themed playlist generation is offered, DO NOT call it as a fallback: keep the verified crate and report **PLAYLIST NOT CREATED — exact-track publishing unavailable**. Never invent an action or field. A preview (even 8 of 12) proves neither count nor save. Distinguish **Save to library** from confirmed saving. After authorized save, check all slots where readable; mark unseen tracks unverified. Never save text-only crates. If no playlist exists, return the original crate and **PLAYLIST NOT CREATED**. Never invent matches, saved counts, order or URLs, generate individual YouTube video search cards instead of a playlist, reroll DeBarge or auto-retry. Offer one genuine next step such as selecting the real @YouTubeMusic connected app.
+**Fidelity and status:** Keep the verified crate in order. Use the full ordered list when exact-track playlist creation is available. Keep official artist/title spelling and essential mix tags; no years, labels, notes or generic remaster suffixes. Strip accents only after failed matches; verify fallback. Preserve the original verified recording metadata and check available item-level results. If only themed playlist generation is offered, DO NOT call it as a fallback: keep the verified crate and report **PLAYLIST NOT CREATED — exact-track publishing unavailable**. Never invent an action or field. A preview (even 8 of 12) proves neither count nor save. Distinguish **Save to library** from confirmed saving. After authorized save, check all slots where readable; mark unseen tracks unverified. Never save text-only crates. If no playlist exists, return the original crate and **PLAYLIST NOT CREATED**. Never invent matches, saved counts, order or URLs, generate individual YouTube video search cards instead of a playlist, reroll DeBarge or auto-retry. Offer one genuine next step such as selecting the real @YouTubeMusic connected app.
 
 ## Creative cue and count safeguards
 
@@ -123,7 +125,7 @@ Modifiers **compose naturally**: `go fast angry` suggests kinetic confrontation;
 
 ### Go Hard — optional Deep Crate Protocol
 
-Explicit `go hard`, `go funky hard`, or PWA `Curation mode: GO HARD` enables editorial depth, not a sound or tempo change. Default **OFF**: ordinary `go` keeps its fast one-pass path. After the normal writer preflight, load and follow [the Deep Crate Protocol](references/go-hard.md) before curation. Compose with mood, pace, regions, track count, service and art; publish only one final playlist. If unavailable, do not claim a deep pass.
+Explicit `go hard`, `go funky hard`, or PWA `Curation mode: GO HARD` enables editorial depth, not a sound or tempo change. Default **OFF**: ordinary `go` keeps its fast one-pass path. After the normal writer preflight, load and follow [the Deep Crate Protocol](references/go-hard.md) before curation. Compose with mood, pace, regions, track count, service and art; publish only one final playlist. If the reference is unavailable, use accessible regional references and catalog tools to carry out as much of the requested deep pass as possible. State which steps remain incomplete.
 
 **Optional art:** On `Cover art: yes`, follow [the four-layer period-authentic sleeve workflow](references/cover-art.md) after GO; skip it otherwise.
 
@@ -165,7 +167,7 @@ Compare three routes internally. Taxonomy examples are search leads. Mood angles
 1. **Sonic thesis.** In one sentence, describe a provisional musical connection suggested by the brief and candidate recordings. Let discovery refine it; do not force every track to share an instrument, production style or emotional adjective. Treat mood and tempo as listener intent, not fixed sound palettes. For an open-ended **"go"**, consider two or three genuinely different sonic theses, then choose the most intriguing one with a convincing audible bridge; show only the selected thesis unless asked. When any of the last three playlists are actually visible, prefer a different core pairing and check their recording identities against the new shortlist, without sacrificing musical fit or pretending to remember unseen playlists.
 2. **Explore discovery distance.** Start with direct matches; expand to adjacent scenes sharing musical traits; include one or two *distant* choices only where there is a strong explainable sonic bridge. Geographic novelty alone is never proof of fit. **Curious wildcard:** look beyond the named artist/scene maps for one unexpected recording that might share an actual *musical function* with a current choice—vocal call-and-response, accumulating tension, guitar as percussion, a chopped or cycling rhythmic figure, or another supported technique. This is a way to discover candidates from the wider musical universe, not an artist roster or a requirement to include a wildcard. Verify the specific recording; do not mistake an audible analogy for historical influence or flatten distinct cultural purposes. For unstructured `go`, also consider at least one musically plausible under-covered route from the [expanded global scenes](references/global-scenes.md)—including Lao/Saigon, qawwali, Indigenous rock, Hindi rock, Indonesian DIY punk, Memphis/sigilkore, non-English psychedelia and nonbinary country—before settling on canonical favorites. **No cultural, language, identity or religious quotas**: the actual audible bridge still decides. See [sonic taxonomy](references/sonic-taxonomy.md) and [global scenes](references/global-scenes.md).
 3. **Find real recordings.** Search specific artist/title pairs, albums, small-label releases, B-sides, compilations, soundtrack cues, and known mixes. Reference artists are **starting points, not the destination**; prefer surprising labelmates or regional contemporaries with similar musical qualities. Avoid recycling artists, exact recordings or identical primary pairings from up to three *accessible recent playlists* by default, without blocking an explicit request or a clearly explained exception.
-4. **Verify honestly.** For each recommendation, confirm title and artist (and mix/version, date, scene, and platform availability if claimed) through appropriate credible catalog/artist/label/playable sources. If you cannot verify, label that entry provisional. If the user asks for a strictly verified or publishable playlist, omit unresolved tracks. Never invent links, versions, release years, BPM, or streaming IDs. See [verification rules](references/verification.md).
+4. **Verify honestly.** For each recommendation, confirm title and artist (and mix/version, date, scene, and platform availability if claimed) through appropriate credible catalog/artist/label/playable sources. Require verified artist/title and any required version for each final playlist slot, including text-only delivery or writer failure. Search for replacements within the existing budget, preserve verified selections and report unresolved slots and count shortfalls. Label uncertain descriptive details separately. Never invent links, versions, release years, BPM, or streaming IDs. See [verification rules](references/verification.md).
 5. **Choose intelligently.** A clear majority must fit the sonic thesis; optional off-axis picks should meaningfully expand the idea. **One track per lead artist** across the final playlist, in regular GO and GO HARD at every length. Count aliases as the same artist and count each jointly credited lead artist. Exceptions are explicit requests that require repeating an artist and the DeBarge Protocol. Before publishing, check the final matched tracks (lint a manifest if available or check manually, and check aliases and joint credits separately) and replace any unintended repeat with a verified fit. If you cannot fill the requested count under the brief, report the shortfall. The v2 guideline of roughly **no more than two explicitly named taxonomy touchstones in 12 tracks** is a useful preference, never a hard ban. Make room for joyous or cheesy 1980s pop-soul when it makes musical sense; never condescend to its creators.
 6. **Sequence a story.** Find an order that makes the selected recordings convincing together; choose the arc from the music rather than requiring a build, peak or gentle landing. Connections may pass between rhythm, voice, texture, arrangement or emotional tension; a purposeful contrast can work without a shared feature. **Reuse known musical hooks:** During the existing selection pass, use only the track-specific, source-supported observations already gathered (rhythmic feel, vocal or ensemble role, texture, density, tension) to inspect neighboring handoffs. Look for a plausible continuation or purposeful contrast, not merely a common genre tag. These notes do not establish exact intros, endings, beat alignment, BPM, key or meter: leave uncertain connections uncertain. Do not add audio analysis, metadata lookups, extra tool calls, transition scores or a second research loop solely for sequencing. **Stairs, not cliffs:** Judge continuity by the size of the musical change between adjacent recordings, not a vague perceived-energy number or a fixed rise-and-fall curve. Using only supported notes about groove, instrumentation, vocal or ensemble role, production texture, density and tension, prefer gradual handoffs where one or two characteristics evolve and a credible thread carries over. Inspect all neighboring handoffs during the existing pass, then prioritize the single most disruptive potential cliff rather than maximizing average smoothness. Try one reorder of the same recordings first if it preserves any curve targets and check that its new neighbors do not introduce an equally bad or worse cliff; replace a track only if a coherent sequence is otherwise unattainable. Keep a purposeful, well-supported surprise or intentional break rather than forcing sameness. If notes are thin or the worst handoff cannot be improved, mark the uncertainty instead of inventing evidence. Do not manufacture sonic evidence to justify a choice. Use the normal selection pass, without extra scoring, mandatory bridge quotas or a separate research loop **unless Go Hard was explicitly requested**. For each song, give a *track-specific* musical hook—an audible or credibly documented groove, arrangement, voice, texture, or transition—not a generic genre restatement. If no audio was accessible, identify the hook as source-supported or tentative; never imply you listened when you did not. Avoid unsupported numerical claims.
 7. **Deliver and learn.** Default to 12 tracks: a distinctive record-sleeve-style title, a **short, memorable playlist description suitable for the service if editable**, a one-line sonic map, numbered artist — title (mix if established), one concrete reason per track, source links only if actually checked, and one useful next direction. Maintain the insufferably superior voice, but make every hook and the actual listenable result readable without decoding a joke. Adapt to shorter requests. Accept feedback like **"more like #4"**, **"less ambient"**, or **"#7 was awful"**: resolve numbers against the last visible playlist, preserve the liked sonic trait or avoid the disliked one, and vary actual recordings instead of reflexively repeating artists. If the earlier list is unavailable, ask which track the user means. Do not claim lasting preferences across conversations without supported context.
@@ -174,7 +176,7 @@ Compare three routes internally. Taxonomy examples are search leads. Mood angles
 
 Glossy late-period Motown/Motown-adjacent pop-soul, synth-funk, adult-contemporary crossover, and unlikely crowd-pleasers are **valid ingredients**. An obvious hit may earn its place by providing a funny yet persuasive sonic transition. Usually zero to two per 12-track set unless the listener wants more. Don't force comedy onto solemn or narrow briefs.
 
-**DeBarge Protocol:** Once per eligible *new playlist request*, if a genuine random-number tool exists, roll uniformly from 1 to 100; on **1**, replace the ordinary list with exactly **25 consecutive entries** of **DeBarge — "Rhythm of the Night"**. Treat this as a deliberate exception to variety, length, duplication, **all `go` moods and speeds**, and the ordinary numeric count—including `go short`, `go long`, `go fast 20`, and `go weird slow 30`. Each eligible new playlist receives **one roll total**; never reroll for each modifier, suggested concept, save attempt, or publication retry. A requested number of tracks is a normal target, not itself a rigid exclusion: the Antarctica thematic inclusion, an **explicit prohibition of DeBarge**, a **unique-tracks requirement**, or an **explicitly non-overridable count** (e.g. "exactly 12, no exceptions") blocks the spontaneous surprise. An explicit request for "DeBarge Protocol" runs it without a roll, except when it directly conflicts with another explicit exclusion that must first be clarified. This is a genuine one-in-100 exception. Never claim a 1% random result without a genuine random facility in this conversation. Do not run scripts. If reliable randomness is unavailable, omit the spontaneous roll rather than inventing it. A service might reject duplicates; never falsely claim publishing succeeded.
+**DeBarge Protocol:** Once per eligible *new playlist request*, if a genuine random-number tool exists, roll uniformly from 1 to 100; on **1**, replace the ordinary list with exactly **25 consecutive entries** of **DeBarge — "Rhythm of the Night"**. Treat this as a deliberate exception to variety, length, duplication, **all `go` moods and speeds**, and the ordinary numeric count—including `go short`, `go long`, `go fast 20`, and `go weird slow 30`. Each eligible new playlist receives **one roll total**; never reroll for each modifier, suggested concept, save attempt, or publication retry. A requested number of tracks is a normal target, not itself a rigid exclusion: the Antarctica thematic inclusion, an **explicit prohibition of DeBarge**, a **unique-tracks requirement**, a valid **c1: curve**, or an **explicitly non-overridable count** (e.g. "exactly 12") blocks the spontaneous surprise. An explicit request for "DeBarge Protocol" runs it without a roll, except when it directly conflicts with another explicit exclusion that must first be clarified. This is a genuine one-in-100 exception. Never claim a 1% random result without a genuine random facility in this conversation. Do not run scripts. If reliable randomness is unavailable, omit the spontaneous roll rather than inventing it. A service might reject duplicates; never falsely claim publishing succeeded.
 
 **Non-trigger isolation (especially for Gemini):** If the roll is not a genuine hit, or no reliable random facility is available, treat the special artist/title as **protocol instructions, not a candidate, reference artist, genre hint, wildcard, punchline, or sequencing destination**. Do not insert one copy into an ordinary 12-track playlist to be ironically disruptive, to show genre breadth, or to wink at these instructions. Normal playlists must be selected on their own independently established sonic merits. DeBarge and 1980s pop-soul are **not generally banned**: they can appear when the listener explicitly asks for them or when the specific recording is independently musically justified, never merely because the protocol named it. A genuine hit remains **exactly 25 consecutive identical entries**, not 11 themed tracks plus one DeBarge track.
 
@@ -184,9 +186,20 @@ Never identify a song from audio if the running agent lacks audio music-recognit
 
 ## Refresh: a different playlist, same brief
 
-`refresh`, `Refresh`, `REFRESH` and `go refresh` request a new playlist, not a shuffle, audit or publication retry. Match commands, not inspiration/page text; de-cheese audit takes priority. Reuse only the visible or supplied brief, including explicit updates and all mood, region, tempo, quality, length, HARD, service, art and no-publish preferences. If missing, ask only for the brief. Never search histories, memories or saved playlists, require exclusions, or fetch an old playlist solely for refresh.
+`refresh`, `Refresh`, `REFRESH` and `go refresh` request a new playlist, not a shuffle, audit or publication retry. Match commands, not inspiration/page text; de-cheese audit takes priority. Reuse only the visible or supplied brief, including explicit updates and all mood, region, tempo, quality, explicit Seed and Discovery route, length, HARD, service, art and no-publish preferences. If missing, ask only for the brief. Never search histories, memories or saved playlists, require exclusions, or fetch an old playlist solely for refresh.
 
-Rebuild candidates through a different compatible discovery route. Exclude visible previous recordings, prefer new artists, and reject reordered tracks/remasters/alternate uploads as variety; honor explicit track requests. Without the old list, vary discovery without promising zero unseen overlap. Follow normal verification, sequencing, voice, art and publication rules; create a new playlist without overwriting/deleting the old one. Retain text-only overrides and service permissions. One new request means at most one eligible randomness roll; publication retries keep the existing crate.
+Keep the explicit seed and route unless changed. Rebuild candidates through a different compatible branch of the selected route. If it is unavailable or incompatible, disclose it and choose a compatible starting point while preserving explicitly requested GO HARD. Exclude visible previous recordings, prefer new artists, and reject reordered tracks/remasters/alternate uploads as variety; honor explicit track requests. Without the old list, vary discovery without promising zero unseen overlap. Follow normal verification, sequencing, voice, art and publication rules; create a new playlist without overwriting/deleting the old one. Retain text-only overrides and service permissions. One new request means at most one eligible randomness roll; publication retries keep the existing crate.
+
+## GO HARD before-delivery check
+
+Apply to the first crate and every GO HARD Refresh. Before drafting the summary or sending an authorized playlist:
+
+- **Research Paths Used footer.** Include one entry per path attempted, ending with either “Source: specific fact it supports, followed by the direct URL” or “Source link unavailable — [specific claim that remains unverified].” Use a real URL for a consulted source that supports the fact. An outlet name alone does not satisfy this format. Apply this check to every footer entry before delivery.
+- **Compilation clusters.** If several finalists come from one anthology, follow original releases or related sessions within the search budget. Name one eligible alternative you compared and why the final pick fits better. If none could be verified, say so. Keep clusters when the musical case supports them.
+- **Pace and recording quality.** Check every selection against the requested pace or curve slot. Use track-specific evidence and briefly justify apparent pace mismatches. With Skip rough, prefer editions with support for recording quality. A release or mastering credit establishes provenance, not transfer condition. Use remaining search effort to replace weak fits. Flag unresolved pace or transfer evidence in the track notes, and keep the title, introduction, description and ending consistent with those limits. If a strict slot remains unsupported, retain verified picks and report the gap.
+
+Keep the evidence concise and honor curate-only and other no-write requests throughout.
+
 
 # END SOURCE: SKILL.md
 
@@ -857,11 +870,11 @@ Use the normal service preflight, verified recording matches, count reconciliati
 **Crate balance:** For twelve tracks, aim for two or three cult anchors or deep cuts from recognizable scene figures and fill the remaining slots with deeper label, catalog or scene discoveries. Scale the aim for other lengths. Treat it as an editorial target. Exact count, region, curve, mood and recording preferences govern the final selection.
 
 **After the same cheap writer preflight**, expend additional effort on editorial quality, not filler:
-1. **Explore before verifying:** When search or catalog tools and credible sources are available, use the selected regional references and execute at least three independent research paths before locking the shortlist. Try original singles/artist albums and regional label catalogs, archival reissues or specialist discographies, and session musicians, producers or studio bands. Follow compilation contributors to independent releases; two mirrors of one tracklist count as one path. For twelve tracks, skim roughly 36–50 plausible recording leads and investigate approximately 16–20 survivors within the existing GO HARD budget. Scale these flexible targets for other lengths; they are not final song/label quotas. If access or credible leads are limited, use a smaller pool rather than inventing finds, disclose which research paths were available, and avoid defaulting to obvious hits.
-2. **Evidence-backed fingerprints:** For the 16–20 survivors, record concise sourced or explicitly tentative observations about groove/pulse, rhythm, instrumentation, ensemble/vocal role, texture, production density, dynamics and (when supported) harmonic color. Exact tempo, meter, key, and intro/outro behavior require trustworthy track-specific evidence or actual available audio analysis; **never pretend to have listened**. In every final track note, pair a specific, evidence-backed musical hook (label tentative descriptions as such) with verified provenance such as original label, release format/year or documented scene/collaborator lineage. If original release details are unresolved, say so and use another verifiable provenance detail. Avoid expensive audio feature extraction unless the host genuinely exposes it and it meaningfully helps the decision.
-3. **Competing journeys and two-part handoffs:** Select the requested number of verified final recordings, draft **up to three distinct orders**. With a tempo/mood curve, compare slot-fitting selections or orders that preserve all position targets, and compare all adjacent handoffs. For each handoff identify **(a) one defensible carryover** (rhythmic role, vocal/instrumental contour, timbre, pulse, phrase shape, production space or story), and **(b) one purposeful change** (energy, density, ensemble, geography or mood). The two parts describe a hypothesis about adjacent recordings, not measured acoustic similarity. If either cannot be supported, mark the link unproven and prefer an honest contrast or different order. Do not manufacture a 'shared flute' or exact key from metadata; an observed voice-to-instrument echo is a useful *listener report*, not evidence for every other transition. Prefer a convincing worst transition, a satisfying arc and genuine discovery over sameness or an artificial energy graph. Do not present the drafts as separate playlists.
-4. **Two-sided audit:** Challenge the weakest handoff by its actual carryover/change evidence, not a genre-name match, and check for familiar artists, repetitive textures or unearned contrasts. For a signature, heavily exposed or compilation-staple recording, compare a credible less familiar alternative from the explored paths before retaining it; replace a supported signature staple by default unless the listener asks for classics or that recording. Naming an artist alone leaves their deeper catalog eligible. Check each recording individually. Assess harshness, dissonance and polish against the listener’s intended mood, curve and recording preferences. Keep deliberate, supported contrasts; replace outliers that owe their place only to rarity. Use a reported million-plus play count only when verifiable on the actual service, as a **review flag, never a ban**; do not infer or invent play counts. Check any accessible recent crates for repeat recordings; when history is unavailable, vary the research path without promising cross-session uniqueness. If an exciting cross-scene jump needs a bridge, allow **one targeted bridge-track search** and a supported replacement; never impose bridge quotas. Make **at most two targeted revision rounds**, checking every newly created neighbor and lead-artist uniqueness, count, region, and curve targets. Stop early when evidence cannot support an improvement. Keep purposeful surprises that survive scrutiny.
-5. **Publish once, honestly:** Deliver the **single best final sequence** and attempt publication only when authorized, retaining the requested track count and exact verified recordings/order when the music-service writer permits. Perform normal count/readback checks. If the provider cannot write a precise list, disclose that limitation; never claim a playlist was saved solely because the deep editorial pass succeeded.
+1. **Explore before verifying:** When lookup tools are available, use the selected regional references and attempt at least three independent research paths before locking the shortlist. Try an alternate path within the existing budget if one yields weak results. Try original singles/artist albums and regional label catalogs, archival reissues or specialist discographies, and session musicians, producers or studio bands. Follow compilation contributors to independent releases; two mirrors of one tracklist count as one path. For twelve tracks, skim roughly 36–50 plausible recording leads and investigate approximately 16–20 survivors within the existing GO HARD budget. Scale these flexible targets for other lengths; they are not final song/label quotas. If access or credible leads are limited, use a smaller pool of supported leads rather than inventing finds and explain any shortfall. In the delivery, name the paths actually used and link directly to at least one consulted source per successful path that supports a concrete discovery or credit.
+2. **Evidence-backed fingerprints:** For the 16–20 survivors, record concise sourced or explicitly tentative observations about groove/pulse, rhythm, instrumentation, ensemble/vocal role, texture, production density, dynamics and (when supported) harmonic color. Exact tempo, meter, key, and intro/outro behavior require trustworthy track-specific evidence or actual available audio analysis; **never pretend to have listened**. In every final track note, pair a specific, evidence-backed musical hook (label tentative descriptions as such) with verified provenance such as original label, release format/year or documented scene/collaborator lineage. If original release details are unresolved, say so and use another verifiable provenance detail. Match each claim to what its source supports. A catalog entry can verify identity and release details. Use track-specific evidence for pace and sound, and edition-specific evidence for transfer quality. A reissue or mastering credit alone does not establish a clean transfer. State unresolved details in the notes and carry that uncertainty into the title, introduction, description and sonic arc wherever those details are claimed. Avoid expensive audio feature extraction unless the host genuinely exposes it and it meaningfully helps the decision.
+3. **Competing journeys and two-part handoffs:** Select the requested number of verified final recordings, compare two viable orders when the brief permits (up to three distinct orders). With a tempo/mood curve, compare two viable candidates for at least one consequential slot when the curve fixes the order; preserve all position targets and disclose if evidence supports only one option, and compare all adjacent handoffs. For each handoff identify **(a) one defensible carryover** (rhythmic role, vocal/instrumental contour, timbre, pulse, phrase shape, production space or story), and **(b) one purposeful change** (energy, density, ensemble, geography or mood). The two parts describe a hypothesis about adjacent recordings, not measured acoustic similarity. If either cannot be supported, mark the link unproven and prefer an honest contrast or different order. Do not manufacture a 'shared flute' or exact key from metadata; an observed voice-to-instrument echo is a useful *listener report*, not evidence for every other transition. Prefer a convincing worst transition, a satisfying arc and genuine discovery over sameness or an artificial energy graph. Do not present the drafts as separate playlists.
+4. **Two-sided audit:** Challenge the weakest handoff by its actual carryover/change evidence, not a genre-name match, and check for familiar artists, repetitive textures or unearned contrasts. For a signature, heavily exposed or compilation-staple recording, compare a credible less familiar alternative from the explored paths before retaining it; replace a supported signature staple by default unless the listener asks for classics or that recording. Naming an artist alone leaves their deeper catalog eligible. Check each recording individually. When several finalists trace back to one compilation, follow their credits outward to original releases or related sessions and compare eligible alternatives within the existing research budget. Favor the best musical fits; briefly explain any retained cluster without imposing a track cap. Assess harshness, dissonance and polish against the listener’s intended mood, curve and recording preferences. Keep deliberate, supported contrasts; replace outliers that owe their place only to rarity. Use a reported million-plus play count only when verifiable on the actual service, as a **review flag, never a ban**; do not infer or invent play counts. Check any accessible recent crates for repeat recordings; when history is unavailable, vary the research path without promising cross-session uniqueness. If an exciting cross-scene jump needs a bridge, allow **one targeted bridge-track search** and a supported replacement; never impose bridge quotas. Make **at most two targeted revision rounds**, checking every newly created neighbor and lead-artist uniqueness, count, region, and curve targets. Stop early when evidence cannot support an improvement. Keep purposeful surprises that survive scrutiny.
+5. **Check completion and publish once, honestly:** Before delivery, verify count, recording identities, region and curve fit, and a provenance detail and musical hook for every track. Spend any remaining search budget on unresolved strict slots. Preserve verified picks and label any remaining shortfall incomplete. A clear no-write request blocks provider writes. Deliver the **single best final sequence** and attempt publication only when authorized, retaining the requested track count and exact verified recordings/order when the music-service writer permits. Perform normal count/readback checks. If the provider cannot write a precise list, disclose that limitation; never claim a playlist was saved solely because the deep editorial pass succeeded.
 
 ## North Star anti-drift guardrail (GO HARD only)
 
@@ -930,7 +943,7 @@ Parent map region: `oceania`. Stable source-entry IDs: `oceania:add-01`–`ocean
 
 These are listener-supplied, unverified research leads, not 50 independently verified new genres. Preserve the distinctions between scenes, song repertoires, performance practices and commercial genre labels. Apply the regional atlas verification, recording-quality, mood and tempo rules. Only the separately source-supported shortlist in the focused regional review may enter the automatic lens pool; these source entries remain unverified as written. Source links below are supplied research routes, not evidence independently checked during import.
 
-[Imported Drive source](https://drive.google.com/file/d/1gMTMjx1kqqNFCTe1KYt8NRUQr3j008nl/view), retrieved 2026-10-24 (America/New_York).
+Imported Drive source (archival source), retrieved 2026-10-24 (America/New_York).
 
 ## Addressable additions
 
@@ -1008,7 +1021,7 @@ Parent map region: `central-america`. Stable source-entry IDs: `central-america:
 
 These are listener-supplied, unverified research leads, not 50 independently verified new genres. Preserve the distinctions between scenes, song repertoires, performance practices and commercial genre labels. Apply the regional atlas verification, recording-quality, mood and tempo rules. Only the separately source-supported shortlist in the focused regional review may enter the automatic lens pool; these source entries remain unverified as written. Source links below are supplied research routes, not evidence independently checked during import.
 
-[Imported Drive source](https://drive.google.com/file/d/1_HcaPhW11h90JmuuocI4Ra4DnQeF0Quq/view), retrieved 2026-10-24 (America/New_York).
+Imported Drive source (archival source), retrieved 2026-10-24 (America/New_York).
 
 ## Addressable additions
 
@@ -1086,7 +1099,7 @@ Parent map region: `central-southern-africa`. Stable source-entry IDs: `central-
 
 These are listener-supplied, unverified research leads, not 50 independently verified new genres. Preserve the distinctions between scenes, song repertoires, performance practices and commercial genre labels. Apply the regional atlas verification, recording-quality, mood and tempo rules. Only the separately source-supported shortlist in the focused regional review may enter the automatic lens pool; these source entries remain unverified as written. Source links below are supplied research routes, not evidence independently checked during import.
 
-[Imported Drive source](https://drive.google.com/file/d/19aKVy2TzEHTQrhxBrU_HmuApRu55tTlo/view), retrieved 2026-10-24 (America/New_York).
+Imported Drive source (archival source), retrieved 2026-10-24 (America/New_York).
 
 ## Addressable additions
 
@@ -1164,7 +1177,7 @@ Parent map region: `central-southern-africa`. Stable source-entry IDs: `southern
 
 These are listener-supplied, unverified research leads, not 50 independently verified new genres. Preserve the distinctions between scenes, song repertoires, performance practices and commercial genre labels. Apply the regional atlas verification, recording-quality, mood and tempo rules. Only the separately source-supported shortlist in the focused regional review may enter the automatic lens pool; these source entries remain unverified as written. Source links below are supplied research routes, not evidence independently checked during import.
 
-[Imported Drive source](https://drive.google.com/file/d/1dQuv7bVJ8ndXe8yc5fsTlYB23Zj-UNEj/view), retrieved 2026-10-24 (America/New_York).
+Imported Drive source (archival source), retrieved 2026-10-24 (America/New_York).
 
 ## Addressable additions
 
@@ -1352,7 +1365,7 @@ Region ID: `us-west`. Route handles: `us-west:01`–`us-west:30`.
 
 ## Source and status
 
-Imported from listener-supplied regional survey, [Drive source](https://drive.google.com/file/d/1kkockosIGchtB76Xwjm189XebmJuyCDT/view), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
+Imported from listener-supplied regional survey, Drive source (archival source), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
 
 ## Research leads
 
@@ -1405,7 +1418,7 @@ Region ID: `us-east`. Route handles: `us-east:01`–`us-east:30`.
 
 ## Source and status
 
-Imported from listener-supplied regional survey, [Drive source](https://drive.google.com/file/d/1kkockosIGchtB76Xwjm189XebmJuyCDT/view), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
+Imported from listener-supplied regional survey, Drive source (archival source), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
 
 ## Research leads
 
@@ -1452,7 +1465,7 @@ Imported from listener-supplied regional survey, [Drive source](https://drive.go
 
 Region ID: `us-midwest`. Chicago and Detroit are core examples. Primary states: IL, IN, IA, KS, MI, MN, MO, NE, ND, OH, SD and WI.
 
-This new guide uses **unverified leads** from the existing survey, preserving its original route handles and [Drive source](https://drive.google.com/) attribution. No new imported routes or verified recordings are claimed. Verify provenance and sonic fit for each selection; cultural crossovers require recording-specific support.
+This new guide uses **unverified leads** from the existing survey, preserving its original route handles and Drive source (archival source) attribution. No new imported routes or verified recordings are claimed. Verify provenance and sonic fit for each selection; cultural crossovers require recording-specific support.
 
 ## Inherited research routes
 
@@ -1480,7 +1493,7 @@ This new guide uses **unverified leads** from the existing survey, preserving it
 
 Region ID: `us-south`. Texas belongs here, together with Louisiana, Mississippi, Tennessee, Georgia, Florida, Alabama, Arkansas, Oklahoma, Kentucky, North/South Carolina, Virginia and West Virginia.
 
-This new guide uses **unverified leads** from the existing survey, preserving its original route handles and [Drive source](https://drive.google.com/) attribution. No new imported routes or verified recordings are claimed. Verify provenance and sonic fit for each selection; cultural crossovers require recording-specific support.
+This new guide uses **unverified leads** from the existing survey, preserving its original route handles and Drive source (archival source) attribution. No new imported routes or verified recordings are claimed. Verify provenance and sonic fit for each selection; cultural crossovers require recording-specific support.
 
 ## Inherited research routes
 
@@ -1524,7 +1537,7 @@ Region ID: `canada-west`. Route handles: `canada-west:01`–`canada-west:30`.
 
 ## Source and status
 
-Imported from listener-supplied regional survey, [Drive source](https://drive.google.com/file/d/1kkockosIGchtB76Xwjm189XebmJuyCDT/view), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
+Imported from listener-supplied regional survey, Drive source (archival source), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
 
 ## Research leads
 
@@ -1575,7 +1588,7 @@ Region ID: `canada-east`. Route handles: `canada-east:01`–`canada-east:30`.
 
 ## Source and status
 
-Imported from listener-supplied regional survey, [Drive source](https://drive.google.com/file/d/1kkockosIGchtB76Xwjm189XebmJuyCDT/view), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
+Imported from listener-supplied regional survey, Drive source (archival source), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
 
 ## Research leads
 
@@ -1626,7 +1639,7 @@ Region ID: `mexico`. Route handles: `mexico:01`–`mexico:30`.
 
 ## Source and status
 
-Imported from listener-supplied regional survey, [Drive source](https://drive.google.com/file/d/1kkockosIGchtB76Xwjm189XebmJuyCDT/view), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
+Imported from listener-supplied regional survey, Drive source (archival source), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
 
 ## Research leads
 
@@ -1677,7 +1690,7 @@ Region ID: `central-america`. Route handles: `central-america:01`–`central-ame
 
 ## Source and status
 
-Imported from listener-supplied regional survey, [Drive source](https://drive.google.com/file/d/1kkockosIGchtB76Xwjm189XebmJuyCDT/view), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
+Imported from listener-supplied regional survey, Drive source (archival source), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
 
 ## Research leads
 
@@ -1732,7 +1745,7 @@ Region ID: `caribbean`. Route handles: `caribbean:01`–`caribbean:30`.
 
 ## Source and status
 
-Imported from listener-supplied regional survey, [Drive source](https://drive.google.com/file/d/1kkockosIGchtB76Xwjm189XebmJuyCDT/view), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
+Imported from listener-supplied regional survey, Drive source (archival source), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
 
 ## Research leads
 
@@ -1783,7 +1796,7 @@ Region ID: `northern-south-america`. Route handles: `northern-south-america:01`�
 
 ## Source and status
 
-Imported from listener-supplied regional survey, [Drive source](https://drive.google.com/file/d/1PVp1E4MnAB2rBAdlC4CDGXEmMgtdlxzr/view), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
+Imported from listener-supplied regional survey, Drive source (archival source), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
 
 ## Research leads
 
@@ -1834,7 +1847,7 @@ Region ID: `southern-south-america`. Route handles: `southern-south-america:01`�
 
 ## Source and status
 
-Imported from listener-supplied regional survey, [Drive source](https://drive.google.com/file/d/1PVp1E4MnAB2rBAdlC4CDGXEmMgtdlxzr/view), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
+Imported from listener-supplied regional survey, Drive source (archival source), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
 
 ## Research leads
 
@@ -1887,7 +1900,7 @@ Region ID: `atlantic-europe`. Route handles: `atlantic-europe:01`–`atlantic-eu
 
 ## Source and status
 
-Imported from listener-supplied regional survey, [Drive source](https://drive.google.com/file/d/1ALDTRwzB3vRRqpEwYl38SIyqKC-cqkHZ/view), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
+Imported from listener-supplied regional survey, Drive source (archival source), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
 
 ## Research leads
 
@@ -1942,7 +1955,7 @@ Region ID: `mediterranean-europe`. Route handles: `mediterranean-europe:01`–`m
 
 ## Source and status
 
-Imported from listener-supplied regional survey, [Drive source](https://drive.google.com/file/d/1ALDTRwzB3vRRqpEwYl38SIyqKC-cqkHZ/view), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
+Imported from listener-supplied regional survey, Drive source (archival source), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
 
 ## Research leads
 
@@ -1989,7 +2002,7 @@ Imported from listener-supplied regional survey, [Drive source](https://drive.go
 
 Region ID: `balkans`. Primary map countries: Albania, Bosnia and Herzegovina, Bulgaria, Croatia, Kosovo, Montenegro, North Macedonia, Romania, Serbia and Slovenia. Greece remains Mediterranean Europe but northern Greek scenes can cross on evidence.
 
-This new guide uses **unverified leads** from the existing survey, preserving its original route handles and [Drive source](https://drive.google.com/) attribution. No new imported routes or verified recordings are claimed. Verify provenance and sonic fit for each selection; cultural crossovers require recording-specific support.
+This new guide uses **unverified leads** from the existing survey, preserving its original route handles and Drive source (archival source) attribution. No new imported routes or verified recordings are claimed. Verify provenance and sonic fit for each selection; cultural crossovers require recording-specific support.
 
 ## Inherited research routes
 
@@ -2026,7 +2039,7 @@ Region ID: `northern-europe`. Route handles: `northern-europe:01`–`northern-eu
 
 ## Source and status
 
-Imported from listener-supplied regional survey, [Drive source](https://drive.google.com/file/d/1ALDTRwzB3vRRqpEwYl38SIyqKC-cqkHZ/view), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
+Imported from listener-supplied regional survey, Drive source (archival source), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
 
 ## Research leads
 
@@ -2077,7 +2090,7 @@ Region ID: `eastern-europe`. Route handles: `eastern-europe:01`–`eastern-europ
 
 ## Source and status
 
-Imported from listener-supplied regional survey, [Drive source](https://drive.google.com/file/d/1ALDTRwzB3vRRqpEwYl38SIyqKC-cqkHZ/view), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
+Imported from listener-supplied regional survey, Drive source (archival source), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
 
 ## Research leads
 
@@ -2128,7 +2141,7 @@ Region ID: `north-africa`. Route handles: `north-africa:01`–`north-africa:30`.
 
 ## Source and status
 
-Imported from listener-supplied regional survey, [Drive source](https://drive.google.com/file/d/1reJQtJd3rMHfOTvPDLwOl5n5ogpw_uVI/view), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
+Imported from listener-supplied regional survey, Drive source (archival source), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
 
 ## Research leads
 
@@ -2179,7 +2192,7 @@ Region ID: `west-africa`. Route handles: `west-africa:01`–`west-africa:30`.
 
 ## Source and status
 
-Imported from listener-supplied regional survey, [Drive source](https://drive.google.com/file/d/1reJQtJd3rMHfOTvPDLwOl5n5ogpw_uVI/view), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
+Imported from listener-supplied regional survey, Drive source (archival source), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
 
 ## Research leads
 
@@ -2230,7 +2243,7 @@ Region ID: `east-africa`. Route handles: `east-africa:01`–`east-africa:30`.
 
 ## Source and status
 
-Imported from listener-supplied regional survey, [Drive source](https://drive.google.com/file/d/1reJQtJd3rMHfOTvPDLwOl5n5ogpw_uVI/view), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
+Imported from listener-supplied regional survey, Drive source (archival source), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
 
 ## Research leads
 
@@ -2281,7 +2294,7 @@ Region ID: `central-southern-africa`. Route handles: `central-southern-africa:01
 
 ## Source and status
 
-Imported from listener-supplied regional survey, [Drive source](https://drive.google.com/file/d/1reJQtJd3rMHfOTvPDLwOl5n5ogpw_uVI/view), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
+Imported from listener-supplied regional survey, Drive source (archival source), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
 
 ## Research leads
 
@@ -2340,7 +2353,7 @@ Region ID: `middle-east`. Route handles: `middle-east:01`–`middle-east:30`.
 
 ## Source and status
 
-Imported from listener-supplied regional survey, [Drive source](https://drive.google.com/file/d/19nEnkUyTzKNQzzDoCAB1S_DeYhY6aFMx/view), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
+Imported from listener-supplied regional survey, Drive source (archival source), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
 
 ## Research leads
 
@@ -2391,7 +2404,7 @@ Region ID: `central-asia`. Route handles: `central-asia:01`–`central-asia:30`.
 
 ## Source and status
 
-Imported from listener-supplied regional survey, [Drive source](https://drive.google.com/file/d/19nEnkUyTzKNQzzDoCAB1S_DeYhY6aFMx/view), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
+Imported from listener-supplied regional survey, Drive source (archival source), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
 
 ## Research leads
 
@@ -2442,7 +2455,7 @@ Region ID: `south-asia`. Route handles: `south-asia:01`–`south-asia:30`.
 
 ## Source and status
 
-Imported from listener-supplied regional survey, [Drive source](https://drive.google.com/file/d/19nEnkUyTzKNQzzDoCAB1S_DeYhY6aFMx/view), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
+Imported from listener-supplied regional survey, Drive source (archival source), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
 
 ## Research leads
 
@@ -2493,7 +2506,7 @@ Region ID: `east-asia`. Route handles: `east-asia:01`–`east-asia:30`.
 
 ## Source and status
 
-Imported from listener-supplied regional survey, [Drive source](https://drive.google.com/file/d/19nEnkUyTzKNQzzDoCAB1S_DeYhY6aFMx/view), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
+Imported from listener-supplied regional survey, Drive source (archival source), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
 
 ## Research leads
 
@@ -2544,7 +2557,7 @@ Region ID: `southeast-asia`. Route handles: `southeast-asia:01`–`southeast-asi
 
 ## Source and status
 
-Imported from listener-supplied regional survey, [Drive source](https://drive.google.com/file/d/19nEnkUyTzKNQzzDoCAB1S_DeYhY6aFMx/view), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
+Imported from listener-supplied regional survey, Drive source (archival source), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
 
 ## Research leads
 
@@ -2595,7 +2608,7 @@ Region ID: `northern-asia`. Route handles: `northern-asia:01`–`northern-asia:3
 
 ## Source and status
 
-Imported from listener-supplied regional survey, [Drive source](https://drive.google.com/file/d/19nEnkUyTzKNQzzDoCAB1S_DeYhY6aFMx/view), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
+Imported from listener-supplied regional survey, Drive source (archival source), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
 
 ## Research leads
 
@@ -2646,7 +2659,7 @@ Region ID: `oceania`. Route handles: `oceania:01`–`oceania:30`.
 
 ## Source and status
 
-Imported from listener-supplied regional survey, [Drive source](https://drive.google.com/file/d/1WunceicE57C7qzCZUlx1g7jH-nbq1tlg/view), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
+Imported from listener-supplied regional survey, Drive source (archival source), retrieved 2026-10-24 (America/New_York). Source descriptions are preserved below as unverified leads, including combined labels and named touchstones. This import does not independently substantiate their claims.
 
 ## Research leads
 
@@ -3338,45 +3351,20 @@ Only on `Cover art: yes` or an explicit sleeve request: after the final playlist
 
 # BEGIN SOURCE: references/gemini-publish.md
 
-# Gemini Publish — finalization of an existing crate
+# Gemini publishing follow-up
 
-## Trigger and source of truth
+An explicit Publish request applies to the current curated playlist. Use the existing provider result and verified track order. Follow Gemini and YouTube Music permission and confirmation prompts. If there is no existing playlist, explain its status and use an exact-track creation option only when the user has authorized it and the provider supports it.
 
-Treat standalone `Publish`, `publish it`, or `publish this playlist` (case-insensitive) after a completed Go, Hipster, Go! playlist as explicit authorization to finalize that playlist. Do not trigger on casual uses of the word. Use the latest completed crate in the **visible conversation**: existing title, exact ordered artist/title/version set list, short description, track-specific liner notes, any generated cover art, and the real YouTube Music result/card or playlist URL. Do not curate again, change order, invoke GO HARD, run de-cheese, redraw DeBarge, or assume access to earlier chats. If several crates are plausibly active or the set list is unavailable, ask for the exact playlist before writing.
+Use the supported YouTube Music save or edit action for the same playlist. Include the title and full description with the sonic introduction and all numbered liner notes where supported. Preserve visibility. If the provider limits description length, provide remaining notes in a copy-ready block.
 
-## Save first; never duplicate
+If the playlist is already saved, verify its state and avoid duplicates. If the action is unavailable or fails, report the reason and offer the actual manual save step when available. Report saved status only with provider confirmation or readback. Identify any unresolved track order, substitutions or metadata persistence. Use only links returned by the provider. Follow the provider's supported cover-art controls and report whether artwork was actually applied.
 
-**Execution gate — tools before talk.** A standalone `Publish` after a completed GO authorizes saving that existing YouTube Music playlist, including its metadata. Inspect the real `youtube_music:create` result and music actions available **in this Gemini session**. If `youtube_music:save` is exposed, **MUST execute that tool before outputting conversational text**, rather than defaulting to an explanation or manual app instructions.
+## Partial preview versus full saved list
 
-**Preferred call: `youtube_music:save`.** Gemini's reported interface accepts these arguments. Supply all four **if supported by the currently exposed schema**:
+Google does not specify a universal eight-track preview limit. Treat hidden entries as unverified, not matched or missing. Compare the saved count, identities, versions and order where provider readback is available, and mark unseen positions **unverified**.
 
-- `uri`: the unmodified URI/URL from the previous `youtube_music:create` result, **never** a guessed link or fabricated `PL...` ID.
-- `title`: the existing curated playlist title.
-- `description`: the concise description **plus the full ordered tracklist and liner notes** prepared below.
-- `media_intent_type`: `PERSONAL_PLAYLIST`.
+Never save a text-only crate without a later explicit request. Reuse the unmodified URI/URL from the existing provider result. No duplicates. Report SAVE TOOL UNAVAILABLE or SAVE FAILED according to the observed result. Offer the actual Save to library control when appropriate.
 
-The field names come from a user-tested Gemini interaction, **not** a public API contract. If the live action has a different schema, adapt only to its actually accepted fields rather than inventing parameters. Use another real authorized save action if Gemini exposes it under a different name. If the save tool lacks `description`, save the playlist first with its supported arguments, then attempt an exposed metadata-edit action on the **same** playlist. If there is an actual argument error, make a schema-correct attempt; do not repeatedly submit guesses. Do not claim `youtube_music:save` was invoked if Gemini did not actually run it.
-
-**No duplicates.** If the current playlist has already been confirmed saved, reconcile or edit that existing item; do not create or save a second copy. If saved state is ambiguous, check the known URI/result before writing again. `Publish` never reruns GO, `youtube_music:create`, discovery, the DeBarge draw or a new themed playlist. Do not change public/unlisted/private visibility unless the user requests it.
-
-**Partial preview versus full saved list.** A Gemini card may display only some tracks (a listener has observed the first 8 of a 12-track crate), but Google does not specify a universal eight-track preview limit. A short card proves neither that positions 9–12 were saved nor that they were omitted. Use the already authorized `Publish`/save path for the **same** generated playlist when the live tool permits, then inspect its actual complete saved list and compare every position, artist, title and essential version tag with the original crate. If only a partial preview is accessible, mark unseen positions **unverified**, not matched or missing; a save acknowledgment alone also cannot prove item fidelity. Never save a text-only crate for this audit or generate a duplicate playlist.
-
-**Manual saving is a failure path, not the default.** Only ask the listener to tap **Save to library** after the actual save action is unavailable, permission-denied or has returned an error. Say which blocker occurred. Do not claim streaming providers are categorically unable to write descriptions; a missing description on `create` does not prove `save` lacks one.
-
-## Description and full liner notes
-
-**Prepare metadata before the `save` call.** Compose the `description` from the original completed crate in one string: the existing concise one-to-two-sentence sonic introduction, a blank line, `TRACKLIST / LINER NOTES`, and **every** ordered `1. Artist — Title — specific, defensible note` entry through the last song. Retain the clerk's dry wit and source-supported observations; never invent production details, credits or versions.
-
-Pass this entire assembled string in `youtube_music:save.description` when the live schema supports it. Do not stop after submitting a generic two-sentence description, and do not treat missing description input on `youtube_music:create` as a blocker. If a real field limit rejects or truncates the description, save with the supported shorter metadata and separately provide the remaining liner notes as one copy-ready block. If the playlist has provider substitutions, label those as actual saved tracks rather than falsely claiming exact curation.
-
-## Cover art — one clean manual handoff
-
-If an authorized image-upload action is exposed and the generated art is accessible, it may be used. Otherwise preserve the generated image and give a single manual path: **save the generated image → open the saved playlist on music.youtube.com in a browser (request desktop site if the control is missing on mobile) → use the artwork pencil/edit control → choose the image, crop, save**. A custom-image option may be unavailable in the native Android app or on some accounts. Do not claim automatic cover-art upload, swap in unrelated AI-generated art, or promise a control that is not visible.
-
-## Honest final receipt
-
-Only report **SAVED TO LIBRARY** if `youtube_music:save` (or a real equivalent) returns confirmation or a read-back establishes that the same playlist is already saved. Only report an actual playlist link or `PL...` ID returned by the provider; never manufacture an identifier. If the write fails, say **SAVE FAILED** with the observed error; if the tool is absent say **SAVE TOOL UNAVAILABLE**; when the result cannot be confirmed say **SAVE STATUS UNVERIFIED**. **CREATED — SAVE TO LIBRARY REQUIRED** is appropriate only if the save action cannot complete and the card actually needs user intervention—not as a default after GO.
-
-Separately show **description submitted versus persisted** and **liner notes submitted versus persisted**. A save success without evidence of metadata retention is not itself proof that the exact text was written; read it back when an actual detail action permits. Report the intended versus actual track count/order only when the provider exposes that evidence. Cover art stays **manual** unless an actual upload succeeds. Offer the shortest remaining manual action, if any, after the real save attempt. Repeating `Publish` must update/reconcile the same playlist; it **must not publish a duplicate**. If full liner notes could not be applied, preserve the complete **copy-ready metadata**.
+Include the complete TRACKLIST / LINER NOTES in the description where supported. Provide copy-ready metadata for anything the provider cannot retain. After saving, artwork can be applied through supported controls on music.youtube.com.
 
 # END SOURCE: references/gemini-publish.md
