@@ -21,6 +21,8 @@ tasks.register('bundleLab', Exec) {
     commandLine 'python3', 'scripts/bundle_android_lab.py'
     inputs.dir '../../launcher'
     inputs.file '../../scripts/bundle_android_lab.py'
+    inputs.file '../../scripts/render_chaos_widget.py'
+    outputs.dir 'src/main/res/drawable-nodpi'
     inputs.file 'build.gradle'
     inputs.dir '../web'
     outputs.dir 'src/main/assets/site'
