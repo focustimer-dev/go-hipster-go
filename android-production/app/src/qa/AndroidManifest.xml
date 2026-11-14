@@ -1,0 +1,5 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools">
+  <!-- Build-type-only launcher name. The final Play package keeps its public name. -->
+  <application android:label="Go, Hipster, Go! RC" tools:replace="android:label" />
+</manifest>
