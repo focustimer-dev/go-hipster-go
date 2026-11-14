@@ -81,4 +81,4 @@ Official personal-account testing: https://support.google.com/googleplay/android
 - Confirm target audience/content-rating responses, app access, ads and Data safety disclosures.
 - Approve final screenshots/feature graphic after installed release evidence.
 
-**Current outcome:** Store copy and policy evidence can be reviewed now; the app is **not Play-submission-ready** until identity, privacy publication, image assets, console declarations and installed-device checks are completed.
+**Current outcome:** The public privacy and support HTML pages are deployed; the app is **not Play-submission-ready** until developer identity, final privacy/retention accuracy, approved data-safety and other Console declarations, image assets, and installed-device checks are completed.
