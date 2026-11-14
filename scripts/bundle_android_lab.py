@@ -114,8 +114,46 @@ def bundle(destination=None):
 ''')
     setup_script.write_text(setup_text)
     script.write_text(text)
+    # A versioned widget catalog derived from canonical Jukebox definitions.
+    # Bundled assets are outputs only, never a second prompt specification.
+    catalog = (ROOT / 'launcher/assets/app.js').read_text()
+    def literal(pattern, label):
+        match = re.search(pattern, catalog, re.M)
+        if not match:
+            raise ValueError('Chaos Roll source contract changed: ' + label)
+        return json.loads(match.group(1))
+    regions = literal(r'^const crateRegions=(\[.*\]);$', 'regions')
+    moods = [x for x in literal(r'^const moods=new Set\((\[.*\])\);$', 'moods') if x != 'go']
+    rhythm_and_texture = literal(r'^const seedCueBank=(\{.*\});$', 'sparks')
+    tensions = literal(r'^const moodSparkBank=(\{.*\});$', 'mood sparks')
+    for mood in moods:
+        if mood not in tensions:
+            tensions[mood] = literal(
+                r'^moodInterpretations\.' + re.escape(mood) + r'=(\[.*\]);$',
+                'mood ' + mood)
+    route_index = json.loads((ROOT / 'android-lab/web/discovery-route-index.json').read_text())
+    if len(moods) != 8 or not regions or len(route_index['routes']) != 24:
+        raise ValueError('Unexpected Chaos Roll catalog shape; review sources')
+    chaos_config = {
+        'version': 1,
+        'moods': moods,
+        'regions': [{'id': x['id'], 'label': x['label']} for x in regions if x['id'] != 'antarctica'],
+        'routeVersion': route_index['version'],
+        'routes': [x['id'] for x in route_index['routes']],
+        'sparks': {
+            'rhythm': [x['text'] for x in rhythm_and_texture['rhythm']],
+            'texture': rhythm_and_texture['texture'],
+            'tension': tensions,
+        },
+    }
+    widget_asset = ROOT / 'android-lab/app/src/main/assets/chaos-roll-config.json'
+    widget_asset.parent.mkdir(parents=True, exist_ok=True)
+    widget_asset.write_text(json.dumps(chaos_config, ensure_ascii=False, separators=(',', ':')))
     import runpy
     runpy.run_path(str(ROOT/'scripts/bundle_maplibre_lab.py'))['bundle_maplibre'](destination)
+    # Generate resize-aware raster crops from one reproducible, layered cassette.
+    runpy.run_path(str(ROOT/'scripts/render_chaos_widget.py'))['render'](
+        ROOT / 'android-lab/app/src/main/res/drawable-nodpi')
     # Only the packaged Android copies are compressed. Originals in launcher/
     # remain lossless and can be re-encoded for future visual revisions.
     runpy.run_path(str(ROOT/'scripts/optimize_android_artwork.py'))['optimize'](destination)

@@ -88,8 +88,14 @@ function renderLabHandoff(){
  if(share)share.textContent=oneTap&&mode==='share'&&ready?'↗ Share this request again':'↗ Share current prompt';
  const button=doc.getElementById('goButton');if(button)button.setAttribute('aria-label',oneTap?'GO! Copy request and '+(mode==='share'?'share to ':mode==='browser'?'open browser for ':'open ')+aiNames[ai]:'GO! Copy current playlist request');
 }
+let labLastChaosPrefs='';
 function renderLabWorkspace(){
  if(!doc.getElementById('labCrate'))return;
+ const chaosPrefs=[ai,service,skipRough?'1':'0'].join('|');
+ if(chaosPrefs!==labLastChaosPrefs){
+  window.HipsterLab?.setChaosPrefs?.(ai,service,Boolean(skipRough));
+  labLastChaosPrefs=chaosPrefs;
+ }
  const setupText=doc.getElementById('labSetupText');
  if(setupText?.value&&setupText.value!==setupPrompt(ai,service)){
   setupText.value='';doc.getElementById('labSetupFallback').hidden=true;doc.getElementById('labSetupFallback').open=false;

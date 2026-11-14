@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@android:id/background" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@drawable/widget_chaos_roll_bg" android:contentDescription="Chaos Roll. Make a new twelve-track request and copy it.">
+    <ImageView android:id="@+id/chaos_roll_art" android:layout_width="match_parent" android:layout_height="match_parent" android:src="@drawable/widget_cassette_mini" android:scaleType="centerCrop" android:importantForAccessibility="no" android:contentDescription="" />
+    <TextView android:id="@+id/chaos_roll_title" android:layout_width="match_parent" android:layout_height="38dp" android:layout_gravity="bottom" android:gravity="center" android:paddingTop="0dp" android:paddingBottom="0dp" android:background="#DD101A25" android:text="ROLL" android:textColor="#FFF4E0" android:textSize="17sp" android:textStyle="bold" android:fontFamily="sans-serif-condensed" />
+</FrameLayout>
