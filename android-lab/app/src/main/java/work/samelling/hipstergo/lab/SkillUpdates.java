@@ -69,9 +69,14 @@ final class SkillUpdates {
         return ("stable".equals(channel())?"Stable":"Preview")+" · Last successful check: "+
             (time==0?"Never":DateFormat.format("MMM d, h:mm a",new Date(time)))+". Confirmations are self-reported.";
     }
-    void onLaunch() {
+    void refreshIfDue() {
         changed.run();
-        if(prefs.getBoolean("skillAuto",true) && System.currentTimeMillis()-prefs.getLong(key("attempt",channel()),0)>86400000L)check(false);
+        if (!prefs.getBoolean("skillAuto", true)) return;
+        String channel = channel();
+        long now = System.currentTimeMillis();
+        boolean refreshDue = now - prefs.getLong(key("checked", channel), 0) >= 86400000L;
+        boolean retryDue = now - prefs.getLong(key("attempt", channel), 0) >= 900000L;
+        if (refreshDue && retryDue) check(false);
     }
     void show() {
         final String channel=channel();

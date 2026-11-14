@@ -145,12 +145,12 @@ public class LabActivity extends Activity {
         }
         if (state == null || web.restoreState(state) == null) web.loadUrl(start);
         if (Build.VERSION.SDK_INT >= 33) getOnBackInvokedDispatcher().registerOnBackInvokedCallback(0, this::back);
-        updates.onLaunch();
         if(state==null)receiveSharedText(getIntent());
     }
 
     @Override protected void onResume() {
         super.onResume();
+        if (updates != null) updates.refreshIfDue();
         if (layout != null) layout.post(() -> applySystemPalette(
             prefs.getString(STATUS_PREF, SystemBarTheme.DEFAULT_COLOR),
             prefs.getString(NAV_PREF, SystemBarTheme.DEFAULT_COLOR)));
