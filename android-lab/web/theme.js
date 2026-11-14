@@ -279,6 +279,7 @@ function syncNativeDialogPalette(){
  const fieldInk=base?'#103135':token('--lab-ui-on-field',ink);
  const rule=base?'#103135':token('--lab-ui-rule',ink);
  bridge.setDialogPalette(theme,surface,ink,accent,field,fieldInk,rule);
+ bridge.syncSystemPalette?.(token("--lab-ui-rail","#103135"));
 }
 function setTheme(next,persist){
  if(!THEMES.includes(next)&&!PILOTS.includes(next))return false;
@@ -307,7 +308,8 @@ function setTheme(next,persist){
 }
 document.addEventListener('click',event=>{
  const choice=event.target.closest?.('[data-lab-theme]');
- if(choice)setTheme(choice.dataset.labTheme,true);
+ if(choice&&choice.dataset.labTheme!==theme&&setTheme(choice.dataset.labTheme,true))
+  window.HipsterLab?.haptic?.("click");
 });
 document.addEventListener('DOMContentLoaded',()=>{
  // A dormant print stylesheet may finish loading after the first paint.

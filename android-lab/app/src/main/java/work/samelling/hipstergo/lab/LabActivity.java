@@ -16,6 +16,7 @@ public class LabActivity extends Activity {
     private static final String HOST = "lab.hipster.invalid";
     private static final String HOME = "https://" + HOST + "/";
     private WebView web;
+    private LinearLayout layout;
     private SkillUpdates updates;
     private SavedRequests shelf;
     private SharedInspiration inspiration;
@@ -31,7 +32,7 @@ public class LabActivity extends Activity {
         shelf = new SavedRequests(this,prefs,this::handoff,this::copy,text->share(text,null),this::refreshWorkspace,dialogs);
         getWindow().setStatusBarColor(Color.rgb(16,49,53));
         getWindow().setNavigationBarColor(Color.rgb(16,49,53));
-        LinearLayout layout = new LinearLayout(this);
+        layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setBackgroundColor(Color.rgb(16,49,53));
         layout.setOnApplyWindowInsetsListener((v, insets) -> {
@@ -169,6 +170,29 @@ public class LabActivity extends Activity {
             return true;
         } catch (RuntimeException failure) { return false; }
     }
+    private void applySystemPalette(String surface) {
+        if (surface == null || !surface.matches("#[0-9a-fA-F]{6}")) return;
+        int color = Color.parseColor(surface);
+        layout.setBackgroundColor(color);
+        if (Build.VERSION.SDK_INT < 35) {
+            getWindow().setStatusBarColor(color);
+            getWindow().setNavigationBarColor(color);
+        }
+        boolean darkIcons = Color.luminance(color) > 0.179;
+        if (Build.VERSION.SDK_INT >= 30) {
+            WindowInsetsController controller = layout.getWindowInsetsController();
+            if (controller == null) return;
+            int mask = WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+                | WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS;
+            controller.setSystemBarsAppearance(darkIcons ? mask : 0, mask);
+        } else {
+            int mask = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            if (Build.VERSION.SDK_INT >= 26) mask |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            View decor = getWindow().getDecorView();
+            decor.setSystemUiVisibility((decor.getSystemUiVisibility() & ~mask) | (darkIcons ? mask : 0));
+        }
+    }
+
     private void pulse() {
         if (prefs.getBoolean("haptics",true)) web.performHapticFeedback(Build.VERSION.SDK_INT >= 30 ? HapticFeedbackConstants.CONFIRM : HapticFeedbackConstants.KEYBOARD_TAP);
     }
@@ -240,6 +264,17 @@ public class LabActivity extends Activity {
         @JavascriptInterface public void setDialogPalette(String theme,String surface,String ink,
             String accent,String field,String fieldInk,String rule){
             runOnUiThread(()->dialogs.update(theme,surface,ink,accent,field,fieldInk,rule));
+        }
+        @JavascriptInterface public void syncSystemPalette(String surface) {
+            runOnUiThread(() -> applySystemPalette(surface));
+        }
+        @JavascriptInterface public void haptic(String kind) {
+            if (!"tick".equals(kind) && !"click".equals(kind)) return;
+            runOnUiThread(() -> {
+                if (!prefs.getBoolean("haptics", true)) return;
+                web.performHapticFeedback("tick".equals(kind)
+                    ? HapticFeedbackConstants.CLOCK_TICK : HapticFeedbackConstants.CONTEXT_CLICK);
+            });
         }
         @JavascriptInterface public void offerSetupShare(String ai,String text){if(url(ai)!=null&&validText(text))runOnUiThread(()->LabActivity.this.offerSetupShare(ai,text));}
         @JavascriptInterface public void showUpdates(){runOnUiThread(()->updates.show());}

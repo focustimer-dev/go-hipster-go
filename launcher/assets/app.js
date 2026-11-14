@@ -406,6 +406,7 @@ function toggleCrateRegion(id){
  if(!validCrateRegions.has(id))return;
  const added=!crateSelected.has(id);
  if(added)crateSelected.add(id);else crateSelected.delete(id);
+ globalThis.HipsterLab?.haptic?.("tick");
  lastCrateStamp=added?id:null;
  updateCrateMap(added);
 }
@@ -633,7 +634,10 @@ function mountMixCurveTrial(){
    if(parsed===null)return;
    if(Number.isFinite(data.height))frame.height=Math.max(100,Math.min(900,Math.ceil(data.height)));
    draftCode=parsed;
-   if(curveActive)setCurve(draftCode);
+   if(curveActive){
+    if(draftCode!==mixCurveTrialCode)globalThis.HipsterLab?.haptic?.("tick");
+    setCurve(draftCode);
+   }
  });
  function selectCurve(active){
    if(curveActive===active)return;
@@ -967,6 +971,7 @@ doc.querySelectorAll("[data-mood]").forEach(b=>b.addEventListener("click",()=>{
  const selected=moodParts(mood),id=b.dataset.mood;
  if(selected.includes(id))selected.splice(selected.indexOf(id),1);
  else{if(selected.length===2)selected.pop();selected.push(id)}
+ globalThis.HipsterLab?.haptic?.("click");
  mood=selected.join(" ")||"go";copiedPrompt=null;selectionChanged();
 }));
 doc.querySelectorAll("[data-crate-region]").forEach(b=>{
