@@ -101,8 +101,10 @@ class AndroidPlayReadiness(unittest.TestCase):
             self.assertNotIn("<", value, field)
             self.assertNotIn(">", value, field)
         self.assertEqual(store["app_name"], "Go, Hipster, Go!")
-        self.assertIsNone(store["privacy_policy_url"],
-                          "Do not invent a live public policy URL")
+        self.assertEqual(store["privacy_policy_url"],
+                         "https://hipster-go.samelling.workers.dev/privacy/")
+        self.assertTrue((ROOT / "launcher/privacy/index.html").is_file())
+        self.assertTrue((ROOT / "launcher/support/index.html").is_file())
         self.assertEqual(store["pricing"], "owner_decision_required")
         self.assertEqual(store["support_email"], "gohipstergosupport@proton.me")
         for claim in (
