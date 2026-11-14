@@ -17,6 +17,9 @@ on:
       - 'scripts/test_android_play_readiness.py'
       - 'docs/android-privacy-policy-draft.md'
       - 'docs/android-play-store-readiness.md'
+      - 'docs/android-play-data-safety-review.md'
+      - 'docs/android-play-asset-shotlist.md'
+      - 'config/google-play-listing.en-US.json'
       - 'scripts/render_chaos_widget.py'
       - '.github/workflows/android-production-rc.yml'
   pull_request:
@@ -33,6 +36,9 @@ on:
       - 'scripts/test_android_play_readiness.py'
       - 'docs/android-privacy-policy-draft.md'
       - 'docs/android-play-store-readiness.md'
+      - 'docs/android-play-data-safety-review.md'
+      - 'docs/android-play-asset-shotlist.md'
+      - 'config/google-play-listing.en-US.json'
       - 'scripts/render_chaos_widget.py'
       - '.github/workflows/android-production-rc.yml'
 

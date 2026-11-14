@@ -1,92 +1,84 @@
-# Android 1.0 — pre-approval Play Store package
+# Android 1.0 — Google Play submission readiness
 
-**Status:** Pre-registration preparation, **not** submitted to Google Play. Developer account verification pending as reported by the owner; there is no approved Google Play package/signing decision yet.
+**Status: pre-registration, review required.** Developer verification is pending; no Google Play app entry or permanent Play upload key has been confirmed. **No signing, upload, listing submission, public PWA deployment or publication is authorized by this plan.**
 
-## Store copy — draft for owner review
+This checklist applies to the native production variant of **Go, Hipster, Go!**, not the old Trusted Web Activity or Android Lab installation.
 
-**App name:** Go, Hipster, Go!
+## 1. Canonical en-US store listing copy
 
-**Short description:** Make 12-track music discovery briefs with moods, regions and tempo curves.
+**Source of truth:** [`config/google-play-listing.en-US.json`](../config/google-play-listing.en-US.json). It contains the final editorial **candidate** for the name, short description, full description and What's New; `approval` flags remain false. Do not hand-edit other copies in parallel. The automated release-preflight test enforces Google's 30/80/4000 character limits.
 
-**Full description:**
+The copy explains the app's actual function: building 12-track music discovery briefs that can be copied/shared with an AI assistant; moods, a 12-slot tempo/mood curve, nine themes, regional Atlas, Your Crate and Chaos Roll widget. It explains that the native app **does not stream songs or guarantee playlist publication**, and that external AI/music services require their own tools/accounts. It does not promise automatic playlist creation, platform installation, or direct streaming. Store copy must be reviewed against the actual approved signed build.
 
-Go, Hipster, Go! turns a feeling, sound, place or odd idea into a detailed request for a music discovery session.
+Working proposals, **not Play Console declarations**: `App` type, `Music & Audio` category, English (United States), support email `gohipstergosupport@proton.me`. Whether the app is **free or paid** is an owner decision—do not default this irreversible listing choice.
 
-Use the Jukebox to combine moods, set a tempo curve and explore music scenes around the world. Add an inspiration from a song link, artist or idea; review it in Your Crate; then copy your request and send it to a supported AI assistant.
+Official field limits and setup: https://support.google.com/googleplay/android-developer/answer/9859152
 
-The native Android app includes:
-- A hands-on mood and tempo curve, designed for twelve-track journeys
-- A region explorer with globe and alternate map views
-- Nine distinctive visual themes
-- Your Crate for saved requests and recent inspiration
-- A home-screen Chaos Roll widget for a fresh prompt
-- Native copy, share and handoff options for supported AI assistants
+## 2. Required image assets and evidence
 
-The interface works offline for core browsing and composing. A network connection may be needed for link previews, update checks and the AI or music services you choose.
+The [screenshot and asset plan](android-play-asset-shotlist.md) identifies approved source artwork and the six real-device screenshots to capture. None is falsely marked complete.
 
-**Important:** The app prepares and copies discovery requests. An external AI assistant performs research, and playlist creation/saving depends on the tools and authorization available to that assistant. The app itself does not stream songs or guarantee playlist publication.
+- [ ] **Store icon**: original approved red-star artwork exported as **512 × 512**, 32-bit PNG with alpha, ≤ 1024 KB, reviewed against the installed launcher icon
+- [ ] **Feature graphic**: **1024 × 500**, JPEG or opaque 24-bit PNG; use approved theme/art, not fake music-player UI
+- [ ] **Phone screenshots**: minimum two compliant real captures; recommended **four or more** from the actual native app at 1080 × 1920 or better, compliant aspect ratio; no Lab/RC copy or staged third-party success
+- [ ] Capture the Jukebox, Atlas, Your Crate, Manual and 3×2 cassette; optionally 1×1 vinyl or alternate theme, with accurate image alt text and a single source SHA
+- [ ] Review all asset usage rights and capture provenance; archive the actual evidence before Play upload
 
-**Release notes (draft):**
-First native Android release: Jukebox, curve, nine themes, regional Atlas, Your Crate, Manual and Chaos Roll widget.
+Official Google Play preview-asset specs: https://support.google.com/googleplay/android-developer/answer/9866151
 
-## Assets and capture plan
+## 3. App-content and Data safety declarations
 
-The release build — **not Android Lab** — must supply:
-- [ ] Launcher icon: approved red star; correct adaptive/icon mask and contrast on launchers
-- [ ] Feature graphic matching the approved visual system; final Play dimensions checked in Console
-- [ ] Phone screenshot 1: Jukebox with mood/tempo curve
-- [ ] Phone screenshot 2: Atlas regional exploration
-- [ ] Phone screenshot 3: Your Crate/inspiration review
-- [ ] Phone screenshot 4: Manual/setup with honest AI handoff instructions
-- [ ] Phone screenshot 5: actual installed Chaos Roll widget, cassette 3×2
-- [ ] Screenshot from all tested themes archived for QA (not necessarily submitted to Store)
-- [ ] Verify images contain no Lab badge, test fixtures, misleading sample playlist publication, or fake platform interactions
+**Technical inventory:** [`android-play-data-safety-review.md`](android-play-data-safety-review.md), with native Java and Cloudflare Worker source evidence. The **Android-specific [privacy draft](android-privacy-policy-draft.md)** is unpublished and not legally approved; the ChatGPT plugin privacy document must not be submitted for the Android app.
 
-## Google Play app-content requirements — do not fill with assumptions
+- [ ] Cloudflare infrastructure/CDN logs, analytics, query-string handling and retention verified, **especially full first-party preview URLs**; data-safety types/ephemeral processing/optional use approved
+- [ ] Android SDK/third-party dependencies and merged manifest audited; confirm no tracking, advertising or undisclosed user/device data transfers
+- [ ] Approve and date final Android privacy policy, with security, retention/deletion, developer contact and third-party disclosure; publish at a **real public, non-editable HTTPS webpage**, worldwide accessible without login
+- [ ] Add that exact policy URL **inside the installed native app** and in Play Console; verify both links open. A GitHub Markdown document is **not** the published policy page
+- [ ] Ads declaration (candidate: no), audience/age ranges and official content-rating questionnaire answered by owner in Play Console; do not infer age rating from themes or external content
+- [ ] App-access instructions: no first-party account; external AI/music assistants may require the user's own accounts or skills
+- [ ] Decide free/paid listing, countries, category, contact and public support URL
+- [ ] Confirm no special declarations (e.g., Families, health/finance, user-generated social posting) apply to final features
+- [ ] Do not answer “No data collected” by default; Google counts off-device data collected by app code/SDKs/WebViews and may count data shared to another app
 
-- [ ] Developer verification approved; Google Play app entry permitted
-- [ ] Final `applicationId` history checked: `work.samelling.hipstergo` is used by historic TWA source and is currently provisional for the native RC
-- [ ] App Signing/enrollment and upload-key strategy approved; fingerprints recorded without exposing secrets
-- [ ] `versionCode` checked for monotonicity against any previous Play uploads, including old TWA
-- [ ] Native signed AAB built and its package/manifest/certificate/SDK versions verified
-- [ ] Privacy policy: approved Android-specific publicly hosted HTTPS page, linked in app **and** store
-- [ ] Data safety: verified actual collection/transmission for full inspiration URLs sent to first-party preview endpoint and public hosts, GitHub update requests, external AI handoff, third-party dependencies, and any logs
-- [ ] Cloudflare Worker preview routing, analytics/log retention and any sub-processors reviewed; document findings in the final Android privacy policy
-- [ ] Advertising declaration validated
-- [ ] Audience/target age/content rating questionnaire answered truthfully
-- [ ] App-access instructions provided (no first-party account needed; explain optional external AI/music accounts)
-- [ ] Pricing/countries/dev contact/support listing confirmed
-- [ ] Play SDK policy/pre-launch and accessibility warnings resolved
-- [ ] Internal test from Play with actual Play-distributed signing/splits; closed testing if required by account type
-- [ ] Owner authorizes Play upload and later public publication separately
+Official app-review requirements: https://support.google.com/googleplay/android-developer/answer/9859455
+Data safety: https://support.google.com/googleplay/android-developer/answer/10787469
 
-## Physical-device release acceptance (not replaceable by CI)
+## 4. Technical bundle and device-readiness gates
 
-- [ ] Fresh install of production app; no Lab references in visible launcher, menus, Manual, toasts or notifications
-- [ ] Lab and production side by side; neither overwrites the other
-- [ ] All nine themes: Jukebox, Manual, Crate, Preferences, contrasts and system bars
-- [ ] Accessibility: TalkBack, large text, tap targets, focus order, reduced motion
-- [ ] Chaos Roll widget: 1×1 vinyl, 3×2 cassette, intermediate resize, tap, clipboard and missing-app fallback
-- [ ] Core 12-slot curve from moods/tempo reflected in GO text; region selection and randomizer contracts
-- [ ] Atlas Robinson/Globe/Cahill transitions, no blank screen or seam artefacts
-- [ ] ChatGPT/Gemini/Claude/Other handoff; clipboard vs share semantics truthful
-- [ ] Network-offline core flow and slow/broken link-preview recovery
-- [ ] Upgrade/reinstall with a higher `versionCode` preserving eligible production settings; no promise of Lab/TWA migration
-- [ ] Cold launch, widget update and APK size compared with approved baseline; no unexplained significant regression
+- [x] **Android API 36 target** in native production Gradle; meets Google's new-app/API 36 submission target as of November 2026
+- [x] **Keyless artifact pipeline** builds unsigned production APK/AAB and separate signed **QA-only** APK from one SHA; [release-evidence runbook](android-release-evidence.md) checks hashes/package identity
+- [ ] Final Play app ID approved: `work.samelling.hipstergo` is **provisional**, previously used by old TWA source; check if it was ever uploaded/registered with the same package and certificate
+- [ ] Owner approves version code monotonicity, Play App Signing/upload-key management and secure CI, **after** developer verification
+- [ ] Final signed AAB: inspect actual merged manifest, release-dependency graph, target SDK, signing fingerprint and device compatibility
+- [ ] Verify 16 KB page compatibility of any embedded native libraries. Current Java-only sources suggest limited NDK exposure but **do not assume** none without examining the final AAB
+- [ ] Fresh Play/internal install: all nine themes, 12-slot curve, Atlas projection transitions, correct Manual/AI skill links, native handoff and offline behavior
+- [ ] Accessibility: TalkBack, 200% font, touch targets, system bars, back behavior, no blocked essential path
+- [ ] Chaos Roll 1×1 and 3×2 widget: correct imagery and captions, resizing and tap actions; no Lab lettering; app remains isolated from Lab
+- [ ] App startup, battery/network usage, APK/AAB size, no unhandled crashes/ANRs or unexplained regression
+- [ ] Capture actual device screenshots from the approved source, not the disposable QA package alone for final Play signoff
 
-## Gate when developer verification arrives
+Device checklist: [Android RC QA](android-device-qa.md).
+API level policy: https://support.google.com/googleplay/android-developer/answer/11926878
+16 KB guidance: https://developer.android.com/guide/practices/page-sizes
 
-1. Check Play Console app entry and whether the old TWA package has ever been registered/installed through Play.
-2. Verify permanent package and signer fingerprints/requirements; do not assume possession of the old Lab key makes it a Play upload key.
-3. Create and verify production upload signing in a secure dedicated workflow (no key in git, logs or downloaded artifacts).
-4. Upload to **internal testing** only after authorization; inspect Play pre-launch report and actual Play-installed app.
-5. Launch the closed testing cohort and meet any account-specific participation requirement.
-6. Apply for production access and publish only after owner sign-off.
+## 5. Account approval and testing sequence
 
-**Background official docs:**
-- [Preparing app for review](https://support.google.com/googleplay/android-developer/answer/9859455)
-- [Data safety](https://support.google.com/googleplay/android-developer/answer/10787469)
-- [Testing tracks](https://support.google.com/googleplay/android-developer/answer/9845334)
-- [Personal-account closed testing](https://support.google.com/googleplay/android-developer/answer/14151465)
+1. Developer account verified; create/confirm permanent app entry and package history **before signing**.
+2. Approve the final owner decisions (free/paid, category, target audience, app content and privacy/Data safety).
+3. Sign the release AAB with the appropriately registered upload key using a secure, separately reviewed workflow. Never reuse temporary QA signing material for the Play app.
+4. Upload to **internal testing** only with release authorization; collect device and Play pre-launch evidence. Internal testing is not a public release.
+5. If the account is a **personal developer account created after November 13, 2023**, Google's rules require at least **12 opted-in closed testers for 14 continuous days** before applying for production access. Confirm actual account eligibility and manage a buffer above 12, because opt-outs reset continuity.
+6. Address issues from real testers, complete pre-launch report, capture owner acceptance, apply for production access as required.
+7. **Public publishing** is a separate explicit owner authorization after Play access is approved.
 
-**No keys, app submission, or app publishing is part of this document.**
+Official personal-account testing: https://support.google.com/googleplay/android-developer/answer/14151465
+
+## Open questions the owner must eventually answer
+
+- Is this a first-ever Play registration or an upgrade to a historic TWA package?
+- What legal developer identity and public contact should the privacy policy reflect?
+- Is the listing free or paid, and which countries are in scope?
+- Confirm target audience/content-rating responses, app access, ads and Data safety disclosures.
+- Approve final screenshots/feature graphic after installed release evidence.
+
+**Current outcome:** Store copy and policy evidence can be reviewed now; the app is **not Play-submission-ready** until identity, privacy publication, image assets, console declarations and installed-device checks are completed.
