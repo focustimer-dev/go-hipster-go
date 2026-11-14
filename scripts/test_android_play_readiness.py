@@ -38,14 +38,35 @@ class AndroidPlayReadiness(unittest.TestCase):
         self.assertIn("targetSdkVersion 36", gradle)
         self.assertIn("versionName '1.0.0-rc.1'", gradle)
         self.assertIn("applicationId 'work.samelling.hipstergo'", gradle)
-        for forbidden in ("signingConfigs", "storePassword", "keyPassword", "keystoreFile"):
+        for forbidden in ("storePassword", "keyPassword", "keystoreFile", "signingConfigs {"):
             self.assertNotIn(forbidden, gradle,
-                             "Production signer must be isolated behind explicit M5 approval")
+                             "Production upload signer must wait for explicit M5 approval")
+        release_block = gradle.split("release {", 1)[1].split("qa {", 1)[0]
+        self.assertNotIn("signingConfig ", release_block,
+                         "Play release must remain unsigned until M0/M5")
+        self.assertIn("signingConfig signingConfigs.debug", gradle,
+                      "Only the isolated QA package may use the temporary debug signer")
+        self.assertIn("applicationIdSuffix '.qa'", gradle)
+        self.assertIn("debuggable false", gradle)
         self.assertIn("app-release-unsigned.apk", ci)
         self.assertIn("bundleRelease", ci)
         self.assertIn("hipst" + "er-go-production-rc-unsigned", ci)
         for forbidden in ("apksigner sign", "play.google.com/upload", "google-github-actions/upload-cloud-storage"):
             self.assertNotIn(forbidden, ci)
+
+    def test_qa_overlay_is_isolated_from_play_manifest(self):
+        qa = ET.fromstring((APP / "src/qa/AndroidManifest.xml").read_text())
+        self.assertEqual(qa.find("application").get(NS + "label"), "Go, Hipster, Go! RC")
+        self.assertNotIn("Go, Hipster, Go! RC",
+                         (APP / "src/main/AndroidManifest.xml").read_text())
+        shortcuts = ET.fromstring((APP / "src/qa/res/xml/shortcuts.xml").read_text())
+        intents = [x.find("intent") for x in shortcuts.findall("shortcut")]
+        self.assertEqual(len(intents), 2)
+        for intent in intents:
+            self.assertEqual(intent.get(NS + "targetPackage"), "work.samelling.hipstergo.qa")
+            self.assertEqual(intent.get(NS + "targetClass"),
+                             "work.samelling.hipstergo.lab.LabActivity")
+            self.assertTrue(intent.get(NS + "data").startswith("hipstergo://"))
 
     def test_android_privacy_policy_is_not_plugin_policy(self):
         plugin = (ROOT / "docs/privacy.md").read_text()
