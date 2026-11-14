@@ -192,9 +192,10 @@ def bundle(destination=None, *, version_name=None, widget_asset_output=None, dra
     widget_asset.write_text(json.dumps(chaos_config, ensure_ascii=False, separators=(',', ':')))
     import runpy
     runpy.run_path(str(ROOT/'scripts/bundle_maplibre_lab.py'))['bundle_maplibre'](destination)
-    # Copy the two approved raster artworks without redrawing or cropping.
+    # Preserve approved Lab artwork; remove only printed '/ LAB' suffix in release/QA cassette.
     runpy.run_path(str(ROOT/'scripts/render_chaos_widget.py'))['render'](
-        Path(drawable_output or ROOT / 'android-lab/app/src/main/res/drawable-nodpi'))
+        Path(drawable_output or ROOT / 'android-lab/app/src/main/res/drawable-nodpi'),
+        release_mode=production)
     # Only the packaged Android copies are compressed. Originals in launcher/
     # remain lossless and can be re-encoded for future visual revisions.
     runpy.run_path(str(ROOT/'scripts/optimize_android_artwork.py'))['optimize'](destination)
