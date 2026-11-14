@@ -28,12 +28,13 @@ Official Google Play preview-asset specs: https://support.google.com/googleplay/
 
 ## 3. App-content and Data safety declarations
 
-**Technical inventory:** [`android-play-data-safety-review.md`](android-play-data-safety-review.md), with native Java and Cloudflare Worker source evidence. The **Android-specific [privacy draft](android-privacy-policy-draft.md)** is unpublished and not legally approved; the ChatGPT plugin privacy document must not be submitted for the Android app.
+**Technical inventory:** [`android-play-data-safety-review.md`](android-play-data-safety-review.md), with native Java and Cloudflare Worker source evidence. The [public Android privacy policy](https://hipster-go.samelling.workers.dev/privacy/) is deployed and linked from native Android and the PWA; the [working audit draft](android-privacy-policy-draft.md) remains separate and unapproved as a final Data safety declaration. The ChatGPT plugin privacy document must not be submitted for the Android app.
 
 - [ ] Cloudflare infrastructure/CDN logs, analytics, query-string handling and retention verified, **especially full first-party preview URLs**; data-safety types/ephemeral processing/optional use approved
 - [ ] Android SDK/third-party dependencies and merged manifest audited; confirm no tracking, advertising or undisclosed user/device data transfers
-- [ ] Approve and date final Android privacy policy, with security, retention/deletion, developer contact and third-party disclosure; publish at a **real public, non-editable HTTPS webpage**, worldwide accessible without login
-- [ ] Add that exact policy URL **inside the installed native app** and in Play Console; verify both links open. A GitHub Markdown document is **not** the published policy page
+- [x] Deploy an Android-specific, dated public HTML privacy policy at `https://hipster-go.samelling.workers.dev/privacy/` (anonymous live verification passed in Cloudflare deploy CI); owner/legal review and Data safety reconciliation remain pending
+- [x] Add policy/support links in the Android Manual and Preferences; automated source checks pass. **Real-device link acceptance is still pending**
+- [ ] Enter the canonical policy URL in Play Console after account verification; verify Console listing. A GitHub Markdown document is **not** the published policy page
 - [ ] Ads declaration (candidate: no), audience/age ranges and official content-rating questionnaire answered by owner in Play Console; do not infer age rating from themes or external content
 - [ ] App-access instructions: no first-party account; external AI/music assistants may require the user's own accounts or skills
 - [ ] Decide free/paid listing, countries, category, contact and public support URL
