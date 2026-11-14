@@ -1,0 +1,59 @@
+plugins { id 'com.android.application' }
+
+android {
+    // Internal Java package is intentionally shared with the Lab test lane.
+    // The installed production app identity is the applicationId below.
+    namespace 'work.samelling.hipstergo.lab'
+    compileSdkVersion 36
+    defaultConfig {
+        // PROVISIONAL until M0 Play Console package/signing history is approved.
+        applicationId 'work.samelling.hipstergo'
+        minSdkVersion 24
+        targetSdkVersion 36
+        versionCode 100000
+        versionName '1.0.0-rc.1'
+    }
+    buildTypes {
+        release { minifyEnabled false }
+    }
+    sourceSets {
+        main {
+            // One shared native implementation; no duplicated Java or artwork.
+            java.srcDirs = ['../../android-lab/app/src/main/java']
+            res.srcDirs = ['build/production-res']
+            assets.srcDirs = ['src/main/assets']
+        }
+        test {
+            java.srcDirs = ['../../android-lab/app/src/test/java']
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+        coreLibraryDesugaringEnabled true
+    }
+}
+
+tasks.register('bundleProduction', Exec) {
+    workingDir rootProject.projectDir.parentFile
+    commandLine 'python3', 'scripts/bundle_android_production.py'
+    inputs.dir '../../launcher'
+    inputs.dir '../android-lab/web'
+    inputs.dir '../android-lab/app/src/main/res'
+    inputs.dir '../android-lab/artwork/chaos-roll'
+    inputs.dir 'config'
+    inputs.file '../../scripts/bundle_android_lab.py'
+    inputs.file '../../scripts/bundle_android_production.py'
+    inputs.file 'build.gradle'
+    outputs.dir 'src/main/assets'
+    outputs.dir 'build/production-res'
+}
+preBuild.dependsOn bundleProduction
+
+dependencies {
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+    implementation 'org.jsoup:jsoup:1.24.1'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs_nio:2.1.5'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.json:json:20240303'
+}
