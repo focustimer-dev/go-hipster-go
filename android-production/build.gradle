@@ -1,0 +1,8 @@
+// Production RC reuses the canonical native source in android-lab without
+// building or distributing the historic android/ Trusted Web Activity.
+buildscript {
+    repositories { google(); mavenCentral() }
+    dependencies { classpath 'com.android.tools.build:gradle:8.9.1' }
+}
+allprojects { repositories { google(); mavenCentral() } }
+tasks.register('clean', Delete) { delete rootProject.buildDir }

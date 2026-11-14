@@ -16,6 +16,11 @@ import java.util.*;
 /** Separately installed sandbox with an offline interface and native release checks. Only bundled pages can call the native bridge. */
 public class LabActivity extends Activity {
     private static final String HOST = "lab.hipster.invalid";
+    // Source classes stay in the shared namespace; installed variants own their shortcut URI.
+    private boolean isOwnShortcut(Uri value) {
+        String scheme = getPackageName().endsWith(".lab") ? "hipsterlab" : "hipstergo";
+        return value != null && scheme.equals(value.getScheme());
+    }
     private static final String HOME = "https://" + HOST + "/";
     private WebView web;
     private PaletteInsetLayout layout;
@@ -134,7 +139,7 @@ public class LabActivity extends Activity {
         });
         String start = HOME;
         Uri input = getIntent().getData();
-        if (input != null && "hipsterlab".equals(input.getScheme())) {
+        if (isOwnShortcut(input)) {
             String mood = input.getQueryParameter("mood");
             if ("funky".equals(mood) || "weird".equals(mood)) start += "?mood="+mood;
         }
@@ -156,7 +161,7 @@ public class LabActivity extends Activity {
         if(Intent.ACTION_SEND.equals(intent.getAction()))receiveSharedText(intent);
         else {
             Uri u=intent.getData();
-            if(u!=null&&"hipsterlab".equals(u.getScheme())) {
+            if(isOwnShortcut(u)) {
                 String mood=u.getQueryParameter("mood");
                 if("funky".equals(mood)||"weird".equals(mood))web.loadUrl(HOME+"?mood="+mood);
             }
@@ -164,7 +169,7 @@ public class LabActivity extends Activity {
     }
     private void receiveSharedText(Intent intent) {
         if(intent==null||!Intent.ACTION_SEND.equals(intent.getAction()))return;
-        if(!"text/plain".equals(intent.getType())){toast("Share a song link or plain text to Lab.");return;}
+        if(!"text/plain".equals(intent.getType())){toast("Share a song link or plain text to Go, Hipster, Go!.");return;}
         try {
             CharSequence raw=intent.getCharSequenceExtra(Intent.EXTRA_TEXT);
             String text=raw==null?null:raw.toString();
@@ -284,7 +289,7 @@ public class LabActivity extends Activity {
             catch (ActivityNotFoundException e) { i.setPackage(null); toast("Choose your AI from the share menu, or paste the copied prompt."); }
         }
         try { startActivity(Intent.createChooser(i,"Share your playlist request")); }
-        catch (ActivityNotFoundException e) { toast("No sharing app available. View the request in Lab to copy it manually."); }
+        catch (ActivityNotFoundException e) { toast("No sharing app available. Open Go, Hipster, Go! to copy the request manually."); }
     }
     private String aiPackage(String ai) {
         return "chatgpt".equals(ai)?"com.openai.chatgpt":"gemini".equals(ai)?"com.google.android.apps.bard":"claude".equals(ai)?"com.anthropic.claude":null;

@@ -6,7 +6,7 @@ import json
 
 ROOT = Path(__file__).resolve().parents[1]
 
-def bundle(destination=None):
+def bundle(destination=None, *, version_name=None, widget_asset_output=None, drawable_output=None, production=False):
     destination = Path(destination or ROOT / 'android-lab/app/src/main/assets/site')
     if destination.exists():
         shutil.rmtree(destination)
@@ -25,10 +25,31 @@ def bundle(destination=None):
     html = page.read_text()
     manual = (ROOT / 'launcher/editions/gig-poster/setup/index.html').read_text()
     workspace = (ROOT / 'android-lab/web/workspace.html').read_text()
-    version = re.findall(r"versionName\s+['\"]([0-9A-Za-z.+_-]+)['\"]", (ROOT / 'android-lab/app/build.gradle').read_text())
+    version = ([version_name] if version_name is not None else
+               re.findall(r"versionName\s+['\"]([0-9A-Za-z.+_-]+)['\"]", (ROOT / 'android-lab/app/build.gradle').read_text()))
     assert len(version) == 1, 'Expected one Android versionName for the Manual.'
     assert workspace.count('<!--LAB_APP_VERSION-->') == 1, 'Manual version placeholder changed.'
     workspace = workspace.replace('<!--LAB_APP_VERSION-->', version[0])
+    if production:
+        # Only copy displayed content. Keep Lab DOM IDs, bridge names, and CSS hooks.
+        visible_copy = {
+            'Share a song link to Hipster GO Lab, or add a musical idea here.':
+                'Share a song link to Go, Hipster, Go!, or add a musical idea here.',
+            'Uninstalling Lab removes your Crate.':
+                'Uninstalling the app removes your Crate.',
+            'Lab prepares the request.':
+                'Go, Hipster, Go! prepares the request.',
+            'Gemini’s installed version cannot be read by Lab.':
+                'This app cannot read Gemini’s installed version.',
+            'ANDROID LAB · ': 'GO, HIPSTER, GO! · ',
+            'A separate offline install.': 'An offline-ready app.',
+            'If the installed app is unavailable, Lab opens its website.':
+                'If the installed AI app is unavailable, its website opens.',
+        }
+        for source, replacement in visible_copy.items():
+            if workspace.count(source) != 1:
+                raise ValueError('Production display contract changed: ' + source)
+            workspace = workspace.replace(source, replacement)
     for marker, cls in [('LINER', 'manual-liner'), ('RESOURCES', 'resource-shelf')]:
         block = re.search(r'<details class="' + cls + r'">.*?</details>', manual, re.S)
         assert block, 'Manual section changed; review Lab integration.'
@@ -72,6 +93,11 @@ def bundle(destination=None):
     shutil.copyfile(ROOT / 'android-lab/web/CAHILL-KEYES-NOTICES.txt',
                     destination / 'assets/CAHILL-KEYES-NOTICES.txt')
     shutil.copyfile(ROOT / 'android-lab/web/manual-guide.html', destination / 'manual-guide.html')
+    if production:
+        guide = destination / 'manual-guide.html'
+        # Manual content uses the term only for on-screen instructions/demos.
+        guide.write_text(re.sub(r'\bLAB\b', 'APP',
+                              re.sub(r'\bLab\b', 'Go, Hipster, Go!', guide.read_text())))
     shutil.copyfile(ROOT / 'android-lab/web/manual-guide-theme.css', destination / 'assets/lab-manual-themes.css')
     shutil.copytree(ROOT / 'android-lab/web/tutorial-media', destination / 'assets/tutorial-media')
     script = destination / 'assets/app.js'
@@ -113,6 +139,21 @@ def bundle(destination=None):
  if(external&&window.HipsterLab){e.preventDefault();window.HipsterLab.open(aiKeys[$('ai').value],setup());return}
 ''')
     setup_script.write_text(setup_text)
+    if production:
+        # Exact user-facing JS strings only: internal lab* state keys are shared.
+        translations = {
+            "mark.textContent='LAB';": "mark.textContent='';mark.hidden=true;",
+            "'Share a song link to Lab, or add an idea.'":
+                "'Share a song link to Go, Hipster, Go!, or add an idea.'",
+            "If the app is unavailable, Lab opens its website.":
+                "If the app is unavailable, its website opens.",
+            "frames:[['LAB','Copy Setup Check']":
+                "frames:[['APP','Copy Setup Check']",
+        }
+        for source, replacement in translations.items():
+            if text.count(source) != 1:
+                raise ValueError('Production script contract changed: ' + source)
+            text = text.replace(source, replacement)
     script.write_text(text)
     # A versioned widget catalog derived from canonical Jukebox definitions.
     # Bundled assets are outputs only, never a second prompt specification.
@@ -146,14 +187,14 @@ def bundle(destination=None):
             'tension': tensions,
         },
     }
-    widget_asset = ROOT / 'android-lab/app/src/main/assets/chaos-roll-config.json'
+    widget_asset = Path(widget_asset_output or ROOT / 'android-lab/app/src/main/assets/chaos-roll-config.json')
     widget_asset.parent.mkdir(parents=True, exist_ok=True)
     widget_asset.write_text(json.dumps(chaos_config, ensure_ascii=False, separators=(',', ':')))
     import runpy
     runpy.run_path(str(ROOT/'scripts/bundle_maplibre_lab.py'))['bundle_maplibre'](destination)
     # Copy the two approved raster artworks without redrawing or cropping.
     runpy.run_path(str(ROOT/'scripts/render_chaos_widget.py'))['render'](
-        ROOT / 'android-lab/app/src/main/res/drawable-nodpi')
+        Path(drawable_output or ROOT / 'android-lab/app/src/main/res/drawable-nodpi'))
     # Only the packaged Android copies are compressed. Originals in launcher/
     # remain lossless and can be re-encoded for future visual revisions.
     runpy.run_path(str(ROOT/'scripts/optimize_android_artwork.py'))['optimize'](destination)

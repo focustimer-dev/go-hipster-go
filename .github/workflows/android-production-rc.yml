@@ -1,0 +1,76 @@
+name: Android production RC (unsigned, no deployment)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'android-production/**'
+      - 'android-lab/**'
+      - 'launcher/**'
+      - 'scripts/bundle_android_lab.py'
+      - 'scripts/bundle_android_production.py'
+      - 'scripts/test_android_production_contract.py'
+      - 'scripts/render_chaos_widget.py'
+      - '.github/workflows/android-production-rc.yml'
+  pull_request:
+    paths:
+      - 'android-production/**'
+      - 'android-lab/**'
+      - 'launcher/**'
+      - 'scripts/bundle_android_lab.py'
+      - 'scripts/bundle_android_production.py'
+      - 'scripts/test_android_production_contract.py'
+      - 'scripts/render_chaos_widget.py'
+      - '.github/workflows/android-production-rc.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-production-rc-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  unsigned-preflight:
+    name: Validate native production and produce unsigned APK/AAB
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools'
+          log-accepted-android-sdk-licenses: false
+      - run: sdkmanager 'platforms;android-36' 'build-tools;35.0.0'
+      - run: python -m pip install Pillow==12.0.0
+      - name: Shared Lab/native and production packaging contracts
+        run: |
+          python -m unittest discover -s android-lab/tests -v
+          python scripts/test_android_production_contract.py
+      - name: Native production release unit tests, lint, APK and AAB
+        run: bash android/gradlew -p android-production testReleaseUnitTest lintVitalRelease assembleRelease bundleRelease --no-daemon
+      - name: Verify unsigned production package identity
+        run: |
+          set -euo pipefail
+          apk=android-production/app/build/outputs/apk/release/app-release-unsigned.apk
+          aab=android-production/app/build/outputs/bundle/release/app-release.aab
+          test -s "$apk" && test -s "$aab"
+          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$apk" | grep -F "name='work.samelling.hipstergo' versionCode='100000' versionName='1.0.0-rc.1'"
+          test "$(unzip -p "$aab" BundleConfig.pb | wc -c)" -gt 0
+          sha256sum "$apk" "$aab"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hipster-go-production-rc-unsigned
+          path: |
+            android-production/app/build/outputs/apk/release/app-release-unsigned.apk
+            android-production/app/build/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
+          retention-days: 14
