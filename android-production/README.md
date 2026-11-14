@@ -12,10 +12,16 @@ With JDK 17, Android SDK API 36/build-tools 35.0.0, Python 3.12 and Pillow 12.0.
 python scripts/bundle_android_production.py
 python scripts/test_android_production_contract.py
 python scripts/test_android_play_readiness.py
-bash android/gradlew -p android-production testReleaseUnitTest assembleRelease bundleRelease lintVitalRelease --no-daemon
+bash android/gradlew -p android-production testReleaseUnitTest testQaUnitTest assembleRelease bundleRelease assembleQa lintVitalRelease --no-daemon
 ```
 
-Check `android-production/app/build/outputs/apk/release/` and `android-production/app/build/outputs/bundle/release/`. **Both are unsigned.** Never use the older `android/` wrapper or the Lab signing workflow for the production RC. Final signable distribution requires the release pipeline, certificate policy and owner's approval.
+Check `android-production/app/build/outputs/apk/release/` and `android-production/app/build/outputs/bundle/release/`. **Both production artifacts are unsigned.** Never use the older `android/` wrapper or the Lab signing workflow for the production RC. Final signable distribution requires the release pipeline, certificate policy and owner's approval.
+
+### Keyless installable RC device test
+
+The `qa` build type produces `android-production/app/build/outputs/apk/qa/app-qa.apk`, signed **only** with the temporary CI runner debug key, for sideload testing. It is deliberately `debuggable=false`, with **Go, Hipster, Go! RC** launcher label, package `work.samelling.hipstergo.qa`, and QA-specific launcher shortcuts that remain within the QA app. **It is not eligible for Google Play and cannot replace/upgrade Lab, the historic TWA, or the future production app.** On subsequent CI runs, expect a new signer: uninstall the prior QA APK first (and lose its local QA data).
+
+A successful CI run uploads a separate `hipster-go-android-qa-sideload` artifact containing `app-qa.apk` and a source/identity record. No existing Lab/TWA key, Google Drive credentials, Play Console account or upload key is accessed. See [the phone QA checklist](../docs/android-device-qa.md) for safe installation and acceptance tests.
 
 Internal source identifiers (the `.lab` Java namespace, theme resources, `HipsterLab` JS bridge and CSS selectors) remain on purpose: they are not user-facing, and renaming them would introduce unnecessary functional risk. Production UI strings, app label, shortcuts and widget app identity are separate; validate those by inspecting the generated assets, merged manifest and installed APK. The native local WebView host `lab.hipster.invalid` is an isolated synthetic URL, not a public website.
 
