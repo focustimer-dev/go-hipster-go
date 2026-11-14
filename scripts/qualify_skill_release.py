@@ -224,7 +224,7 @@ def render_markdown(result: dict) -> str:
         "- [ ] Live ChatGPT, Gemini and Claude host loading/behavior checked",
         "- [ ] Baseline-vs-candidate musical quality reviewed with real recording evidence",
         "- [ ] Track matching, saved state and live publishing limitations evaluated without making unauthorized playlists",
-        "- [x] Candidate version 3.11.6 synchronized offline; live host and publication approval pending",
+        "- [x] Candidate version 3.11.7 synchronized offline; live host and publication approval pending",
         "- [ ] Separate approval obtained before public release/tag/reference promotion",
         "",
         "**No publication, deployment, tag or production-reference promotion was performed.**",
