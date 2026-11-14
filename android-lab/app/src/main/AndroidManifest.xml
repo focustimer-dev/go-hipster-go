@@ -21,7 +21,7 @@
     </activity>
     <activity android:name=".ChaosRollActivity" android:exported="false"
         android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-    <receiver android:name=".ChaosRollWidgetProvider" android:exported="true">
+    <receiver android:name=".ChaosRollWidgetProvider" android:label="@string/chaos_roll_widget_name" android:exported="true">
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
       </intent-filter>
