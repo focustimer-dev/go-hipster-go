@@ -26,6 +26,18 @@ The app's primary interface and Atlas assets are packaged for offline use. Some 
 
 You can remove saved requests and references from Your Crate and disable optional skill-update checks. The app does not have an in-app user account. Uninstalling the Android app generally removes its local data, subject to the phone's OS/device behavior. To manage data sent to an external AI or music service, use that service's account/privacy controls.
 
+## Security, retention and deletion
+
+The app's explicit network code uses HTTPS for preview and public release-metadata requests; cleartext Android traffic and Android backup are disabled in the production manifest. An external AI app or browser handles data **after you deliberately open/share to it** under that service's separate policies. No first-party account login is part of the current native app.
+
+Saved requests and recent inspirations stay in the app's local storage until you remove them, clear app data or uninstall the app. Some theme/AI choices and skill-update status are also saved locally; removing an individual Crate entry does not necessarily clear every preference. The app does not promise deletion of data previously sent to another AI, music service or public link host.
+
+**Unresolved before publication:** The first-party Cloudflare preview endpoint receives a full submitted music URL, which may contain information in its query string, and the platform handling the HTTPS request can receive ordinary network metadata. Deployed Worker settings inspected on 2026-11-14 showed explicit Logpush **off** and no populated observability config, but that does **not** establish Cloudflare/account/CDN request log retention or analytics practices. The final approved privacy policy must state verified retention/deletion and recipient details and must match the Data safety form. Do not say “we collect no data” until the complete review is signed off.
+
+## Privacy rights and questions
+
+You can disable automatic Skill update checks through the app's update settings and choose not to supply music URLs or share prompts to external AI services. If you contact support, avoid including passwords, tokens or sensitive account details. The data associated with an external provider account must be managed with that provider. Because Go, Hipster, Go! does not currently create first-party user accounts, there is no first-party app-account deletion login flow; if accounts are ever introduced, the policy and deletion options must be changed before release.
+
 ## Contact
 
 For app support and privacy inquiries: [gohipstergosupport@proton.me](mailto:gohipstergosupport@proton.me). Do not email passwords or tokens.
