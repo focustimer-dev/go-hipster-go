@@ -20,7 +20,7 @@ import java.util.Set;
 /** Shared native Android dialog colors from the local WebView theme roles. */
 final class NativeDialogPalette {
  private static final Set<String> THEMES=new HashSet<>(Arrays.asList(
-     "liberi","bosque","usiku","kingston","detroit","addis","polish","beirut"));
+     "liberi","bosque","usiku","kingston","detroit","addis","polish","beirut","michoacan","electricstars"));
  private final Activity activity;
  // The original gold and teal Libéri native dialog remains the fallback.
  private int surface=Color.rgb(223,176,69),ink=Color.rgb(16,49,53);
