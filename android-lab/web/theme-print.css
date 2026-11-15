@@ -209,12 +209,12 @@
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=funky]):not([data-mood=desire]):not([data-mood=triumphant]) .face::after{
   filter:url(#themeMoodSelectedEngraving)!important;
 }
-/* Desire v3's ink darkness is encoded in alpha and must not be recalculated
-   with referenceInk; show the expressive selected plate on every print skin. */
+/* Desire v4 uses the alpha mask as-is, tinting via semantic ink roles.
+   Selected-expression visibility is shared by every print profile. */
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=desire][aria-pressed=true] .face::before{
-  opacity:0;filter:url(#alphaInk)!important;
+  opacity:0;filter:none!important;
 }
-:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=desire][aria-pressed=true] .face::after{opacity:1;filter:url(#alphaInk)!important}
+:root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=desire][aria-pressed=true] .face::after{opacity:1;filter:none!important}
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[data-mood=desire] .desire-hearts{
   background:var(--lab-mood-desire-hearts);
 }
