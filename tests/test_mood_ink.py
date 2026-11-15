@@ -51,21 +51,32 @@ class MoodInkTests(unittest.TestCase):
         self.assertIn('background:#d64b30',css,'Use the approved solid vermilion stock')
         self.assertNotIn('background:rgb(214 75 48 / 22%)',css)
 
-    def test_desire_heart_color_mask_preserves_source_and_placement(self):
+    def test_desire_v2_expression_and_heart_mask_are_independent(self):
+        from PIL import Image
         svg=(ART/'desire-heart-ink-mask.svg').read_text()
-        self.assertIn(hashlib.sha256((ART/'desire-selected-v1.png').read_bytes()).hexdigest(),svg)
-        spans=[tuple(map(int,m)) for m in re.findall(r'M(\d+) (\d+)h(\d+)v1H\d+z',svg)]
-        self.assertTrue(spans)
-        self.assertTrue(all(400<=x<800 and 515<=y<=650 and width>0 for x,y,width in spans),'Only heart ink can be recolored')
-        self.assertTrue(any(x<=470<x+width and y==570 for x,y,width in spans))
-        self.assertTrue(any(x<=680<x+width and y==570 for x,y,width in spans))
+        self.assertIn('Desire v2',svg)
+        self.assertNotIn('Source SHA256',svg,'Old eye-coordinate mask must not survive')
+        self.assertIn('viewBox="0 0 1254 1254"',svg)
+        self.assertIn('id="heart"',svg)
         css=(ART.parent/'mood-portraits.css').read_text()
+        for state in ('neutral','selected'):
+            self.assertIn(f'desire-{state}-v2.webp',css)
+            path=ART/f'desire-{state}-v2.webp'
+            with Image.open(path) as image:
+                self.assertEqual(image.size,(1254,1254))
+                rgba=image.convert('RGBA')
+                self.assertEqual(rgba.getchannel('A').getextrema(),(0,255))
+                self.assertLess(rgba.getchannel('A').getbbox()[1],25)
+                self.assertGreater(rgba.getchannel('A').getbbox()[3],1200)
+        self.assertIn('filter:url(#alphaInk)',css)
         self.assertIn('background:var(--funk-selected-paper)',css)
         page=(ROOT/'launcher/editions/gig-poster/index.html').read_text()
-        self.assertIn('id="selectedMoodPetrol"',page)
         self.assertIn('class="desire-hearts" aria-hidden="true"',page)
-        self.assertNotIn('portrait-underprint',page)
-
+        theme=(ROOT/'android-lab/web/theme-print.css').read_text()
+        pwa=(ROOT/'launcher/assets/pwa-themes.css').read_text()
+        self.assertIn('opacity:1;filter:url(#alphaInk)!important',theme)
+        self.assertIn('opacity:1;filter:url(#alphaInk)!important',pwa)
+        self.assertNotIn('Desire negative-looking selection plate stays hidden',pwa)
     def test_current_pages_preload_ink_sprites(self):
         page=(ROOT/'launcher/editions/gig-poster/index.html').read_text()
         for state in ('neutral','selected'):
