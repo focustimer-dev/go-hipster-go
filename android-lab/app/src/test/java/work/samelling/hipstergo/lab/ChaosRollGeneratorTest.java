@@ -35,7 +35,7 @@ public class ChaosRollGeneratorTest {
         JSONObject config=catalog();
         String first=ChaosRollGenerator.generate(config,new Random(17),"chatgpt","spotify",true);
         assertEquals(first, ChaosRollGenerator.generate(config,new Random(17),"chatgpt","spotify",true));
-        assertTrue(first.startsWith("@go-hipster-go @Spotify go "));
+        assertTrue(first.startsWith("@go-hipster-go @Spotify go"));
         assertTrue(first.contains("Recording preference: Skip rough recordings."));
         assertFalse(first.contains("Inspiration:"));
         assertFalse(first.contains("Antarctica"));
@@ -47,9 +47,9 @@ public class ChaosRollGeneratorTest {
         Pattern slot=Pattern.compile("-?[0-2](?:[hasdwcft]{1,2}|x)?");
         for (int seed=0;seed<100;seed++) {
             String prompt=ChaosRollGenerator.generate(config,new Random(seed),"gemini","youtube",false);
-            assertTrue(prompt.startsWith("@go-hipster-go @YouTube Music go "));
+            assertTrue(prompt.startsWith("@go-hipster-go @YouTube Music go"));
             String[] lines=prompt.split("\\n");
-            assertTrue(lines.length>=6);
+            assertTrue(lines.length>=5);
             assertTrue(lines[1].startsWith("c1:"));
             String payload=lines[1].substring(3);
             Matcher matcher=slot.matcher(payload);
@@ -58,7 +58,8 @@ public class ChaosRollGeneratorTest {
             while(matcher.find()){reconstructed.append(matcher.group());count++;}
             assertEquals("seed "+seed,12,count);
             assertEquals("seed "+seed,payload,reconstructed.toString());
-            assertTrue(prompt.contains("Discovery route: v1/R"));
+            assertFalse(prompt.contains("Discovery route:"));
+            assertFalse(prompt.contains("Seed:"));
             assertFalse(prompt.contains("Inspiration:"));
             assertFalse(prompt.contains("Recording preference:"));
         }
@@ -67,7 +68,7 @@ public class ChaosRollGeneratorTest {
     @Test public void otherAiKeepsTheBriefManualAndUsesConfiguredService() throws Exception {
         JSONObject config=catalog();
         String prompt=ChaosRollGenerator.generate(config,new Random(51),"other","apple",true);
-        assertTrue(prompt.startsWith("Use Go, Hipster, Go!: go "));
+        assertTrue(prompt.startsWith("Use Go, Hipster, Go!: go"));
         assertTrue(prompt.contains("\nService: Apple Music."));
         assertTrue(prompt.contains("Recording preference: Skip rough recordings."));
         assertFalse(prompt.contains("@go-hipster-go"));
