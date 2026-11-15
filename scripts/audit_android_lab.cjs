@@ -81,6 +81,22 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
     // Focused crops from the packaged UI, not edited mockups.
     await page.locator('.poster-hero').screenshot({path:path.join(output,'phone-hero-plate.png'),animations:'disabled'});
     await page.locator('.mood-grid').screenshot({path:path.join(output,'phone-moods-neutral.png'),animations:'disabled'});
+    // Capture both real tempo modes for the offset comparison board.
+    await page.locator('#tempoSlider').evaluate(el=>{
+     el.value='4';el.dispatchEvent(new Event('input',{bubbles:true}));el.dispatchEvent(new Event('change',{bubbles:true}));
+    });
+    await page.locator('#tempoControl').screenshot({path:path.join(output,'phone-tempo-simple.png'),animations:'disabled'});
+    await page.getByRole('button',{name:'The curve',exact:true}).click();
+    await page.locator('#mixCurveEditor').waitFor({state:'visible'});
+    const curve=page.frameLocator('#mixCurveEditor');
+    await curve.getByRole('button',{name:/^Start ·/}).press('ArrowUp');
+    await page.locator('.tempo-mode-switch').locator('..').screenshot({path:path.join(output,'phone-tempo-curve.png'),animations:'disabled'});
+    await page.getByRole('button',{name:'Set the tempo',exact:true}).click();
+    await page.locator('#includeCover').click();
+    await page.locator('#goHard').click();
+    await page.locator('.go-options').screenshot({path:path.join(output,'phone-go-art-hard.png'),animations:'disabled'});
+    await page.locator('#goHard').click();
+    await page.locator('#includeCover').click();
    }
    await page.locator('[data-lab-tab="crate"]').click();
    await page.evaluate(()=>{auditReference='Harlem Prom Night 1986';window.HipsterLabRefresh()});
@@ -103,6 +119,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    assert((await page.locator('#prompt').textContent()).includes('Inspiration:'),'GO retains inspiration in its compact brief');
    await capture('receipt');
    await page.locator('[data-lab-action="save"]').click();
+   if(marketing)await page.evaluate(()=>{if(auditState.saved[0])auditState.saved[0].name='City after dark — our saved mixtape structure';window.HipsterLabStateChanged()});
    await page.locator('[data-lab-tab="crate"]').click();await capture('saved-crate');
    await page.evaluate(()=>{
     auditState.recentInspirations=[{id:'recent-preview',text:auditReference,title:'Harlem Prom Night 1986',description:'A page-supplied music reference description.'}];auditState.inspirationPreview={title:'Harlem Prom Night 1986',description:'A page-supplied music reference description.'};
