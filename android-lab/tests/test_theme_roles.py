@@ -229,6 +229,7 @@ class AndroidThemeRoles(unittest.TestCase):
         # but never in the alternate Android theme mapping.
         self.assertIsNone(re.search(r"#[0-9a-fA-F]{6}\b", onboarding))
         self.assertIn("--lab-setup-rule:var(--lab-ui-highlight)", tokens)
+        self.assertIn("--lab-setup-focus:var(--lab-ui-ticket-ink)", tokens)
         for name, body in re.findall(
             r":root\[data-pwa-theme=([a-z]+)\]\{([^}]*)\}", tokens, re.S
         ):
