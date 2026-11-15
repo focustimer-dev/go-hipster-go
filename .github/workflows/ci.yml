@@ -28,6 +28,30 @@ jobs:
           python scripts/playlist_cli.py validate examples/example-playlist.json
           python -m unittest discover -s tests -v
           python scripts/qualify_skill_release.py --check
+      # Export the same checked source as the Android RC for private host QA.
+      # These ZIPs are NOT the frozen 3.11.7 stable release. Never publish or
+      # overwrite the pinned release from an ordinary push.
+      - name: Record unreleased platform ZIP QA provenance
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && matrix.python-version == '3.12' }}
+        run: |
+          printf 'channel=unreleased-qa\\nsource_sha=%s\\npublic_release=no\\ninstallation_verified=no\\n' "$GITHUB_SHA" > dist/platform-qa-provenance.txt
+          sha256sum dist/go-hipster-go-{gemini-app-skill,chatgpt-plugin,claude-skill,claude-plugin}.zip | sort >> dist/platform-qa-provenance.txt
+          grep -F 'Protocol: N' adapters/chatgpt/CHATGPT_KNOWLEDGE.md >/dev/null
+          grep -F 'Protocol: N' adapters/gemini/GEM_KNOWLEDGE.md >/dev/null
+      - name: Retain matching platform ZIPs for private Android RC QA
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && matrix.python-version == '3.12' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ghg-unreleased-platform-qa-${{ github.sha }}
+          path: |
+            dist/go-hipster-go-gemini-app-skill.zip
+            dist/go-hipster-go-chatgpt-plugin.zip
+            dist/go-hipster-go-claude-skill.zip
+            dist/go-hipster-go-claude-plugin.zip
+            dist/platform-qa-provenance.txt
+          retention-days: 7
+          if-no-files-found: error
+
       - name: Build isolated Gate 4 private QA packages and provenance
         if: ${{ github.event_name == 'pull_request' && matrix.python-version == '3.12' && github.head_ref == 'test/skill-3116-gate4-two-host' }}
         run: |
