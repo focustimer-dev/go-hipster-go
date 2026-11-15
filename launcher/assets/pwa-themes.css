@@ -8,7 +8,7 @@
  --lab-ui-action:#0c426d;--lab-ui-on-action:#f6b8fb;
  --lab-ui-rule:#be74cd;--lab-ui-field:#011629;--lab-ui-on-field:#f6b8fb;
  --lab-ui-focus:#f6b8fb;--lab-ui-control-outline:#be74cd;
- --lab-ui-ticket-stock:#372b68;--lab-ui-ticket-ink:#f6b8fb;
+ --lab-ui-ticket-stock:#0c426d;--lab-ui-ticket-ink:#f6b8fb;
  --lab-ui-go:#0c426d;--lab-ui-go-ink:#f6b8fb;
  --lab-ui-highlight:#be74cd;--lab-ui-on-highlight:#011629;
  --lab-print-muted:#372b68;--lab-print-stamp:#be74cd;
@@ -19,7 +19,7 @@
  --lab-atlas-paper:#0c426d;--lab-atlas-land:#0c426d;--lab-atlas-ocean:#011629;
  --lab-atlas-ink:#f6b8fb;--lab-atlas-selected:#be74cd;--lab-atlas-route:#f6b8fb;
  --lab-atlas-backdrop:#011629;--lab-atlas-field:#011629;
- --lab-mood-neutral-paper:#011629;--lab-mood-neutral-ink:#be74cd;
+ --lab-mood-neutral-paper:#0c426d;--lab-mood-neutral-ink:#f6b8fb;
  --lab-mood-selected-paper:#be74cd;--lab-mood-selected-ink:#011629;
  --lab-mood-desire-heart:#f6b8fb;
 }
