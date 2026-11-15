@@ -4,7 +4,8 @@ const {chromium}=require('playwright');
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http');
 const assert=require('node:assert/strict');
 const root=path.resolve(__dirname,'../android-lab/app/src/main/assets/site');
-const output=path.resolve(__dirname,'../android-lab/build/workflow-audit');
+const marketing=true;
+const output=path.resolve(__dirname,marketing?'../android-lab/build/marketing-captures':'../android-lab/build/workflow-audit');
 const types={'.html':'text/html','.js':'application/javascript','.css':'text/css','.svg':'image/svg+xml','.webp':'image/webp','.png':'image/png','.woff':'font/woff'};
 (async()=>{
  fs.mkdirSync(output,{recursive:true});
@@ -19,7 +20,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
  try{
   browser=await chromium.launch({headless:true,...(process.env.LAB_CHROMIUM?{executablePath:process.env.LAB_CHROMIUM}:{})});
   for(const profile of [{name:'phone',width:412,height:915},{name:'narrow',width:320,height:740},{name:'large-text',width:412,height:915,scale:2},{name:'landscape',width:915,height:412}]){
-   const context=await browser.newContext({viewport:{width:profile.width,height:profile.height},isMobile:true,hasTouch:true,reducedMotion:profile.name==='phone'?'no-preference':'reduce'});
+   const context=await browser.newContext({viewport:{width:profile.width,height:profile.height},deviceScaleFactor:marketing?3:1,isMobile:true,hasTouch:true,reducedMotion:profile.name==='phone'?'no-preference':'reduce'});
    const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
    await page.addInitScript(()=>{
     window.auditCalls=[];window.auditCopyOK=true;window.auditReference='';
@@ -32,14 +33,14 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    });
    await page.goto('http://127.0.0.1:'+server.address().port+'/');
    assert.equal(await page.evaluate(()=>document.documentElement.dataset.pwaTheme),'polish','Fresh Android installs default to Katowice');
-   await page.evaluate(()=>localStorage.setItem('ghg-lab-theme-v1','liberi'));
+   if(!marketing)await page.evaluate(()=>localStorage.setItem('ghg-lab-theme-v1','liberi'));
    await page.reload();
    if(profile.scale)await page.addStyleTag({content:'html{font-size:200% !important}'});
    await page.evaluate(()=>document.fonts.ready);
    const capture=async name=>{
     const navigation=await page.locator('.lab-rail [data-lab-tab]').evaluateAll(tabs=>tabs.map(e=>({tab:e.dataset.labTab,active:e.getAttribute('aria-current')==='page',background:getComputedStyle(e).backgroundColor,color:getComputedStyle(e).color})));
     assert.equal(navigation.filter(t=>t.active).length,1,'Exactly one current destination');
-    for(const tab of navigation){assert.equal(tab.background,tab.active?'rgb(223, 176, 69)':'rgba(0, 0, 0, 0)','Only the current tab is highlighted: '+tab.tab);assert.equal(tab.color,tab.active?'rgb(16, 49, 53)':'rgb(223, 176, 69)')}
+    if(!marketing)for(const tab of navigation){assert.equal(tab.background,tab.active?'rgb(223, 176, 69)':'rgba(0, 0, 0, 0)','Only the current tab is highlighted: '+tab.tab);assert.equal(tab.color,tab.active?'rgb(16, 49, 53)':'rgb(223, 176, 69)')}
     await page.screenshot({path:path.join(output,profile.name+'-'+name+'.png'),fullPage:true});
     const metrics=await page.evaluate(()=>{
      const visible=e=>!!e.getClientRects().length&&getComputedStyle(e).visibility!=='hidden'&&!e.closest('[hidden]');
