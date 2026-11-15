@@ -111,7 +111,45 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
      assert.equal(portrait.imageWidth,128,'Inline Desire mask must decode within the sandbox');
      assert(portrait.visible>1500,'Desire mask must contain actual engraved pixels');
     }
-    if(marketing)await curveFrame.locator('.mood-track').screenshot({path:path.join(output,'phone-desire-v4-curve-verified.png'),animations:'disabled'});
+    if(marketing){
+      const track=curveFrame.locator('.mood-track');
+      const capture=path.join(output,'phone-desire-v4-curve-verified.png');
+      try{
+        await track.screenshot({path:capture,animations:'disabled',timeout:9000});
+      }catch(error){
+        // This sandboxed chart continuously repaints and may never satisfy
+        // Playwright's "element stable" wait. Preserve an actual chart crop
+        // via the main-frame screenshot API instead; never invent evidence.
+        if(error?.name!=='TimeoutError')throw error;
+        // Playwright's bounding box is viewport-relative, and the editor may
+        // be well below the fold. Scroll the *parent* iframe into view first.
+        await page.locator('#mixCurveEditor').evaluate(el=>
+          el.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'}));
+        const box=await track.boundingBox(),view=page.viewportSize();
+        const left=Math.max(0,box?.x??0),top=Math.max(0,box?.y??0);
+        const width=Math.min(box?.x+box?.width??0,view.width)-left;
+        const height=Math.min(box?.y+box?.height??0,view.height)-top;
+        let cropped=false;
+        if(box&&width>10&&height>10){
+          try{
+            await page.screenshot({path:capture,clip:{x:left,y:top,width,height},
+              animations:'disabled',timeout:15000});
+            cropped=true;
+          }catch(cropError){
+            // Even a moving clip must not silently erase the evidence.
+            if(!/clip|outside|empty/i.test(String(cropError)))throw cropError;
+          }
+        }
+        if(!cropped){
+          // Retain genuine full-page evidence rather than forge a detail crop
+          // when the editor cannot be framed in this runner.
+          await page.screenshot({path:capture,fullPage:true,animations:'disabled',timeout:15000});
+          console.warn('Marketing curve capture fell back to full-page evidence.');
+        }else{
+          console.warn('Marketing capture used viewport crop fallback for moving curve track.');
+        }
+      }
+    }
     await page.getByRole('button',{name:'Set the tempo',exact:true}).click();
    }
    if(marketing && profile.name==='phone'){
