@@ -204,6 +204,28 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert(focusBounds.y>=ticketBounds.y+ticketBounds.height+10,'Focused mood clears the floating ticket');
   await ticket.locator('summary').click();
   assert(await ticket.locator('.ticket-region-short').isVisible(),'Expanded ticket restores region/option details');
+  // Exact native haptic contract: one strong detent for each unpinned input.
+  const checkShuffle=async expected=>{
+   await page.evaluate(()=>{window.labCalls=window.labCalls.filter(c=>c[0]!=='haptic')});
+   await page.locator('#shuffleCrate').evaluate(button=>button.click());
+   await page.waitForTimeout(470);
+   const kinds=await page.evaluate(()=>labCalls.filter(c=>c[0]==='haptic').map(c=>c[1]));
+   assert.deepEqual(kinds,Array(expected).fill('shuffle'),
+    expected+' unpinned inputs must yield '+expected+' native haptic pulses');
+  };
+  await checkShuffle(3);
+  await page.locator('#pinMood').evaluate(button=>button.click());
+  await checkShuffle(2);
+  await page.locator('#pinPace').evaluate(button=>button.click());
+  await checkShuffle(1);
+  await page.locator('#pinMood').evaluate(button=>button.click());
+  await page.locator('#pinPace').evaluate(button=>button.click());
+  await page.evaluate(()=>{window.labCalls=window.labCalls.filter(c=>c[0]!=='haptic')});
+  await page.locator('#includeCover').evaluate(button=>button.click());
+  await page.locator('#goHard').evaluate(button=>button.click());
+  assert.deepEqual(await page.evaluate(()=>labCalls.filter(c=>c[0]==='haptic').map(c=>c[1])),
+   ['click','click'],'Each GO extra provides exactly one discrete click');
+
   assert.deepEqual(errors,[]);
   if (!process.argv.includes('--renderer')) {
    console.log('PASS: Android Lab workspace and native handoff smoke tests.');
