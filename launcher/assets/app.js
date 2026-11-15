@@ -596,7 +596,7 @@ function mountMixCurveTrial(){
   const grip=doc.createElement("span");
   grip.className="mood-drag-grip";
   grip.setAttribute("aria-hidden","true");
-  grip.innerHTML='<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><circle cx="10" cy="4" r="1.6"/><circle cx="10" cy="10" r="1.6"/><circle cx="10" cy="16" r="1.6"/></svg>';
+  grip.innerHTML='<span class="mood-drag-mark">✥</span>';
   button.append(grip);
  }
 
