@@ -29,7 +29,7 @@ public final class ChaosRollActivity extends Activity {
             if (brief == null) {
                 SecureRandom random = new SecureRandom();
                 int roll = SurpriseRoll.draw(random);
-                if (roll == 1) prefs.edit().putBoolean("underneathElectricStarsUnlocked", true).commit();
+                if (roll == 1) prefs.edit().putBoolean("electricStarsUnlocked", true).commit();
                 brief = ChaosRollGenerator.generate(config, random, ai, service, skipRough)
                     + "\n" + SurpriseRoll.line(roll);
             }
