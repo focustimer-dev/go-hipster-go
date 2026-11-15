@@ -48,15 +48,28 @@ const server=http.createServer((req,res)=>{
   assert.equal(await page.evaluate(()=>window.HipsterPWABridge.getPrompt()),before,'Tempo-only curve retains existing global mood');
 
   const frame=page.locator('#mixCurveEditor');
+  const stamp=mood.locator('[data-mood=triumphant]'); // Last row, adjacent to the editor.
   await frame.waitFor({state:'visible'});
-  await page.waitForTimeout(250);
-  const a=await happy.boundingBox(),b=await frame.boundingBox();
+  await frame.scrollIntoViewIfNeeded();
+  await stamp.scrollIntoViewIfNeeded();
+  await page.waitForTimeout(300);
+  let a=await stamp.boundingBox(),b=await frame.boundingBox();
   assert(a&&b,'Portrait and curve have usable screen geometry');
+  // The first-row portrait is offscreen on many phones once Curve opens.
+  // Align the viewport so both the source and drop point are genuinely visible.
+  const screen=page.viewportSize(),endY=b.y+Math.min(64,b.height*.4);
+  if(endY>screen.height-20){
+    await page.evaluate(distance=>window.scrollBy(0,distance),endY-(screen.height-20));
+    a=await stamp.boundingBox();b=await frame.boundingBox();
+  }
+  const target={x:b.x+b.width*.35,y:b.y+Math.min(64,b.height*.4)};
+  console.log('Curve drag viewport',JSON.stringify({screen,source:a,target}));
+  assert(a.y>=0&&a.y+a.height/2<screen.height&&target.y>0&&target.y<screen.height,'Drag endpoints must be on screen');
   await page.mouse.move(a.x+a.width/2,a.y+a.height/2);
   await page.mouse.down();
-  await page.mouse.move(b.x+b.width*.35,b.y+50,{steps:9});
+  await page.mouse.move(target.x,target.y,{steps:12});
   await page.mouse.up();
-  await page.waitForFunction(()=>/\\bc1:/.test(window.HipsterPWABridge.getPrompt()),{timeout:5000});
+  await page.waitForFunction(()=>/\\bc1:/.test(window.HipsterPWABridge.getPrompt()),null,{timeout:7000});
   assert.match(await hint.innerText(),/change the mood along it/);
   assert.equal(await happy.getAttribute('aria-pressed'),'false','Pinned curve moods own the selection');
   await page.locator('.refinements').screenshot({path:'android-lab/build/curve-mood-review.png'});
