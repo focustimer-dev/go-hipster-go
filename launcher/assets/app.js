@@ -522,6 +522,8 @@ const mixCurveTrialAvailable=body.dataset.page==="launch"&&
 let mixCurveTrialCode="";
 let curvePortraitModeActive=false;
 function updateMoodInteractionCues(){
+ // This hint is optional on minimal launcher/test shells.
+ if(typeof doc.querySelector!=="function")return;
  const grid=doc.querySelector(".mood-grid");
  const hint=doc.getElementById("moodModeHint");
  if(!grid||!hint)return;
