@@ -143,7 +143,6 @@ class EngravedEditionChecks(unittest.TestCase):
         # Automatic framing backs away from small selected territories.
         # Continent focus, touch zoom/pan and Antarctica keep their original paths.
         self.assertIn('function atlasRelaxSelectedView(view){',script)
-        self.assertIn("const factor=body.classList.contains('lab-workspace')?1.55:1.18;",script)
         self.assertIn('const width=Math.min(720,w*factor),height=width*372/720;',script)
         self.assertIn("const factor=keyes?2.15:body.classList.contains('lab-workspace')?1.55:1.18;",script)
         self.assertIn('return [x+(w-width)/2,y+(h-height)/2,width,height];',script)
