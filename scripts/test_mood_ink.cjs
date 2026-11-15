@@ -14,8 +14,18 @@ const boxes=()=>page.locator('.mood-grid .mood').evaluateAll(nodes=>nodes.map(n=
 for(const name of names){await page.locator('.mood-grid [data-mood="'+name+'"]').click();await page.waitForFunction(sel=>{const el=document.querySelector('.mood-grid [data-mood="'+sel+'"] .face');if(!el)return false;return Number(getComputedStyle(el,'::before').opacity)<.02&&Number(getComputedStyle(el,'::after').opacity)>.98},name,{timeout:2000});const layers=await page.locator('.mood-grid [data-mood="'+name+'"] .face').evaluate(el=>['::before','::after'].map(p=>{const s=getComputedStyle(el,p);return {opacity:s.opacity,filter:s.filter,url:s.backgroundImage}}));assert(Number(layers[0].opacity)<.02,JSON.stringify({surface,viewport,name,layers}));assert(Number(layers[1].opacity)>.98,JSON.stringify({surface,viewport,name,layers}));const canonicalFunk=surface==='lab'&&name==='funky';assert(layers[0].url.includes('-ink-v2.webp'),JSON.stringify({surface,viewport,name,layers}));assert(layers[1].url.includes(canonicalFunk?'funk-selected-engraved.webp':'-ink-v2.webp'),JSON.stringify({surface,viewport,name,layers}));
 // Android selected Funk uses the approved baked yellow alpha engraving.
 // PWA and other moods retain the original selected sprite sheet.
-assert.equal(layers[0].filter,'none',JSON.stringify({surface,viewport,name,layers}));
-assert.equal(layers[1].filter,'none','No device-dependent SVG CSS filter');
+// The Android print profiles deliberately shade ORIGINAL six-character
+// engravings using the per-theme ink/paper SVG filter. Those filters do not
+// alter alpha and must not be mistaken for an unexpected portrait overlay.
+const printProfile=surface==='lab'&&await page.evaluate(()=>document.documentElement.dataset.ghgThemeProfile==='print');
+if(printProfile){
+ assert.match(layers[0].filter,/themeMoodNeutralEngraving/,'Original print portrait uses neutral engraving role');
+ if(canonicalFunk)assert.equal(layers[1].filter,'none','Selected Funk is pre-baked, not SVG filtered');
+ else assert.match(layers[1].filter,/themeMoodSelectedEngraving/,'Selected print portrait uses selected engraving role');
+}else{
+ assert.equal(layers[0].filter,'none',JSON.stringify({surface,viewport,name,layers}));
+ assert.equal(layers[1].filter,'none','Unthemed portrait never needs an SVG ink filter');
+}
 assert.deepEqual(await boxes(),before,'Mood toggling moved portrait controls');await page.locator('.mood-grid [data-mood="'+name+'"]').click();assert.equal(await page.locator('.mood-grid [data-mood="'+name+'"]').getAttribute('aria-pressed'),'false','Test must clear each selected mood before checking the next');}
 await page.emulateMedia({reducedMotion:'reduce'});await page.locator('.mood-grid [data-mood="happy"]').click();assert.equal(await page.locator('[data-mood="happy"] .face').evaluate(e=>getComputedStyle(e,'::after').transitionDuration),'0s');
 if(process.env.MOOD_INK_CAPTURE&&[360,915,1280].includes(viewport.width))await page.locator('.mood-grid').screenshot({path:'/tmp/mood-ink-'+surface+'-'+viewport.width+'.png'});
