@@ -77,6 +77,42 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    await page.locator('#firstCrateSetup [data-action="ready"]').click();
    assert(!await page.locator('#fc-ticket').isVisible(),'Completed setup stays hidden');
    await capture('jukebox');
+   if(profile.name==='phone'){
+    // Reproduce the real opaque-origin iframe that Android WebView uses.
+    // Verify the Desire v4 pixels arrive as an inline mask instead of only
+    // asserting that an external CSS URL was syntactically present.
+    await page.getByRole('button',{name:'The curve',exact:true}).click();
+    const curveFrame=page.frameLocator('#mixCurveEditor');
+    await curveFrame.locator('#lane').evaluate(()=>{
+     moods.set(0,'Desire');moods.set(1,'Happy + Desire');renderMoods();
+    });
+    await curveFrame.locator('html[data-desire-portrait-ready]').waitFor({state:'attached',timeout:12000});
+    const portraits=await curveFrame.locator('.mood-track .face.desire-v4').evaluateAll(async elements=>{
+     const result=[];
+     for(const face of elements){
+      const style=getComputedStyle(face);
+      const uri=style.webkitMaskImage.match(/^url\\("?(data:image\\/png;base64,[^"\\)]+)"?\\)$/)?.[1];
+      if(!uri){result.push({width:style.width,height:style.height,imageWidth:0,ink:style.backgroundColor});continue}
+      const picture=new Image();picture.src=uri;
+      await picture.decode();
+      const canvas=document.createElement('canvas');canvas.width=picture.width;canvas.height=picture.height;
+      const context=canvas.getContext('2d');context.drawImage(picture,0,0);
+      const data=context.getImageData(0,0,canvas.width,canvas.height).data;
+      let visible=0;for(let i=3;i<data.length;i+=4)if(data[i]>40)visible++;
+      result.push({width:style.width,height:style.height,imageWidth:picture.width,visible,ink:style.backgroundColor});
+     }
+     return result;
+    });
+    assert.equal(portraits.length,2,'Desire must render in both one- and two-mood curve slots');
+    for(const portrait of portraits){
+     assert.equal(portrait.width,'23px','Curve Desire portrait width stays invariant');
+     assert.equal(portrait.height,'23px','Curve Desire portrait height stays invariant');
+     assert.equal(portrait.imageWidth,128,'Inline Desire mask must decode within the sandbox');
+     assert(portrait.visible>1500,'Desire mask must contain actual engraved pixels');
+    }
+    if(marketing)await curveFrame.locator('.mood-track').screenshot({path:path.join(output,'phone-desire-v4-curve-verified.png'),animations:'disabled'});
+    await page.getByRole('button',{name:'Set the tempo',exact:true}).click();
+   }
    if(marketing && profile.name==='phone'){
     // Focused crops from the packaged UI, not edited mockups.
     await page.locator('.poster-hero').screenshot({path:path.join(output,'phone-hero-plate.png'),animations:'disabled'});
