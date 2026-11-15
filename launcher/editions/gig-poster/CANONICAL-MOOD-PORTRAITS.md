@@ -36,3 +36,26 @@ Both sheets are 1536 × 1024 WebP, with a 3 × 2 layout in the order above. The 
 | `assets/moods-selected-approved-v1.webp` | `f45fa9c3d5915723f393e71a7ee8cb26d11c3931ec533fd8b98f6ace74625a72` |
 
 `mood-portraits.css` follows the application's existing `aria-pressed` state, including shuffle and Undo. Inline filters in `assets/mood-portrait-filters.svg` reproduce the approved golden-paper / midnight-teal neutral treatment and vermilion / midnight-teal selected treatment with restrained, source-luminance ivory highlights. The inset border and underlined label supplement color. Reduced motion disables the 160ms expression fade.
+
+## Desire v2 — approved portrait replacement (2026-11-14)
+
+The separate eight-character Desire portrait replaces the former heart-eye
+Desire artwork with a paired classical engraving: calm neutral and yearning
+selected expressions. The source illustration was supplied and approved by the
+owner. The artwork has **ink luminance encoded as alpha**; white paper is
+transparent. Theme-specific ink colors belong to the renderer.
+
+Both runtime plates are **1254 × 1254** and lossless WebP; their shared
+registered placement is an intentional 1.12× scale from the approved alpha
+conversion to fill the existing square character plate. Canonical source images
+remain in the review package rather than becoming fake raster-vector artwork.
+
+| Runtime file | SHA-256 | Bytes |
+| --- | --- | ---: |
+| `desire-neutral-v2.webp` | `16f4157fe6ca5c5eb57e57a63a2e5c2d832628fc32895f1308f6a8f16d9b90b0` | 607128 |
+| `desire-selected-v2.webp` | `3a4b888dca9f337f9a43460a5dd9c24c9502f4e97c35d7a94074a348f49009e8` | 617302 |
+
+V2 ships a vector decorative-heart mask independent of the selected face.
+The old heart-eye coordinates and the old luminance-to-alpha SVG filter must
+not be applied to the already processed plates. Libéri/PWA theme parity and
+all nine Android theme states require verification before merge.
