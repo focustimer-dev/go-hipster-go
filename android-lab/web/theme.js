@@ -86,8 +86,8 @@ const ATLAS=Object.freeze({
 /* Neutral Funk shares the same paper and ink as the other portraits.
    Only selected Funk is a fixed performance, not a palette role. */
 const MOODS=Object.freeze({
- electricstars:Object.freeze({neutralPaper:'#0c426d',neutralInk:'#f6b8fb',
-  selectedPaper:'#be74cd',selectedInk:'#011629',desireHeart:'#f6b8fb'
+ electricstars:Object.freeze({neutralPaper:'#be74cd',neutralInk:'#372b68',
+  selectedPaper:'#ce87da',selectedInk:'#372b68',desireHeart:'#f6b8fb'
  }),
  michoacan:Object.freeze({
   neutralPaper:'#d1ad91',neutralInk:'#49232b',
