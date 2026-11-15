@@ -20,7 +20,7 @@ assert.equal(paint.mood.background,navy,'Neutral mood tiles use dark Petrol Navy
 assert.equal(paint.moodLabel.ink,lilac,'Neutral mood labels use high-contrast lilac');
 // Assert legibility, not just the names of the palette tokens.
 const luminance=color=>{
- const rgb=color.match(/\\d+/g).slice(0,3).map(Number).map(v=>{
+ const rgb=color.match(/\d+/g).slice(0,3).map(Number).map(v=>{
   const n=v/255;return n<=.04045?n/12.92:((n+.055)/1.055)**2.4;
  });
  return .2126*rgb[0]+.7152*rgb[1]+.0722*rgb[2];
