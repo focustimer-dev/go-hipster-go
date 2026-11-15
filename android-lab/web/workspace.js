@@ -161,6 +161,62 @@ function labSendSkillStatus(state=labState()){
 function labPreferences(){
  const state=labState(),dialog=doc.getElementById('labPreferences');if(dialog.open)return;dialog.querySelectorAll('[name="labHandoff"]').forEach(i=>i.checked=i.value===(state.mode||'share'));dialog.querySelectorAll('[data-lab-pref]').forEach(i=>i.checked=state[i.dataset.labPref]!==false);dialog.querySelector('.lab-dialog-body').scrollTop=0;dialog.showModal();body.classList.add('lab-modal-open');
 }
+/* WebView's OS-owned <select> popup ignores CSS theme roles. Keep the original
+   select as first-crate's source of truth, but replace its Android tap target
+   with a keyboard-accessible, fully themed modal choice list. */
+function labInstallThemedSetupSelectors(){
+ const root=doc.getElementById('firstCrateSetup');if(!root)return;
+ const dialog=doc.createElement('dialog');
+ dialog.className='lab-setup-choices';
+ dialog.setAttribute('aria-labelledby','labSetupChoicesTitle');
+ doc.body.append(dialog);
+ let restore=null;
+ dialog.addEventListener('close',()=>{
+  if(restore){restore.setAttribute('aria-expanded','false');restore.focus({preventScroll:true})}
+  restore=null;
+ });
+ for(const id of ['fc-ai','fc-service']){
+  const select=root.querySelector('#'+id);if(!select||select.dataset.themed==='true')continue;
+  const title=id==='fc-ai'?'YOUR AI':'YOUR MUSIC';
+  const trigger=doc.createElement('button');
+  trigger.type='button';trigger.className='lab-setup-select-trigger';
+  trigger.setAttribute('aria-haspopup','dialog');
+  trigger.setAttribute('aria-expanded','false');
+  trigger.setAttribute('aria-label','Choose '+title.toLowerCase());
+  const sync=()=>{trigger.textContent=select.selectedOptions[0]?.textContent||select.value;trigger.disabled=select.disabled};
+  select.dataset.themed='true';select.classList.add('lab-setup-native-select');
+  select.tabIndex=-1;select.setAttribute('aria-hidden','true');
+  select.after(trigger);
+  select.addEventListener('change',sync);
+  // First-crate still focuses the original controls on Back/Resume.
+  select.addEventListener('focus',()=>trigger.focus({preventScroll:true}));
+  trigger.addEventListener('click',()=>{
+   if(select.disabled)return;
+   sync();restore=trigger;trigger.setAttribute('aria-expanded','true');
+   const heading=doc.createElement('h2');heading.id='labSetupChoicesTitle';heading.textContent=title;
+   const close=doc.createElement('button');close.type='button';close.className='lab-setup-choice-close';close.textContent='CLOSE';
+   close.setAttribute('aria-label','Close '+title.toLowerCase()+' choices');
+   close.addEventListener('click',()=>dialog.close());
+   const header=doc.createElement('div');header.className='lab-setup-choice-header';header.append(heading,close);
+   const list=doc.createElement('div');list.className='lab-setup-choice-list';list.setAttribute('role','group');
+   list.setAttribute('aria-label',title+' options');
+   for(const option of select.options){
+    const item=doc.createElement('button');item.type='button';item.className='lab-setup-choice';
+    item.textContent=option.textContent;item.setAttribute('aria-pressed',String(option.value===select.value));
+    if(option.value===select.value)item.classList.add('is-selected');
+    item.addEventListener('click',()=>{
+     select.value=option.value;
+     select.dispatchEvent(new Event('change',{bubbles:true}));
+     sync();dialog.close();
+    });
+    list.append(item);
+   }
+   dialog.replaceChildren(header,list);dialog.showModal();
+   (list.querySelector('[aria-pressed=true]')||list.firstElementChild)?.focus({preventScroll:true});
+  });
+  sync();
+ }
+}
 function initLabWorkspace(){
  // Completed setup yields the Jukebox space on the next launch. Keep its
  // original controls and storage inside Preferences, including Change setup.
@@ -194,6 +250,7 @@ function initLabWorkspace(){
   nav.setAttribute('aria-label','Information and support');nav.append(...links);
   footer.replaceChildren(legal,nav);
  }
+ labInstallThemedSetupSelectors();
  initLabGuide();
  const heading=doc.querySelector('.receipt-heading');if(heading){const label=doc.createElement('span');while(heading.firstChild)label.appendChild(heading.firstChild);const b=doc.createElement('button');b.type='button';b.className='lab-text-button lab-save-button';b.dataset.labAction='save';b.textContent='SAVE REQUEST';heading.append(label,b)}
  doc.addEventListener('click',event=>{
