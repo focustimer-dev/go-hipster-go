@@ -38,6 +38,17 @@ s=s[:a]+'''    <div class="hero-title poster-hero">
 s=s.replace('    <h2 class="counter-heading mix-heading">',welcome+'    <h2 class="counter-heading mix-heading">',1)
 s=s.replace('<h3 class="panel-head"','<h2 class="panel-head"').replace('THE ROBOT</h3>','THE ROBOT</h2>').replace('THE NEEDLE</h3>','THE NEEDLE</h2>')
 s=s.replace('CHOOSE YOUR SERVICES','PICK YOUR SERVICES').replace('THE ROBOT','PICK YOUR AI').replace('THE NEEDLE','PICK YOUR DESTINATION').replace('SHAPE YOUR MIX','SET THE TEMPO').replace('<h3 class="counter-label">MOOD</h3>','<h2 class="counter-label">WHAT’S THE VIBE?</h2>')
+# A single source for the Android/PWA curve-mode cue; keep the checked-in
+# Gig Poster HTML byte-for-byte reproducible from this generator.
+mood_grid='    <div class="mood-grid" role="group" aria-label="Mood presets">'
+assert s.count(mood_grid)==1, 'Mood-strip anchor changed'
+mood_hint='''    <p id="moodModeHint" class="mood-mode-hint" data-mode="tap" role="status" aria-live="polite">
+      <svg class="mood-mode-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4v5c0 6 4 9 11 9"/><path d="m11 13 5 5 5-5"/></svg>
+      <span class="mood-mode-copy">Tap up to two moods.</span>
+    </p>
+    <div class="mood-grid" role="group" aria-label="Mood presets" aria-describedby="moodModeHint" data-mood-interaction="tap">'''
+s=s.replace(mood_grid,mood_hint,1)
+
 s=s.replace('<details class="crate-geo" id="crateGeo">','<details class="crate-geo" id="crateGeo" open>')
 s=s.replace('      <small>TAKE YOUR TASTE ABROAD</small>','')
 # The workflow is explained at the top; the real copy status handles the next step.
