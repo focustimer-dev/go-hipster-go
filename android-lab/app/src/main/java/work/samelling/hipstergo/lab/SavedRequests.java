@@ -35,6 +35,20 @@ final class SavedRequests {
         }
         Toast.makeText(activity,"That saved request is no longer on this device.",Toast.LENGTH_SHORT).show();changed.run();
     }
+    /** Replay the exact saved prompt. This does not restore editable Jukebox controls. */
+    void replayEntry(String id) {
+        JSONArray entries=load();
+        for(int i=0;i<entries.length();i++){
+            JSONObject entry=entries.optJSONObject(i);
+            if(entry==null||!id.equals(entry.optString("id")))continue;
+            String ai=entry.optString("ai"),prompt=entry.optString("prompt");
+            if(!SavedRequestPolicy.canSave(ai,prompt))break;
+            if(SavedRequestPolicy.isManual(ai))copyRequest(prompt,true);
+            else replay.open(ai,prompt);
+            return;
+        }
+        Toast.makeText(activity,"That saved request is no longer on this device.",Toast.LENGTH_SHORT).show();changed.run();
+    }
     void save(String ai,String prompt) {
         if(prompt==null || prompt.isEmpty()){Toast.makeText(activity,"Press GO first to prepare a request.",Toast.LENGTH_LONG).show();return;}
         EditText name=new EditText(activity);name.setSingleLine(true);name.setHint("Name this request");
