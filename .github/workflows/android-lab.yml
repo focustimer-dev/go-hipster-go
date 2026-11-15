@@ -82,6 +82,7 @@ jobs:
       - run: node scripts/test_atlas_boundary.cjs
       - run: npx playwright install --with-deps chromium
       - run: node scripts/test_rc_manual_pairing.cjs
+      - run: node scripts/test_first_crate_theme_menus.cjs
       - name: Final Five print palette and Funk contract (100s watchdog)
         run: timeout --signal=TERM --kill-after=10s 100s node scripts/test_final_five_contract.cjs
       - run: node scripts/test_cahill_region_fit.cjs
