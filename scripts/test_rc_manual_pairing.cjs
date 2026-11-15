@@ -29,8 +29,11 @@ const root = path.resolve(__dirname, '../android-lab/app/src/main/assets/site');
 
     async function check(ai, service, aiName, serviceName, setupHash) {
       await page.evaluate(pair => window.HipsterSetup.setPair(pair), { ai, service });
-      await guide.locator('#requestServiceName').evaluate((element, value) => {
-        if (element.textContent !== value) throw Error('Service not updated: ' + element.textContent);
+      // postMessage to the embedded Manual is asynchronous; wait for the
+      // selected pairing rather than racing the iframe's message handler.
+      await page.waitForFunction(expected => {
+        const frame = document.getElementById('labManualFrame')?.contentDocument;
+        return frame?.getElementById('requestServiceName')?.textContent === expected;
       }, serviceName);
       assert.equal(await guide.locator('#overviewSetupLink').getAttribute('href'), setupHash);
       assert.equal(await guide.locator('#introSetupLink').getAttribute('href'), setupHash);
