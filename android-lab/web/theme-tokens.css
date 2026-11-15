@@ -137,6 +137,18 @@
    coverage-only pass; future hierarchy can tune roles in the palette,
    not by adding theme-name selectors to components. Libéri is unchanged. */
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print]){
+ /* Every onboarding stage uses the same physical ticket and legible ink.
+    Accent rules can change by profile without changing the setup markup. */
+ --lab-setup-paper:var(--lab-ui-ticket-stock);
+ --lab-setup-ink:var(--lab-ui-ticket-ink);
+ --lab-setup-field-paper:var(--lab-ui-ticket-stock);
+ --lab-setup-field-ink:var(--lab-ui-ticket-ink);
+ --lab-setup-action-paper:var(--lab-ui-ticket-ink);
+ --lab-setup-action-ink:var(--lab-ui-ticket-stock);
+ --lab-setup-rule:var(--lab-ui-rule);
+ --lab-setup-focus:var(--lab-ui-ticket-ink);
+ --lab-setup-hover-paper:var(--lab-ui-action);
+ --lab-setup-hover-ink:var(--lab-ui-on-action);
  --lab-theme-selected-bg:var(--lab-ui-action);
  --lab-theme-selected-ink:var(--lab-ui-on-action);
  /* A real printable accent: preserve fluorescent/muted original pigments
@@ -170,4 +182,9 @@
  --lab-ui-primary-rule:var(--lab-ui-go);
  --lab-theme-selected-bg:var(--lab-ui-go);
  --lab-theme-selected-ink:var(--lab-ui-go-ink);
+}
+
+/* Printed sleeve accents mark ticket edges, not small text. */
+:root[data-ghg-theme-profile=print]{
+ --lab-setup-rule:var(--lab-ui-highlight);
 }

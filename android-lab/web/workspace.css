@@ -1082,3 +1082,97 @@ body.gig-poster.lab-workspace #labSkillNotice button{
  border:1px solid var(--lab-ui-primary-rule,#103135);
  font:400 .94rem/1.1 Poster,sans-serif;
 }
+
+/* Android first-run and revisitable setup: one semantic ticket contract.
+   The bundled first-crate.css intentionally retains the original Libéri
+   artwork; every alternate Android theme supplies colors through tokens.
+   This also styles AI/music dropdowns, their native options, and the
+   paused/confirmed, installer and advanced setup submenus. */
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
+ body.gig-poster.lab-workspace #firstCrateSetup{
+ --ink:var(--lab-setup-ink);
+ --paper:var(--lab-setup-paper);
+ --cream:var(--lab-setup-paper);
+ --ticket-stock:var(--lab-setup-paper);
+ --receipt-red:var(--lab-setup-ink);
+ --setup-rule:var(--lab-setup-rule);
+ --red:var(--lab-setup-rule);
+ color:var(--lab-setup-ink);
+ color-scheme:light;
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
+ body.gig-poster.lab-workspace #firstCrateSetup :is(.ticket,.is-paused){
+ --ink:var(--lab-setup-ink);
+ --paper:var(--lab-setup-paper);
+ --cream:var(--lab-setup-paper);
+ --ticket-stock:var(--lab-setup-paper);
+ --receipt-red:var(--lab-setup-ink);
+ --setup-rule:var(--lab-setup-rule);
+ background:var(--lab-setup-paper);
+ color:var(--lab-setup-ink);
+ border-top-color:var(--lab-setup-rule);
+ border-bottom-color:var(--lab-setup-ink);
+ color-scheme:light;
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
+ body.gig-poster.lab-workspace #firstCrateSetup :is(.services select,.services select option,textarea){
+ background:var(--lab-setup-field-paper);
+ color:var(--lab-setup-field-ink);
+ -webkit-text-fill-color:var(--lab-setup-field-ink);
+ border-color:var(--lab-setup-ink);
+ color-scheme:light;
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
+ body.gig-poster.lab-workspace #firstCrateSetup .services select:disabled{opacity:1}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
+ body.gig-poster.lab-workspace #firstCrateSetup :is(.primary,.resume-action){
+ background:var(--lab-setup-action-paper);
+ color:var(--lab-setup-action-ink);
+ border-color:var(--lab-setup-action-paper);
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
+ body.gig-poster.lab-workspace #firstCrateSetup :is(.primary,.resume-action):hover{
+ background:var(--lab-setup-hover-paper);
+ color:var(--lab-setup-hover-ink);
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
+ body.gig-poster.lab-workspace #firstCrateSetup :is(.text-action,.close-setup,.setup-back,.uploader-choices button,.confirm-ready,.install-link){
+ color:var(--lab-setup-ink);
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
+ body.gig-poster.lab-workspace #firstCrateSetup .uploader-choices button[aria-pressed=true]{
+ background:var(--lab-setup-action-paper);
+ color:var(--lab-setup-action-ink);
+ border-color:var(--lab-setup-action-paper);
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
+ body.gig-poster.lab-workspace #firstCrateSetup :is(.confirm-ready:hover,.confirm-ready:focus-visible){
+ background:var(--lab-setup-action-paper);
+ color:var(--lab-setup-action-ink);
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
+ body.gig-poster.lab-workspace #firstCrateSetup :is(.ticket-step,.services label>span){
+ color:var(--lab-setup-ink);
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
+ body.gig-poster.lab-workspace #firstCrateSetup .install-steps>li::marker{
+ color:var(--lab-setup-ink);
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
+ body.gig-poster.lab-workspace #firstCrateSetup :is(.ink-stamp,.copy-stamp){
+ color:var(--lab-setup-ink);
+ border-color:var(--lab-setup-rule);
+ background:var(--lab-setup-paper);
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
+ body.gig-poster.lab-workspace #firstCrateSetup #fc-current-setup:not([hidden]){
+ background:var(--lab-setup-paper);
+ color:var(--lab-setup-ink);
+ border:1px solid var(--lab-setup-rule);
+ padding:12px;
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
+ body.gig-poster.lab-workspace #firstCrateSetup :is(button,a,input,select,textarea,summary):focus-visible{
+ outline:3px solid var(--lab-setup-focus);
+ outline-offset:3px;
+}
