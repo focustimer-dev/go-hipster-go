@@ -102,7 +102,9 @@ class LabSnapshotTests(unittest.TestCase):
                          'triumph-neutral-v1.webp','triumph-selected-v1.webp'):
                 original=ROOT/'launcher/editions/gig-poster/assets'/name
                 packaged=dest/'editions/gig-poster/assets'/name
-                self.assertLess(packaged.stat().st_size,original.stat().st_size)
+                # The optimizer may keep an already smaller lossless master.
+                # Never require lossy recompression when it increases size.
+                self.assertLessEqual(packaged.stat().st_size,original.stat().st_size)
                 with Image.open(original) as original_image, Image.open(packaged) as packaged_image:
                     self.assertEqual(original_image.size,packaged_image.size)
                     self.assertEqual(original_image.convert('RGBA').getchannel('A').tobytes(),
