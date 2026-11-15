@@ -381,12 +381,13 @@ function atlasSelectedView(shapes,selected){
  return box;
 }
 // A selected region should provide context, not fill the entire viewport.
-// Ease auto-framing out by 18%, centered on the same projected geography.
-// Manual pinch/pan, continent focus and Antarctica's explicit view are unchanged.
+// Android's first region selection benefits from more surrounding geography.
+// Manual pinch/pan, continent focus, Antarctica and PWA framing are unchanged.
 function atlasRelaxSelectedView(view){
  if(!view)return null;
  const [x,y,w,h]=atlasNormalize(view);
- const width=Math.min(720,w*1.18),height=width*372/720;
+ const factor=body.classList.contains('lab-workspace')?1.55:1.18;
+ const width=Math.min(720,w*factor),height=width*372/720;
  return [x+(w-width)/2,y+(h-height)/2,width,height];
 }
 function frameSelectedAtlas(){
@@ -920,6 +921,11 @@ function shuffleCrate(){
  lastCrateStamp=null;copiedPrompt=null;previousShuffle=snapshot;
  store(crateStorageKey,JSON.stringify([...crateSelected]));selectionChanged(true);if(!shufflePins.regions)frameSelectedAtlas();
  const changed=Object.keys(shufflePins).filter(k=>!shufflePins[k]),kept=Object.keys(shufflePins).filter(k=>shufflePins[k]);
+ // One quiet detent for each shuffled (unpinned) axis. Native opt-in and OS
+ // haptic settings are respected by the existing Bridge; no PWA vibration.
+ if(globalThis.HipsterLab?.haptic){
+  changed.forEach((axis,i)=>setTimeout(()=>globalThis.HipsterLab?.haptic?.("tick"),i*110));
+ }
  const result=doc.getElementById("shuffleResult");if(result)result.textContent="Shuffled "+changed.join(", ")+"."+(kept.length?" Kept "+kept.join(" and ")+".":"");
  const control=doc.getElementById("shuffleCrate");if(control){control.setAttribute("data-dealt","true");if(typeof control.animate==="function"&&!(typeof window!=="undefined"&&window.matchMedia("(prefers-reduced-motion: reduce)").matches))control.animate([{transform:"translateY(0)"},{transform:"translateY(2px)"},{transform:"translateY(0)"}],{duration:240,easing:"cubic-bezier(.16,1,.3,1)"})}
  status("Crate shuffled. Review the brief, edit any choice, or undo. Press GO when ready.");
@@ -941,11 +947,13 @@ if(recordingOption)recordingOption.addEventListener("change",()=>{
 const hardOption=doc.getElementById("goHard");
 if(hardOption)hardOption.addEventListener("click",()=>{
  goHard=!goHard;copiedPrompt=null;renderLaunch();
+ globalThis.HipsterLab?.haptic?.("click");
  status("Deeper research and sequencing "+(goHard?"enabled":"disabled")+". Press GO to copy the updated request.");
 });
 const coverOption=doc.getElementById("includeCover");
 if(coverOption)coverOption.addEventListener("click",()=>{
  includeCover=!includeCover;copiedPrompt=null;renderLaunch();
+ globalThis.HipsterLab?.haptic?.("click");
  status("Cover art "+(includeCover?"included":"removed")+". Press GO to copy the updated request.");
 });
 async function copyGo(){

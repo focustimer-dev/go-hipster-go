@@ -45,6 +45,16 @@ html[data-chart-theme] #curve{--curve-line:var(--ink);--curve-endpoint:var(--ink
 html[data-chart-theme] #curve summary{color:var(--ink)}
 html[data-chart-theme] .handle:first-child::after,html[data-chart-theme] .handle:last-child::after{border-color:var(--paper)}
 html[data-chart-theme] #curve button:focus-visible{outline-color:var(--focus-ink);box-shadow:0 0 0 6px var(--focus-paper)}
+/* The in-curve marker shares the approved Desire v4 alpha artwork with
+   the Jukebox, rather than the older eight-face contact sheet. */
+.pin .face.desire-v4{
+ background-image:none!important;
+ background-color:var(--portrait-strip-ink,var(--ink));
+ background-position:center;
+ -webkit-mask:url('/editions/gig-poster/assets/desire-neutral-v4.webp') center/contain no-repeat;
+ mask:url('/editions/gig-poster/assets/desire-neutral-v4.webp') center/contain no-repeat;
+ mask-mode:alpha;
+}
 </style>
 <main>
 <div id="curve">
@@ -158,6 +168,7 @@ function portrait(mood){
  const face=document.createElement('span');
  const i=Object.keys(codes).indexOf(mood);
  face.className='face';
+ if(mood==='Desire')face.classList.add('desire-v4');
  face.setAttribute('aria-hidden','true');
  face.style.setProperty('--px',((i%4)/3*100)+'%');
  face.style.setProperty('--py',i<4?'0%':'74%');

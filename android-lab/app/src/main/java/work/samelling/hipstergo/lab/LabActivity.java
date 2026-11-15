@@ -322,7 +322,7 @@ public class LabActivity extends Activity {
         if (destination == null || !validText(text)) return;
         if(!alreadyCopied&&!copy(text)){toast("Clipboard unavailable. Copy the request manually before opening your AI.");return;} pulse();
         String pkg = aiPackage(ai);
-        String mode = prefs.getString("mode","open");
+        String mode = prefs.getString("mode","share");
         if ("browser".equals(mode)) { browser(destination); return; }
         if ("share".equals(mode)) { share(text,pkg); return; }
         if (pkg != null) {
@@ -345,7 +345,7 @@ public class LabActivity extends Activity {
         try {
             return new org.json.JSONObject().put("saved",shelf.entries())
                 .put("activeInspiration",inspiration.value()).put("recentInspirations",inspiration.recent()).put("inspirationPreview",inspiration.preview())
-                .put("mode",prefs.getString("mode","open")).put("oneTap",prefs.getBoolean("oneTap",true))
+                .put("mode",prefs.getString("mode","share")).put("oneTap",prefs.getBoolean("oneTap",true))
                 .put("haptics",prefs.getBoolean("haptics",true)).put("updateAvailable",updates.available())
                 .put("updateSummary",updates.summary()).put("updateDetail",updates.detail())
                 .put("updateLatest",updates.latestVersion()).put("updateConfirmed",updates.recordedVersion()).toString();
