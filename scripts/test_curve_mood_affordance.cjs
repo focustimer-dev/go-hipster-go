@@ -1,4 +1,4 @@
-// Browser regression: portrait taps are selectors in Simple and drag stamps in Curve.
+// Browser regression: both modes allow 2-mood taps; Curve also offers 3-dot drag stamps.
 const {chromium}=require('playwright');
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const root=path.resolve(__dirname,'../android-lab/app/src/main/assets/site');
@@ -38,14 +38,26 @@ const server=http.createServer((req,res)=>{
   await page.getByRole('button',{name:'The curve'}).click();
   assert.equal(await mood.getAttribute('data-mood-interaction'),'drag');
   assert.equal(await hint.getAttribute('data-mode'),'drag');
-  assert.match(await hint.innerText(),/Drag a face onto the curve/);
-  assert.match(await mood.getAttribute('aria-label'),/drag onto the curve/);
+  assert.match(await hint.innerText(),/Tap up to two moods, then drag onto the curve/);
+  assert.match(await mood.getAttribute('aria-label'),/tap up to two, then drag onto the curve/);
   assert.equal(await mood.locator('.mood-drag-grip').first().evaluate(e=>getComputedStyle(e).display),'grid');
-  assert.match(await happy.getAttribute('title'),/Drag HAPPY onto the curve/);
-  assert.equal(await happy.getAttribute('aria-pressed'),'true','Global Happy remains until the curve gets a mood pin');
+  assert.equal(await mood.locator('.mood-drag-grip').first().locator('svg circle').count(),3,'Small three-dot drag cue, not six dots');
+  assert.match(await happy.getAttribute('title'),/Tap to select HAPPY; drag onto the curve/);
+  assert.equal(await happy.getAttribute('aria-pressed'),'true','Happy remains selected in Curve mode');
+  assert.equal(await page.evaluate(()=>window.HipsterPWABridge.getPrompt()),before,'Tempo-only curve keeps the original global mood');
   await angry.click();
-  assert.equal(await angry.getAttribute('aria-pressed'),'false','A tap must not silently change global mood in curve mode');
-  assert.equal(await page.evaluate(()=>window.HipsterPWABridge.getPrompt()),before,'Tempo-only curve retains existing global mood');
+  assert.equal(await happy.getAttribute('aria-pressed'),'true','Curve mode preserves first tap selection');
+  assert.equal(await angry.getAttribute('aria-pressed'),'true','Curve mode allows a second selected portrait');
+  const twoMoodPrompt=await page.evaluate(()=>window.HipsterPWABridge.getPrompt());
+  assert.match(twoMoodPrompt,/go happy angry/,'Tempo-only curve exports both global moods');
+  await page.locator('[data-mood=weird]').click();
+  assert.equal(await happy.getAttribute('aria-pressed'),'true','Third tap preserves the first mood');
+  assert.equal(await angry.getAttribute('aria-pressed'),'false','Third tap replaces the second mood');
+  assert.equal(await page.locator('[data-mood=weird]').getAttribute('aria-pressed'),'true');
+  await page.locator('[data-mood=weird]').click();
+  assert.equal(await page.locator('[data-mood=weird]').getAttribute('aria-pressed'),'false','Tapping a selected mood removes it');
+  await angry.click();
+  assert.equal(await angry.getAttribute('aria-pressed'),'true','Restore two selected moods for the curve stamp');
 
   // Use the real parent/iframe message contract. Synthetic Playwright mouse
   // drags across sandboxed iframes are not a reliable substitute for the
@@ -62,19 +74,27 @@ const server=http.createServer((req,res)=>{
    return window.HipsterPWABridge.getPrompt();
   },code);
   assert(promptAfterPin.includes(code),'Pinned mood must enter the actual exported curve');
-  assert.match(await hint.innerText(),/change the mood along it/);
-  assert.equal(await happy.getAttribute('aria-pressed'),'false','Pinned curve moods own the selection');
+  assert.match(await hint.innerText(),/Curve pins control the mix/);
+  assert.equal(await happy.getAttribute('aria-pressed'),'true','Pinned curve moods do not erase staged drag selection');
+  assert.equal(await angry.getAttribute('aria-pressed'),'true','Second staged mood remains available for another curve stamp');
+  assert.doesNotMatch(promptAfterPin,/go happy angry/,'Pinned curve moods override global mood in exported prompt');
+  await page.locator('[data-mood=sad]').click();
+  assert.equal(await page.locator('[data-mood=sad]').getAttribute('aria-pressed'),'true','Tap selection still works after a pin');
+  assert.equal(await angry.getAttribute('aria-pressed'),'false','Third tap updates staged pair');
+  assert.equal(await page.evaluate(()=>window.HipsterPWABridge.getPrompt()),promptAfterPin,'Staging next moods must not override pinned curve output');
   await page.locator('.refinements').screenshot({path:'android-lab/build/curve-mood-review.png'});
 
   await page.getByRole('button',{name:'Set the tempo'}).click();
   assert.equal(await mood.getAttribute('data-mood-interaction'),'tap');
   assert.match(await hint.innerText(),/Tap up to two moods/);
   assert.equal(await mood.locator('.mood-drag-grip').first().evaluate(e=>getComputedStyle(e).display),'none');
-  assert.equal(await happy.getAttribute('aria-pressed'),'true','Switching back restores original global choice');
+  assert.equal(await happy.getAttribute('aria-pressed'),'true','Switching back retains staged mood');
+  assert.equal(await page.locator('[data-mood=sad]').getAttribute('aria-pressed'),'true','Second staged mood survives return to simple');
   await angry.click();
-  assert.equal(await angry.getAttribute('aria-pressed'),'true','Portrait tapping is restored in Simple');
+  assert.equal(await angry.getAttribute('aria-pressed'),'true','Third tap selects the new second mood in Simple');
+  assert.equal(await page.locator('[data-mood=sad]').getAttribute('aria-pressed'),'false');
   assert.equal(errors.length,0,'No browser exceptions: '+errors.join(' | '));
-  console.log('PASS curve mood affordances, retained global moods, iframe message contract, tap isolation and mode recovery');
+  console.log('PASS 2-mood taps in both modes, three-dot drag cue, iframe curve precedence and mode recovery');
   await page.close();
  }finally{await browser.close()}
 })().catch(error=>{console.error(error);process.exitCode=1}).finally(()=>server.close());
