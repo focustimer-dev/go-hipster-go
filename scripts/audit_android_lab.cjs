@@ -28,7 +28,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
     window.HipsterLab={state:()=>JSON.stringify(auditState),inspiration:()=>auditReference,
      copy(t){auditCalls.push(['copy',t]);return auditCopyOK},go(a,t){auditCalls.push(['go',a,t])},open(a,t){auditCalls.push(['open',a,t])},share(t){auditCalls.push(['share',t])},
      setPreference(k,v){auditState[k]=k==='mode'?v:v==='true';window.HipsterLabStateChanged()},
-     saveRequest(ai,prompt){auditState.saved.push({id:'audit-1',name:'A deliberately long saved request title for narrow screens',ai,prompt,time:0});window.HipsterLabStateChanged()},
+     saveRequest(ai,prompt){auditState.saved.push({id:'audit-1',name:'After-hours discoveries',ai,prompt,time:0});window.HipsterLabStateChanged()},
      savedRequest(id){auditCalls.push(['saved',id])},reviewInspiration(){auditCalls.push(['review'])},clearInspiration(){auditReference='';window.HipsterLabRefresh()},showUpdates(){auditCalls.push(['updates'])},offerSetupShare(a,t){auditCalls.push(['offerSetupShare',a,t])}};
    });
    await page.goto('http://127.0.0.1:'+server.address().port+'/');
@@ -77,6 +77,9 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    await page.locator('#firstCrateSetup [data-action="ready"]').click();
    assert(!await page.locator('#fc-ticket').isVisible(),'Completed setup stays hidden');
    await capture('jukebox');
+   await page.getByRole('button',{name:'The curve',exact:true}).click();
+   await capture('tempo-curve');
+   await page.getByRole('button',{name:'Set the tempo',exact:true}).click();
    await page.locator('[data-lab-tab="crate"]').click();
    await page.evaluate(()=>{auditReference='Harlem Prom Night 1986';window.HipsterLabRefresh()});
    assert(await page.locator('#labJukebox').isVisible(),'Accepted inspiration returns to the shaping workspace');
