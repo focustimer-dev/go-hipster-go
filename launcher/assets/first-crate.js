@@ -54,7 +54,7 @@ const action=(label,id,secondary=false)=>`<button type="button" class="${seconda
 function persist(){try{localStorage.setItem(key,JSON.stringify({stage,paused,completed,confirmedPairs,help,claudeRoute,ai:$('ai').value,service:$('service').value}))}catch{}}
 function focusAction(name){root.querySelector(`[data-action="${name}"]`)?.focus()}
 function pause(){if(completed&&!help)return;paused=true;help=false;render();focusAction('resume')}
-function resume(){paused=false;completed=false;help=false;if(stage==='away')stage='return';render();if(stage==='choose')$('ai').focus();else $('ticket').querySelector('[data-action]:not([data-action="pause"]):not([data-action="previous"])')?.focus()}
+function resume(){paused=false;completed=false;help=false;if(stage==='away')stage='return';render();if(stage==='choose')$('ai-trigger').focus();else $('ticket').querySelector('[data-action]:not([data-action="pause"]):not([data-action="previous"])')?.focus()}
 function previousStage(current){return ({choose:'welcome',install:'choose',check:'install',copied:'check',away:'check',return:'check'})[current]||null}
 function backLabel(){if(help)return 'Back to setup';return ({choose:'Back to the welcome',install:'Back to AI and music choices',check:'Back to installation steps',copied:'Back to the connection check',away:'Back to the connection check',return:'Back to the connection check'})[stage]||'Back'}
 function goBack(){
@@ -62,7 +62,7 @@ function goBack(){
  if(help){help=false;if(stage==='copied'||stage==='away')stage='check'}else{const previous=previousStage(stage);if(!previous)return;stage=previous;completed=false}
  render();
  if(completed)return;
- if(stage==='choose')$('ai').focus();else $('ticket').querySelector('[data-action]:not([data-action="pause"]):not([data-action="previous"])')?.focus();
+ if(stage==='choose')$('ai-trigger').focus();else $('ticket').querySelector('[data-action]:not([data-action="pause"]):not([data-action="previous"])')?.focus();
 }
 function setupHelp(){return `<p>What’s getting in the way?</p><div class="setup-help"><details><summary>Skill not installed</summary><p>Use the installation steps for ${esc(aiName())}. Then ask the AI to confirm that Go, Hipster, Go! is loaded.</p>${action('SHOW MY INSTALLATION STEPS','install',true)}</details><details><summary>Music service won’t connect</summary><p>Open your AI’s apps or connection settings and reconnect ${esc($('service').value)}. Complete sign-in there, then run the connection check again. If it isn’t offered, change your pairing.</p>${action('CHANGE MY SETUP','choose',true)}</details><details><summary>Can’t save playlists</summary><p>Ask your AI which playlist-writing tools are available for ${esc($('service').value)}. If none are available, you can still get a track list and add it yourself, or choose another pairing.</p>${action('CONTINUE WITH RECOMMENDATIONS','recommendations',true)}</details></div>${action('BACK TO MY SETUP','resume')}<div class="secondary-row">${action('Run a fresh connection check','check',true)}${action('Finish later','pause',true)}</div>`}
 function confirmSetup(){return `<div class="confirm-setup"><strong>Already checked in your AI?</strong><p>Once it confirms the skill is loaded and your music service is ready, finish here.</p><button type="button" class="confirm-ready" data-action="ready">MY AI CONFIRMED — I’M READY</button><p class="note">Saved on this device as your confirmation.</p></div>`}
@@ -144,7 +144,7 @@ root.addEventListener('click',async e=>{/* PLATFORM_SETUP_OPEN */
  }
  if(a==='recommendations'){copySerial++;help=false;completed=false;paused=true;render();document.querySelector('[data-mood]').focus();return}
  if(a==='copied'){copySerial++;stage='copied';notice='';help=false;render();return}
- if(['choose','install','check','away','return'].includes(a)){copySerial++;stage=a;paused=false;completed=false;help=false;notice='';render();if(stage==='choose')$('ai').focus();else $('ticket').querySelector('[data-action]:not([data-action="pause"]):not([data-action="previous"])')?.focus()}
+ if(['choose','install','check','away','return'].includes(a)){copySerial++;stage=a;paused=false;completed=false;help=false;notice='';render();if(stage==='choose')$('ai-trigger').focus();else $('ticket').querySelector('[data-action]:not([data-action="pause"]):not([data-action="previous"])')?.focus()}
 });
 for(const id of ['ai','service'])$(id).addEventListener('change',()=>{copySerial++;stage='choose';paused=false;completed=false;help=false;notice='';installNotice='';claudeRoute='';syncPair();render()});
 root.addEventListener('keydown',e=>{if(e.key==='Escape'&&pickerDialog?.open)return;if(e.key==='Escape'&&(!completed||help)&&!paused){e.preventDefault();pause()}});
