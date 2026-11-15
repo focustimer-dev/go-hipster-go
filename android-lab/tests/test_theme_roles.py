@@ -227,12 +227,12 @@ class AndroidThemeRoles(unittest.TestCase):
             self.assertIn(selector, onboarding)
         # Hard-coded Libéri ink is permissible in the *default* edition CSS,
         # but never in the alternate Android theme mapping.
-        self.assertIsNone(re.search(r"#[0-9a-fA-F]{6}\\b", onboarding))
+        self.assertIsNone(re.search(r"#[0-9a-fA-F]{6}\b", onboarding))
         self.assertIn("--lab-setup-rule:var(--lab-ui-highlight)", tokens)
         for name, body in re.findall(
-            r":root\\[data-pwa-theme=([a-z]+)\\]\\{([^}]*)\\}", tokens, re.S
+            r":root\[data-pwa-theme=([a-z]+)\]\{([^}]*)\}", tokens, re.S
         ):
-            colors = dict(re.findall(r"(--lab-ui-[a-z-]+):\\s*(#[0-9a-f]{6})\\s*;", body))
+            colors = dict(re.findall(r"(--lab-ui-[a-z-]+):\s*(#[0-9a-f]{6})\s*;", body))
             if "--lab-ui-ticket-stock" in colors:
                 self.assertGreaterEqual(
                     contrast(colors["--lab-ui-ticket-stock"], colors["--lab-ui-ticket-ink"]),
