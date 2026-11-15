@@ -146,7 +146,7 @@
  --lab-setup-action-paper:var(--lab-ui-ticket-ink);
  --lab-setup-action-ink:var(--lab-ui-ticket-stock);
  --lab-setup-rule:var(--lab-ui-rule);
- --lab-setup-focus:var(--lab-ui-focus);
+ --lab-setup-focus:var(--lab-ui-ticket-ink);
  --lab-setup-hover-paper:var(--lab-ui-action);
  --lab-setup-hover-ink:var(--lab-ui-on-action);
  --lab-theme-selected-bg:var(--lab-ui-action);
