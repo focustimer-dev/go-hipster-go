@@ -57,3 +57,25 @@ selected portrait must display as the selected expression for all nine themes;
 Android's package optimizer may compress it further but must preserve alpha
 and registration. The superseded v2 portrait files are excluded from this PR.
 
+
+## Desire v4 — full-crown and theme-ink alpha plates (2026-11-14)
+
+The approved v3 engraving contained a source-level straight crop through the
+crown; CSS translation could only move that cut edge. V4 recreates the full
+pearl circlet and hair in both expressions, while matching the original cast's
+engraving density and registration at actual Android mood-tile size.
+
+Each 1254×1254 lossless WebP stores dark ink as opacity (white paper becomes
+transparent). CSS paints the alpha as the theme's
+`--lab-mood-neutral-ink` / `--lab-mood-selected-ink`, not the older SVG flood;
+position is `translateY(2%) scale(.92)` for both states. Decorative hearts
+remain independent of facial shading.
+
+| Runtime file | SHA-256 | Bytes | Ink alpha bounds |
+| --- | --- | ---: | --- |
+| `desire-neutral-v4.webp` | `59680b820cb7406639dbe67164835108ca3e6f0c284a97f2051dd3526f9ed207` | 537520 | (70, 32, 1184, 1164) |
+| `desire-selected-v4.webp` | `dc7c2204ac872c1a1a743fbd07329bfb5e32d39e66497189d6320e4d0bcaa4d7` | 545786 | (68, 32, 1186, 1164) |
+
+V3 is retained as a historical rollback plate but is not bundled into the
+Android runtime. This revision requires an on-device visual approval before
+merging PR #311 or publishing the production app.
