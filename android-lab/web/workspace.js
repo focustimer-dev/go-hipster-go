@@ -143,7 +143,9 @@ function renderLabWorkspace(){
    const row=doc.createElement('div');row.className='lab-record';const main=doc.createElement('div');main.className='lab-record-main';
    const h=doc.createElement('h3');h.textContent=typeof entry.name==='string'&&entry.name.trim()?entry.name:'Untitled crate';const p=doc.createElement('p');p.textContent=(aiNames[entry.ai]||'AI')+' · '+(labRequestSummary(entry.prompt)||'Exact saved request');
    const date=doc.createElement('p');date.className='lab-date';const when=new Date(Number(entry.time));date.textContent=entry.time!==null&&entry.time!==''&&Number(entry.time)>0&&Number.isFinite(when.getTime())?when.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}):'Saved on this device';main.append(h,p,date);
-   const b=doc.createElement('button');b.type='button';b.className='lab-text-button';b.dataset.labSaved=String(entry.id);b.textContent='OPTIONS';b.setAttribute('aria-label','Options for saved request: '+h.textContent);row.append(main,b);rows.append(row);
+   const actions=doc.createElement('div');actions.className='lab-record-actions';
+   const reuse=doc.createElement('button');reuse.type='button';reuse.className='lab-text-button';reuse.dataset.labReplay=String(entry.id);reuse.textContent='REUSE';reuse.setAttribute('aria-label','Reuse exact saved request: '+h.textContent);
+   const b=doc.createElement('button');b.type='button';b.className='lab-text-button';b.dataset.labSaved=String(entry.id);b.textContent='OPTIONS';b.setAttribute('aria-label','More options for saved request: '+h.textContent);actions.append(reuse,b);row.append(main,actions);rows.append(row);
   }
  }
  doc.getElementById('labServicePair').textContent=aiNames[ai]+' → '+serviceNames[service];doc.getElementById('labUpdateState').textContent=state.updateSummary||'Check your installed skill';doc.getElementById('labUpdateDetail').textContent=state.updateDetail||'Check GitHub for the latest Gemini Skill ZIP.';
@@ -153,7 +155,7 @@ function renderLabWorkspace(){
 function labSendSkillStatus(state=labState()){
  const frame=doc.getElementById('labManualFrame');
  if(!frame?.contentWindow)return;
- frame.contentWindow.postMessage({type:'lab-skill-status',
+ frame.contentWindow.postMessage({type:'lab-skill-status',ai,service,
   available:ai==='gemini'&&state.updateAvailable===true,
   latest:String(state.updateLatest||'Not checked'),recorded:String(state.updateConfirmed||'Not recorded')
  },location.origin);
@@ -209,9 +211,9 @@ function initLabWorkspace(){
     if(['/','/editions/gig-poster/'].includes(u.pathname)){event.preventDefault();labNavigate('jukebox');return}
    }
   }
-  const b=event.target.closest('[data-lab-tab],[data-lab-action],[data-lab-saved],[data-lab-recent]');if(!b)return;
+  const b=event.target.closest('[data-lab-tab],[data-lab-action],[data-lab-saved],[data-lab-replay],[data-lab-recent]');if(!b)return;
   if(b.dataset.labRecent){window.HipsterLab?.useRecentInspiration?.(b.dataset.labRecent);return}
-  if(b.dataset.labTab){labNavigate(b.dataset.labTab);return}if(b.dataset.labSaved){window.HipsterLab?.savedRequest?.(b.dataset.labSaved);return}
+  if(b.dataset.labTab){labNavigate(b.dataset.labTab);return}if(b.dataset.labReplay){if(window.HipsterLab?.replaySavedRequest)window.HipsterLab.replaySavedRequest(b.dataset.labReplay);else window.HipsterLab?.savedRequest?.(b.dataset.labReplay);return}if(b.dataset.labSaved){window.HipsterLab?.savedRequest?.(b.dataset.labSaved);return}
   const action=b.dataset.labAction;
   if(action==='preferences')labPreferences();else if(action==='close-preferences')doc.getElementById('labPreferences').close();
   else if(action==='inspiration')labOpenInspirationEditor();else if(action==='save')window.HipsterLab?.saveRequest?.(ai,goPrompt(ai,service,mood));else if(action==='check-updates')window.HipsterLab?.checkSkillUpdates?.();else if(action==='updates')window.HipsterLab?.showUpdates?.();else if(action==='jukebox')labNavigate('jukebox');

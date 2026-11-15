@@ -403,6 +403,7 @@ public class LabActivity extends Activity {
         @JavascriptInterface public void checkSkillUpdates(){runOnUiThread(()->updates.check(true));}
         @JavascriptInterface public void saveRequest(String ai,String text){if(SavedRequestPolicy.canSave(ai,text))runOnUiThread(()->shelf.save(ai,text));}
         @JavascriptInterface public void savedRequest(String id){if(id!=null&&id.length()<=64)runOnUiThread(()->shelf.showEntry(id));}
+        @JavascriptInterface public void replaySavedRequest(String id){if(id!=null&&id.length()<=64)runOnUiThread(()->shelf.replayEntry(id));}
         @JavascriptInterface public void setPreference(String key,String value){
             runOnUiThread(()->{
                 if("mode".equals(key)&&Arrays.asList("open","share","browser").contains(value))prefs.edit().putString(key,value).apply();

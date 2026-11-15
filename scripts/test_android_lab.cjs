@@ -93,7 +93,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert.equal(await page.locator('#labJukebox .service-counter').count(),0);
   assert.equal(await page.locator('.poster-go-trail-word').last().textContent(),'CONTINUE IN YOUR AI');
   await page.locator('.lab-rail [data-lab-action="preferences"]').click();
-  assert.deepEqual(await page.locator('[name=labHandoff]').evaluateAll(nodes=>nodes.map(n=>n.nextElementSibling.firstChild.textContent)),['Copy + Open Installed App','Copy + Open Installed App + Paste','Copy + Open Browser']);
+  assert.deepEqual(await page.locator('[name=labHandoff]').evaluateAll(nodes=>nodes.map(n=>n.nextElementSibling.firstChild.textContent)),['Copy + Open Installed App','Share request to AI','Copy + Open Browser']);
   // Verify the native switch's state, selection colors and narrow-phone layout.
   const rough=page.locator('#skipRough');
   await rough.check();
