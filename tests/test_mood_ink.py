@@ -51,7 +51,7 @@ class MoodInkTests(unittest.TestCase):
         self.assertIn('background:#d64b30',css,'Use the approved solid vermilion stock')
         self.assertNotIn('background:rgb(214 75 48 / 22%)',css)
 
-    def test_desire_v2_expression_and_heart_mask_are_independent(self):
+    def test_desire_v3_expression_and_heart_mask_are_independent(self):
         # CI's skill-validation Python environment intentionally has no Pillow.
         # The pinned, exact lossless files are alpha-verified in Android Lab.
         try:
@@ -59,7 +59,7 @@ class MoodInkTests(unittest.TestCase):
         except ImportError:
             Image = None
         svg=(ART/'desire-heart-ink-mask.svg').read_text()
-        self.assertIn('Desire v2',svg)
+        self.assertIn('Desire v3',svg)
         self.assertNotIn('Source SHA256',svg,'Old eye-coordinate mask must not survive')
         self.assertIn('viewBox="0 0 1254 1254"',svg)
         self.assertEqual(svg.count('<path '),4)
@@ -68,8 +68,8 @@ class MoodInkTests(unittest.TestCase):
             self.assertIn(f'desire-{state}-v2.webp',css)
             path=ART/f'desire-{state}-v2.webp'
             expected = {
-                'neutral': '16f4157fe6ca5c5eb57e57a63a2e5c2d832628fc32895f1308f6a8f16d9b90b0',
-                'selected': '3a4b888dca9f337f9a43460a5dd9c24c9502f4e97c35d7a94074a348f49009e8'
+                'neutral': '35db845af7e3e05d634af21deb37a4ed6d72d6e690ac7760becd40effbbaf53c',
+                'selected': 'fa62b1482bf9bdd1b94512dd95781a1ac113ef052fa7f5ba4fa5ec3b08752f30'
             }
             self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(),expected[state])
             raw=path.read_bytes()
@@ -81,8 +81,8 @@ class MoodInkTests(unittest.TestCase):
                     self.assertEqual(image.size,(1254,1254))
                     rgba=image.convert('RGBA')
                     self.assertEqual(rgba.getchannel('A').getextrema(),(0,255))
-                    self.assertLess(rgba.getchannel('A').getbbox()[1],25)
-                    self.assertGreater(rgba.getchannel('A').getbbox()[3],1200)
+                    self.assertLess(rgba.getchannel('A').getbbox()[1],60)
+                    self.assertGreater(rgba.getchannel('A').getbbox()[3],1180)
         self.assertIn('filter:url(#alphaInk)',css)
         self.assertIn('background:var(--funk-selected-paper)',css)
         page=(ROOT/'launcher/editions/gig-poster/index.html').read_text()

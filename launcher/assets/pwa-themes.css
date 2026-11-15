@@ -275,7 +275,7 @@ html[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[data-mood][aria-pre
 html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=true] .face::after{
  filter:none!important;
 }
-/* Desire v2 has two distinct alpha-engraved expression plates.
+/* Desire v3 has two distinct alpha-engraved expression plates.
    Never resurrect the neutral expression when selected: changing ink/stock
    is the job of theme tokens, not an image-negative workaround. */
 html[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=true] .face::before,

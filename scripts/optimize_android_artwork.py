@@ -7,8 +7,8 @@ from PIL import Image
 
 ART = Path("editions/gig-poster/assets")
 PORTRAITS = (
-    "desire-neutral-v2.webp",
-    "desire-selected-v2.webp",
+    "desire-neutral-v3.webp",
+    "desire-selected-v3.webp",
     "triumph-neutral-v1.webp",
     "triumph-selected-v1.webp",
 )
