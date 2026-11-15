@@ -168,9 +168,9 @@ for(const profile of profiles){
     assert.match(observedThemes[name].funkGradient,/linear-gradient/,'Funk uses a violet to magenta pressing');
     assert.equal(observedThemes[name].selectInk,'none','Canonical baked Funk needs no flat color filter');
     assert.match(observedThemes[name].selectPortraitImage,/funk-selected-engraved\.webp/,'Funk uses the original engraved highlighter artwork');
-    assert.match(observedThemes[name].desireNeutralInk,/referenceInk/,'Desire reuses the natural detailed portrait');
-    assert.equal(observedThemes[name].desireNeutralOpacity,'1','Desire neutral portrait remains visible on selection');
-    assert.equal(observedThemes[name].desireSelectedOpacity,'0','Desire negative-looking selection plate stays hidden');
+    assert.equal(observedThemes[name].desireNeutralInk,'none','Desire uses a real alpha mask in the theme ink');
+    assert.equal(observedThemes[name].desireNeutralOpacity,'0','Desire neutral must hide on selection');
+    assert.equal(observedThemes[name].desireSelectedOpacity,'1','Desire selected expression must be visible');
     assert.equal(observedThemes[name].desireHearts,'rgb(142, 48, 105)','Desire keeps its magenta heart eyes');
     assert.equal(observedThemes[name].selectedMapInk,'rgb(229, 207, 66)','Selected regions use visible yellow');
    }
@@ -184,7 +184,7 @@ for(const profile of profiles){
     assert.equal(observedThemes.usiku.neutralInkFilter,'none','No photo-negative or brightened portrait ink');
     assert.match(observedThemes.usiku.neutralInkMask,/moods-neutral-ink-v2\.webp/,'Use original engraving alpha');
     assert.equal(observedThemes.usiku.neutralInkColor,'rgb(6, 56, 33)','Plain forest-green ink, no cream');
-    assert.match(observedThemes.usiku.neutralDesireInk,/referenceInk/,'Desire keeps dark SVG alpha extraction, not cream inversion');
+    assert.equal(observedThemes.usiku.neutralDesireInk,'none','Desire preserves original alpha with no SVG color filter');
     assert.doesNotMatch(observedThemes.usiku.neutralDesireInk,/invert/,'Desire must never become a photo-negative');
     assert.equal(observedThemes.usiku.sea,'rgb(17, 17, 17)','Usiku atlas ocean must be near-black');
     assert.equal(observedThemes.usiku.land,'rgb(245, 240, 230)','Usiku land engraving must be cream');

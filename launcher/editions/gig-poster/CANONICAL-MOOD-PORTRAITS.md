@@ -36,3 +36,54 @@ Both sheets are 1536 × 1024 WebP, with a 3 × 2 layout in the order above. The 
 | `assets/moods-selected-approved-v1.webp` | `f45fa9c3d5915723f393e71a7ee8cb26d11c3931ec533fd8b98f6ace74625a72` |
 
 `mood-portraits.css` follows the application's existing `aria-pressed` state, including shuffle and Undo. Inline filters in `assets/mood-portrait-filters.svg` reproduce the approved golden-paper / midnight-teal neutral treatment and vermilion / midnight-teal selected treatment with restrained, source-luminance ivory highlights. The inset border and underlined label supplement color. Reduced motion disables the 160ms expression fade.
+
+## Desire v3 — approved corrected portrait (2026-11-14)
+
+Desire now uses the tighter, deeper-crosshatched portrait approved after
+side-by-side comparison with the original six-character production cast.
+The paired calm / yearning expressions use the same face scale and registration.
+Each file is a lossless **1254 × 1254 RGBA WebP** with black engraving luminance
+encoded into alpha opacity. The white paper becomes transparent and the
+renderer supplies each theme's ink; **do not apply referenceInk** (which would
+re-extract luminance and destroy the intended alpha levels).
+
+| Runtime file | SHA-256 | Bytes |
+| --- | --- | ---: |
+| `desire-neutral-v3.webp` | `35db845af7e3e05d634af21deb37a4ed6d72d6e690ac7760becd40effbbaf53c` | 611676 |
+| `desire-selected-v3.webp` | `fa62b1482bf9bdd1b94512dd95781a1ac113ef052fa7f5ba4fa5ec3b08752f30` | 625516 |
+
+The vector decorative-heart overlay is independent of either face. The
+selected portrait must display as the selected expression for all nine themes;
+Android's package optimizer may compress it further but must preserve alpha
+and registration. The superseded v2 portrait files are excluded from this PR.
+
+
+## Desire v4 — full-crown and theme-ink alpha plates (2026-11-14)
+
+The approved v3 engraving contained a source-level straight crop through the
+crown; CSS translation could only move that cut edge. V4 recreates the full
+pearl circlet and hair in both expressions, while matching the original cast's
+engraving density and registration at actual Android mood-tile size.
+
+Each 1254×1254 lossless WebP stores dark ink as opacity (white paper becomes
+transparent). CSS paints the alpha as the theme's
+`--lab-mood-neutral-ink` / `--lab-mood-selected-ink`, not the older SVG flood;
+position is `translateY(2%) scale(.92)` for both states. Decorative hearts
+remain independent of facial shading.
+
+| Runtime file | SHA-256 | Bytes | Ink alpha bounds |
+| --- | --- | ---: | --- |
+| `desire-neutral-v4.webp` | `05a4385a45262f70e9eb2f7262a48303de5751784909029fa35e1b0524eabd6d` | 522848 | (70, 32, 1184, 1164) |
+| `desire-selected-v4.webp` | `dd93e886c2a08516a0b8e358c39a63a031f7faf81081eedacaa704cf2dfa55bc` | 530836 | (68, 32, 1186, 1164) |
+
+V3 is retained as a historical rollback plate but is not bundled into the
+Android runtime. This revision requires an on-device visual approval before
+merging PR #311 or publishing the production app.
+
+### Final ink-density correction
+
+Only the strongest quarter of alpha is softened: values 0–191 stay exact;
+192–255 are linearly compressed to 192–230. Maximum ink drops by 9.8%.
+RGB, dimensions, alpha bounds, framing, expressions and theme tokens stay
+unchanged. `scripts/soften_desire_ink.py` pins the original hashes and refuses
+repeat processing. Lossless output preserves the lighter engraving detail.
