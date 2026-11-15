@@ -65,8 +65,8 @@ class MoodInkTests(unittest.TestCase):
         self.assertEqual(svg.count('<path '),4)
         css=(ART.parent/'mood-portraits.css').read_text()
         for state in ('neutral','selected'):
-            self.assertIn(f'desire-{state}-v2.webp',css)
-            path=ART/f'desire-{state}-v2.webp'
+            self.assertIn(f'desire-{state}-v3.webp',css)
+            path=ART/f'desire-{state}-v3.webp'
             expected = {
                 'neutral': '35db845af7e3e05d634af21deb37a4ed6d72d6e690ac7760becd40effbbaf53c',
                 'selected': 'fa62b1482bf9bdd1b94512dd95781a1ac113ef052fa7f5ba4fa5ec3b08752f30'
