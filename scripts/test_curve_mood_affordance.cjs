@@ -33,7 +33,7 @@ const server=http.createServer((req,res)=>{
   await happy.click();
   assert.equal(await happy.getAttribute('aria-pressed'),'true');
   const before=await page.evaluate(()=>window.HipsterPWABridge.getPrompt());
-  assert.match(before,/^go happy/m);
+  assert.match(before,/\bgo happy\b/,'Default Lab handoff prefix may precede the music command');
 
   await page.getByRole('button',{name:'The curve'}).click();
   assert.equal(await mood.getAttribute('data-mood-interaction'),'drag');
