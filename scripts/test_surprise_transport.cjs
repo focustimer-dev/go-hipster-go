@@ -1,12 +1,12 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 global.Event=class Event{};
 let draws=0,base='go';
-const c=vm.createContext({Event,window:{dispatchEvent(){},HipsterLab:{rollSurprise:()=>`App surprise: v1/${++draws}/1000.`}},goPrompt:()=>base,ai:'chatgpt',service:'spotify',mood:'go',copiedPrompt:null});
+const c=vm.createContext({Event,window:{dispatchEvent(){},HipsterLab:{rollSurprise:()=>`Protocol: ${++draws}`}},goPrompt:()=>base,ai:'chatgpt',service:'spotify',mood:'go',copiedPrompt:null});
 vm.runInContext(fs.readFileSync('android-lab/web/surprise.js','utf8'),c);
 const run=()=>vm.runInContext('labPrepareSurprise();labSurpriseLine',c);
-assert.match(run(),/v1\/1\//);assert.match(run(),/v1\/1\//);assert.equal(draws,1);
-c.copiedPrompt='copied';assert.match(run(),/v1\/2\//);
-c.copiedPrompt=null;base='changed';assert.match(run(),/v1\/3\//);
+assert.equal(run(),'Protocol: 1');assert.equal(run(),'Protocol: 1');assert.equal(draws,1);
+c.copiedPrompt='copied';assert.equal(run(),'Protocol: 2');
+c.copiedPrompt=null;base='changed';assert.equal(run(),'Protocol: 3');
 const app=fs.readFileSync('launcher/assets/app.js','utf8');
 vm.runInContext(app.slice(app.indexOf('function curveOwnsMoods'),app.indexOf('function goPrompt')),c);
 for(const [code,expected] of [['',false],['c1:012',false],['c1:0tc-1',true],['c1:0x12',true]]){c.mixCurveTrialCode=code;assert.equal(vm.runInContext('curveOwnsMoods()',c),expected)}
