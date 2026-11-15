@@ -60,7 +60,21 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    assert(await page.locator('#firstCrateSetup [data-action="resume"]').isVisible(),'Paused setup offers resume');
    await page.locator('#firstCrateSetup [data-action="resume"]').click();
    await page.locator('#firstCrateSetup [data-action="choose"]').first().click();
-   await page.locator('#fc-ai').selectOption('Claude');
+   const aiPicker=page.locator('#fc-ai + .lab-setup-select-trigger');
+   assert(await aiPicker.isVisible(),'Android setup uses a themed, accessible AI picker');
+   await aiPicker.click();
+   const themed=await page.evaluate(()=>{
+    const dialog=document.querySelector('.lab-setup-choices');
+    const css=getComputedStyle(dialog),root=getComputedStyle(document.documentElement);
+    return {open:dialog.open,background:css.backgroundColor,ink:css.color,
+     setup:root.getPropertyValue('--lab-setup-paper').trim(),
+     atlas:root.getPropertyValue('--lab-atlas-selected').trim()};
+   });
+   assert(themed.open,'The themed setup choices are visible in the top layer');
+   assert.equal(themed.background,'rgb(255, 250, 240)','Katowice uses its actual cream ticket stock, not the OS mustard popup');
+   if(profile.name==='phone')await capture('setup-ai-choices-themed');
+   await page.locator('.lab-setup-choices .lab-setup-choice').filter({hasText:'Claude'}).click();
+   assert.equal(await page.locator('#fc-ai').inputValue(),'Claude');
    await page.locator('#firstCrateSetup [data-action="install"]').first().click();
    assert(await page.locator('#firstCrateSetup [data-action="install-copy"]').isVisible(),'Claude prompt-first installation is directly visible');
    assert.equal(await page.locator('#firstCrateSetup .install-fallback').getAttribute('open'),null,'Manual uploader instructions stay secondary');
@@ -70,7 +84,9 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    assert.equal(await page.evaluate(()=>auditCalls.some(c=>c[0]==='share'||c[0]==='go')),false,'Copy offers consent without auto-sharing');
    await capture('claude-prompt-first');
    await page.locator('#firstCrateSetup [data-action="choose"]').first().click();
-   await page.locator('#fc-ai').selectOption('ChatGPT');
+   await aiPicker.click();
+   await page.locator('.lab-setup-choices .lab-setup-choice').filter({hasText:'ChatGPT'}).click();
+   assert.equal(await page.locator('#fc-ai').inputValue(),'ChatGPT');
    for(const action of ['install','check'])await page.locator('#firstCrateSetup [data-action="'+action+'"]').first().click();
    await page.locator('#firstCrateSetup [data-action="copy"]').click();
    await capture('setup-copied');
@@ -89,6 +105,20 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
     await page.getByRole('button',{name:'The curve',exact:true}).click();
     await page.locator('#mixCurveEditor').waitFor({state:'visible'});
     const curve=page.frameLocator('#mixCurveEditor');
+    const actualFrame=page.frame({url:/mix-curve-trial\.html/});
+    assert(actualFrame,'Curve frame must have loaded');
+    await actualFrame.waitForFunction(()=>document.documentElement.classList.contains('has-desire-mask'),null,{timeout:8000});
+    await actualFrame.evaluate(()=>{place(3,'Desire');place(7,'Happy + Desire')});
+    const stamps=await actualFrame.evaluate(()=>{
+     const one=[...document.querySelectorAll('.mood-track .pin')].find(p=>p.title==='Desire');
+     const two=[...document.querySelectorAll('.mood-track .pin')].find(p=>p.title==='Happy + Desire');
+     const width=el=>getComputedStyle(el).width;
+     return {one:width(one.querySelector('.face')),two:width(two.querySelector('.face')),
+      mask:getComputedStyle(one.querySelector('.desire-v4')).webkitMaskImage.startsWith('url("data:image/webp;base64,'),
+      twoFaces:two.querySelectorAll('.face').length};
+    });
+    assert.deepEqual(stamps,{one:'26px',two:'26px',mask:true,twoFaces:2},
+     'Desire v4 renders with same-sized one and two-mood portraits');
     await curve.getByRole('button',{name:/^Start ·/}).press('ArrowUp');
     await page.locator('.tempo-mode-switch').locator('..').screenshot({path:path.join(output,'phone-tempo-curve.png'),animations:'disabled'});
     await page.getByRole('button',{name:'Set the tempo',exact:true}).click();
