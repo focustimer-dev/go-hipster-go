@@ -275,17 +275,21 @@ html[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[data-mood][aria-pre
 html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood][aria-pressed=true] .face::after{
  filter:none!important;
 }
-/* Desire's selected plate is a purpose-built effect. Keep the ORIGINAL
-   neutral plate (normal facial shading) and draw its heart-eye mask atop it.
-   No new image, character, or modified portrait asset is introduced. */
+/* Desire v2 has two distinct alpha-engraved expression plates.
+   Never resurrect the neutral expression when selected: changing ink/stock
+   is the job of theme tokens, not an image-negative workaround. */
 html[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=true] .face::before,
 html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=true] .face::before{
- opacity:1;
- filter:url(#referenceInk)!important;
+ opacity:0;
+ filter:url(#alphaInk)!important;
 }
 html[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=true] .face::after,
 html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=true] .face::after{
- opacity:0;
+ opacity:1;
+ filter:url(#alphaInk)!important;
+}
+html:is([data-pwa-theme=bosque],[data-pwa-theme=usiku]) #alphaInk feFlood{
+ flood-color:var(--lab-mood-neutral-ink);
 }
 html[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=true] .desire-hearts,
 html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=true] .desire-hearts{
@@ -407,7 +411,7 @@ html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood]:not([data
 }
 /* Additional portraits retain their source alpha and existing registration. */
 html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=false] .face::before{
- filter:url(#referenceInk)!important;
+ filter:url(#alphaInk)!important;
  opacity:1;
 }
 html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=triumphant][aria-pressed=false] .face::before{
@@ -833,8 +837,8 @@ html[data-pwa-theme=usiku] body.pwa-workspace .pwa-dialog-head{
 :root[data-pwa-theme=michoacan] :is(#referenceInk,#alphaInk) feFlood{flood-color:var(--lab-mood-neutral-ink)}
 :root[data-pwa-theme=michoacan] body.gig-poster .mood[data-mood=desire] .desire-hearts{background:var(--lab-mood-desire-heart)}
 :root[data-pwa-theme=michoacan] body.pwa-workspace .pwa-guide-eject{background:var(--lab-ui-action);color:var(--lab-ui-on-action)}
-:root[data-pwa-theme=michoacan] body.gig-poster .mood[data-mood=desire][aria-pressed=true] .face::before{opacity:1;filter:url(#referenceInk)!important}
-:root[data-pwa-theme=michoacan] body.gig-poster .mood[data-mood=desire][aria-pressed=true] .face::after{opacity:0}
+:root[data-pwa-theme=michoacan] body.gig-poster .mood[data-mood=desire][aria-pressed=true] .face::before{opacity:0;filter:url(#alphaInk)!important}
+:root[data-pwa-theme=michoacan] body.gig-poster .mood[data-mood=desire][aria-pressed=true] .face::after{opacity:1;filter:url(#alphaInk)!important}
 :root[data-pwa-theme=michoacan] body.pwa-workspace .pwa-dialog .pwa-theme-choice[aria-pressed=true],
 :root[data-pwa-theme=michoacan] body.pwa-workspace .pwa-guide-tabs button[aria-selected=true]{
  background:var(--lab-ui-action);color:var(--lab-ui-on-action);border-bottom-color:var(--lab-print-active-ink);
