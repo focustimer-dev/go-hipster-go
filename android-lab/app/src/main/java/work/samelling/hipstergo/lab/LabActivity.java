@@ -368,11 +368,14 @@ public class LabActivity extends Activity {
             });
         }
         @JavascriptInterface public void haptic(String kind) {
-            if (!"tick".equals(kind) && !"click".equals(kind)) return;
+            if (!"tick".equals(kind) && !"click".equals(kind) && !"shuffle".equals(kind)) return;
             runOnUiThread(() -> {
                 if (!prefs.getBoolean("haptics", true)) return;
                 web.performHapticFeedback("tick".equals(kind)
-                    ? HapticFeedbackConstants.CLOCK_TICK : HapticFeedbackConstants.CONTEXT_CLICK);
+                    ? HapticFeedbackConstants.CLOCK_TICK
+                    : "shuffle".equals(kind)
+                    ? (Build.VERSION.SDK_INT >= 30 ? HapticFeedbackConstants.CONFIRM : HapticFeedbackConstants.CONTEXT_CLICK)
+                    : HapticFeedbackConstants.CONTEXT_CLICK);
             });
         }
         /** Mirror only supported widget inputs; the WebView remains the settings owner. */
