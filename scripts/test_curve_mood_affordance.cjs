@@ -1,0 +1,75 @@
+// Browser regression: portrait taps are selectors in Simple and drag stamps in Curve.
+const {chromium}=require('playwright');
+const http=require('node:http'),fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+const root=path.resolve(__dirname,'../android-lab/app/src/main/assets/site');
+const server=http.createServer((req,res)=>{
+ const route=decodeURIComponent(new URL(req.url,'http://localhost').pathname);
+ const file=path.resolve(root,'.'+(route.endsWith('/')?route+'index.html':route));
+ if(!file.startsWith(root+path.sep)){res.writeHead(403);return res.end()}
+ try{
+  res.setHeader('Content-Type',({'.html':'text/html','.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.webp':'image/webp'})[path.extname(file)]||'application/octet-stream');
+  res.end(fs.readFileSync(file));
+ }catch{res.writeHead(404);res.end()}
+});
+(async()=>{
+ await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
+ const browser=await chromium.launch({headless:true,...(process.env.LAB_CHROMIUM?{executablePath:process.env.LAB_CHROMIUM}:{})});
+ try{
+  const page=await browser.newPage({viewport:{width:412,height:915},hasTouch:true,isMobile:true});
+  const errors=[];page.on('pageerror',error=>errors.push(error.message));
+  await page.addInitScript(()=>{window.HipsterLab={
+   state:()=>JSON.stringify({saved:[],mode:'share',oneTap:true}),
+   inspiration:()=>'',surpriseUnlocked:()=>false,
+   setDialogPalette(){},syncSystemPalette(){},
+   haptic(){},copy:()=>true
+  }});
+  await page.goto('http://127.0.0.1:'+server.address().port+'/?atlas=legacy');
+  const mood=page.locator('.mood-grid'),happy=mood.locator('[data-mood=happy]'),angry=mood.locator('[data-mood=angry]');
+  const hint=page.locator('#moodModeHint');
+  assert.equal(await mood.getAttribute('data-mood-interaction'),'tap');
+  assert.match(await hint.innerText(),/Tap up to two moods/);
+  assert.equal(await mood.locator('.mood-drag-grip').count(),8);
+  assert.equal(await mood.locator('.mood-drag-grip').first().evaluate(e=>getComputedStyle(e).display),'none');
+  await happy.click();
+  assert.equal(await happy.getAttribute('aria-pressed'),'true');
+  const before=await page.evaluate(()=>window.HipsterPWABridge.getPrompt());
+  assert.match(before,/^go happy/m);
+
+  await page.getByRole('button',{name:'The curve'}).click();
+  assert.equal(await mood.getAttribute('data-mood-interaction'),'drag');
+  assert.equal(await hint.getAttribute('data-mode'),'drag');
+  assert.match(await hint.innerText(),/Drag a face onto the curve/);
+  assert.match(await mood.getAttribute('aria-label'),/drag onto the curve/);
+  assert.equal(await mood.locator('.mood-drag-grip').first().evaluate(e=>getComputedStyle(e).display),'grid');
+  assert.match(await happy.getAttribute('title'),/Drag HAPPY onto the curve/);
+  assert.equal(await happy.getAttribute('aria-pressed'),'true','Global Happy remains until the curve gets a mood pin');
+  await angry.click();
+  assert.equal(await angry.getAttribute('aria-pressed'),'false','A tap must not silently change global mood in curve mode');
+  assert.equal(await page.evaluate(()=>window.HipsterPWABridge.getPrompt()),before,'Tempo-only curve retains existing global mood');
+
+  const frame=page.locator('#mixCurveEditor');
+  await frame.waitFor({state:'visible'});
+  await page.waitForTimeout(250);
+  const a=await happy.boundingBox(),b=await frame.boundingBox();
+  assert(a&&b,'Portrait and curve have usable screen geometry');
+  await page.mouse.move(a.x+a.width/2,a.y+a.height/2);
+  await page.mouse.down();
+  await page.mouse.move(b.x+b.width*.35,b.y+50,{steps:9});
+  await page.mouse.up();
+  await page.waitForFunction(()=>/\\bc1:/.test(window.HipsterPWABridge.getPrompt()),{timeout:5000});
+  assert.match(await hint.innerText(),/change the mood along it/);
+  assert.equal(await happy.getAttribute('aria-pressed'),'false','Pinned curve moods own the selection');
+  await page.locator('.refinements').screenshot({path:'android-lab/build/curve-mood-review.png'});
+
+  await page.getByRole('button',{name:'Set the tempo'}).click();
+  assert.equal(await mood.getAttribute('data-mood-interaction'),'tap');
+  assert.match(await hint.innerText(),/Tap up to two moods/);
+  assert.equal(await mood.locator('.mood-drag-grip').first().evaluate(e=>getComputedStyle(e).display),'none');
+  assert.equal(await happy.getAttribute('aria-pressed'),'true','Switching back restores original global choice');
+  await angry.click();
+  assert.equal(await angry.getAttribute('aria-pressed'),'true','Portrait tapping is restored in Simple');
+  assert.equal(errors.length,0,'No browser exceptions: '+errors.join(' | '));
+  console.log('PASS curve mood affordances, retained global moods, actual drag, tap isolation and mode recovery');
+  await page.close();
+ }finally{await browser.close()}
+})().catch(error=>{console.error(error);process.exitCode=1}).finally(()=>server.close());
