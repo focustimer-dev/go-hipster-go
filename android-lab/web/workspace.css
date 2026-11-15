@@ -1291,10 +1291,10 @@ body.gig-poster.lab-workspace #firstCrateSetup .lab-setup-native-select{
 }
 body.gig-poster.lab-workspace #firstCrateSetup .lab-setup-select-trigger{
  display:block;width:100%;min-height:52px;box-sizing:border-box;
- border:1px solid var(--lab-setup-ink,#103135);border-radius:0;
+ border:1px solid var(--lab-setup-ink,var(--ink));border-radius:0;
  padding:12px 38px 12px 14px;text-align:left;
  font:400 1.125rem/1.22 Arial,Helvetica,sans-serif;
- background:var(--lab-setup-field-paper,#dfb045);color:var(--lab-setup-field-ink,#103135);
+ background:var(--lab-setup-field-paper,var(--paper));color:var(--lab-setup-field-ink,var(--ink));
  position:relative;cursor:pointer;
 }
 body.gig-poster.lab-workspace #firstCrateSetup .lab-setup-select-trigger::after{
@@ -1302,25 +1302,25 @@ body.gig-poster.lab-workspace #firstCrateSetup .lab-setup-select-trigger::after{
  transform:translateY(-57%);font:700 1.5rem/1 Arial,sans-serif;
 }
 body.gig-poster.lab-workspace #firstCrateSetup .lab-setup-select-trigger:focus-visible{
- outline:3px solid var(--lab-setup-focus,#103135);outline-offset:3px;
+ outline:3px solid var(--lab-setup-focus,var(--ink));outline-offset:3px;
 }
 body.gig-poster.lab-workspace .lab-setup-choices{
  /* Libéri has no shared print-theme aliases; retain its native gold/teal. */
- --lab-setup-paper:var(--lab-ui-ticket-stock,#dfb045);
- --lab-setup-ink:var(--lab-ui-ticket-ink,#103135);
- --lab-setup-rule:var(--lab-ui-rule,#103135);
- --lab-setup-focus:var(--lab-ui-focus,#103135);
- --lab-setup-hover-paper:var(--lab-ui-action,#103135);
- --lab-setup-hover-ink:var(--lab-ui-on-action,#dfb045);
+ --lab-setup-paper:var(--lab-ui-ticket-stock,var(--paper));
+ --lab-setup-ink:var(--lab-ui-ticket-ink,var(--ink));
+ --lab-setup-rule:var(--lab-ui-rule,var(--ink));
+ --lab-setup-focus:var(--lab-ui-focus,var(--ink));
+ --lab-setup-hover-paper:var(--lab-ui-action,var(--ink));
+ --lab-setup-hover-ink:var(--lab-ui-on-action,var(--paper));
  width:calc(100vw - 40px);max-width:440px;max-height:calc(100dvh - 90px);
  box-sizing:border-box;padding:0;margin:auto;overflow:auto;
- border:1px solid var(--lab-setup-ink,#103135);border-radius:0;
+ border:1px solid var(--lab-setup-ink,var(--ink));border-radius:0;
  background:var(--lab-setup-paper);color:var(--lab-setup-ink);
- box-shadow:6px 7px 0 color-mix(in srgb,var(--lab-ui-rail,#103135) 45%,transparent);
+ box-shadow:6px 7px 0 color-mix(in srgb,var(--lab-ui-rail,var(--ink)) 45%,transparent);
  color-scheme:light;
 }
 body.gig-poster.lab-workspace .lab-setup-choices::backdrop{
- background:color-mix(in srgb,var(--lab-ui-rail,#103135) 68%,transparent);
+ background:color-mix(in srgb,var(--lab-ui-rail,var(--ink)) 68%,transparent);
 }
 body.gig-poster.lab-workspace .lab-setup-choice-header{
  display:flex;align-items:center;justify-content:space-between;
