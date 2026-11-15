@@ -73,9 +73,17 @@ remain independent of facial shading.
 
 | Runtime file | SHA-256 | Bytes | Ink alpha bounds |
 | --- | --- | ---: | --- |
-| `desire-neutral-v4.webp` | `59680b820cb7406639dbe67164835108ca3e6f0c284a97f2051dd3526f9ed207` | 537520 | (70, 32, 1184, 1164) |
-| `desire-selected-v4.webp` | `dc7c2204ac872c1a1a743fbd07329bfb5e32d39e66497189d6320e4d0bcaa4d7` | 545786 | (68, 32, 1186, 1164) |
+| `desire-neutral-v4.webp` | `05a4385a45262f70e9eb2f7262a48303de5751784909029fa35e1b0524eabd6d` | 522848 | (70, 32, 1184, 1164) |
+| `desire-selected-v4.webp` | `dd93e886c2a08516a0b8e358c39a63a031f7faf81081eedacaa704cf2dfa55bc` | 530836 | (68, 32, 1186, 1164) |
 
 V3 is retained as a historical rollback plate but is not bundled into the
 Android runtime. This revision requires an on-device visual approval before
 merging PR #311 or publishing the production app.
+
+### Final ink-density correction
+
+Only the strongest quarter of alpha is softened: values 0–191 stay exact;
+192–255 are linearly compressed to 192–230. Maximum ink drops by 9.8%.
+RGB, dimensions, alpha bounds, framing, expressions and theme tokens stay
+unchanged. `scripts/soften_desire_ink.py` pins the original hashes and refuses
+repeat processing. Lossless output preserves the lighter engraving detail.

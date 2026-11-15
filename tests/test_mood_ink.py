@@ -68,8 +68,8 @@ class MoodInkTests(unittest.TestCase):
             self.assertIn(f'desire-{state}-v4.webp',css)
             path=ART/f'desire-{state}-v4.webp'
             expected = {
-                'neutral': '59680b820cb7406639dbe67164835108ca3e6f0c284a97f2051dd3526f9ed207',
-                'selected': 'dc7c2204ac872c1a1a743fbd07329bfb5e32d39e66497189d6320e4d0bcaa4d7'
+                'neutral': '05a4385a45262f70e9eb2f7262a48303de5751784909029fa35e1b0524eabd6d',
+                'selected': 'dd93e886c2a08516a0b8e358c39a63a031f7faf81081eedacaa704cf2dfa55bc'
             }
             self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(),expected[state])
             raw=path.read_bytes()
@@ -80,7 +80,7 @@ class MoodInkTests(unittest.TestCase):
                 with Image.open(path) as image:
                     self.assertEqual(image.size,(1254,1254))
                     rgba=image.convert('RGBA')
-                    self.assertEqual(rgba.getchannel('A').getextrema(),(0,255))
+                    self.assertEqual(rgba.getchannel('A').getextrema(),(0,230))
                     self.assertLess(rgba.getchannel('A').getbbox()[1],60)
                     self.assertGreater(rgba.getchannel('A').getbbox()[3],1100)
         self.assertIn('mask-mode:alpha',css)
@@ -95,6 +95,13 @@ class MoodInkTests(unittest.TestCase):
         self.assertIn('opacity:1;filter:none!important',theme)
         self.assertIn('opacity:1;filter:none!important',pwa)
         self.assertNotIn('Desire negative-looking selection plate stays hidden',pwa)
+    def test_desire_softening_preserves_midtone_and_tonal_order(self):
+        from scripts.soften_desire_ink import ALPHA_LUT
+        self.assertEqual(ALPHA_LUT[:192], list(range(192)))
+        self.assertEqual(ALPHA_LUT[255], 230)
+        self.assertEqual(ALPHA_LUT, sorted(ALPHA_LUT))
+        self.assertGreater(len(set(ALPHA_LUT[192:])), 30)
+
     def test_current_pages_preload_ink_sprites(self):
         page=(ROOT/'launcher/editions/gig-poster/index.html').read_text()
         for state in ('neutral','selected'):
