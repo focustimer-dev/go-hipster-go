@@ -206,6 +206,39 @@ class AndroidThemeRoles(unittest.TestCase):
         self.assertIn("var(--lab-ui-focus,#103135)",inspiration)
         self.assertNotIn(":root[data-pwa-theme=michoacan] body.gig-poster.lab-workspace #labCrateEmpty",css)
 
+
+    def test_android_first_run_setup_uses_theme_tokens_in_every_submenu(self):
+        tokens = source("android-lab/web/theme-tokens.css")
+        css = source("android-lab/web/workspace.css")
+        onboarding = css.split("/* Android first-run and revisitable setup:", 1)[1]
+        self.assertIn(":root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])", onboarding)
+        for role in (
+            "paper", "ink", "field-paper", "field-ink", "action-paper",
+            "action-ink", "rule", "focus", "hover-paper", "hover-ink",
+        ):
+            self.assertIn("--lab-setup-" + role + ":", tokens)
+            self.assertIn("var(--lab-setup-" + role + ")", onboarding)
+        for selector in (
+            ".services select", ".services select option", ".services select:disabled",
+            ".uploader-choices button", ".confirm-ready", ".install-link",
+            ".ticket-step", ".ink-stamp", "#fc-current-setup",
+            ".is-paused", ":focus-visible",
+        ):
+            self.assertIn(selector, onboarding)
+        # Hard-coded Libéri ink is permissible in the *default* edition CSS,
+        # but never in the alternate Android theme mapping.
+        self.assertIsNone(re.search(r"#[0-9a-fA-F]{6}\\b", onboarding))
+        self.assertIn("--lab-setup-rule:var(--lab-ui-highlight)", tokens)
+        for name, body in re.findall(
+            r":root\\[data-pwa-theme=([a-z]+)\\]\\{([^}]*)\\}", tokens, re.S
+        ):
+            colors = dict(re.findall(r"(--lab-ui-[a-z-]+):\\s*(#[0-9a-f]{6})\\s*;", body))
+            if "--lab-ui-ticket-stock" in colors:
+                self.assertGreaterEqual(
+                    contrast(colors["--lab-ui-ticket-stock"], colors["--lab-ui-ticket-ink"]),
+                    4.5, name + " first-run ticket text"
+                )
+
     def test_079_semantic_hierarchy_role_contrast_all_eight_palettes(self):
         """Small accent type, secondary copy and functional borders remain AA."""
         raw=source("android-lab/web/theme-tokens.css")
