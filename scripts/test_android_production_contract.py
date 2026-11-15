@@ -71,6 +71,43 @@ class AndroidProductionContract(unittest.TestCase):
         self.assertNotIn("Share a song link to Lab,", js)
         self.assertNotIn("Lab opens its website.", js)
 
+    def test_rc_embeds_shared_theme_surprise_and_routing_contract(self):
+        """The installable RC must include the same approved mechanics as Lab."""
+        site = APP / "src/main/assets/site"
+        page = (site / "index.html").read_text()
+        theme = (site / "assets/lab-themes.js").read_text()
+        css = (site / "assets/lab-workspace.css").read_text()
+        colors = (site / "assets/lab-theme-tokens.css").read_text()
+        app_js = (site / "assets/app.js").read_text()
+        native = (LAB / "src/main/java/work/samelling/hipstergo/lab/LabActivity.java").read_text()
+
+        # ElectricStars is present, but legitimately locked until the native draw.
+        self.assertIn('data-lab-theme="electricstars"', page)
+        self.assertIn("function electricStarsUnlocked()", theme)
+        self.assertIn("if(next==='electricstars'&&!electricStarsUnlocked())return false;", theme)
+        self.assertIn('surpriseUnlocked()', native)
+        self.assertIn('rollSurprise()', native)
+        self.assertIn("function labPrepareSurprise()", app_js)
+        self.assertIn("window.HipsterLab.rollSurprise()", app_js)
+        self.assertIn("--lab-mood-neutral-paper:#be74cd;", colors)
+        self.assertIn("--lab-mood-neutral-ink:#372b68;", colors)
+
+        # The RC and Lab use the same route ownership and curve-mood policy.
+        self.assertIn('function curveOwnsMoods()', app_js)
+        self.assertIn('if(curveOwnsMoods())mood="go";', app_js)
+        prompt_export = app_js.split("function goPrompt(", 1)[1].split("const crateRegions", 1)[0]
+        self.assertNotIn("Discovery route:", prompt_export)
+
+        # Saving a local appearance preference is not a permanent privacy banner.
+        self.assertIn('id="labThemeStatus" class="lab-theme-status" role="status" aria-live="polite"></p>', page)
+        self.assertNotIn("Saved separately on this device.", page)
+        self.assertIn(".lab-theme-status:empty{display:none}", css)
+        self.assertIn("status.textContent='Appearance saved.';", theme)
+        self.assertIn("Device storage unavailable.", theme)
+        self.assertIn("PRIVACY POLICY", page)
+        self.assertIn("java.srcDirs = ['../../android-lab/app/src/main/java']",
+                      (APP / "build.gradle").read_text())
+
     def test_production_widget_picker_label_is_not_lab(self):
         prod = (APP / "build/production-res/values/strings.xml").read_text()
         lab = (LAB / "src/main/res/values/strings.xml").read_text()
