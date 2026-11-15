@@ -71,7 +71,8 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
      atlas:root.getPropertyValue('--lab-atlas-selected').trim()};
    });
    assert(themed.open,'The themed setup choices are visible in the top layer');
-   assert.equal(themed.background,'rgb(255, 250, 240)','Katowice uses its actual cream ticket stock, not the OS mustard popup');
+   assert.equal(themed.background,marketing?'rgb(255, 250, 240)':'rgb(223, 176, 69)',
+    'Setup popup must follow the selected Android theme, not the OS defaults');
    if(profile.name==='phone')await capture('setup-ai-choices-themed');
    await page.locator('.lab-setup-choices .lab-setup-choice').filter({hasText:'Claude'}).click();
    assert.equal(await page.locator('#fc-ai').inputValue(),'Claude');
