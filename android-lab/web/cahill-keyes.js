@@ -282,7 +282,9 @@ function labCahillInit(host,geography,routes,legacy){
   const rect=viewport.getBoundingClientRect();
   if(!rect.width||!rect.height)return reset();
   const dx=Math.max(14,x1-x0),dy=Math.max(14,y1-y0);
-  const s=limit(Math.min(W/(dx*1.28),H/(dy*1.28)),1,5.5);
+  // Auto-fit gives the selected region more geographic context; manual pinch,
+  // wheel and double-tap can still reach the full 5.5x camera zoom.
+  const s=limit(Math.min(W/(dx*1.85),H/(dy*1.85)),1,2.8);
   animateCameraFit(s,(x0+x1)/2,(y0+y1)/2);
  };
  svg.addEventListener('wheel',event=>{
