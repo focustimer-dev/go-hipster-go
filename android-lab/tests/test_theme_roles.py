@@ -327,6 +327,18 @@ class AndroidThemeRoles(unittest.TestCase):
         self.assertNotIn("moods-selected-ink-v2.webp",css)
         self.assertNotIn("mask-image:url('/editions/gig-poster/assets/moods-neutral-ink-v2.webp')",css)
 
+    def test_katowice_hero_uses_existing_active_vermilion(self):
+        """Katowice's bird/globe registration and GO accents share one ink."""
+        for path in ("android-lab/web/theme-tokens.css", "launcher/assets/pwa-themes.css"):
+            raw = source(path)
+            block = re.search(r":root\[data-pwa-theme=polish\]\{([^}]*)\}", raw, re.S)
+            self.assertIsNotNone(block, path)
+            inks = dict(re.findall(r"(--lab-[a-z-]+):\s*(#[0-9a-f]{6})\s*;", block.group(1)))
+            self.assertEqual(inks["--lab-print-stamp"], "#c13b28", path)
+            self.assertEqual(inks["--lab-print-stamp"], inks["--lab-print-active-ink"], path)
+        self.assertIn("--poster-bird-ink:var(--lab-print-stamp)",
+                      source("android-lab/web/theme-print.css"))
+
     def test_every_print_theme_has_an_independent_accessible_ink_pair(self):
         """Future print themes may choose colors, not skip semantic roles."""
         raw=source("android-lab/web/theme-tokens.css")
