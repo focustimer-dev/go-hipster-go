@@ -326,7 +326,7 @@ function setTheme(next,persist){
  syncNativeDialogPalette();
  if(persist){
   const status=document.getElementById('labThemeStatus');
-  if(status&&!status.textContent.includes('unavailable'))status.textContent='Appearance saved on this device.';
+  if(status&&!status.textContent.includes('unavailable'))status.textContent='Appearance saved.';
  }
  return true;
 }
