@@ -386,8 +386,7 @@ function atlasSelectedView(shapes,selected){
 function atlasRelaxSelectedView(view){
  if(!view)return null;
  const [x,y,w,h]=atlasNormalize(view);
- const keyes=body.classList.contains('lab-workspace')&&doc.querySelector('#labAtlasCahill:not([hidden])');
- const factor=keyes?2.15:body.classList.contains('lab-workspace')?1.55:1.18;
+ const factor=body.classList.contains('lab-workspace')?1.55:1.18;
  const width=Math.min(720,w*factor),height=width*372/720;
  return [x+(w-width)/2,y+(h-height)/2,width,height];
 }
