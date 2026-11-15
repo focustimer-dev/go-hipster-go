@@ -47,16 +47,29 @@ html[data-chart-theme] .handle:first-child::after,html[data-chart-theme] .handle
 html[data-chart-theme] #curve button:focus-visible{outline-color:var(--focus-ink);box-shadow:0 0 0 6px var(--focus-paper)}
 /* The in-curve marker shares the approved Desire v4 alpha artwork with
    the Jukebox, rather than the older eight-face contact sheet. */
+/* The iframe has sandbox="allow-scripts": opaque origin, no external CSS
+   mask loads. The parent sends a downscaled alpha image as a data URI.
+   A readable initial letter remains if the image cannot be delivered. */
 .mood-track .pin .face.desire-v4{
  width:23px;height:23px;aspect-ratio:1;flex:0 0 23px;
- background:var(--portrait-strip-ink,var(--ink))!important;
- background-image:none!important;
- -webkit-mask-image:url('/editions/gig-poster/assets/desire-neutral-v4.webp');
- mask-image:url('/editions/gig-poster/assets/desire-neutral-v4.webp');
+ display:grid;place-items:center;
+ background:transparent!important;background-image:none!important;
+ -webkit-mask-image:none;mask-image:none;
+ color:var(--portrait-strip-ink,var(--ink));
+}
+.mood-track .pin .face.desire-v4::before{
+ content:'D';font:700 15px/23px Arial,sans-serif;
+}
+html[data-desire-portrait-ready] .mood-track .pin .face.desire-v4{
+ display:block;background:var(--portrait-strip-ink,var(--ink))!important;
+ -webkit-mask-image:var(--desire-curve-mask);
+ mask-image:var(--desire-curve-mask);
  -webkit-mask-position:center;mask-position:center;
  -webkit-mask-size:contain;mask-size:contain;
  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+ mask-mode:alpha;
 }
+html[data-desire-portrait-ready] .mood-track .pin .face.desire-v4::before{content:none}
 .mood-track .pin{min-width:0;width:auto;max-width:100%;height:34px;align-items:center}
 .mood-track .pin .face{width:23px;height:23px;flex:0 0 23px;aspect-ratio:1}
 </style>
@@ -258,6 +271,14 @@ const moodNames={happy:"Happy",angry:"Angry",sad:"Sad",desire:"Desire",weird:"We
 window.addEventListener("message",event=>{
  if(event.source!==parent)return;
  const data=event.data;
+ if(data?.type==="ghg-chart-desire-portrait"){
+   const image=data.image;
+   if(typeof image!=="string"||image.length>150000||!/^data:image\\/png;base64,[A-Za-z0-9+/=]+$/.test(image))return;
+   const root=document.documentElement;
+   root.style.setProperty("--desire-curve-mask",'url("'+image+'")');
+   root.dataset.desirePortraitReady="true";
+   return;
+ }
  if(data?.type==="ghg-chart-theme"){
    const root=document.documentElement;
    for(const token of ["--paper","--ink","--line","--focus-ink","--focus-paper","--atlas-selected"]){
