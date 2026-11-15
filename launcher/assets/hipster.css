@@ -849,7 +849,7 @@ body.gig-poster .mood-mode-hint[data-mode=drag] .mood-mode-icon{display:block}
 body.gig-poster .mood-grid .mood-drag-grip{display:none;pointer-events:none}
 body.gig-poster .mood-grid[data-mood-interaction=drag] .mood{position:relative;cursor:grab}
 body.gig-poster .mood-grid[data-mood-interaction=drag] .mood:active{cursor:grabbing}
-body.gig-poster .mood-grid[data-mood-interaction=drag] .mood-drag-grip{display:grid;place-items:center;position:absolute;top:3px;right:3px;width:17px;height:19px;border:1px solid currentColor;background:var(--paper);color:var(--ink)}
+body.gig-poster .mood-grid[data-mood-interaction=drag] .mood-drag-grip{display:grid;place-items:center;position:absolute;top:3px;right:3px;width:17px;height:19px;border:0;background:transparent;color:var(--ink);filter:drop-shadow(0 1px 0 var(--paper))}
 body.gig-poster .mood-grid .mood-drag-grip svg{display:block;width:12px;height:12px}
 @media(forced-colors:active){body.gig-poster .mood-grid[data-mood-interaction=drag] .mood-drag-grip{background:Canvas;color:CanvasText}}
 
