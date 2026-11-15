@@ -527,16 +527,15 @@ function updateMoodInteractionCues(){
  if(!grid||!hint)return;
  const drag=curvePortraitModeActive;
  grid.dataset.moodInteraction=drag?"drag":"tap";
- grid.setAttribute("aria-label",drag?"Mood stamps — drag onto the curve":"Mood presets — tap to choose up to two");
+ grid.setAttribute("aria-label",drag?"Mood portraits — tap up to two, then drag onto the curve":"Mood presets — tap to choose up to two");
  hint.dataset.mode=drag?"drag":"tap";
  const copy=hint.querySelector(".mood-mode-copy");
  if(copy)copy.textContent=!drag?"Tap up to two moods.":
-  curveOwnsMoods()?"Drag a face onto the curve to change the mood along it.":
-  moodParts(mood).length?"Drag a face onto the curve. Your selected moods apply until you add one.":
-  "Drag a face onto the curve to set a mood.";
+  curveOwnsMoods()?"Tap up to two moods, then drag onto the curve. Curve pins control the mix.":
+  "Tap up to two moods, then drag onto the curve to place them.";
  for(const button of grid.querySelectorAll("[data-mood]")){
   const name=button.querySelector(".word")?.textContent?.trim()||button.dataset.mood;
-  button.title=drag?"Drag "+name+" onto the curve":"Tap to choose "+name;
+  button.title=drag?"Tap to select "+name+"; drag onto the curve":"Tap to choose "+name;
  }
 }
 
@@ -595,7 +594,7 @@ function mountMixCurveTrial(){
   const grip=doc.createElement("span");
   grip.className="mood-drag-grip";
   grip.setAttribute("aria-hidden","true");
-  grip.innerHTML='<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><circle cx="6" cy="4" r="1.6"/><circle cx="14" cy="4" r="1.6"/><circle cx="6" cy="10" r="1.6"/><circle cx="14" cy="10" r="1.6"/><circle cx="6" cy="16" r="1.6"/><circle cx="14" cy="16" r="1.6"/></svg>';
+  grip.innerHTML='<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><circle cx="10" cy="4" r="1.6"/><circle cx="10" cy="10" r="1.6"/><circle cx="10" cy="16" r="1.6"/></svg>';
   button.append(grip);
  }
 
@@ -850,7 +849,10 @@ function renderLaunch(regionsOnly=false){
  const tempoSummary=doc.getElementById("tempoSummary");if(tempoSummary)tempoSummary.textContent=tempo?tempoNames[tempo]:"Any tempo";
  const tempoHelp=doc.getElementById("tempoHelp");if(tempoHelp)tempoHelp.textContent=tempo?tempoNames[tempo]+" pace. Choose Any to clear it.":"Any pace. The clerk can cope. Move the slider to choose.";
  if(anyTempo)anyTempo.setAttribute("aria-pressed",String(!tempo));
- doc.querySelectorAll("[data-mood]").forEach(b=>b.setAttribute("aria-pressed",String(!curveOwnsMoods()&&moodParts(mood).includes(b.dataset.mood))));
+ // Keep the tap-selected portraits visible as the next drag stamp even when
+ // existing curve pins own the exported playlist moods.
+ doc.querySelectorAll("[data-mood]").forEach(b=>b.setAttribute("aria-pressed",String(moodParts(mood).includes(b.dataset.mood))));
+ updateMoodInteractionCues();
  }
  const e={prompt:doc.getElementById("prompt"),mood:doc.getElementById("moodName"),code:doc.getElementById("receiptCode"),open:doc.getElementById("openAi"),browser:doc.getElementById("browserAi")};
  if(!e.prompt)return;
@@ -1040,7 +1042,8 @@ async function copyGo(){
  else{const details=doc.getElementById("promptDetails");if(details)details.open=true;status("Clipboard blocked. Copy the full prompt in the receipt below, then use its manual Open link.")}
 }
 doc.querySelectorAll("[data-mood]").forEach(b=>b.addEventListener("click",()=>{
- if(curvePortraitModeActive){status("Drag a portrait onto the curve to place it. For tap selection, switch to Set the tempo.");return}
+ // Taps always stage up to two moods; dragging places that selection on the
+ // curve. Once pinned, the curve still takes precedence in exported prompts.
  const selected=moodParts(mood),id=b.dataset.mood;
  if(selected.includes(id))selected.splice(selected.indexOf(id),1);
  else{if(selected.length===2)selected.pop();selected.push(id)}
