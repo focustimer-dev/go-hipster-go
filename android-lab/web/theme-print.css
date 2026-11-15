@@ -280,3 +280,21 @@
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .go-options .go-extras :is(#includeCover,#goHard) .option-label{
  color:var(--lab-ui-on-action);
 }
+
+/* ElectricStars is a dark stock, not the previous print theme's cream ticket.
+   Keep the semantic Petrol Navy / Neon Lilac pairing on first-run setup and
+   unselected moods, including theme switches that inherit stale paper values. */
+:root[data-pwa-theme=electricstars][data-ghg-theme-profile=print] body.gig-poster.lab-workspace #firstCrateSetup .ticket{
+ --ticket-stock:var(--lab-ui-action);
+ --cream:var(--lab-ui-action);
+ --paper:var(--lab-ui-action);
+ background:var(--lab-ui-action);
+ color:var(--lab-ui-on-action);
+}
+:root[data-pwa-theme=electricstars][data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[aria-pressed=false]{
+ background:var(--lab-ui-action);
+ color:var(--lab-ui-on-action);
+}
+:root[data-pwa-theme=electricstars][data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood[aria-pressed=false] .word{
+ color:var(--lab-ui-on-action);
+}
