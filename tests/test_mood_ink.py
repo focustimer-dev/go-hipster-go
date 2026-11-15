@@ -57,11 +57,16 @@ class MoodInkTests(unittest.TestCase):
         self.assertIn('Desire v2',svg)
         self.assertNotIn('Source SHA256',svg,'Old eye-coordinate mask must not survive')
         self.assertIn('viewBox="0 0 1254 1254"',svg)
-        self.assertIn('id="heart"',svg)
+        self.assertEqual(svg.count('<path '),4)
         css=(ART.parent/'mood-portraits.css').read_text()
         for state in ('neutral','selected'):
             self.assertIn(f'desire-{state}-v2.webp',css)
             path=ART/f'desire-{state}-v2.webp'
+            expected = {
+                'neutral': '16f4157fe6ca5c5eb57e57a63a2e5c2d832628fc32895f1308f6a8f16d9b90b0',
+                'selected': '3a4b888dca9f337f9a43460a5dd9c24c9502f4e97c35d7a94074a348f49009e8'
+            }
+            self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(),expected[state])
             with Image.open(path) as image:
                 self.assertEqual(image.size,(1254,1254))
                 rgba=image.convert('RGBA')
