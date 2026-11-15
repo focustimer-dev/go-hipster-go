@@ -1,6 +1,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+global.Event=class Event{};
 let draws=0,base='go';
-const c=vm.createContext({window:{HipsterLab:{rollSurprise:()=>`App surprise: v1/${++draws}/1000.`}},goPrompt:()=>base,ai:'chatgpt',service:'spotify',mood:'go',copiedPrompt:null});
+const c=vm.createContext({Event,window:{dispatchEvent(){},HipsterLab:{rollSurprise:()=>`App surprise: v1/${++draws}/1000.`}},goPrompt:()=>base,ai:'chatgpt',service:'spotify',mood:'go',copiedPrompt:null});
 vm.runInContext(fs.readFileSync('android-lab/web/surprise.js','utf8'),c);
 const run=()=>vm.runInContext('labPrepareSurprise();labSurpriseLine',c);
 assert.match(run(),/v1\/1\//);assert.match(run(),/v1\/1\//);assert.equal(draws,1);
