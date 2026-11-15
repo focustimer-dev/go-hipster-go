@@ -150,6 +150,29 @@ function setupPrompt(ai,service){
 }
 
 const $=id=>document.getElementById(id),example='A rainy train ride after midnight';let selected=new Set(),run=0,running=false,restoreIdea=null;
+let manualAi='chatgpt',manualService='spotify';
+try{const a=localStorage.getItem('hmg-ai'),s=localStorage.getItem('hmg-service');
+ if(Object.prototype.hasOwnProperty.call(aiNames,a))manualAi=a;
+ manualService=Object.prototype.hasOwnProperty.call(serviceNames,s)?s:(manualAi==='gemini'?'youtube':'spotify');
+}catch(_){}
+const manualAiName=()=>aiNames[manualAi]||'your AI';
+const manualServiceName=()=>serviceNames[manualService]||'your music service';
+const manualSetupHash=()=>({chatgpt:'#setupChat',gemini:'#setup',claude:'#claude',other:'#other'})[manualAi]||'#manual';
+const manualSetupService=a=>manualAi===a?manualService:(a==='gemini'?'youtube':'spotify');
+function syncManualPair(){
+ const a=manualAiName(),s=manualServiceName(),g=serviceNames[manualSetupService('gemini')],c=serviceNames[manualSetupService('chatgpt')];
+ $('introSetupLink').href=manualSetupHash();$('overviewSetupLink').href=manualSetupHash();
+ $('sendServiceLabel').textContent='In '+a;$('sendAiName').textContent=a;$('sendCopyAiName').textContent=a;
+ $('requestServiceName').textContent=s;$('sendInstructionTitle').textContent='In '+a+': Review → Send';
+ $('keepAiName').textContent=a;$('keepAiChat').textContent='Same '+a+' conversation';
+ $('savedExampleText').textContent='If '+a+' confirms the playlist was saved, check '+s+' for it. Otherwise follow the available save or copy steps.';
+ $('artServiceNote').textContent='Edit the cover in '+s+' if your account and the service support it; otherwise keep the image separately.';
+ $('artYoutubeNote').hidden=manualService!=='youtube';
+ for(const id of ['geminiCurrentService','geminiChooseService','geminiReceiptService','geminiConfirmService','geminiToolsService'])$(id).textContent=g;
+ $('pickYoutube').textContent=g;
+ for(const id of ['chatChooseService','chatReceiptService','chatConfirmService','chatToolsService','chatConnectService'])$(id).textContent=c;
+ $('pickYoutubeChat').textContent=c;
+}
 const inspiration=()=>$('ideaInput').value.trim()||example;
 function update(){ $('requestIdea').textContent='“'+inspiration()+'”';$('requestMood').textContent=selected.size?'Moods: '+[...selected].join(' + '):'No extra moods. Let the idea lead.';}
 function useIdea(){if(!$('ideaInput').value.trim()){$('ideaStatus').textContent='Add a few words first, or press Watch the example.';$('ideaInput').focus();return false}$('ideaStatus').textContent='Inspiration ready. Add a mood, or press GO.';update();return true}
