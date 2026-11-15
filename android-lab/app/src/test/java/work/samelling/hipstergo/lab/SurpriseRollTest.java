@@ -11,7 +11,7 @@ public class SurpriseRollTest {
                 @Override public int nextInt(int bound){assertEquals(1000,bound);calls[0]++;return fixed;}
             });
             assertEquals(value+1,result);assertEquals(1,calls[0]);
-            assertEquals("App surprise: v1/"+result+"/1000.",SurpriseRoll.line(result));
+            assertEquals("Protocol: "+result,SurpriseRoll.line(result));
         }
     }
     @Test(expected=IllegalArgumentException.class) public void rejectsInvalidRoll(){SurpriseRoll.line(0);}
