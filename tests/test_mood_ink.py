@@ -52,7 +52,12 @@ class MoodInkTests(unittest.TestCase):
         self.assertNotIn('background:rgb(214 75 48 / 22%)',css)
 
     def test_desire_v2_expression_and_heart_mask_are_independent(self):
-        from PIL import Image
+        # CI's skill-validation Python environment intentionally has no Pillow.
+        # The pinned, exact lossless files are alpha-verified in Android Lab.
+        try:
+            from PIL import Image
+        except ImportError:
+            Image = None
         svg=(ART/'desire-heart-ink-mask.svg').read_text()
         self.assertIn('Desire v2',svg)
         self.assertNotIn('Source SHA256',svg,'Old eye-coordinate mask must not survive')
@@ -67,12 +72,17 @@ class MoodInkTests(unittest.TestCase):
                 'selected': '3a4b888dca9f337f9a43460a5dd9c24c9502f4e97c35d7a94074a348f49009e8'
             }
             self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(),expected[state])
-            with Image.open(path) as image:
-                self.assertEqual(image.size,(1254,1254))
-                rgba=image.convert('RGBA')
-                self.assertEqual(rgba.getchannel('A').getextrema(),(0,255))
-                self.assertLess(rgba.getchannel('A').getbbox()[1],25)
-                self.assertGreater(rgba.getchannel('A').getbbox()[3],1200)
+            raw=path.read_bytes()
+            self.assertEqual(raw[:4],b'RIFF')
+            self.assertEqual(raw[8:12],b'WEBP')
+            self.assertIn(b'VP8L',raw[:32],'Ink alpha plates must stay lossless')
+            if Image is not None:
+                with Image.open(path) as image:
+                    self.assertEqual(image.size,(1254,1254))
+                    rgba=image.convert('RGBA')
+                    self.assertEqual(rgba.getchannel('A').getextrema(),(0,255))
+                    self.assertLess(rgba.getchannel('A').getbbox()[1],25)
+                    self.assertGreater(rgba.getchannel('A').getbbox()[3],1200)
         self.assertIn('filter:url(#alphaInk)',css)
         self.assertIn('background:var(--funk-selected-paper)',css)
         page=(ROOT/'launcher/editions/gig-poster/index.html').read_text()
