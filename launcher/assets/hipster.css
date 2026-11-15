@@ -840,8 +840,8 @@ body[data-page=launch] .onboarding-ticket[hidden]{display:none!important}
 .tempo-mode-switch button{min-height:44px;padding:4px 0;border:0;background:none;color:var(--ink);font:inherit;font-weight:800;text-align:left}
 .tempo-mode-switch button[aria-pressed=true]{text-decoration:underline;text-decoration-color:var(--atlas-accent,var(--ink));text-decoration-thickness:2px;text-underline-offset:5px}
 
-/* Mode-aware mood affordances: the same portraits are tap choices in Simple,
-   but transferable stamps in Curve. Reuse the active theme's ink and stock. */
+/* Mode-aware mood affordances: tap up to two portraits in either mode;
+   in Curve, the selection can also be dragged as a stamp. Keep theme ink. */
 body.gig-poster .mood-mode-hint{display:flex;align-items:center;gap:7px;min-height:22px;margin:2px 0 8px;color:var(--ink);font:700 .8125rem/1.35 Arial,Helvetica,sans-serif;letter-spacing:.005em}
 body.gig-poster .mood-mode-hint .mood-mode-icon{display:none;width:20px;height:20px;flex:0 0 20px}
 body.gig-poster .mood-mode-hint[data-mode=drag]{padding-bottom:6px;border-bottom:1px dashed currentColor}
@@ -849,7 +849,7 @@ body.gig-poster .mood-mode-hint[data-mode=drag] .mood-mode-icon{display:block}
 body.gig-poster .mood-grid .mood-drag-grip{display:none;pointer-events:none}
 body.gig-poster .mood-grid[data-mood-interaction=drag] .mood{position:relative;cursor:grab}
 body.gig-poster .mood-grid[data-mood-interaction=drag] .mood:active{cursor:grabbing}
-body.gig-poster .mood-grid[data-mood-interaction=drag] .mood-drag-grip{display:grid;place-items:center;position:absolute;top:3px;right:3px;width:21px;height:21px;border:1px solid currentColor;background:var(--paper);color:var(--ink)}
-body.gig-poster .mood-grid .mood-drag-grip svg{display:block;width:13px;height:13px}
+body.gig-poster .mood-grid[data-mood-interaction=drag] .mood-drag-grip{display:grid;place-items:center;position:absolute;top:3px;right:3px;width:17px;height:19px;border:1px solid currentColor;background:var(--paper);color:var(--ink)}
+body.gig-poster .mood-grid .mood-drag-grip svg{display:block;width:12px;height:12px}
 @media(forced-colors:active){body.gig-poster .mood-grid[data-mood-interaction=drag] .mood-drag-grip{background:Canvas;color:CanvasText}}
 
