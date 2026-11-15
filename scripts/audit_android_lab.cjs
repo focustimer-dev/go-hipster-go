@@ -5,7 +5,7 @@ const fs=require('node:fs'),path=require('node:path'),http=require('node:http');
 const assert=require('node:assert/strict');
 const root=path.resolve(__dirname,'../android-lab/app/src/main/assets/site');
 const marketing=true;
-const output=path.resolve(__dirname,marketing?'../android-lab/build/marketing-captures':'../android-lab/build/workflow-audit');
+const output=path.resolve(__dirname,marketing?'../android-lab/build/workflow-audit':'../android-lab/build/workflow-audit');
 const types={'.html':'text/html','.js':'application/javascript','.css':'text/css','.svg':'image/svg+xml','.webp':'image/webp','.png':'image/png','.woff':'font/woff'};
 (async()=>{
  fs.mkdirSync(output,{recursive:true});
