@@ -520,6 +520,26 @@ const mixCurveTrialAvailable=body.dataset.page==="launch"&&
  (params.get("mixCurve")==="1"||Boolean(doc.querySelector?.(
    'script[src="/assets/lab-themes.js"],script[src="/assets/pwa-workspace.js"]')));
 let mixCurveTrialCode="";
+let curvePortraitModeActive=false;
+function updateMoodInteractionCues(){
+ const grid=doc.querySelector(".mood-grid");
+ const hint=doc.getElementById("moodModeHint");
+ if(!grid||!hint)return;
+ const drag=curvePortraitModeActive;
+ grid.dataset.moodInteraction=drag?"drag":"tap";
+ grid.setAttribute("aria-label",drag?"Mood stamps — drag onto the curve":"Mood presets — tap to choose up to two");
+ hint.dataset.mode=drag?"drag":"tap";
+ const copy=hint.querySelector(".mood-mode-copy");
+ if(copy)copy.textContent=!drag?"Tap up to two moods.":
+  curveOwnsMoods()?"Drag a face onto the curve to change the mood along it.":
+  moodParts(mood).length?"Drag a face onto the curve. Your selected moods apply until you add one.":
+  "Drag a face onto the curve to set a mood.";
+ for(const button of grid.querySelectorAll("[data-mood]")){
+  const name=button.querySelector(".word")?.textContent?.trim()||button.dataset.mood;
+  button.title=drag?"Drag "+name+" onto the curve":"Tap to choose "+name;
+ }
+}
+
 // Parse every tempo as exactly one track, including adjacent identical digits.
 // Gemini previously miscounted a valid 12-slot compact sequence as 11.
 function mixCurveSlots(code){
@@ -570,6 +590,15 @@ function mountMixCurveTrial(){
  let skipClick=null;
  const portraits=[...doc.querySelectorAll("[data-mood]")];
  const previousTouch=portraits.map(button=>button.style.touchAction);
+ // An unintrusive handle signals that portraits become movable stamps in curve mode.
+ for(const button of portraits){
+  const grip=doc.createElement("span");
+  grip.className="mood-drag-grip";
+  grip.setAttribute("aria-hidden","true");
+  grip.innerHTML='<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><circle cx="6" cy="4" r="1.6"/><circle cx="14" cy="4" r="1.6"/><circle cx="6" cy="10" r="1.6"/><circle cx="14" cy="10" r="1.6"/><circle cx="6" cy="16" r="1.6"/><circle cx="14" cy="16" r="1.6"/></svg>';
+  button.append(grip);
+ }
+
  const dragLabel=doc.createElement("span");
  dragLabel.setAttribute("aria-hidden","true");
  dragLabel.style.cssText="position:fixed;z-index:2147483647;pointer-events:none;padding:4px 8px;background:var(--ink);color:var(--paper);transform:translate(-50%,-125%);white-space:nowrap";
@@ -630,6 +659,7 @@ function mountMixCurveTrial(){
    mixCurveTrialCode=code;
    copiedPrompt=null;
    renderLaunch();
+   updateMoodInteractionCues();
  }
  window.addEventListener("message",event=>{
    if(!frame||event.source!==frame.contentWindow||event.origin!=="null")return;
@@ -647,12 +677,14 @@ function mountMixCurveTrial(){
  function selectCurve(active){
    if(curveActive===active)return;
    curveActive=active;
+   curvePortraitModeActive=active;
    simpleButton.setAttribute("aria-pressed",String(!active));
    curveButton.setAttribute("aria-pressed",String(active));
    tempoControl.style.display=active?"none":tempoDisplay;
    portraits.forEach((button,i)=>{button.style.touchAction=active?"none":previousTouch[i]});
    clearPortraitDrag();
    skipClick=null;
+   updateMoodInteractionCues();
    if(!active){
      if(frame)frame.style.display="none";
      doc.dispatchEvent(new Event("mixcurvegeometrychange"));
@@ -714,6 +746,7 @@ function mountMixCurveTrial(){
  }
  simpleButton.addEventListener("click",()=>selectCurve(false));
  curveButton.addEventListener("click",()=>selectCurve(true));
+ updateMoodInteractionCues();
 }
 // END optional mix-curve trial
 
@@ -1007,7 +1040,7 @@ async function copyGo(){
  else{const details=doc.getElementById("promptDetails");if(details)details.open=true;status("Clipboard blocked. Copy the full prompt in the receipt below, then use its manual Open link.")}
 }
 doc.querySelectorAll("[data-mood]").forEach(b=>b.addEventListener("click",()=>{
- if(curveOwnsMoods()){status("Moods follow the curve. Drag portraits onto it, or switch to Set the tempo.");return}
+ if(curvePortraitModeActive){status("Drag a portrait onto the curve to place it. For tap selection, switch to Set the tempo.");return}
  const selected=moodParts(mood),id=b.dataset.mood;
  if(selected.includes(id))selected.splice(selected.indexOf(id),1);
  else{if(selected.length===2)selected.pop();selected.push(id)}
