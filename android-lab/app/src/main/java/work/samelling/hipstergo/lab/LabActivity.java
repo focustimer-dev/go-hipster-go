@@ -354,11 +354,11 @@ public class LabActivity extends Activity {
     public final class Bridge {
         @JavascriptInterface public String rollSurprise() {
             int roll = SurpriseRoll.draw(new java.security.SecureRandom());
-            if (roll == 1) prefs.edit().putBoolean("underneathElectricStarsUnlocked", true).commit();
+            if (roll == 1) prefs.edit().putBoolean("electricStarsUnlocked", true).commit();
             return SurpriseRoll.line(roll);
         }
         @JavascriptInterface public boolean surpriseUnlocked() {
-            return prefs.getBoolean("underneathElectricStarsUnlocked", false);
+            return prefs.getBoolean("electricStarsUnlocked", false) || prefs.getBoolean("underneathElectricStarsUnlocked", false);
         }
 
         @JavascriptInterface public String state(){return workspaceState();}
