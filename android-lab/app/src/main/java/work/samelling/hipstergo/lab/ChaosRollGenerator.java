@@ -29,9 +29,7 @@ final class ChaosRollGenerator {
                     && !row.optString("label").isEmpty()) regions.add(row.optString("label"));
             }
         }
-        List<String> routes = readStrings(catalog.optJSONArray("routes"));
-        JSONObject sparks = catalog.optJSONObject("sparks");
-        if (moods.size() != 8 || regions.isEmpty() || routes.size() != 24 || sparks == null)
+        if (moods.size() != 8 || regions.isEmpty())
             throw new IllegalArgumentException("Incomplete Chaos Roll catalog");
 
         // Fisher-Yates with the injected random is independently testable.
@@ -42,25 +40,15 @@ final class ChaosRollGenerator {
         regionCount = Math.min(regionCount, regions.size());
         List<String> selectedMoods = moods.subList(0, moodCount);
         List<String> selectedRegions = regions.subList(0, regionCount);
-        String moodLabel = join(selectedMoods, " ");
         boolean hard = random.nextBoolean();
 
         StringBuilder result = new StringBuilder();
-        String command = "go " + moodLabel + (hard ? " hard" : "");
+        String command = "go" + (hard ? " hard" : "");
         if ("other".equals(ai)) result.append("Use Go, Hipster, Go!: ").append(command);
         else result.append("@go-hipster-go @").append(musicName(service, ai))
                    .append(" ").append(command);
         result.append("\n").append(curve(selectedMoods, random))
-              .append("\nRegional exploration: ").append(join(selectedRegions, ", ")).append(".")
-              .append("\nDiscovery route: v").append(catalog.optInt("routeVersion", 1))
-              .append("/").append(routes.get(random.nextInt(routes.size()))).append(".")
-              .append("\nSeed: ")
-              .append(pick(readStrings(sparks.optJSONArray("rhythm")), random)).append(" / ")
-              .append(pick(readStrings(sparks.optJSONArray("texture")), random)).append(" / ");
-        JSONObject tensions = sparks.optJSONObject("tension");
-        List<String> tension = tensions == null ? Collections.<String>emptyList()
-                                              : readStrings(tensions.optJSONArray(selectedMoods.get(0)));
-        result.append(pick(tension, random)).append(".");
+              .append("\nRegional exploration: ").append(join(selectedRegions, ", ")).append(".");
         if (skipRough) result.append("\nRecording preference: Skip rough recordings.");
         if ("other".equals(ai)) result.append("\nService: ").append(musicName(service, ai)).append(".");
         result.append("\nExactly 12 real tracks, no exceptions.");
