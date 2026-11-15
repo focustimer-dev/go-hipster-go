@@ -69,7 +69,14 @@ assert(ratio(composed,plum)>=4.5,'Selected wash and Velvet Plum must meet AA tex
 // Preserve Funk's approved selected composition (gold ink, deep magenta,
 // engraved image and lasers); the generic mood wash must never touch it.
 await page.locator('.mood-grid .mood[data-mood=funky]').evaluate(el=>el.click());
-await page.waitForFunction(()=>document.querySelector('.mood-grid .mood[data-mood=funky]').getAttribute('aria-pressed')==='true');
+// The CSS animates from the neutral Orchid stock to Funk's approved pressing.
+// Wait for the actual painted result, not just the aria state at frame zero.
+await page.waitForFunction(()=>{
+ const el=document.querySelector('.mood-grid .mood[data-mood=funky]');
+ return el?.getAttribute('aria-pressed')==='true'&&
+  getComputedStyle(el).backgroundColor==='rgb(110, 34, 92)'&&
+  getComputedStyle(el.querySelector('.word')).color==='rgb(242, 200, 78)';
+},null,{timeout:5000});
 const funk=await page.evaluate(()=>{
  const el=document.querySelector('.mood-grid .mood[data-mood=funky]');
  const style=getComputedStyle(el);
