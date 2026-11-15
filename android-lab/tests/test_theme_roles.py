@@ -106,7 +106,7 @@ class AndroidThemeRoles(unittest.TestCase):
         pattern=r"\b([a-z]+):Object\.freeze\(\{(.*?)\n \}\)"
         atlas_def=dict(re.findall(pattern,atlas,re.S))
         mood_def=dict(re.findall(pattern,moods,re.S))
-        self.assertEqual(set(atlas_def),{"liberi","bosque","usiku","kingston","detroit","addis","polish","beirut","michoacan"})
+        self.assertEqual(set(atlas_def),{"liberi","bosque","usiku","kingston","detroit","addis","polish","beirut","michoacan","electricstars"})
         self.assertEqual(set(mood_def),set(atlas_def))
         atlas_required={
             "paper","land","ocean","ink","selected","route",
@@ -194,7 +194,7 @@ class AndroidThemeRoles(unittest.TestCase):
             self.assertIn("var("+role,print_css)
         # Every original palette remains defined independently; these
         # component aliases may not smuggle hardcoded Libéri into print skins.
-        for theme in ("bosque","usiku","kingston","detroit","addis","polish","beirut","michoacan"):
+        for theme in ("bosque","usiku","kingston","detroit","addis","polish","beirut","michoacan","electricstars"):
             self.assertIn(":root[data-pwa-theme="+theme+"]",tokens)
         inspiration=css.split("#labAddInspiration {",1)[1].split("/* Three compact projection keys",1)[0]
         # Strip CSS variable fallbacks: an intentional Libéri default is
@@ -259,7 +259,7 @@ class AndroidThemeRoles(unittest.TestCase):
             values=dict(re.findall(r"(--lab-[a-z-]+):\s*(#[0-9a-f]{6})\s*;",body))
             if "--lab-ui-surface" in values:
                 palettes[name]=values
-        self.assertEqual(set(palettes),{"bosque","usiku","kingston","detroit","addis","polish","beirut","michoacan"})
+        self.assertEqual(set(palettes),{"bosque","usiku","kingston","detroit","addis","polish","beirut","michoacan","electricstars"})
         for theme,v in palettes.items():
             paper=v["--lab-ui-surface"]
             ink=v["--lab-ui-ink"]
@@ -282,8 +282,8 @@ class AndroidThemeRoles(unittest.TestCase):
         roles=source("android-lab/web/theme-tokens.css")
         css=source("android-lab/web/theme-print.css")
         bundle=source("scripts/bundle_android_lab.py")
-        self.assertIn("const PILOTS=['kingston','detroit','addis','polish','beirut','michoacan']",js)
-        self.assertIn("THEMES=['liberi','bosque','usiku','kingston','detroit','addis','polish','beirut','michoacan']",js)
+        self.assertIn("const PILOTS=['kingston','detroit','addis','polish','beirut','michoacan','electricstars']",js)
+        self.assertIn("THEMES=['liberi','bosque','usiku','kingston','detroit','addis','polish','beirut','michoacan','electricstars']",js)
         self.assertNotIn("PILOTS.includes(next)&&persist",js)
         self.assertIn("PILOTS.includes(preview)?preview:saved()",js)
         self.assertIn("data-lab-print-style",bundle)
@@ -379,7 +379,7 @@ class AndroidThemeRoles(unittest.TestCase):
         tokens=source("android-lab/web/theme-tokens.css")
         css=source("android-lab/web/theme-print.css")
         manual=source("android-lab/web/manual-guide.html")
-        self.assertIn("const PILOTS=['kingston','detroit','addis','polish','beirut','michoacan']",js)
+        self.assertIn("const PILOTS=['kingston','detroit','addis','polish','beirut','michoacan','electricstars']",js)
         self.assertIn(":root[data-pwa-theme=detroit]",tokens)
         self.assertIn("kingston|detroit|addis|polish|beirut|michoacan",manual)
         self.assertIn('data-lab-theme="detroit"',source("android-lab/web/workspace.html"))
@@ -458,11 +458,11 @@ class AndroidThemeRoles(unittest.TestCase):
         roles=source("android-lab/web/theme-tokens.css")
         html=source("android-lab/web/workspace.html")
         guide=source("android-lab/web/manual-guide.html")
-        for name in ("kingston","detroit","addis","polish","beirut","michoacan"):
+        for name in ("kingston","detroit","addis","polish","beirut","michoacan","electricstars"):
             self.assertIn('data-lab-theme="'+name+'"',html)
             self.assertIn("data-pwa-theme="+name,roles)
         self.assertIn("kingston|detroit|addis|polish|beirut|michoacan",guide)
-        self.assertIn("const PILOTS=['kingston','detroit','addis','polish','beirut','michoacan']",js)
+        self.assertIn("const PILOTS=['kingston','detroit','addis','polish','beirut','michoacan','electricstars']",js)
 
     def test_print_tempo_thumb_consumes_only_active_ink(self):
         css=source("android-lab/web/theme-print.css")
