@@ -98,7 +98,7 @@ class LabSnapshotTests(unittest.TestCase):
             stripped=stripped.replace('atlas-engraved-details.webp','atlas-engraved-details.png')
             self.assertEqual(stripped,(ROOT/'launcher/editions/gig-poster/index.html').read_text())
             from PIL import Image
-            for name in ('desire-neutral-v1.webp','desire-selected-v1.webp',
+            for name in ('desire-neutral-v2.webp','desire-selected-v2.webp',
                          'triumph-neutral-v1.webp','triumph-selected-v1.webp'):
                 original=ROOT/'launcher/editions/gig-poster/assets'/name
                 packaged=dest/'editions/gig-poster/assets'/name
