@@ -24,6 +24,20 @@ class EngravedEditionChecks(unittest.TestCase):
         self.assertIn('id="crateAtlasMap"',index)
         self.assertIn('id="atlasHome"',index)
 
+    def test_android_polish_haptics_and_curved_desire_portrait(self):
+        script=(ROOT/"launcher/assets/app.js").read_text()
+        curve=(ROOT/"launcher/assets/mix-curve-trial.html").read_text()
+        native=(ROOT/"android-lab/app/src/main/java/work/samelling/hipstergo/lab/LabActivity.java").read_text()
+        workspace=(ROOT/"android-lab/web/workspace.js").read_text()
+        self.assertIn('changed.forEach((axis,i)=>setTimeout(()=>globalThis.HipsterLab?.haptic?.("tick"),i*110))',script)
+        self.assertIn('globalThis.HipsterLab?.haptic?.("click");',script)
+        self.assertIn("face.classList.add('desire-v4')",curve)
+        self.assertIn("/editions/gig-poster/assets/desire-neutral-v4.webp",curve)
+        self.assertIn('prefs.getString("mode","share")',native)
+        self.assertIn("state.mode='share'",workspace)
+        self.assertIn("panel.className='lab-decheese'",workspace)
+        self.assertIn("nav.className='lab-footer-links'",workspace)
+
     def test_atlas_secrets_are_zoom_gated_and_route_picks_replace_regions(self):
         script=(ROOT/"launcher/assets/app.js").read_text()
         css=(BASE/"edition.css").read_text()
@@ -127,7 +141,8 @@ class EngravedEditionChecks(unittest.TestCase):
         # Automatic framing backs away from small selected territories.
         # Continent focus, touch zoom/pan and Antarctica keep their original paths.
         self.assertIn('function atlasRelaxSelectedView(view){',script)
-        self.assertIn('const width=Math.min(720,w*1.18),height=width*372/720;',script)
+        self.assertIn("const factor=body.classList.contains('lab-workspace')?1.55:1.18;",script)
+        self.assertIn('const width=Math.min(720,w*factor),height=width*372/720;',script)
         self.assertIn('return [x+(w-width)/2,y+(h-height)/2,width,height];',script)
         self.assertIn('const antarcticaOnly=crateSelected.size===1&&crateSelected.has("antarctica")',script)
         self.assertIn('antarcticaOnly?atlasRobinsonViews.antarctica:crateSelected.size?atlasRelaxSelectedView(atlasSelectedView(atlasRegionShapes,crateSelected)):null',script)
