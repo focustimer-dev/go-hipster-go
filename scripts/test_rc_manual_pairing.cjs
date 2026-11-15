@@ -14,14 +14,15 @@ const root = path.resolve(__dirname, '../android-lab/app/src/main/assets/site');
     catch (_) { res.statusCode = 404; res.end(); }
   });
   await new Promise(resolve => server.listen(0, resolve));
-  const browser = await chromium.launch({
+  let browser;
+  try {
+    browser = await chromium.launch({
     ...(process.env.LAB_CHROMIUM ? { executablePath: process.env.LAB_CHROMIUM } : {}),
     args: ['--no-sandbox', '--use-angle=swiftshader', '--enable-unsafe-swiftshader']
   });
   const page = await browser.newPage({ viewport: { width: 390, height: 800 } });
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
-  try {
     await page.goto('http://localhost:' + server.address().port + '/index.html?ai=chatgpt&service=spotify');
     await page.locator('[data-lab-tab="manual"]').click();
     const guide = page.frameLocator('#labManualFrame');
@@ -65,7 +66,7 @@ const root = path.resolve(__dirname, '../android-lab/app/src/main/assets/site');
     assert.deepEqual(errors, [], 'Manual has no browser runtime errors');
     console.log('PASS: Manual routing, chosen AI/service across four AI providers, Apple Music setup copy, guide picker.');
   } finally {
-    await browser.close();
+    if (browser) await browser.close();
     server.close();
   }
 })().catch(error => { console.error(error); process.exitCode = 1; });
