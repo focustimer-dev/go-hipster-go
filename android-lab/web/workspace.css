@@ -1182,7 +1182,7 @@ body.gig-poster.lab-workspace #labSkillNotice button{
    All emphasis comes from existing semantic theme ink roles, never a new
    hard-coded accent or an extra elevated card. */
 body.gig-poster.lab-workspace[data-page=launch] .poster-go-trail-star{
- fill:var(--lab-print-stamp,var(--lab-ui-trail-mark-ink,var(--lab-ui-ink)));
+ fill:var(--lab-atlas-selected,var(--lab-ui-highlight,var(--lab-ui-trail-mark-ink)));
  width:clamp(20px,3.5cqw,29px);height:clamp(20px,3.5cqw,29px);
 }
 body.gig-poster.lab-workspace[data-page=launch] .poster-go-trail-mark{
