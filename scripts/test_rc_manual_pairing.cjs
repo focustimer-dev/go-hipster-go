@@ -38,7 +38,6 @@ const root = path.resolve(__dirname, '../android-lab/app/src/main/assets/site');
       assert.equal(await guide.locator('#sendCopyAiName').textContent(), aiName);
       assert.equal(await guide.locator('#keepAiName').textContent(), aiName);
       assert.equal(await guide.locator('#requestServiceName').textContent(), serviceName);
-      await guide.locator('a[href="#surprise"].page-nav-link-placeholder').count(); // keep the route inert
       await page.evaluate(() => {
         const frame = document.getElementById('labManualFrame');
         if (!frame || !frame.contentWindow) throw Error('Manual frame missing');
