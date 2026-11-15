@@ -77,6 +77,11 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    await page.locator('#firstCrateSetup [data-action="ready"]').click();
    assert(!await page.locator('#fc-ticket').isVisible(),'Completed setup stays hidden');
    await capture('jukebox');
+   if(marketing && profile.name==='phone'){
+    // Focused crops from the packaged UI, not edited mockups.
+    await page.locator('.poster-hero').screenshot({path:path.join(output,'phone-hero-plate.png'),animations:'disabled'});
+    await page.locator('.mood-grid').screenshot({path:path.join(output,'phone-moods-neutral.png'),animations:'disabled'});
+   }
    await page.locator('[data-lab-tab="crate"]').click();
    await page.evaluate(()=>{auditReference='Harlem Prom Night 1986';window.HipsterLabRefresh()});
    assert(await page.locator('#labJukebox').isVisible(),'Accepted inspiration returns to the shaping workspace');
@@ -88,6 +93,10 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    assert.equal(await page.evaluate(()=>document.activeElement===document.querySelector('[data-mood]')),true);
    await capture('inspiration-music-choices');
    await page.locator('[data-mood="desire"]').click();await page.locator('[data-mood="weird"]').click();
+   if(marketing && profile.name==='phone'){
+    // Selected Desire v4 cropped above the tempo controls.
+    await page.locator('.mood-grid').screenshot({path:path.join(output,'phone-moods-desire-selected.png'),animations:'disabled'});
+   }
    await page.locator('#goButton').click();
    await page.waitForFunction(()=>auditCalls.some(c=>c[0]==='go'));
    assert.equal(await page.evaluate(()=>auditCalls.filter(c=>c[0]==='copy').at(-1)[1]===auditCalls.filter(c=>c[0]==='go').at(-1)[2]),true,'Exact prompt reaches native handoff');
