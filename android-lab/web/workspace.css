@@ -1151,7 +1151,11 @@ body.gig-poster.lab-workspace #labSkillNotice button{
  color:var(--lab-setup-action-ink);
 }
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
- body.gig-poster.lab-workspace #firstCrateSetup :is(.ticket-step,.services label>span,.install-steps>li::marker){
+ body.gig-poster.lab-workspace #firstCrateSetup :is(.ticket-step,.services label>span){
+ color:var(--lab-setup-ink);
+}
+:root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
+ body.gig-poster.lab-workspace #firstCrateSetup .install-steps>li::marker{
  color:var(--lab-setup-ink);
 }
 :root:is([data-pwa-theme=bosque],[data-pwa-theme=usiku],[data-ghg-theme-profile=print])
