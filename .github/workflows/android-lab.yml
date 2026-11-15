@@ -15,6 +15,7 @@ on:
       - 'scripts/test_final_five_contract.cjs'
       - 'scripts/test_lab_discovery_routes.cjs'
       - 'scripts/test_mood_ink.cjs'
+      - 'scripts/test_curve_mood_affordance.cjs'
       - 'launcher/**'
       - 'scripts/atlas_navigation.py'
       - 'scripts/robinson_atlas.py'
@@ -82,6 +83,7 @@ jobs:
         run: timeout --signal=TERM --kill-after=10s 100s node scripts/test_final_five_contract.cjs
       - run: node scripts/test_cahill_region_fit.cjs
       - run: node scripts/test_electricstars.cjs
+      - run: node scripts/test_curve_mood_affordance.cjs
       - name: Android Lab workspace and native handoff smoke
         run: node scripts/test_android_lab.cjs
       - run: node scripts/test_lab_tutorial.cjs
@@ -92,6 +94,7 @@ jobs:
           path: |
             android-lab/app/build/outputs/apk/release/app-release-unsigned.apk
             android-lab/build/electricstars-review/*.png
+            android-lab/build/curve-mood-review.png
             android-lab/build/switch-review/*.png
             android-lab/build/motion-review/*.png
           if-no-files-found: error
