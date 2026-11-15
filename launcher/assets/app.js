@@ -669,7 +669,34 @@ function mountMixCurveTrial(){
        const colors=Object.fromEntries(tokens.map(token=>[token,style.getPropertyValue(token).trim()]));
        frame.contentWindow?.postMessage({type:"ghg-chart-theme",colors},"*");
      };
-     frame.addEventListener("load",sendChartTheme);
+     // The curve iframe deliberately has an opaque sandbox origin. It cannot
+     // fetch or CSS-mask a same-host image. Resolve the approved v4 alpha plate
+     // here, where it is same-origin, and send a small inline thumbnail across.
+     // Retaining allow-scripts WITHOUT allow-same-origin preserves isolation.
+     let desireCurveArt=null;
+     const desireCurveImage=new Promise(resolve=>{
+       const img=new Image();
+       img.onload=()=>{
+         try{
+           const canvas=doc.createElement("canvas");
+           canvas.width=128;canvas.height=128;
+           const ctx=canvas.getContext("2d");
+           if(!ctx)return resolve(null);
+           ctx.drawImage(img,0,0,128,128);
+           resolve(canvas.toDataURL("image/png"));
+         }catch(e){resolve(null)}
+       };
+       img.onerror=()=>resolve(null);
+       img.src="/editions/gig-poster/assets/desire-neutral-v4.webp";
+     });
+     desireCurveImage.then(data=>{
+       desireCurveArt=data;
+       if(data&&frame?.contentWindow)frame.contentWindow.postMessage({type:"ghg-chart-desire-portrait",image:data},"*");
+     });
+     frame.addEventListener("load",()=>{
+       sendChartTheme();
+       if(desireCurveArt)frame.contentWindow?.postMessage({type:"ghg-chart-desire-portrait",image:desireCurveArt},"*");
+     });
      const themeObserver=new MutationObserver(sendChartTheme);
      for(const element of [doc.documentElement,body]){
        themeObserver.observe(element,{attributes:true});
