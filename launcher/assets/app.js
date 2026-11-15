@@ -152,7 +152,10 @@ function pwaInspirationMetadata(reference){
 }
 
 // The skill owns curation policy; GO sends only current creative inputs and service.
+function curveOwnsMoods(){return Boolean(mixCurveTrialCode && /[hasdwcftx]/.test(mixCurveTrialCode.slice(3)))}
+function activeMoodLabel(){return curveOwnsMoods()?"Moods follow the curve":moodLabel(mood)}
 function goPrompt(ai,service,mood){
+ if(curveOwnsMoods())mood="go";
  const parts=[goCommand(ai,service,mood)];
  if(mixCurveTrialCode){
   parts.push(mixCurveTrialCode);
@@ -162,7 +165,7 @@ function goPrompt(ai,service,mood){
  /* PLATFORM_ROUTE_PROMPT */
 
  if(crateSelected.size)parts.push(crateRegionPrompt());
- const brief=moodDiscoveryBrief(mood);if(brief)parts.push(brief.trim());
+ const brief=curveOwnsMoods()?"":moodDiscoveryBrief(mood);if(brief)parts.push(brief.trim());
  if(tempo&&!mixCurveTrialCode)parts.push("Tempo preference: "+tempoNames[tempo]+".");
  if(skipRough)parts.push("Recording preference: Skip rough recordings.");
  /* PLATFORM_REFERENCE */
@@ -170,6 +173,7 @@ function goPrompt(ai,service,mood){
  else if(crateSparkPhrase)parts.push("Seed: "+crateSparkPhrase+".");
  if(ai==="other")parts.push("Service: "+serviceNames[service]+".");
  if(includeCover)parts.push("Cover art: yes.");
+ if(typeof labSurpriseLine!=="undefined"&&labSurpriseLine&&parts.join("\n")===labSurpriseBase)parts.push(labSurpriseLine);
  return parts.join("\n");
 }
 
@@ -813,18 +817,18 @@ function renderLaunch(regionsOnly=false){
  const tempoSummary=doc.getElementById("tempoSummary");if(tempoSummary)tempoSummary.textContent=tempo?tempoNames[tempo]:"Any tempo";
  const tempoHelp=doc.getElementById("tempoHelp");if(tempoHelp)tempoHelp.textContent=tempo?tempoNames[tempo]+" pace. Choose Any to clear it.":"Any pace. The clerk can cope. Move the slider to choose.";
  if(anyTempo)anyTempo.setAttribute("aria-pressed",String(!tempo));
- doc.querySelectorAll("[data-mood]").forEach(b=>b.setAttribute("aria-pressed",String(moodParts(mood).includes(b.dataset.mood))));
+ doc.querySelectorAll("[data-mood]").forEach(b=>b.setAttribute("aria-pressed",String(!curveOwnsMoods()&&moodParts(mood).includes(b.dataset.mood))));
  }
  const e={prompt:doc.getElementById("prompt"),mood:doc.getElementById("moodName"),code:doc.getElementById("receiptCode"),open:doc.getElementById("openAi"),browser:doc.getElementById("browserAi")};
  if(!e.prompt)return;
  e.prompt.textContent=goPrompt(ai,service,mood);
- e.mood.textContent=moodLabel(mood).toUpperCase();
- e.code.textContent=(ai==="chatgpt"?"CG":ai==="gemini"?"GM":ai==="claude"?"CL":"OTHER")+"-"+mood.slice(0,3).toUpperCase()+"-01";
+ e.mood.textContent=activeMoodLabel().toUpperCase();
+ e.code.textContent=(ai==="chatgpt"?"CG":ai==="gemini"?"GM":ai==="claude"?"CL":"OTHER")+"-"+(curveOwnsMoods()?"CURVE":mood.slice(0,3).toUpperCase())+"-01";
  e.open.href=ai==="gemini"?geminiIntent:destinations[ai];e.open.textContent="↗ OPEN "+aiNames[ai].toUpperCase();
- const summary=doc.getElementById("receiptSummary");if(summary)summary.textContent=aiNames[ai]+" · "+serviceNames[service]+" · "+moodLabel(mood)+(mixCurveTrialCode?" · Tempo curve":tempo?" · "+tempoNames[tempo]:"")+" · 12 tracks"+(includeCover?" · cover art":"")+(goHard?" · deep crate":"")+(skipRough?" · skip rough recordings":"");
+ const summary=doc.getElementById("receiptSummary");if(summary)summary.textContent=aiNames[ai]+" · "+serviceNames[service]+" · "+activeMoodLabel()+(mixCurveTrialCode?" · Tempo curve":tempo?" · "+tempoNames[tempo]:"")+" · 12 tracks"+(includeCover?" · cover art":"")+(goHard?" · deep crate":"")+(skipRough?" · skip rough recordings":"");
  const regions=doc.getElementById("receiptRegions");if(regions)regions.textContent="CRATES / "+(crateSelected.size?crateRegions.filter(r=>crateSelected.has(r.id)).map(r=>r.label).join(" · "):"Worldwide");
  const ticketShort=doc.getElementById("selectionTicketShort");
- if(ticketShort)ticketShort.textContent=ticketAiCodes[ai]+" › "+ticketServiceCodes[service]+" · "+(moodParts(mood).map(m=>ticketMoodCodes[m]||({desire:"LOVE",triumphant:"WIN"})[m]).join("+")||"SURP")+" · "+(mixCurveTrialCode?"CURVE":tempo?ticketTempoCodes[tempo]:"ANY");
+ if(ticketShort)ticketShort.textContent=ticketAiCodes[ai]+" › "+ticketServiceCodes[service]+" · "+(curveOwnsMoods()?"CURVE MOODS":moodParts(mood).map(m=>ticketMoodCodes[m]||({desire:"LOVE",triumphant:"WIN"})[m]).join("+")||"SURP")+" · "+(mixCurveTrialCode?"CURVE":tempo?ticketTempoCodes[tempo]:"ANY");
  const ticketRegionShort=doc.getElementById("selectionTicketRegionShort");
  if(ticketRegionShort){
   const inspirationActive=Boolean((typeof labInspiration==="function"&&labInspiration())||pwaReference);
@@ -836,7 +840,7 @@ function renderLaunch(regionsOnly=false){
  const hard=doc.getElementById("goHard");if(hard)hard.setAttribute("aria-pressed",String(goHard));
  const recording=doc.getElementById("skipRough");if(recording)recording.checked=skipRough;
  const hint=doc.getElementById("goHint");if(hint)hint.textContent="Copy your prompt";
- const goButton=doc.getElementById("goButton");if(goButton)goButton.setAttribute("aria-label","GO! Copy "+(mood==="go"?"surprise":moodLabel(mood))+" playlist prompt");
+ const goButton=doc.getElementById("goButton");if(goButton)goButton.setAttribute("aria-label","GO! Copy "+(curveOwnsMoods()?"curve":mood==="go"?"surprise":moodLabel(mood))+" playlist prompt");
  const manual=doc.getElementById("manualOpenAi");if(manual){manual.href=destinations[ai];manual.textContent=ai==="other"?"I COPIED IT — SHOW NEXT STEP":"I COPIED IT MANUALLY — OPEN "+aiNames[ai].toUpperCase()}
  }
  updateHandoff();
@@ -988,7 +992,7 @@ async function copyGo(){
  if(button&&button.disabled)return;
  /* PLATFORM_BEFORE_GO */
  // Each GO explores a different lane; preview and copied request stay identical.
- moodAngle=moodParts(mood).map(m=>moodInterpretations[m]?nextDiscoveryCue(moodInterpretations[m],"ghg-mood-angles-v1-"+m):"").filter(Boolean).join(" + ");freshCrateLens="";crateSparkPhrase=nextCrateSparkPhrase();/* PLATFORM_ROUTE_DRAW */renderLaunch();
+ if(typeof labSurpriseLine==="undefined"||!labSurpriseLine||copiedPrompt)moodAngle=moodParts(mood).map(m=>moodInterpretations[m]?nextDiscoveryCue(moodInterpretations[m],"ghg-mood-angles-v1-"+m):"").filter(Boolean).join(" + ");freshCrateLens="";crateSparkPhrase="";/* PLATFORM_ROUTE_DRAW */renderLaunch();
  const prompt=goPrompt(ai,service,mood);
  if(button){button.disabled=true;button.setAttribute("aria-busy","true");button.setAttribute("data-copy-state","copying")}
  copiedPrompt=null;updateHandoff();
@@ -1003,6 +1007,7 @@ async function copyGo(){
  else{const details=doc.getElementById("promptDetails");if(details)details.open=true;status("Clipboard blocked. Copy the full prompt in the receipt below, then use its manual Open link.")}
 }
 doc.querySelectorAll("[data-mood]").forEach(b=>b.addEventListener("click",()=>{
+ if(curveOwnsMoods()){status("Moods follow the curve. Drag portraits onto it, or switch to Set the tempo.");return}
  const selected=moodParts(mood),id=b.dataset.mood;
  if(selected.includes(id))selected.splice(selected.indexOf(id),1);
  else{if(selected.length===2)selected.pop();selected.push(id)}
