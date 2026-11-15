@@ -1,4 +1,4 @@
-// Browser regression: both modes allow 2-mood taps; Curve also offers 3-dot drag stamps.
+// Browser regression: both modes allow 2-mood taps; Curve also offers ✥ drag stamps.
 const {chromium}=require('playwright');
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const root=path.resolve(__dirname,'../android-lab/app/src/main/assets/site');
