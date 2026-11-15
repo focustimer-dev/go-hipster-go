@@ -51,7 +51,7 @@ const root = path.resolve(__dirname, '../android-lab/app/src/main/assets/site');
     await check('other', 'spotify', 'Other AI', 'Spotify', '#other');
     await check('chatgpt', 'apple', 'ChatGPT', 'Apple Music', '#setupChat');
     assert.equal(await guide.locator('#chatReceiptService').textContent(), 'Apple Music');
-    await guide.locator('#introSetupLink').click();
+    await guide.locator('#overviewSetupLink').click();
     await guide.locator('#practicePasteChat').click();
     assert.match(await guide.locator('#setupPasteChat').textContent(), /ChatGPT \+ Apple Music/);
     assert.match(await guide.locator('#setupPasteChat').textContent(), /Apple Music/);
