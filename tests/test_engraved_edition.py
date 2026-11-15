@@ -38,7 +38,7 @@ class EngravedEditionChecks(unittest.TestCase):
         self.assertIn("panel.className='lab-decheese'",workspace)
         self.assertIn('labInstallThemedSetupSelectors();',workspace)
         self.assertIn("dialog.className='lab-setup-choices'",workspace)
-        self.assertIn("'ghg-desire-asset'",script)
+        self.assertIn('"ghg-desire-asset"',script)
         self.assertIn('.mood-track .pin .face:only-child{width:26px}',curve)
         self.assertIn('html.has-desire-mask',curve)
         keyes=(ROOT/"android-lab/web/cahill-keyes.js").read_text()
