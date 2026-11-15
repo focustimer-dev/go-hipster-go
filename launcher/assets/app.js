@@ -669,7 +669,30 @@ function mountMixCurveTrial(){
        const colors=Object.fromEntries(tokens.map(token=>[token,style.getPropertyValue(token).trim()]));
        frame.contentWindow?.postMessage({type:"ghg-chart-theme",colors},"*");
      };
-     frame.addEventListener("load",sendChartTheme);
+     // A scripts-only sandbox has an opaque origin. CSS mask URLs from that
+     // origin can be CORS-blocked even though ordinary image URLs display.
+     // Deliver the approved alpha asset as a data URL from the trusted parent.
+     // Do not relax the iframe sandbox or duplicate the WebP in the bundle.
+     let desireMaskPromise=null;
+     const sendDesireAsset=async()=>{
+       try{
+         if(!desireMaskPromise)desireMaskPromise=fetch(
+           "/editions/gig-poster/assets/desire-neutral-v4.webp",{cache:"force-cache"}
+         ).then(response=>{
+           if(!response.ok)throw new Error("Desire portrait unavailable");
+           return response.blob();
+         }).then(blob=>new Promise((resolve,reject)=>{
+           const reader=new FileReader();
+           reader.onload=()=>resolve(reader.result);
+           reader.onerror=()=>reject(new Error("Desire portrait reading failed"));
+           reader.readAsDataURL(blob);
+         }));
+         const dataUrl=await desireMaskPromise;
+         if(typeof dataUrl==="string"&&dataUrl.startsWith("data:image/"))
+           frame?.contentWindow?.postMessage({type:"ghg-desire-asset",dataUrl},"*");
+       }catch(_){desireMaskPromise=null} // An ordinary WebP fallback remains visible.
+     };
+     frame.addEventListener("load",()=>{sendChartTheme();sendDesireAsset()});
      const themeObserver=new MutationObserver(sendChartTheme);
      for(const element of [doc.documentElement,body]){
        themeObserver.observe(element,{attributes:true});
