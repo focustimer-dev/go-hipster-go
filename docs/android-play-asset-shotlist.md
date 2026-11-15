@@ -19,6 +19,8 @@ Use the existing **Go, Hipster, Go!** visual identity (printed music ephemera, g
 
 Images from `android-lab/artwork/chaos-roll/` are source materials, **not** final production widget screenshots. The Lab cassette source includes printed `/ LAB`; the production/QA packaging step removes that suffix. Never upload an image that still contains **Lab** or **RC** wording as if it were the final public app.
 
+**Approved design vs authentic capture:** The eight-slide Katowice marketing graphics layout was approved on 2026-11-15 as the visual direction. That approval does **not** certify individual screenshots as Play-compliant native captures. Preserve the composition when using actual installed-release screenshots; retain the original capture SHA/device evidence, and separately verify the 512px icon and 1024×500 feature-graphic exports before uploading.
+
 ## Phone screenshots in priority order
 
 All screenshots must be captured from a **single known QA/production commit**, with the version and screenshot date recorded. The release app's core UI should be visible; no unrelated private accounts, playlists or identifying notification shade details.
@@ -28,7 +30,7 @@ All screenshots must be captured from a **single known QA/production commit**, w
 | **01** | **The Jukebox** | Main mood selections and twelve-slot tempo/mood curve | Choose an attractive populated but honest example. Show app title and control labels without a clipboard success toast |
 | **02** | **Musical Atlas** | Robinson region explorer with one selected region | Selected geography and route controls must be readable. Do not claim the app streams music |
 | **03** | **Your Crate** | A saved inspiration and saved request on the device | Use non-sensitive **dummy** example text. Avoid a real user’s private prompt or personally identifying link |
-| **04** | **Manual / AI handoff** | Stable package instructions and normal copy-and-review workflow | Show accurate current stable skill `3.11.6`, no deprecated ZIP link; do not imply the app silently installs a skill |
+| **04** | **Manual / AI handoff** | Stable package instructions and normal copy-and-review workflow | Match the stable version/tag in [`config/stable-skill-release.json`](../config/stable-skill-release.json), with no deprecated ZIP links; do not imply the app silently installs a skill |
 | **05** | **Chaos Roll cassette** | **Real 3×2 home-screen widget** using approved production art | Capture actual Android launcher, cassette with `HIPSTER GO`, **without `/ LAB`**; crop to comply with Play screenshot rules |
 | **06** | **Chaos Roll vinyl or alternate theme** | 1×1 record widget or contrast-rich second app theme | Must be real installation, correct proportions, no fake animation or custom UI compositing |
 
