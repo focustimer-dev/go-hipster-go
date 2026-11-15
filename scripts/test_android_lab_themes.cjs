@@ -736,7 +736,7 @@ async function verifyManualHierarchy(page,name,width){
    assert.equal(printedExtra.selectedFunk.label,'rgb(242, 200, 78)','Funk canonical gold label');
    assert.equal(printedExtra.selectedFunk.stock,'rgb(110, 34, 92)','Funk canonical violet base');
    assert.notEqual(printedExtra.selectedFunk.stock,'rgb(210, 195, 166)','Funk selected pink pressing stays distinct');
-   assert.equal(printedExtra.desireInk,'rgb(38, 63, 62)','Desire and Triumph use shared engraving ink');
+   assert.equal(printedExtra.desireInk,'rgb(38, 63, 62)','Triumph retains its legacy alphaInk filter; Desire uses theme-ink masking');
    // Exercise every approved character in its selected pose. Do not mutate
    // the underlying artwork or depend on only one easy-to-color portrait.
    const selectedCast=await pilot.locator('.mood-grid .mood[data-mood]').evaluateAll(tiles=>
@@ -758,7 +758,7 @@ async function verifyManualHierarchy(page,name,width){
     else assert.notEqual(portrait.paper,'rgb(210, 195, 166)','Funk retains its own pink paper');
     assert.equal(portrait.label,special?'rgb(242, 200, 78)':'rgb(36, 70, 67)',
      portrait.mood+' selected label');
-    assert.equal(portrait.selectedPlateOpacity,portrait.mood==='desire'?'0':'1',
+    assert.equal(portrait.selectedPlateOpacity,'1',
      portrait.mood+' approved expression visibility');
    }
    // New print themes choose two ink roles once. Prove every consumer
