@@ -1280,3 +1280,44 @@ body.gig-poster.lab-workspace .footer .lab-footer-links a{
  font:700 .875rem/1.35 Arial,Helvetica,sans-serif;
  text-decoration:underline;text-underline-offset:4px;
 }
+
+/* Android polish pass 2: tokenized onboarding and modal controls. */
+body.gig-poster.lab-workspace #firstCrateSetup .ticket{
+ --ink:var(--lab-ui-ticket-ink,var(--lab-ui-ink));
+ --paper:var(--lab-ui-ticket-stock,var(--lab-ui-surface));
+ --receipt-red:var(--lab-ui-rule);
+ --setup-rule:var(--lab-ui-rule);
+ background:var(--lab-ui-ticket-stock,var(--lab-ui-surface));
+ color:var(--lab-ui-ticket-ink,var(--lab-ui-ink));
+}
+body.gig-poster.lab-workspace #firstCrateSetup .ticket .services select{
+ background:var(--lab-ui-field,var(--lab-ui-surface));
+ color:var(--lab-ui-on-field,var(--lab-ui-ink));
+ border-color:var(--lab-ui-control-outline,var(--lab-ui-rule));
+ -webkit-text-fill-color:var(--lab-ui-on-field,var(--lab-ui-ink));
+ accent-color:var(--lab-atlas-selected);
+ color-scheme:light;
+}
+body.gig-poster.lab-workspace #firstCrateSetup .ticket .services select option{
+ background:var(--lab-ui-field,var(--lab-ui-surface));
+ color:var(--lab-ui-on-field,var(--lab-ui-ink));
+}
+body.gig-poster.lab-workspace #firstCrateSetup .ticket :is(.close-setup,.setup-back,.text-action){
+ color:var(--lab-ui-ticket-ink,var(--lab-ui-ink));
+}
+body.gig-poster.lab-workspace #firstCrateSetup .ticket .primary{
+ background:var(--lab-ui-action);color:var(--lab-ui-on-action);
+ border-color:var(--lab-ui-action);
+}
+body.gig-poster.lab-workspace .lab-dialog,
+body.gig-poster.lab-workspace .lab-dialog-head{
+ background:var(--lab-ui-panel,var(--lab-ui-surface));
+ color:var(--lab-ui-on-panel,var(--lab-ui-ink));
+ border-color:var(--lab-ui-rule);
+}
+body.gig-poster.lab-workspace .lab-dialog .lab-choice input{
+ accent-color:var(--lab-atlas-selected);
+}
+body.gig-poster.lab-workspace[data-page=launch] .poster-go-trail-star{
+ fill:var(--lab-atlas-selected)!important;
+}

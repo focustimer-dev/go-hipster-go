@@ -924,7 +924,7 @@ function shuffleCrate(){
  // One quiet detent for each shuffled (unpinned) axis. Native opt-in and OS
  // haptic settings are respected by the existing Bridge; no PWA vibration.
  if(globalThis.HipsterLab?.haptic){
-  changed.forEach((axis,i)=>setTimeout(()=>globalThis.HipsterLab?.haptic?.("tick"),i*110));
+  changed.forEach((axis,i)=>setTimeout(()=>globalThis.HipsterLab?.haptic?.("shuffle"),i*135));
  }
  const result=doc.getElementById("shuffleResult");if(result)result.textContent="Shuffled "+changed.join(", ")+"."+(kept.length?" Kept "+kept.join(" and ")+".":"");
  const control=doc.getElementById("shuffleCrate");if(control){control.setAttribute("data-dealt","true");if(typeof control.animate==="function"&&!(typeof window!=="undefined"&&window.matchMedia("(prefers-reduced-motion: reduce)").matches))control.animate([{transform:"translateY(0)"},{transform:"translateY(2px)"},{transform:"translateY(0)"}],{duration:240,easing:"cubic-bezier(.16,1,.3,1)"})}
