@@ -273,7 +273,8 @@ window.addEventListener("message",event=>{
  const data=event.data;
  if(data?.type==="ghg-chart-desire-portrait"){
    const image=data.image;
-   if(typeof image!=="string"||image.length>150000||!/^data:image\\/png;base64,[A-Za-z0-9+/=]+$/.test(image))return;
+   const prefix="data:image/png;base64,";
+   if(typeof image!=="string"||image.length>150000||!image.startsWith(prefix)||!/^[A-Za-z0-9+/=]+$/.test(image.slice(prefix.length)))return;
    const root=document.documentElement;
    root.style.setProperty("--desire-curve-mask",'url("'+image+'")');
    root.dataset.desirePortraitReady="true";
