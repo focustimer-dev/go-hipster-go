@@ -34,7 +34,7 @@ jobs:
       - name: Record unreleased platform ZIP QA provenance
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && matrix.python-version == '3.12' }}
         run: |
-          printf 'channel=unreleased-qa\\nsource_sha=%s\\npublic_release=no\\ninstallation_verified=no\\n' "$GITHUB_SHA" > dist/platform-qa-provenance.txt
+          printf 'channel=unreleased-qa\nsource_sha=%s\npublic_release=no\ninstallation_verified=no\n' "$GITHUB_SHA" > dist/platform-qa-provenance.txt
           sha256sum dist/go-hipster-go-{gemini-app-skill,chatgpt-plugin,claude-skill,claude-plugin}.zip | sort >> dist/platform-qa-provenance.txt
           grep -F 'Protocol: N' adapters/chatgpt/CHATGPT_KNOWLEDGE.md >/dev/null
           grep -F 'Protocol: N' adapters/gemini/GEM_KNOWLEDGE.md >/dev/null
