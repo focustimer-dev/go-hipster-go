@@ -51,7 +51,7 @@ class MoodInkTests(unittest.TestCase):
         self.assertIn('background:#d64b30',css,'Use the approved solid vermilion stock')
         self.assertNotIn('background:rgb(214 75 48 / 22%)',css)
 
-    def test_desire_v3_expression_and_heart_mask_are_independent(self):
+    def test_desire_v4_full_crown_and_theme_alpha_masks(self):
         # CI's skill-validation Python environment intentionally has no Pillow.
         # The pinned, exact lossless files are alpha-verified in Android Lab.
         try:
@@ -65,11 +65,11 @@ class MoodInkTests(unittest.TestCase):
         self.assertEqual(svg.count('<path '),4)
         css=(ART.parent/'mood-portraits.css').read_text()
         for state in ('neutral','selected'):
-            self.assertIn(f'desire-{state}-v3.webp',css)
-            path=ART/f'desire-{state}-v3.webp'
+            self.assertIn(f'desire-{state}-v4.webp',css)
+            path=ART/f'desire-{state}-v4.webp'
             expected = {
-                'neutral': '35db845af7e3e05d634af21deb37a4ed6d72d6e690ac7760becd40effbbaf53c',
-                'selected': 'fa62b1482bf9bdd1b94512dd95781a1ac113ef052fa7f5ba4fa5ec3b08752f30'
+                'neutral': '59680b820cb7406639dbe67164835108ca3e6f0c284a97f2051dd3526f9ed207',
+                'selected': 'dc7c2204ac872c1a1a743fbd07329bfb5e32d39e66497189d6320e4d0bcaa4d7'
             }
             self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(),expected[state])
             raw=path.read_bytes()
@@ -82,15 +82,18 @@ class MoodInkTests(unittest.TestCase):
                     rgba=image.convert('RGBA')
                     self.assertEqual(rgba.getchannel('A').getextrema(),(0,255))
                     self.assertLess(rgba.getchannel('A').getbbox()[1],60)
-                    self.assertGreater(rgba.getchannel('A').getbbox()[3],1180)
-        self.assertIn('filter:url(#alphaInk)',css)
+                    self.assertGreater(rgba.getchannel('A').getbbox()[3],1100)
+        self.assertIn('mask-mode:alpha',css)
+        self.assertIn('background-color:var(--lab-mood-neutral-ink',css)
+        self.assertIn('background-color:var(--lab-mood-selected-ink',css)
+        self.assertIn('transform:translateY(2%) scale(.92)',css)
         self.assertIn('background:var(--funk-selected-paper)',css)
         page=(ROOT/'launcher/editions/gig-poster/index.html').read_text()
         self.assertIn('class="desire-hearts" aria-hidden="true"',page)
         theme=(ROOT/'android-lab/web/theme-print.css').read_text()
         pwa=(ROOT/'launcher/assets/pwa-themes.css').read_text()
-        self.assertIn('opacity:1;filter:url(#alphaInk)!important',theme)
-        self.assertIn('opacity:1;filter:url(#alphaInk)!important',pwa)
+        self.assertIn('opacity:1;filter:none!important',theme)
+        self.assertIn('opacity:1;filter:none!important',pwa)
         self.assertNotIn('Desire negative-looking selection plate stays hidden',pwa)
     def test_current_pages_preload_ink_sprites(self):
         page=(ROOT/'launcher/editions/gig-poster/index.html').read_text()
