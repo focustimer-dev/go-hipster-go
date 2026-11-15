@@ -297,7 +297,8 @@
  color:var(--lab-mood-neutral-ink);
 }
 :root[data-pwa-theme=electricstars][data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=funky])[aria-pressed=false] .word{
- color:var(--lab-mood-neutral-ink);
+ /* Small labels need AA contrast; the character engraving remains Plum. */
+ color:var(--lab-mood-neutral-label-ink);
 }
 :root[data-pwa-theme=electricstars][data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=funky])[aria-pressed=true]{
  background-color:var(--lab-mood-neutral-paper);
