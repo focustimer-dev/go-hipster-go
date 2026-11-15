@@ -111,7 +111,27 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
      assert.equal(portrait.imageWidth,128,'Inline Desire mask must decode within the sandbox');
      assert(portrait.visible>1500,'Desire mask must contain actual engraved pixels');
     }
-    if(marketing)await curveFrame.locator('.mood-track').screenshot({path:path.join(output,'phone-desire-v4-curve-verified.png'),animations:'disabled'});
+    if(marketing){
+      const track=curveFrame.locator('.mood-track');
+      const capture=path.join(output,'phone-desire-v4-curve-verified.png');
+      try{
+        await track.screenshot({path:capture,animations:'disabled',timeout:9000});
+      }catch(error){
+        // This sandboxed chart continuously repaints and may never satisfy
+        // Playwright's "element stable" wait. Preserve an actual chart crop
+        // via the main-frame screenshot API instead; never invent evidence.
+        if(error?.name!=='TimeoutError')throw error;
+        const box=await track.boundingBox();
+        if(!box||box.width<10||box.height<10)throw error;
+        await page.screenshot({
+          path:capture,
+          clip:{x:Math.max(0,box.x),y:Math.max(0,box.y),
+            width:box.width,height:box.height},
+          animations:'disabled',timeout:15000
+        });
+        console.warn('Marketing capture used viewport clip fallback for moving curve track.');
+      }
+    }
     await page.getByRole('button',{name:'Set the tempo',exact:true}).click();
    }
    if(marketing && profile.name==='phone'){
