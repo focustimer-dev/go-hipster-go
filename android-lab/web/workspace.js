@@ -34,7 +34,7 @@ function labState(){
  try{
   let state=JSON.parse(window.HipsterLab?.state?.()||'{}');
   if(!state||typeof state!=='object'||Array.isArray(state))state={};
-  if(!['open','share','browser'].includes(state.mode))state.mode='open';
+  if(!['open','share','browser'].includes(state.mode))state.mode='share';
   // Legacy bridge support is read once per snapshot, never per prompt render.
   if(typeof state.activeInspiration!=='string')state.activeInspiration=String(window.HipsterLab?.inspiration?.()||'');
   return labSnapshot=state;
@@ -52,7 +52,7 @@ function renderLabHandoff(){
  // The GO key is the only visible copy stamp; the receipt provides the next action.
  const receiptMark=doc.getElementById('receiptCopy');
  if(receiptMark){receiptMark.hidden=true;receiptMark.textContent='';}
- const state=labState(),mode=state.mode||'open',oneTap=state.oneTap!==false;
+ const state=labState(),mode=state.mode||'share',oneTap=state.oneTap!==false;
  if(ai==='other'){
   // Other AI never has a native handoff: restore the manual recovery link
   // when switching away from an already-copied Gemini request.
@@ -159,7 +159,7 @@ function labSendSkillStatus(state=labState()){
  },location.origin);
 }
 function labPreferences(){
- const state=labState(),dialog=doc.getElementById('labPreferences');if(dialog.open)return;dialog.querySelectorAll('[name="labHandoff"]').forEach(i=>i.checked=i.value===(state.mode||'open'));dialog.querySelectorAll('[data-lab-pref]').forEach(i=>i.checked=state[i.dataset.labPref]!==false);dialog.querySelector('.lab-dialog-body').scrollTop=0;dialog.showModal();body.classList.add('lab-modal-open');
+ const state=labState(),dialog=doc.getElementById('labPreferences');if(dialog.open)return;dialog.querySelectorAll('[name="labHandoff"]').forEach(i=>i.checked=i.value===(state.mode||'share'));dialog.querySelectorAll('[data-lab-pref]').forEach(i=>i.checked=state[i.dataset.labPref]!==false);dialog.querySelector('.lab-dialog-body').scrollTop=0;dialog.showModal();body.classList.add('lab-modal-open');
 }
 function initLabWorkspace(){
  // Completed setup yields the Jukebox space on the next launch. Keep its
@@ -174,6 +174,26 @@ function initLabWorkspace(){
  if(recording&&recordingSlot){const oldPanel=recording.closest('.listening-preferences');recording.classList.add('lab-choice','lab-toggle');recordingSlot.append(recording);const hardware=doc.getElementById('labRecordingHardware');if(hardware)recording.querySelector('.recording-rocker').replaceWith(hardware.content.firstElementChild.cloneNode(true));if(oldPanel)oldPanel.remove()}
  const trail=doc.querySelector('.poster-go-trail-steps>.poster-go-trail-word:last-child');if(trail)trail.textContent='CONTINUE IN YOUR AI';
  body.classList.add('lab-workspace');body.dataset.labScreen='jukebox';doc.querySelectorAll('.topnav').forEach(nav=>nav.hidden=true);
+ // In Android, keep the optional skeptical audit discoverable without making
+ // its lengthy explanation compete with the receipt's primary handoff.
+ const cheese=doc.querySelector('.decheese-note');
+ if(cheese&&cheese.tagName==='P'){
+  const panel=doc.createElement('details');panel.className='lab-decheese';
+  const summary=doc.createElement('summary');summary.textContent='SMELLS LIKE AI CHEESE?';
+  cheese.querySelector('strong')?.remove();
+  cheese.before(panel);panel.append(summary,cheese);
+ }
+ // Keep the original legal wording and external hrefs, but give each a stable
+ // reading region instead of running links into unstructured footer text.
+ const footer=doc.querySelector('.footer');
+ if(footer&&!footer.querySelector('.lab-footer-links')){
+  const links=[...footer.querySelectorAll('a')];
+  const legal=doc.createElement('p');legal.className='lab-footer-legal';
+  legal.textContent='† EST. 2007 is an aesthetic condition, not a legal assertion. No artisanal beard oils were tested on animals.';
+  const nav=doc.createElement('nav');nav.className='lab-footer-links';
+  nav.setAttribute('aria-label','Information and support');nav.append(...links);
+  footer.replaceChildren(legal,nav);
+ }
  initLabGuide();
  const heading=doc.querySelector('.receipt-heading');if(heading){const label=doc.createElement('span');while(heading.firstChild)label.appendChild(heading.firstChild);const b=doc.createElement('button');b.type='button';b.className='lab-text-button lab-save-button';b.dataset.labAction='save';b.textContent='SAVE REQUEST';heading.append(label,b)}
  doc.addEventListener('click',event=>{
