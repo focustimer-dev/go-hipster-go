@@ -124,7 +124,11 @@
     <h2 class="counter-heading mix-heading">SET THE TEMPO</h2>
     <div class="refinements" aria-label="Optional music preferences">
     <h2 class="counter-label">WHAT’S THE VIBE?</h2>
-    <div class="mood-grid" role="group" aria-label="Mood presets">
+    <p id="moodModeHint" class="mood-mode-hint" data-mode="tap" role="status" aria-live="polite">
+      <svg class="mood-mode-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4v5c0 6 4 9 11 9"/><path d="m11 13 5 5 5-5"/></svg>
+      <span class="mood-mode-copy">Tap up to two moods.</span>
+    </p>
+    <div class="mood-grid" role="group" aria-label="Mood presets" aria-describedby="moodModeHint" data-mood-interaction="tap">
       <button class="mood" data-mood="happy" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">HAPPY</span></button>
       <button class="mood" data-mood="angry" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">ANGRY</span></button>
       <button class="mood" data-mood="sad" type="button" aria-pressed="false"><span class="face" aria-hidden="true"></span><span class="word">SAD</span></button>
