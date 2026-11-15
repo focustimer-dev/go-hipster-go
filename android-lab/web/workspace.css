@@ -1280,3 +1280,81 @@ body.gig-poster.lab-workspace .footer .lab-footer-links a{
  font:700 .875rem/1.35 Arial,Helvetica,sans-serif;
  text-decoration:underline;text-underline-offset:4px;
 }
+
+
+/* Android themed first-crate choices. The original select remains the state
+   owner; this top-layer sheet avoids WebView's unthemeable OS list popup. */
+body.gig-poster.lab-workspace #firstCrateSetup .lab-setup-native-select{
+ position:absolute!important;width:1px!important;height:1px!important;
+ opacity:0!important;pointer-events:none!important;
+ margin:0!important;padding:0!important;border:0!important;
+}
+body.gig-poster.lab-workspace #firstCrateSetup .lab-setup-select-trigger{
+ display:block;width:100%;min-height:52px;box-sizing:border-box;
+ border:1px solid var(--lab-setup-ink);border-radius:0;
+ padding:12px 38px 12px 14px;text-align:left;
+ font:400 1.125rem/1.22 Arial,Helvetica,sans-serif;
+ background:var(--lab-setup-field-paper);color:var(--lab-setup-field-ink);
+ position:relative;cursor:pointer;
+}
+body.gig-poster.lab-workspace #firstCrateSetup .lab-setup-select-trigger::after{
+ content:'⌄';position:absolute;right:14px;top:50%;
+ transform:translateY(-57%);font:700 1.5rem/1 Arial,sans-serif;
+}
+body.gig-poster.lab-workspace #firstCrateSetup .lab-setup-select-trigger:focus-visible{
+ outline:3px solid var(--lab-setup-focus);outline-offset:3px;
+}
+body.gig-poster.lab-workspace .lab-setup-choices{
+ width:calc(100vw - 40px);max-width:440px;max-height:calc(100dvh - 90px);
+ box-sizing:border-box;padding:0;margin:auto;overflow:auto;
+ border:1px solid var(--lab-setup-ink);border-radius:0;
+ background:var(--lab-setup-paper);color:var(--lab-setup-ink);
+ box-shadow:6px 7px 0 color-mix(in srgb,var(--lab-ui-rail) 45%,transparent);
+ color-scheme:light;
+}
+body.gig-poster.lab-workspace .lab-setup-choices::backdrop{
+ background:color-mix(in srgb,var(--lab-ui-rail) 68%,transparent);
+}
+body.gig-poster.lab-workspace .lab-setup-choice-header{
+ display:flex;align-items:center;justify-content:space-between;
+ min-height:66px;gap:12px;padding:12px 18px;
+ border-bottom:1px solid var(--lab-setup-rule);
+}
+body.gig-poster.lab-workspace .lab-setup-choice-header h2{
+ margin:0;color:var(--lab-setup-ink);
+ font:400 1.7rem/1.1 Poster,sans-serif;
+}
+body.gig-poster.lab-workspace .lab-setup-choice-close{
+ min-width:48px;min-height:48px;border:0;background:transparent;
+ color:var(--lab-setup-ink);cursor:pointer;
+ font:400 1rem Poster,sans-serif;
+}
+body.gig-poster.lab-workspace .lab-setup-choice-list{padding:4px 0 9px}
+body.gig-poster.lab-workspace .lab-setup-choice{
+ display:flex;align-items:center;justify-content:space-between;gap:16px;
+ box-sizing:border-box;width:100%;min-height:64px;padding:15px 20px;
+ background:transparent;color:var(--lab-setup-ink);
+ border:0;border-bottom:1px solid var(--lab-setup-rule);
+ text-align:left;font:400 1.25rem/1.2 Arial,Helvetica,sans-serif;
+ cursor:pointer;
+}
+body.gig-poster.lab-workspace .lab-setup-choice:last-child{border-bottom:0}
+body.gig-poster.lab-workspace .lab-setup-choice.is-selected{
+ color:var(--lab-setup-ink);font-weight:700;
+}
+body.gig-poster.lab-workspace .lab-setup-choice.is-selected::after{
+ content:'';width:15px;height:15px;flex:none;border-radius:50%;
+ background:var(--lab-atlas-selected,var(--lab-ui-focus));
+ outline:2px solid var(--lab-setup-ink);outline-offset:3px;
+}
+body.gig-poster.lab-workspace .lab-setup-choices button:focus-visible{
+ outline:3px solid var(--lab-setup-focus);outline-offset:-3px;
+}
+@media(hover:hover){
+ body.gig-poster.lab-workspace .lab-setup-choice:hover{
+  background:var(--lab-setup-hover-paper);color:var(--lab-setup-hover-ink);
+ }
+}
+@media(forced-colors:active){
+ body.gig-poster.lab-workspace .lab-setup-choice.is-selected{outline:2px solid Highlight}
+}
