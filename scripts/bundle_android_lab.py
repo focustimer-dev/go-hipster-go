@@ -102,8 +102,6 @@ def bundle(destination=None, *, version_name=None, widget_asset_output=None, dra
     shutil.copytree(ROOT / 'android-lab/web/tutorial-media', destination / 'assets/tutorial-media')
     script = destination / 'assets/app.js'
     text = script.read_text()
-    route_index = json.loads((ROOT / 'android-lab/web/discovery-route-index.json').read_text())
-    routes_js = (ROOT / 'android-lab/web/discovery-routes.js').read_text().replace('/*LAB_ROUTE_INDEX*/', json.dumps(route_index, separators=(',', ':')))
     # Versioned, explicit extension slots: never patch implementation statements.
     def inject(source, name, code):
         marker = '/* PLATFORM_' + name + ' */'
@@ -114,14 +112,14 @@ def bundle(destination=None, *, version_name=None, widget_asset_output=None, dra
         'ATLAS_CAMERA': 'if(labGlobeReady){labGlobeBounds(view);return}',
         'ATLAS_SELECTION': 'labGlobeSync();',
         'ATLAS_INSTRUCTION': 'labAtlasInstruction();',
-        'DECLARATIONS': (ROOT / 'android-lab/web/atlas-touch-targets.js').read_text() + '\n' + (ROOT / 'android-lab/web/atlas-morph-vectors.js').read_text() + '\n' + (ROOT / 'android-lab/web/cahill-keyes-routes.js').read_text() + '\n' + (ROOT / 'android-lab/web/cahill-keyes-lanes.js').read_text() + '\n' + (ROOT / 'android-lab/web/cahill-keyes-navigator.js').read_text() + '\n' + (ROOT / 'android-lab/web/cahill-keyes.js').read_text() + '\n' + (ROOT / 'android-lab/web/cahill-keyes-motion.js').read_text() + '\n' + (ROOT / 'android-lab/web/cahill-keyes-switch.js').read_text() + '\n' + (ROOT / 'android-lab/web/globe.js').read_text() + '\n' + routes_js + '\n' + (ROOT / 'android-lab/web/workspace.js').read_text() + '\n' + (ROOT / 'android-lab/web/inspiration.js').read_text() + '\n' + (ROOT / 'android-lab/web/tutorial.js').read_text(),
+        'DECLARATIONS': (ROOT / 'android-lab/web/atlas-touch-targets.js').read_text() + '\n' + (ROOT / 'android-lab/web/atlas-morph-vectors.js').read_text() + '\n' + (ROOT / 'android-lab/web/cahill-keyes-routes.js').read_text() + '\n' + (ROOT / 'android-lab/web/cahill-keyes-lanes.js').read_text() + '\n' + (ROOT / 'android-lab/web/cahill-keyes-navigator.js').read_text() + '\n' + (ROOT / 'android-lab/web/cahill-keyes.js').read_text() + '\n' + (ROOT / 'android-lab/web/cahill-keyes-motion.js').read_text() + '\n' + (ROOT / 'android-lab/web/cahill-keyes-switch.js').read_text() + '\n' + (ROOT / 'android-lab/web/globe.js').read_text() + '\n' + (ROOT / 'android-lab/web/surprise.js').read_text() + '\n' + (ROOT / 'android-lab/web/workspace.js').read_text() + '\n' + (ROOT / 'android-lab/web/inspiration.js').read_text() + '\n' + (ROOT / 'android-lab/web/tutorial.js').read_text(),
         'COPY': 'if(window.HipsterLab)return window.HipsterLab.copy(text);',
-        'ROUTE_PROMPT': 'if(labRoutePrompt())parts.push(labRoutePrompt());',
+        'ROUTE_PROMPT': '',
         'REFERENCE': 'const reference=labInspiration();if(reference){parts.push(...inspirationPromptLines(reference,labState().inspirationPreview));}else',
         'HANDOFF_RENDER': 'renderLabHandoff();',
         'RENDER': 'labRefreshState();renderLabWorkspace();renderLabInspiration();',
         'BEFORE_GO': 'if(labSubmitDraftBeforeGo())return;',
-        'ROUTE_DRAW': 'crateSparkPhrase="";labActiveRoute=labInspiration()?null:nextLabDiscoveryRoute();',
+        'ROUTE_DRAW': 'labPrepareSurprise();',
         'COPIED': 'if(ok&&window.HipsterLab){if(ai==="other"){status("Request copied. Open your AI manually, paste and send.")}else{window.HipsterLab.go(ai,prompt);status(labState().oneTap===false?"Request copied. Choose OPEN when ready.":labState().mode==="share"?"Continue in your AI to review and send the shared request.":"Request copied. Paste and send it in your AI.")}return;}',
         'OPEN': '''for(const id of ["openAi","manualOpenAi"]){const link=doc.getElementById(id);if(link)link.addEventListener("click",event=>{
  if(event.defaultPrevented||!window.HipsterLab)return;

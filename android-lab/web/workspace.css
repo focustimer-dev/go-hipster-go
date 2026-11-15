@@ -1,3 +1,9 @@
+
+.lab-theme-choice[data-lab-theme=electricstars] .lab-theme-swatches i:nth-child(1){background:#011629}
+.lab-theme-choice[data-lab-theme=electricstars] .lab-theme-swatches i:nth-child(2){background:#3a74db}
+.lab-theme-choice[data-lab-theme=electricstars] .lab-theme-swatches i:nth-child(3){background:#f6b8fb}
+.lab-theme-choice[data-lab-theme=electricstars]:disabled{filter:grayscale(1);opacity:.48;cursor:not-allowed}
+
 /* Lab snapshot only: canonical atlas and portraits keep their geometry. */
 body.gig-poster.lab-workspace{padding-top:56px;--lab-rail-height:56px;color:#103135;background-color:#dfb045;scrollbar-color:#103135 #dfb045}
 .lab-workspace [hidden]{display:none!important}

@@ -1,3 +1,31 @@
+
+/* ElectricStars: nocturnal blue silhouettes against orchid light. */
+:root[data-pwa-theme=electricstars]{
+ color-scheme:dark;
+ --lab-ui-surface:#011629;--lab-ui-ink:#f6b8fb;
+ --lab-ui-panel:#372b68;--lab-ui-on-panel:#f6b8fb;
+ --lab-ui-rail:#011629;--lab-ui-on-rail:#f6b8fb;
+ --lab-ui-action:#0c426d;--lab-ui-on-action:#f6b8fb;
+ --lab-ui-rule:#be74cd;--lab-ui-field:#011629;--lab-ui-on-field:#f6b8fb;
+ --lab-ui-focus:#f6b8fb;--lab-ui-control-outline:#be74cd;
+ --lab-ui-ticket-stock:#0c426d;--lab-ui-ticket-ink:#f6b8fb;
+ --lab-ui-go:#0c426d;--lab-ui-go-ink:#f6b8fb;
+ --lab-ui-highlight:#be74cd;--lab-ui-on-highlight:#011629;
+ --lab-print-muted:#372b68;--lab-print-stamp:#be74cd;
+ --lab-print-active-ink:#f6b8fb;--lab-print-control-ink:#f6b8fb;
+ --lab-mood-selected-edge:#f6b8fb;--lab-print-stamp-border-style:solid;
+ --lab-print-substrate-texture:radial-gradient(ellipse at 85% 0%,#372b6833,transparent 65%);
+ --lab-print-stamp-filter:none;
+ --lab-atlas-paper:#0c426d;--lab-atlas-land:#0c426d;--lab-atlas-ocean:#011629;
+ --lab-atlas-ink:#f6b8fb;--lab-atlas-selected:#be74cd;--lab-atlas-route:#f6b8fb;
+ --lab-atlas-backdrop:#011629;--lab-atlas-field:#011629;
+ --lab-mood-neutral-paper:#be74cd;--lab-mood-neutral-ink:#372b68;
+ --lab-mood-neutral-label-ink:#011629;
+ --lab-mood-selected-paper:#ce87da;--lab-mood-selected-ink:#372b68;
+ --lab-mood-selected-wash:rgba(246,184,251,.28);
+ --lab-mood-desire-heart:#f6b8fb;
+}
+
 /* PWA-only theme skins. No Android build or map geometry changes.
    Liberi deliberately inherits the shipped poster stylesheet unchanged. */
 
@@ -652,7 +680,7 @@ html[data-pwa-theme=usiku] body.pwa-workspace .pwa-dialog-head{
 /* Existing poster markup, Crate and Manual accept Android semantic color roles.
    Geometry, gestures, local browser storage and original faces are unchanged. */
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan],[data-pwa-theme=electricstars])
  body.gig-poster:is([data-page=launch],[data-page=setup]){
  --ink:var(--lab-ui-ink);--ink2:var(--lab-ui-action);
  --paper:var(--lab-ui-surface);--bone:var(--lab-ui-ticket-stock);
@@ -673,52 +701,52 @@ html[data-pwa-theme=usiku] body.pwa-workspace .pwa-dialog-head{
  background:var(--lab-ui-surface);color:var(--lab-ui-ink);color-scheme:light;
 }
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan],[data-pwa-theme=electricstars])
  body.gig-poster .site{background:var(--lab-ui-surface);color:var(--lab-ui-ink)}
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan],[data-pwa-theme=electricstars])
  body.gig-poster :is(.go-options,.go-button){background:var(--lab-ui-go);color:var(--lab-ui-on-action)}
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan],[data-pwa-theme=electricstars])
  body.gig-poster .go-button .go-copy :is(b,span){color:var(--lab-ui-on-action)}
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan],[data-pwa-theme=electricstars])
  body.gig-poster .mood-grid .mood[aria-pressed=true]{background:var(--lab-mood-selected-paper);color:var(--lab-mood-selected-ink);border-color:var(--lab-print-active-ink)}
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan],[data-pwa-theme=electricstars])
  body.gig-poster .crate-map-zone[data-selected=true] path{fill:var(--lab-atlas-selected);stroke:var(--lab-atlas-ink)}
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan],[data-pwa-theme=electricstars])
  body.pwa-workspace .pwa-rail{background:var(--lab-ui-rail);color:var(--lab-ui-on-rail)}
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan],[data-pwa-theme=electricstars])
  body.pwa-workspace .pwa-rail button[aria-current=page]{background:var(--lab-ui-surface);color:var(--lab-ui-ink);border-bottom-color:var(--lab-print-active-ink)}
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan],[data-pwa-theme=electricstars])
  body.pwa-workspace :is(.pwa-page,.pwa-dialog,.pwa-guide-nav,.pwa-guide-shelf){background:var(--lab-ui-surface);color:var(--lab-ui-ink)}
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan],[data-pwa-theme=electricstars])
  body.pwa-workspace :is(.pwa-dialog-head,.pwa-page section>h2,.pwa-section-head,.pwa-record,.pwa-guide-picker,.pwa-local-note){border-color:var(--lab-ui-rule)}
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan],[data-pwa-theme=electricstars])
  body.pwa-workspace :is(.pwa-record button,.pwa-wide,.pwa-save-button,.pwa-dialog button,.pwa-dialog a){color:var(--lab-ui-ink);border-color:var(--lab-ui-control-outline)}
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan],[data-pwa-theme=electricstars])
  body.pwa-workspace :is(.pwa-dialog-body input,.pwa-dialog-body textarea,.pwa-dialog-body pre){background:var(--lab-ui-field);color:var(--lab-ui-on-field);border-color:var(--lab-ui-control-outline)}
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan],[data-pwa-theme=electricstars])
  body.pwa-workspace .pwa-dialog-actions button[type=submit]{background:var(--lab-ui-action);color:var(--lab-ui-on-action)}
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan],[data-pwa-theme=electricstars])
  body.pwa-workspace .pwa-inspiration{background:var(--lab-ui-rail);color:var(--lab-ui-on-rail);border-left:4px solid var(--lab-print-active-ink)}
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan],[data-pwa-theme=electricstars])
  body.pwa-workspace .pwa-inspiration strong{color:var(--lab-ui-highlight)}
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan],[data-pwa-theme=electricstars])
  body.pwa-workspace :is(.pwa-guide-tabs button,.pwa-sleeve-actions button){background:var(--lab-ui-field);color:var(--lab-ui-on-field)}
 :root:is([data-pwa-theme=kingston],[data-pwa-theme=detroit],
- [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan])
+ [data-pwa-theme=addis],[data-pwa-theme=polish],[data-pwa-theme=beirut],[data-pwa-theme=michoacan],[data-pwa-theme=electricstars])
  body.gig-poster :is(button,a,input,textarea,summary):focus-visible{outline-color:var(--lab-ui-focus)}
 @media(max-width:520px){
  .pwa-theme-choices{grid-template-columns:repeat(2,minmax(0,1fr))}

@@ -2,14 +2,21 @@
    This early document script leaves native app state and map geometry alone. */
 (function(){
 'use strict';
-const KEY='ghg-lab-theme-v1',THEMES=['liberi','bosque','usiku','kingston','detroit','addis','polish','beirut','michoacan'];
+const KEY='ghg-lab-theme-v1',THEMES=['liberi','bosque','usiku','kingston','detroit','addis','polish','beirut','michoacan','electricstars'];
 // All five printed record traditions are selectable in Android Preferences.
-const PILOTS=['kingston','detroit','addis','polish','beirut','michoacan'];
+const PILOTS=['kingston','detroit','addis','polish','beirut','michoacan','electricstars'];
 const preview=new URLSearchParams(location.search).get('theme');
 /* Single paint contract for the three REAL projections and their cached
    animation frames. Geometry, sprites, camera and transitions are unchanged.
    CSS receives identical roles via --lab-atlas-*; no per-projection palette. */
 const ATLAS=Object.freeze({
+ electricstars:Object.freeze({
+  paper:'#0c426d',land:'#0c426d',ocean:'#011629',ink:'#f6b8fb',
+  selected:'#be74cd',route:'#f6b8fb',routeOpacity:.78,routeWidth:1.1,
+  routeDash:[3,4],backdrop:'#011629',field:'#011629',
+  graticule:'#3a74db',graticuleOpacity:.3,
+  oceanStroke:'#3a74db',oceanStrokeOpacity:.65
+ }),
  michoacan:Object.freeze({
   paper:'#d1ad91',land:'#d1ad91',ocean:'#24191b',ink:'#49232b',
   selected:'#e5b653',route:'#e5b653',routeOpacity:.78,routeWidth:1.1,
@@ -79,6 +86,9 @@ const ATLAS=Object.freeze({
 /* Neutral Funk shares the same paper and ink as the other portraits.
    Only selected Funk is a fixed performance, not a palette role. */
 const MOODS=Object.freeze({
+ electricstars:Object.freeze({neutralPaper:'#be74cd',neutralInk:'#372b68',
+  selectedPaper:'#ce87da',selectedInk:'#372b68',desireHeart:'#f6b8fb'
+ }),
  michoacan:Object.freeze({
   neutralPaper:'#d1ad91',neutralInk:'#49232b',
   selectedPaper:'#e5b653',selectedInk:'#24191b',
@@ -188,19 +198,27 @@ function applyThemeTokens(){
   style.setProperty('--lab-mood-'+role,String(mood[property]));
  syncPortraitInk();
 }
+function electricStarsUnlocked(){return window.HipsterLab?.surpriseUnlocked?.()===true}
 function saved(){
  try{const value=localStorage.getItem(KEY);return THEMES.includes(value)?value:'polish'}
  catch(_){return 'polish'}
 }
 let theme=PILOTS.includes(preview)?preview:saved(),atlas=null,defaults=null,frame=0;
+if(theme==='electricstars'&&!electricStarsUnlocked())theme='polish';
 document.documentElement.dataset.pwaTheme=theme;
 document.documentElement.dataset.ghgThemeProfile=PILOTS.includes(theme)?'print':'';
 applyThemeTokens();
 window.GHGAtlasPaintColors=()=>({theme,...ATLAS[theme]});
 function refreshButtons(){
- document.querySelectorAll('[data-lab-theme]').forEach(button=>
-  button.setAttribute('aria-pressed',String(button.dataset.labTheme===theme)));
+ document.querySelectorAll('[data-lab-theme]').forEach(button=>{
+  const locked=button.dataset.labTheme==='electricstars'&&!electricStarsUnlocked();
+  button.disabled=locked;button.setAttribute('aria-disabled',String(locked));
+  button.setAttribute('aria-pressed',String(button.dataset.labTheme===theme));
+  if(button.dataset.labTheme==='electricstars')button.querySelector('small').textContent=locked?'Locked · DeBarge surprise':'Unlocked · Electric nights';
+ });
 }
+window.addEventListener('focus',refreshButtons);
+window.addEventListener('ghg-surprise-roll',refreshButtons);
 function paint(){
  const map=atlas,palette=ATLAS[theme];
  if(!map||!map.getLayer?.('land'))return;
@@ -287,6 +305,7 @@ function syncNativeDialogPalette(){
  bridge.syncSystemPalette?.(theme,statusBar,navigationBar);
 }
 function setTheme(next,persist){
+ if(next==='electricstars'&&!electricStarsUnlocked())return false;
  if(!THEMES.includes(next)&&!PILOTS.includes(next))return false;
  // The base Liberi palette is already in the canonical stylesheet.
  // Load the shared additional rules only for the two alternate themes.

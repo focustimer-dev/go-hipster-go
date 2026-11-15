@@ -280,3 +280,33 @@
 :root[data-ghg-theme-profile=print] body.gig-poster.lab-workspace .go-options .go-extras :is(#includeCover,#goHard) .option-label{
  color:var(--lab-ui-on-action);
 }
+
+/* ElectricStars keeps onboarding Petrol Navy, but mood portraits are
+   dark Velvet Plum engraving on Orchid Mesh -- not light film negatives.
+   A translucent Neon Lilac wash marks selection without an opaque block.
+   Funk's approved selected performance is deliberately excluded. */
+:root[data-pwa-theme=electricstars][data-ghg-theme-profile=print] body.gig-poster.lab-workspace #firstCrateSetup .ticket{
+ --ticket-stock:var(--lab-ui-action);
+ --cream:var(--lab-ui-action);
+ --paper:var(--lab-ui-action);
+ background:var(--lab-ui-action);
+ color:var(--lab-ui-on-action);
+}
+:root[data-pwa-theme=electricstars][data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=funky])[aria-pressed=false]{
+ background:var(--lab-mood-neutral-paper);
+ color:var(--lab-mood-neutral-ink);
+}
+:root[data-pwa-theme=electricstars][data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=funky])[aria-pressed=false] .word{
+ /* Small labels need AA contrast; the character engraving remains Plum. */
+ color:var(--lab-mood-neutral-label-ink);
+}
+:root[data-pwa-theme=electricstars][data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=funky])[aria-pressed=true]{
+ background-color:var(--lab-mood-neutral-paper);
+ background-image:linear-gradient(var(--lab-mood-selected-wash),var(--lab-mood-selected-wash));
+ color:var(--lab-mood-selected-ink);
+ box-shadow:inset 0 0 0 2px var(--lab-mood-selected-edge),inset 0 -3px 0 var(--lab-mood-selected-edge);
+}
+:root[data-pwa-theme=electricstars][data-ghg-theme-profile=print] body.gig-poster.lab-workspace .mood-grid .mood:not([data-mood=funky])[aria-pressed=true] .word{
+ color:var(--lab-mood-selected-ink);
+ text-decoration-color:var(--lab-mood-selected-edge);
+}

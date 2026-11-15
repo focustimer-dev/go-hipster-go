@@ -25,7 +25,15 @@ public final class ChaosRollActivity extends Activity {
         boolean skipRough = prefs.getBoolean("chaosSkipRough", false);
         try {
             JSONObject config = new JSONObject(asset("chaos-roll-config.json"));
-            String brief = ChaosRollGenerator.generate(config, new SecureRandom(), ai, service, skipRough);
+            String brief = state == null ? null : state.getString("brief");
+            if (brief == null) {
+                SecureRandom random = new SecureRandom();
+                int roll = SurpriseRoll.draw(random);
+                if (roll == 1) prefs.edit().putBoolean("electricStarsUnlocked", true).commit();
+                brief = ChaosRollGenerator.generate(config, random, ai, service, skipRough)
+                    + "\n" + SurpriseRoll.line(roll);
+            }
+            currentBrief = brief;
             ((ClipboardManager) getSystemService(CLIPBOARD_SERVICE))
                 .setPrimaryClip(ClipData.newPlainText("Go, Hipster, Go! Chaos Roll", brief));
             // Opening a host is not equivalent to submitting a request.
@@ -41,6 +49,11 @@ public final class ChaosRollActivity extends Activity {
         }
     }
 
+    private String currentBrief;
+    @Override public void onSaveInstanceState(Bundle state) {
+        super.onSaveInstanceState(state);
+        state.putString("brief", currentBrief);
+    }
     private String asset(String path) throws Exception {
         try (InputStream in = getAssets().open(path);
              ByteArrayOutputStream out = new ByteArrayOutputStream()) {

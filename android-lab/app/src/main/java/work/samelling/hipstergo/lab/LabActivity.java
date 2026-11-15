@@ -352,6 +352,15 @@ public class LabActivity extends Activity {
         }catch(org.json.JSONException e){return "{}";}
     }
     public final class Bridge {
+        @JavascriptInterface public String rollSurprise() {
+            int roll = SurpriseRoll.draw(new java.security.SecureRandom());
+            if (roll == 1) prefs.edit().putBoolean("electricStarsUnlocked", true).commit();
+            return SurpriseRoll.line(roll);
+        }
+        @JavascriptInterface public boolean surpriseUnlocked() {
+            return prefs.getBoolean("electricStarsUnlocked", false) || prefs.getBoolean("underneathElectricStarsUnlocked", false);
+        }
+
         @JavascriptInterface public String state(){return workspaceState();}
         /** Semantic palette values are validated again on the Android UI thread. */
         @JavascriptInterface public void setDialogPalette(String theme,String surface,String ink,

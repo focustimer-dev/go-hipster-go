@@ -379,7 +379,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  await repeat.elements.goButton.click();await repeat.elements.goButton.click();
  assert.equal(repeatCopies.length,2,'Each GO press copies once');
  assert.doesNotMatch(repeatCopies[0],/Fresh-crate discovery lens:/,'The skill selects its research route');
- assert.match(repeatCopies[0],/Seed:/,'GO adds an independently combined random phrase');
+ assert.doesNotMatch(repeatCopies[0],/Seed:|Discovery route:/,'Skill owns automatic discovery');
  const geminiPrompt=harness(async()=>{},'?ai=gemini&service=youtube').elements.prompt.textContent;
  assert.match(geminiPrompt,/^@go-hipster-go @YouTube Music go(?:\n|$)/,'A bare GO is a valid one-line skill invocation');
  assert.doesNotMatch(geminiPrompt,/^Service:/m,'Do not repeat the destination already in the GO command');
@@ -432,8 +432,7 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  const nonGemSetup=harness(async()=>{},'?ai=chatgpt&service=spotify','setup').elements.setupPromptText.textContent;
  assert.doesNotMatch(nonGemSetup,/Task mode|native Gemini app/,'ChatGPT setup is not altered');
 
- assert.notEqual(repeatCopies[0],repeatCopies[1],'Repeats rotate even with no browser crypto');
- assert.notEqual(repeatCopies[0].match(/Seed: ([^\n]+)/)[1],repeatCopies[1].match(/Seed: ([^\n]+)/)[1],'Each GO changes the spark, even without browser crypto');
+ assert.equal(repeatCopies[0],repeatCopies[1],'Bare GO keeps a compact brief; the skill varies discovery');
  assert.doesNotMatch(harness(async()=>{},'?ai=gemini&service=youtube').elements.prompt.textContent,/@youtube-music/,'Do not suggest unofficial @youtube-music spelling');
  assert.equal(repeat.elements.prompt.textContent,repeatCopies[1],'Receipt matches the copied fresh crate');
  let copies=[];let h=harness(async text=>copies.push(text)),e=h.elements;
@@ -570,46 +569,19 @@ function harness(write,search='',page='launch',storage=new Map(),runtime={}){
  assert.equal(racingStamp.elements.receiptCopy.textContent,'COPYING…');
  await racingStamp.moods[1].click();release();await copyingStamp;
  assert.equal(racingStamp.elements.receiptCopy.textContent,'','An outdated in-flight copy cannot stamp the new request');
- const sparkBank=JSON.parse(fs.readFileSync('references/mood-spark-bank.json','utf8'));
  for(const selected of ['happy','angry','sad','weird','criminal','funky']){
-  const sparkStore=new Map(),outputs=[];
-  let sparkHarness=harness(async t=>outputs.push(t),'?mood='+selected,'launch',sparkStore);
-  for(let n=0;n<20;n++){
-   if(n===10)sparkHarness=harness(async t=>outputs.push(t),'?mood='+selected,'launch',sparkStore);
-   await sparkHarness.elements.goButton.click();
-  }
-  const parts=outputs.map(t=>t.match(/Seed: ([^\n]+)/)[1].replace(/\.$/,'').split(' / '));
-  assert.equal(new Set(parts.map(p=>p[2])).size,20,'Every mood image is used before recycling, including across reloads');
-  assert.ok(parts.every(p=>sparkBank[selected].map(s=>s.toLowerCase()).includes(p[2])),'Images stay in the selected mood');
-  assert.equal(new Set(parts.slice(0,10).map(p=>p[0])).size,10,'Rhythm rotates independently');
-  assert.equal(new Set(parts.slice(0,10).map(p=>p[1])).size,10,'Texture rotates independently');
- }
- const slowCopies=[],slowSparks=harness(async t=>slowCopies.push(t),'?mood=angry&tempo=slow');
- for(let i=0;i<50;i++)await slowSparks.elements.goButton.click();
- assert.ok(slowCopies.every(t=>!/blast beats|breakcore|frenz|redline|tempo push|headbang|mosh/i.test(t.match(/Seed: ([^\n]+)/)[1])),'Slow anger avoids overt speed-conflicting sparks');
- const cueBank=JSON.parse(fs.readFileSync('references/seed-cues.json','utf8'));
- for(const selected of ['','happy','angry','sad','weird','criminal','funky']){
-  for(const pace of ['','slow','relaxed','brisk','fast']){
-   const copies=[],run=harness(async t=>copies.push(t),'?mood='+selected+'&tempo='+pace);
-   for(let i=0;i<30;i++)await run.elements.goButton.click();
-   for(const prompt of copies){
-    const seed=prompt.match(/Seed: ([^\n]+)/)[1].replace(/\.$/,'').split(' / ');
-    assert.equal(seed.length,3);
-    assert.ok(seed.join(' / ').length<220,'Seed stays compact');
-    const rhythm=cueBank.rhythm.find(c=>c.text===seed[0]);
-    assert.ok(rhythm,'Rhythm comes from reviewed bank');
-    assert.ok(cueBank.texture.includes(seed[1]));
-    if(['slow','relaxed'].includes(pace))assert.notEqual(rhythm.pace,'fast');
-    if(['brisk','fast'].includes(pace))assert.notEqual(rhythm.pace,'slow');
-   }
-  }
+  const outputs=[],run=harness(async t=>outputs.push(t),'?mood='+selected+'&tempo=slow');
+  await run.elements.goButton.click();
+  assert.doesNotMatch(outputs[0],/Seed:|Discovery route:/,'No automatic discovery override');
+  assert.match(outputs[0],new RegExp('go '+selected));
+  assert.match(outputs[0],/Tempo preference: Slow/);
  }
  const artCopies=[],art=harness(async t=>artCopies.push(t),'?mood=funky');
  assert.equal(art.elements.includeCover.attrs['aria-pressed'],'false');
  await art.elements.goButton.click();assert.doesNotMatch(artCopies.at(-1),/Cover art:/);
- const seedBefore=art.elements.prompt.textContent.match(/Seed: ([^\n]+)/)[1];
+ const seedBefore=art.elements.prompt.textContent;
  await art.elements.includeCover.click();
- assert.equal(art.elements.prompt.textContent.match(/Seed: ([^\n]+)/)[1],seedBefore,'Artwork toggling preserves the current music brief');
+ assert.equal(art.elements.prompt.textContent.replace('\nCover art: yes.',''),seedBefore,'Artwork toggling preserves the current music brief');
  assert.equal(art.elements.openAi.attrs['aria-disabled'],'true','Cover change invalidates copied handoff');
  assert.match(art.elements.prompt.textContent,/Cover art: yes\./);
  assert.doesNotMatch(art.elements.prompt.textContent,/verified original release year|exact playlist title|music-service upload/,'Art policy stays in skill');

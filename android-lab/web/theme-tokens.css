@@ -1,3 +1,31 @@
+
+/* ElectricStars: nocturnal blue silhouettes against orchid light. */
+:root[data-pwa-theme=electricstars]{
+ color-scheme:dark;
+ --lab-ui-surface:#011629;--lab-ui-ink:#f6b8fb;
+ --lab-ui-panel:#372b68;--lab-ui-on-panel:#f6b8fb;
+ --lab-ui-rail:#011629;--lab-ui-on-rail:#f6b8fb;
+ --lab-ui-action:#0c426d;--lab-ui-on-action:#f6b8fb;
+ --lab-ui-rule:#be74cd;--lab-ui-field:#011629;--lab-ui-on-field:#f6b8fb;
+ --lab-ui-focus:#f6b8fb;--lab-ui-control-outline:#be74cd;
+ --lab-ui-ticket-stock:#0c426d;--lab-ui-ticket-ink:#f6b8fb;
+ --lab-ui-go:#0c426d;--lab-ui-go-ink:#f6b8fb;
+ --lab-ui-highlight:#be74cd;--lab-ui-on-highlight:#011629;
+ --lab-print-muted:#372b68;--lab-print-stamp:#be74cd;
+ --lab-print-active-ink:#f6b8fb;--lab-print-control-ink:#f6b8fb;
+ --lab-mood-selected-edge:#f6b8fb;--lab-print-stamp-border-style:solid;
+ --lab-print-substrate-texture:radial-gradient(ellipse at 85% 0%,#372b6833,transparent 65%);
+ --lab-print-stamp-filter:none;
+ --lab-atlas-paper:#0c426d;--lab-atlas-land:#0c426d;--lab-atlas-ocean:#011629;
+ --lab-atlas-ink:#f6b8fb;--lab-atlas-selected:#be74cd;--lab-atlas-route:#f6b8fb;
+ --lab-atlas-backdrop:#011629;--lab-atlas-field:#011629;
+ --lab-mood-neutral-paper:#be74cd;--lab-mood-neutral-ink:#372b68;
+ --lab-mood-neutral-label-ink:#011629;
+ --lab-mood-selected-paper:#ce87da;--lab-mood-selected-ink:#372b68;
+ --lab-mood-selected-wash:rgba(246,184,251,.28);
+ --lab-mood-desire-heart:#f6b8fb;
+}
+
 /* Android-only semantic UI colors. Single source for the Android WebView
    and its separately themed Manual iframe. The locked Libéri surface has no
    overrides here; map ocean/land and portrait inks are separate systems.
