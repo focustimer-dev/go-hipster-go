@@ -23,7 +23,7 @@ const rgb=hex=>{const s=hex.trim().replace('#','');if(!/^[0-9a-f]{6}$/i.test(s))
    setDialogPalette(){},syncSystemPalette(){},haptic(){},copy:()=>true
   }});
   await page.goto('http://127.0.0.1:'+server.address().port+'/?atlas=legacy');
-  await page.locator('#fc-ai-trigger').waitFor();
+  await page.locator('#fc-ai-trigger').waitFor({state:'attached'});
   // Exercise the normal pairing change handler to reach first-run choose stage.
   await page.evaluate(()=>document.getElementById('fc-ai').dispatchEvent(new Event('change',{bubbles:true})));
   assert(await page.locator('#fc-ai-trigger').isVisible(),'Visible custom AI picker');
