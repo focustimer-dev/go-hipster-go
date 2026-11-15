@@ -5,5 +5,5 @@ function labPrepareSurprise(){
  const base=goPrompt(ai,service,mood);
  if(base===labSurpriseBase&&previous&&!copiedPrompt){labSurpriseLine=previous;return}
  labSurpriseBase=base;
- if(window.HipsterLab?.rollSurprise)labSurpriseLine=window.HipsterLab.rollSurprise();
+ if(window.HipsterLab?.rollSurprise){labSurpriseLine=window.HipsterLab.rollSurprise();window.dispatchEvent(new Event("ghg-surprise-roll"));}
 }
