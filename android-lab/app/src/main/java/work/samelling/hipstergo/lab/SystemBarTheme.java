@@ -9,7 +9,7 @@ final class SystemBarTheme {
     static final String DEFAULT_COLOR = "#103135";
     private static final Set<String> THEMES = new HashSet<>(Arrays.asList(
         "liberi", "bosque", "usiku", "kingston", "detroit",
-        "addis", "polish", "beirut", "michoacan"));
+        "addis", "polish", "beirut", "michoacan", "electricstars"));
 
     private SystemBarTheme() { }
 
