@@ -91,7 +91,8 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
      const result=[];
      for(const face of elements){
       const style=getComputedStyle(face);
-      const uri=style.webkitMaskImage.match(/^url\\("?(data:image\\/png;base64,[^"\\)]+)"?\\)$/)?.[1];
+      const mask=style.webkitMaskImage;
+      const uri=mask.startsWith('url("data:image/png;base64,')&&mask.endsWith('")')?mask.slice(5,-2):null;
       if(!uri){result.push({width:style.width,height:style.height,imageWidth:0,ink:style.backgroundColor});continue}
       const picture=new Image();picture.src=uri;
       await picture.decode();
