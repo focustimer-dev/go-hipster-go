@@ -12,6 +12,7 @@ on:
       - 'scripts/test_cahill_region_fit.cjs'
       - 'scripts/test_android_lab_dom.cjs'
       - 'scripts/test_rc_manual_pairing.cjs'
+      - 'scripts/test_first_crate_theme_menus.cjs'
       - 'scripts/test_android_lab_themes.cjs'
       - 'scripts/test_final_five_contract.cjs'
       - 'scripts/test_lab_discovery_routes.cjs'
