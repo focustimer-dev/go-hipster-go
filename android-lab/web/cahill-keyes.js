@@ -282,7 +282,12 @@ function labCahillInit(host,geography,routes,legacy){
   const rect=viewport.getBoundingClientRect();
   if(!rect.width||!rect.height)return reset();
   const dx=Math.max(14,x1-x0),dy=Math.max(14,y1-y0);
-  const s=limit(Math.min(W/(dx*1.28),H/(dy*1.28)),1,5.5);
+  // Leave geographic context on first selection: never plunge straight
+  // into a small territory. Manual pinch, pan and double-tap still reach 5.5.
+  const loneRegion=!atlasFocus&&crateSelected.size===1;
+  const padding=loneRegion?2.05:1.48;
+  const maximum=loneRegion?2.1:4.2;
+  const s=limit(Math.min(W/(dx*padding),H/(dy*padding)),1,maximum);
   animateCameraFit(s,(x0+x1)/2,(y0+y1)/2);
  };
  svg.addEventListener('wheel',event=>{
