@@ -98,11 +98,13 @@ class LabSnapshotTests(unittest.TestCase):
             stripped=stripped.replace('atlas-engraved-details.webp','atlas-engraved-details.png')
             self.assertEqual(stripped,(ROOT/'launcher/editions/gig-poster/index.html').read_text())
             from PIL import Image
-            for name in ('desire-neutral-v1.webp','desire-selected-v1.webp',
+            for name in ('desire-neutral-v4.webp','desire-selected-v4.webp',
                          'triumph-neutral-v1.webp','triumph-selected-v1.webp'):
                 original=ROOT/'launcher/editions/gig-poster/assets'/name
                 packaged=dest/'editions/gig-poster/assets'/name
-                self.assertLess(packaged.stat().st_size,original.stat().st_size)
+                # The optimizer may keep an already smaller lossless master.
+                # Never require lossy recompression when it increases size.
+                self.assertLessEqual(packaged.stat().st_size,original.stat().st_size)
                 with Image.open(original) as original_image, Image.open(packaged) as packaged_image:
                     self.assertEqual(original_image.size,packaged_image.size)
                     self.assertEqual(original_image.convert('RGBA').getchannel('A').tobytes(),
