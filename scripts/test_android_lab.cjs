@@ -147,6 +147,25 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert.equal(await page.evaluate(()=>location.host.startsWith('127.0.0.1')),true,'Manual must remain on local origin');
   await page.locator('#labManualReturn').click();
   await page.locator('#labManualGuide').waitFor({state:'visible'});
+  // The Manual's inspiration illustration must not masquerade as real controls.
+  const guide=page.frameLocator('#labManualFrame');
+  await guide.locator('body').evaluate(()=>{location.hash='idea'});
+  await guide.locator('#openJukebox').waitFor({state:'visible'});
+  assert.equal(await guide.locator('#ideaInput,#moodArea,#go').count(),0,
+   'No fake inspiration form, mood picker or GO in the Manual');
+  assert.match(await guide.locator('#ideaStage').textContent(),/Not your active request/);
+  // A forged parent-page message cannot trigger iframe-only navigation.
+  await page.evaluate(()=>window.postMessage({type:'lab-manual-open-jukebox'},location.origin));
+  assert(await page.locator('#labManual').isVisible(),'Ignore messages not sent by Manual frame');
+  await guide.locator('#openJukebox').click();
+  await page.locator('#labJukebox').waitFor({state:'visible'});
+  assert.equal(await page.evaluate(()=>window.labState.activeInspiration),'',
+   'Guide navigation never writes example text into real inspiration');
+  assert(await page.locator('#labAddInspiration').isVisible(),'Show real Jukebox inspiration entry');
+  assert.equal(await page.evaluate(()=>document.activeElement?.id),'labAddInspiration',
+   'Move focus to the genuine Add inspiration button');
+  await page.locator('[data-lab-tab="manual"]').click();
+  await page.locator('#labManual').waitFor({state:'visible'});
   await page.frameLocator('#labManualFrame').locator('#cratePicker > summary').click();await page.frameLocator('#labManualFrame').locator('[data-crate-tab=setup]').click();await page.frameLocator('#labManualFrame').locator('.crate-dividers a[href="#setup"]').click();await page.frameLocator('#labManualFrame').locator('#setupConfirm .finish [data-review-skill-updates]').click();
   await page.waitForFunction(()=>labCalls.some(c=>c[0]==='updates'));
   await page.locator('[data-lab-tab="jukebox"]').click();assert(Math.abs((await page.evaluate(()=>window.scrollY))-position)<2);
