@@ -58,6 +58,10 @@ const rgb=hex=>{const s=hex.trim().replace('#','');if(!/^[0-9a-f]{6}$/i.test(s))
   await page.keyboard.press('Escape');
   assert.equal(await page.locator('#fc-picker-dialog').evaluate(e=>e.open),false,'Escape closes popup');
   assert.match(await page.locator('#fc-ticket').innerText(),/WHAT.S YOUR SETUP/,'Escape must not abandon setup');
+  // Switching from Libéri must activate the optional theme stylesheet.
+  // Changing root.dataset directly does not load disabled <link media="not all">.
+  await page.evaluate(()=>window.HipsterLabTheme.set('bosque',false));
+  await page.waitForFunction(()=>getComputedStyle(document.documentElement).getPropertyValue('--lab-ui-panel').trim()==='#f5f0e6');
   for(const theme of ['bosque','usiku','michoacan','electricstars']){
    await page.evaluate(theme=>{document.documentElement.dataset.pwaTheme=theme;document.documentElement.dataset.ghgThemeProfile='print'},theme);
    await page.locator('#fc-ai-trigger').click();
