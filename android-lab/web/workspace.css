@@ -52,7 +52,7 @@ body.lab-workspace:not([data-lab-screen=jukebox]) .selection-ticket{display:none
 .lab-empty p{font-size:.875rem;margin:0 0 10px}
 .lab-save-button{margin-left:auto;flex-shrink:0;font-size:1rem}
 body.gig-poster.lab-workspace .receipt-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.lab-dialog{box-sizing:border-box;width:calc(100% - 24px);max-width:480px;max-height:85dvh;padding:0;background:#dfb045;color:#103135;border:1px solid #103135;box-shadow:0 12px 32px #0005;overflow:auto;font:1rem/1.5 Arial,sans-serif}
+.lab-dialog{--lab-dialog-default-stock:#dfb045;--lab-dialog-default-ink:#103135;box-sizing:border-box;width:calc(100% - 24px);max-width:480px;max-height:85dvh;padding:0;background:var(--lab-dialog-default-stock);color:var(--lab-dialog-default-ink);border:1px solid var(--lab-dialog-default-ink);box-shadow:0 12px 32px #0005;overflow:auto;font:1rem/1.5 Arial,sans-serif}
 .lab-dialog::backdrop{background:#10313599}
 .lab-dialog-head{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #103135;padding:12px 18px}
 .lab-dialog-body{padding:18px}
@@ -1325,9 +1325,9 @@ body.gig-poster.lab-workspace #firstCrateSetup .ticket .primary{
    entire Preferences sheet transparent over the Jukebox. */
 body.gig-poster.lab-workspace .lab-dialog,
 body.gig-poster.lab-workspace .lab-dialog-head{
- background:var(--lab-ui-panel,var(--lab-ui-surface,#dfb045));
- color:var(--lab-ui-on-panel,var(--lab-ui-ink,#103135));
- border-color:var(--lab-ui-rule,#103135);
+ background:var(--lab-ui-panel,var(--lab-ui-surface,var(--lab-dialog-default-stock)));
+ color:var(--lab-ui-on-panel,var(--lab-ui-ink,var(--lab-dialog-default-ink)));
+ border-color:var(--lab-ui-rule,var(--lab-dialog-default-ink));
 }
 body.gig-poster.lab-workspace .lab-dialog .lab-choice input{
  accent-color:var(--lab-atlas-selected);
