@@ -205,6 +205,23 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    await page.locator('[data-lab-tab="crate"]').click();await page.locator('[data-lab-recent="recent-preview"]').click();
    assert(await page.locator('#labJukebox').isVisible());assert(await page.locator('#labInspiration').isVisible());
    await page.locator('[data-lab-tab="manual"]').click();await capture('manual');
+   // Capture the actual Inspiration guide, not merely the Manual index.
+   // This iframe is the shipped Android web asset with a simulated native bridge.
+   const manualGuide=page.frameLocator('#labManualFrame');
+   await manualGuide.locator('body').evaluate(()=>{location.hash='idea'});
+   await manualGuide.locator('#openJukebox').waitFor({state:'visible'});
+   assert.equal(await manualGuide.locator('#ideaInput,#moodArea,#go').count(),0,
+    'The Manual must not present fake inspiration, moods or GO controls');
+   assert.match(await manualGuide.locator('#ideaStage').innerText(),/Example only[\s\S]*Not your active request/i);
+   await capture('manual-inspiration');
+   const existingReference=await page.evaluate(()=>window.auditReference);
+   await manualGuide.locator('#openJukebox').click();
+   await page.locator('#labJukebox').waitFor({state:'visible'});
+   assert.equal(await page.evaluate(()=>window.auditReference),existingReference,
+    'Manual navigation must not overwrite the active reference');
+   assert.equal(await page.evaluate(()=>document.activeElement?.id),'labReviewInspiration',
+    'Manual navigation must focus the real Edit inspiration action when a reference exists');
+   await page.locator('[data-lab-tab="manual"]').click();
    const appVersion=fs.readFileSync(path.resolve(__dirname,'../android-lab/app/build.gradle'),'utf8').match(/versionName\s+'([^']+)'/)[1];
    assert.equal(await page.locator('#labAppVersion').textContent(),appVersion);
    await page.evaluate(()=>window.auditCopyOK=false);
