@@ -58,6 +58,20 @@ class GeminiExactPublishingContractTests(unittest.TestCase):
         self.assertIn("unverified", policy)
         self.assertIn("not matched or missing", policy)
 
+    def test_runtime_parameter_rules_are_reachable_from_go_and_gem(self):
+        policy = read("references/gemini-publish.md")
+        entry = read("adapters/gemini/SKILL.md")
+        gem = read("adapters/gemini/GEM_INSTRUCTIONS.md")
+        self.assertIn("## Gemini-runtime YouTube Music tool parameter rules", policy)
+        self.assertIn("Before an exact-track YouTube Music create/save", entry)
+        self.assertIn("Gemini Publish", entry)
+        self.assertIn("omit `video_titles` entirely", gem)
+        self.assertIn("omit `video_uris` entirely", gem)
+        self.assertIn("SAVE UNCONFIRMED", policy)
+        self.assertIn("Do not call create again", policy)
+        self.assertIn("12 requests expand into 17–21", policy)
+        self.assertIn("not even `null` or `[]`", policy)
+
     def test_no_composer_handoff_in_gem_runtime(self):
         for path in ("adapters/gemini/SKILL.md", "adapters/gemini/GEM_KNOWLEDGE.md"):
             with self.subTest(path=path):
