@@ -208,7 +208,7 @@ For `Discovery route: v1/Rxx`, read [routes](references/discovery-routes.md) bef
 
 ## Gemini-native playlist creation
 
-**Tool parameter contract:** Before an exact-track YouTube Music create/save, follow [Gemini Publish](references/gemini-publish.md), including its observed Gemini-runtime field restrictions and confirmation checks.
+**Gemini tool fields:** Before any exact-track create/save, follow [Gemini Publish](references/gemini-publish.md) for allowed fields and verification.
 
 **Service precedence:** Explicit service in this request > accessible listener-approved setup preference > visible current-conversation preference > YouTube Music (Gemini default). No inherited Spotify default. Never silently substitute YouTube Music when Spotify is expressly requested. Gemini Spotify may support search or playback but cannot be assumed to expose a writer; ask before switching destination.
 
