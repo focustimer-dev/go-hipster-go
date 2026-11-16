@@ -1,4 +1,4 @@
-// Browser regression: both modes allow 2-mood taps; Curve also offers 3-dot drag stamps.
+// Browser regression: both modes allow 2-mood taps; Curve also offers ✥ drag stamps.
 const {chromium}=require('playwright');
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const root=path.resolve(__dirname,'../android-lab/app/src/main/assets/site');
@@ -41,7 +41,7 @@ const server=http.createServer((req,res)=>{
   assert.match(await hint.innerText(),/Tap up to two moods, then drag onto the curve/);
   assert.match(await mood.getAttribute('aria-label'),/tap up to two, then drag onto the curve/);
   assert.equal(await mood.locator('.mood-drag-grip').first().evaluate(e=>getComputedStyle(e).display),'grid');
-  assert.equal(await mood.locator('.mood-drag-grip').first().locator('svg circle').count(),3,'Small three-dot drag cue, not six dots');
+  assert.equal((await mood.locator('.mood-drag-grip').first().innerText()).trim(),'✥','Four-spoked drag cue does not resemble an overflow menu');
   assert.match(await happy.getAttribute('title'),/Tap to select HAPPY; drag onto the curve/);
   assert.equal(await happy.getAttribute('aria-pressed'),'true','Happy remains selected in Curve mode');
   assert.equal(await page.evaluate(()=>window.HipsterPWABridge.getPrompt()),before,'Tempo-only curve keeps the original global mood');

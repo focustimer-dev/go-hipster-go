@@ -114,9 +114,22 @@
 
     <section id="firstCrateSetup" aria-label="First-time setup">
       <div id="fc-options-holder" hidden><div class="services" id="fc-services">
-        <label><span>YOUR AI</span><select id="fc-ai"><option>ChatGPT</option><option>Gemini</option><option>Claude</option><option>Other</option></select></label>
-        <label><span>YOUR MUSIC</span><select id="fc-service"><option>Spotify</option><option>YouTube Music</option><option>Apple Music</option></select></label>
+        <div class="fc-service-field" role="group" aria-labelledby="fc-ai-label">
+          <span id="fc-ai-label" class="fc-service-label">YOUR AI</span>
+          <select id="fc-ai" hidden tabindex="-1" aria-hidden="true"><option>ChatGPT</option><option>Gemini</option><option>Claude</option><option>Other</option></select>
+          <button type="button" id="fc-ai-trigger" class="fc-picker-trigger" aria-haspopup="dialog" aria-controls="fc-picker-dialog" aria-expanded="false" aria-labelledby="fc-ai-label fc-ai-value"><span id="fc-ai-value">ChatGPT</span><span class="fc-picker-chevron" aria-hidden="true">⌄</span></button>
+        </div>
+        <div class="fc-service-field" role="group" aria-labelledby="fc-service-label">
+          <span id="fc-service-label" class="fc-service-label">YOUR MUSIC</span>
+          <select id="fc-service" hidden tabindex="-1" aria-hidden="true"><option>Spotify</option><option>YouTube Music</option><option>Apple Music</option></select>
+          <button type="button" id="fc-service-trigger" class="fc-picker-trigger" aria-haspopup="dialog" aria-controls="fc-picker-dialog" aria-expanded="false" aria-labelledby="fc-service-label fc-service-value"><span id="fc-service-value">Spotify</span><span class="fc-picker-chevron" aria-hidden="true">⌄</span></button>
+        </div>
       </div></div>
+      <dialog id="fc-picker-dialog" class="fc-picker-dialog" aria-labelledby="fc-picker-title">
+        <h2 id="fc-picker-title" class="fc-picker-title">CHOOSE YOUR SERVICE</h2>
+        <div id="fc-picker-options" class="fc-picker-options" role="group" aria-label="Available choices"></div>
+        <button type="button" class="fc-picker-cancel" id="fc-picker-cancel">CANCEL</button>
+      </dialog>
       <div id="fc-current-setup" role="status" hidden></div>
       <section id="fc-ticket" class="ticket" aria-label="Setup steps"></section>
       <noscript>Setup needs JavaScript. <a href="/editions/gig-poster/setup/">Read the Manual.</a></noscript>

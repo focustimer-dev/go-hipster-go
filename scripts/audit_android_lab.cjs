@@ -60,7 +60,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    assert(await page.locator('#firstCrateSetup [data-action="resume"]').isVisible(),'Paused setup offers resume');
    await page.locator('#firstCrateSetup [data-action="resume"]').click();
    await page.locator('#firstCrateSetup [data-action="choose"]').first().click();
-   await page.locator('#fc-ai').selectOption('Claude');
+   await page.locator('#fc-ai-trigger').click();await page.locator('.fc-picker-option').filter({hasText:'Claude'}).click();
    await page.locator('#firstCrateSetup [data-action="install"]').first().click();
    assert(await page.locator('#firstCrateSetup [data-action="install-copy"]').isVisible(),'Claude prompt-first installation is directly visible');
    assert.equal(await page.locator('#firstCrateSetup .install-fallback').getAttribute('open'),null,'Manual uploader instructions stay secondary');
@@ -70,7 +70,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    assert.equal(await page.evaluate(()=>auditCalls.some(c=>c[0]==='share'||c[0]==='go')),false,'Copy offers consent without auto-sharing');
    await capture('claude-prompt-first');
    await page.locator('#firstCrateSetup [data-action="choose"]').first().click();
-   await page.locator('#fc-ai').selectOption('ChatGPT');
+   await page.locator('#fc-ai-trigger').click();await page.locator('.fc-picker-option').filter({hasText:'ChatGPT'}).click();
    for(const action of ['install','check'])await page.locator('#firstCrateSetup [data-action="'+action+'"]').first().click();
    await page.locator('#firstCrateSetup [data-action="copy"]').click();
    await capture('setup-copied');
@@ -219,7 +219,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    await page.locator('[data-lab-action="close-preferences"]').click();
    await page.locator('[data-lab-tab="jukebox"]').click();
    await page.locator('#fc-current-setup [data-action="choose"]').click();
-   await page.locator('#fc-ai').selectOption('Other');
+   await page.locator('#fc-ai-trigger').click();await page.locator('.fc-picker-option').filter({hasText:'Other'}).click();
    await page.locator('#firstCrateSetup [data-action="pause"]').first().click();
    await page.locator('[data-lab-tab="jukebox"]').click();await page.locator('#goButton').click();
    await page.waitForFunction(()=>document.querySelector('#handoffTitle').textContent.includes('MANUALLY'));
