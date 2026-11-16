@@ -130,6 +130,7 @@
 :root[data-ghg-theme-profile=print] :is(.crate-tabs button[aria-selected=true],.crate-dividers a[aria-current=page],.manual-groups [aria-pressed=true]){
  background:var(--guide-active)!important;color:var(--guide-active-ink)!important;
 }
+:root[data-ghg-theme-profile=print] .crate-current{gap:6px}
 :root[data-ghg-theme-profile=print] .crate-picker summary{border-color:var(--lab-ui-rule)}
 :root[data-ghg-theme-profile=print] .crate-action{
  background:var(--lab-ui-action);color:var(--lab-ui-on-action);
