@@ -63,7 +63,7 @@ class GeminiExactPublishingContractTests(unittest.TestCase):
         entry = read("adapters/gemini/SKILL.md")
         gem = read("adapters/gemini/GEM_INSTRUCTIONS.md")
         self.assertIn("## Gemini-runtime YouTube Music tool parameter rules", policy)
-        self.assertIn("Before an exact-track YouTube Music create/save", entry)
+        self.assertIn("Before any exact-track create/save", entry)
         self.assertIn("Gemini Publish", entry)
         self.assertIn("omit `video_titles` entirely", gem)
         self.assertIn("omit `video_uris` entirely", gem)
