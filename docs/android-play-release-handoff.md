@@ -1,6 +1,6 @@
 # Go, Hipster, Go! — first Google Play release
 
-Developer verification is complete per the account owner. Start with the native Android production RC. Use this page as the release index, with the linked files as the editable sources.
+The owner completed verification in Android Developer Console. Google Play Console enrollment is pending. Google lists a one-time US$25 Play Console registration fee. [Play Console registration](https://support.google.com/googleplay/android-developer/answer/6112435) Start with the native Android production RC. Use this page as the release index, with the linked files as the editable sources.
 
 | Item | Source |
 | --- | --- |
@@ -13,7 +13,7 @@ Developer verification is complete per the account owner. Start with the native 
 
 ## 1. Register the app
 
-1. Open [Play Console](https://play.google.com/console), select **All apps → Create app** and enter **Go, Hipster, Go!**, **English (United States)** and **App**. Confirm pricing before saving. The current listing proposes **Music & Audio**.
+1. Finish Play Console registration and complete any account verification Play Console requests. Open [Play Console](https://play.google.com/console), select **All apps → Create app** and enter **Go, Hipster, Go!**, **English (United States)** and **App**. Confirm pricing before saving. The current listing proposes **Music & Audio**.
 2. Check whether `work.samelling.hipstergo` already has Play or off-Play signing history. If Google requests existing-key proof, resolve it with the original signing key before committing the package or signing path. Decide whether existing production-package installs need an in-place upgrade. The isolated `.qa` app has a separate identity.
 3. Enroll in [Play App Signing](https://support.google.com/googleplay/android-developer/answer/9842756) and record the upload certificate SHA-256 and Play app-signing certificate SHA-256. Keep a secure backup of the upload keystore. The upload key signs the AAB and Google uses the app-signing key for the APKs it distributes.
 
