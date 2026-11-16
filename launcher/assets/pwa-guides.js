@@ -12,11 +12,18 @@ const guides=[
  {id:'gemini',group:'setup',title:'Gemini',intro:'Gemini uses the saved Go, Hipster, Go! Skill and YouTube Music when their tools are available.',steps:['Select Gemini and YouTube Music in Jukebox.','Install or update the persistent Skill through Gemini’s supported skill setup, then copy and send the setup check.','Confirm both the saved Skill and the available YouTube Music actions before making the playlist. Reading an instruction link is not the same as installing a Skill.'],action:'copy-setup',label:'COPY SETUP CHECK'},
  {id:'claude',group:'setup',title:'Claude',intro:'Use Claude’s supported Skill or plugin setup, then verify music tools.',steps:['Choose Claude and your music service in Jukebox.','Load the appropriate Go, Hipster, Go! package through Claude’s supported installation route. A Skill ZIP and Plugin ZIP are not interchangeable.','Copy and send the setup check. Verify music search, playlist creation and track addition, not just playback.'],action:'copy-setup',label:'COPY SETUP CHECK'},
  {id:'other',group:'setup',title:'Other AI',intro:'Use your AI’s documented way to load instructions.',steps:['Choose Other AI in Jukebox and load the canonical skill through a supported setup route.','Copy and send the setup check, and verify what is installed and whether it persists.','If the AI cannot save playlists, keep its verified tracklist and add it to your music service yourself.'],action:'copy-setup',label:'COPY SETUP CHECK'},
- {id:'resources',group:'setup',title:'More Resources',intro:'Install guides and current skill packages live in the public release.',steps:['Open the latest GitHub release to find current ChatGPT, Gemini and Claude packages.','Use the canonical skill file when your AI supports a prompt-based install.','Browser settings are separate from your installed Android app; updating this page will not update a Skill already installed in another AI.'],url:'https://github.com/focustimer-dev/go-hipster-go/releases/latest',label:'OPEN LATEST RELEASE'},
+ {id:'resources',group:'setup',title:'More Resources',intro:'Choose the verified stable packages, not experimental RC downloads.',steps:['Choose the ZIP for your AI and its supported installation route. Claude Skill and Claude Plugin ZIPs are different products.','Download and install the package inside your AI, then run the setup check. Reading a URL or downloading a ZIP is not proof of installation.','Browser settings are separate from the Android app; reloading this PWA does not update a Skill installed in another AI.'],url:'https://github.com/focustimer-dev/go-hipster-go/releases/tag/gemini-skill-v3.11.7',label:'OPEN VERIFIED STABLE RELEASE'},
  {id:'normal',group:'use',title:'Normal GO',intro:'No inspiration required. You can begin directly in the Jukebox.',steps:['Same settings, new playlist: send Refresh in the AI conversation containing your brief.','Leave Your Crate inspiration empty. Pick a mood, pace or region, if you like.','Press GO to prepare your request. In the browser, copy the request and open your AI, then paste and send.','Listen to the result, review and refine it before saving anything.'],action:'jukebox',label:'OPEN JUKEBOX'},
  {id:'inspiration',group:'use',title:'Inspiration',intro:'Start with an idea, song or artist, then shape the request.',steps:['In Your Crate, tap ADD to enter a musical idea or a link. You can also review and remove the active reference from Jukebox.','Choose Use in Jukebox. Moods, pace and regions remain independent choices.','Press GO. Your inspiration appears as a reference in the exact request, not as instructions to the AI.'],action:'crate',label:'OPEN YOUR CRATE'},
  {id:'review',group:'use',title:'Review & Publish',intro:'A finished playlist should be checked before it is saved.',steps:['Stay in the same AI conversation that produced the playlist. Ask for go de-cheese to examine repetition, obvious picks and drift from your original request.','Review any proposed changes and approve only the edits you want.','For Gemini with a working YouTube Music save action, send Publish and verify the actual saved playlist. Other AI/music combinations must use their available save flow; a link alone is not proof of saving.'],copy:'go de-cheese',label:'COPY DE-CHEESE'},
  {id:'artwork',group:'use',title:'Cover Art',intro:'Finish the sleeve after the playlist has actually been saved.',steps:['If you requested cover art, download the generated image.','Open the saved playlist in your music service and find its artwork-edit control, if offered.','Choose the image and save. YouTube Music controls can vary by account or device; try its desktop site when the mobile control is absent.'],url:'https://music.youtube.com/',label:'OPEN YOUTUBE MUSIC'}
+];
+// These immutable URLs are synchronized with config/stable-skill-release.json.
+const STABLE_PACKAGES=[
+ ['ChatGPT Plugin ZIP','https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.11.7/go-hipster-go-chatgpt-plugin.zip'],
+ ['Gemini Skill ZIP','https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.11.7/go-hipster-go-gemini-app-skill.zip'],
+ ['Claude Skill ZIP','https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.11.7/go-hipster-go-claude-skill.zip'],
+ ['Claude Plugin ZIP','https://github.com/focustimer-dev/go-hipster-go/releases/download/gemini-skill-v3.11.7/go-hipster-go-claude-plugin.zip']
 ];
 const byId=new Map(guides.map(g=>[g.id,g]));
 let selected='overview',category='setup';
@@ -62,6 +69,14 @@ function renderGuide(){
  const list=element('ol','pwa-guide-steps');
  for(const step of g.steps)list.append(element('li','',step));
  content.append(list);
+ if(g.id==='resources'){
+  content.append(element('p','pwa-guide-intro','Stable skill release: 3.11.7. Downloading is not installation.'));
+  const downloads=element('div','pwa-guide-downloads');
+  for(const [name,url] of STABLE_PACKAGES){
+   const a=element('a','pwa-wide',name);a.href=url;a.target='_blank';a.rel='noopener noreferrer';downloads.append(a);
+  }
+  content.append(downloads);
+ }
  if(g.action){
   const b=element('button','pwa-wide',g.label);b.type='button';
   b.dataset.pwaAction=g.action==='jukebox'||g.action==='crate'?'pwa-guide-'+g.action:g.action;

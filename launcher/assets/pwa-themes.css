@@ -39,6 +39,9 @@
 .pwa-theme-choice small{font:400 .68rem/1.3 Arial,sans-serif}
 .pwa-theme-sample{display:flex;height:31px;overflow:hidden;border:1px solid #11111145;border-radius:1px}
 .pwa-theme-sample i{display:block;flex:1}
+.pwa-theme-choice[data-pwa-theme=electricstars] .pwa-theme-sample i:nth-child(1){background:#011629}
+.pwa-theme-choice[data-pwa-theme=electricstars] .pwa-theme-sample i:nth-child(2){background:#3a74db}
+.pwa-theme-choice[data-pwa-theme=electricstars] .pwa-theme-sample i:nth-child(3){background:#f6b8fb}
 .pwa-theme-choice[data-pwa-theme=liberi] .pwa-theme-sample i:nth-child(1){background:#103135}
 .pwa-theme-choice[data-pwa-theme=liberi] .pwa-theme-sample i:nth-child(2){background:#dfb045}
 .pwa-theme-choice[data-pwa-theme=liberi] .pwa-theme-sample i:nth-child(3){background:#a83223}
@@ -50,6 +53,7 @@
 .pwa-theme-choice[data-pwa-theme=usiku] .pwa-theme-sample i:nth-child(3){background:#f5f0e6}
 .pwa-dialog .pwa-theme-choice[aria-pressed=true]{outline:2px solid currentColor;outline-offset:2px;background:var(--ghg-theme-active,#103135);color:var(--ghg-theme-active-text,#dfb045)}
 .pwa-theme-choice:focus-visible{outline:3px solid currentColor;outline-offset:3px}
+.pwa-dialog .pwa-theme-choice:disabled{filter:grayscale(.5);opacity:.58;cursor:not-allowed}
 .pwa-theme-status{min-height:1.4em;margin:10px 0 0!important;font:.76rem/1.4 Arial,sans-serif}
 @media(max-width:340px){.pwa-theme-choices{gap:5px}.pwa-dialog .pwa-theme-choice{padding:6px}.pwa-theme-choice strong{font-size:1rem}}
 @media(forced-colors:active){.pwa-dialog .pwa-theme-choice[aria-pressed=true]{outline:3px solid Highlight}}
