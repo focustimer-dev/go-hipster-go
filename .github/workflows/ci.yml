@@ -28,6 +28,23 @@ jobs:
           python scripts/playlist_cli.py validate examples/example-playlist.json
           python -m unittest discover -s tests -v
           python scripts/qualify_skill_release.py --check
+      # PR #329: retain a short-lived Gemini test ZIP, never a stable release.
+      - name: Record PR329 Gemini handoff candidate provenance
+        if: ${{ github.event_name == 'pull_request' && matrix.python-version == '3.12' && github.head_ref == 'fix/gemini-ytmusic-parameter-contract-20261115' }}
+        run: |
+          printf 'channel=pr329-gemini-ytmusic-qa\nsource_sha=%s\nskill_version=3.11.7 (unreleased PR candidate, NOT installed stable)\npublic_release=no\ninstallation_verified=no\n' "${{ github.event.pull_request.head.sha }}" > dist/pr329-gemini-qa-provenance.txt
+          sha256sum dist/go-hipster-go-gemini-app-skill.zip >> dist/pr329-gemini-qa-provenance.txt
+      - name: Retain PR329 Gemini YouTube Music handoff test ZIP
+        if: ${{ github.event_name == 'pull_request' && matrix.python-version == '3.12' && github.head_ref == 'fix/gemini-ytmusic-parameter-contract-20261115' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ghg-pr329-gemini-ytmusic-qa-${{ github.event.pull_request.head.sha }}
+          path: |
+            dist/go-hipster-go-gemini-app-skill.zip
+            dist/pr329-gemini-qa-provenance.txt
+          retention-days: 7
+          if-no-files-found: error
+
       # Export the same checked source as the Android RC for private host QA.
       # These ZIPs are NOT the frozen 3.11.7 stable release. Never publish or
       # overwrite the pinned release from an ordinary push.
