@@ -26,6 +26,8 @@ For `Discovery route: v1/Rxx`, read [routes](https://raw.githubusercontent.com/f
 
 ## Gemini-native playlist creation
 
+**Tool parameter contract:** Before an exact-track YouTube Music create/save, follow [Gemini Publish](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/release/skill-prod/references/gemini-publish.md), including its observed Gemini-runtime field restrictions and confirmation checks.
+
 **Service precedence:** Explicit service in this request > accessible listener-approved setup preference > visible current-conversation preference > YouTube Music (Gemini default). No inherited Spotify default. Never silently substitute YouTube Music when Spotify is expressly requested. Gemini Spotify may support search or playback but cannot be assumed to expose a writer; ask before switching destination.
 
 **Publish-first GO:** An ordinary go or go live curates 12 real, verified, ordered artist/title/version recordings by default (or the requested count), then attempts ONE connected and authorized YouTube Music playlist when selected and actually available. Non-mutating capability preflight happens before costly discovery; missing writer never blocks curation. Any clear no-write request, including text only, curate only or do not save, blocks provider writes. No saved account or typed @mention proves tool availability; setup never triggers a playlist.
