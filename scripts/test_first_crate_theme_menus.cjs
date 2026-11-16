@@ -24,6 +24,28 @@ const rgb=hex=>{const s=hex.trim().replace('#','');if(!/^[0-9a-f]{6}$/i.test(s))
   }});
   await page.goto('http://127.0.0.1:'+server.address().port+'/?atlas=legacy');
   await page.locator('#fc-ai-trigger').waitFor({state:'attached'});
+  // Regression: Libéri previously had no --lab-ui-panel / --lab-ui-on-panel
+  // tokens. The last dialog override became invalid at computed time and
+  // revealed the Jukebox through a transparent Preferences surface.
+  assert.equal(await page.evaluate(()=>document.documentElement.dataset.pwaTheme),'liberi','Explicit Libéri setup-menu smoke');
+  await page.locator('.lab-rail [data-lab-action="preferences"]').click();
+  const prefs=page.locator('#labPreferences');
+  const paint=await prefs.evaluate(el=>{
+   const panel=getComputedStyle(el),header=getComputedStyle(el.querySelector('.lab-dialog-head'));
+   return {open:el.open,panelBg:panel.backgroundColor,panelInk:panel.color,
+    headerBg:header.backgroundColor,headerInk:header.color,opacity:panel.opacity};
+  });
+  assert.equal(paint.open,true);
+  assert.equal(paint.panelBg,'rgb(223, 176, 69)','Libéri Preferences must have opaque gold stock');
+  assert.equal(paint.headerBg,'rgb(223, 176, 69)','Sticky Preferences header must cover scrolled content');
+  assert.equal(paint.panelInk,'rgb(16, 49, 53)','Libéri Preferences ink');
+  assert.equal(paint.headerInk,'rgb(16, 49, 53)','Libéri header ink');
+  assert.equal(paint.opacity,'1','No translucent modal opacity');
+  fs.mkdirSync('android-lab/build/switch-review',{recursive:true});
+  await page.screenshot({path:'android-lab/build/switch-review/liberi-preferences-opaque.png'});
+  await page.locator('[data-lab-action="close-preferences"]').click();
+  assert.equal(await prefs.evaluate(el=>el.open),false,'Preferences close restores Jukebox');
+
   // Exercise the normal pairing change handler to reach first-run choose stage.
   await page.evaluate(()=>document.getElementById('fc-ai').dispatchEvent(new Event('change',{bubbles:true})));
   assert(await page.locator('#fc-ai-trigger').isVisible(),'Visible custom AI picker');
