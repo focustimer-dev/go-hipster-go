@@ -228,6 +228,14 @@ function initLabWorkspace(){
 
 function labShowManualResources(show){doc.getElementById('labMoreResources').hidden=!show;doc.getElementById('labManualGuide').hidden=show;if(!show){const frame=doc.getElementById('labManualFrame');if(frame.contentWindow)frame.contentWindow.location.hash='manual'}doc.getElementById('labManualTitle').scrollIntoView({block:'start'})}
 window.addEventListener('message',event=>{if(event.source===doc.getElementById('labManualFrame')?.contentWindow&&event.origin===location.origin&&event.data?.type==='lab-manual-resources')labShowManualResources(true)});
+window.addEventListener('message',event=>{
+ if(event.source!==doc.getElementById('labManualFrame')?.contentWindow ||
+    event.origin!==location.origin || event.data?.type!=='lab-manual-open-jukebox')return;
+ labNavigate('jukebox');
+ // Keep the user's real selections untouched; show the genuine editor entry.
+ const target=doc.getElementById(labInspiration()?'labReviewInspiration':'labAddInspiration');
+ if(target&&!target.hidden){labRevealInspiration(target);target.focus({preventScroll:true})}
+});
 doc.getElementById('labManualReturn').onclick=()=>labShowManualResources(false);
 
 window.addEventListener('message',event=>{if(event.source===doc.getElementById('labManualFrame')?.contentWindow&&event.origin===location.origin&&event.data?.type==='lab-gemini-updates')window.HipsterLab?.showUpdates?.()});
