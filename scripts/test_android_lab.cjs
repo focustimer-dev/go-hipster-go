@@ -147,6 +147,14 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
   assert.equal(await page.evaluate(()=>location.host.startsWith('127.0.0.1')),true,'Manual must remain on local origin');
   await page.locator('#labManualReturn').click();
   await page.locator('#labManualGuide').waitFor({state:'visible'});
+  await page.frameLocator('#labManualFrame').locator('#cratePicker > summary').click();await page.frameLocator('#labManualFrame').locator('[data-crate-tab=setup]').click();await page.frameLocator('#labManualFrame').locator('.crate-dividers a[href="#setup"]').click();await page.frameLocator('#labManualFrame').locator('#setupConfirm .finish [data-review-skill-updates]').click();
+  await page.waitForFunction(()=>labCalls.some(c=>c[0]==='updates'));
+  // First validate ordinary Manual return preserves the prior Jukebox scroll.
+  await page.locator('[data-lab-tab="jukebox"]').click();assert(Math.abs((await page.evaluate(()=>window.scrollY))-position)<2);
+  // Separately exercise intentional Manual -> inspiration navigation; that
+  // action moves the Jukebox to its editor and must not be conflated with return.
+  await page.locator('[data-lab-tab="manual"]').click();
+  await page.locator('#labManual').waitFor({state:'visible'});
   // The Manual's inspiration illustration must not masquerade as real controls.
   const guide=page.frameLocator('#labManualFrame');
   await guide.locator('body').evaluate(()=>{location.hash='idea'});
@@ -166,9 +174,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    'Move focus to the genuine Add inspiration button');
   await page.locator('[data-lab-tab="manual"]').click();
   await page.locator('#labManual').waitFor({state:'visible'});
-  await page.frameLocator('#labManualFrame').locator('#cratePicker > summary').click();await page.frameLocator('#labManualFrame').locator('[data-crate-tab=setup]').click();await page.frameLocator('#labManualFrame').locator('.crate-dividers a[href="#setup"]').click();await page.frameLocator('#labManualFrame').locator('#setupConfirm .finish [data-review-skill-updates]').click();
-  await page.waitForFunction(()=>labCalls.some(c=>c[0]==='updates'));
-  await page.locator('[data-lab-tab="jukebox"]').click();assert(Math.abs((await page.evaluate(()=>window.scrollY))-position)<2);
+  await page.locator('[data-lab-tab="jukebox"]').click();
   await page.locator('.lab-rail [data-lab-action="preferences"]').click();await page.locator('#labPreferences').waitFor({state:'visible'});
   await page.locator('[name="labHandoff"][value="share"]').check();await page.locator('[data-lab-action="close-preferences"]').click();await page.locator('#labPreferences').waitFor({state:'hidden'});
   assert((await page.locator('#goHint').textContent()).includes('SHARE TO GEMINI'));
