@@ -32,13 +32,14 @@ for(const profile of profiles){
  page.setDefaultTimeout(20000);
  const errors=[];
  const sandboxWarnings=[];
+ let curveEditorUsed=false;
  // The curve editor deliberately runs in a restrictive allow-scripts sandbox.
- // Chromium sometimes reports this exact blocked service-worker access while
- // the editor is active. Keep the diagnostic visible, never waive other errors.
+ // An opaque-origin frame's URL can be hidden or detached when the asynchronous
+ // service-worker warning is delivered. Track that the test actually opened
+ // the curve, and exclude ONLY this exact browser restriction warning.
  page.on('pageerror',e=>{
   const sandboxServiceWorkerWarning=e.message==="Failed to read the 'serviceWorker' property from 'Navigator': Service worker is disabled because the context is sandboxed and lacks the 'allow-same-origin' flag.";
-  const curveIsolated=page.frames().some(frame=>frame.url().includes('/assets/mix-curve-trial'));
-  if(sandboxServiceWorkerWarning&&curveIsolated)sandboxWarnings.push(e.message);
+  if(sandboxServiceWorkerWarning&&curveEditorUsed)sandboxWarnings.push(e.message);
   else errors.push(e.message);
  });
  page.on('response',res=>{if(res.url().startsWith(base)&&res.status()>=400)errors.push('HTTP '+res.status()+' '+res.url())});
@@ -57,6 +58,7 @@ for(const profile of profiles){
   await page.screenshot({path:folder+'/'+profile.name+'-jukebox.png'});
   const curveMode=page.getByRole('button',{name:'The curve',exact:true});
   const tempoMode=page.getByRole('button',{name:'Set the tempo',exact:true});
+  curveEditorUsed=true; // Set before click: frame errors may arrive during navigation.
   await curveMode.click();
   await page.locator('#tempoControl').waitFor({state:'hidden'});
   const curve=page.frameLocator('#mixCurveEditor');
