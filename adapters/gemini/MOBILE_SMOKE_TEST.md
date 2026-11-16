@@ -1,3 +1,15 @@
+## Test P3 — Gemini create/save parameter regression (November 2026)
+
+**Manual host test — required before release; not exercised by CI.** Install or load the actual PR candidate (record version and source commit) in Gemini Android/web, with YouTube Music connected and real playlist-writing authorization. Use a 12-recording verified crate. Capture the actual tool-call arguments and provider results; the model's narrative alone is not evidence.
+
+1. **Create:** On authorized normal GO, confirm that the exact-track `youtube_music:create` call has **only** `media_intent_type`, `title`, `number_of_videos: 12`, and 12 ordered `video_uris`; it must omit `video_titles`, including `null` or `[]`. Confirm the IDs/URIs match the original curated recordings. **Fail** if provider appends duplicate album or alternate matches (previously 17–21 tracks), substitutes a thematic playlist, or claims the requested number is proof of actual count.
+2. **Save:** If the crate is a pending queue, request `Publish`. Confirm the actual `youtube_music:save` call has **only** `media_intent_type`, unchanged create-result `uri`, `title` and complete `description`. It must omit `video_uris` entirely. An empty `[]` response is **not** proof of saving.
+3. **Persistence:** Independently inspect the YouTube Music library and, where available, all 12 item identities, versions and positions plus the description. Record whether the result is saved and exact, saved but partially verifiable, or unconfirmed/failed. A `QP...` or `PL...` marker alone does not pass.
+4. **Repeat:** Send `Publish` again using the same crate. It must reuse or reconcile the same playlist, not create a duplicate, re-curate, or reroll DeBarge.
+5. **Negative:** In a separate text-only request, confirm that no create/save calls occur. Without the exact-track writer, preserve the crate and report unavailable instead of silently constructing a thematic approximation.
+
+**Evidence to retain:** installed version/source commit, redacted create/save request fields, returned URI type, confirmed saved-library URL if any, full count/order where readable, description persistence, and pass/fail per step. No fabricated live result; follow actual permissions and user confirmation.
+
 ## Test P2 — save action before explanation (user-observed regression)
 
 1. Finish a normal GO on Gemini Android with an actual YouTube Music create-result URI and full 12-track liner notes. Issue only `@go-hipster-go publish`. **Pass:** the first relevant action is `youtube_music:save` with the actual prior `uri`, curated `title`, `description` containing the short prose plus every ordered liner note, and `media_intent_type: PERSONAL_PLAYLIST` where the live schema supports it.

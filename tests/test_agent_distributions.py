@@ -80,6 +80,14 @@ class PortableAgentTests(unittest.TestCase):
         with ZipFile(archive) as z:
             names = set(z.namelist())
             self.assertEqual(len(names), len(z.namelist()))
+            # Scan the actual installable reference, not only repository text.
+            packaged_policy = z.read("references/gemini-publish.md").decode("utf-8")
+            self.assertEqual(packaged_policy, (ROOT / "references/gemini-publish.md").read_text(encoding="utf-8"))
+            for restricted in ("youtube_music:", "media_intent_type", "video_titles",
+                               "number_of_videos", "video_uris", "PERSONAL_PLAYLIST",
+                               "```json", "drive.google.com", "http://"):
+                self.assertNotIn(restricted, packaged_policy)
+
             self.assertTrue(all(i.date_time == (1980, 1, 1, 0, 0, 0) for i in z.infolist()))
             self.assertEqual(names, set(__import__("scripts.build_gemini_app_skill", fromlist=["REFERENCES"]).REFERENCES) | {
                 "SKILL.md",
@@ -221,12 +229,43 @@ class PortableAgentTests(unittest.TestCase):
         from scripts.build_gemini_app_skill import modular_files
         files = modular_files((ROOT / "SKILL.md").read_text())
         entry = files["SKILL.md"]
-        policy = (ROOT / "references/gemini-publish.md").read_text()
+        policy = (ROOT / "references/gemini-publish.md").read_text(encoding="utf-8")
         self.assertIn("permission and confirmation", entry)
         self.assertIn("permission and confirmation", policy)
+        self.assertIn("## Gemini-specific playlist creation and saving", policy)
+        self.assertIn("**YouTube Music handoff:**", entry)
         for content in (entry, files["references/workflow.md"], policy):
-            for marker in ("youtube_music:", "PERSONAL_PLAYLIST", "video_titles"):
-                self.assertNotIn(marker, content)
+            for marker in ("youtube_music:", "PERSONAL_PLAYLIST", "media_intent_type",
+                           "video_titles", "number_of_videos", "video_uris", "```json"):
+                with self.subTest(marker=marker):
+                    self.assertNotIn(marker, content)
+
+    def test_gemini_natural_language_handoff_rules_and_mirror(self):
+        # Static policy guard; it cannot prove a real provider save.
+        policy = (ROOT / "references/gemini-publish.md").read_text(encoding="utf-8")
+        gem = (ROOT / "adapters/gemini/GEM_INSTRUCTIONS.md").read_text(encoding="utf-8")
+        must_preserve = (
+            "Supply only the personal-playlist intent, the curated title",
+            "Omit any separate list of track titles",
+            "12 by default", "17–21",
+            "exact, unmodified playlist link returned by creation",
+            "Supply only the personal-playlist intent, that same unmodified playlist link",
+            "Omit the list of individual recording links",
+            "SAVE UNCONFIRMED", "SAVE FAILED", "SAVED — PARTIALLY VERIFIED",
+            "Never save a text-only crate", "No duplicates.",
+        )
+        for phrase in must_preserve:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, policy)
+        for content in (policy, gem):
+            for forbidden in ("youtube_music:", "media_intent_type", "video_titles",
+                              "number_of_videos", "video_uris", "PERSONAL_PLAYLIST",
+                              "```json", "drive.google.com", "http://"):
+                with self.subTest(forbidden=forbidden):
+                    self.assertNotIn(forbidden, content)
+        knowledge = (ROOT / "adapters/gemini/GEM_KNOWLEDGE.md").read_text(encoding="utf-8")
+        self.assertEqual(knowledge.count("# BEGIN SOURCE: references/gemini-publish.md"), 1)
+        self.assertIn(policy.strip(), knowledge)
 
     def test_gemini_persona_and_refresh_instructions(self):
         script=(ROOT/"scripts/build_gemini_app_skill.py").read_text(encoding="utf-8")

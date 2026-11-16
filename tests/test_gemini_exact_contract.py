@@ -58,6 +58,24 @@ class GeminiExactPublishingContractTests(unittest.TestCase):
         self.assertIn("unverified", policy)
         self.assertIn("not matched or missing", policy)
 
+    def test_plain_language_handoff_reachable_from_go_and_gem(self):
+        policy = read("references/gemini-publish.md")
+        entry = read("adapters/gemini/SKILL.md")
+        gem = read("adapters/gemini/GEM_INSTRUCTIONS.md")
+        self.assertIn("## Gemini-specific playlist creation and saving", policy)
+        self.assertIn("**YouTube Music handoff:**", entry)
+        self.assertIn("Gemini Publish", entry)
+        self.assertIn("do not provide a separate list of track titles", gem)
+        self.assertIn("do not resend the individual track links", gem)
+        self.assertIn("SAVE UNCONFIRMED", policy)
+        self.assertIn("Do not automatically retry a failed save", policy)
+        self.assertIn("17–21 tracks", policy)
+        self.assertIn("including an empty or null list", policy)
+        for forbidden in ("youtube_music:", "media_intent_type", "video_titles",
+                          "number_of_videos", "video_uris", "```json"):
+            with self.subTest(forbidden=forbidden):
+                self.assertNotIn(forbidden, policy)
+
     def test_no_composer_handoff_in_gem_runtime(self):
         for path in ("adapters/gemini/SKILL.md", "adapters/gemini/GEM_KNOWLEDGE.md"):
             with self.subTest(path=path):
