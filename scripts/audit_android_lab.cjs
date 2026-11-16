@@ -212,7 +212,7 @@ const types={'.html':'text/html','.js':'application/javascript','.css':'text/css
    await manualGuide.locator('#openJukebox').waitFor({state:'visible'});
    assert.equal(await manualGuide.locator('#ideaInput,#moodArea,#go').count(),0,
     'The Manual must not present fake inspiration, moods or GO controls');
-   assert.match(await manualGuide.locator('#ideaStage').innerText(),/Example only[\s\S]*Not your active request/);
+   assert.match(await manualGuide.locator('#ideaStage').innerText(),/Example only[\s\S]*Not your active request/i);
    await capture('manual-inspiration');
    const existingReference=await page.evaluate(()=>window.auditReference);
    await manualGuide.locator('#openJukebox').click();
