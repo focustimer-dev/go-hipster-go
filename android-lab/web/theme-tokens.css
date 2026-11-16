@@ -1,4 +1,14 @@
 
+/* Libéri's canonical gold/teal Android UI roles. The Preferences dialog
+   needs real tokens: an unresolved nested var() fallback made its surface
+   transparent in WebView even though its original CSS background was gold.
+   Keep the original Libéri colors and artwork, not a new theme palette. */
+:root[data-pwa-theme=liberi]{
+ --lab-ui-panel:#dfb045;
+ --lab-ui-on-panel:#103135;
+ --lab-ui-rule:#103135;
+}
+
 /* ElectricStars: nocturnal blue silhouettes against orchid light. */
 :root[data-pwa-theme=electricstars]{
  color-scheme:dark;
