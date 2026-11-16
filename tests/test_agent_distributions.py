@@ -224,9 +224,37 @@ class PortableAgentTests(unittest.TestCase):
         policy = (ROOT / "references/gemini-publish.md").read_text()
         self.assertIn("permission and confirmation", entry)
         self.assertIn("permission and confirmation", policy)
-        for content in (entry, files["references/workflow.md"], policy):
+        # The short entry/workflow stay schema-agnostic, but Gemini's deferred
+        # publishing policy intentionally documents live-tool parameters.
+        for content in (entry, files["references/workflow.md"]):
             for marker in ("youtube_music:", "PERSONAL_PLAYLIST", "video_titles"):
                 self.assertNotIn(marker, content)
+        self.assertIn("## Gemini-runtime YouTube Music tool parameter rules", policy)
+        self.assertIn("observed Gemini-runtime field restrictions", entry)
+
+    def test_gemini_create_save_parameter_examples_and_packaged_policy(self):
+        # Static contract checks only; live Gemini/YouTube Music save verification
+        # must be performed separately before release.
+        import re
+        policy = (ROOT / "references/gemini-publish.md").read_text(encoding="utf-8")
+        blocks = re.findall(r"```json\n(.*?)\n```", policy, flags=re.S)
+        self.assertEqual(len(blocks), 2, "expected create and save examples")
+        create, save = (json.loads(block) for block in blocks)
+        self.assertEqual(set(create), {"media_intent_type", "title", "number_of_videos", "video_uris"})
+        self.assertEqual(set(save), {"media_intent_type", "uri", "title", "description"})
+        self.assertEqual(create["media_intent_type"], "PERSONAL_PLAYLIST")
+        self.assertEqual(save["media_intent_type"], "PERSONAL_PLAYLIST")
+        self.assertEqual(create["number_of_videos"], len(create["video_uris"]))
+        self.assertEqual(len(create["video_uris"]), 12)
+        self.assertEqual(len(set(create["video_uris"])), 12)
+        self.assertEqual(save["uri"], "<exact uri from create result>")
+        self.assertIn("Omit `video_titles` entirely", policy)
+        self.assertIn("Omit `video_uris` entirely", policy)
+        self.assertIn("SAVE UNCONFIRMED", policy)
+        self.assertIn("No duplicates.", policy)
+        knowledge = (ROOT / "adapters/gemini/GEM_KNOWLEDGE.md").read_text(encoding="utf-8")
+        self.assertEqual(knowledge.count("# BEGIN SOURCE: references/gemini-publish.md"), 1)
+        self.assertIn(policy.strip(), knowledge)
 
     def test_gemini_persona_and_refresh_instructions(self):
         script=(ROOT/"scripts/build_gemini_app_skill.py").read_text(encoding="utf-8")
