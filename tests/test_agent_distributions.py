@@ -230,7 +230,7 @@ class PortableAgentTests(unittest.TestCase):
             for marker in ("youtube_music:", "PERSONAL_PLAYLIST", "video_titles"):
                 self.assertNotIn(marker, content)
         self.assertIn("## Gemini-runtime YouTube Music tool parameter rules", policy)
-        self.assertIn("observed Gemini-runtime field restrictions", entry)
+        self.assertIn("**Gemini tool fields:**", entry)
 
     def test_gemini_create_save_parameter_examples_and_packaged_policy(self):
         # Static contract checks only; live Gemini/YouTube Music save verification
