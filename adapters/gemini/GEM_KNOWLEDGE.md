@@ -32,7 +32,7 @@ For `Discovery route: v1/Rxx`, read [routes](references/discovery-routes.md) bef
 
 ## Gemini-native playlist creation
 
-**Gemini tool fields:** Before any exact-track create/save, follow [Gemini Publish](references/gemini-publish.md) for allowed fields and verification.
+**YouTube Music handoff:** Follow [Gemini Publish](references/gemini-publish.md) for exact creation, saving and verification.
 
 **Service precedence:** Explicit service in this request > accessible listener-approved setup preference > visible current-conversation preference > YouTube Music (Gemini default). No inherited Spotify default. Never silently substitute YouTube Music when Spotify is expressly requested. Gemini Spotify may support search or playback but cannot be assumed to expose a writer; ask before switching destination.
 
@@ -3363,42 +3363,19 @@ Use the supported YouTube Music save or edit action for the same playlist. Inclu
 
 If the playlist is already saved, verify its state and avoid duplicates. If the action is unavailable or fails, report the reason and offer the actual manual save step when available. Report saved status only with provider confirmation or readback. Identify any unresolved track order, substitutions or metadata persistence. Use only links returned by the provider. Follow the provider's supported cover-art controls and report whether artwork was actually applied.
 
-## Gemini-runtime YouTube Music tool parameter rules (observed)
+## Gemini-specific playlist creation and saving (observed behavior)
 
-These are Gemini-reported fixes for the connected `youtube_music:create` and `youtube_music:save` actions, **not** a universal YouTube Music API contract. Check that the actual connected tool exposes the action and accepted fields before calling it. Never invent unavailable tools, fields, recording URIs or successful writes.
+These restrictions are based on Gemini's reported working YouTube Music handoff. They are not a universal YouTube Music API contract. First check that the connected service exposes authorized actions for an exact, ordered playlist. Follow the action's actual accepted inputs and the listener's permission prompts; never invent a capability or claim a write succeeded without evidence.
 
-**Create — exact ordered recordings.** After resolving the complete curated crate, pass **only** `media_intent_type`, `title`, `number_of_videos` and `video_uris` to `youtube_music:create`. The count must equal the number of verified ordered URIs (12 by default, or the explicitly requested count). **Omit `video_titles` entirely**—not even `null` or `[]`. Gemini observed that sending both titles and URIs made 12 requests expand into 17–21 entries through additional title matching. Do not use a thematic writer as a fallback.
+**Create the exact playlist.** Supply only the personal-playlist intent, the curated title, the requested number of tracks and the corresponding verified recording links in their intended order. The number of recording links must match the requested count: **12 by default**, or the listener's explicitly requested count. Omit any separate list of track titles **entirely**, including an empty or null list. In Gemini's reported tests, supplying recording links together with a separate title list caused an intended 12-track playlist to expand to 17–21 tracks through additional matches. Never fill the difference with duplicates or replace an exact-track request with a thematic mix.
 
-Illustrative 12-track request (replace placeholders with actual verified URIs; never send placeholders):
+Keep the **exact, unmodified playlist link returned by creation** for subsequent saving. Do not reconstruct it from an identifier or substitute a search result. An intermediate queue or playback link is not proof of library persistence.
 
-```json
-{
-  "media_intent_type": "PERSONAL_PLAYLIST",
-  "title": "<curated playlist title>",
-  "number_of_videos": 12,
-  "video_uris": [
-    "<verified URI 01>", "<verified URI 02>", "<verified URI 03>",
-    "<verified URI 04>", "<verified URI 05>", "<verified URI 06>",
-    "<verified URI 07>", "<verified URI 08>", "<verified URI 09>",
-    "<verified URI 10>", "<verified URI 11>", "<verified URI 12>"
-  ]
-}
-```
+**Save the existing playlist.** Supply only the personal-playlist intent, that same unmodified playlist link, the curated title and the description containing the sonic introduction and complete numbered TRACKLIST / LINER NOTES. Omit the list of individual recording links **entirely**, including an empty or null list. Gemini reported that including that list during saving produced an empty result without a confirmed library save. Reuse the existing playlist rather than attempting creation again.
 
-Preserve the **unmodified** playlist/queue `uri` returned by create for a subsequent save; do not reconstruct it from IDs or use a newly searched URL. A `QP...` identifier is a reported intermediate form, not proof of persistence.
+**Verify the actual outcome.** An empty result, generated playlist card, queue identifier or library-looking identifier does not establish successful saving. Verify library persistence through provider confirmation or readback. Where available, check the count, recording identities, versions and order against the original curated list. If saving cannot be confirmed, report **SAVE UNCONFIRMED** and preserve the original link. If an actual save failure is observed, report **SAVE FAILED**. If library saving is confirmed but some positions remain hidden, report **SAVED — PARTIALLY VERIFIED** and mark those positions unverified. Claim exact publication only when all requested positions and their order have been verified.
 
-**Save — the existing result only.** Call `youtube_music:save` using **only** `media_intent_type`, `uri` (the exact URI returned by create), `title` and `description` with sonic introduction and full ordered TRACKLIST / LINER NOTES. **Omit `video_uris` entirely**—not even `null` or `[]`. Gemini observed that supplying `video_uris` to save returned `[]` and did not save the playlist.
-
-```json
-{
-  "media_intent_type": "PERSONAL_PLAYLIST",
-  "uri": "<exact uri from create result>",
-  "title": "<curated playlist title>",
-  "description": "<sonic introduction and full numbered TRACKLIST / LINER NOTES>"
-}
-```
-
-**Verify rather than infer.** Do not interpret an empty `[]` save response, a `QP...` or `PL...` ID, or a preview card as confirmed saving. Check provider confirmation or actual library readback and available count, recording identity, version and order. If saving is unconfirmed, say **SAVE UNCONFIRMED** and keep the existing URI; if failure is observed, say **SAVE FAILED**. If saving is confirmed but some positions are not readable, disclose **SAVED — PARTIALLY VERIFIED**; claim exact publication only after the entire count and order have been verified. Do not call create again, auto-retry a failed save, change the tracks, or silently make a duplicate. On a subsequent Publish request, reuse the existing result and check its state first.
+Do not automatically retry a failed save, create a duplicate, re-curate or change recordings. A later Publish request must check the existing playlist's state first and reuse it. Never save a text-only request without subsequent explicit authorization.
 
 ## Partial preview versus full saved list
 
