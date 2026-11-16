@@ -1319,11 +1319,15 @@ body.gig-poster.lab-workspace #firstCrateSetup .ticket .primary{
  background:var(--lab-ui-action);color:var(--lab-ui-on-action);
  border-color:var(--lab-ui-action);
 }
+/* Libéri intentionally disables lab-theme-tokens.css. The final shared
+   dialog override must resolve without those optional variables. Otherwise
+   its background is invalid at computed-value time and WebView paints the
+   entire Preferences sheet transparent over the Jukebox. */
 body.gig-poster.lab-workspace .lab-dialog,
 body.gig-poster.lab-workspace .lab-dialog-head{
- background:var(--lab-ui-panel,var(--lab-ui-surface));
- color:var(--lab-ui-on-panel,var(--lab-ui-ink));
- border-color:var(--lab-ui-rule);
+ background:var(--lab-ui-panel,var(--lab-ui-surface,#dfb045));
+ color:var(--lab-ui-on-panel,var(--lab-ui-ink,#103135));
+ border-color:var(--lab-ui-rule,#103135);
 }
 body.gig-poster.lab-workspace .lab-dialog .lab-choice input{
  accent-color:var(--lab-atlas-selected);
