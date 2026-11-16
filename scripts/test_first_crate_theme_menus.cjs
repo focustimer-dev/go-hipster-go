@@ -22,6 +22,7 @@ const rgb=hex=>{const s=hex.trim().replace('#','');if(!/^[0-9a-f]{6}$/i.test(s))
    inspiration:()=>'',surpriseUnlocked:()=>false,
    setDialogPalette(){},syncSystemPalette(){},haptic(){},copy:()=>true
   }});
+  await page.addInitScript(()=>{try{localStorage.setItem('ghg-lab-theme-v1','liberi')}catch(_){}});
   await page.goto('http://127.0.0.1:'+server.address().port+'/?atlas=legacy');
   await page.locator('#fc-ai-trigger').waitFor({state:'attached'});
   // Regression: Libéri previously had no --lab-ui-panel / --lab-ui-on-panel
