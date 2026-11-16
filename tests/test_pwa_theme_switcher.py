@@ -6,12 +6,14 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 
 class PWAThemeTests(unittest.TestCase):
-    def test_nine_named_preferences_and_stable_local_storage_key(self):
+    def test_nine_selectable_themes_plus_locked_electricstars(self):
         js = (ROOT / "launcher/assets/pwa-workspace.js").read_text()
         self.assertIn("const THEMES=['liberi','bosque','usiku','kingston','detroit','addis','polish','beirut','michoacan']", js)
         self.assertIn("const THEME_STORE='ghg-pwa-theme-v1'", js)
         for theme in ("liberi", "bosque", "usiku", "kingston", "detroit", "addis", "polish", "beirut", "michoacan"):
             self.assertIn(f'data-pwa-theme="{theme}"', js)
+        self.assertIn('data-pwa-theme="electricstars" aria-pressed="false" aria-disabled="true" disabled', js)
+        self.assertIn('Locked · DeBarge surprise (Android)', js)
         self.assertIn('aria-labelledby="pwaThemeHeading"', js)
         self.assertIn("aria-pressed", js)
         self.assertIn("localStorage.setItem(THEME_STORE,theme)", js)
@@ -42,7 +44,7 @@ class PWAThemeTests(unittest.TestCase):
     def test_print_themes_match_approved_android_ui_tokens(self):
         canonical = (ROOT / "android-lab/web/theme-tokens.css").read_text()
         browser = (ROOT / "launcher/assets/pwa-themes.css").read_text()
-        for theme in ("kingston", "detroit", "addis", "polish", "beirut", "michoacan"):
+        for theme in ("kingston", "detroit", "addis", "polish", "beirut", "michoacan", "electricstars"):
             start = canonical.index(":root[data-pwa-theme=" + theme + "]{")
             end = canonical.index("\n}", start) + 2
             self.assertIn(canonical[start:end], browser)
@@ -50,6 +52,13 @@ class PWAThemeTests(unittest.TestCase):
         self.assertIn("--lab-atlas-ocean", browser)
         self.assertIn("--lab-mood-selected-paper", browser)
         self.assertIn("@media(max-width:520px)", browser)
+
+    def test_katowice_atlas_matches_current_android_tokens(self):
+        bridge = (ROOT / 'launcher/assets/pwa-atlas-bridge.js').read_text()
+        self.assertIn("polish:{ocean:'#103135',land:'#f1e1c7',ink:'#103135',selected:'#d83c2d'", bridge)
+        self.assertIn("polish:{paper:'#f1e1c7',ocean:'#103135',selected:'#d83c2d'", bridge)
+        self.assertNotIn("polish:{ocean:'#172c40'", bridge)
+        self.assertNotIn("polish:{paper:'#f6f2e6'", bridge)
 
     def test_print_themes_work_in_three_projection_browser_atlas(self):
         bridge = (ROOT / "launcher/assets/pwa-atlas-bridge.js").read_text()

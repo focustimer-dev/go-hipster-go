@@ -16,6 +16,8 @@ on:
       - 'launcher/index.html'
       - 'launcher/setup/index.html'
       - 'tests/test_legal_pages.py'
+      - 'tests/test_pwa_skill_release_links.py'
+      - 'scripts/sync_stable_skill_links.py'
       - 'scripts/verify_legal_pages.mjs'
       - 'cloudflare/link-preview.js'
       - 'tests/link_preview_worker.test.mjs'

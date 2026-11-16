@@ -19,6 +19,7 @@ RAW = "https://raw.githubusercontent.com/focustimer-dev/go-hipster-go"
 FILES = [
     "README.md",
     "launcher/assets/app.js",
+    "launcher/assets/pwa-guides.js",
     "launcher/setup/index.html",
     "launcher/editions/gig-poster/setup/index.html",
     "android-lab/web/manual-guide.html",
@@ -74,6 +75,11 @@ def synced(text: str, manifest: dict, path: str) -> str:
         # claims to verify, not mutable main / release branches.
         text = RAW_ENTRY.sub(
             RAW + "/" + manifest["tag"] + "/adapters/gemini/SKILL.md", text)
+    if path == "launcher/assets/pwa-guides.js":
+        text = re.sub(re.escape(REPO) + r"/releases/(?:latest|tag/gemini-skill-v\d+\.\d+\.\d+)",
+                      manifest["release_page"], text)
+        text = re.sub(r"Stable skill release: \d+\.\d+\.\d+",
+                      "Stable skill release: " + manifest["version"], text)
     if path == "launcher/assets/app.js":
         text = RELEASES_BASE.sub(
             'const releases=repo+"/releases/download/' + manifest["tag"] + '/";', text)
@@ -96,6 +102,12 @@ def inspect(manifest):
         for match in ZIP_URL.finditer(old):
             if not match.group().startswith(expected_base):
                 problems.append(f"{path}: ZIP from nonrecommended tag {match.group()}")
+        if path == "launcher/assets/pwa-guides.js":
+            if manifest["release_page"] not in old or "Stable skill release: " + manifest["version"] not in old:
+                problems.append(f"{path}: verified stable release page/version not displayed")
+            for a in manifest["artifacts"].values():
+                if a["url"] not in old:
+                    problems.append(f"{path}: missing verified {a['filename']} URL")
         if path in ("launcher/assets/app.js", "android-lab/web/manual-guide.html"):
             if "Verify version " + manifest["version"] not in old:
                 problems.append(f"{path}: Gemini setup check must verify the stable version")
@@ -122,7 +134,7 @@ def main():
             print("ERROR:", error, file=sys.stderr)
         sys.exit(1)
     print("Stable skill release aligned:", m["version"], m["tag"],
-          "— 4 published ZIPs, 8 installation surfaces")
+          f"— 4 published ZIPs, {len(FILES)} installation surfaces")
 
 if __name__ == "__main__":
     main()

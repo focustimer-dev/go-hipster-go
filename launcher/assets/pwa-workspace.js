@@ -123,6 +123,8 @@ shell.innerHTML=[
  '<button class="pwa-theme-choice" type="button" data-pwa-theme="polish" aria-pressed="false"><span class="pwa-theme-sample" aria-hidden="true"><i></i><i></i><i></i></span><strong>Katowice</strong><small>Modernist sleeve</small></button>',
  '<button class="pwa-theme-choice" type="button" data-pwa-theme="beirut" aria-pressed="false"><span class="pwa-theme-sample" aria-hidden="true"><i></i><i></i><i></i></span><strong>Beirut</strong><small>Cassette Slip</small></button>',
  '<button class="pwa-theme-choice" type="button" data-pwa-theme="michoacan" aria-pressed="false"><span class="pwa-theme-sample" aria-hidden="true"><i></i><i></i><i></i></span><strong>Michoacán</strong><small>Lacquer &amp; gold</small></button>',
+ // This browser has no native DeBarge-surprise bridge: display, but do not fake, its unlock.
+ '<button class="pwa-theme-choice" type="button" data-pwa-theme="electricstars" aria-pressed="false" aria-disabled="true" disabled><span class="pwa-theme-sample" aria-hidden="true"><i></i><i></i><i></i></span><strong>ElectricStars</strong><small>Locked · DeBarge surprise (Android)</small></button>',
  '</div><p id="pwaThemeStatus" class="pwa-theme-status" role="status" aria-live="polite">Saved on this device when browser storage is available.</p></section>',
  '<p>AI and music choices stay on the Jukebox for the browser edition.</p><button type="button" class="pwa-wide" data-pwa-action="services">CHANGE AI &amp; MUSIC</button>',
  '<button type="button" class="pwa-wide" data-pwa-action="recording">LISTENING PREFERENCES</button><p>GO copies your request. Open your chosen AI, paste and send; the browser does not automatically submit it.</p></div></dialog>',
