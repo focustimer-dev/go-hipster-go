@@ -26,7 +26,7 @@ For `Discovery route: v1/Rxx`, read [routes](https://raw.githubusercontent.com/f
 
 ## Gemini-native playlist creation
 
-**Gemini tool fields:** Before any exact-track create/save, follow [Gemini Publish](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/release/skill-prod/references/gemini-publish.md) for allowed fields and verification.
+**YouTube Music handoff:** Follow [Gemini Publish](https://raw.githubusercontent.com/focustimer-dev/go-hipster-go/release/skill-prod/references/gemini-publish.md) for exact creation, saving and verification.
 
 **Service precedence:** Explicit service in this request > accessible listener-approved setup preference > visible current-conversation preference > YouTube Music (Gemini default). No inherited Spotify default. Never silently substitute YouTube Music when Spotify is expressly requested. Gemini Spotify may support search or playback but cannot be assumed to expose a writer; ask before switching destination.
 
