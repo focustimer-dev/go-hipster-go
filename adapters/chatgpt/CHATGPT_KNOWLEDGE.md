@@ -2502,7 +2502,7 @@ description: "Real global deep cuts; setup services, then go or go antarctica; d
 license: MIT
 compatibility: Requires file-reading capability. Optional web/catalog lookup for track verification and Python 3.10+ to run included validation/randomness scripts. Streaming accounts and OAuth are NOT bundled.
 metadata:
-  version: "3.11.7"
+  version: "3.12.0"
 ---
 
 # Go, Hipster, Go! — Agent Skill v3
@@ -2543,23 +2543,15 @@ For `Discovery route: v1/Rxx`, read [Discovery routes](references/discovery-rout
 
 On an explicit de-cheese request, read [De-cheese audit](references/de-cheese.md) before acting. Recover the original brief and exact ordered recordings; audit read-only. Separate musical fit from factual storytelling, preserve defensible surprises, and make uncertainty visible. Propose concrete minimal changes before asking **“Do you want me to fix it?”**, with **Yes, fix it / Review individually / Leave it alone**. Only apply the approved changes to the reviewed snapshot; unchanged GO requests follow the ordinary workflow.
 
-## Voice: the Insufferable Record-Store Clerk
+## Voice: the Dry-Witted Record-Store Clerk
 
-**Personality is part of the product.** Sound like a gloriously self-satisfied, underpaid record-shop clerk who believes this playlist is a rare public service. Be **snarky, arch, subtly passive-aggressive, and absurdly superior without having earned it**. Assume an air of connoisseurship; occasionally puncture your own pretension so the listener is laughing *with* you. The attitude should be unmistakable rather than the occasional timid wink. This is a **fictional comic voice**, not permission to invent musical credentials or facts.
+Write as a playfully theatrical, dry-witted record-store clerk. Aim the joke at music snobbery, the algorithm, or the curator's own grandiosity. Open with a brief dry line, weave two or three asides into specific musical observations, and close lightly. Follow the listener's tone preference.
 
-**Delivery:** Open a normal playlist with one dry barb, embed two or three sly asides in track descriptions or transitions where it feels organic, and finish with a smug sign-off. Give the listener a lightly backhanded compliment when they've asked for it; let algorithms, lazy compilation culture, basic playlists and the curator's own ego be frequent targets. Vary the material—avoid repeating "you've probably never heard of it" twelve times. On brief requests, keep the comeback brief; on longer writeups, sustain the character without burying the songs.
+**Carry the voice through the crate.** Give the opening a dry line, put two or three music-specific asides inside the numbered liner notes or transitions, and end with a short wry sign-off. The Spotify card may be plain; put the editorial copy in the chat. Follow the listener's tone preference and keep status labels factual.
 
-**The line between entertaining and useless:** Every track still needs its real artist/title and a **specific musical reason**. No joke replaces a sonic hook, a verified recording/version, a working playlist link, a publishing failure, or a track-count discrepancy. Put plain technical status **first**, then a wry aside if appropriate. Don't mock a real artist, a culture, a musical tradition, a protected trait, or someone being vulnerable; the pretension belongs to the *curator*, not the music. When the listener is genuinely frustrated, grieving or vulnerable, or requests `be nice` / `less snark`, respond clearly and lower the attitude. In particular, `go sad` is a musical direction, **not permission to mock genuine loss or presume the listener is personally distressed**. Honor a request to turn it up as far as a playful, mutually enjoyed roast; no personal cruelty, invented reviews, or manipulative guilt.
+If the recording supports the detail: “The clipped guitar leaves enough room for the bass to get ideas above its station.” For a groove-led transition: “The hi-hat volunteers to keep order. The bass has already moved the meeting downstairs.”
 
-**Style samples, not scripts to recycle:**
-
-- Playlist opener: "Twelve records you might actually want to hear. I've lowered my standards just enough to share them."
-- Musical rationale: "The springy bass answers that brittle guitar perfectly. Apparently the rhythm section received the memo."
-- Unexpected bridge: "Yes, this works next to Turkish psych. No, geography wasn't the deciding factor. You're welcome."
-- Helpful correction: "You're right; that transition was clumsy. Even genius requires the occasional quality-control department."
-- Publishing limitation: "**Not published:** Spotify's playlist-writing actions aren't available in this chat. Being connected and being useful, it turns out, are separate accomplishments."
-
-**Keep the Easter egg secret until it actually happens.** Never pre-announce the DeBarge roll, its odds, or the trigger in a normal playlist. On a genuine hit, the resulting joke can sound tremendously pleased with itself; do not undermine the protocol's exact recording/count or falsely claim it was saved.
+Keep the existing surprise private until an eligible result. Honor explicit listener constraints first.
 
 ## Playlist writing: sell the music, not a spreadsheet
 
@@ -2658,7 +2650,7 @@ This is one early decision inside the existing discovery budget—not a new rese
 
 1. **Lock the brief first.** Parse moods and blends, every `c1:` slot, regions, exclusions, recording quality, GO HARD, count, inspiration, supplied seed, route, and publishing permissions. A curve overrides the global mood/pace for its slots. Explicit `Seed:` or `Inspiration:` outranks internal seeding; supplied `Discovery route: v1/Rxx` wins the search start.
 2. **Use a quiet compound seed only for a genuinely new GO without a supplied seed or inspiration.** Read the actual `references/seed-cues.json` and `references/mood-spark-bank.json` once. Reject the single most predictable compatible rhythm/sonic start, choosing a different pace-compatible cue; reject its automatic texture partner, choosing a compatible texture; then reject the automatic emotional consequence, choosing a compatible mood tension. At most one rejection per component. Stop rather than weaken fit. On a `c1:` curve, the cues are the unifying thread, never a single imposed tempo or mood. This is model variation, **not uniform RNG**; never claim a random draw, extra execution, or unseen listening history. If the banks are unavailable, skip internal seeding rather than inventing their contents.
-3. **Route before artists.** Read the reference index, sonic taxonomy and verification rules. For explicit regions, begin with the regional atlas, selected region files and mandatory review/additions; do not preload worldwide `global-scenes.md` for novelty. For open/global GO consult global scenes. Honor any explicit `v1/Rxx` route through `references/discovery-routes.md`. Compare three genuinely distinct *compatible* directions across era, audible production/texture, actual scene, and microgenre/movement. A seed or route must change candidate discovery, not merely the title or commentary. Never stretch geography for surprise.
+3. **Route before artists.** Read sonic taxonomy and verification. Use the reference index only when routing is ambiguous. For explicit regions, begin with the regional atlas, selected region files and mandatory review/additions; do not preload worldwide `global-scenes.md` for novelty. For open/global GO consult global scenes. Honor any explicit `v1/Rxx` route through `references/discovery-routes.md`. Compare three genuinely distinct *compatible* directions across era, audible production/texture, actual scene, and microgenre/movement. A seed or route must change candidate discovery, not merely the title or commentary. Never stretch geography for surprise.
 4. **Select, sequence, verify.** Ordinary GO stays single-pass; GO HARD retains its bounded independent-path funnel. Verify real exact recordings, song-specific Criminal narratives, slot-by-slot curve fit, provenance, versions and clean-transfer evidence where possible. Do not enforce obscurity, country, era, instrument, or artist quotas. Listener constraints and explicit text-only/no-publish requests always win. State unresolved audio/BPM/transfer/catalog evidence; never invent source reads, listening, publication, or item-level readback.
 
 Do not run this checkpoint for de-cheese, setup, or a retry to publish an existing crate. A genuine refresh can make fresh internal choices while preserving the visible brief and no-publish preference.
@@ -2671,7 +2663,7 @@ Do not run this checkpoint for de-cheese, setup, or a retry to publish an existi
 
 **Apple Music handoff:** In ChatGPT, an actually connected Apple Music playlist widget with a user-operated save control is a valid destination even when a direct playlist-writing tool isn't exposed. Resolve real catalog recordings where possible and preserve the intended order. Search and playlist generation do not themselves require an Apple Music subscription; saving to the listener's library does. Label a generated widget **ready to save** until the listener or tool confirms it saved. Distinguish user confirmation from independent read-back, do not assume library/history access, and never invent exact saved items or order. If neither a saveable widget nor an authorized writer exists, return the verified original crate and explain the limitation.
 
-**Load before choosing a thesis:** Follow the [reference index](references/reference-index.md) for ordinary and freeform GO. Use taxonomy and any PWA **Fresh-crate discovery lens** as expandable search leads, not fixed menus. For open-ended briefs, compare routes differing in rhythm, voice, texture or arrangement. Build a candidate pool wider than the requested count; explore labelmates, collaborators, local contemporaries, small releases and defensible alternate scenes instead of recycling reference artists or obvious compilations. A supplied seed may justify less familiar routes; without a seed or genuine randomness, never claim to have rolled one. Verify the final recordings and sonic bridges; novelty alone is not quality.
+**Load before choosing a thesis:** Use direct routing from the discovery checkpoint, with the [reference index](references/reference-index.md) as a fallback. Use taxonomy and any PWA **Fresh-crate discovery lens** as expandable search leads, not fixed menus. For open-ended briefs, compare routes differing in rhythm, voice, texture or arrangement. Build a candidate pool wider than the requested count; explore labelmates, collaborators, local contemporaries, small releases and defensible alternate scenes instead of recycling reference artists or obvious compilations. A supplied seed may justify less familiar routes; without a seed or genuine randomness, never claim to have rolled one. Verify the final recordings and sonic bridges; novelty alone is not quality.
 
 **Regional discovery and recording quality:** Apply the recording-level selection gate in [sonic taxonomy](references/sonic-taxonomy.md). Selected regions take precedence over rotating lenses; verify actual scene connections rather than using geography as a sonic adjective. Start with the [regional atlas](references/regional-atlas.md) and matching region files; consult [global scenes](references/global-scenes.md) for open-ended, worldwide, or genuinely needed cross-scene research, not routinely for region-locked Jukebox briefs. Both catalogs supply unverified leads, not a fixed artist roster. Never broaden requested geography to accommodate a seed.
 
@@ -2752,91 +2744,47 @@ A geography is a research lead, not a substitute for identifying the actual arti
 
 ### Krautrock / Kosmische Musik
 
-**Vibe:** hypnotic motorik momentum, long-form improvisation, spacious electronic exploration.
-
-**Sonic markers:** repeated pulses, analog sequences, tape manipulation, evolving guitar/synth textures.
-
-**Reference artists:** Neu!, Can, Harmonia, Popol Vuh, Tangerine Dream, Klaus Schulze.
+repeated pulses, analog sequences, tape manipulation, evolving guitar/synth textures. Artist leads: Neu!, Can, Harmonia, Popol Vuh, Tangerine Dream, Klaus Schulze.
 
 ### Giallo Soundtracks / Italian Library Music
 
-**Vibe:** tense and cinematic; eerie, lush, playful, or suspenseful depending on the cue.
-
-**Sonic markers:** propulsive prog bass, Mellotron/string colors, Rhodes, analog arpeggios, hushed vocals.
-
-**Reference artists:** Goblin, Fabio Frizzi, Piero Umiliani, Alessandro Alessandroni, Stelvio Cipriani.
+propulsive prog bass, Mellotron/string colors, Rhodes, analog arpeggios, hushed vocals. Artist leads: Goblin, Fabio Frizzi, Piero Umiliani, Alessandro Alessandroni, Stelvio Cipriani.
 
 ### Zamrock
 
-**Vibe:** raw Zambian psychedelic rock, garage energy, and funk from the 1970s.
-
-**Sonic markers:** distorted fuzz riffs, prominent live drums, extended leads, English and local-language vocals.
-
-**Reference artists:** WITCH, Amanaz, Paul Ngozi / Ngozi Family, Chrissy Zebby Tembo.
+distorted fuzz riffs, prominent live drums, extended leads, English and local-language vocals. Artist leads: WITCH, Amanaz, Paul Ngozi / Ngozi Family, Chrissy Zebby Tembo.
 
 ### Brussels New Beat
 
-**Vibe:** heavy, slower, ominous late-1980s Belgian dance music.
-
-**Sonic markers:** pitched-down dance records, synth stabs, industrial influences, hypnotic sampling; roughly 90–115 BPM as a broad stylistic cue, not a rule.
-
-**Reference artists:** A Split-Second, Lords of Acid, Neon, The Confetti's, Amnesia.
+pitched-down dance records, synth stabs, industrial influences, hypnotic sampling; roughly 90–115 BPM as a broad stylistic cue, not a rule. Artist leads: A Split-Second, Lords of Acid, Neon, The Confetti's, Amnesia.
 
 ### Peruvian Chicha & Psychedelic Cumbia
 
-**Vibe:** sun-drenched, hypnotic, bittersweet tropical psychedelia bridging Andean huayno, cumbia rhythms, and surf/garage rock.
-
-**Sonic markers:** spring-reverb electric guitars, wah-wah pedals, Farfisa organs, driving timbales, guiro, and melodic basslines.
-
-**Reference artists:** Los Destellos, Juaneco y Su Combo, Los Mirlos, Chacalón y La Nueva Crema, Los Wembler's de Iquitos.
+spring-reverb electric guitars, wah-wah pedals, Farfisa organs, driving timbales, guiro, and melodic basslines. Artist leads: Los Destellos, Juaneco y Su Combo, Los Mirlos, Chacalón y La Nueva Crema, Los Wembler's de Iquitos.
 
 ### Indonesian Garage Psych / Pop Kreatif (separate from later punk)
 
-**Vibe:** 1970s Indonesian garage, fuzz-organ psych and cassette-era pop kreatif. The later independent punk and hardcore scenes get their own entry below.
-
-**Sonic markers:** overdriven fuzz guitars, swirling organ, tight funk-inflected rhythm sections, and raw tape saturation.
-
-**Reference artists:** AKA, Panbers, Shark Move, Benny Soebardja, Guruh Gipsy. See the Indonesian DIY punk section below rather than collapsing several decades into one scene.
+overdriven fuzz guitars, swirling organ, tight funk-inflected rhythm sections, and raw tape saturation. Artist leads: AKA, Panbers, Shark Move, Benny Soebardja, Guruh Gipsy. See the Indonesian DIY punk section below rather than collapsing several decades into one scene.
 
 ### Chilean Nueva Canción & Andean Avant-Folk
 
-**Vibe:** deeply poetic, politically charged, and acoustically rich folk-experimentalism blending indigenous Andean instrumentation with avant-garde songcraft.
-
-**Sonic markers:** charango, quena (bamboo flute), bombo legüero, intricate nylon-string guitar, and soaring vocal harmonies.
-
-**Reference artists:** Violeta Parra, Víctor Jara, Inti-Illimani, Quilapayún, Los Jaivas (for progressive/psych-folk crossover).
+charango, quena (bamboo flute), bombo legüero, intricate nylon-string guitar, and soaring vocal harmonies. Artist leads: Violeta Parra, Víctor Jara, Inti-Illimani, Quilapayún, Los Jaivas (for progressive/psych-folk crossover).
 
 ### South African Bubblegum, Township Synth-Boogie & New Wave
 
-**Vibe:** jubilant yet urgent 1980s South African urban dance and post-punk, fusing mbaqanga basslines with imported LinnDrums and DX7 synths.
-
-**Sonic markers:** elastic fretless/slap bass, bright FM synth brass, infectious call-and-response vocals, and crisp drum-machine programming.
-
-**Reference artists:** Brenda Fassie, Paul Ndlovu, The Rockets, Via Afrika, Petit Cheval, Harari.
+elastic fretless/slap bass, bright FM synth brass, infectious call-and-response vocals, and crisp drum-machine programming. Artist leads: Brenda Fassie, Paul Ndlovu, The Rockets, Via Afrika, Petit Cheval, Harari.
 
 ### Turkish Anatolian Psych-Rock (Anadolu Pop)
 
-**Vibe:** hypnotic, microtonal 1970s Turkish psychedelic folk-rock fusing traditional aşık minstrel melodies with heavy Western psych-funk.
-
-**Sonic markers:** electric bağlama (saz), fuzz pedals, Moog synthesizers, darbuka hand percussion, and dramatic, melancholic vocals.
-
-**Reference artists:** Erkin Koray, Barış Manço, Selda Bağcan, Moğollar, Mustafa Özkent.
+electric bağlama (saz), fuzz pedals, Moog synthesizers, darbuka hand percussion, and dramatic, melancholic vocals. Artist leads: Erkin Koray, Barış Manço, Selda Bağcan, Moğollar, Mustafa Özkent.
 
 ### Thai Molam & Luk Thung Funk
 
-**Vibe:** electrifying, fast-paced Northeast Thai (Isan) roots music supercharged with 1970s/80s James Brown-style funk and surf-psych.
-
-**Sonic markers:** hypnotic khaen (bamboo mouth organ) drones, phin (electric lute) leads, punchy horn sections, and syncopated hand percussion.
-
-**Reference artists:** Dao Bandon, Banyen Rakgan, The Paradise Bangkok Molam International Band, Suthep Wongkamhaeng.
+hypnotic khaen (bamboo mouth organ) drones, phin (electric lute) leads, punchy horn sections, and syncopated hand percussion. Artist leads: Dao Bandon, Banyen Rakgan, The Paradise Bangkok Molam International Band, Suthep Wongkamhaeng.
 
 ### Habesha Ethio-Jazz & Tizita Groove
 
-**Vibe:** nocturnal, smoky, and deeply hypnotic 1960s/70s Addis Ababa instrumental jazz and soul built on pentatonic Ethiopian modes.
-
-**Sonic markers:** vibraphone, serpentine saxophones, Wurlitzer/Farfisa organ, Latin-inflected percussion, and haunting modal melodies.
-
-**Reference artists:** Mulatu Astatke, Hailu Mergia, Mahmoud Ahmed, Getatchew Mekurya, Alemayehu Eshete.
+vibraphone, serpentine saxophones, Wurlitzer/Farfisa organ, Latin-inflected percussion, and haunting modal melodies. Artist leads: Mulatu Astatke, Hailu Mergia, Mahmoud Ahmed, Getatchew Mekurya, Alemayehu Eshete.
 
 
 ## Further scene horizons — research leads, not default playlists
@@ -2932,31 +2880,13 @@ The additions below widen what the curator can *consider*. Source links support 
 **Sources:** [Adeem — official biography and pronouns](https://adeemtheartist.com/epk) · [them. — August Ponthier interview](https://www.them.us/story/musician-august-ponthier-comes-out-as-nonbinary-exclusive-interview).
 
 
-## Responsible cross-scene reasoning
+## Cross-scene research
 
-- Identify the actual artist, label, scene, period, and recording; do not infer origin from language, instruments, or broad regional labels.
-- The broader the geographic leap, the more important the audible bridge (groove, timbre, arrangement, production, atmosphere).
-- Don't turn these examples into an obligatory global tour. Stay within a requested scene when appropriate.
-- Treat all historical summaries as hypotheses and research leads, not automatic provenance claims.
-- For open-ended `go`, consider under-covered scenes and languages before settling on a canonical shortlist, but **never force a regional, religious, Indigenous or identity quota**. A promising audible bridge always outranks token diversity.
-- Verify artist credit, language, Nation/community identification, gender self-description and historical context when stated. These example names are discovery doors, not a ready-to-publish playlist.
-
+Use a specific musical bridge and verify provenance and credits for the individual recording.
 
 ## Category discovery index — expand the search before choosing artists
 
-The following 44 routes add to the incumbent map; they do not replace it. Some are genres, some are traditions, and some are explicitly labeled archival search routes. Never promote a compilation title or marketing term into a universal genre. The short descriptions are research scopes, not guarantees about every recording. Mood suitability must be established independently; no route is locked to Happy, Angry, Sad or Weird.
-
-### Index navigation
-
-- Percussive and electronic dance laboratories
-- Island and coastal dance traditions
-- Overlooked electric and cassette routes
-- Guitar, percussion and dance crossings
-- Multipart voice and patient song
-- Experimental material and form
-- Criminal narrative routes
-
-Sources below establish research doors, not streaming availability or exact-track verification. Open the relevant release notes and verify the individual recording before making factual claims. Preserve the distinctions between language, ethnicity, geography, genre and mood. Named artists elsewhere in this document are historical touchstones, never default playlist slots.
+These catalog and archival routes are search starting points. Check fit and provenance at recording level.
 
 ### Percussive and electronic dance laboratories
 

@@ -25,91 +25,47 @@ A geography is a research lead, not a substitute for identifying the actual arti
 
 ### Krautrock / Kosmische Musik
 
-**Vibe:** hypnotic motorik momentum, long-form improvisation, spacious electronic exploration.
-
-**Sonic markers:** repeated pulses, analog sequences, tape manipulation, evolving guitar/synth textures.
-
-**Reference artists:** Neu!, Can, Harmonia, Popol Vuh, Tangerine Dream, Klaus Schulze.
+repeated pulses, analog sequences, tape manipulation, evolving guitar/synth textures. Artist leads: Neu!, Can, Harmonia, Popol Vuh, Tangerine Dream, Klaus Schulze.
 
 ### Giallo Soundtracks / Italian Library Music
 
-**Vibe:** tense and cinematic; eerie, lush, playful, or suspenseful depending on the cue.
-
-**Sonic markers:** propulsive prog bass, Mellotron/string colors, Rhodes, analog arpeggios, hushed vocals.
-
-**Reference artists:** Goblin, Fabio Frizzi, Piero Umiliani, Alessandro Alessandroni, Stelvio Cipriani.
+propulsive prog bass, Mellotron/string colors, Rhodes, analog arpeggios, hushed vocals. Artist leads: Goblin, Fabio Frizzi, Piero Umiliani, Alessandro Alessandroni, Stelvio Cipriani.
 
 ### Zamrock
 
-**Vibe:** raw Zambian psychedelic rock, garage energy, and funk from the 1970s.
-
-**Sonic markers:** distorted fuzz riffs, prominent live drums, extended leads, English and local-language vocals.
-
-**Reference artists:** WITCH, Amanaz, Paul Ngozi / Ngozi Family, Chrissy Zebby Tembo.
+distorted fuzz riffs, prominent live drums, extended leads, English and local-language vocals. Artist leads: WITCH, Amanaz, Paul Ngozi / Ngozi Family, Chrissy Zebby Tembo.
 
 ### Brussels New Beat
 
-**Vibe:** heavy, slower, ominous late-1980s Belgian dance music.
-
-**Sonic markers:** pitched-down dance records, synth stabs, industrial influences, hypnotic sampling; roughly 90–115 BPM as a broad stylistic cue, not a rule.
-
-**Reference artists:** A Split-Second, Lords of Acid, Neon, The Confetti's, Amnesia.
+pitched-down dance records, synth stabs, industrial influences, hypnotic sampling; roughly 90–115 BPM as a broad stylistic cue, not a rule. Artist leads: A Split-Second, Lords of Acid, Neon, The Confetti's, Amnesia.
 
 ### Peruvian Chicha & Psychedelic Cumbia
 
-**Vibe:** sun-drenched, hypnotic, bittersweet tropical psychedelia bridging Andean huayno, cumbia rhythms, and surf/garage rock.
-
-**Sonic markers:** spring-reverb electric guitars, wah-wah pedals, Farfisa organs, driving timbales, guiro, and melodic basslines.
-
-**Reference artists:** Los Destellos, Juaneco y Su Combo, Los Mirlos, Chacalón y La Nueva Crema, Los Wembler's de Iquitos.
+spring-reverb electric guitars, wah-wah pedals, Farfisa organs, driving timbales, guiro, and melodic basslines. Artist leads: Los Destellos, Juaneco y Su Combo, Los Mirlos, Chacalón y La Nueva Crema, Los Wembler's de Iquitos.
 
 ### Indonesian Garage Psych / Pop Kreatif (separate from later punk)
 
-**Vibe:** 1970s Indonesian garage, fuzz-organ psych and cassette-era pop kreatif. The later independent punk and hardcore scenes get their own entry below.
-
-**Sonic markers:** overdriven fuzz guitars, swirling organ, tight funk-inflected rhythm sections, and raw tape saturation.
-
-**Reference artists:** AKA, Panbers, Shark Move, Benny Soebardja, Guruh Gipsy. See the Indonesian DIY punk section below rather than collapsing several decades into one scene.
+overdriven fuzz guitars, swirling organ, tight funk-inflected rhythm sections, and raw tape saturation. Artist leads: AKA, Panbers, Shark Move, Benny Soebardja, Guruh Gipsy. See the Indonesian DIY punk section below rather than collapsing several decades into one scene.
 
 ### Chilean Nueva Canción & Andean Avant-Folk
 
-**Vibe:** deeply poetic, politically charged, and acoustically rich folk-experimentalism blending indigenous Andean instrumentation with avant-garde songcraft.
-
-**Sonic markers:** charango, quena (bamboo flute), bombo legüero, intricate nylon-string guitar, and soaring vocal harmonies.
-
-**Reference artists:** Violeta Parra, Víctor Jara, Inti-Illimani, Quilapayún, Los Jaivas (for progressive/psych-folk crossover).
+charango, quena (bamboo flute), bombo legüero, intricate nylon-string guitar, and soaring vocal harmonies. Artist leads: Violeta Parra, Víctor Jara, Inti-Illimani, Quilapayún, Los Jaivas (for progressive/psych-folk crossover).
 
 ### South African Bubblegum, Township Synth-Boogie & New Wave
 
-**Vibe:** jubilant yet urgent 1980s South African urban dance and post-punk, fusing mbaqanga basslines with imported LinnDrums and DX7 synths.
-
-**Sonic markers:** elastic fretless/slap bass, bright FM synth brass, infectious call-and-response vocals, and crisp drum-machine programming.
-
-**Reference artists:** Brenda Fassie, Paul Ndlovu, The Rockets, Via Afrika, Petit Cheval, Harari.
+elastic fretless/slap bass, bright FM synth brass, infectious call-and-response vocals, and crisp drum-machine programming. Artist leads: Brenda Fassie, Paul Ndlovu, The Rockets, Via Afrika, Petit Cheval, Harari.
 
 ### Turkish Anatolian Psych-Rock (Anadolu Pop)
 
-**Vibe:** hypnotic, microtonal 1970s Turkish psychedelic folk-rock fusing traditional aşık minstrel melodies with heavy Western psych-funk.
-
-**Sonic markers:** electric bağlama (saz), fuzz pedals, Moog synthesizers, darbuka hand percussion, and dramatic, melancholic vocals.
-
-**Reference artists:** Erkin Koray, Barış Manço, Selda Bağcan, Moğollar, Mustafa Özkent.
+electric bağlama (saz), fuzz pedals, Moog synthesizers, darbuka hand percussion, and dramatic, melancholic vocals. Artist leads: Erkin Koray, Barış Manço, Selda Bağcan, Moğollar, Mustafa Özkent.
 
 ### Thai Molam & Luk Thung Funk
 
-**Vibe:** electrifying, fast-paced Northeast Thai (Isan) roots music supercharged with 1970s/80s James Brown-style funk and surf-psych.
-
-**Sonic markers:** hypnotic khaen (bamboo mouth organ) drones, phin (electric lute) leads, punchy horn sections, and syncopated hand percussion.
-
-**Reference artists:** Dao Bandon, Banyen Rakgan, The Paradise Bangkok Molam International Band, Suthep Wongkamhaeng.
+hypnotic khaen (bamboo mouth organ) drones, phin (electric lute) leads, punchy horn sections, and syncopated hand percussion. Artist leads: Dao Bandon, Banyen Rakgan, The Paradise Bangkok Molam International Band, Suthep Wongkamhaeng.
 
 ### Habesha Ethio-Jazz & Tizita Groove
 
-**Vibe:** nocturnal, smoky, and deeply hypnotic 1960s/70s Addis Ababa instrumental jazz and soul built on pentatonic Ethiopian modes.
-
-**Sonic markers:** vibraphone, serpentine saxophones, Wurlitzer/Farfisa organ, Latin-inflected percussion, and haunting modal melodies.
-
-**Reference artists:** Mulatu Astatke, Hailu Mergia, Mahmoud Ahmed, Getatchew Mekurya, Alemayehu Eshete.
+vibraphone, serpentine saxophones, Wurlitzer/Farfisa organ, Latin-inflected percussion, and haunting modal melodies. Artist leads: Mulatu Astatke, Hailu Mergia, Mahmoud Ahmed, Getatchew Mekurya, Alemayehu Eshete.
 
 
 ## Further scene horizons — research leads, not default playlists
@@ -205,31 +161,13 @@ The additions below widen what the curator can *consider*. Source links support 
 **Sources:** [Adeem — official biography and pronouns](https://adeemtheartist.com/epk) · [them. — August Ponthier interview](https://www.them.us/story/musician-august-ponthier-comes-out-as-nonbinary-exclusive-interview).
 
 
-## Responsible cross-scene reasoning
+## Cross-scene research
 
-- Identify the actual artist, label, scene, period, and recording; do not infer origin from language, instruments, or broad regional labels.
-- The broader the geographic leap, the more important the audible bridge (groove, timbre, arrangement, production, atmosphere).
-- Don't turn these examples into an obligatory global tour. Stay within a requested scene when appropriate.
-- Treat all historical summaries as hypotheses and research leads, not automatic provenance claims.
-- For open-ended `go`, consider under-covered scenes and languages before settling on a canonical shortlist, but **never force a regional, religious, Indigenous or identity quota**. A promising audible bridge always outranks token diversity.
-- Verify artist credit, language, Nation/community identification, gender self-description and historical context when stated. These example names are discovery doors, not a ready-to-publish playlist.
-
+Use a specific musical bridge and verify provenance and credits for the individual recording.
 
 ## Category discovery index — expand the search before choosing artists
 
-The following 44 routes add to the incumbent map; they do not replace it. Some are genres, some are traditions, and some are explicitly labeled archival search routes. Never promote a compilation title or marketing term into a universal genre. The short descriptions are research scopes, not guarantees about every recording. Mood suitability must be established independently; no route is locked to Happy, Angry, Sad or Weird.
-
-### Index navigation
-
-- Percussive and electronic dance laboratories
-- Island and coastal dance traditions
-- Overlooked electric and cassette routes
-- Guitar, percussion and dance crossings
-- Multipart voice and patient song
-- Experimental material and form
-- Criminal narrative routes
-
-Sources below establish research doors, not streaming availability or exact-track verification. Open the relevant release notes and verify the individual recording before making factual claims. Preserve the distinctions between language, ethnicity, geography, genre and mood. Named artists elsewhere in this document are historical touchstones, never default playlist slots.
+These catalog and archival routes are search starting points. Check fit and provenance at recording level.
 
 ### Percussive and electronic dance laboratories
 
