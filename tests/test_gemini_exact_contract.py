@@ -14,8 +14,8 @@ class GeminiExactPublishingContractTests(unittest.TestCase):
         # Guard canonical source, generated online entry, and portable/Gem instructions.
         required = {
             "SKILL.md": "do not** generate a theme-based substitute",
-            "adapters/gemini/SKILL.md": "DO NOT call it as a fallback",
-            "adapters/gemini/GEM_KNOWLEDGE.md": "DO NOT call it as a fallback",
+            "adapters/gemini/SKILL.md": "A theme-only writer is insufficient",
+            "adapters/gemini/GEM_KNOWLEDGE.md": "A theme-only writer is insufficient",
             "adapters/gemini/GEM_INSTRUCTIONS.md": "only when the actual writer accepts explicit ordered tracks",
             "adapters/gemini/README.md": "only if the authorized writer supports explicit ordered track entries",
             "README.md": "one playlist attempt only if an authorized writer can accept the ordered tracklist",
@@ -31,7 +31,7 @@ class GeminiExactPublishingContractTests(unittest.TestCase):
             with self.subTest(path=path):
                 self.assertIn("PLAYLIST NOT CREATED", read(path))
         self.assertIn("exact-track publishing unavailable", read("adapters/gemini/GEM_INSTRUCTIONS.md"))
-        self.assertIn("exact-track publishing unavailable", read("adapters/gemini/SKILL.md"))
+        self.assertIn("exact-track publishing is unavailable", read("adapters/gemini/SKILL.md"))
 
     def test_approximation_is_separate_and_explicit(self):
         gem = read("adapters/gemini/GEM_INSTRUCTIONS.md")
@@ -45,18 +45,18 @@ class GeminiExactPublishingContractTests(unittest.TestCase):
         self.assertIn("Text-only skips writer preflight and publication", read("SKILL.md"))
         self.assertIn("go, text only opts out", read("adapters/gemini/GEM_INSTRUCTIONS.md"))
         policy = read("references/gemini-publish.md")
-        for phrase in ("No duplicates.", "SAVE TOOL UNAVAILABLE", "SAVE FAILED",
-                       "Never save a text-only crate", "unmodified URI/URL"):
+        for phrase in ("Reuse the existing playlist", "failed save",
+                       "A text-only crate requires a later explicit request", "exact, unmodified playlist link"):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, policy)
 
     def test_partial_preview_is_unknown_not_failed(self):
-        for path in ("SKILL.md", "adapters/gemini/SKILL.md"):
+        for path in ("SKILL.md", "references/verification.md"):
             with self.subTest(path=path):
                 self.assertIn("8 of 12", read(path))
-        policy = read("references/gemini-publish.md")
+        policy = read("references/verification.md")
         self.assertIn("unverified", policy)
-        self.assertIn("not matched or missing", policy)
+        self.assertIn("unknown", policy)
 
     def test_plain_language_handoff_reachable_from_go_and_gem(self):
         policy = read("references/gemini-publish.md")
@@ -67,7 +67,7 @@ class GeminiExactPublishingContractTests(unittest.TestCase):
         self.assertIn("Gemini Publish", entry)
         self.assertIn("do not provide a separate list of track titles", gem)
         self.assertIn("do not resend the individual track links", gem)
-        self.assertIn("SAVE UNCONFIRMED", policy)
+        self.assertIn("library persistence", policy)
         self.assertIn("Do not automatically retry a failed save", policy)
         self.assertIn("17–21 tracks", policy)
         self.assertIn("including an empty or null list", policy)

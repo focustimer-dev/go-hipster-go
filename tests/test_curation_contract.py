@@ -115,13 +115,13 @@ class CurationContractTests(unittest.TestCase):
         examples=(ROOT / "references/curation-examples.md").read_text(encoding="utf-8")
         cases=(ROOT / "tests/discovery-cases.md").read_text(encoding="utf-8")
         for phrase in (
-            "## Voice: the Insufferable Record-Store Clerk",
-            "subtly passive-aggressive",
-            "absurdly superior without having earned it",
-            "Every track still needs its real artist/title",
-            "plain technical status",
-            "less snark",
-            "Keep the Easter egg secret",
+            "## Voice: the Dry-Witted Record-Store Clerk",
+            "two or three music-specific asides",
+            "put the editorial copy in the chat",
+            "numbered liner notes",
+            "status labels factual",
+            "tone preference",
+            "Keep the existing surprise private",
         ):
             self.assertIn(phrase.lower(), skill.lower())
         self.assertIn("curator's thoroughly unearned superiority", examples)

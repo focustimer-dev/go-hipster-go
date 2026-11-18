@@ -15,7 +15,7 @@ class PolarCoastlineTests(unittest.TestCase):
                           'automatic regional shuffle', 'prior Antarctica playlist',
                           'explicit region selections never imply Antarctica'):
                 self.assertIn(guard, text, path)
-        compact = (ROOT / 'scripts/build_gemini_app_skill.py').read_text()
+        compact = (ROOT / 'adapters/gemini/templates/SKILL.md').read_text()
         self.assertIn('Exclude it from plain go', compact)
         self.assertIn('Past use is not consent', compact)
 
