@@ -44,8 +44,9 @@ jobs:
               assert set(z.namelist()) == set(generated) | set(REFERENCES)
               assert 'references/tempo-curve.md' in z.namelist()
               text=z.read('SKILL.md').decode('utf-8') + z.read('references/workflow.md').decode('utf-8')
-              assert '## The personality is mandatory in Gemini' in text
-              assert 'DeBarge Protocol' in text and '25 consecutive' in text
+              assert 'playfully theatrical, dry-witted record-store clerk' in text
+              assert 'references/protocol-hit.md' not in z.namelist()
+              assert 'DeBarge Protocol' not in text
               assert 'scripts/' not in text and 'python ' not in text.lower()
           claude=Path('dist/go-hipster-go-claude-skill.zip')
           plugin=Path('dist/go-hipster-go-claude-plugin.zip')
