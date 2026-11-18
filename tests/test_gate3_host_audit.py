@@ -15,7 +15,7 @@ class Gate3HostAudit(unittest.TestCase):
         for content in (rendered, bundle):
             with self.subTest(length=len(content)):
                 for required in ("CURATED — NOT PUBLISHED", "PUBLISHED — EXACT",
-                                 "PUBLISHED — APPROXIMATE", "8 of 12", "25 DeBarge"):
+                                 "PUBLISHED — APPROXIMATE", "8 of 12", "intentionally repeated recordings"):
                     self.assertIn(required, content)
                 self.assertNotIn("python scripts/playlist_cli.py status-report", content)
                 self.assertNotIn("status-report evidence.json", content)
@@ -39,8 +39,8 @@ class Gate3HostAudit(unittest.TestCase):
         for term in ("**Display pattern:**", "**Count fidelity:**", "**Non-trigger isolation"):
             self.assertIn(term, skill)
         self.assertIn("**Count fidelity:**", workflow)
-        self.assertIn("8 of 12", gem)
-        self.assertIn("DO NOT call it as a fallback", gem)
+        self.assertIn("8 of 12", (ROOT / "references/verification.md").read_text())
+        self.assertIn("A theme-only writer is insufficient", gem)
         self.assertNotIn("ChatGPT plugin composer", gem)
 
 

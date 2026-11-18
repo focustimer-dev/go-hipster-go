@@ -92,6 +92,7 @@ class PortableAgentTests(unittest.TestCase):
             self.assertEqual(names, set(__import__("scripts.build_gemini_app_skill", fromlist=["REFERENCES"]).REFERENCES) | {
                 "SKILL.md",
                 "references/workflow.md",
+                "references/setup.md",
                 "references/tempo-curve.md",
                 "references/global-scenes.md",
                 "references/sonic-taxonomy.md",
@@ -106,29 +107,15 @@ class PortableAgentTests(unittest.TestCase):
             self.assertIn("c1:-2wd-1012a210-1s-2-10", curve)
             text = entry + z.read("references/workflow.md").decode("utf-8")
             self.assertTrue(text.startswith("---\nname: go-hipster-go\n"))
-            self.assertIn("passive-aggressive record-store clerk", text[:700])
-            self.assertIn("## The personality is mandatory in Gemini", text[:1300])
-            self.assertIn("two or three varied little jabs", text[:1800])
-            self.assertIn("If YouTube Music returns", text[:2000])
-            self.assertIn("## Voice: the Insufferable Record-Store Clerk", text)
+            self.assertIn("playfully theatrical, dry-witted record-store clerk", entry)
+            self.assertIn("two or three asides into specific musical observations", text)
             self.assertIn("## Gemini-native playlist creation", text)
-            self.assertIn("@YouTubeMusic", text)
-            self.assertIn("Save to library", text)
-            self.assertNotIn("composer", text.lower())
-            self.assertNotIn("selecting both Go, Hipster, Go!", text)
             self.assertIn("no code execution", text.lower())
-            self.assertIn("DeBarge Protocol", text)
-            self.assertIn("25 consecutive", text)
-            self.assertNotIn("scripts/", text)
+            self.assertNotIn("DeBarge Protocol", text)
+            self.assertNotIn("references/protocol-hit.md", names)
             self.assertNotIn("python ", text.lower())
             self.assertIn("Gemini default", text)
-            self.assertIn("version: " + json.loads((ROOT / "plugin.json").read_text())["version"], text.split("---", 2)[1])
-            self.assertIn("## Creative cue and count safeguards", text)
-            self.assertIn("optional subplot", text)
-            self.assertIn("Pre-publish deduplication", text)
-            from scripts.build_gemini_app_skill import render
-            full = render((ROOT / "SKILL.md").read_text())
-            self.assertIn(full[full.index("## Intent and activation"):].rstrip(), text)
+            self.assertIn("version: " + json.loads((ROOT / "plugin.json").read_text())["version"], entry)
             online = (ROOT / "adapters/gemini/SKILL.md").read_text()
             self.assertNotIn("](references/", online)
             self.assertIn("raw.githubusercontent.com", online)
@@ -147,7 +134,7 @@ class PortableAgentTests(unittest.TestCase):
             quality = z.read("references/recording-quality.md").decode("utf-8")
             self.assertIn("Never silently relax", quality)
             self.assertIn("recording-quality.md", z.read("references/reference-index.md").decode("utf-8"))
-            self.assertIn("| Flat or generic | Actually on brand |", text)
+            self.assertIn("The clipped guitar leaves enough room", text)
             self.assertEqual(text.count("## Gemini-native playlist creation"), 1)
             v = z.read("references/verification.md").decode("utf-8")
             self.assertIn("Criminal mood: verify the song", v)
@@ -160,7 +147,7 @@ class PortableAgentTests(unittest.TestCase):
             self.assertEqual(z.read("references/global-scenes.md"),
                              (ROOT / "references/global-scenes.md").read_bytes())
             self.assertEqual(z.read("references/sonic-taxonomy.md"),
-                             (ROOT / "references/sonic-taxonomy.md").read_bytes())
+                             (ROOT / "adapters/gemini/templates/references/sonic-taxonomy.md").read_bytes())
             for link in re.findall(r"\]\(([^)]+)\)", text):
                 if "://" not in link:
                     self.assertIn(link, names)
@@ -184,7 +171,7 @@ class PortableAgentTests(unittest.TestCase):
         online = modular_files(canonical, online=True)
         for policy in (rendered, online["references/workflow.md"]):
             self.assertNotIn("lint-sequence", policy)
-            self.assertIn("lint a manifest if available or check manually", policy)
+            self.assertIn("Check the final count", policy)
 
     def test_gemini_clean_track_matching_and_partial_preview(self):
         canonical = (ROOT / "SKILL.md").read_text(encoding="utf-8")
@@ -195,16 +182,9 @@ class PortableAgentTests(unittest.TestCase):
         self.assertIn("official artist/title spelling and diacritics", canonical)
         self.assertIn("not generic `(Remastered)` tags", canonical)
         self.assertIn("simplify accents or punctuation only after a particular match fails", canonical)
-        self.assertIn("Keep official artist/title spelling and essential mix tags", entry)
-        self.assertIn("no years, labels, notes or generic remaster suffixes", entry)
-        self.assertIn("A preview (even 8 of 12) proves neither count nor save", entry)
-        self.assertIn("Never save text-only crates", entry)
-        self.assertIn("Partial preview versus full saved list", policy)
-        self.assertIn("Google does not specify a universal eight-track preview limit", policy)
-        self.assertIn("mark unseen positions **unverified**", policy)
-        self.assertIn("Never save a text-only crate", policy)
-        self.assertIn("Partial preview versus full saved list", knowledge)
-        self.assertIn("A preview (even 8 of 12) proves neither count nor save", knowledge)
+        self.assertIn("requested number of tracks", policy)
+        self.assertIn("Partial preview example", knowledge)
+        self.assertIn("no-write request", entry)
 
     def test_gemini_publish_follow_up_contract(self):
         from scripts.build_gemini_app_skill import render, REFERENCES
@@ -217,9 +197,8 @@ class PortableAgentTests(unittest.TestCase):
         self.assertIn("raw.githubusercontent.com/focustimer-dev/go-hipster-go/release/skill-prod/references/gemini-publish.md", entry)
         self.assertIn("**Publish follow-up:**", render((ROOT / "SKILL.md").read_text()))
         self.assertEqual(knowledge.count("# BEGIN SOURCE: references/gemini-publish.md"), 1)
-        self.assertIn("# Gemini publishing follow-up", knowledge)
-        for needle in ("Save to library", "TRACKLIST / LINER NOTES", "music.youtube.com",
-                       "No duplicates.", "copy-ready metadata"):
+        self.assertIn("# Gemini exact-track publishing", knowledge)
+        for needle in ("Save to library", "TRACKLIST / LINER NOTES", "existing playlist", "copy-ready text"):
             self.assertIn(needle, policy)
         self.assertIn("## Publish — finalize the existing playlist", gem)
         self.assertNotIn("**Publish follow-up:**", (ROOT / "SKILL.md").read_text())
@@ -251,8 +230,8 @@ class PortableAgentTests(unittest.TestCase):
             "exact, unmodified playlist link returned by creation",
             "Supply only the personal-playlist intent, that same unmodified playlist link",
             "Omit the list of individual recording links",
-            "SAVE UNCONFIRMED", "SAVE FAILED", "SAVED — PARTIALLY VERIFIED",
-            "Never save a text-only crate", "No duplicates.",
+            "library persistence", "failed save", "verification",
+            "A text-only crate requires a later explicit request", "Reuse the existing playlist",
         )
         for phrase in must_preserve:
             with self.subTest(phrase=phrase):
@@ -268,11 +247,11 @@ class PortableAgentTests(unittest.TestCase):
         self.assertIn(policy.strip(), knowledge)
 
     def test_gemini_persona_and_refresh_instructions(self):
-        script=(ROOT/"scripts/build_gemini_app_skill.py").read_text(encoding="utf-8")
+        script=(ROOT/"adapters/gemini/templates/SKILL.md").read_text(encoding="utf-8")
         gem=(ROOT/"adapters/gemini/GEM_INSTRUCTIONS.md").read_text(encoding="utf-8")
         guide=(ROOT/"adapters/gemini/README.md").read_text(encoding="utf-8")
         cases=(ROOT/"adapters/gemini/MOBILE_SMOKE_TEST.md").read_text(encoding="utf-8")
-        self.assertIn("The personality is mandatory in Gemini",script)
+        self.assertIn("Editorial voice",script)
         self.assertIn("Gemini voice priority",gem)
         self.assertIn("Replace skill",guide)
         self.assertIn("go weird, 6 tracks, text only",guide)

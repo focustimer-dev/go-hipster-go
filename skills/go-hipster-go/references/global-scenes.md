@@ -163,7 +163,7 @@ The additions below widen what the curator can *consider*. Source links support 
 
 ## Cross-scene research
 
-Use a specific musical bridge and verify provenance and credits for the individual recording.
+Use a specific musical bridge and verify provenance and credits for the individual recording. Search broadly and never force a regional, religious, Indigenous or identity quota.
 
 ## Category discovery index — expand the search before choosing artists
 

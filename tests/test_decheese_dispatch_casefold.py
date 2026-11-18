@@ -23,7 +23,7 @@ class DecheeseDispatchTests(unittest.TestCase):
         self.assertIn("never starts a new playlist", canonical)
 
     def test_gemini_entry_and_generator_prioritize_audit(self):
-        for rel in ("adapters/gemini/SKILL.md", "scripts/build_gemini_app_skill.py"):
+        for rel in ("adapters/gemini/SKILL.md", "adapters/gemini/templates/SKILL.md"):
             with self.subTest(path=rel):
                 text = (ROOT / rel).read_text(encoding="utf-8")
                 self.assertIn("Audit first (case-insensitive)", text)
