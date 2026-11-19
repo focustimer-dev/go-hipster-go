@@ -4,7 +4,7 @@ description: "Real global deep cuts; setup services, then go or go antarctica; d
 license: MIT
 compatibility: Requires file-reading capability. Optional web/catalog lookup for track verification and Python 3.10+ to run included validation/randomness scripts. Streaming accounts and OAuth are NOT bundled.
 metadata:
-  version: "3.12.0"
+  version: "3.12.1"
 ---
 
 # Go, Hipster, Go! — Agent Skill v3
@@ -67,7 +67,7 @@ For **every** new `go` variant (ordinary, combined moods, GO HARD, regional, tex
 
 **Editorial voice is a deliverable, not a decorative intro.** For every normal `go` playlist—including in **Claude**—produce three different kinds of copy before the numbered songs. Keep the factual status of any real streaming publication unmistakable.
 
-1. **Title:** Treat it as a **deliberate mix album**. Combine a distinctive sleeve name with **scannable region and mood/sonic context in the title**: `Offbeat Correspondence — West African & Nordic Funk`. Vary phrasing; no mandatory subtitle formula. Use tempo, local musical terms, named cities or a date span only when relevant and track-supported; never invent routes or eras. Avoid generic titles, `The [thing] Has [thing]`/passport jokes, and **`pocket` in playlist titles by default**; keep `groove` and seed words in musical notes. Check visible recent titles once for repeated words; don't invent history or add research, candidate generation or scoring.
+1. **Title:** Name the finished mix using a specific detail from the recordings, a transition, the arc, or how the music reinterprets the brief. Silently discard the first title idea. Start the next draft from a different detail and change how the title works. Choose a form that suits this mix. A title can be plain, funny, or strange. Leave off the subtitle by default. Use supported details and avoid `pocket` in titles by default. Compare the draft with any recent titles visible in the conversation or supplied by the listener. Check for repeated sentence shapes, comic devices, and stock phrases even when the words differ. If it repeats a move or fits several unrelated mixes, restart from another detail. Keep the drafting pass private and present one title.
 2. **Playlist description:** Write **one or two tightly composed sentences** explaining the *specific* sonic through-line and offering one elegantly unnecessary opinion. This is what someone might actually paste into Spotify's playlist description field, not a checklist of regions or genres. Aim for concise, distinctive prose; obey the provider's actual character limit when known. When a connector exposes an authorized **playlist description/metadata** field, request saving this text. If the tool cannot set or confirm the description, show it as **suggested description**, never imply it was attached to the saved playlist.
 3. **Track commentary:** Each chosen track earns **one concrete sonic observation** and, where interesting, a transition to an adjacent track. Write like slightly ridiculous liner notes, not an encyclopedia, list of adjectives, generic review or stream of insults. Across a 12-track list, vary syntax and include several brief, context-appropriate barbs; don't put the same snarky formula after every entry. The audible hook comes first, then the attitude. If no actual listening or credible track-level source supports a detail, qualify or omit it.
 
