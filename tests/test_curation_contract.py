@@ -135,13 +135,13 @@ class CurationContractTests(unittest.TestCase):
         for marker in (
             "## Playlist writing: sell the music, not a spreadsheet",
             "**Title:**", "**Playlist description:**", "**Track commentary:**",
-            "Suggested description", "generic titles", "actual character limit",
+            "Suggested description", "fits several unrelated mixes", "actual character limit",
         ):
             # Lowercased checks permit small editorial phrasing differences.
             if marker == "Suggested description":
                 self.assertIn("suggested description", skill.lower())
-            elif marker == "generic titles":
-                self.assertIn("generic titles", skill.lower())
+            elif marker == "fits several unrelated mixes":
+                self.assertIn("fits several unrelated mixes", skill.lower())
             else:
                 self.assertIn(marker.lower(),skill.lower())
         self.assertIn("Suggested playlist description",examples)
