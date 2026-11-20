@@ -910,3 +910,9 @@ html[data-pwa-theme=usiku] body.pwa-workspace .pwa-dialog-head{
 :root[data-pwa-theme=electricstars] :is(#referenceInk,#alphaInk) feFlood{
  flood-color:var(--lab-mood-neutral-ink);
 }
+
+/* Forward ElectricStars slide-lane and portrait colors into the sandboxed curve editor. */
+:root[data-pwa-theme=electricstars] body.gig-poster{
+ --portrait-ground:#372b68;
+ --portrait-strip-ink:#f6b8fb;
+}
