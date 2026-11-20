@@ -702,7 +702,7 @@ function mountMixCurveTrial(){
      frame.style.border="0";
      const sendChartTheme=()=>{
        const style=getComputedStyle(panel);
-       const tokens=["--paper","--ink","--line","--focus-ink","--focus-paper","--atlas-selected"];
+       const tokens=["--paper","--ink","--line","--focus-ink","--focus-paper","--atlas-selected","--portrait-ground","--portrait-strip-ink"];
        const colors=Object.fromEntries(tokens.map(token=>[token,style.getPropertyValue(token).trim()]));
        frame.contentWindow?.postMessage({type:"ghg-chart-theme",colors},"*");
      };

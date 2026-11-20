@@ -282,7 +282,7 @@ window.addEventListener("message",event=>{
  }
  if(data?.type==="ghg-chart-theme"){
    const root=document.documentElement;
-   for(const token of ["--paper","--ink","--line","--focus-ink","--focus-paper","--atlas-selected"]){
+   for(const token of ["--paper","--ink","--line","--focus-ink","--focus-paper","--atlas-selected","--portrait-ground","--portrait-strip-ink"]){
      const color=data.colors?.[token];
      if(typeof color==="string"&&CSS.supports("color",color))root.style.setProperty(token,color);
    }

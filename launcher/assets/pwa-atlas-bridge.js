@@ -4,9 +4,10 @@
 (function(){
 'use strict';
 const KEY='ghg-pwa-crate-v1', REF='ghg-pwa-reference-v1', PREF='ghg-pwa-atlas-prefs-v1';
-const THEME_KEY='ghg-pwa-theme-v1', THEMES=['liberi','bosque','usiku','kingston','detroit','addis','polish','beirut','michoacan'];
-const PRINT_THEMES=new Set(['kingston','detroit','addis','polish','beirut','michoacan']);
+const THEME_KEY='ghg-pwa-theme-v1', THEMES=['liberi','bosque','usiku','kingston','detroit','addis','polish','beirut','michoacan','electricstars'];
+const PRINT_THEMES=new Set(['kingston','detroit','addis','polish','beirut','michoacan','electricstars']);
 const ATLAS_PALETTES={
+ electricstars:{ocean:'#011629',land:'#0c426d',ink:'#f6b8fb',selected:'#be74cd',route:'#f6b8fb',routeOpacity:.8,routeWidth:1.1,routeDash:[3,4]},
  michoacan:{ocean:'#24191b',land:'#d1ad91',ink:'#49232b',selected:'#e5b653',route:'#e5b653',routeOpacity:.78,routeWidth:1.1,routeDash:[3,4]},
  bosque:{ocean:'#e8e9df',land:'#004225',ink:'#003018',selected:'#e5cf42',route:'#8c6239'},
  usiku:{ocean:'#111111',land:'#f5f0e6',ink:'#003018',selected:'#e5cf42',route:'#b77b4d'},
@@ -28,6 +29,7 @@ const LIBERI_ROUTE_PAINT={'line-color':'#edc65d','line-opacity':.65,
  'line-width':1,'line-dasharray':[3,5]};
 const THEMED_ROUTE_PAINT={opacity:.88,width:1.7,dash:[3,2.6]};
 const TWEEN_PALETTES={
+ electricstars:{paper:'#0c426d',ocean:'#011629',selected:'#be74cd',ink:'#f6b8fb',backdrop:'#011629',land:'#0c426d',route:'#f6b8fb'},
  michoacan:{paper:'#d1ad91',ocean:'#24191b',selected:'#e5b653',ink:'#49232b',backdrop:'#6a2430',land:'#d1ad91',route:'#e5b653'},
  liberi:{paper:'#dfb045',ocean:'#103135',selected:'#a83223',ink:'#103135',backdrop:'#dfb045'},
  bosque:{paper:'#004225',ocean:'#e8e9df',selected:'#e5cf42',ink:'#003018',backdrop:'#f5f0e6'},
