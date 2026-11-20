@@ -916,3 +916,23 @@ html[data-pwa-theme=usiku] body.pwa-workspace .pwa-dialog-head{
  --portrait-ground:#372b68;
  --portrait-strip-ink:#f6b8fb;
 }
+
+/* PWA-only late-cast engraving correction. Desire is an alpha mask and
+   Triumph an alpha-filtered WebP, unlike the original six sprite plates.
+   Keep their approved shapes and expressions; lighten the heavy ink impression
+   on Liberi and ElectricStars without changing Detroit/Katowice or Android. */
+:root:is([data-pwa-theme=liberi],[data-pwa-theme=electricstars]) body.gig-poster .mood-grid .mood:is([data-mood=desire],[data-mood=triumphant]) .face{
+ filter:none!important;
+}
+:root:is([data-pwa-theme=liberi],[data-pwa-theme=electricstars]) body.gig-poster .mood-grid .mood:is([data-mood=desire],[data-mood=triumphant]) .face::before{
+ opacity:.82;
+}
+:root:is([data-pwa-theme=liberi],[data-pwa-theme=electricstars]) body.gig-poster .mood-grid .mood:is([data-mood=desire],[data-mood=triumphant]) .face::after{
+ opacity:0;
+}
+:root:is([data-pwa-theme=liberi],[data-pwa-theme=electricstars]) body.gig-poster .mood-grid .mood:is([data-mood=desire],[data-mood=triumphant])[aria-pressed=true] .face::before{
+ opacity:0;
+}
+:root:is([data-pwa-theme=liberi],[data-pwa-theme=electricstars]) body.gig-poster .mood-grid .mood:is([data-mood=desire],[data-mood=triumphant])[aria-pressed=true] .face::after{
+ opacity:.86;
+}
