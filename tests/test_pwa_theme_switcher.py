@@ -6,14 +6,14 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 
 class PWAThemeTests(unittest.TestCase):
-    def test_nine_selectable_themes_plus_locked_electricstars(self):
+    def test_ten_selectable_themes_including_electricstars(self):
         js = (ROOT / "launcher/assets/pwa-workspace.js").read_text()
-        self.assertIn("const THEMES=['liberi','bosque','usiku','kingston','detroit','addis','polish','beirut','michoacan']", js)
+        self.assertIn("const THEMES=['liberi','bosque','usiku','kingston','detroit','addis','polish','beirut','michoacan','electricstars']", js)
         self.assertIn("const THEME_STORE='ghg-pwa-theme-v1'", js)
         for theme in ("liberi", "bosque", "usiku", "kingston", "detroit", "addis", "polish", "beirut", "michoacan"):
             self.assertIn(f'data-pwa-theme="{theme}"', js)
-        self.assertIn('data-pwa-theme="electricstars" aria-pressed="false" aria-disabled="true" disabled', js)
-        self.assertIn('Locked · DeBarge surprise (Android)', js)
+        self.assertIn('data-pwa-theme="electricstars" aria-pressed="false"', js)
+        self.assertIn('Electric after dark', js)
         self.assertIn('aria-labelledby="pwaThemeHeading"', js)
         self.assertIn("aria-pressed", js)
         self.assertIn("localStorage.setItem(THEME_STORE,theme)", js)

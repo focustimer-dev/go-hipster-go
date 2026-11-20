@@ -6,7 +6,7 @@ const doc=document,api=window.HipsterPWABridge;
 if(!api || !doc.querySelector('.site'))return;
 const STORE='ghg-pwa-crate-v1';
 const THEME_STORE='ghg-pwa-theme-v1';
-const THEMES=['liberi','bosque','usiku','kingston','detroit','addis','polish','beirut','michoacan'];
+const THEMES=['liberi','bosque','usiku','kingston','detroit','addis','polish','beirut','michoacan','electricstars'];
 doc.body.insertAdjacentHTML('beforeend','<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute"><defs><filter id="pwaMichoacanNeutral" color-interpolation-filters="sRGB"><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" intercept="0.28627451" slope="0.53333333"/><feFuncG type="linear" intercept="0.13725490" slope="0.54117647"/><feFuncB type="linear" intercept="0.16862745" slope="0.40000000"/></feComponentTransfer></filter><filter id="pwaMichoacanSelected" color-interpolation-filters="sRGB"><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" intercept="0.14117647" slope="0.75686275"/><feFuncG type="linear" intercept="0.09803922" slope="0.61568627"/><feFuncB type="linear" intercept="0.10588235" slope="0.21960784"/></feComponentTransfer></filter></defs></svg>');
 const LIMIT_SAVED=10,LIMIT_RECENT=3,LIMIT_REFERENCE=2000;
 const destinations={chatgpt:'https://chatgpt.com/',gemini:'https://gemini.google.com/app',claude:'https://claude.ai/'};
@@ -123,8 +123,7 @@ shell.innerHTML=[
  '<button class="pwa-theme-choice" type="button" data-pwa-theme="polish" aria-pressed="false"><span class="pwa-theme-sample" aria-hidden="true"><i></i><i></i><i></i></span><strong>Katowice</strong><small>Modernist sleeve</small></button>',
  '<button class="pwa-theme-choice" type="button" data-pwa-theme="beirut" aria-pressed="false"><span class="pwa-theme-sample" aria-hidden="true"><i></i><i></i><i></i></span><strong>Beirut</strong><small>Cassette Slip</small></button>',
  '<button class="pwa-theme-choice" type="button" data-pwa-theme="michoacan" aria-pressed="false"><span class="pwa-theme-sample" aria-hidden="true"><i></i><i></i><i></i></span><strong>Michoacán</strong><small>Lacquer &amp; gold</small></button>',
- // This browser has no native DeBarge-surprise bridge: display, but do not fake, its unlock.
- '<button class="pwa-theme-choice" type="button" data-pwa-theme="electricstars" aria-pressed="false" aria-disabled="true" disabled><span class="pwa-theme-sample" aria-hidden="true"><i></i><i></i><i></i></span><strong>ElectricStars</strong><small>Locked · DeBarge surprise (Android)</small></button>',
+ '<button class="pwa-theme-choice" type="button" data-pwa-theme="electricstars" aria-pressed="false"><span class="pwa-theme-sample" aria-hidden="true"><i></i><i></i><i></i></span><strong>ElectricStars</strong><small>Electric after dark</small></button>',
  '</div><p id="pwaThemeStatus" class="pwa-theme-status" role="status" aria-live="polite">Saved on this device when browser storage is available.</p></section>',
  '<p>AI and music choices stay on the Jukebox for the browser edition.</p><button type="button" class="pwa-wide" data-pwa-action="services">CHANGE AI &amp; MUSIC</button>',
  '<button type="button" class="pwa-wide" data-pwa-action="recording">LISTENING PREFERENCES</button><p>GO copies your request. Open your chosen AI, paste and send; the browser does not automatically submit it.</p></div></dialog>',
