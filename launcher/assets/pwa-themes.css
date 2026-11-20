@@ -892,3 +892,21 @@ html[data-pwa-theme=usiku] body.pwa-workspace .pwa-dialog-head{
 :root[data-pwa-theme=michoacan] body.gig-poster.pwa-workspace[data-page=launch] .switch button[aria-pressed=true]{
  background:var(--lab-ui-go);color:var(--lab-ui-go-ink);
 }
+
+/* ElectricStars PWA: make neutral portraits readable against the dark page.
+   Retain the original portrait artwork and Android's separate rendering. */
+:root[data-pwa-theme=electricstars] body.gig-poster .mood-grid .mood{
+ background:var(--lab-mood-neutral-paper);color:var(--lab-mood-neutral-ink);
+}
+:root[data-pwa-theme=electricstars] body.gig-poster .mood-grid .mood .word{
+ color:var(--lab-mood-neutral-ink);
+}
+:root[data-pwa-theme=electricstars] body.gig-poster .mood-grid .mood[aria-pressed=true]{
+ background:var(--lab-mood-selected-paper);color:var(--lab-mood-selected-ink);
+}
+:root[data-pwa-theme=electricstars] body.gig-poster .mood-grid .mood[aria-pressed=true] .word{
+ color:var(--lab-mood-selected-ink);
+}
+:root[data-pwa-theme=electricstars] :is(#referenceInk,#alphaInk) feFlood{
+ flood-color:var(--lab-mood-neutral-ink);
+}
