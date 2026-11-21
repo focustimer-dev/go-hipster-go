@@ -443,6 +443,8 @@ html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood]:not([data
 }
 /* Additional portraits retain their source alpha and existing registration. */
 html[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=false] .face::before{
+ /* Match the forest-green engraving of the other neutral Usiku faces. */
+ background-color:var(--usiku-neutral-ink,#063821)!important;
  filter:none!important;
  opacity:1;
 }
@@ -915,4 +917,66 @@ html[data-pwa-theme=usiku] body.pwa-workspace .pwa-dialog-head{
 :root[data-pwa-theme=electricstars] body.gig-poster{
  --portrait-ground:#372b68;
  --portrait-strip-ink:#f6b8fb;
+}
+
+/* Late-added portraits use distinct rendering pipelines: Desire is a tinted
+   alpha mask, Triumph is an alpha-filtered image. Do not apply a blanket
+   opacity adjustment to either: it fades already-fine engraved details. */
+/* Bosque selected stock is yellow. Its generic selected ink can resolve to
+   ivory, making Desire's alpha-mask image disappear into the bright tile.
+   Keep the approved selected expression and color it with dark neutral ink. */
+:root[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=true] .face::after{
+ background-color:var(--lab-mood-neutral-ink,#103135)!important;
+ filter:none!important;
+ opacity:1;
+}
+/* ElectricStars: protect the alpha-mask from the generic face flood filter.
+   Triumph retains its own alphaInk treatment and its original luminance. */
+:root[data-pwa-theme=electricstars] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=true] .face{
+ filter:none!important;
+}
+
+/* PWA-only late-portrait finish: neutral Desire is an alpha mask, not an
+   SVG-filtered print. Explicit theme ink prevents the washed-out neutral face. */
+:root:is([data-pwa-theme=addis],[data-pwa-theme=detroit],[data-pwa-theme=electricstars])
+ body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=false] .face::before{
+ background-color:var(--lab-mood-neutral-ink)!important;
+ filter:none!important;
+ opacity:1;
+}
+/* ElectricStars selection must read at a glance, not merely shift lilac. */
+:root[data-pwa-theme=electricstars]{
+ --lab-mood-selected-paper:#3a74db;
+ --lab-mood-selected-ink:#011629;
+}
+:root[data-pwa-theme=electricstars] body.gig-poster .mood-grid .mood[aria-pressed=true]{
+ box-shadow:inset 0 0 0 2px #f6b8fb;
+}
+
+/* Usiku Desire: use the approved alpha plates as ink-only stencils in BOTH
+   states. Explicit dark ink on each pseudo-element avoids inherited ivory
+   fills and any photo-negative treatment from the general portrait pipeline. */
+:root[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=desire] .face{
+ filter:none!important;
+ background:none!important;
+}
+:root[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=desire] .face::before,
+:root[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=desire] .face::after{
+ background-image:none!important;
+ background-color:#063821!important;
+ filter:none!important;
+ -webkit-mask-mode:alpha;
+ mask-mode:alpha;
+}
+:root[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=true] .face::before{opacity:0!important}
+:root[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=true] .face::after{opacity:1!important}
+:root[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=false] .face::before{opacity:1!important}
+:root[data-pwa-theme=usiku] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=false] .face::after{opacity:0!important}
+
+/* Detroit/Addis: register neutral Desire to the original six portrait grid.
+   This changes only the neutral alpha plate's placement, never its ink or
+   the selected expression; Katowice and the other themes retain their fit. */
+:root:is([data-pwa-theme=detroit],[data-pwa-theme=addis])
+ body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=false] .face::before{
+ transform:translateY(0) scale(.88);
 }
