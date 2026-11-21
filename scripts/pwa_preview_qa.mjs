@@ -56,6 +56,44 @@ for(const profile of profiles){
   assert.equal(await page.locator('.pwa-atlas-preview-link').count(),0,'Retired three-map trial link must not appear in the Jukebox');
   assert.equal(await page.locator('.pwa-add-inspiration').getAttribute('data-pwa-action'),'edit-reference');
   await page.screenshot({path:folder+'/'+profile.name+'-jukebox.png'});
+  // Full eight-character portrait contact set, every available PWA theme.
+  // Capture identical neutral/selected states before the normal QA mutates moods.
+  // These are real Chromium-rendered element screenshots, not simulated swatches.
+  if(profile.name==='phone'){
+   const portraitThemes=['liberi','bosque','usiku','kingston','detroit','addis','polish','beirut','michoacan','electricstars'];
+   for(const theme of portraitThemes){
+    await page.locator('[data-pwa-action="prefs"]').click();
+    await page.locator('#pwaPrefs').waitFor({state:'visible'});
+    await page.locator('button[data-pwa-theme="'+theme+'"]').click();
+    assert.equal(await page.evaluate(()=>document.documentElement.dataset.pwaTheme),theme);
+    await page.locator('[data-pwa-action="close"]').click();
+    // Clear the initial URL-provided Happy selection and any previous test state.
+    for(const mood of ['happy','angry','sad','weird','criminal','funky','desire','triumphant']){
+     const key=page.locator('.mood[data-mood="'+mood+'"]');
+     if(await key.getAttribute('aria-pressed')==='true')await key.click();
+    }
+    await page.waitForTimeout(220); // Allow the 160ms portrait expression fade to settle.
+    const grid=page.locator('.mood-grid');
+    await grid.scrollIntoViewIfNeeded();
+    await grid.screenshot({path:folder+'/portraits-'+theme+'-neutral.png'});
+    for(const mood of ['desire','triumphant']){
+     const key=page.locator('.mood[data-mood="'+mood+'"]');
+     await key.click();
+     assert.equal(await key.getAttribute('aria-pressed'),'true');
+    }
+    await page.waitForTimeout(220);
+    await grid.screenshot({path:folder+'/portraits-'+theme+'-selected.png'});
+   }
+   // Restore original baseline before behavioral QA.
+   await page.locator('[data-pwa-action="prefs"]').click();
+   await page.locator('button[data-pwa-theme="liberi"]').click();
+   await page.locator('[data-pwa-action="close"]').click();
+   for(const mood of ['desire','triumphant']){
+    const key=page.locator('.mood[data-mood="'+mood+'"]');
+    if(await key.getAttribute('aria-pressed')==='true')await key.click();
+   }
+   await page.locator('.mood[data-mood="happy"]').click();
+  }
   const curveMode=page.getByRole('button',{name:'The curve',exact:true});
   const tempoMode=page.getByRole('button',{name:'Set the tempo',exact:true});
   curveEditorUsed=true; // Set before click: frame errors may arrive during navigation.
