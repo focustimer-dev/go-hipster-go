@@ -917,22 +917,19 @@ html[data-pwa-theme=usiku] body.pwa-workspace .pwa-dialog-head{
  --portrait-strip-ink:#f6b8fb;
 }
 
-/* PWA-only late-cast engraving correction. Desire is an alpha mask and
-   Triumph an alpha-filtered WebP, unlike the original six sprite plates.
-   Keep their approved shapes and expressions; lighten the heavy ink impression
-   on Liberi and ElectricStars without changing Detroit/Katowice or Android. */
-:root:is([data-pwa-theme=liberi],[data-pwa-theme=electricstars]) body.gig-poster .mood-grid .mood:is([data-mood=desire],[data-mood=triumphant]) .face{
+/* Late-added portraits use distinct rendering pipelines: Desire is a tinted
+   alpha mask, Triumph is an alpha-filtered image. Do not apply a blanket
+   opacity adjustment to either: it fades already-fine engraved details. */
+/* Bosque selected stock is yellow. Its generic selected ink can resolve to
+   ivory, making Desire's alpha-mask image disappear into the bright tile.
+   Keep the approved selected expression and color it with dark neutral ink. */
+:root[data-pwa-theme=bosque] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=true] .face::after{
+ background-color:var(--lab-mood-neutral-ink,#103135)!important;
  filter:none!important;
+ opacity:1;
 }
-:root:is([data-pwa-theme=liberi],[data-pwa-theme=electricstars]) body.gig-poster .mood-grid .mood:is([data-mood=desire],[data-mood=triumphant]) .face::before{
- opacity:.82;
-}
-:root:is([data-pwa-theme=liberi],[data-pwa-theme=electricstars]) body.gig-poster .mood-grid .mood:is([data-mood=desire],[data-mood=triumphant]) .face::after{
- opacity:0;
-}
-:root:is([data-pwa-theme=liberi],[data-pwa-theme=electricstars]) body.gig-poster .mood-grid .mood:is([data-mood=desire],[data-mood=triumphant])[aria-pressed=true] .face::before{
- opacity:0;
-}
-:root:is([data-pwa-theme=liberi],[data-pwa-theme=electricstars]) body.gig-poster .mood-grid .mood:is([data-mood=desire],[data-mood=triumphant])[aria-pressed=true] .face::after{
- opacity:.86;
+/* ElectricStars: protect the alpha-mask from the generic face flood filter.
+   Triumph retains its own alphaInk treatment and its original luminance. */
+:root[data-pwa-theme=electricstars] body.gig-poster .mood-grid .mood[data-mood=desire][aria-pressed=true] .face{
+ filter:none!important;
 }
