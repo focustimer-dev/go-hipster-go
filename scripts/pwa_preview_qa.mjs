@@ -83,6 +83,38 @@ for(const profile of profiles){
     }
     await page.waitForTimeout(220);
     await grid.screenshot({path:folder+'/portraits-'+theme+'-selected.png'});
+    // Capture registration and ink evidence for all eight faces in both states.
+    // Fail if an approved face is hidden, clipped by CSS, or scaled outside
+    // its tile. Pixel-level visual matching remains a separate review.
+    for(const state of ['selected','neutral']){
+     if(state==='neutral')for(const mood of ['desire','triumphant']){
+      const key=page.locator('.mood[data-mood="'+mood+'"]');
+      if(await key.getAttribute('aria-pressed')==='true')await key.click();
+     }
+     const registration=await page.locator('.mood-grid .mood[data-mood]').evaluateAll(nodes=>nodes.map(node=>{
+      const face=node.querySelector('.face');
+      const rect=face.getBoundingClientRect();
+      const pseudo=getComputedStyle(face,node.getAttribute('aria-pressed')==='true'?'::after':'::before');
+      return {mood:node.dataset.mood,pressed:node.getAttribute('aria-pressed'),
+       width:rect.width,height:rect.height,mask:pseudo.maskImage,
+       maskSize:pseudo.maskSize,backgroundSize:pseudo.backgroundSize,
+       transform:pseudo.transform,clipPath:pseudo.clipPath,
+       ink:pseudo.backgroundColor,filter:pseudo.filter,opacity:pseudo.opacity};
+     }));
+     await writeFile(folder+'/registration-'+theme+'-'+state+'.json',
+      JSON.stringify(registration,null,2));
+     for(const face of registration){
+      assert.ok(face.width>0&&face.height>0,'Visible portrait '+theme+'/'+face.mood);
+      assert.ok(Math.abs(face.width-face.height)<2,'Square portrait registration '+theme+'/'+face.mood);
+      if(face.mood==='desire'){
+       assert.match(face.mask,/desire-(neutral|selected)-v4\\.webp/,
+        'Desire keeps approved mask '+theme+'/'+state);
+       assert.equal(face.maskSize,'contain','No Desire mask cropping '+theme+'/'+state);
+       assert.equal(face.clipPath,'none','No Desire clip path '+theme+'/'+state);
+      }
+     }
+    }
+
    }
    // Restore original baseline before behavioral QA.
    await page.locator('[data-pwa-action="prefs"]').click();
