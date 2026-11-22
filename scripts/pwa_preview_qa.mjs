@@ -56,6 +56,76 @@ for(const profile of profiles){
   assert.equal(await page.locator('.pwa-atlas-preview-link').count(),0,'Retired three-map trial link must not appear in the Jukebox');
   assert.equal(await page.locator('.pwa-add-inspiration').getAttribute('data-pwa-action'),'edit-reference');
   await page.screenshot({path:folder+'/'+profile.name+'-jukebox.png'});
+  // Full eight-character portrait contact set, every available PWA theme.
+  // Capture identical neutral/selected states before the normal QA mutates moods.
+  // These are real Chromium-rendered element screenshots, not simulated swatches.
+  if(profile.name==='phone'){
+   const portraitThemes=['liberi','bosque','usiku','kingston','detroit','addis','polish','beirut','michoacan','electricstars'];
+   for(const theme of portraitThemes){
+    await page.locator('[data-pwa-action="prefs"]').click();
+    await page.locator('#pwaPrefs').waitFor({state:'visible'});
+    await page.locator('button[data-pwa-theme="'+theme+'"]').click();
+    assert.equal(await page.evaluate(()=>document.documentElement.dataset.pwaTheme),theme);
+    await page.locator('[data-pwa-action="close"]').click();
+    // Clear the initial URL-provided Happy selection and any previous test state.
+    for(const mood of ['happy','angry','sad','weird','criminal','funky','desire','triumphant']){
+     const key=page.locator('.mood[data-mood="'+mood+'"]');
+     if(await key.getAttribute('aria-pressed')==='true')await key.click();
+    }
+    await page.waitForTimeout(220); // Allow the 160ms portrait expression fade to settle.
+    const grid=page.locator('.mood-grid');
+    await grid.scrollIntoViewIfNeeded();
+    await grid.screenshot({path:folder+'/portraits-'+theme+'-neutral.png'});
+    for(const mood of ['desire','triumphant']){
+     const key=page.locator('.mood[data-mood="'+mood+'"]');
+     await key.click();
+     assert.equal(await key.getAttribute('aria-pressed'),'true');
+    }
+    await page.waitForTimeout(220);
+    await grid.screenshot({path:folder+'/portraits-'+theme+'-selected.png'});
+    // Capture registration and ink evidence for all eight faces in both states.
+    // Fail if an approved face is hidden, clipped by CSS, or scaled outside
+    // its tile. Pixel-level visual matching remains a separate review.
+    for(const state of ['selected','neutral']){
+     if(state==='neutral')for(const mood of ['desire','triumphant']){
+      const key=page.locator('.mood[data-mood="'+mood+'"]');
+      if(await key.getAttribute('aria-pressed')==='true')await key.click();
+     }
+     const registration=await page.locator('.mood-grid .mood[data-mood]').evaluateAll(nodes=>nodes.map(node=>{
+      const face=node.querySelector('.face');
+      const rect=face.getBoundingClientRect();
+      const pseudo=getComputedStyle(face,node.getAttribute('aria-pressed')==='true'?'::after':'::before');
+      return {mood:node.dataset.mood,pressed:node.getAttribute('aria-pressed'),
+       width:rect.width,height:rect.height,mask:pseudo.maskImage,
+       maskSize:pseudo.maskSize,backgroundSize:pseudo.backgroundSize,
+       transform:pseudo.transform,clipPath:pseudo.clipPath,
+       ink:pseudo.backgroundColor,filter:pseudo.filter,opacity:pseudo.opacity};
+     }));
+     await writeFile(folder+'/registration-'+theme+'-'+state+'.json',
+      JSON.stringify(registration,null,2));
+     for(const face of registration){
+      assert.ok(face.width>0&&face.height>0,'Visible portrait '+theme+'/'+face.mood);
+      assert.ok(Math.abs(face.width-face.height)<2,'Square portrait registration '+theme+'/'+face.mood);
+      if(face.mood==='desire'){
+       assert.match(face.mask,/desire-(neutral|selected)-v4\.webp/,
+        'Desire keeps approved mask '+theme+'/'+state);
+       assert.equal(face.maskSize,'contain','No Desire mask cropping '+theme+'/'+state);
+       assert.equal(face.clipPath,'none','No Desire clip path '+theme+'/'+state);
+      }
+     }
+    }
+
+   }
+   // Restore original baseline before behavioral QA.
+   await page.locator('[data-pwa-action="prefs"]').click();
+   await page.locator('button[data-pwa-theme="liberi"]').click();
+   await page.locator('[data-pwa-action="close"]').click();
+   for(const mood of ['desire','triumphant']){
+    const key=page.locator('.mood[data-mood="'+mood+'"]');
+    if(await key.getAttribute('aria-pressed')==='true')await key.click();
+   }
+   await page.locator('.mood[data-mood="happy"]').click();
+  }
   const curveMode=page.getByRole('button',{name:'The curve',exact:true});
   const tempoMode=page.getByRole('button',{name:'Set the tempo',exact:true});
   curveEditorUsed=true; // Set before click: frame errors may arrive during navigation.
