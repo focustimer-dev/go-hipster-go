@@ -107,7 +107,7 @@ for(const profile of profiles){
       assert.ok(face.width>0&&face.height>0,'Visible portrait '+theme+'/'+face.mood);
       assert.ok(Math.abs(face.width-face.height)<2,'Square portrait registration '+theme+'/'+face.mood);
       if(face.mood==='desire'){
-       assert.match(face.mask,/desire-(neutral|selected)-v4\\.webp/,
+       assert.match(face.mask,/desire-(neutral|selected)-v4\.webp/,
         'Desire keeps approved mask '+theme+'/'+state);
        assert.equal(face.maskSize,'contain','No Desire mask cropping '+theme+'/'+state);
        assert.equal(face.clipPath,'none','No Desire clip path '+theme+'/'+state);
